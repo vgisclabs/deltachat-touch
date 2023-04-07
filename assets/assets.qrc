@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/assets">
+        <file>addNew.svg</file>
+        <file>background_bright.svg</file>
+        <file>background_dark.svg</file>
+        <file>circled_x_red.svg</file>
+        <file>dotted_circle_black.svg</file>
+        <file>image-icon3.svg</file>
+        <file>logo.svg</file>
+        <file>read_black.svg</file>
+        <file>read_white.svg</file>
+        <file>sent_black.svg</file>
+        <file>sent_white.svg</file>
+    </qresource>
+</RCC>

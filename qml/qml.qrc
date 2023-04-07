@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+        <file>pages/About.qml</file>
+        <file>pages/AccountConfig.qml</file>
+        <file>pages/AddAccount.qml</file>
+        <file>pages/AddChat.qml</file>
+        <file>pages/AddOrConfigureEmailAccount.qml</file>
+        <file>pages/BlockContactPopup.qml</file>
+        <file>pages/BlockedContacts.qml</file>
+        <file>pages/ChatView.qml</file>
+        <file>pages/ChatInfosActions.qml</file>
+        <file>pages/ConfirmAccountDeletion.qml</file>
+        <file>pages/ConfirmChatDeletion.qml</file>
+        <file>pages/ConfirmMsgDeletion.qml</file>
+        <file>pages/ErrorMessage.qml</file>
+        <file>pages/ForwardMessage.qml</file>
+        <file>pages/InfoPopup.qml</file>
+        <file>pages/MessageInfosActions.qml</file>
+        <file>pages/NotImplemented.qml</file>
+        <file>pages/PickerProfilePic.qml</file>
+        <file>pages/PickerBackupFile.qml</file>
+        <file>pages/PickerAudioToExport.qml</file>
+        <file>pages/PickerAudioToSend.qml</file>
+        <file>pages/PickerFileToExport.qml</file>
+        <file>pages/PickerFileToSend.qml</file>
+        <file>pages/PickerImageToExport.qml</file>
+        <file>pages/PickerImageToSend.qml</file>
+        <file>pages/ProgressConfigAccount.qml</file>
+        <file>pages/ProgressBackupImport.qml</file>
+        <file>pages/Profile.qml</file>
+        <file>pages/SettingsPage.qml</file>
+        <file>pages/UnblockContactPopup.qml</file>
+        <file>delegates/delegSelfAudio.qml</file>
+        <file>delegates/delegSelfImage.qml</file>
+        <file>delegates/delegSelfTextMsg.qml</file>
+        <file>delegates/delegSelfUnknown.qml</file>
+        <file>delegates/delegOtherAudio.qml</file>
+        <file>delegates/delegOtherImage.qml</file>
+        <file>delegates/delegOtherTextMsg.qml</file>
+        <file>delegates/delegOtherUnknown.qml</file>
+        <file>delegates/delegUnreadMsgsBar.qml</file>
+    </qresource>
+</RCC>

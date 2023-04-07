@@ -1,0 +1,5 @@
+clickable_minimum_required: 7.1.2
+builder: cmake
+kill: deltatouch
+prebuild: mkdir -p plugins/DeltaHandler && cp ../../../deltachat-core/${ARCH_TRIPLET}/libdeltachat.so plugins/DeltaHandler
+"install_lib": "deltachat-core/${ARCH_TRIPLET}/libdeltachat.so*"

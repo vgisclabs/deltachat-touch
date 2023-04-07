@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="65.233749mm"
+   height="65.135521mm"
+   viewBox="0 0 65.233749 65.135521"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="image-icon3.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="167.54536"
+     inkscape:cy="127.07856"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1039"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-31.48684,-53.367919)">
+    <path
+       style="fill:none;stroke:#808080;stroke-width:2.4366;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 35.731814,58.846716 V 113.67179 H 91.830283 V 58.819192 Z"
+       id="path835" />
+    <circle
+       style="fill:#808080;fill-opacity:1;stroke:#808080;stroke-width:1.065;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path841"
+       r="7.0400715"
+       cy="75.503502"
+       cx="77.271004" />
+    <path
+       style="fill:#808080;fill-opacity:1;stroke:#808080;stroke-width:0.255336px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 39.143383,107.05931 8.683448,-33.543108 8.900663,23.625408 7.741015,-13.381844 8.638667,23.295244 z"
+       id="path854"
+       sodipodi:nodetypes="cccccc" />
+  </g>
+</svg>

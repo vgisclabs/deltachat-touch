@@ -1,0 +1,15 @@
+{
+    "name": "deltatouch.lotharketterer",
+    "description": "Messaging app via your existing email account, powered by deltachat-core",
+    "architecture": "@CLICK_ARCH@",
+    "title": "DeltaTouch",
+    "hooks": {
+        "deltatouch": {
+            "apparmor": "deltatouch.apparmor",
+            "desktop":  "deltatouch.desktop"
+        }
+    },
+    "version": "0.3.0",
+    "maintainer": "Lothar Ketterer <ketterer_src@mailbox.org>",
+    "framework" : "@CLICK_FRAMEWORK@"
+}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 20:34+0000\n"
+"POT-Creation-Date: 2023-04-12 11:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,24 +97,24 @@ msgstr ""
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/About.qml:26 ../qml/pages/Profile.qml:65
+#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
 #: ../qml/pages/SettingsPage.qml:55
 msgid "About"
 msgstr ""
 
-#: ../qml/pages/About.qml:56
+#: ../qml/pages/About.qml:71
 msgid "License:"
 msgstr ""
 
-#: ../qml/pages/About.qml:67
+#: ../qml/pages/About.qml:82
 msgid "Source code:"
 msgstr ""
 
-#: ../qml/pages/About.qml:87
+#: ../qml/pages/About.qml:102
 msgid "Report bugs here:"
 msgstr ""
 
-#: ../qml/pages/About.qml:110
+#: ../qml/pages/About.qml:125
 msgid ""
 "This app is powered by deltachat-core (<a href=\"https://github.com/"
 "deltachat/deltachat-core-rust\">source</a>)."
@@ -335,7 +335,7 @@ msgstr ""
 msgid "Block Contact"
 msgstr ""
 
-#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:163
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:167
 msgid "Blocked Contacts"
 msgstr ""
 
@@ -441,7 +441,7 @@ msgstr ""
 msgid "Edit Profile"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:188
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:192
 msgid "Profile"
 msgstr ""
 

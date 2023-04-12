@@ -19,12 +19,16 @@
 import QtQuick 2.12
 import Ubuntu.Components 1.3
 
+import DeltaHandler 1.0
+
 Page {
     id: aboutPage
     header: PageHeader {
         id: aboutHeader
         title: i18n.tr('About')
     }
+
+    property string deltaversion: DeltaHandler.getCurrentConfig("sys.version")
 
     Label {
         id: versionLabel
@@ -37,10 +41,21 @@ Page {
     }
 
     Label {
-        id: copyleftLabel
+        id: versionLabel2
         anchors {
             horizontalCenter: parent.horizontalCenter
             top: versionLabel.bottom
+            margins: units.gu(2)
+        }
+        text: "libdeltachat.so version: " + deltaversion
+        visible: deltaversion != ""
+    }
+
+    Label {
+        id: copyleftLabel
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: versionLabel2.visible ? versionLabel2.bottom : versionLabel.bottom
             margins: units.gu(2)
         }
         text: '© 2023 Lothar Ketterer'

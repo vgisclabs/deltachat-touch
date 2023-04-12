@@ -1,5 +1,11 @@
 clickable_minimum_required: 7.1.2
 builder: cmake
 kill: deltatouch
-prebuild: mkdir -p plugins/DeltaHandler && cp ../../../deltachat-core/${ARCH_TRIPLET}/libdeltachat.so plugins/DeltaHandler
-"install_lib": "deltachat-core/${ARCH_TRIPLET}/libdeltachat.so*"
+libraries:
+  deltachat-core-rust:
+    builder: cmake
+    make_jobs: 1
+    rust_channel: 1.65.0
+    build_args: -DCLICK_ARCH_RUST=${ARCH_RUST}
+install_lib: build/${ARCH_TRIPLET}/deltachat-core-rust/install/lib/libdeltachat.so
+

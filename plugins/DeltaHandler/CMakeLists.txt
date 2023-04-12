@@ -14,7 +14,7 @@ set(
 )
 
 add_library(deltachat SHARED IMPORTED)
-set_property(TARGET deltachat PROPERTY IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/../../../deltachat-core-rust/install/lib/libdeltachat.so")
+set_property(TARGET deltachat PROPERTY IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/libdeltachat.so")
 
 set(CMAKE_AUTOMOC ON)
 

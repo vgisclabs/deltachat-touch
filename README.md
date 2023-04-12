@@ -9,23 +9,29 @@ Recommended way is via clickable. For this, either docker or podman need to be i
 ### General
 
 Clone this repo:
+
 `git clone https://codeberg.org/lk108/deltatouch`
 
 ### Building libdeltachat.so
 
 Activate/update the deltachat-core-rust submodule:
+
 `cd deltatouch`
+
 `git submodule update --init --recursive`
 
 If the submodule has been cloned for the first time or its CMakeLists.txt has been modified by an update, it needs to be patched in order to work with clickable:
+
 `patch libs/deltachat-core-rust/CMakeLists.txt < libs/patches/dc_core_rust-CMakeLists.patch`
 
 Build the libdeltachat.so for your architecture (arm64 in this example, could also be armhf or amd64 if you want to use `clickable desktop`). This will take some time:
+
 `clickable build --libs deltachat-core-rust --arch arm64`
 
 ### Build the app
 
 Build the app for your architecture (arm64 in this example, could also be armhf):
+
 `clickable build --arch arm64`
 
 This will give you a .click file in build/aarch64-linux-gnu/app or build/arm-linux-gnueabihf/app that you can send to your phone and install it via OpenStore (just click on it in the file manager).

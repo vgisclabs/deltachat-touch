@@ -1,0 +1,21 @@
+--- ../deltachat-core-rust/CMakeLists.txt	2023-04-12 20:37:37.273530765 +0200
++++ /tmp/CMakeLists.txt	2023-04-12 20:34:26.178806104 +0200
+@@ -21,7 +21,7 @@
+         PREFIX=${CMAKE_INSTALL_PREFIX}
+         LIBDIR=${CMAKE_INSTALL_FULL_LIBDIR}
+         INCLUDEDIR=${CMAKE_INSTALL_FULL_INCLUDEDIR}
+-        ${CARGO} build --release --no-default-features --features jsonrpc
++        CARGO_HOME=~/.clickable/cargo ${CARGO} build --target=${CLICK_ARCH_RUST} --release --no-default-features --features jsonrpc
+ 
+ 	# Build in `deltachat-ffi` directory instead of using
+ 	# `--package deltachat_ffi` to avoid feature resolver version
+@@ -45,6 +45,6 @@
+ )
+ 
+ install(FILES "deltachat-ffi/deltachat.h" DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+-install(FILES "target/release/libdeltachat.a" DESTINATION ${CMAKE_INSTALL_LIBDIR})
+-install(FILES "target/release/libdeltachat.${DYNAMIC_EXT}" DESTINATION ${CMAKE_INSTALL_LIBDIR})
+-install(FILES "target/release/pkgconfig/deltachat.pc" DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
++install(FILES "target/${CLICK_ARCH_RUST}/release/libdeltachat.a" DESTINATION ${CMAKE_INSTALL_LIBDIR})
++install(FILES "target/${CLICK_ARCH_RUST}/release/libdeltachat.${DYNAMIC_EXT}" DESTINATION ${CMAKE_INSTALL_LIBDIR})
++install(FILES "target/${CLICK_ARCH_RUST}/release/pkgconfig/deltachat.pc" DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)

@@ -47,7 +47,7 @@ This will give you a .click file in build/aarch64-linux-gnu/app or build/arm-lin
 
 ### Test it on your PC
 
-It's possible to run the app on a standard desktop computer:
+It's possible to run the app on a standard desktop computer. Prerequisite is that libdeltachat.so has been built for the architecture amd64. Then enter:
 
 ```
 clickable desktop
@@ -56,7 +56,7 @@ clickable desktop
 For some options like dark mode or using a different language, see <https://clickable-ut.dev/en/latest/commands.html#desktop>.
 
 Note that there are some limitations to `clickable desktop`:
-- The resolution is quite low, so don't be surprised if it looks blurred. This is not the case on the phone.
+- The resolution is quite low, so don't be surprised if it looks blurred. This will not the case on the phone.
 - Anything requiring a service that's running in Ubuntu Touch will not work. As a consequence, file exchange will not be possible as it needs the so-called content hub which is not running on the desktop. This means:
     - Backups cannot be im- or exported, so accounts have to be set up via logging in to your account.
     - Images and sound files / voice recordings cannot be sent.

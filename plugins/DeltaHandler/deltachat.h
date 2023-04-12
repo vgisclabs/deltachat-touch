@@ -11,18 +11,20 @@ extern "C" {
 #endif
 
 
-typedef struct _dc_context  dc_context_t;
-typedef struct _dc_accounts dc_accounts_t;
-typedef struct _dc_array    dc_array_t;
-typedef struct _dc_chatlist dc_chatlist_t;
-typedef struct _dc_chat     dc_chat_t;
-typedef struct _dc_msg      dc_msg_t;
-typedef struct _dc_contact  dc_contact_t;
-typedef struct _dc_lot      dc_lot_t;
-typedef struct _dc_provider dc_provider_t;
-typedef struct _dc_event    dc_event_t;
+typedef struct _dc_context   dc_context_t;
+typedef struct _dc_accounts  dc_accounts_t;
+typedef struct _dc_array     dc_array_t;
+typedef struct _dc_chatlist  dc_chatlist_t;
+typedef struct _dc_chat      dc_chat_t;
+typedef struct _dc_msg       dc_msg_t;
+typedef struct _dc_reactions dc_reactions_t;
+typedef struct _dc_contact   dc_contact_t;
+typedef struct _dc_lot       dc_lot_t;
+typedef struct _dc_provider  dc_provider_t;
+typedef struct _dc_event     dc_event_t;
 typedef struct _dc_event_emitter dc_event_emitter_t;
 typedef struct _dc_jsonrpc_instance dc_jsonrpc_instance_t;
+typedef struct _dc_backup_provider dc_backup_provider_t;
 
 // Alias for backwards compatibility, use dc_event_emitter_t instead.
 typedef struct _dc_event_emitter dc_accounts_event_emitter_t;
@@ -70,7 +72,6 @@ typedef struct _dc_event_emitter dc_accounts_event_emitter_t;
  *
  * The example above uses "pthreads",
  * however, you can also use anything else for thread handling.
- * All deltachat-core functions, unless stated otherwise, are thread-safe.
  *
  * Now you can **configure the context:**
  *
@@ -138,6 +139,67 @@ typedef struct _dc_event_emitter dc_accounts_event_emitter_t;
  * Message 1: Hi, here is my first message!
  * Message 2: Got it!
  * ~~~
+ *
+ *
+ * ## Thread safety
+ *
+ * All deltachat-core functions, unless stated otherwise, are thread-safe.
+ * In particular, it is safe to pass the same dc_context_t pointer
+ * to multiple functions running concurrently in different threads.
+ *
+ * All the functions are guaranteed not to use the reference passed to them
+ * after returning. If the function spawns a long-running process,
+ * such as dc_configure() or dc_imex(), it will ensure that the objects
+ * passed to them are not deallocated as long as they are needed.
+ * For example, it is safe to call dc_imex(context, ...) and
+ * call dc_context_unref(context) immediately after return from dc_imex().
+ * It is however **not safe** to call dc_context_unref(context) concurrently
+ * until dc_imex() returns, because dc_imex() may have not increased
+ * the reference count of dc_context_t yet.
+ *
+ * This means that the context may be still in use after
+ * dc_context_unref() call.
+ * For example, it is possible to start the import/export process,
+ * call dc_context_unref(context) immediately after
+ * and observe #DC_EVENT_IMEX_PROGRESS events via the event emitter.
+ * Once dc_get_next_event() returns NULL,
+ * it is safe to terminate the application.
+ *
+ * It is recommended to create dc_context_t in the main thread
+ * and only call dc_context_unref() once other threads that may use it,
+ * such as the event loop thread, are terminated.
+ * Common mistake is to use dc_context_unref() as a way
+ * to cause dc_get_next_event() return NULL and terminate event loop this way.
+ * If event loop thread is inside a function taking dc_context_t
+ * as an argument at the moment dc_context_unref() is called on the main thread,
+ * the behavior is undefined.
+ *
+ * Recommended way to safely terminate event loop
+ * and shutdown the application is
+ * to use a boolean variable
+ * indicating that the event loop should stop
+ * and check it in the event loop thread
+ * every time before calling dc_get_next_event().
+ * To terminate the event loop, main thread should:
+ * 1. Notify event loop that it should terminate by atomically setting the
+ *    boolean flag in the memory shared between the main thread and event loop.
+ * 2. Call dc_stop_io() or dc_accounts_stop_io(), depending
+ *    on whether a single account or account manager is used.
+ *    Stopping I/O is guaranteed to emit at least one event
+ *    and interrupt the event loop even if it was blocked on dc_get_next_event().
+ * 3. Wait until the event loop thread notices the flag,
+ *    exits the event loop and terminates.
+ * 4. Call dc_context_unref() or dc_accounts_unref().
+ * 5. Keep calling dc_get_next_event() in a loop until it returns NULL,
+ *    indicating that the contexts are deallocated.
+ * 6. Terminate the application.
+ *
+ * When using C API via FFI in runtimes that use automatic memory management,
+ * such as CPython, JVM or Node.js, take care to ensure the correct
+ * shutdown order and avoid calling dc_context_unref() or dc_accounts_unref()
+ * on the objects still in use in other threads,
+ * e.g. by keeping a reference to the wrapper object.
+ * The details depend on the runtime being used.
  *
  *
  * ## Class reference
@@ -611,7 +673,7 @@ int             dc_all_work_done             (dc_context_t* context);
  * While dc_configure() returns immediately,
  * the started configuration-job may take a while.
  *
- * During configuration, #DC_EVENT_CONFIGURE_PROGRESS events are emmited;
+ * During configuration, #DC_EVENT_CONFIGURE_PROGRESS events are emitted;
  * they indicate a successful configuration as well as errors
  * and may be used to create a progress bar.
  *
@@ -868,7 +930,7 @@ uint32_t        dc_get_chat_id_by_contact_id (dc_context_t* context, uint32_t co
  * @param context The context object as returned from dc_context_new().
  * @param chat_id The chat ID to send the message to.
  * @param msg The message object to send to the chat defined by the chat ID.
- *     On succcess, msg_id and state of the object are set up,
+ *     On success, msg_id and state of the object are set up,
  *     The function does not take ownership of the object,
  *     so you have to free it using dc_msg_unref() as usual.
  * @return The ID of the message that is being prepared.
@@ -879,7 +941,7 @@ uint32_t        dc_prepare_msg               (dc_context_t* context, uint32_t ch
 /**
  * Send a message defined by a dc_msg_t object to a chat.
  *
- * Sends the event #DC_EVENT_MSGS_CHANGED on succcess.
+ * Sends the event #DC_EVENT_MSGS_CHANGED on success.
  * However, this does not imply, the message really reached the recipient -
  * sending may be delayed e.g. due to network problems. However, from your
  * view, you're done with the message. Sooner or later it will find its way.
@@ -908,7 +970,7 @@ uint32_t        dc_prepare_msg               (dc_context_t* context, uint32_t ch
  * @param chat_id The chat ID to send the message to.
  *     If dc_prepare_msg() was called before, this parameter can be 0.
  * @param msg The message object to send to the chat defined by the chat ID.
- *     On succcess, msg_id of the object is set up,
+ *     On success, msg_id of the object is set up,
  *     The function does not take ownership of the object,
  *     so you have to free it using dc_msg_unref() as usual.
  * @return The ID of the message that is about to be sent. 0 in case of errors.
@@ -925,7 +987,7 @@ uint32_t        dc_send_msg                  (dc_context_t* context, uint32_t ch
  * @param chat_id The chat ID to send the message to.
  *     If dc_prepare_msg() was called before, this parameter can be 0.
  * @param msg The message object to send to the chat defined by the chat ID.
- *     On succcess, msg_id of the object is set up,
+ *     On success, msg_id of the object is set up,
  *     The function does not take ownership of the object,
  *     so you have to free it using dc_msg_unref() as usual.
  * @return The ID of the message that is about to be sent. 0 in case of errors.
@@ -936,7 +998,7 @@ uint32_t        dc_send_msg_sync                  (dc_context_t* context, uint32
 /**
  * Send a simple text message a given chat.
  *
- * Sends the event #DC_EVENT_MSGS_CHANGED on succcess.
+ * Sends the event #DC_EVENT_MSGS_CHANGED on success.
  * However, this does not imply, the message really reached the recipient -
  * sending may be delayed e.g. due to network problems. However, from your
  * view, you're done with the message. Sooner or later it will find its way.
@@ -989,6 +1051,34 @@ uint32_t        dc_send_text_msg             (dc_context_t* context, uint32_t ch
  *     or 0 for errors.
  */
 uint32_t dc_send_videochat_invitation (dc_context_t* context, uint32_t chat_id);
+
+
+/**
+ * Send a reaction to message.
+ *
+ * Reaction is a string of emojis separated by spaces. Reaction to a
+ * single message can be sent multiple times. The last reaction
+ * received overrides all previously received reactions. It is
+ * possible to remove all reactions by sending an empty string.
+ *
+ * @memberof dc_context_t
+ * @param context The context object.
+ * @param msg_id ID of the message you react to.
+ * @param reaction A string consisting of emojis separated by spaces.
+ * @return The ID of the message sent out or 0 for errors.
+ */
+uint32_t dc_send_reaction (dc_context_t* context, uint32_t msg_id, char *reaction);
+
+
+/**
+ * Get a structure with reactions to the message.
+ *
+ * @memberof dc_context_t
+ * @param context The context object.
+ * @param msg_id The message ID to get reactions for.
+ * @return A structure with all reactions to the message.
+ */
+dc_reactions_t* dc_get_msg_reactions (dc_context_t *context, int msg_id);
 
 
 /**
@@ -1117,7 +1207,7 @@ void            dc_set_draft                 (dc_context_t* context, uint32_t ch
  *     // not now and not when this code is executed again
  *     dc_add_device_msg(context, "update-123", NULL);
  * } else {
- *     // welcome message was not added now, this is an oder installation,
+ *     // welcome message was not added now, this is an older installation,
  *     // add a changelog
  *     dc_add_device_msg(context, "update-123", changelog_msg);
  * }
@@ -1130,7 +1220,7 @@ uint32_t        dc_add_device_msg            (dc_context_t* context, const char*
 
 /**
  * Check if a device-message with a given label was ever added.
- * Device-messages can be added dc_add_device_msg().
+ * Device-messages can be added with dc_add_device_msg().
  *
  * @memberof dc_context_t
  * @param context The context object.
@@ -1198,7 +1288,11 @@ int             dc_get_msg_cnt               (dc_context_t* context, uint32_t ch
  * Get the number of _fresh_ messages in a chat.
  * Typically used to implement a badge with a number in the chatlist.
  *
- * If the specified chat is muted,
+ * As muted archived chats are not unarchived automatically,
+ * a similar information is needed for the @ref dc_get_chatlist() "archive link" as well:
+ * here, the number of archived chats containing fresh messages is returned.
+ *
+ * If the specified chat is muted or the @ref dc_get_chatlist() "archive link",
  * the UI should show the badge counter "less obtrusive",
  * e.g. using "gray" instead of "red" color.
  *
@@ -2027,8 +2121,9 @@ char*           dc_get_contact_encrinfo      (dc_context_t* context, uint32_t co
 
 
 /**
- * Delete a contact. The contact is deleted from the local device. It may happen that this is not
- * possible as the contact is in use. In this case, the contact can be blocked.
+ * Delete a contact so that it disappears from the corresponding lists.
+ * Depending on whether there are ongoing chats, deletion is done by physical deletion or hiding.
+ * The contact is deleted from the local device.
  *
  * May result in a #DC_EVENT_CONTACTS_CHANGED event.
  *
@@ -2066,8 +2161,7 @@ dc_contact_t*   dc_get_contact               (dc_context_t* context, uint32_t co
 
 /**
  * Import/export things.
- * During backup import/export IO must not be started,
- * if needed stop IO using dc_accounts_stop_io() or dc_stop_io() first.
+ *
  * What to do is defined by the _what_ parameter which may be one of the following:
  *
  * - **DC_IMEX_EXPORT_BACKUP** (11) - Export a backup to the directory given as `param1`
@@ -2261,6 +2355,7 @@ void            dc_stop_ongoing_process      (dc_context_t* context);
 #define         DC_QR_FPR_MISMATCH           220 // id=contact
 #define         DC_QR_FPR_WITHOUT_ADDR       230 // test1=formatted fingerprint
 #define         DC_QR_ACCOUNT                250 // text1=domain
+#define         DC_QR_BACKUP                 251
 #define         DC_QR_WEBRTC_INSTANCE        260 // text1=domain, text2=instance pattern
 #define         DC_QR_ADDR                   320 // id=contact
 #define         DC_QR_TEXT                   330 // text1=text
@@ -2286,7 +2381,7 @@ void            dc_stop_ongoing_process      (dc_context_t* context);
  *   ask whether to verify the contact;
  *   if so, start the protocol with dc_join_securejoin().
  *
- * - DC_QR_ASK_VERIFYGROUP withdc_lot_t::text1=Group name:
+ * - DC_QR_ASK_VERIFYGROUP with dc_lot_t::text1=Group name:
  *   ask whether to join the group;
  *   if so, start the protocol with dc_join_securejoin().
  *
@@ -2305,6 +2400,10 @@ void            dc_stop_ongoing_process      (dc_context_t* context);
  * - DC_QR_ACCOUNT dc_lot_t::text1=domain:
  *   ask the user if they want to create an account on the given domain,
  *   if so, call dc_set_config_from_qr() and then dc_configure().
+ *
+ * - DC_QR_BACKUP:
+ *   ask the user if they want to set up a new device.
+ *   If so, pass the qr-code to dc_receive_backup().
  *
  * - DC_QR_WEBRTC_INSTANCE with dc_lot_t::text1=domain:
  *   ask the user if they want to use the given service for video chats;
@@ -2595,6 +2694,123 @@ char* dc_get_last_error (dc_context_t* context);
  */
 void dc_str_unref (char* str);
 
+
+/**
+ * @class dc_backup_provider_t
+ *
+ * Set up another device.
+ */
+
+/**
+ * Creates an object for sending a backup to another device.
+ *
+ * The backup is sent to through a peer-to-peer channel which is bootstrapped
+ * by a QR-code.  The backup contains the entire state of the account
+ * including credentials.  This can be used to setup a new device.
+ *
+ * This is a blocking call as some preparations are made like e.g. exporting
+ * the database.  Once this function returns, the backup is being offered to
+ * remote devices.  To wait until one device received the backup, use
+ * dc_backup_provider_wait().  Alternatively abort the operation using
+ * dc_stop_ongoing_process().
+ *
+ * During execution of the job #DC_EVENT_IMEX_PROGRESS is sent out to indicate
+ * state and progress.
+ *
+ * @memberof dc_backup_provider_t
+ * @param context The context.
+ * @return Opaque object for sending the backup.
+ *    On errors, NULL is returned and dc_get_last_error() returns an error that
+ *    should be shown to the user.
+ */
+dc_backup_provider_t* dc_backup_provider_new (dc_context_t* context);
+
+
+/**
+ * Returns the QR code text that will offer the backup to other devices.
+ *
+ * The QR code contains a ticket which will validate the backup and provide
+ * authentication for both the provider and the recipient.
+ *
+ * The scanning device should call the scanned text to dc_check_qr().  If
+ * dc_check_qr() returns DC_QR_BACKUP, the backup transfer can be started using
+ * dc_get_backup().
+ *
+ * @memberof dc_backup_provider_t
+ * @param backup_provider The backup provider object as created by
+ *    dc_backup_provider_new().
+ * @return The text that should be put in the QR code.
+ *    On errors an empty string is returned, NULL is never returned.
+ *    the returned string must be released using dc_str_unref() after usage.
+ */
+char* dc_backup_provider_get_qr (const dc_backup_provider_t* backup_provider);
+
+
+/**
+ * Returns the QR code SVG image that will offer the backup to other devices.
+ *
+ * This works like dc_backup_provider_qr() but returns the text of a rendered
+ * SVG image containing the QR code.
+ *
+ * @memberof dc_backup_provider_t
+ * @param backup_provider The backup provider object as created by
+ *    dc_backup_provider_new().
+ * @return The QR code rendered as SVG.
+ *    On errors an empty string is returned, NULL is never returned.
+ *    the returned string must be released using dc_str_unref() after usage.
+ */
+char* dc_backup_provider_get_qr_svg (const dc_backup_provider_t* backup_provider);
+
+/**
+ * Waits for the sending to finish.
+ *
+ * This is a blocking call and should only be called once.
+ *
+ * @memberof dc_backup_provider_t
+ * @param backup_provider The backup provider object as created by
+ *    dc_backup_provider_new().  If NULL is given nothing is done.
+ */
+void dc_backup_provider_wait (dc_backup_provider_t* backup_provider);
+
+/**
+ * Frees a dc_backup_provider_t object.
+ *
+ * If the provider has not yet finished, as indicated by
+ * dc_backup_provider_wait() or the #DC_EVENT_IMEX_PROGRESS event with value
+ * of 0 (failed) or 1000 (succeeded), this will also abort any in-progress
+ * transfer.  If this aborts the provider a #DC_EVENT_IMEX_PROGRESS event with
+ * value 0 (failed) will be emitted.
+ *
+ * @memberof dc_backup_provider_t
+ * @param backup_provider The backup provider object as created by
+ *    dc_backup_provider_new().
+ */
+void dc_backup_provider_unref (dc_backup_provider_t* backup_provider);
+
+/**
+ * Gets a backup offered by a dc_backup_provider_t object on another device.
+ *
+ * This function is called on a device that scanned the QR code offered by
+ * dc_backup_sender_qr() or dc_backup_sender_qr_svg().  Typically this is a
+ * different device than that which provides the backup.
+ *
+ * This call will block while the backup is being transferred and only
+ * complete on success or failure.  Use dc_stop_ongoing_process() to abort it
+ * early.
+ *
+ * During execution of the job #DC_EVENT_IMEX_PROGRESS is sent out to indicate
+ * state and progress.  The process is finished when the event emits either 0
+ * or 1000, 0 means it failed and 1000 means it succeeded.  These events are
+ * for showing progress and informational only, success and failure is also
+ * shown in the return code of this function.
+ *
+ * @memberof dc_context_t
+ * @param context The context.
+ * @param qr The qr code text, dc_check_qr() must have returned DC_QR_BACKUP
+ *    on this text.
+ * @return 0=failure, 1=success.
+ */
+int dc_receive_backup (dc_context_t* context, const char* qr);
 
 /**
  * @class dc_accounts_t
@@ -3150,7 +3366,7 @@ dc_lot_t*        dc_chatlist_get_summary     (const dc_chatlist_t* chatlist, siz
  * it takes the chat ID and the message ID as returned by dc_chatlist_get_chat_id() and dc_chatlist_get_msg_id()
  * as arguments. The chatlist object itself is not needed directly.
  *
- * This maybe useful if you convert the complete object into a different represenation
+ * This maybe useful if you convert the complete object into a different representation
  * as done e.g. in the node-bindings.
  * If you have access to the chatlist object in some way, using this function is not recommended,
  * use dc_chatlist_get_summary() in this case instead.
@@ -4068,9 +4284,19 @@ int             dc_msg_get_info_type          (const dc_msg_t* msg);
 
 
 // DC_INFO* uses the same values as SystemMessage in rust-land
-#define         DC_INFO_PROTECTION_ENABLED     11
-#define         DC_INFO_PROTECTION_DISABLED    12
-
+#define         DC_INFO_UNKNOWN                    0
+#define         DC_INFO_GROUP_NAME_CHANGED         2
+#define         DC_INFO_GROUP_IMAGE_CHANGED        3
+#define         DC_INFO_MEMBER_ADDED_TO_GROUP      4
+#define         DC_INFO_MEMBER_REMOVED_FROM_GROUP  5
+#define         DC_INFO_AUTOCRYPT_SETUP_MESSAGE    6
+#define         DC_INFO_SECURE_JOIN_MESSAGE        7
+#define         DC_INFO_LOCATIONSTREAMING_ENABLED  8
+#define         DC_INFO_LOCATION_ONLY              9
+#define         DC_INFO_EPHEMERAL_TIMER_CHANGED   10
+#define         DC_INFO_PROTECTION_ENABLED        11
+#define         DC_INFO_PROTECTION_DISABLED       12
+#define         DC_INFO_WEBXDC_INFO_MESSAGE       32
 
 /**
  * Check if a message is still in creation. A message is in creation between
@@ -4281,6 +4507,18 @@ void            dc_msg_set_text               (dc_msg_t* msg, const char* text);
  * @param html HTML to send.
  */
 void            dc_msg_set_html               (dc_msg_t* msg, const char* html);
+
+
+/**
+ * Sets the email's subject. If it's empty, a default subject
+ * will be used (e.g. `Message from Alice` or `Re: <last subject>`).
+ * This does not alter any information in the database.
+ *
+ * @memberof dc_msg_t
+ * @param msg The message object.
+ * @param subject The new subject.
+ */
+void            dc_msg_set_subject            (dc_msg_t* msg, const char* subject);
 
 
 /**
@@ -4695,6 +4933,37 @@ int             dc_contact_is_blocked        (const dc_contact_t* contact);
 int             dc_contact_is_verified       (dc_contact_t* contact);
 
 
+
+/**
+ * Return the address that verified a contact
+ *
+ * The UI may use this in addition to a checkmark showing the verification status
+ *
+ * @memberof dc_contact_t
+ * @param contact The contact object.
+ * @return 
+ *    A string containing the verifiers address. If it is the same address as the contact itself,
+ *    we verified the contact ourself. If it is an empty string, we don't have verifier 
+ *    information or the contact is not verified.
+ */
+char*           dc_contact_get_verifier_addr       (dc_contact_t* contact);
+
+
+/**
+ * Return the `ContactId` that verified a contact
+ *
+ * The UI may use this in addition to a checkmark showing the verification status
+ *
+ * @memberof dc_contact_t
+ * @param contact The contact object.
+ * @return 
+ *    The `ContactId` of the verifiers address. If it is the same address as the contact itself,
+ *    we verified the contact ourself. If it is 0, we don't have verifier information or 
+ *    the contact is not verified.
+ */
+uint32_t       dc_contact_get_verifier_id      (dc_contact_t* contact);
+
+
 /**
  * @class dc_provider_t
  *
@@ -4882,7 +5151,49 @@ uint32_t        dc_lot_get_id            (const dc_lot_t* lot);
  * @param lot The lot object.
  * @return The timestamp as defined by the creator of the object. 0 if there is not timestamp or on errors.
  */
-int64_t          dc_lot_get_timestamp     (const dc_lot_t* lot);
+int64_t         dc_lot_get_timestamp     (const dc_lot_t* lot);
+
+
+/**
+ * @class dc_reactions_t
+ *
+ * An object representing all reactions for a single message.
+ */
+
+/**
+ * Returns array of contacts which reacted to the given message.
+ *
+ * @memberof dc_reactions_t
+ * @param reactions The object containing message reactions.
+ * @return array of contact IDs. Use dc_array_get_cnt() to get array length and
+ *         dc_array_get_id() to get the IDs. Should be freed using `dc_array_unref()` after usage.
+ */
+dc_array_t*     dc_reactions_get_contacts(dc_reactions_t* reactions);
+
+
+/**
+ * Returns a string containing space-separated reactions of a single contact.
+ *
+ * @memberof dc_reactions_t
+ * @param reactions The object containing message reactions.
+ * @param contact_id ID of the contact.
+ * @return Space-separated list of emoji sequences, which could be empty.
+ *         Returned string should not be modified and should be freed
+ *         with dc_str_unref() after usage.
+ */
+char*           dc_reactions_get_by_contact_id(dc_reactions_t* reactions, uint32_t contact_id);
+
+
+/**
+ * Frees an object containing message reactions.
+ *
+ * Reactions objects are created by dc_get_msg_reactions().
+ *
+ * @memberof dc_reactions_t
+ * @param reactions The object to free.
+ *     If NULL is given, nothing is done.
+ */
+void            dc_reactions_unref       (dc_reactions_t* reactions);
 
 
 /**
@@ -5461,6 +5772,14 @@ void dc_event_unref(dc_event_t* event);
 #define DC_EVENT_IMAP_MESSAGE_MOVED   105
 
 /**
+ * Emitted before going into IDLE on the Inbox folder.
+ *
+ * @param data1 0
+ * @param data2 0
+ */
+#define DC_EVENT_IMAP_INBOX_IDLE 106
+
+/**
  * Emitted when a new blob file was successfully written
  *
  * @param data1 0
@@ -5534,6 +5853,15 @@ void dc_event_unref(dc_event_t* event);
 
 
 /**
+ * Message reactions changed.
+ *
+ * @param data1 (int) chat_id ID of the chat affected by the changes.
+ * @param data2 (int) msg_id ID of the message for which reactions were changed.
+ */
+#define DC_EVENT_REACTIONS_CHANGED        2001
+
+
+/**
  * There is a fresh message. Typically, the user will show an notification
  * when receiving this message.
  *
@@ -5543,6 +5871,17 @@ void dc_event_unref(dc_event_t* event);
  * @param data2 (int) msg_id
  */
 #define DC_EVENT_INCOMING_MSG             2005
+
+/**
+ * Downloading a bunch of messages just finished. This is an
+ * event to allow the UI to only show one notification per message bunch,
+ * instead of cluttering the user with many notifications.
+ * For each of the msg_ids, an additional #DC_EVENT_INCOMING_MSG event was emitted before.
+ * 
+ * @param data1 0
+ * @param data2 (char*) msg_ids, a json object with the message ids.
+ */
+#define DC_EVENT_INCOMING_MSG_BUNCH       2006
 
 
 /**
@@ -5674,7 +6013,7 @@ void dc_event_unref(dc_event_t* event);
  * @param data2 (int) The progress as:
  *     300=vg-/vc-request received, typically shown as "bob@addr joins".
  *     600=vg-/vc-request-with-auth received, vg-member-added/vc-contact-confirm sent, typically shown as "bob@addr verified".
- *     800=vg-member-added-received received, shown as "bob@addr securely joined GROUP", only sent for the verified-group-protocol.
+ *     800=contact added to chat, shown as "bob@addr securely joined GROUP". Only for the verified-group-protocol.
  *     1000=Protocol finished for this contact.
  */
 #define DC_EVENT_SECUREJOIN_INVITER_PROGRESS      2060
@@ -6192,7 +6531,7 @@ void dc_event_unref(dc_event_t* event);
 ///
 /// Used in status messages.
 ///
-/// @deperecated 2022-09-10
+/// @deprecated 2022-09-10
 #define DC_STR_EPHEMERAL_MINUTE           77
 
 /// "Message deletion timer is set to 1 hour."
@@ -6474,7 +6813,7 @@ void dc_event_unref(dc_event_t* event);
 
 /// "You changed your email address from %1$s to %2$s.
 /// If you now send a message to a group, contacts there will automatically
-/// replace the old with your new address.\n\nIt's highly advised to set up 
+/// replace the old with your new address.\n\n It's highly advised to set up 
 /// your old email provider to forward all emails to your new email address. 
 /// Otherwise you might miss messages of contacts who did not get your new 
 /// address yet." + the link to the AEAP blog post
@@ -6724,6 +7063,16 @@ void dc_event_unref(dc_event_t* event);
 ///
 /// `%1$s` will be replaced by name and address of the contact.
 #define DC_STR_PROTECTION_DISABLED_BY_OTHER 161
+
+/// "Scan to set up second device for %1$s"
+///
+/// `%1$s` will be replaced by name and address of the account.
+#define DC_STR_BACKUP_TRANSFER_QR 162
+
+/// "Account transferred to your second device."
+///
+/// Used as a device message after a successful backup transfer.
+#define DC_STR_BACKUP_TRANSFER_MSG_BODY 163
 
 /**
  * @}

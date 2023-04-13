@@ -35,6 +35,26 @@ Page {
 
     Component.onCompleted: {
         offlineSwitch.checked = root.syncAll
+        updateShowClassicMailsCurrentSetting()
+    }
+
+    property string showClassicMailsCurrentSetting: ""
+
+    function updateShowClassicMailsCurrentSetting() {
+        switch (DeltaHandler.getCurrentConfig("show_emails")) {
+            case "0":
+                showClassicMailsCurrentSetting = i18n.tr("No, chats only")
+                break
+            case "1":
+                showClassicMailsCurrentSetting = i18n.tr("For accepted contacts")
+                break
+            case "2":
+                showClassicMailsCurrentSetting = i18n.tr("All")
+                break
+            default:
+                showClassicMailsCurrentSetting = "?"
+                break
+        }
     }
 
     header: PageHeader {
@@ -147,14 +167,44 @@ Page {
                         // below?
                         onCheckedChanged: {
                             if (readReceiptsSwitch.checked) {
-                                console.log("================== setting mdns_enabled = 1")
                                 DeltaHandler.setCurrentConfig("mdns_enabled", "1")
                             } else {
                                 DeltaHandler.setCurrentConfig("mdns_enabled", "0")
-                                console.log("================== setting mdns_enabled = 0")
                             }
                         }
                     }
+                }
+            }
+
+            ListItem {
+                height: showClassicMailsLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: showClassicMailsLayout
+                    title.text: i18n.tr("Show Classic E-Mails")
+
+                    Label {
+                        id: showClassicMailsLabel
+                        width: settingsPage.width/4
+                        text: showClassicMailsCurrentSetting
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                    }
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+                onClicked: {
+                    PopupUtils.open(
+                        Qt.resolvedUrl("PopupSelectShowMails.qml"),
+                        null,
+                        { showMailsSetting: DeltaHandler.getCurrentConfig("show_emails"),
+                          updateTest: updateShowClassicMailsCurrentSetting }
+                    )
                 }
             }
 

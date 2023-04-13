@@ -970,14 +970,12 @@ void DeltaHandler::setTempContext(uint32_t accID)
 }
 
 
-// TODO: rename to getTempContextConfig or something to make 
-// distinguishable from getConfig and setConfig
 QString DeltaHandler::getTempContextConfig(QString key)
 {
     QString retval;
 
     if (!tempContext) {
-        qDebug() << "DeltaHandler::getTempContextConfig: ERROR: tempContext is not set";
+        qDebug() << "DeltaHandler::getTempContextConfig: tempContext is not set, returning empty string";
         retval = "";
     }
     else {

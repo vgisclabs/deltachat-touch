@@ -41,21 +41,10 @@ Page {
     }
 
     Label {
-        id: versionLabel2
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: versionLabel.bottom
-            margins: units.gu(2)
-        }
-        text: "libdeltachat.so version: " + deltaversion
-        visible: deltaversion != ""
-    }
-
-    Label {
         id: copyleftLabel
         anchors {
             horizontalCenter: parent.horizontalCenter
-            top: versionLabel2.visible ? versionLabel2.bottom : versionLabel.bottom
+            top: versionLabel.bottom
             margins: units.gu(2)
         }
         text: '© 2023 Lothar Ketterer'
@@ -122,7 +111,7 @@ Page {
             top: bugsLink.bottom
             topMargin: units.gu(3)
         }
-        text: i18n.tr('This app is powered by deltachat-core (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
+        text: i18n.tr('This app is powered by deltachat-core') + (deltaversion == "" ? "" : " v" + deltaversion) + (' (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
         onLinkActivated: Qt.openUrlExternally('https://github.com/deltachat/deltachat-core-rust')
         wrapMode: Text.Wrap
     }

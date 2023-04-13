@@ -518,6 +518,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerImageToSend.qml'))
+                            attachmentMode = false
                         }
                         enabled: true
                     }
@@ -548,6 +549,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerAudioToSend.qml'))
+                            attachmentMode = false
                         }
                         enabled: true
                     }
@@ -578,6 +580,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToSend.qml'))
+                            attachmentMode = false
                         }
                         enabled: true
                     }

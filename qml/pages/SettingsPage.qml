@@ -177,6 +177,7 @@ Page {
             }
 
             ListItem {
+                id: showClassicMailsItem
                 height: showClassicMailsLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
 
@@ -199,12 +200,13 @@ Page {
                     }
                 }
                 onClicked: {
-                    PopupUtils.open(
-                        Qt.resolvedUrl("PopupSelectShowMails.qml"),
-                        null,
-                        { showMailsSetting: DeltaHandler.getCurrentConfig("show_emails"),
-                          updateTest: updateShowClassicMailsCurrentSetting }
-                    )
+                    PopupUtils.open(popoverComponentClassicMail, showClassicMailsItem)
+            //        PopupUtils.open(
+            //            Qt.resolvedUrl("PopupSelectShowMails.qml"),
+            //            null,
+            //            { showMailsSetting: DeltaHandler.getCurrentConfig("show_emails"),
+            //              updateTest: updateShowClassicMailsCurrentSetting }
+            //        )
                 }
             }
 
@@ -250,6 +252,66 @@ Page {
 
                 onClicked: {
                     layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("Profile.qml"))
+                }
+            }
+
+            Component {
+                id: popoverComponentClassicMail
+                Popover {
+                    id: popoverClassicMail
+                    Column {
+                        id: containerLayout
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            right: parent.right
+                        }
+                        ListItem {
+                            height: layout1.height
+                            // should be automatically be themed with something like
+                            // theme.palette.normal.overlay, but this
+                            // doesn't seem to work for Ambiance (and importing
+                            // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout1
+                                title.text: i18n.tr("No, chats only")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("show_emails", "0")
+                                PopupUtils.close(popoverClassicMail)
+                                updateShowClassicMailsCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout2.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout2
+                                title.text: i18n.tr("For accepted contacts")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("show_emails", "1")
+                                PopupUtils.close(popoverClassicMail)
+                                updateShowClassicMailsCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout3.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout3
+                                title.text: i18n.tr("All")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("show_emails", "2")
+                                PopupUtils.close(popoverClassicMail)
+                                updateShowClassicMailsCurrentSetting()
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -26,7 +26,6 @@
         <file>pages/PickerFileToSend.qml</file>
         <file>pages/PickerImageToExport.qml</file>
         <file>pages/PickerImageToSend.qml</file>
-        <file>pages/PopupSelectShowMails.qml</file>
         <file>pages/ProgressConfigAccount.qml</file>
         <file>pages/ProgressBackupImport.qml</file>
         <file>pages/Profile.qml</file>

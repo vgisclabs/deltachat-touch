@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 19:53+0000\n"
+"POT-Creation-Date: 2023-04-14 20:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -333,7 +333,7 @@ msgstr ""
 msgid "Block Contact"
 msgstr ""
 
-#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:217
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:219
 msgid "Blocked Contacts"
 msgstr ""
 
@@ -435,19 +435,22 @@ msgstr ""
 msgid "Select your new profile image"
 msgstr ""
 
-#: ../qml/pages/PopupSelectShowMails.qml:32 ../qml/pages/SettingsPage.qml:185
+#: ../qml/pages/PopupSelectShowMails.qml:32 ../qml/pages/SettingsPage.qml:186
 msgid "Show Classic E-Mails"
 msgstr ""
 
 #: ../qml/pages/PopupSelectShowMails.qml:41 ../qml/pages/SettingsPage.qml:46
+#: ../qml/pages/SettingsPage.qml:278
 msgid "No, chats only"
 msgstr ""
 
 #: ../qml/pages/PopupSelectShowMails.qml:63 ../qml/pages/SettingsPage.qml:49
+#: ../qml/pages/SettingsPage.qml:292
 msgid "For accepted contacts"
 msgstr ""
 
 #: ../qml/pages/PopupSelectShowMails.qml:85 ../qml/pages/SettingsPage.qml:52
+#: ../qml/pages/SettingsPage.qml:306
 msgid "All"
 msgstr ""
 
@@ -455,7 +458,7 @@ msgstr ""
 msgid "Edit Profile"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:242
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:244
 msgid "Profile"
 msgstr ""
 

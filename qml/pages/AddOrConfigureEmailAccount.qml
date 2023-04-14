@@ -389,7 +389,7 @@ Page {
                 Rectangle {
                     id: socksSwitchRect
                     width: parent.width < units.gu(45) ? parent.width - units.gu(8) : units.gu(37)
-                    height: socksSwitchLabel.height
+                    height: socksSwitch.height
                     visible: advancedOptionsVisible
 
                     Label {
@@ -468,6 +468,7 @@ Page {
                     id: socksPasswordFieldRect
                     width: addEmailPage.width < units.gu(45) ? addEmailPage.width - units.gu(8) : units.gu(37)
                     height: socksPasswordField.height
+                    color: theme.palette.normal.background
 
                     TextField {
                         id: socksPasswordField

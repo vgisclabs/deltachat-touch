@@ -117,6 +117,10 @@ public:
 
     Q_INVOKABLE void chatBlockContactRequest();
 
+    Q_INVOKABLE void exportBackup();
+
+    Q_INVOKABLE QString getUrlToExport();
+
     // expects the index of the chat in the chatlist
     Q_INVOKABLE QString getChatEncInfo(int myindex);
 
@@ -204,6 +208,12 @@ signals:
     void newTempProfilePic(QString);
     void chatBlockContactDone();
 
+    // for exporting backup, will be emitted
+    // when the backup file has been written (i.e.
+    // the event DC_EVENT_IMEX_FILE_WRITTEN has
+    // been received
+    void backupFileWritten();
+
 public slots:
     void unrefTempContext();
     void chatViewIsClosed();
@@ -217,7 +227,9 @@ private slots:
     void messageDeliveredToServer(uint32_t accID, int chatID, int msgID);
     void messageFailedSlot(uint32_t accID, int chatID, int msgID);
     void progressEvent(int perMill, QString errorMsg);
-    void imexProgressReceiver(int perMill);
+    void imexBackupImportProgressReceiver(int perMill);
+    void imexBackupExportProgressReceiver(int perMill);
+    void imexFileReceiver(QString filepath);
     void chatCreationReceiver(uint32_t chatID);
     void updateCurrentChatMessageCount();
     void resetCurrentChatMessageCount();
@@ -240,7 +252,8 @@ private:
     bool m_networkingIsStarted;
     bool m_configuringNewAccount;
     bool m_showArchivedChats;
-    QSettings* settings;
+    QString m_tempExportPath;
+    //QSettings* settings;
     QHash<QString, QString> m_changedProfileValues;
 
     bool isExistingChat(uint32_t chatID);

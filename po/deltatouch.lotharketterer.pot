@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 20:12+0000\n"
+"POT-Creation-Date: 2023-04-15 16:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,7 +98,7 @@ msgid "Unread Messages"
 msgstr ""
 
 #: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
-#: ../qml/pages/SettingsPage.qml:75
+#: ../qml/pages/SettingsPage.qml:86
 msgid "About"
 msgstr ""
 
@@ -231,8 +231,8 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:261
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:340
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:445
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:433
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:446
 msgid "Standard (%1)"
 msgstr ""
 
@@ -281,34 +281,34 @@ msgstr ""
 msgid "Accept invalid certificates"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:401
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:402
 msgid "Use SOCKS5"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:420
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:421
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:425
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:426
 msgid "SOCKS5 Host"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:438
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:439
 msgid "SOCKS5 Port"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:452
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:453
 msgid "SOCKS5 User"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:464
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:465
 msgid "SOCKS5 Password"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:539
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:541
 #: ../qml/pages/BlockContactPopup.qml:36
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
 #: ../qml/pages/ConfirmChatDeletion.qml:56
@@ -317,11 +317,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:550
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:552
 msgid "Ok"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:620
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:622
 msgid "Configuring..."
 msgstr ""
 
@@ -333,7 +333,7 @@ msgstr ""
 msgid "Block Contact"
 msgstr ""
 
-#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:219
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:245
 msgid "Blocked Contacts"
 msgstr ""
 
@@ -421,8 +421,10 @@ msgid "Sorry, not implemented yet :-("
 msgstr ""
 
 #: ../qml/pages/PickerAudioToExport.qml:42
-#: ../qml/pages/PickerAudioToSend.qml:34 ../qml/pages/PickerFileToExport.qml:42
-#: ../qml/pages/PickerFileToSend.qml:34 ../qml/pages/PickerImageToExport.qml:42
+#: ../qml/pages/PickerAudioToSend.qml:34
+#: ../qml/pages/PickerBackupToExport.qml:42
+#: ../qml/pages/PickerFileToExport.qml:42 ../qml/pages/PickerFileToSend.qml:34
+#: ../qml/pages/PickerImageToExport.qml:42
 #: ../qml/pages/PickerImageToSend.qml:34
 msgid "Select"
 msgstr ""
@@ -435,30 +437,11 @@ msgstr ""
 msgid "Select your new profile image"
 msgstr ""
 
-#: ../qml/pages/PopupSelectShowMails.qml:32 ../qml/pages/SettingsPage.qml:186
-msgid "Show Classic E-Mails"
-msgstr ""
-
-#: ../qml/pages/PopupSelectShowMails.qml:41 ../qml/pages/SettingsPage.qml:46
-#: ../qml/pages/SettingsPage.qml:278
-msgid "No, chats only"
-msgstr ""
-
-#: ../qml/pages/PopupSelectShowMails.qml:63 ../qml/pages/SettingsPage.qml:49
-#: ../qml/pages/SettingsPage.qml:292
-msgid "For accepted contacts"
-msgstr ""
-
-#: ../qml/pages/PopupSelectShowMails.qml:85 ../qml/pages/SettingsPage.qml:52
-#: ../qml/pages/SettingsPage.qml:306
-msgid "All"
-msgstr ""
-
 #: ../qml/pages/Profile.qml:48
 msgid "Edit Profile"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:244
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:270
 msgid "Profile"
 msgstr ""
 
@@ -482,28 +465,59 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
+#: ../qml/pages/ProgressBackupExport.qml:43
 #: ../qml/pages/ProgressBackupImport.qml:43
 msgid "Failed"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:62
+#: ../qml/pages/ProgressBackupExport.qml:48
+msgid ""
+"A backup helps you to set up a new installation on this or on another "
+"device.\n"
+"\n"
+"The backup will contain all messages, contacts and chats and your end-to-end "
+"Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
+"as possible."
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
+msgid "No, chats only"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
+msgid "For accepted contacts"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
+msgid "All"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:73
 msgid "Settings"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:100
+#: ../qml/pages/SettingsPage.qml:111
 msgid "Sync all"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:119
+#: ../qml/pages/SettingsPage.qml:130
 msgid "Accounts"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:146
+#: ../qml/pages/SettingsPage.qml:157
 msgid "Profile specific settings"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:158
+#: ../qml/pages/SettingsPage.qml:170
+msgid "Show Classic E-Mails"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:197
 msgid "Read Receipts"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:356
+msgid "Export Backup"
 msgstr ""
 
 #: ../qml/pages/UnblockContactPopup.qml:33

@@ -40,7 +40,18 @@ Page {
 
     property string showClassicMailsCurrentSetting: ""
 
-    function updateShowClassicMailsCurrentSetting() {
+    // Opens the file export dialog once the backup
+    // file has been written to the cache.
+    function startFileExport()
+    {
+        layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('PickerBackupToExport.qml'))
+
+    }
+
+    // Updating the displayed setting for "Show Classic Emails",
+    // see Label with id: showClassicMailsLabel
+    function updateShowClassicMailsCurrentSetting()
+    {
         switch (DeltaHandler.getCurrentConfig("show_emails")) {
             case "0":
                 showClassicMailsCurrentSetting = i18n.tr("No, chats only")
@@ -150,6 +161,34 @@ Page {
             }
 
             ListItem {
+                id: showClassicMailsItem
+                height: showClassicMailsLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: showClassicMailsLayout
+                    title.text: i18n.tr("Show Classic E-Mails")
+
+                    Label {
+                        id: showClassicMailsLabel
+                        width: settingsPage.width/4
+                        text: showClassicMailsCurrentSetting
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                    }
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+                onClicked: {
+                    PopupUtils.open(popoverComponentClassicMail, showClassicMailsItem)
+                }
+            }
+
+            ListItem {
                 height: readReceiptsLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
 
@@ -177,21 +216,13 @@ Page {
             }
 
             ListItem {
-                id: showClassicMailsItem
-                height: showClassicMailsLayout.height + (divider.visible ? divider.height : 0)
+                id: exportBackupItem
+                height: exportBackupLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
 
                 ListItemLayout {
-                    id: showClassicMailsLayout
-                    title.text: i18n.tr("Show Classic E-Mails")
-
-                    Label {
-                        id: showClassicMailsLabel
-                        width: settingsPage.width/4
-                        text: showClassicMailsCurrentSetting
-                        horizontalAlignment: Text.AlignRight
-                        elide: Text.ElideRight
-                    }
+                    id: exportBackupLayout
+                    title.text: i18n.tr("Export Backup")
 
                     Icon {
                         name: "go-next"
@@ -200,13 +231,8 @@ Page {
                     }
                 }
                 onClicked: {
-                    PopupUtils.open(popoverComponentClassicMail, showClassicMailsItem)
-            //        PopupUtils.open(
-            //            Qt.resolvedUrl("PopupSelectShowMails.qml"),
-            //            null,
-            //            { showMailsSetting: DeltaHandler.getCurrentConfig("show_emails"),
-            //              updateTest: updateShowClassicMailsCurrentSetting }
-            //        )
+                    PopupUtils.open(progressBackupExport)
+                    DeltaHandler.backupFileWritten.connect(startFileExport)
                 }
             }
 
@@ -321,6 +347,13 @@ Page {
         target: DeltaHandler
         onBlockedcontactsmodelChanged: {
             layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("BlockedContacts.qml"))
+        }
+    }
+
+    Component {
+        id: progressBackupExport
+        ProgressBackupExport {
+            title: i18n.tr('Export Backup')
         }
     }
 }

@@ -31,7 +31,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     QString configdir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     qDebug() << "Config directory set to: " << configdir;
 
-    settings = new QSettings("deltatouch.lotharketterer", "deltatouch.lotharketterer");
+    //settings = new QSettings("deltatouch.lotharketterer", "deltatouch.lotharketterer");
 
     if (!QFile::exists(configdir)) {
         qDebug() << "Config directory not existing, creating it now";
@@ -45,6 +45,23 @@ DeltaHandler::DeltaHandler(QObject* parent)
             exit(1);
         }
     }
+
+    // create the cache dir if it doesn't exist yet
+    QString cachedir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+
+    if (!QFile::exists(cachedir)) {
+        qDebug() << "Cache directory not existing, creating it now";
+        QDir tempdir;
+        bool success = tempdir.mkpath(cachedir);
+        if (success) {
+            qDebug() << "Cache directory successfully created";
+        }
+        else {
+            qDebug() << "Could not create Cache directory, exiting";
+            exit(1);
+        }
+    }
+
     m_chatmodel = new ChatModel();
     // TODO: should be something like chatIsCurrentlyViewed or
     // similar because the only time the variable is used is
@@ -102,12 +119,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
     connectSuccess = connect(eventThread, SIGNAL(configureProgress(int, QString)), this, SLOT(progressEvent(int, QString)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal configureProgress to slot progressEvent";
-        exit(1);
-    }
-
-    connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexProgressReceiver(int)));
-    if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexProgressReceiver";
         exit(1);
     }
 
@@ -1137,7 +1148,7 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
 }
 
 
-void DeltaHandler::imexProgressReceiver(int perMill)
+void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
 {
     emit imexEventReceived(perMill);
     if (perMill == 0) {
@@ -1188,6 +1199,25 @@ void DeltaHandler::imexProgressReceiver(int perMill)
         m_networkingIsAllowed = true;
         emit networkingIsAllowedChanged();
     }
+}
+
+
+void DeltaHandler::imexBackupExportProgressReceiver(int perMill)
+{
+    emit imexEventReceived(perMill);
+}
+
+
+void DeltaHandler::imexFileReceiver(QString filepath)
+{
+    // no further files are expected to be written,
+    // so the signal is disconnected
+    disconnect(eventThread, SIGNAL(imexFileWritten(QString)), this, SLOT(imexFileReceiver(QString)));
+
+    m_tempExportPath = filepath;
+    m_tempExportPath.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+
+    emit backupFileWritten();
 }
 
 
@@ -1389,6 +1419,17 @@ bool DeltaHandler::isBackupFile(QString filePath)
 
 void DeltaHandler::importBackup(QString filePath)
 {
+    // imexProgress may be connected to imexBackupExportProgressReceiver,
+    // disconnect it...
+    bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+    
+    // ... and connect it to imexBackupImportProgressReceiver instead
+    bool connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupImportProgressReceiver";
+        exit(1);
+    }
+
     // the url handed over by the ContentHub starts with
     // "file:///home....", so we have to remove the first 7
     // characters
@@ -1419,6 +1460,40 @@ void DeltaHandler::chatDeleteContactRequest()
 void DeltaHandler::chatBlockContactRequest()
 {
     dc_block_chat(currentContext, currentChatID);
+}
+
+
+void DeltaHandler::exportBackup()
+{
+    if (!currentContext) return;
+
+    // imexProgress may be connected to imexBackupImportProgressReceiver,
+    // disconnect it...
+    bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+    
+    // ... and connect it to imexBackupExportProgressReceiver instead
+    bool connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupExportProgressReceiver";
+        exit(1);
+    }
+
+    connectSuccess = connect(eventThread, SIGNAL(imexFileWritten(QString)), this, SLOT(imexFileReceiver(QString)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexFileWritten to slot imexFileReceiver";
+        exit(1);
+    }
+
+    QString cacheDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    qDebug() << "========== exportBackup(): cacheDir is: " << cacheDir;
+
+    dc_imex(currentContext, DC_IMEX_EXPORT_BACKUP, cacheDir.toStdString().c_str(), NULL);
+}
+
+
+QString DeltaHandler::getUrlToExport()
+{
+    return m_tempExportPath;
 }
 
 

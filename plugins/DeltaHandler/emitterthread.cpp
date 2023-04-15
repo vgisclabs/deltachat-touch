@@ -122,6 +122,8 @@ void EmitterThread::run()
                     qDebug() << "Emitter: DC_EVENT_IMEX_FILE_WRITTEN";
                     eventData2Str = dc_event_get_data2_str(event);
                     qDebug() << "Emitter: " << eventData2Str;
+                    data2info = eventData2Str;
+                    emit imexFileWritten(data2info);
                     break;
                     
                 case DC_EVENT_IMEX_PROGRESS:

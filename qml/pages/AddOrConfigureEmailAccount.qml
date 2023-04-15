@@ -391,6 +391,7 @@ Page {
                     width: parent.width < units.gu(45) ? parent.width - units.gu(8) : units.gu(37)
                     height: socksSwitch.height
                     visible: advancedOptionsVisible
+                    color: theme.palette.normal.background
 
                     Label {
                         id: socksSwitchLabel

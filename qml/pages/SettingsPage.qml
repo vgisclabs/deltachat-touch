@@ -154,7 +154,7 @@ Page {
                     }
                     // TODO: string not translated
                     // TODO: maybe solve issue in a different way?
-                    text: i18n.tr("Profile specific settings")
+                    text: i18n.tr("Account specific settings")
                     font.bold: true
                 }
                 color: theme.palette.normal.background

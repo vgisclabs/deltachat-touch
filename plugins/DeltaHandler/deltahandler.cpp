@@ -1485,7 +1485,6 @@ void DeltaHandler::exportBackup()
     }
 
     QString cacheDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
-    qDebug() << "========== exportBackup(): cacheDir is: " << cacheDir;
 
     dc_imex(currentContext, DC_IMEX_EXPORT_BACKUP, cacheDir.toStdString().c_str(), NULL);
 }

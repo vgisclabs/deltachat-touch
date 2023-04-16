@@ -36,7 +36,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '0.3.2'
+    property string version: '0.3.3'
 
     // Color scheme
     property bool darkmode: (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
@@ -60,7 +60,7 @@ MainView {
     // connection via Connectivity does not work.
     // If the app is run in desktop mode, set this property to 'true' and the
     // check will be disabled."
-    property bool isDesktopMode: true
+    property bool isDesktopMode: false
 
     // Will connect to the network if true. Offline mode if
     // set to false. Connected to the "Sync all" switch

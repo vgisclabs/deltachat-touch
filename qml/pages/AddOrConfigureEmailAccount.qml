@@ -35,8 +35,33 @@ Page {
     property bool advancedOptionsVisible: false;
     property bool advancedOptionsOpened: false;
 
+    property int showClassicMailsCurrentSetting: DeltaHandler.getTempContextConfig("show_emails") == "" ? 2 : parseInt(DeltaHandler.getTempContextConfig("show_emails"))
+    property string showClassicMailsCurrentSettingString: ""
+
+    function updateShowClassicMailsCurrentSetting()
+    {
+        switch (showClassicMailsCurrentSetting) {
+            case 0:
+                showClassicMailsCurrentSettingString = i18n.tr("No, chats only")
+                break
+            case 1:
+                showClassicMailsCurrentSettingString = i18n.tr("For accepted contacts")
+                break
+            case 2:
+                showClassicMailsCurrentSettingString = i18n.tr("All")
+                break
+            default:
+                showClassicMailsCurrentSettingString = "All"
+                break
+        }
+    }
+
     Connections {
         onLeavingAddEmailPage: DeltaHandler.unrefTempContext()
+    }
+
+    Component.onCompleted: {
+        updateShowClassicMailsCurrentSetting()
     }
 
     Component.onDestruction: {
@@ -189,13 +214,56 @@ Page {
                 text: i18n.tr("For known e-mail providers additional settings are set up automatically. Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail provider or friends for help.")
             }
 
+            ListItem {
+                id: dividerItem
+                height: divider.height
+                anchors {
+                    left: parent.left
+                    top: advancedInfoLabel.bottom
+                    topMargin: units.gu(2)
+                }
+            }
+
+            ListItem {
+                id: showClassicMailsItem
+                height: showClassicMailsLayout.height + (divider.visible ? divider.height : 0)
+                width: addEmailPage.width
+                anchors {
+                    left: parent.left
+                    top: dividerItem.bottom
+                }
+
+                ListItemLayout {
+                    id: showClassicMailsLayout
+                    title.text: i18n.tr("Show Classic E-Mails")
+
+                    Label {
+                        id: showClassicMailsLabel
+                        width: addEmailPage.width/4
+                        text: showClassicMailsCurrentSettingString
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                    }
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+                onClicked: {
+                    PopupUtils.open(popoverComponentClassicMail, showClassicMailsItem)
+                }
+            }
+
             Button {
                 id: advancedOptionsButton
                 width: parent.width < units.gu(45) ? parent.width - units.gu(8) : units.gu(37)
                 anchors {
                     left: parent.left
                     leftMargin: units.gu(4)
-                    top: advancedInfoLabel.bottom
+                    //top: showClassicMailsRect.bottom
+                    top: showClassicMailsItem.bottom
                     topMargin: units.gu(3)
                 }
                 iconName: advancedOptionsVisible ? "go-down" : "go-next"
@@ -562,6 +630,8 @@ Page {
                         passwordField.focus = false
                         DeltaHandler.setTempContextConfig("mail_pw", passwordField.text)
 
+                        DeltaHandler.setTempContextConfig("show_emails", showClassicMailsCurrentSetting.toString(10))
+
                         if (advancedOptionsOpened) {
                             imapLoginNameField.focus = false
                             DeltaHandler.setTempContextConfig("mail_user", imapLoginNameField.text)
@@ -620,6 +690,66 @@ Page {
 
         ProgressConfigAccount { // see file ProgressConfigAccount.qml
             title: i18n.tr('Configuring...')
+        }
+    }
+
+    Component {
+        id: popoverComponentClassicMail
+        Popover {
+            id: popoverClassicMail
+            Column {
+                id: containerLayout
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+                ListItem {
+                    height: layout1.height
+                    // should be automatically be themed with something like
+                    // theme.palette.normal.overlay, but this
+                    // doesn't seem to work for Ambiance (and importing
+                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout1
+                        title.text: i18n.tr("No, chats only")
+                    }
+                    onClicked: {
+                        showClassicMailsCurrentSetting = 0
+                        PopupUtils.close(popoverClassicMail)
+                        updateShowClassicMailsCurrentSetting()
+                    }
+                }
+
+                ListItem {
+                    height: layout2.height
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout2
+                        title.text: i18n.tr("For accepted contacts")
+                    }
+                    onClicked: {
+                        showClassicMailsCurrentSetting = 1
+                        PopupUtils.close(popoverClassicMail)
+                        updateShowClassicMailsCurrentSetting()
+                    }
+                }
+
+                ListItem {
+                    height: layout3.height
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout3
+                        title.text: i18n.tr("All")
+                    }
+                    onClicked: {
+                        showClassicMailsCurrentSetting = 2
+                        PopupUtils.close(popoverClassicMail)
+                        updateShowClassicMailsCurrentSetting()
+                    }
+                }
+            }
         }
     }
     

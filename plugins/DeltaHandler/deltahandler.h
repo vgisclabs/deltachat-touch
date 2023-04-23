@@ -26,6 +26,7 @@
 #include "accountsmodel.h"
 #include "blockedcontactsmodel.h"
 #include "contactsmodel.h"
+#include "groupmembermodel.h"
 #include "emitterthread.h"
 #include "deltachat.h"
 
@@ -33,6 +34,8 @@ class ChatModel;
 class AccountsModel;
 class EmitterThread;
 class ContactsModel;
+class BlockedContactsModel;
+class GroupMemberModel;
 
 class DeltaHandler : public QAbstractListModel {
     Q_OBJECT
@@ -130,8 +133,13 @@ public:
     // expects the index of the chat in the chatlist
     Q_INVOKABLE bool chatIsSelfTalk(int myindex);
 
-    // expects the index of the chat in the chatlist
+    // expects the index of the chat in the chatlist,
+    // will check for the currently active chat
+    // (i.e., the one in currentChatID) if -1 is
+    // passed
     Q_INVOKABLE bool chatIsGroup(int myindex);
+
+    Q_INVOKABLE bool selfIsInGroup(int myindex);
 
     Q_INVOKABLE void chatBlockContact(int myindex);
 
@@ -154,6 +162,29 @@ public:
 
     /* ================ End Profile editing ================== */
 
+    /* ========================================================
+     * ============== New Group / Editing Group ===============
+     * ======================================================== */
+
+    Q_INVOKABLE void startCreateGroup();
+    
+    // will set up the currently active chat
+    // (i.e., the one in currentChatID) if -1 is
+    // passed
+    Q_INVOKABLE void startEditGroup(int myindex);
+
+    Q_INVOKABLE void finalizeGroupEdit(QString groupName, QString imagePath);
+    Q_INVOKABLE void stopCreateOrEditGroup();
+
+    Q_INVOKABLE void leaveGroup(int myindex);
+
+    Q_INVOKABLE QString getTempGroupPic();
+    Q_INVOKABLE QString getTempGroupName();
+
+    Q_INVOKABLE void setGroupPic(QString filepath);
+
+    /* ============ End New Group / Editing Group ============= */
+
     void unselectAccount(uint32_t accID);
 
     // QAbstractListModel interface
@@ -164,11 +195,13 @@ public:
     Q_PROPERTY(AccountsModel* accountsmodel READ accountsmodel NOTIFY accountsmodelChanged);
     Q_PROPERTY(ContactsModel* contactsmodel READ contactsmodel NOTIFY contactsmodelChanged);
     Q_PROPERTY(BlockedContactsModel* blockedcontactsmodel READ blockedcontactsmodel NOTIFY blockedcontactsmodelChanged);
+    Q_PROPERTY(GroupMemberModel* groupmembermodel READ groupmembermodel NOTIFY groupmembermodelChanged);
 
     ChatModel* chatmodel();
     AccountsModel* accountsmodel();
     ContactsModel* contactsmodel();
     BlockedContactsModel* blockedcontactsmodel();
+    GroupMemberModel* groupmembermodel();
 
     Q_PROPERTY(bool hasConfiguredAccount READ hasConfiguredAccount NOTIFY hasConfiguredAccountChanged);
     Q_PROPERTY(bool networkingIsAllowed READ networkingIsAllowed NOTIFY networkingIsAllowedChanged);
@@ -188,6 +221,7 @@ signals:
     void accountsmodelChanged();
     void contactsmodelChanged();
     void blockedcontactsmodelChanged();
+    void groupmembermodelChanged();
     void chatlistShowsArchivedOnly(bool showsArchived);
 
     void hasConfiguredAccountChanged();
@@ -207,6 +241,13 @@ signals:
     void openChatViewRequest();
     void newTempProfilePic(QString);
     void chatBlockContactDone();
+    
+    /* ========================================================
+     * ============== New Group / Editing Group ===============
+     * ======================================================== */
+    void newChatPic(QString newPath);
+    
+    /* ============ End New Group / Editing Group ============= */
 
     // for exporting backup, will be emitted
     // when the backup file has been written (i.e.
@@ -217,6 +258,8 @@ signals:
 public slots:
     void unrefTempContext();
     void chatViewIsClosed();
+
+    void prepareContactsmodelForGroupMemberAddition();
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -245,6 +288,7 @@ private:
     AccountsModel* m_accountsmodel;
     BlockedContactsModel* m_blockedcontactsmodel;
     ContactsModel* m_contactsmodel;
+    GroupMemberModel* m_groupmembermodel;
     uint32_t currentChatID;
     bool chatmodelIsConfigured;
     bool m_hasConfiguredAccount;
@@ -257,6 +301,10 @@ private:
     QHash<QString, QString> m_changedProfileValues;
 
     bool isExistingChat(uint32_t chatID);
+
+    // for creation of new group or editing of group
+    uint32_t m_tempGroupChatID;
+    bool creatingNewGroup;
 };
 
 #endif // DELTAHANDLER_H

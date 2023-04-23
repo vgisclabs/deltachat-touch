@@ -21,6 +21,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <vector>
 //#include <string>
 #include "deltahandler.h"
 #include "deltachat.h"
@@ -32,12 +33,16 @@ class ContactsModel : public QAbstractListModel {
 
 signals:
     void chatCreationSuccess(uint32_t chatID);
+    void queryDone();
+    void addContactToGroup(uint32_t contactID);
 
 public:
     explicit ContactsModel(QObject *parent = 0);
     ~ContactsModel();
 
-    enum { DisplayNameRole, ProfilePicRole, EmailAddressRole, AvatarColorRole, AvatarInitialRole};
+    // IsAlreadyMemberOfGroupRole and IsToBeAddedToGroupRole
+    // are used in the page to add contacts to a group chat
+    enum { DisplayNameRole, ProfilePicRole, EmailAddressRole, AvatarColorRole, AvatarInitialRole, IsAlreadyMemberOfGroupRole, IsToBeAddedToGroupRole};
 
     // QAbstractListModel interface
     virtual int rowCount(const QModelIndex &parent) const;
@@ -45,9 +50,19 @@ public:
 
     void updateContext(dc_context_t* cContext);
 
+    // used for the page to add contacts to a group
+    void setMembersAlreadyInGroup(const std::vector<uint32_t> &alreadyIn);
+    void resetNewMemberList();
+
 public slots:
     void updateQuery(QString query);
-    void selectIndex(int myindex);
+
+    // Used in the page to add members to a group
+    void startChatWithIndex(int myindex);
+    void addIndexToMemberlist(int myindex);
+    void removeIndexFromMemberlist(int myindex);
+    void finalizeMemberChanges(bool actionRequested);
+
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -65,6 +80,12 @@ private:
     int m_offset;
 
     QString m_query;
+
+    // used in the page to add contacts to a group
+    // stores the contactIDs of members that are already in the group
+    std::vector<uint32_t> m_membersAlreadyInGroup;
+    // stores the additionally selected members
+    std::vector<uint32_t> m_newMembers;
 };
 
 #endif // CONTACTSMODEL_H

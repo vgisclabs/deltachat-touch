@@ -27,7 +27,15 @@ Dialog {
 
     property int chatIndex
 
+    property bool isGroup: DeltaHandler.chatIsGroup(chatIndex)
+    property bool isDeviceTalk: DeltaHandler.chatIsDeviceTalk(chatIndex)
+    property bool isSelfTalk: DeltaHandler.chatIsSelfTalk(chatIndex)
+    property bool selfInGroup: false
+
     Component.onCompleted: {
+        if (isGroup) {
+            selfInGroup = DeltaHandler.selfIsInGroup(chatIndex)
+        }
     }
     
     Connections {
@@ -47,7 +55,33 @@ Dialog {
                 { indexToBlock: chatIndex }
             )
         }
-        enabled: !DeltaHandler.chatIsGroup(chatIndex) && !(DeltaHandler.chatIsDeviceTalk(chatIndex) || DeltaHandler.chatIsSelfTalk(chatIndex))
+        visible: !isGroup && !(isDeviceTalk || isSelfTalk)
+    }
+
+    Button {
+        id: editGroupButton
+        text: i18n.tr("Edit Group")
+        onClicked: {
+            DeltaHandler.startEditGroup(chatIndex)
+            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false })
+            PopupUtils.close(dialog)
+        }
+        visible: isGroup
+        enabled: selfInGroup
+    }
+
+    Button {
+        id: leaveGroupButton
+        text: i18n.tr("Leave Group")
+        onClicked: {
+            PopupUtils.open(
+                Qt.resolvedUrl("ConfirmLeaveGroup.qml"),
+                null,
+                { indexToLeave: chatIndex }
+            )
+        }
+        visible: isGroup
+        enabled: selfInGroup
     }
 
     Button {
@@ -61,7 +95,7 @@ Dialog {
                 { text: tempString }
             )
         }
-        enabled: !DeltaHandler.chatIsDeviceTalk(chatIndex) && !DeltaHandler.chatIsSelfTalk(chatIndex)
+        visible: !isDeviceTalk && !isSelfTalk
     }
 
     Button {

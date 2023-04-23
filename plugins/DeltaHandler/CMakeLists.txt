@@ -11,6 +11,7 @@ set(
     blockedcontactsmodel.cpp
     contactsmodel.cpp
     chatlistmodel.cpp
+    groupmembermodel.cpp
 )
 
 add_library(deltachat SHARED IMPORTED)

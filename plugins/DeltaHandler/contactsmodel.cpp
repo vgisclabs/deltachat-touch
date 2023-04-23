@@ -20,7 +20,9 @@
 //#include <unistd.h> // for sleep
 
 ContactsModel::ContactsModel(QObject* parent)
-    : QAbstractListModel(parent), m_context {nullptr}, m_contactsArray {nullptr}, m_offset {0}, m_query {""} { 
+    : QAbstractListModel(parent), m_context {nullptr}, m_contactsArray {nullptr}, m_offset {0}, m_query {""}
+{ 
+    m_newMembers.resize(0);
 };
 
 ContactsModel::~ContactsModel()
@@ -45,6 +47,8 @@ QHash<int, QByteArray> ContactsModel::roleNames() const
     roles[EmailAddressRole] = "address";
     roles[AvatarColorRole] = "avatarColor";
     roles[AvatarInitialRole] = "avatarInitial";
+    roles[IsAlreadyMemberOfGroupRole] = "isAlreadyMemberOfGroup";
+    roles[IsToBeAddedToGroupRole] = "isToBeAddedToGroup";
 
     return roles;
 }
@@ -102,6 +106,14 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
             case ContactsModel::AvatarInitialRole:
                 tempQString = "";
                 retval = tempQString;
+                break;
+
+            case ContactsModel::IsAlreadyMemberOfGroupRole:
+                retval = false;
+                break;
+
+            case ContactsModel::IsToBeAddedToGroupRole:
+                retval = false;
                 break;
 
             default:
@@ -164,6 +176,24 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
             retval = tempQString;
             break;
 
+        case ContactsModel::IsAlreadyMemberOfGroupRole:
+            retval = false;
+            for (size_t i = 0; i < m_membersAlreadyInGroup.size(); ++i) {
+                if (tempContactID == m_membersAlreadyInGroup[i]) {
+                    retval = true;
+                }
+            }
+            break;
+
+        case ContactsModel::IsToBeAddedToGroupRole:
+            retval = false;
+            for (size_t i = 0; i < m_newMembers.size(); ++i) {
+                if (tempContactID == m_newMembers[i]) {
+                    retval = true;
+                }
+            }
+            break;
+
         default:
             retval = QVariant();
             qDebug() << "ContactsModel::data switch reached default";
@@ -190,6 +220,21 @@ void ContactsModel::updateContext(dc_context_t* cContext)
     m_context = cContext;
     m_contactsArray = dc_get_contacts(m_context, 0, NULL);
     endResetModel();
+}
+
+
+void ContactsModel::resetNewMemberList()
+{
+    m_newMembers.resize(0);
+}
+
+void ContactsModel::setMembersAlreadyInGroup(const std::vector<uint32_t> &alreadyIn)
+{
+    m_membersAlreadyInGroup.resize(alreadyIn.size());
+
+    for (size_t i = 0; i < alreadyIn.size(); ++i) {
+        m_membersAlreadyInGroup[i] = alreadyIn[i];
+    }
 }
 
 
@@ -223,7 +268,7 @@ void ContactsModel::updateQuery(QString query) {
 }
 
 
-void ContactsModel::selectIndex(int myindex)
+void ContactsModel::startChatWithIndex(int myindex)
 {
     uint32_t contactID {0};
 
@@ -248,4 +293,90 @@ void ContactsModel::selectIndex(int myindex)
     } else {
         // TODO error: chat could not be created
     }
+}
+
+
+void ContactsModel::addIndexToMemberlist(int myindex)
+{
+    uint32_t tempContactID {0};
+
+    if (1 == m_offset && 0 == myindex) {
+        if (dc_may_be_valid_addr(m_query.toStdString().c_str())) {
+            tempContactID = dc_lookup_contact_id_by_addr(m_context, m_query.toStdString().c_str());
+            if (!tempContactID) {
+                // TODO: Is a check needed whether tempContactID is in m_membersAlreadyInGroup? 
+                tempContactID = dc_create_contact(m_context, NULL, m_query.toStdString().c_str());
+                m_newMembers.push_back(tempContactID);
+
+            } else {
+                bool isAlreadyIn = false;
+                for (size_t i = 0; i < m_membersAlreadyInGroup.size(); ++i) {
+                    if (tempContactID == m_membersAlreadyInGroup[i]) {
+                        isAlreadyIn = true;
+                    }
+                }
+
+                if (!isAlreadyIn) {
+                    m_newMembers.push_back(tempContactID);
+                }
+                // clear the query whether the address has already
+                // been in the list of group members or not
+            }
+
+            emit queryDone();
+
+        } else {
+            // most likely no valid email address, do nothing
+            // TODO: display error message?
+        }
+         
+        return;
+    }
+
+    tempContactID = dc_array_get_id(m_contactsArray, myindex - m_offset);
+    
+    bool isAlreadyIn = false;
+    for (size_t i = 0; i < m_newMembers.size(); ++i) {
+        if (tempContactID == m_newMembers[i]) {
+            isAlreadyIn = true;
+        }
+    }
+
+    if (!isAlreadyIn) {
+        m_newMembers.push_back(tempContactID);
+        emit QAbstractListModel::dataChanged(index(myindex, 0), index(myindex, 0));
+    }
+}
+
+
+void ContactsModel::removeIndexFromMemberlist(int myindex)
+{
+
+    uint32_t tempContactID = dc_array_get_id(m_contactsArray, myindex - m_offset);
+
+    std::vector<uint32_t>::iterator it;
+    bool isInList = false;
+
+    for (it = m_newMembers.begin(); it != m_newMembers.end(); ++it) {
+        if (tempContactID == *it) {
+            isInList = true;
+            m_newMembers.erase(it);
+            break;
+        }
+    }
+
+    if (isInList) {
+        emit QAbstractListModel::dataChanged(index(myindex, 0), index(myindex, 0));
+    }
+}
+
+
+void ContactsModel::finalizeMemberChanges(bool actionRequested)
+{
+    if (actionRequested) {
+        for (size_t i = 0; i < m_newMembers.size(); ++i) {
+            emit addContactToGroup(m_newMembers[i]);
+        }
+    }
+    resetNewMemberList();
 }

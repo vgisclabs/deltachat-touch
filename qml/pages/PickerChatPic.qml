@@ -31,7 +31,7 @@ Page {
 
     header: PageHeader {
         id: picPickerHeader
-        title: i18n.tr("Select your new profile image")
+        title: i18n.tr("Select Group Image")
     }
 
 
@@ -79,7 +79,7 @@ Page {
             if (picPickerPage.activeTransfer.state === ContentTransfer.Charged) {
                 if (picPickerPage.activeTransfer.items.length > 0) {
                     picPickerPage.source = picPickerPage.activeTransfer.items[0].url;
-                    DeltaHandler.setProfileValue("selfavatar", picPickerPage.source)
+                    DeltaHandler.setGroupPic(picPickerPage.source)
                 }
                 layout.removePages(picPickerPage)
             }

@@ -29,9 +29,10 @@ import DeltaHandler 1.0
 Page {
     id: addChatPage
     anchors.fill: parent
+
     header: PageHeader {
         id: addChatHeader
-        title: i18n.tr('New Chat')
+        title: i18n.tr("New Chat")
     }
 
     signal textHasChanged(string query)
@@ -48,6 +49,14 @@ Page {
             topMargin: units.gu(2)
         }
         text: i18n.tr('New Group')
+        onClicked: {
+            bottomEdge.collapse()
+            // reset the text in the TextField, otherwise the
+            // selection would also be active for the add members list
+            enterNameOrEmailField.text = ""
+            DeltaHandler.startCreateGroup()
+            layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), {"createNewGroup": true})
+        }
     }
 
     Button {
@@ -61,6 +70,13 @@ Page {
             topMargin: units.gu(2)
         }
         text: i18n.tr('New Verified Group')
+        onClicked: {
+            bottomEdge.collapse()
+            // reset the text in the TextField, otherwise the
+            // selection would also be active for the add members list
+            enterNameOrEmailField.text = ""
+            layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("NotImplemented.qml"))
+        }
     }
 
     Label {
@@ -82,6 +98,11 @@ Page {
             top: enterNameOrEmailLabel.bottom
             topMargin: units.gu(1)
         }
+
+        // Without inputMethodHints set to Qg.ImhNoPredictiveText, the
+        // clear button only works in x86_64, but does not work
+        // correctly for  aarch64 and armhf.
+        inputMethodHints: Qt.ImhNoPredictiveText
         onDisplayTextChanged: {
             addChatPage.textHasChanged(displayText)
         }
@@ -203,6 +224,6 @@ Page {
 
     Component.onCompleted: {
         addChatPage.textHasChanged.connect(DeltaHandler.contactsmodel.updateQuery)
-        addChatPage.indexSelected.connect(DeltaHandler.contactsmodel.selectIndex)
+        addChatPage.indexSelected.connect(DeltaHandler.contactsmodel.startChatWithIndex)
     }
 } // end Page id: aboutPage

@@ -12,9 +12,13 @@
         <file>pages/ChatInfosActions.qml</file>
         <file>pages/ConfirmAccountDeletion.qml</file>
         <file>pages/ConfirmChatDeletion.qml</file>
+        <file>pages/ConfirmLeaveGroup.qml</file>
+        <file>pages/ConfirmMemberDeletion.qml</file>
         <file>pages/ConfirmMsgDeletion.qml</file>
+        <file>pages/CreateOrEditGroup.qml</file>
         <file>pages/ErrorMessage.qml</file>
         <file>pages/ForwardMessage.qml</file>
+        <file>pages/GroupAddMember.qml</file>
         <file>pages/InfoPopup.qml</file>
         <file>pages/MessageInfosActions.qml</file>
         <file>pages/NotImplemented.qml</file>
@@ -23,6 +27,7 @@
         <file>pages/PickerAudioToExport.qml</file>
         <file>pages/PickerAudioToSend.qml</file>
         <file>pages/PickerBackupToExport.qml</file>
+        <file>pages/PickerChatPic.qml</file>
         <file>pages/PickerFileToExport.qml</file>
         <file>pages/PickerFileToSend.qml</file>
         <file>pages/PickerImageToExport.qml</file>

@@ -90,6 +90,32 @@ Page {
     header: PageHeader {
         id: header
         title: chatname
+ 
+        trailingActionBar.actions: [
+        //    Action {
+        //        iconName: 'help'
+        //        text: i18n.tr('Help')
+        //        // TODO make help page for the Account config page
+        //        onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
+        //    },
+
+            Action {
+                iconName: 'edit'
+                text: i18n.tr("Edit Group")
+                onTriggered: {
+                    DeltaHandler.startEditGroup(-1)
+                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false })
+                }
+                visible: {
+                    if (DeltaHandler.chatIsGroup(-1)) {
+                        if (DeltaHandler.selfIsInGroup(-1)) {
+                            return true
+                        }
+                    }
+                    return false
+                }
+            }
+        ]
     }
 
     Image {

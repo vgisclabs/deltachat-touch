@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <vector>
 #include "deltahandler.h"
 //#include <unistd.h> // for sleep
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}
+    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}
 {
 
     qRegisterMetaType<uint32_t>("uint32_t");
@@ -266,6 +267,10 @@ DeltaHandler::~DeltaHandler()
 
     if (m_blockedcontactsmodel) {
         delete m_blockedcontactsmodel;
+    }
+
+    if (m_groupmembermodel) {
+        delete m_groupmembermodel;
     }
 }
 
@@ -1560,6 +1565,218 @@ void DeltaHandler::finalizeProfileEdit()
 /* ================ End Profile editing ================== */
 
 
+/* ========================================================
+ * ============== New Group / Editing Group ===============
+ * ======================================================== */
+
+
+void DeltaHandler::startCreateGroup()
+{
+    creatingNewGroup = true;
+    m_groupmembermodel = new GroupMemberModel();
+    m_groupmembermodel->setConfig(currentContext, true);
+
+    m_contactsmodel->resetNewMemberList();
+    m_contactsmodel->setMembersAlreadyInGroup(m_groupmembermodel->getMembersAlreadyInGroup());
+    
+    bool connectSuccess = connect(m_contactsmodel, SIGNAL(addContactToGroup(uint32_t)), m_groupmembermodel, SLOT(addMember(uint32_t)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember";
+        exit(1);
+    }
+}
+
+
+void DeltaHandler::startEditGroup(int myindex)
+{
+    creatingNewGroup = false;
+
+    // will set up the currently active chat
+    // (i.e., the one in currentChatID) if -1 is
+    // passed
+    if (-1 == myindex) {
+        m_tempGroupChatID = currentChatID;
+    } else {
+        m_tempGroupChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    }
+
+    m_groupmembermodel = new GroupMemberModel();
+    m_groupmembermodel->setConfig(currentContext, false, m_tempGroupChatID);
+
+    m_contactsmodel->resetNewMemberList();
+    m_contactsmodel->setMembersAlreadyInGroup(m_groupmembermodel->getMembersAlreadyInGroup());
+    
+    bool connectSuccess = connect(m_contactsmodel, SIGNAL(addContactToGroup(uint32_t)), m_groupmembermodel, SLOT(addMember(uint32_t)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember";
+        exit(1);
+    }
+}
+
+
+QString DeltaHandler::getTempGroupPic()
+{
+    if (creatingNewGroup) {
+        return QString();
+    }
+
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_tempGroupChatID);
+    
+    char* tempText = dc_chat_get_profile_image(tempChat);
+
+    QString tempQString = tempText;
+    tempQString.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length() + 1);
+
+    dc_str_unref(tempText);
+    dc_chat_unref(tempChat);
+
+    return tempQString;
+}
+
+
+QString DeltaHandler::getTempGroupName()
+{
+    if (creatingNewGroup) {
+        return QString();
+    }
+
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_tempGroupChatID);
+    
+    char* tempText = dc_chat_get_name(tempChat);
+
+    QString tempQString = tempText;
+
+    dc_str_unref(tempText);
+    dc_chat_unref(tempChat);
+
+    return tempQString;
+}
+
+
+void DeltaHandler::setGroupPic(QString filepath)
+{
+    filepath.remove(0, 7);
+    filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+    emit newChatPic(filepath);
+}
+
+
+void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
+{
+
+    if (creatingNewGroup) {
+        m_tempGroupChatID = dc_create_group_chat(currentContext, 0, groupName.toStdString().c_str());
+        if ("" != imagePath) {
+            imagePath.remove(0, 7);
+            dc_set_chat_profile_image(currentContext, m_tempGroupChatID, imagePath.toStdString().c_str());
+        }
+    } else {
+        QString tempQString = getTempGroupName();
+        if (groupName != tempQString) {
+            dc_set_chat_name(currentContext, m_tempGroupChatID, groupName.toStdString().c_str());
+        }
+
+        // if the group image has been modified, imagePath will be
+        // located in the CacheLocation, whereas it will be in the
+        // AppConfigLocation when unmodified. Only set it if it has been
+        // modified. Check by assuming AppConfigLocation and compare it
+        // to the existing group image
+        tempQString = imagePath;
+        tempQString.remove(0, 7);
+        tempQString.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length() + 1);
+
+        if (tempQString != getTempGroupPic()) {
+            if ("" == imagePath) {
+                dc_set_chat_profile_image(currentContext, m_tempGroupChatID, NULL);
+            } else {
+                imagePath.remove(0, 7);
+                dc_set_chat_profile_image(currentContext, m_tempGroupChatID, imagePath.toStdString().c_str());
+            }
+        }
+    }
+
+
+    dc_array_t* tempContactsArray = dc_get_chat_contacts(currentContext, m_tempGroupChatID);
+    size_t numberOfPresentContacts = dc_array_get_cnt(tempContactsArray);
+
+    std::vector<uint32_t> finalMemberList = m_groupmembermodel->getMembersAlreadyInGroup();
+
+    // adding all contactIDs to the group that are in the list
+    // from m_groupmembermodel, but not in the array received
+    // from currentContext
+    for (size_t i = 0; i < finalMemberList.size(); ++i) {
+        bool hasToBeAdded = true;
+        for (size_t j = 0; j < numberOfPresentContacts; ++j) {
+            if (finalMemberList[i] == dc_array_get_id(tempContactsArray, j)) {
+                hasToBeAdded = false;
+                break;
+            }
+        }
+        if (hasToBeAdded) {
+            qDebug() << "========= will now add: " << m_groupmembermodel->getNameOfIndex(i);
+            dc_add_contact_to_chat(currentContext, m_tempGroupChatID, finalMemberList[i]);
+        }
+    }
+
+    // removing all contactIDs from the group that are in
+    // the array received from currentContext, but no
+    // in the list from m_groupmembermodel
+    for (size_t i = 0; i < numberOfPresentContacts; ++i) {
+        bool hasToBeRemoved = true;
+        for (size_t j = 0; j < finalMemberList.size(); ++j) {
+            if (dc_array_get_id(tempContactsArray, i) == finalMemberList[j]) {
+                hasToBeRemoved = false;
+                break;
+            }
+        }
+        if (hasToBeRemoved) {
+            qDebug() << "========= will now REMOVE ID: " << dc_array_get_id(tempContactsArray, i);
+            dc_remove_contact_from_chat(currentContext, m_tempGroupChatID, dc_array_get_id(tempContactsArray, i));
+        }
+    }
+
+    dc_array_unref(tempContactsArray);
+    delete m_groupmembermodel;
+}
+
+
+void DeltaHandler::leaveGroup(int myindex)
+{
+    uint32_t chatID {0};
+
+    // will leave the currently active chat
+    // (i.e., the one in currentChatID) if -1 is
+    // passed
+    if (-1 == myindex) {
+        chatID = currentChatID;
+    } else {
+        chatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    }
+
+    dc_remove_contact_from_chat(currentContext, chatID, DC_CONTACT_ID_SELF);
+}
+
+
+void DeltaHandler::stopCreateOrEditGroup()
+{
+    delete m_groupmembermodel;
+}
+
+
+void DeltaHandler::prepareContactsmodelForGroupMemberAddition()
+{
+    m_contactsmodel->setMembersAlreadyInGroup(m_groupmembermodel->getMembersAlreadyInGroup());
+}
+
+
+GroupMemberModel* DeltaHandler::groupmembermodel()
+{
+    return m_groupmembermodel;
+}
+
+/* ============ End New Group / Editing Group ============= */
+
+
 void DeltaHandler::updateCurrentChatMessageCount()
 {
     for (size_t i = 0; i < dc_chatlist_get_cnt(currentChatlist); ++i) {
@@ -1660,7 +1877,17 @@ bool DeltaHandler::chatIsSelfTalk(int myindex)
 
 bool DeltaHandler::chatIsGroup(int myindex)
 {
-    uint32_t chatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    uint32_t chatID {0};
+
+    // will check for the currently active chat
+    // (i.e., the one in currentChatID) if -1 is
+    // passed
+    if (-1 == myindex) {
+        chatID = currentChatID;
+    } else {
+        chatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    }
+
     dc_chat_t* tempChat = dc_get_chat(currentContext, chatID);
 
     bool retval = (dc_chat_get_type(tempChat) == DC_CHAT_TYPE_GROUP);
@@ -1670,6 +1897,36 @@ bool DeltaHandler::chatIsGroup(int myindex)
     }
 
     return retval;
+}
+
+
+bool DeltaHandler::selfIsInGroup(int myindex)
+{
+    uint32_t chatID {0};
+
+    // will check for the currently active chat
+    // (i.e., the one in currentChatID) if -1 is
+    // passed
+    if (-1 == myindex) {
+        chatID = currentChatID;
+    } else {
+        chatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    }
+
+    dc_array_t* tempContactsArray = dc_get_chat_contacts(currentContext, chatID);
+    
+    bool isInGroup = false;
+
+    for (size_t i = 0; i < dc_array_get_cnt(tempContactsArray); ++i) {
+        if (DC_CONTACT_ID_SELF == dc_array_get_id(tempContactsArray, i)) {
+            isInGroup = true;
+            break;
+        }
+    }
+
+    dc_array_unref(tempContactsArray);
+
+    return isInGroup;
 }
 
 

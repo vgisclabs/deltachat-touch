@@ -262,7 +262,6 @@ Page {
                 anchors {
                     left: parent.left
                     leftMargin: units.gu(4)
-                    //top: showClassicMailsRect.bottom
                     top: showClassicMailsItem.bottom
                     topMargin: units.gu(3)
                 }

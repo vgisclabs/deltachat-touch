@@ -254,15 +254,42 @@ void ContactsModel::updateQuery(QString query) {
     beginResetModel();
     dc_array_unref(m_contactsArray);
     
-    const char* query_cstring {nullptr};
+    uint32_t tempContactID {0};
+    dc_contact_t* tempContact {nullptr};
+    char* tempText {nullptr};
+    QString tempQString {""};
+
     if (query != "") {
-        query_cstring = query.toStdString().c_str();
+        m_contactsArray = dc_get_contacts(m_context, 0, query.toUtf8().constData());
         m_offset = 1;
-    } else {
+
+        // Check whether the entered string equals any of the email
+        // addresses in the array. If yes, don't show the additional
+        // line with a newly to be added contact (i.e., set m_offset
+        // to 0)
+        for (size_t i = 0; i < dc_array_get_cnt(m_contactsArray); ++i) {
+            tempContactID = dc_array_get_id(m_contactsArray, i);
+            tempContact = dc_get_contact(m_context, tempContactID);
+            tempText = dc_contact_get_addr(tempContact);
+            tempQString = tempText;
+
+            if (tempQString == query) {
+                m_offset = 0;
+                break;
+            }
+        }
+    } else { // query is empty string
+        m_contactsArray = dc_get_contacts(m_context, 0, NULL);
         m_offset = 0;
     }
-    
-    m_contactsArray = dc_get_contacts(m_context, 0, query_cstring);
+
+    if (tempContact) {
+        dc_contact_unref(tempContact);
+    }
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
 
     endResetModel();
 }

@@ -273,7 +273,7 @@ void ContactsModel::updateQuery(QString query) {
             tempText = dc_contact_get_addr(tempContact);
             tempQString = tempText;
 
-            if (tempQString == query) {
+            if (QString::compare(tempQString, query, Qt::CaseInsensitive) == 0) {
                 m_offset = 0;
                 break;
             }

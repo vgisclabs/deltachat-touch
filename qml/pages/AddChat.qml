@@ -33,6 +33,20 @@ Page {
     header: PageHeader {
         id: addChatHeader
         title: i18n.tr("New Chat")
+
+        leadingActionBar.actions: [
+            Action {
+                iconName: 'go-down'
+                text: i18n.tr('Cancel')
+                onTriggered: {
+                    bottomEdge.collapse()
+                    // reset the text in the TextField, otherwise the
+                    // query would remain for the next time the
+                    // model is used
+                    enterNameOrEmailField.text = ""
+                }
+            }
+        ]
     }
 
     signal textHasChanged(string query)

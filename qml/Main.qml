@@ -40,7 +40,7 @@ MainView {
 
     // Color scheme
     property bool darkmode: (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
-    property string otherMessageBackgroundColor: root.darkmode ? "#3b3b3b" : "#d3d3d3" // "#f7f7f7" "#f8f4eb"
+    property string otherMessageBackgroundColor: root.darkmode ? "#3b3b3b" : "#e9e9e9" //"#d3d3d3"
     property string selfMessagePendingBackgroundColor: root.darkmode ? "#86d3db" : "#f0fafb"
     property string selfMessageSentBackgroundColor: root.darkmode ? "#0ca7b6" : "#cbecf0" //"#0ca7b6" : "#e1f4f6"
     property string selfMessageSeenBackgroundColor: root.darkmode ? "#06545b" : "#2bb2c0"

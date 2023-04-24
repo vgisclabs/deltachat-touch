@@ -38,14 +38,15 @@
         <file>pages/Profile.qml</file>
         <file>pages/SettingsPage.qml</file>
         <file>pages/UnblockContactPopup.qml</file>
-        <file>delegates/delegSelfAudio.qml</file>
-        <file>delegates/delegSelfImage.qml</file>
-        <file>delegates/delegSelfTextMsg.qml</file>
-        <file>delegates/delegSelfUnknown.qml</file>
+        <file>delegates/delegInfoMsg.qml</file>
         <file>delegates/delegOtherAudio.qml</file>
         <file>delegates/delegOtherImage.qml</file>
         <file>delegates/delegOtherTextMsg.qml</file>
         <file>delegates/delegOtherUnknown.qml</file>
         <file>delegates/delegUnreadMsgsBar.qml</file>
+        <file>delegates/delegSelfAudio.qml</file>
+        <file>delegates/delegSelfImage.qml</file>
+        <file>delegates/delegSelfTextMsg.qml</file>
+        <file>delegates/delegSelfUnknown.qml</file>
     </qresource>
 </RCC>

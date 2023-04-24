@@ -185,11 +185,20 @@ Page {
                 // TODO rename
                 property int parentWidth: parent.width
                 property Audio msgAudio: messageAudio
+                property bool anchorToRight: {
+                    if (model.isInfo) {
+                        return false
+                    } else {
+                        return model.isSelf
+                    }
+                }
                 height: childrenRect.height // TODO: QML complains about a binding loop for property "height"
-                anchors.right: model.isSelf ? parent.right : undefined
-                anchors.left: model.isSelf ? undefined : parent.left
+                anchors.right: anchorToRight ? parent.right : undefined
+                anchors.left: anchorToRight ? undefined : parent.left
                 source: 
-                    if (model.isSelf) {
+                    if (model.isInfo) {
+                        return "../delegates/delegInfoMsg.qml"
+                    } else if (model.isSelf) {
                         messageListItem.leadingActions = leadingMsgAction
                         messageListItem.trailingActions = trailingMsgActions
 

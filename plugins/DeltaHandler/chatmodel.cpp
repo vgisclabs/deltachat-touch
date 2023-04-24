@@ -43,6 +43,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[IsSelfRole] = "isSelf";
+    roles[IsInfoRole] = "isInfo";
     roles[IsForwardedRole] = "isForwarded";
     roles[MessageSeenRole] = "messageSeen";
     roles[MessageStateRole] = "messageState";
@@ -120,10 +121,18 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
     switch(role) {
         case ChatModel::IsSelfRole:
             if (dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF) {
-                retval = QVariant(true);
+                retval = true;
             }
             else {
-                retval = QVariant(false);
+                retval = false;
+            }
+            break;
+
+        case ChatModel::IsInfoRole:
+            if (dc_msg_is_info(tempMsg)) {
+                retval = true;
+            } else {
+                retval = false;
             }
             break;
 
@@ -329,17 +338,19 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
         case ChatModel::IsSameSenderAsNextRole:
             // Most recent message has sender of next message
             if (row == 0 || row - 1 == m_unreadMessageBarIndex) {
-                retval = QVariant(false);
+                retval = false;
             }
             else {
                 // row - 1 corresponds to the next message
                 tempMsgID = msgVector[row - 1];
                 nextMsg = dc_get_msg(currentMsgContext, tempMsgID);
-                if (dc_msg_get_from_id(nextMsg) == dc_msg_get_from_id(tempMsg)) {
-                    retval = QVariant(true);
+                if (dc_msg_is_info(nextMsg)) {
+                    retval = false;
+                } else if (dc_msg_get_from_id(nextMsg) == dc_msg_get_from_id(tempMsg)) {
+                    retval = true;
                 } 
                 else {
-                    retval = QVariant(false);
+                    retval = false;
                 }
             }
             break;
@@ -347,10 +358,10 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
         case ChatModel::PadlockRole:
 
             if (dc_msg_get_showpadlock(tempMsg)) {
-                retval = QVariant(true);
+                retval = true;
             }
             else {
-                retval = QVariant(false);
+                retval = false;
             }
             break;
 

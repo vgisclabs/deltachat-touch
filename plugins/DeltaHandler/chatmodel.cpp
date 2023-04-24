@@ -834,7 +834,7 @@ QString ChatModel::copyToCache(QString fromFilePath) const
     // if it exists, remove it first
     if (QFile::exists(toFilePath)) {
         qDebug() << "ChatModel::copyToCache: trying to remove file " << toFilePath << " from Cache...";
-        int success = remove(toFilePath.toStdString().c_str());
+        int success = remove(toFilePath.toUtf8().constData());
         if (0 == success) {
             qDebug() << "ChatModel::copyToCache: ...success.";
         } else {
@@ -878,7 +878,7 @@ void ChatModel::setDraft(QString draftText)
         if ("" == draftText && !draftHasQuote()) {
             dc_set_draft(currentMsgContext, chatID, NULL);
         } else {
-            dc_msg_set_text(currentMessageDraft, draftText.toStdString().c_str());
+            dc_msg_set_text(currentMessageDraft, draftText.toUtf8().constData());
             dc_set_draft(currentMsgContext, chatID, currentMessageDraft);
         }
     // no draft exists, and the message enter field is empty,
@@ -889,7 +889,7 @@ void ChatModel::setDraft(QString draftText)
     // contains text, so a draft message is now created
     } else {
         currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
-        dc_msg_set_text(currentMessageDraft, draftText.toStdString().c_str());
+        dc_msg_set_text(currentMessageDraft, draftText.toUtf8().constData());
         dc_set_draft(currentMsgContext, chatID, currentMessageDraft);
     }
 }
@@ -1088,7 +1088,7 @@ ChatlistModel* ChatModel::chatlistmodel()
 void ChatModel::sendMessage(QString messageText)
 {
     if (currentMessageDraft) {
-        dc_msg_set_text(currentMessageDraft, messageText.toStdString().c_str());
+        dc_msg_set_text(currentMessageDraft, messageText.toUtf8().constData());
         // TODO: check return value?
         dc_send_msg(currentMsgContext, chatID, currentMessageDraft);
 
@@ -1105,7 +1105,7 @@ void ChatModel::sendMessage(QString messageText)
         }
     } else {
         // TODO: check return value?
-        dc_send_text_msg(currentMsgContext, chatID, messageText.toStdString().c_str());
+        dc_send_text_msg(currentMsgContext, chatID, messageText.toUtf8().constData());
     }
 }
 

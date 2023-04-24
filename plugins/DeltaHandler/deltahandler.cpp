@@ -85,6 +85,8 @@ DeltaHandler::DeltaHandler(QObject* parent)
     // as a const char *. This is equivalent to calling
     // <QString>.toLocal8Bit().constData().
     //
+    // Also possible: <QString>.toUtf8().constData() ==>> preferred!
+    //
     // Also possible: <QString>.toStdString().c_str()
     //
     // TODO unref the accounts somewhen later? => done in the destructor
@@ -565,7 +567,7 @@ void DeltaHandler::sendAttachment(QString filepath, MsgViewType attachType)
             break;
     }
 
-    dc_msg_set_file(msg, filepath.toStdString().c_str(), NULL);
+    dc_msg_set_file(msg, filepath.toUtf8().constData(), NULL);
     dc_send_msg(currentContext, currentChatID, msg);
      
     dc_msg_unref(msg);
@@ -860,7 +862,7 @@ QString DeltaHandler::getCurrentConfig(QString key)
     // be trimmed.
     QString retval;
     if (currentContext) {
-        char * tempString = dc_get_config(currentContext, key.toStdString().c_str());
+        char * tempString = dc_get_config(currentContext, key.toUtf8().constData());
         retval = tempString;
 
         if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
@@ -930,7 +932,7 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
         // have to check for the special case where the
         // selfavatar should be deleted
         if ("" == newValue) {
-            int success = dc_set_config(currentContext, key.toStdString().c_str(), NULL);
+            int success = dc_set_config(currentContext, key.toUtf8().constData(), NULL);
 
             if (!success) {
                 qDebug() << "DeltaHandler::setCurrentConfig: ERROR: Setting key " << key << " to \"\" was not successful.";
@@ -947,7 +949,7 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
         }
     }
 
-    int success = dc_set_config(currentContext, key.toStdString().c_str(), newValue.toStdString().c_str());
+    int success = dc_set_config(currentContext, key.toUtf8().constData(), newValue.toUtf8().constData());
 
     if (!success) {
         qDebug() << "DeltaHandler::setCurrentConfig: ERROR: Setting key " << key << " to " << newValue << " was not successful.";
@@ -995,7 +997,7 @@ QString DeltaHandler::getTempContextConfig(QString key)
         retval = "";
     }
     else {
-        char* tempText = dc_get_config(tempContext, key.toStdString().c_str());
+        char* tempText = dc_get_config(tempContext, key.toUtf8().constData());
         retval = tempText;
         dc_str_unref(tempText);
     }
@@ -1021,7 +1023,7 @@ void DeltaHandler::setTempContextConfig(QString key, QString val)
         }
 
     } else {
-        dc_set_config(tempContext, key.toStdString().c_str(), val.toStdString().c_str());
+        dc_set_config(tempContext, key.toUtf8().constData(), val.toUtf8().constData());
 
         if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
             qDebug() << "DeltaHandler::setTempContextConfig: Setting " << key << " to " << "*****";
@@ -1400,7 +1402,7 @@ bool DeltaHandler::isBackupFile(QString filePath)
 
     tempContext = dc_accounts_get_account(allAccounts, accID);
 
-    char* tempText = dc_imex_has_backup(tempContext, purePath.toStdString().c_str());
+    char* tempText = dc_imex_has_backup(tempContext, purePath.toUtf8().constData());
     QString tempFile = tempText;
     
     bool isBackup;
@@ -1444,7 +1446,7 @@ void DeltaHandler::importBackup(QString filePath)
     // not emitting signal, but stopping io directly
     stop_io();
     // TODO: implement password for importing backup
-    dc_imex(tempContext, DC_IMEX_IMPORT_BACKUP, filePath.toStdString().c_str(), NULL);
+    dc_imex(tempContext, DC_IMEX_IMPORT_BACKUP, filePath.toUtf8().constData(), NULL);
 }
 
 
@@ -1491,7 +1493,7 @@ void DeltaHandler::exportBackup()
 
     QString cacheDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
 
-    dc_imex(currentContext, DC_IMEX_EXPORT_BACKUP, cacheDir.toStdString().c_str(), NULL);
+    dc_imex(currentContext, DC_IMEX_EXPORT_BACKUP, cacheDir.toUtf8().constData(), NULL);
 }
 
 
@@ -1665,15 +1667,15 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
 {
 
     if (creatingNewGroup) {
-        m_tempGroupChatID = dc_create_group_chat(currentContext, 0, groupName.toStdString().c_str());
+        m_tempGroupChatID = dc_create_group_chat(currentContext, 0, groupName.toUtf8().constData());
         if ("" != imagePath) {
             imagePath.remove(0, 7);
-            dc_set_chat_profile_image(currentContext, m_tempGroupChatID, imagePath.toStdString().c_str());
+            dc_set_chat_profile_image(currentContext, m_tempGroupChatID, imagePath.toUtf8().constData());
         }
     } else {
         QString tempQString = getTempGroupName();
         if (groupName != tempQString) {
-            dc_set_chat_name(currentContext, m_tempGroupChatID, groupName.toStdString().c_str());
+            dc_set_chat_name(currentContext, m_tempGroupChatID, groupName.toUtf8().constData());
         }
 
         // if the group image has been modified, imagePath will be
@@ -1690,7 +1692,7 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
                 dc_set_chat_profile_image(currentContext, m_tempGroupChatID, NULL);
             } else {
                 imagePath.remove(0, 7);
-                dc_set_chat_profile_image(currentContext, m_tempGroupChatID, imagePath.toStdString().c_str());
+                dc_set_chat_profile_image(currentContext, m_tempGroupChatID, imagePath.toUtf8().constData());
             }
         }
     }

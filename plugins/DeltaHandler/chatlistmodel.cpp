@@ -243,7 +243,7 @@ void ChatlistModel::updateQuery(QString query) {
         currentChatlist = dc_get_chatlist(currentContext, m_flagsForChatlist, NULL, 0);
 
     } else {
-        const char* query_cstring = m_query.toStdString().c_str();
+        const char* query_cstring = m_query.toUtf8().constData();
         currentChatlist = dc_get_chatlist(currentContext, m_flagsForChatlist, query_cstring, 0);
     }
 
@@ -294,7 +294,10 @@ void ChatlistModel::updateQuery(QString query) {
 //    // as a const char *. This is equivalent to calling
 //    // <QString>.toLocal8Bit().constData().
 //    //
-//    // Also possible: <QString>.toStdString().c_str()
+//    // Also possible: <QString>.toUtf8().constData() ==>> preferred!
+//    //
+//    // Also possible: <QString>.toStdString().c_str(), but this is not
+//    // compatible with deltachat-core-rust in all cases.
 //    //
 //    // TODO unref the accounts somewhen later? => done in the destructor
 //    allAccounts = dc_accounts_new(NULL, qPrintable(configdir));
@@ -688,7 +691,7 @@ void ChatlistModel::updateQuery(QString query) {
 //            break;
 //    }
 //
-//    dc_msg_set_file(msg, filepath.toStdString().c_str(), NULL);
+//    dc_msg_set_file(msg, filepath.toUtf8().constData(), NULL);
 //    dc_send_msg(currentContext, currentChatID, msg);
 //     
 //    dc_msg_unref(msg);
@@ -937,7 +940,7 @@ void ChatlistModel::updateQuery(QString query) {
 //        // have to check for the special case where the
 //        // selfavatar should be deleted
 //        if ("" == newValue) {
-//            int success = dc_set_config(currentContext, key.toStdString().c_str(), NULL);
+//            int success = dc_set_config(currentContext, key.toUtf8().constData(), NULL);
 //
 //            if (!success) {
 //                qDebug() << "ChatlistModel::setCurrentConfig: ERROR: Setting key " << key << " to \"\" was not successful.";
@@ -954,7 +957,7 @@ void ChatlistModel::updateQuery(QString query) {
 //        }
 //    }
 //
-//    int success = dc_set_config(currentContext, key.toStdString().c_str(), newValue.toStdString().c_str());
+//    int success = dc_set_config(currentContext, key.toUtf8().constData(), newValue.toUtf8().constData());
 //
 //    if (!success) {
 //        qDebug() << "ChatlistModel::setCurrentConfig: ERROR: Setting key " << key << " to " << newValue << " was not successful.";
@@ -1004,7 +1007,7 @@ void ChatlistModel::updateQuery(QString query) {
 //        retval = "";
 //    }
 //    else {
-//        char* tempText = dc_get_config(tempContext, key.toStdString().c_str());
+//        char* tempText = dc_get_config(tempContext, key.toUtf8().constData());
 //        retval = tempText;
 //        dc_str_unref(tempText);
 //    }
@@ -1030,7 +1033,7 @@ void ChatlistModel::updateQuery(QString query) {
 //        }
 //
 //    } else {
-//        dc_set_config(tempContext, key.toStdString().c_str(), val.toStdString().c_str());
+//        dc_set_config(tempContext, key.toUtf8().constData(), val.toUtf8().constData());
 //
 //        if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
 //            qDebug() << "ChatlistModel::setTempContextConfig: Setting " << key << " to " << "*****";
@@ -1398,7 +1401,7 @@ void ChatlistModel::updateQuery(QString query) {
 //
 //    tempContext = dc_accounts_get_account(allAccounts, accID);
 //
-//    char* tempText = dc_imex_has_backup(tempContext, purePath.toStdString().c_str());
+//    char* tempText = dc_imex_has_backup(tempContext, purePath.toUtf8().constData());
 //    QString tempFile = tempText;
 //    
 //    bool isBackup;
@@ -1431,7 +1434,7 @@ void ChatlistModel::updateQuery(QString query) {
 //    // not emitting signal, but stopping io directly
 //    stop_io();
 //    // TODO: implement password for importing backup
-//    dc_imex(tempContext, DC_IMEX_IMPORT_BACKUP, filePath.toStdString().c_str(), NULL);
+//    dc_imex(tempContext, DC_IMEX_IMPORT_BACKUP, filePath.toUtf8().constData(), NULL);
 //}
 //
 //

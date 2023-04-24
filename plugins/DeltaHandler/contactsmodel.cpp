@@ -88,7 +88,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
                 break;
 
             case ContactsModel::EmailAddressRole:
-                isEmailAddress  = dc_may_be_valid_addr(m_query.toStdString().c_str());
+                isEmailAddress  = dc_may_be_valid_addr(m_query.toUtf8().constData());
                 if (isEmailAddress) {
                     retval = m_query;
                 } else {
@@ -301,8 +301,8 @@ void ContactsModel::startChatWithIndex(int myindex)
 
     // Taking care of the custom entry by the user
     if (1 == m_offset && 0 == myindex) {
-        if (dc_may_be_valid_addr(m_query.toStdString().c_str())) {
-            contactID = dc_create_contact(m_context, NULL, m_query.toStdString().c_str());
+        if (dc_may_be_valid_addr(m_query.toUtf8().constData())) {
+            contactID = dc_create_contact(m_context, NULL, m_query.toUtf8().constData());
         } else {
             // if the entry is not a valid email address, we
             // just do nothing when the user clicks the corresponding
@@ -328,11 +328,11 @@ void ContactsModel::addIndexToMemberlist(int myindex)
     uint32_t tempContactID {0};
 
     if (1 == m_offset && 0 == myindex) {
-        if (dc_may_be_valid_addr(m_query.toStdString().c_str())) {
-            tempContactID = dc_lookup_contact_id_by_addr(m_context, m_query.toStdString().c_str());
+        if (dc_may_be_valid_addr(m_query.toUtf8().constData())) {
+            tempContactID = dc_lookup_contact_id_by_addr(m_context, m_query.toUtf8().constData());
             if (!tempContactID) {
                 // TODO: Is a check needed whether tempContactID is in m_membersAlreadyInGroup? 
-                tempContactID = dc_create_contact(m_context, NULL, m_query.toStdString().c_str());
+                tempContactID = dc_create_contact(m_context, NULL, m_query.toUtf8().constData());
                 m_newMembers.push_back(tempContactID);
 
             } else {

@@ -139,9 +139,17 @@ UbuntuShape {
             leftMargin: units.gu(1)
             top: quoteLabel.bottom
         }
-        // TODO: setting the text like this doesn't work
-        // CAVE: need to check whether there is a quoted message first
-        text: (model.quoteIsSelf === "yes" ? i18n.tr("Me") : (model.quoteUser === "" ? i18n.tr("Unknown") : model.quoteUser))
+
+        property bool quoteIsFromSelf: model.quoteIsSelf    
+        property bool quoteUserIsEmpty: model.quoteUser == ""
+        text: {
+            if (quoteUserIsEmpty) {
+                return i18n.tr("Unknown")
+            } else {
+                return model.quoteUser
+            }
+        } 
+
         fontSize: "x-small"
         font.bold: true
         color: msgLabel.color

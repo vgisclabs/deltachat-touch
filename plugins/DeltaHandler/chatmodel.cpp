@@ -208,13 +208,13 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
             nextMsg = dc_msg_get_quoted_msg(tempMsg);
             if (nextMsg) {
                 if (dc_msg_get_from_id(nextMsg) == DC_CONTACT_ID_SELF) {
-                    retval = QString("yes");
+                    retval = true;
                 }
                 else {
-                    retval = QString("no");
+                    retval = false;
                 }
             } else { // no quoted message
-                retval = QString("no");
+                retval = false;
             }
             break;
 

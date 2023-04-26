@@ -132,6 +132,7 @@ UbuntuShape {
         }
     }
 
+
     Label {
         id: quoteUser
         anchors {
@@ -140,15 +141,19 @@ UbuntuShape {
             top: quoteLabel.bottom
         }
 
-        property bool quoteIsFromSelf: model.quoteIsSelf    
-        property bool quoteUserIsEmpty: model.quoteUser == ""
         text: {
-            if (quoteUserIsEmpty) {
+            if (model.quoteUser == "") {
                 return i18n.tr("Unknown")
             } else {
                 return model.quoteUser
             }
-        } 
+        }
+
+        fontSize: "x-small"
+        font.bold: true
+        color: msgLabel.color
+        visible: quoteLabel.visible
+    }
 
         fontSize: "x-small"
         font.bold: true

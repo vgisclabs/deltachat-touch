@@ -133,7 +133,7 @@ Item {
 
         Label {
             id: quoteLabel
-            width: parentWidth - avatarShape.width - units.gu(5) - units.gu(1.5)
+            width: parentWidth - (avatarShape.width + units.gu(5) + units.gu(1.5))
             anchors {
                 left: quoteRectangle.right
                 leftMargin: units.gu(1)
@@ -160,16 +160,14 @@ Item {
                 top: quoteLabel.bottom
             }
 
-            property bool quoteIsFromSelf: model.quoteIsSelf    
-            property bool quoteUserIsEmpty: model.quoteUser == ""
             text: {
-                if (quoteUserIsEmpty) {
+                if (model.quoteUser == "") {
                     return i18n.tr("Unknown")
                 } else {
                     return model.quoteUser
                 }
-            } 
-
+            }
+            
             fontSize: "x-small"
             font.bold: true
             visible: quoteLabel.visible
@@ -199,6 +197,7 @@ Item {
             text: model.username + "  "
             fontSize: "x-small"
             font.bold: true
+            color: model.avatarColor
         }
 
         Label {
@@ -221,7 +220,7 @@ Item {
             }
             visible: model.hasPadlock
             name: "lock"
-            color: username.color
+            color: msgDate.color
             
         }
     } // end UbuntuShape id: msgbox

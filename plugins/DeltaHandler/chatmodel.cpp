@@ -49,7 +49,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[MessageStateRole] = "messageState";
     roles[QuotedTextRole] = "quotedText";
     roles[QuoteUserRole] = "quoteUser";
-    roles[QuoteIsSelfRole] = "quoteUser";
+    roles[QuoteIsSelfRole] = "quoteIsSelf";
     roles[MessageInfoRole] = "messageInfo";
     roles[DurationRole] = "duration";
     roles[IsUnreadMsgsBarRole] = "isUnreadMsgsBar";

@@ -200,10 +200,8 @@ Item {
                     top: quoteLabel.bottom
                 }
 
-                property bool quoteIsFromSelf: model.quoteIsSelf    
-                property bool quoteUserIsEmpty: model.quoteUser == ""
                 text: {
-                    if (quoteUserIsEmpty) {
+                    if (model.quoteUser == "") {
                         return i18n.tr("Unknown")
                     } else {
                         return model.quoteUser
@@ -242,6 +240,7 @@ Item {
                 text: model.username + "  "
                 fontSize: "x-small"
                 font.bold: true
+                color: model.avatarColor
             }
             
             Label {
@@ -265,7 +264,7 @@ Item {
                 }
                 visible: model.hasPadlock
                 name: "lock"
-                color: username.color
+                color: msgDate.color
                 
             }
         } // end UbuntuShape id: dateEtcShape

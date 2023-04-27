@@ -155,12 +155,6 @@ UbuntuShape {
         visible: quoteLabel.visible
     }
 
-        fontSize: "x-small"
-        font.bold: true
-        color: msgLabel.color
-        visible: quoteLabel.visible
-    }
-
     UbuntuShape {
         id: playShape
         height: units.gu(4)

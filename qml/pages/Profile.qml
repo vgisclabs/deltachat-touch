@@ -62,7 +62,7 @@ Page {
           //  },
             Action {
                 iconName: 'info'
-                text: i18n.tr('About')
+                text: i18n.tr('About DeltaTouch')
                 onTriggered: {
                             layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('About.qml'))
                 }

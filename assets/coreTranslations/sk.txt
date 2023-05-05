@@ -1,0 +1,126 @@
+@linechat_no_messages Žiadne správy.
+@lineself Ja
+@linedraft Návrh
+@linevoice_message Hlasová správa
+@lineimage Obrázok
+@linegif Gif
+@linevideo Video
+@lineaudio Zvuk
+@linefile Súbor
+@lineencrypted_message Zašifrovaná správa
+@lineqrscan_fingerprint_label Odtlačok prsta
+@linesystemmsg_cannot_decrypt Túto správu nie je možné dešifrovať.
+
+• Už by mohlo pomôcť jednoducho odpovedať na túto správu a požiadať odosielateľa, aby správu odoslal znova.
+
+• V prípade, že ste na ňu znova nainštalovali program Delta Chat alebo iný e-mailový program alebo iné zariadenie, z ktorého budete pravdepodobne chcieť odoslať správu o nastavení automatického šifrovania.
+@linesystemmsg_read_receipt_subject Správa otvorená
+@linesystemmsg_read_receipt_body %1$s Správa, ktorú ste poslali, sa zobrazila na obrazovke príjemcu.
+
+Zaručujeme, že obsah nebol prečítaný.
+@lineautocrypt_prefer_e2ee Preferovať šifrovanie typu end-to-end
+@linechat_archived_chats_title Archivované konverzácie
+@lineautocrypt_asm_subject Správa o nastavení automatického šifrovania
+@lineautocrypt_asm_general_body Toto je správa o nastavení automatického šifrovania, ktorá sa používa na prenos komplexného nastavenia medzi klientmi.
+
+Ak chcete dešifrovať a použiť svoje nastavenie, otvorte správu v klientovi kompatibilnom s automatickým šifrovaním a zadajte inštalačný kód uvedený na generujúcom zariadení.
+@linelogin_error_cannot_login Nie je možné prihlásiť sa ako „%1$s“. Skontrolujte správnosť e-mailovej adresy a hesla.
+@linedevice_talk Správy zariadenia
+@linesaved_messages Uložené správy
+@linecontact_verified %1$s overené.
+@linecontact_not_verified Cannot verify %1$s.
+@linecontact_setup_changed Zmena nastavenia pre %1$s.
+@linedevice_talk_explain Správy v tejto konverzácií sú generované lokálne vašou aplikáciou Delta Chat. Jeho tvorcovia ho používajú na informovanie o aktualizáciách aplikácií a problémoch počas používania.
+@linedevice_talk_welcome_message Vitajte na chatu Delta! - Delta Chat vyzerá a vyzerá ako iné populárne aplikácie pre komunikáciu, nezahŕňa však centralizované riadenie, sledovanie ani predaj vašich priateľov, kolegov alebo rodiny veľkým organizáciám.
+
+Technicky je Delta Chat e-mailová aplikácia s moderným rozhraním pre chat. . Ak budete chcieť, pošlite e-mail v novom šate 👻
+
+Použite program Delta Chat s kýmkoľvek z miliárd ľudí: stačí použiť jeho e-mailovú adresu. Príjemcovia nemusia inštalovať Delta Chat, navštevovať webové stránky alebo sa kdekoľvek registrovať - samozrejme, ak sa im páči, môžete ich odkázať na 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Neznámy odosielateľ pre túto konverzáciu. Ďalšie informácie nájdete v časti „Informácie“.
+@linesystemmsg_subject_for_new_contact Správa od %1$s
+@linesystemmsg_failed_sending_to Správu sa nepodarilo odoslať %1$s .
+@linevideochat_invitation Pozvánka na videohovor
+@linevideochat_invitation_body Ste pozvaní na videohovor, kliknutím %1$s sa pripojíte.
+@lineconfiguration_failed_with_error Konfigurácia zlyhala. Chyba: %1$s
+@linereply_noun Odpovedať
+@lineforwarded Preposlané
+@linelocation Poloha
+@linesticker Nálepka
+@linedevicemsg_bad_time Zdá sa, že dátum alebo čas vášho zariadenia je nepresný (%1$s).
+
+Upravte si hodiny ⏰🔧, aby ste zaistili správne prijímanie správ. 
+@linedevicemsg_update_reminder ⚠️ Vaša verzia Delta Chat-u môže byť zastaraná.
+
+Môže to spôsobiť problémy, pretože vaši chatový partneri používajú novšie verzie – a vám chýbajú najnovšie funkcie 😳
+Aktualizácie nájdete na https://get.delta.chat alebo obchode s aplikáciami . 
+@linedevicemsg_self_deleted Odstránili ste konverzáciu \"Uložené správy\".
+
+ℹ️ Aby ste využili funkciu \"Uložené správy\" znova, vytvorte novú konverzáciu so sebou.
+@linedevicemsg_storage_exceeding ⚠️ Úložisko vašeho poskytovateľa čoskoro prekročí limit, už%1$s%%  sú využité.
+
+ Je možné, že nebudete môcť prijímať správy, ak bude úložisko 100 %% využité.
+
+👉 Prosím skontrolujte, či môžete vo webovom rozhraní poskytovateľa vymazať staré údaje, a zvážte aktiváciu „Nastavenia / Odstrániť Staré Správy“. Aktuálne využitie úložiska si môžete kedykoľvek skontrolovať v časti „Nastavenia / Pripojenie“. 
+@linen_bytes_message %1$s správa
+@linedownload_max_available_until Maximálny počet stiahnutí k dispozícii do %1$s
+@lineincoming_messages Prichádzajúce Správy
+@lineoutgoing_messages Odchádzajúce Správy
+@linestorage_on_domain Dáta o %1$s
+@lineone_moment Moment...
+@lineconnectivity_connected Pripojené
+@lineconnectivity_connecting Pripájam sa…
+@lineconnectivity_updating Aktualizujem…
+@linesending Odosielam...
+@linelast_msg_sent_successfully Posledná správa odoslaná úspešne.
+@lineerror_x Chyba: %1$s
+@linenot_supported_by_provider Nie je podporovaná vaším poskytovateľom.
+@linemessages Správy
+@linebroadcast_list Zoznam Rozosielania
+@linepart_of_total_used %1$s z %2$svyužitých 
+@linesecure_join_started %1$s vás pozval, aby ste sa pripojili k tejto skupine.
+
+Čaká sa na odpoveď zo zariadenia používateľa %2$s...
+@linesecure_join_replies %1$sodpovedal a čaká sa na pridanie do skupiny...
+@lineqrshow_join_contact_hint Naskenujte a vytvorte kontakt s %1$s .
+@lineqrshow_join_group_hint Naskenujte a pripojte sa ku skupine „%1$s“.
+@lineconnectivity_not_connected Nepripojené
+@lineaeap_addr_changed %1$s zmenil(a) svoju adresu z %2$s na %3$s
+@linegroup_name_changed_by_you Názov skupiny sa zmenil z „%1$s“ na „%2$s“ mnou.
+@linegroup_name_changed_by_other Názov skupiny sa zmenil z „%1$s“ na „%2$s“ od %3$s.
+@linegroup_image_changed_by_you Zmenili ste obrázok skupiny.
+@linegroup_image_changed_by_other Obrázok skupiny zmenil(a) %1$s.
+@lineadd_member_by_you Člen %1$s pridaný mnou.
+@lineadd_member_by_other Člen %1$s pridaný od %2$s.
+@lineremove_member_by_you Člen %1$s bol odstránený mnou.
+@lineremove_member_by_other Člen %1$s bol odstránený od %2$s.
+@linegroup_left_by_you Opustili ste skupinu
+@linegroup_left_by_other Skupinu opustil(a) %1$s.
+@linegroup_image_deleted_by_you Odstránili ste obrázok skupiny.
+@linegroup_image_deleted_by_other Obrázok skupiny odstránil(a) %1$s.
+@linelocation_enabled_by_you Zapli ste vysielanie vašej polohy.
+@linelocation_enabled_by_other %1$s povolil(a) vysielanie svojej polohy.
+@lineephemeral_timer_disabled_by_you Časovač zmiznutia správ je deaktivovaný mnou.
+@lineephemeral_timer_disabled_by_other Časovač zmiznutia správ je deaktivovaný od %1$s.
+@lineephemeral_timer_seconds_by_you Časovač zmiznutia správ nastavený na %1$s s mnou.
+@lineephemeral_timer_seconds_by_other Časovač zmiznutia správ nastavený na %1$s s od %2$s.
+@lineephemeral_timer_1_minute_by_you Časovač zmiznutia správ bol nastavený na 1 minútu mnou.
+@lineephemeral_timer_1_minute_by_other Časovač zmiznutia správ bol nastavený na 1 minútu od %1$s.
+@lineephemeral_timer_1_hour_by_you Časovač zmiznutia správ bol nastavený na 1 hodinu mnou.
+@lineephemeral_timer_1_hour_by_other Časovač zmiznutia správ bol nastavený na 1 hodinu od %1$s.
+@lineephemeral_timer_1_day_by_you Časovač zmiznutia správ nastavený na 1 deň mnou.
+@lineephemeral_timer_1_day_by_other Časovač zmiznutia správ nastavený na 1 deň od %1$s.
+@lineephemeral_timer_1_week_by_you Časovač zmiznutia správ nastavený na 1 týždeň mnou.
+@lineephemeral_timer_1_week_by_other Časovač zmiznutia správ nastavený na 1 týždeň od %1$s.
+@lineephemeral_timer_minutes_by_you Časovač zmiznutia správ bol nastavený na %1$s minúty mnou.
+@lineephemeral_timer_minutes_by_other Časovač zmiznutia správ bol nastavený na %1$s minúty od %2$s.
+@lineephemeral_timer_hours_by_you Časovač zmiznutia správ bol nastavený na %1$s hodiny mnou.
+@lineephemeral_timer_hours_by_other Časovač zmiznutia správ bol nastavený na %1$s hodiny od %2$s.
+@lineephemeral_timer_days_by_you Časovač zmiznutia správ nastavený na %1$s dni mnou.
+@lineephemeral_timer_days_by_other Časovač zmiznutia správ nastavený na %1$s dni od %2$s.
+@lineephemeral_timer_weeks_by_you Časovač zmiznutia správ nastavený na %1$s týždne mnou.
+@lineephemeral_timer_weeks_by_other Časovač zmiznutia správ nastavený na %1$s týždne od %2$s.
+@lineprotection_enabled_by_you Ochrana konverzácií je zapnutá mnou.
+@lineprotection_enabled_by_other Ochrana konverzácií je zapnutá od %1$s.
+@lineprotection_disabled_by_you Ochrana konverzácií je vypnutá mnou.
+@lineprotection_disabled_by_other Ochrana konverzácií je vypnutá od %1$s.
+@end

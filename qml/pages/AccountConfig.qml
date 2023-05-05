@@ -188,7 +188,7 @@ Page {
             title: i18n.tr("Error")
             // TODO: probably create new string? Something like
             // "Swipe right and click edit to complete configuration. Choosing info after swiping will give a hint about the last error."
-            text: i18n.tr("Account is not configured")
+            text: i18n.tr("Account is not configured.")
         }
     }
 } // end of Page id: accountConfigPage

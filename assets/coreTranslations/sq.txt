@@ -1,0 +1,132 @@
+@linechat_no_messages S\’ka mesazhe.
+@lineself Unë
+@linedraft Skicë
+@linevoice_message Mesazh zanor
+@lineimage Figurë
+@linegif Gif
+@linevideo Video
+@lineaudio Audio
+@linefile Kartelë
+@lineencrypted_message Mesazh i fshehtëzuar
+@lineqrscan_fingerprint_label Shenja gishtash
+@linesystemmsg_cannot_decrypt Ky mesazh s\’mund të shfshehtëzohet.
+
+• Mundet që të ndihmojë dërgimi thjesht i një përgjigjeje këtij mesazhi dhe t\’i kërkohet dërguesit ta ridërgojë mesazhin.
+
+• Në rast se ri-instaluat Delta Chat-in apo një tjetër program email-esh në këtë apo në një tjetër pajisje, mund të donit të dërgonit një Mesazh Rregullimi Autocrypt-i që prej andej.
+@linesystemmsg_read_receipt_subject Dëftesë leximi
+@linesystemmsg_read_receipt_body Kjo është dëftesë leximi për mesazhin \"%1$s\".
+
+Do të thotë që mesazhi u shfaq te pajisja e marrësit, jo domosdo që lënda u lexua.
+@lineautocrypt_prefer_e2ee Parapëlqe fshehtëzim skaj-më-skaj
+@linechat_archived_chats_title Fjalosje të arkivuara
+@lineautocrypt_asm_subject Mesazh Rregullimi Autocrypt-i
+@lineautocrypt_asm_general_body Ky është Mesazhi i Rregullimit të Autocrypt-it i përdorur për të shpërngulur rregullimin tuaj skaj-më-skaj në klientë të tjerë.
+
+Që ta shfshehtëzoni rregullimin tuaj, hapeni mesazhin te një klient që mund të përdorë Autocrypt-in dhe jepni kodin e rregullimit të treguar te pajisja që e prodhoi.
+@linelogin_error_cannot_login S\’bëhet dot hyrja si %1$s. Ju lutemi, shihni nëse adresa email dhe fjalëkalimi janë të saktë.
+@linedevice_talk Mesazhe Pajisjeje
+@linesaved_messages Mesazhe të ruajtur
+@linecontact_verified %1$s u verifikua.
+@linecontact_not_verified S\’verifikohet dot %1$s
+@linecontact_setup_changed U ndryshua rregullimi për %1$s
+@linedevice_talk_explain Mesazhet në këtë fjalosje prodhohen lokalisht nga aplikacioni juaj Delta Chat. Krijuesit e tij e përdorin për t’ju bërë të ditur përditësime dhe probleme gjatë përdorimit.
+@linedevice_talk_welcome_message Mirë se vini te Delta Chat! – Delta Chat duket si aplikacione të tjerë popullorë për shkëmbim mesazhesh, por nuk përmban kontroll të centralizuar, s’ju gjurmon apo shet te ente të mëdha ju, shokët tuaj, kolegët apo familjen tuaj.
+
+Teknikisht, Delta Chat është një aplikacion email me një ndërfaqe moderne. Email me rroba të reja, nëse doni kështu 👻
+
+Përdoreni Delta Chat-in me cilindo prej miliarda vetash: thjesht përdorni adresat e tyre email. Marrësit s’ka nevojë të instalojnë Delta Chat-in, të vizitojnë sajte apo të regjistrohen diku - por sigurisht, nëse duan, mund t’i drejtoni te 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Dërgues i panjohur për këtë fjalosje. Për më tepër hollësi, shihni \'info\'.
+@linesystemmsg_subject_for_new_contact Mesazh nga %1$s
+@linesystemmsg_failed_sending_to S’u arrit të dërgohej mesazh te %1$s.
+@linevideochat_invitation Ftesë për fjalosje me video
+@linevideochat_invitation_body Jeni ftuar në një fjalosje video, klikoni mbi %1$s që të hyni në të.
+@lineconfiguration_failed_with_error Formësimi dështoi. Gabim: %1$s
+@linereply_noun Përgjigje
+@lineforwarded Përcjellë
+@linelocation Vendndodhje
+@linesticker Ngjitës
+@linedevicemsg_bad_time ⚠️ Data ose koha e pajisjes tuaj duket të jetë e pasaktë (%1$s).
+
+Rregulloni sahatin tuaj ⏰🔧 që të garantohet se mesazhet tuaj merren saktë.
+@linedevicemsg_update_reminder ⚠️ Versioni juaj i Delta Chat-it duket të jetë i vjetruar.
+
+Kjo mund të shkaktojë probleme, ngaqë partnerët tuaj të fjalosjes përdorin versione të rinj - dhe ju mungojnë veçoritë më të reja 😳
+Për përditësime, ju lutemi, shihni te https://get.delta.chat ose te shitorja juaj e aplikacioneve.
+@linedevicemsg_self_deleted Fshitë fjalosjen “Mesazhe të ruajtur”.
+
+ℹ️ Që të përdorni sërish veçorinë “Mesazhe të ruajtur”, krijoni një fjalosje të re me veten tuaj.
+@linedevicemsg_storage_exceeding ⚠️ Po mbaron depozita e shërbimit tuaj, përdoren tashmë %1$s%%.
+
+Kur depozita është 100%% e përdorur, mund të mos jeni në gjendje të merrni mesazhe.
+
+👉 Ju lutemi, shihni se mos mund të fshini të dhëna të vjetra që nga ndërfaqja web e furnizuesit të shërbimit dhe shihni mundësinë të aktivizoni “Rregullime / Fshi Mesazhe të Vjetër”. Se sa depozitë është aktualisht e përdorur mund ta kontrolloni kurdo, që nga \"Rregullime / Lidhje\".
+@linen_bytes_message Mesazh %1$s
+@linedownload_max_available_until Shkarko maksimumin e mundshëm deri më %1$s
+@lineincoming_messages Mesazhe të Marrë
+@lineoutgoing_messages Mesazhe të Dërguar
+@linestorage_on_domain Depozitim në %1$s
+@lineone_moment Një çast…
+@lineconnectivity_connected I lidhur
+@lineconnectivity_connecting Po lidhet…
+@lineconnectivity_updating Po përditësohet…
+@linesending Po dërgohet…
+@linelast_msg_sent_successfully Mesazhi i fundit i dërguar me sukses.
+@lineerror_x Gabim: %1$s
+@linenot_supported_by_provider I pambuluar nga furnizuesi juaj i shërbimit
+@linemessages Mesazhe
+@linebroadcast_list Listë Transmetimi
+@linepart_of_total_used %1$s nga %2$s gjithsej
+@linesecure_join_started %1$s ju ftoi të bëheni pjesë e këtij grupi.
+
+Po pritet për pajisjen e %2$s që të përgjigjet…
+@linesecure_join_replies %1$s u përgjigj, po pritet që të shtohet te grupi…
+@lineqrshow_join_contact_hint Skanojeni këtë që të rregullohet një kontakt %1$s
+@lineqrshow_join_group_hint Që të bëheni pjesë e grupit \"%1$s\", skanoni këtë.
+@lineconnectivity_not_connected I palidhur
+@lineaeap_addr_changed %1$s ndryshoi adresën e vet nga %2$s në %3$s
+@lineaeap_explanation Ndryshuat adresën tuaj nga %1$s në %2$s.
+
+Nëse dërgoni tani një mesazh te një grup i verifikuar, kontaktet atje do të zëvendësojnë automatikisht adresën tuaj të vjetër me të renë.
+
+Është tejet e këshillueshme të ujdisni shërbimin tuaj të vjetër të email-it të përcjellë krejt email-et te adresa juaj e re email. Përndryshme, mund të humbni mesazhe të kontakteve që s’e kanë marrë ende adresën tuaj të re.
+@linegroup_name_changed_by_you E ndryshuat emrin e grupit nga “%1$s” në “%2$s”.
+@linegroup_name_changed_by_other Emri i grupit u ndryshua nga “%1$s” në “%2$s” nga %3$s.
+@linegroup_image_changed_by_you Ndryshuat figurën e grupit
+@linegroup_image_changed_by_other Figura e grupit u ndryshua nga %1$s.
+@lineadd_member_by_you Shtuat anëtarin %1$s.
+@lineadd_member_by_other Anëtari %1$s u shtua nga %2$s.
+@lineremove_member_by_you Hoqët anëtarin %1$s.
+@lineremove_member_by_other Anëtari %1$s u hoq nga %2$s.
+@linegroup_left_by_you E braktisët grupin.
+@linegroup_left_by_other Grupi u braktis nga %1$s.
+@linegroup_image_deleted_by_you Fshitë figurën e grupit.
+@linegroup_image_deleted_by_other Figura e grupit u fshi nga %1$s.
+@linelocation_enabled_by_you Aktivizuat dhënie vendndodhjeje
+@linelocation_enabled_by_other Dhënie vendndodhjeje aktivizuar nga %1$s.
+@lineephemeral_timer_disabled_by_you Çaktivizuat kohëmatësin e zhdukjes së mesazheve.
+@lineephemeral_timer_disabled_by_other Kohëmatësi i zhdukjes së mesazheve u çaktivizua nga %1$s.
+@lineephemeral_timer_seconds_by_you E vutë kohëmatësin e zhdukjes së mesazheve në %1$s s
+@lineephemeral_timer_seconds_by_other Kohëmatësi i zhdukjes së mesazheve u vu në %1$s s nga %2$s.
+@lineephemeral_timer_1_minute_by_you E vutë kohëmatësin e zhdukjes së mesazheve në 1 minutë.
+@lineephemeral_timer_1_minute_by_other Kohëmatësi i zhdukjes së mesazheve u vu në 1 minutë nga %1$s.
+@lineephemeral_timer_1_hour_by_you E vutë kohëmatësin e zhdukjes së mesazheve në 1 orë.
+@lineephemeral_timer_1_hour_by_other Kohëmatësi i zhdukjes së mesazheve u vu në 1 orë nga %1$s.
+@lineephemeral_timer_1_day_by_you E vutë kohëmatësin e zhdukjes së mesazheve në 1 ditë.
+@lineephemeral_timer_1_day_by_other Kohëmatësi i zhdukjes së mesazheve u vu në 1 ditë nga %1$s.
+@lineephemeral_timer_1_week_by_you E vutë kohëmatësin e zhdukjes së mesazheve në 1 javë.
+@lineephemeral_timer_1_week_by_other Kohëmatësi i zhdukjes së mesazheve u vu në 1 javë nga %1$s.
+@lineephemeral_timer_minutes_by_you E vutë kohëmatësin e zhdukjes së mesazheve në %1$s minuta.
+@lineephemeral_timer_minutes_by_other Kohëmatësi i zhdukjes së mesazheve u vu në %1$s minuta nga %2$s.
+@lineephemeral_timer_hours_by_you E vutë kohëmatësin e zhdukjes së mesazheve në %1$s orë.
+@lineephemeral_timer_hours_by_other Kohëmatësi i zhdukjes së mesazheve u vu në %1$s orë nga %2$s.
+@lineephemeral_timer_days_by_you E vutë kohëmatësin e zhdukjes së mesazheve në %1$s ditë.
+@lineephemeral_timer_days_by_other Kohëmatësi i zhdukjes së mesazheve u vu në %1$s ditë nga %2$s.
+@lineephemeral_timer_weeks_by_you E vutë kohëmatësin e zhdukjes së mesazheve në %1$s javë.
+@lineephemeral_timer_weeks_by_other Kohëmatësi i zhdukjes së mesazheve u vu në %1$s javë nga %2$s.
+@lineprotection_enabled_by_you Aktivizuat mbrojtje fjalosjeje.
+@lineprotection_enabled_by_other Mbrojtje fjalosjeje aktivizuar nga %1$s.
+@lineprotection_disabled_by_you Çaktivizuat mbrojtje fjalosjeje.
+@lineprotection_disabled_by_other Mbrojtje fjalosjeje çaktivizuar nga %1$s.
+@linemultidevice_qr_subtitle Skanojeni, që të ujdisni pajise të dytë për %1$s
+@end

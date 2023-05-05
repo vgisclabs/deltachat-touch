@@ -88,7 +88,7 @@ Page {
 //
 //            Action {
 //                iconName: 'info'
-//                text: i18n.tr('About')
+//                text: i18n.tr('About DeltaTouch')
 //                onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('About.qml'))
 //            }
 //        ]
@@ -485,7 +485,7 @@ Page {
                 Label {
                     id: socksWarningLabel
                     width: addEmailPage.width < units.gu(45) ? addEmailPage.width - units.gu(8) : units.gu(37)
-                    text: i18n.tr("SOCKS5 support is currently experimental. Please use at your own risk. If you type in an address in the e-mail field, there will be DNS lookup that won\'t get tunneled through SOCKS5.")
+                    text: i18n.tr("SOCKS5 support is currently experimental. Please use at your own risk. If you type in an address in the e-mail field, there will be DNS lookup that won't get tunneled through SOCKS5.")
                     wrapMode: Text.Wrap
                 }
                 Label {
@@ -616,7 +616,7 @@ Page {
                         right: parent.right
                         verticalCenter: parent.verticalCenter
                     }
-                    text: i18n.tr('Ok')
+                    text: i18n.tr('OK')
                     onClicked: {
                         DeltaHandler.prepareTempContextConfig()
 

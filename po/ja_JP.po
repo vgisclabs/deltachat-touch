@@ -1,0 +1,578 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Translations made by the DeltaChat Community on Transifex
+# https://app.transifex.com/delta-chat/public/
+# This file is distributed under the same license as the deltatouch.lotharketterer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: deltatouch.lotharketterer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-04 10:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../qml/Main.qml:38 deltatouch.desktop.in.h:1
+msgid "DeltaTouch"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211
+msgid "No account configured"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211 ../qml/Main.qml:254
+#: ../qml/pages/AccountConfig.qml:120
+msgid "no username set"
+msgstr ""
+
+#: ../qml/Main.qml:205 ../qml/Main.qml:212
+msgid "Click Settings to manage accounts"
+msgstr ""
+
+#: ../qml/Main.qml:359
+msgid "Archived Chats"
+msgstr "アーカイブしたチャット"
+
+#: ../qml/Main.qml:551
+msgid "Request"
+msgstr ""
+
+#: ../qml/Main.qml:625 ../qml/pages/AddChat.qml:35
+msgid "New Chat"
+msgstr "新規チャット"
+
+#: ../qml/delegates/delegOtherAudio.qml:130
+#: ../qml/delegates/delegOtherImage.qml:155
+#: ../qml/delegates/delegOtherTextMsg.qml:115
+#: ../qml/delegates/delegOtherUnknown.qml:114
+#: ../qml/delegates/delegSelfAudio.qml:93
+#: ../qml/delegates/delegSelfImage.qml:134
+#: ../qml/delegates/delegSelfTextMsg.qml:90
+#: ../qml/delegates/delegSelfUnknown.qml:91
+msgid "Forwarded Message"
+msgstr "転送されたメッセージ"
+
+#: ../qml/delegates/delegOtherAudio.qml:180
+#: ../qml/delegates/delegOtherImage.qml:205
+#: ../qml/delegates/delegOtherTextMsg.qml:165
+#: ../qml/delegates/delegOtherUnknown.qml:164
+#: ../qml/delegates/delegSelfAudio.qml:146
+#: ../qml/delegates/delegSelfImage.qml:185
+#: ../qml/delegates/delegSelfTextMsg.qml:142
+#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
+#: ../qml/pages/GroupAddMember.qml:125
+msgid "Unknown"
+msgstr "不明"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Audio"
+msgstr "音楽"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Voice Message"
+msgstr "音声メッセージ"
+
+#: ../qml/delegates/delegUnreadMsgsBar.qml:48
+msgid "Unread Messages"
+msgstr ""
+
+#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
+#: ../qml/pages/SettingsPage.qml:86
+msgid "About DeltaTouch"
+msgstr ""
+
+#: ../qml/pages/About.qml:60
+msgid "License:"
+msgstr ""
+
+#: ../qml/pages/About.qml:71
+msgid "Source code:"
+msgstr ""
+
+#: ../qml/pages/About.qml:91
+msgid "Report bugs here:"
+msgstr ""
+
+#: ../qml/pages/About.qml:114
+msgid "This app is powered by deltachat-core"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:130
+msgid "Known Accounts"
+msgstr "知り合い"
+
+#: ../qml/pages/AccountConfig.qml:42
+msgid "Help"
+msgstr "ヘルプ"
+
+#: ../qml/pages/AccountConfig.qml:49 ../qml/pages/AddAccount.qml:33
+msgid "Add Account"
+msgstr "アカウントを追加"
+
+#: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
+#: ../qml/pages/PickerBackupFile.qml:100
+msgid "Error"
+msgstr "エラー"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "Info"
+msgstr "情報"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "None"
+msgstr "無し"
+
+#: ../qml/pages/AccountConfig.qml:191
+msgid "Account is not configured."
+msgstr ""
+
+#: ../qml/pages/AddAccount.qml:57
+msgid "Log into your E-Mail Account"
+msgstr "自分のメールサーバーにログインする"
+
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/PickerBackupFile.qml:35
+#: ../qml/pages/PickerBackupFile.qml:108
+msgid "Restore from Backup"
+msgstr "バックアップをインポート"
+
+#: ../qml/pages/AddAccount.qml:59
+msgid "Scan Invitation Code"
+msgstr ""
+
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:608
+#: ../qml/pages/BlockContactPopup.qml:36
+#: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmChatDeletion.qml:56
+#: ../qml/pages/ConfirmLeaveGroup.qml:46
+#: ../qml/pages/ConfirmMemberDeletion.qml:55
+#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
+#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
+#: ../qml/pages/UnblockContactPopup.qml:38
+msgid "Cancel"
+msgstr "取消"
+
+#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:35
+msgid "New Group"
+msgstr "新規グループ"
+
+#: ../qml/pages/AddChat.qml:86
+msgid "New Verified Group"
+msgstr "新しい検証済みグループ"
+
+#: ../qml/pages/AddChat.qml:103 ../qml/pages/GroupAddMember.qml:77
+msgid "Enter name or e-mail address"
+msgstr "名前かメールアドレスを入力"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:45
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:715
+#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
+msgid "No, chats only"
+msgstr "いいえ、チャットのみ"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:48
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:729
+#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
+msgid "For accepted contacts"
+msgstr "許可されたユーザーのみ"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:51
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:743
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
+msgid "All"
+msgstr "全部"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:76
+msgid "Log In"
+msgstr "ログイン"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
+msgid "Log in with an existing e-mail account"
+msgstr "既存のメールアカウントにログインする"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:130
+msgid "E-Mail Address"
+msgstr "メールアドレス"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:154
+msgid "Password"
+msgstr "パスワード"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:214
+msgid ""
+"For known e-mail providers additional settings are set up automatically. "
+"Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
+"provider or friends for help."
+msgstr "主なメールサーバーは自動で設定されます｡一般にIMAPはサーバー側で有効に設定する必要が有ります｡サーバー提供者や詳しい人に確認しましょう｡"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:238
+#: ../qml/pages/SettingsPage.qml:170
+msgid "Show Classic E-Mails"
+msgstr "一般的なメールを表示する"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:270
+msgid "Advanced"
+msgstr "追加設定"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:291
+msgid "Inbox"
+msgstr "受信"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:297
+msgid "IMAP Login Name"
+msgstr "IMAPログイン名"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:304
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:371
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
+msgid "Default (same as above)"
+msgstr "初期値（同上）"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:309
+msgid "IMAP Server"
+msgstr "IMAPサーバー"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:316
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:336
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:415
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+msgid "Automatic"
+msgstr "自動"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:321
+msgid "IMAP Port"
+msgstr "IMAPポート"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:328
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:407
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:500
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:513
+msgid "Standard (%1)"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:334
+msgid "IMAP Security"
+msgstr "IMAP暗号方式"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:339
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:418
+msgid "Off"
+msgstr "切"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+msgid "Outbox"
+msgstr "送信"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:364
+msgid "SMTP Login Name"
+msgstr "SMTPログイン名"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+msgid "SMTP Password"
+msgstr "SMTPパスワード"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:388
+msgid "SMTP Server"
+msgstr "SMTPサーバー"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+msgid "SMTP Port"
+msgstr "SMTPポート"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
+msgid "SMTP Security"
+msgstr "SMTP暗号方式"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:430
+msgid "Certificate Checks"
+msgstr "有効な証明書です"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:433
+msgid "Strict"
+msgstr "厳重"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:434
+msgid "Accept invalid certificates"
+msgstr "無効な証明書を受け入れます"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:469
+msgid "Use SOCKS5"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:488
+msgid ""
+"SOCKS5 support is currently experimental. Please use at your own risk. If "
+"you type in an address in the e-mail field, there will be DNS lookup that "
+"won't get tunneled through SOCKS5."
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+msgid "SOCKS5 Host"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:506
+msgid "SOCKS5 Port"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:520
+msgid "SOCKS5 User"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:532
+msgid "SOCKS5 Password"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:619
+#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/Profile.qml:239
+msgid "OK"
+msgstr "了承"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:691
+msgid "Configuring..."
+msgstr ""
+
+#: ../qml/pages/BlockContactPopup.qml:31
+msgid "Block this contact? You will no longer receive messages from them."
+msgstr "この連絡先を拒否しますか"
+
+#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:50
+msgid "Block Contact"
+msgstr "拒否する"
+
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:245
+msgid "Blocked Contacts"
+msgstr "ブロックされた人"
+
+#: ../qml/pages/BlockedContacts.qml:46
+msgid "Blocked contacts will appear here."
+msgstr "ブロックされた連絡先がここに表示されます。"
+
+#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:104
+#: ../qml/pages/CreateOrEditGroup.qml:36
+msgid "Edit Group"
+msgstr "グループを編集"
+
+#: ../qml/pages/ChatInfosActions.qml:75 ../qml/pages/ConfirmLeaveGroup.qml:36
+msgid "Leave Group"
+msgstr "退室する"
+
+#: ../qml/pages/ChatInfosActions.qml:89
+msgid "Show Encryption Info"
+msgstr "暗号化情報の表示"
+
+#: ../qml/pages/ChatView.qml:648
+msgid "Accept"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:664 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ConfirmMemberDeletion.qml:45
+msgid "Delete"
+msgstr "削除"
+
+#: ../qml/pages/ChatView.qml:679
+msgid "Block"
+msgstr "ブロック"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:35
+#: ../qml/pages/ConfirmAccountDeletion.qml:51
+msgid "Delete Account"
+msgstr "アカウントを削除"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:39
+msgid "Are you sure you want to delete your account data?"
+msgstr "本当にアカウントデータを削除しますか？"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:45
+msgid ""
+"All account data of \"%1\" on this device will be deleted, including your "
+"end-to-end encryption setup, contacts, chats, messages and media. This "
+"action cannot be undone."
+msgstr "暗号鍵・連絡先・チャット・メッセージを含めて%1のアカウントデータを端末から削除します。元に戻すことはできません。"
+
+#: ../qml/pages/ConfirmChatDeletion.qml:36
+#: ../qml/pages/ConfirmChatDeletion.qml:46
+msgid "Delete Chat"
+msgstr "チャットを削除"
+
+#: ../qml/pages/ConfirmChatDeletion.qml:40
+#: ../qml/pages/ConfirmMsgDeletion.qml:40
+msgid "Are you sure you want to delete \"%1\"?"
+msgstr "%1を削除してよろしいですか？"
+
+#: ../qml/pages/ConfirmLeaveGroup.qml:32
+msgid "Are you sure you want to leave this group?"
+msgstr "本当に退室しますか"
+
+#: ../qml/pages/ConfirmMemberDeletion.qml:39
+msgid "Remove %1 from group?"
+msgstr "%1をグループから排除しますか"
+
+#: ../qml/pages/ConfirmMsgDeletion.qml:36
+#: ../qml/pages/ConfirmMsgDeletion.qml:46
+msgid "Delete Message"
+msgstr "メッセージを削除する"
+
+#: ../qml/pages/CreateOrEditGroup.qml:100
+msgid "QR Invite Code"
+msgstr "自分のQRｺｰﾄﾞ"
+
+#: ../qml/pages/CreateOrEditGroup.qml:200
+msgid "Group Name"
+msgstr "グループ名"
+
+#: ../qml/pages/CreateOrEditGroup.qml:223
+msgid "%1 member"
+msgstr ""
+
+#: ../qml/pages/CreateOrEditGroup.qml:224
+msgid "%1 members"
+msgstr ""
+
+#: ../qml/pages/CreateOrEditGroup.qml:241 ../qml/pages/GroupAddMember.qml:34
+msgid "Add Members"
+msgstr "メンバーを追加"
+
+#: ../qml/pages/CreateOrEditGroup.qml:331
+msgid "Please enter a name for the group."
+msgstr "グループ名を入力して下さい"
+
+#: ../qml/pages/CreateOrEditGroup.qml:355
+msgid "Change Group Image"
+msgstr "グループ画像の編集"
+
+#: ../qml/pages/CreateOrEditGroup.qml:368
+msgid "Remove Group Image"
+msgstr "アイコン画像の削除"
+
+#: ../qml/pages/ForwardMessage.qml:41
+msgid "Forward to…"
+msgstr "転送"
+
+#: ../qml/pages/ForwardMessage.qml:49
+msgid "Close"
+msgstr "閉じる"
+
+#: ../qml/pages/ForwardMessage.qml:71
+msgid "Search"
+msgstr "検索"
+
+#: ../qml/pages/MessageInfosActions.qml:35
+msgid "Copy Text"
+msgstr "テキストをコピー"
+
+#: ../qml/pages/MessageInfosActions.qml:42
+msgid "Export Attachment"
+msgstr "添付ファイルのエクスポート"
+
+#: ../qml/pages/MessageInfosActions.qml:68
+msgid "Message Details"
+msgstr "メッセージの詳細"
+
+#: ../qml/pages/NotImplemented.qml:27
+msgid "Not Implemented Yet"
+msgstr ""
+
+#: ../qml/pages/NotImplemented.qml:36
+msgid "Sorry, not implemented yet :-("
+msgstr ""
+
+#: ../qml/pages/PickerAudioToExport.qml:42
+#: ../qml/pages/PickerAudioToSend.qml:34
+#: ../qml/pages/PickerBackupToExport.qml:42
+#: ../qml/pages/PickerFileToExport.qml:42 ../qml/pages/PickerFileToSend.qml:34
+#: ../qml/pages/PickerImageToExport.qml:42
+#: ../qml/pages/PickerImageToSend.qml:34
+msgid "Select"
+msgstr "選択"
+
+#: ../qml/pages/PickerBackupFile.qml:101
+msgid "The selected file is not a valid backup file."
+msgstr ""
+
+#: ../qml/pages/PickerChatPic.qml:34
+msgid "Select Group Image"
+msgstr "グループ画像を選択する"
+
+#: ../qml/pages/PickerProfilePic.qml:34
+msgid "Select your new profile image"
+msgstr "新しいアイコン画像を選択してください"
+
+#: ../qml/pages/Profile.qml:48
+msgid "Edit Profile"
+msgstr "プロフィール編集"
+
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:270
+msgid "Profile"
+msgstr "プロファイル"
+
+#: ../qml/pages/Profile.qml:122
+msgid "Select Profile Image"
+msgstr "アイコン画像を選択する"
+
+#: ../qml/pages/Profile.qml:137
+msgid "Delete Profile Image"
+msgstr "アイコン画像を削除する"
+
+#: ../qml/pages/Profile.qml:152
+msgid "Your Name"
+msgstr "あなたの名前"
+
+#: ../qml/pages/Profile.qml:191
+msgid "Signature Text"
+msgstr "署名"
+
+#: ../qml/pages/ProgressBackupExport.qml:43
+#: ../qml/pages/ProgressBackupImport.qml:43
+msgid "Failed"
+msgstr ""
+
+#: ../qml/pages/ProgressBackupExport.qml:48
+msgid ""
+"A backup helps you to set up a new installation on this or on another "
+"device.\n"
+"\n"
+"The backup will contain all messages, contacts and chats and your end-to-end "
+"Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
+"as possible."
+msgstr "バックアップは、本デバイスまたは別のデバイスに新たにインストールする際に役立ちます。\n\nこのバックアップには、すべてのメッセージ、連絡先、チャット、およびエンドツーエンドの自動暗号化設定が含まれます。バックアップファイルは安全な場所に保管するか、できるだけ早く削除してください。"
+
+#: ../qml/pages/SettingsPage.qml:73
+msgid "Settings"
+msgstr "設定"
+
+#: ../qml/pages/SettingsPage.qml:111
+msgid "Sync All"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:157
+msgid "Account specific settings"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:197
+msgid "Read Receipts"
+msgstr "既読通知"
+
+#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:356
+msgid "Export Backup"
+msgstr "バックアップをエクスポート"
+
+#: ../qml/pages/UnblockContactPopup.qml:33
+msgid ""
+"Unblock this contact? You will then be able to receive messages from them."
+msgstr "この連絡先の拒否設定を解除しますか"
+
+#: ../qml/pages/UnblockContactPopup.qml:44
+msgid "Unblock Contact"
+msgstr "拒否を解除"
+

@@ -301,6 +301,7 @@ private:
     QHash<QString, QString> m_changedProfileValues;
 
     bool isExistingChat(uint32_t chatID);
+    void setCoreTranslations();
 
     // for creation of new group or editing of group
     uint32_t m_tempGroupChatID;

@@ -1,0 +1,578 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Translations made by the DeltaChat Community on Transifex
+# https://app.transifex.com/delta-chat/public/
+# This file is distributed under the same license as the deltatouch.lotharketterer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: deltatouch.lotharketterer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-04 10:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../qml/Main.qml:38 deltatouch.desktop.in.h:1
+msgid "DeltaTouch"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211
+msgid "No account configured"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211 ../qml/Main.qml:254
+#: ../qml/pages/AccountConfig.qml:120
+msgid "no username set"
+msgstr ""
+
+#: ../qml/Main.qml:205 ../qml/Main.qml:212
+msgid "Click Settings to manage accounts"
+msgstr ""
+
+#: ../qml/Main.qml:359
+msgid "Archived Chats"
+msgstr "Αρχειοθετημένες Συνομιλίες"
+
+#: ../qml/Main.qml:551
+msgid "Request"
+msgstr "Αίτημα"
+
+#: ../qml/Main.qml:625 ../qml/pages/AddChat.qml:35
+msgid "New Chat"
+msgstr "Νέα Συνομιλία"
+
+#: ../qml/delegates/delegOtherAudio.qml:130
+#: ../qml/delegates/delegOtherImage.qml:155
+#: ../qml/delegates/delegOtherTextMsg.qml:115
+#: ../qml/delegates/delegOtherUnknown.qml:114
+#: ../qml/delegates/delegSelfAudio.qml:93
+#: ../qml/delegates/delegSelfImage.qml:134
+#: ../qml/delegates/delegSelfTextMsg.qml:90
+#: ../qml/delegates/delegSelfUnknown.qml:91
+msgid "Forwarded Message"
+msgstr "Κοινοποίηση Μηνύματος"
+
+#: ../qml/delegates/delegOtherAudio.qml:180
+#: ../qml/delegates/delegOtherImage.qml:205
+#: ../qml/delegates/delegOtherTextMsg.qml:165
+#: ../qml/delegates/delegOtherUnknown.qml:164
+#: ../qml/delegates/delegSelfAudio.qml:146
+#: ../qml/delegates/delegSelfImage.qml:185
+#: ../qml/delegates/delegSelfTextMsg.qml:142
+#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
+#: ../qml/pages/GroupAddMember.qml:125
+msgid "Unknown"
+msgstr "Άγνωστο"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Audio"
+msgstr "Ήχοι"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Voice Message"
+msgstr "Μήνυμα φωνής"
+
+#: ../qml/delegates/delegUnreadMsgsBar.qml:48
+msgid "Unread Messages"
+msgstr ""
+
+#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
+#: ../qml/pages/SettingsPage.qml:86
+msgid "About DeltaTouch"
+msgstr ""
+
+#: ../qml/pages/About.qml:60
+msgid "License:"
+msgstr ""
+
+#: ../qml/pages/About.qml:71
+msgid "Source code:"
+msgstr ""
+
+#: ../qml/pages/About.qml:91
+msgid "Report bugs here:"
+msgstr ""
+
+#: ../qml/pages/About.qml:114
+msgid "This app is powered by deltachat-core"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:130
+msgid "Known Accounts"
+msgstr "Γνωστοί Λογαριασμοί"
+
+#: ../qml/pages/AccountConfig.qml:42
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: ../qml/pages/AccountConfig.qml:49 ../qml/pages/AddAccount.qml:33
+msgid "Add Account"
+msgstr "Προσθήκη Λογαριασμού"
+
+#: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
+#: ../qml/pages/PickerBackupFile.qml:100
+msgid "Error"
+msgstr "Σφάλμα"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "Info"
+msgstr "Πληροφορίες"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "None"
+msgstr "Κανένα"
+
+#: ../qml/pages/AccountConfig.qml:191
+msgid "Account is not configured."
+msgstr "Ο λογαριασμός δεν έχει ρυθμιστεί."
+
+#: ../qml/pages/AddAccount.qml:57
+msgid "Log into your E-Mail Account"
+msgstr "Συνδεθείτε στον λογαριασμό σας E-Mail"
+
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/PickerBackupFile.qml:35
+#: ../qml/pages/PickerBackupFile.qml:108
+msgid "Restore from Backup"
+msgstr "Επαναφορά από το Aντίγραφο Aσφαλείας"
+
+#: ../qml/pages/AddAccount.qml:59
+msgid "Scan Invitation Code"
+msgstr "Σάρωση Κωδικού Πρόσκλησης"
+
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:608
+#: ../qml/pages/BlockContactPopup.qml:36
+#: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmChatDeletion.qml:56
+#: ../qml/pages/ConfirmLeaveGroup.qml:46
+#: ../qml/pages/ConfirmMemberDeletion.qml:55
+#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
+#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
+#: ../qml/pages/UnblockContactPopup.qml:38
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:35
+msgid "New Group"
+msgstr "Νέα ομάδα"
+
+#: ../qml/pages/AddChat.qml:86
+msgid "New Verified Group"
+msgstr "Νέα Επαληθευμένη Ομάδα"
+
+#: ../qml/pages/AddChat.qml:103 ../qml/pages/GroupAddMember.qml:77
+msgid "Enter name or e-mail address"
+msgstr "Εισάγετε όνομα ή διεύθυνση e-mail"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:45
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:715
+#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
+msgid "No, chats only"
+msgstr "Όχι, μόνο συνομιλίες"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:48
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:729
+#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
+msgid "For accepted contacts"
+msgstr "Για αποδεκτές επαφές"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:51
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:743
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
+msgid "All"
+msgstr "Όλα"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:76
+msgid "Log In"
+msgstr "Σύνδεση"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
+msgid "Log in with an existing e-mail account"
+msgstr "Συνδεθείτε με έναν υπάρχοντα λογαριασμό e-mail"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:130
+msgid "E-Mail Address"
+msgstr "Διεύθυνση E-mail"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:154
+msgid "Password"
+msgstr "Συνθηματικό"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:214
+msgid ""
+"For known e-mail providers additional settings are set up automatically. "
+"Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
+"provider or friends for help."
+msgstr "Για γνωστούς παρόχους email ρυθμίζονται αυτόματα πρόσθετες ρυθμίσεις. Μερικές φορές το IMAP πρέπει να είναι ενεργοποιημένο στις ρυθμίσεις Ιστού. Συμβουλευτείτε τον πάροχο e-mail ή τους φίλους σας για βοήθεια."
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:238
+#: ../qml/pages/SettingsPage.qml:170
+msgid "Show Classic E-Mails"
+msgstr "Εμφάνιση κλασικών E-Mails"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:270
+msgid "Advanced"
+msgstr "Για προχωρημένους"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:291
+msgid "Inbox"
+msgstr "Εισερχόμενα"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:297
+msgid "IMAP Login Name"
+msgstr "Όνομα Σύνδεσης IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:304
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:371
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
+msgid "Default (same as above)"
+msgstr "Προκαθορισμένο (Ίδιο με το παραπάνω)"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:309
+msgid "IMAP Server"
+msgstr "Διακομιστής IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:316
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:336
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:415
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+msgid "Automatic"
+msgstr "Αυτόματα"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:321
+msgid "IMAP Port"
+msgstr "Θύρα IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:328
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:407
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:500
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:513
+msgid "Standard (%1)"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:334
+msgid "IMAP Security"
+msgstr "Ασφάλεια IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:339
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:418
+msgid "Off"
+msgstr "Απενεργοποιημένο"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+msgid "Outbox"
+msgstr "Εξερχόμενα"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:364
+msgid "SMTP Login Name"
+msgstr "Όνομα σύνδεσης SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+msgid "SMTP Password"
+msgstr "Κωδικός πρόσβασης SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:388
+msgid "SMTP Server"
+msgstr "Διακομιστής SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+msgid "SMTP Port"
+msgstr "Θύρα SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
+msgid "SMTP Security"
+msgstr "Ασφάλεια SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:430
+msgid "Certificate Checks"
+msgstr "Έλεγχοι Πιστοποιητικών"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:433
+msgid "Strict"
+msgstr "Αυστηρός"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:434
+msgid "Accept invalid certificates"
+msgstr "Αποδοχή μη έγκυρων πιστοποιητικών"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:469
+msgid "Use SOCKS5"
+msgstr "Χρήση SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:488
+msgid ""
+"SOCKS5 support is currently experimental. Please use at your own risk. If "
+"you type in an address in the e-mail field, there will be DNS lookup that "
+"won't get tunneled through SOCKS5."
+msgstr "Η SOCKS5 υποστήριξη είναι αυτή τη στιγμή πειραματική. Παρακαλούμε χρησιμοποιήστε με δική σας ευθύνη. Εάν πληκτρολογήσετε μια διεύθυνση στο πεδίο ηλεκτρονικού ταχυδρομείου, θα υπάρξει αναζήτηση DNS που δεν θα περάσει στο SOCKS5."
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+msgid "SOCKS5 Host"
+msgstr "SOCKS5 Κεντρικός"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:506
+msgid "SOCKS5 Port"
+msgstr "Θύρα SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:520
+msgid "SOCKS5 User"
+msgstr "Χρήστης SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:532
+msgid "SOCKS5 Password"
+msgstr "Κωδικός SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:619
+#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/Profile.qml:239
+msgid "OK"
+msgstr "Εντάξει"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:691
+msgid "Configuring..."
+msgstr ""
+
+#: ../qml/pages/BlockContactPopup.qml:31
+msgid "Block this contact? You will no longer receive messages from them."
+msgstr "Αποκλεισμός αυτής της επαφής; Δεν θα λαμβάνετε πλέον μηνύματα από αυτούς."
+
+#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:50
+msgid "Block Contact"
+msgstr "Αποκλεισμός Επαφής"
+
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:245
+msgid "Blocked Contacts"
+msgstr "Αποκλεισμένες Επαφές"
+
+#: ../qml/pages/BlockedContacts.qml:46
+msgid "Blocked contacts will appear here."
+msgstr "Οι αποκλεισμένες επαφές θα εμφανίζονται εδώ."
+
+#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:104
+#: ../qml/pages/CreateOrEditGroup.qml:36
+msgid "Edit Group"
+msgstr "Επεξεργασία ομάδας"
+
+#: ../qml/pages/ChatInfosActions.qml:75 ../qml/pages/ConfirmLeaveGroup.qml:36
+msgid "Leave Group"
+msgstr "Αποχώρηση απ' την ομάδα"
+
+#: ../qml/pages/ChatInfosActions.qml:89
+msgid "Show Encryption Info"
+msgstr "Εμφάνιση Πληροφοριών Κρυπτογράφησης"
+
+#: ../qml/pages/ChatView.qml:648
+msgid "Accept"
+msgstr "Αποδοχή"
+
+#: ../qml/pages/ChatView.qml:664 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ConfirmMemberDeletion.qml:45
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: ../qml/pages/ChatView.qml:679
+msgid "Block"
+msgstr "Φραγή"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:35
+#: ../qml/pages/ConfirmAccountDeletion.qml:51
+msgid "Delete Account"
+msgstr "Διαγραφή Λογαριασμού"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:39
+msgid "Are you sure you want to delete your account data?"
+msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε τα δεδομένα του λογαριασμού σας;"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:45
+msgid ""
+"All account data of \"%1\" on this device will be deleted, including your "
+"end-to-end encryption setup, contacts, chats, messages and media. This "
+"action cannot be undone."
+msgstr "Όλα τα δεδομένα λογαριασμού του \"%1\" σε αυτήν τη συσκευή θα διαγραφούν, συμπεριλαμβανομένων των ρυθμίσεων κρυπτογράφησης από άκρο σε άκρο, των επαφών, των συνομιλιών, των μηνυμάτων και των πολυμέσων. Αυτή η πράξη δε μπορεί να αναιρεθεί."
+
+#: ../qml/pages/ConfirmChatDeletion.qml:36
+#: ../qml/pages/ConfirmChatDeletion.qml:46
+msgid "Delete Chat"
+msgstr "Διαγραφή Συνομιλίας"
+
+#: ../qml/pages/ConfirmChatDeletion.qml:40
+#: ../qml/pages/ConfirmMsgDeletion.qml:40
+msgid "Are you sure you want to delete \"%1\"?"
+msgstr "Είστε σίγουρος ότι θέλετε να διαγράψετε \"%1\";"
+
+#: ../qml/pages/ConfirmLeaveGroup.qml:32
+msgid "Are you sure you want to leave this group?"
+msgstr "Είστε σίγουρος/-η ότι θέλετε να βγείτε από αυτή την ομάδα;"
+
+#: ../qml/pages/ConfirmMemberDeletion.qml:39
+msgid "Remove %1 from group?"
+msgstr "Αφαίρεση του/της %1 από την ομάδα;"
+
+#: ../qml/pages/ConfirmMsgDeletion.qml:36
+#: ../qml/pages/ConfirmMsgDeletion.qml:46
+msgid "Delete Message"
+msgstr "Διαγραφή μηνύματος"
+
+#: ../qml/pages/CreateOrEditGroup.qml:100
+msgid "QR Invite Code"
+msgstr "Κωδικός Πρόσκλησης QR"
+
+#: ../qml/pages/CreateOrEditGroup.qml:200
+msgid "Group Name"
+msgstr "Όνομα ομάδας"
+
+#: ../qml/pages/CreateOrEditGroup.qml:223
+msgid "%1 member"
+msgstr "%1 μέλος"
+
+#: ../qml/pages/CreateOrEditGroup.qml:224
+msgid "%1 members"
+msgstr "%1 μέλη"
+
+#: ../qml/pages/CreateOrEditGroup.qml:241 ../qml/pages/GroupAddMember.qml:34
+msgid "Add Members"
+msgstr "Προσθήκη μελών"
+
+#: ../qml/pages/CreateOrEditGroup.qml:331
+msgid "Please enter a name for the group."
+msgstr "Εισάγετε ένα όνομα για αυτή την ομάδα."
+
+#: ../qml/pages/CreateOrEditGroup.qml:355
+msgid "Change Group Image"
+msgstr "Αλλαγή Εικόνας Ομάδας"
+
+#: ../qml/pages/CreateOrEditGroup.qml:368
+msgid "Remove Group Image"
+msgstr "Αφαίρεση φωτογραφίας ομάδας;"
+
+#: ../qml/pages/ForwardMessage.qml:41
+msgid "Forward to…"
+msgstr "Κοινοποίηση σε..."
+
+#: ../qml/pages/ForwardMessage.qml:49
+msgid "Close"
+msgstr "Κλείσιμο"
+
+#: ../qml/pages/ForwardMessage.qml:71
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: ../qml/pages/MessageInfosActions.qml:35
+msgid "Copy Text"
+msgstr "Αντιγραφή κειμένου"
+
+#: ../qml/pages/MessageInfosActions.qml:42
+msgid "Export Attachment"
+msgstr "Εξαγωγή Συνημμένου"
+
+#: ../qml/pages/MessageInfosActions.qml:68
+msgid "Message Details"
+msgstr "Στοιχεία μηνύματος"
+
+#: ../qml/pages/NotImplemented.qml:27
+msgid "Not Implemented Yet"
+msgstr ""
+
+#: ../qml/pages/NotImplemented.qml:36
+msgid "Sorry, not implemented yet :-("
+msgstr ""
+
+#: ../qml/pages/PickerAudioToExport.qml:42
+#: ../qml/pages/PickerAudioToSend.qml:34
+#: ../qml/pages/PickerBackupToExport.qml:42
+#: ../qml/pages/PickerFileToExport.qml:42 ../qml/pages/PickerFileToSend.qml:34
+#: ../qml/pages/PickerImageToExport.qml:42
+#: ../qml/pages/PickerImageToSend.qml:34
+msgid "Select"
+msgstr "Επιλογή"
+
+#: ../qml/pages/PickerBackupFile.qml:101
+msgid "The selected file is not a valid backup file."
+msgstr ""
+
+#: ../qml/pages/PickerChatPic.qml:34
+msgid "Select Group Image"
+msgstr "Επιλέξτε Εικόνας Ομάδας"
+
+#: ../qml/pages/PickerProfilePic.qml:34
+msgid "Select your new profile image"
+msgstr "Επιλογή Νέας Εικόνας Προφίλ"
+
+#: ../qml/pages/Profile.qml:48
+msgid "Edit Profile"
+msgstr "Επεξεργασία Προφίλ"
+
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:270
+msgid "Profile"
+msgstr "Προφίλ"
+
+#: ../qml/pages/Profile.qml:122
+msgid "Select Profile Image"
+msgstr "Επιλογή Εικόνας Προφίλ"
+
+#: ../qml/pages/Profile.qml:137
+msgid "Delete Profile Image"
+msgstr "Διαγραφή Εικόνας Προφίλ"
+
+#: ../qml/pages/Profile.qml:152
+msgid "Your Name"
+msgstr "Το όνομά σου"
+
+#: ../qml/pages/Profile.qml:191
+msgid "Signature Text"
+msgstr "Υπογραφή"
+
+#: ../qml/pages/ProgressBackupExport.qml:43
+#: ../qml/pages/ProgressBackupImport.qml:43
+msgid "Failed"
+msgstr ""
+
+#: ../qml/pages/ProgressBackupExport.qml:48
+msgid ""
+"A backup helps you to set up a new installation on this or on another "
+"device.\n"
+"\n"
+"The backup will contain all messages, contacts and chats and your end-to-end "
+"Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
+"as possible."
+msgstr "Ένα αντίγραφο ασφαλείας σάς βοηθά να ρυθμίσετε μια νέα εγκατάσταση σε αυτήν ή σε άλλη συσκευή.\n\nΤο αντίγραφο ασφαλείας θα περιέχει όλα τα μηνύματα, τις επαφές και τις συνομιλίες και τη ρύθμιση αυτόματης κρυπτογράφησης από άκρο σε άκρο. Φυλάξτε το αρχείο αντιγράφου ασφαλείας σε ασφαλές μέρος ή διαγράψτε το το συντομότερο δυνατό."
+
+#: ../qml/pages/SettingsPage.qml:73
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: ../qml/pages/SettingsPage.qml:111
+msgid "Sync All"
+msgstr "Συγχρονισμός Όλων"
+
+#: ../qml/pages/SettingsPage.qml:157
+msgid "Account specific settings"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:197
+msgid "Read Receipts"
+msgstr "Αποδεικτικά ανάγνωσης"
+
+#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:356
+msgid "Export Backup"
+msgstr "Εξαγωγή Αντιγράφων Ασφαλείας"
+
+#: ../qml/pages/UnblockContactPopup.qml:33
+msgid ""
+"Unblock this contact? You will then be able to receive messages from them."
+msgstr "Κατάργηση αποκλεισμού αυτής της επαφής; Θα μπορείτε να λαμβάνετε μηνύματα από αυτούς."
+
+#: ../qml/pages/UnblockContactPopup.qml:44
+msgid "Unblock Contact"
+msgstr "Ξεμπλοκάρισμα Επαφής"
+

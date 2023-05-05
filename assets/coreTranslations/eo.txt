@@ -1,0 +1,26 @@
+@linechat_no_messages Neniu mesaĝo.
+@lineself Mi
+@linedraft Malneto
+@linevoice_message Voĉmesaĝo
+@lineimage Bildo
+@linegif Gif
+@linevideo Filmo
+@lineaudio Sonaĵo
+@linefile Dosiero
+@lineautocrypt_prefer_e2ee Preferi tutvojan ĉifradon
+@linechat_archived_chats_title Enarĥivigitaj babiloj
+@linedevice_talk Aparataj mesaĝoj
+@linesaved_messages Konservitaj mesaĝoj
+@linedevice_talk_explain Mesaĝoj en tiu ĉi babilo estas surloke generataj de via Delta Chat apo. Ĝiaj kreintoj uzas ilin por informi pri apaj ĝisdatigoj kaj problemoj dum uzado.
+@linedevice_talk_welcome_message Bonvenon al Delta Chat! – Delta Chat aspektas kvazaŭ aliaj popularaj mesaĝiloj, sed al ĝi mankas centra regado, sekvado de kaj perfido al vi, viaj amikoj, kolegoj kaj familianoj je la servo de grandaj organizoj.
+
+Vere, Delta Chat estas retpoŝta aplikaĵo kun moderna babila interfaco. Alivorte, retpoŝto kun novaj vestaĵoj 👻
+
+Uzu Delta Chat-on kun iu ajn el miliardoj da homoj: simple uzu la retadreson. Ricevantoj ne devas instali Delta Chat-on, viziti retejojn aŭ registriĝi ie ajn - sed, kompreneble, se ili volas, vi povas atentigi ilin al 👉 https://get.delta.chat
+@linereply_noun Respondi
+@lineforwarded Plusendita
+@linelocation Loko
+@lineone_moment Unu momenton…
+@lineerror_x Eraro: %1$s
+@linebroadcast_list Elsenda Listo
+@end

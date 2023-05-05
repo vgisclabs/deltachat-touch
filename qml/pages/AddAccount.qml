@@ -41,7 +41,7 @@ Page {
 //
 //            Action {
 //                iconName: 'info'
-//                text: i18n.tr('About')
+//                text: i18n.tr('About DeltaTouch')
 //                onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('About.qml'))
 //            }
 //        ]

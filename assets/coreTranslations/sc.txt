@@ -1,0 +1,29 @@
+@linechat_no_messages Perunu messàgiu.
+@lineself Deo
+@linedraft Abbotzu
+@linevoice_message Messàgiu sonoru
+@lineimage Immàgine
+@linegif Gif
+@linevideo Vìdeu
+@lineaudio Àudio
+@linefile Documentu
+@lineautocrypt_prefer_e2ee Preferi sa tzifradura a nodu terminale (end-to-end)
+@linechat_archived_chats_title Tzarradas archiviadas
+@lineautocrypt_asm_subject Messàgiu de configuratzione de Autocrypt
+@linelogin_error_cannot_login Impossìbile atzèdere comente \"%1$s\". pro paghere verìfica si s\'indiritzu de posta eletrònica e sa crae de intrada sunt curretos.
+@linedevice_talk Messàgios de su dispositivu
+@linesaved_messages Messàgios sarvados
+@linedevice_talk_explain Sos messàgios in custa tzarrada benint ingendrados localmente dae s\'aplicatzone Delta Chat tua. Sos isvilupadores los impreant pro informare a pitzu de sos agiornamentos de s\'aplicatzione e de problemas durante s\'impreu.
+@linedevice_talk_welcome_message Bene bènnidu in Delta Chat! – Delta Chat paret simigiante a àteras aplicatziones populares pro imbiare messàgios, ma non tenet controllos tzentralizados, arrastamentu o bèndida de sos datos tuos, de sos collegas tuos o de sos familiares tuos a organizatziones mannas.
+
+Tecnicamente, Delta Chat est un\'aplicatzione de posta eletrònica cun un\'interfache de tzarrada moderna. Sa posta eletrònica in una bestimenta noa, diamus pòdere nàrrere 👻
+
+Imprea Delta Chat cun chie si siat: depes impreare petzi s\'indiritzu de posta eletrònica issoro. Sos destinatàrios non tenent bisòngiu de installare Delta Chat, de bisitare sitos web o de si registrare in noddue - ma craru chi, si sunt interessados, li podes nàrrere de andare a s\'indiritzu 👉 https://get.delta.chat
+@linevideochat_invitation Invitu a sa vìdeu-tzarrada
+@linevideochat_invitation_body Ses invitadu a una vìdeu-tzarrada. Incarca %1$s pro bi pigare parte.
+@lineconfiguration_failed_with_error Configuratzione fallida. Errore: %1$s
+@linereply_noun Risponde
+@linelocation Positzione
+@lineone_moment Unu momentu...
+@lineerror_x Faddina: %1$s
+@end

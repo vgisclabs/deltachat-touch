@@ -1,0 +1,132 @@
+@linechat_no_messages Geen berichten.
+@lineself Ik
+@linedraft Concept
+@linevoice_message Spraakbericht
+@lineimage Afbeelding
+@linegif GIF
+@linevideo Video
+@lineaudio Audio
+@linefile Bestand
+@lineencrypted_message Versleuteld bericht
+@lineqrscan_fingerprint_label Vingerafdruk
+@linesystemmsg_cannot_decrypt Dit bericht kan niet worden ontsleuteld.
+
+• Het kan helpen dit bericht te beantwoorden en de afzender te vragen het opnieuw te versturen.
+
+• Als je Delta Chat of een andere e-mailapp opnieuw hebt geïnstalleerd op dit of een ander apparaat, verstuur het instelbericht dan opnieuw.
+@linesystemmsg_read_receipt_subject Leesbevestiging
+@linesystemmsg_read_receipt_body Het door jou verstuurde bericht, “%1$s”, heeft het scherm van de ontvanger bereikt.
+
+Dit betekent echter niet dat het ook gelezen is.
+@lineautocrypt_prefer_e2ee Voorkeur voor eind-tot-eindversleuteling
+@linechat_archived_chats_title Gearchiveerde gesprekken
+@lineautocrypt_asm_subject Autocrypt-instelbericht
+@lineautocrypt_asm_general_body Dit is het Autocrypt-instelbericht dat wordt gebruikt om je instellingen over te zetten.
+
+Om te ontsleutelen en te gebruiken, open je het bericht in een met Autocrypt compatibele app en voer je de code in die wordt getoond op het apparaat dat de code heeft gegenereerd.
+@linelogin_error_cannot_login Kan niet inloggen als \"%1$s\". Controleer het e-mailadres en wachtwoord.
+@linedevice_talk Berichten op apparaat
+@linesaved_messages Opgeslagen berichten
+@linecontact_verified %1$s is goedgekeurd.
+@linecontact_not_verified Kan %1$s niet goedkeuren
+@linecontact_setup_changed Gewijzigde instellingen voor %1$s
+@linedevice_talk_explain Berichten in dit gesprek worden geplaatst door de app zelf. Zo blijf je op de hoogte van app-updates en gebruiksproblemen.
+@linedevice_talk_welcome_message Welkom bij Delta Chat! Delta Chat lijkt heel erg op andere chatapps, maar is toch écht anders! Zo is er geen centraal beheer, wordt je niet gevolgd en worden jouw gegevens of die van je vrienden/familie niet verkocht aan bedrijven.
+
+Technisch gesproken is het een e-mailapp in een modern jasje (of moderne jurk 👻).
+
+Gebruik Delta Chat om te communiceren met iedereen die een e-mailadres heeft. Ontvangers hoeven het niet te installeren, naar een website te gaan of ergens te registreren. Maar als ze dat willen, kun je ze natuurlijk altíjd doorverwijzen naar 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Dit gesprek bevat een onbekende afzender. Zie ‘Informatie’ voor meer informatie.
+@linesystemmsg_subject_for_new_contact Bericht van %1$s
+@linesystemmsg_failed_sending_to Het bericht kan niet worden verstuurd aan %1$s.
+@linevideochat_invitation Uitnodiging voor videogesprek
+@linevideochat_invitation_body Je bent uitgenodigd voor een videogesprek. Druk op %1$s om deel te nemen.
+@lineconfiguration_failed_with_error Het instellen is mislukt. Foutmelding: %1$s
+@linereply_noun Antwoord
+@lineforwarded Doorgestuurd
+@linelocation Locatie
+@linesticker Sticker
+@linedevicemsg_bad_time ⚠️ De datum en tijd van je apparaat lijken niet te kloppen (%1$s).
+
+Verzet je klok ⏰🔧 om er zeker van te zijn dat je berichten kunt ontvangen.
+@linedevicemsg_update_reminder ⚠️ Je versie van Delta Chat is mogelijk verouderd.
+
+Dit kan problemen veroorzaken aangezien je gesprekspartners nieuwe versies gebruiken. Bovendien mis je hierdoor enkele nieuwe functies. 😳
+Ga naar https://get.delta.chat of de appwinkel van je apparaat om te controleren op updates.
+@linedevicemsg_self_deleted Je hebt het gesprek ‘Opgeslagen berichten’ verwijderd.
+
+ℹ️ Als je weer gebruik wilt maken van deze functie, begin dan een nieuw gesprek met jezelf.
+@linedevicemsg_storage_exceeding ⚠️ De opslagruimte die je provider je biedt is bijna overschreden - momenteel heb je %1$s%% ervan in gebruik.
+
+Als je alle ruimte verbruikt hebt, kun je mogelijk geen berichten meer ontvangen.
+
+👉 Kijk of je oude gegevens kunt verwijderen in de webclient van je provider. Overweeg ook ‘Instellingen --> Oude berichten verwijderen’ in te schakelen. Je kunt je huidige gebruik te allen tijde bekijken in ‘Instellingen --> Verbindingen’.
+@linen_bytes_message %1$s bericht
+@linedownload_max_available_until Maximaal downloaden tot en met een aantal van %1$s
+@lineincoming_messages Inkomende berichten
+@lineoutgoing_messages Uitgaande berichten
+@linestorage_on_domain Opslag op %1$s
+@lineone_moment Even geduld…
+@lineconnectivity_connected Verbonden
+@lineconnectivity_connecting Bezig met verbinden…
+@lineconnectivity_updating Bezig met bijwerken…
+@linesending Bezig met versturen…
+@linelast_msg_sent_successfully Het laatste bericht is verstuurd.
+@lineerror_x Fout: %1$s
+@linenot_supported_by_provider Wordt niet ondersteund door je provider.
+@linemessages Berichten
+@linebroadcast_list Verzendlijst
+@linepart_of_total_used %1$s van %2$s in gebruik
+@linesecure_join_started %1$s heeft je uitgenodigd voor deze groep.
+
+Er wordt gewacht op antwoord van het apparaat %2$s…
+@linesecure_join_replies %1$s heefn geantwoord en wacht op toelating tot de groep…
+@lineqrshow_join_contact_hint Scan dit om een gesprek te beginnen met %1$s
+@lineqrshow_join_group_hint Scan dit om deel te nemen aan de groep ‘%1$s’.
+@lineconnectivity_not_connected Niet verbonden
+@lineaeap_addr_changed %1$s heeft zijn/haar adres veranderd van %2$s naar %3$s
+@lineaeap_explanation Je hebt je e-mailadres veranderd van %1$s naar %2$s.
+
+Als je een bericht stuurt aan een goedgekeurde groep, dan zien contactpersonen in de groep je nieuwe adres.
+
+Wel raden we aan om bij je oude provider in te stellen dat je e-mails wilt doorsturen naar je nieuwe adres, anders missen sommige contactpersonen mogelijk je berichten.
+@linegroup_name_changed_by_you Je hebt de groepsnaam gewijzigd. Oude naam: “%1$s” - Nieuwe naam: “%2$s”
+@linegroup_name_changed_by_other De groepsnaam is gewijzigd door %3$s. Oude naam: “%1$s” - Nieuwe naam: “%2$s”
+@linegroup_image_changed_by_you Je hebt de groepsafbeelding gewijzigd.
+@linegroup_image_changed_by_other De groepsafbeelding is gewijzigd door %1$s.
+@lineadd_member_by_you Je hebt ‘%1$s’ toegevoegd.
+@lineadd_member_by_other ‘%1$s’ is toegevoegd door %2$s.
+@lineremove_member_by_you Je hebt ‘%1$s’ verwijderd.
+@lineremove_member_by_other ‘%1$s’ is verwijderd door %2$s.
+@linegroup_left_by_you Je hebt de groep verlaten.
+@linegroup_left_by_other De groep is verlaten door %1$s.
+@linegroup_image_deleted_by_you Je hebt de groepsafbeelding verwijderd.
+@linegroup_image_deleted_by_other De groepsafbeelding is verwijderd door %1$s.
+@linelocation_enabled_by_you Je hebt locatiedeling ingeschakeld.
+@linelocation_enabled_by_other Locatiedeling is ingeschakeld door %1$s.
+@lineephemeral_timer_disabled_by_you Je hebt de tijdklok van verdwijnende berichten uitgeschakeld.
+@lineephemeral_timer_disabled_by_other De tijdklok van verdwijnende berichten is uitgeschakeld door %1$s.
+@lineephemeral_timer_seconds_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op %1$s sec.
+@lineephemeral_timer_seconds_by_other De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s sec.
+@lineephemeral_timer_1_minute_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op 1 minuut.
+@lineephemeral_timer_1_minute_by_other De tijdklok van verdwijnende berichten is door %1$s ingesteld op 1 minuut.
+@lineephemeral_timer_1_hour_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op 1 uur.
+@lineephemeral_timer_1_hour_by_other De tijdklok van verdwijnende berichten is door %1$s ingesteld op 1 uur.
+@lineephemeral_timer_1_day_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op 1 dag.
+@lineephemeral_timer_1_day_by_other De tijdklok van verdwijnende berichten is door %1$s ingesteld op 1 dag.
+@lineephemeral_timer_1_week_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op 1 week.
+@lineephemeral_timer_1_week_by_other De tijdklok van verdwijnende berichten is door %1$s ingesteld op 1 week.
+@lineephemeral_timer_minutes_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op %1$s minuten.
+@lineephemeral_timer_minutes_by_other De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s minuten.
+@lineephemeral_timer_hours_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op %1$s uur.
+@lineephemeral_timer_hours_by_other De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s uur.
+@lineephemeral_timer_days_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op %1$s dagen.
+@lineephemeral_timer_days_by_other De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s dagen.
+@lineephemeral_timer_weeks_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op %1$s weken.
+@lineephemeral_timer_weeks_by_other De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s weken.
+@lineprotection_enabled_by_you Je hebt gespreksbeveiliging ingeschakeld.
+@lineprotection_enabled_by_other Gespreksbeveiliging is ingeschakeld door %1$s.
+@lineprotection_disabled_by_you Je hebt gespreksbeveiliging uitgeschakeld.
+@lineprotection_disabled_by_other Gespreksbeveiliging is uitgeschakeld door %1$s.
+@linemultidevice_qr_subtitle Scan om een secundair apparaat voor %1$s in te stellen
+@end

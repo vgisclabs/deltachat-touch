@@ -1,0 +1,96 @@
+@linechat_no_messages Ingen beskeder
+@lineself Mig
+@linedraft Kladde
+@linevoice_message Tale besked
+@lineimage Billede
+@linegif Gif
+@linevideo Video
+@lineaudio Lyd
+@linefile Fil
+@lineencrypted_message Krypteret besked
+@lineqrscan_fingerprint_label Fingeraftryk
+@linesystemmsg_cannot_decrypt Denne besked kan ikke dekrypteres.
+
+• Det kan måske hjælpe at svare på beskeden og bede afsender sende beskeden igen.
+
+• I tilfælde at Delta Chat eller andet e-mail program på denne enhed eller en anden er blevet gen-installeret bør der sendes en Autocrypt opsætning besked derfra.
+@linesystemmsg_read_receipt_subject Besked åbnet
+@linesystemmsg_read_receipt_body Beskeden \"%1$s\" du har sendt blev vist på modtagerens skærm.
+
+Dette er ikke en garanti for at indholdet blev læst.
+@lineautocrypt_prefer_e2ee Foretræk end-to-end kryptering
+@linechat_archived_chats_title Arkiverede samtaler
+@lineautocrypt_asm_subject Autocrypt opsætningsbesked
+@lineautocrypt_asm_general_body Dette er Autocrypt opsætning besked brugt til at overføre ende-til-ende opsætning mellem klienter.
+
+For at af kryptere og bruge opsætning åben beskeden i en Autocrypt kompatibel klient og indtast opsæt koden vist på den genererende enhed.
+@linelogin_error_cannot_login Kan ikke logge ind som  \"%1$s\". Kontroller om e-mailadresse og adgangskode er korrekt.
+@linedevice_talk Enhedsbeskeder
+@linesaved_messages Gemte beskeder
+@linecontact_verified %1$s bekræftet.
+@linecontact_not_verified Kan ikke bekræfte %1$s
+@linecontact_setup_changed Ændret opsætning for %1$s
+@linedevice_talk_explain Beskederne i denne chat er blevet generated lokalt af din Delta Chat app. Skaberne af appen bruger dette til at informere om app-opdateringer og problemer under brug.
+@linedevice_talk_welcome_message Velkommen til Delta Chat! - Delta Chat ser ud og føles som andre populære messenger apps men kontrolleres ikke fra centralt hold, tracker ikke eller sælger ikke dine, dine venners, dine kollegaers og din families oplysninger til store organisationer.
+
+Teknisk set er Delta Chat en email-klient med et moderne chat interface. E-mail i nye klæder om man vil. 👻
+
+Brug Delta Chat med hvem som helst ud af milliarder af mennesker: brug blot deres email-adresse. Modtagerne behøver ikke at installere Delta Chat, besøge websider eller melde sig ind nogen steder - men, selvfølgelig, hvis du vil kan du henvise dem til 👉https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Ukent afsender af denne chat. Se \'info\' for flere detaljer.
+@linesystemmsg_subject_for_new_contact Besked fra %1$s
+@linesystemmsg_failed_sending_to Mislykket forsøg på afsendelse af besked til %1$s.
+@linevideochat_invitation Videochat-invitation
+@linevideochat_invitation_body Du er inviteret til en videochat, klik %1$s for at tilslutte dig.
+@lineconfiguration_failed_with_error Konfiguration mislykkedes. Fejl: %1$s
+@linereply_noun Svar
+@lineforwarded Videresendt
+@linelocation Placering
+@linesticker Klistermærker
+@lineincoming_messages Indkommende beskeder
+@lineoutgoing_messages Udgående beskeder
+@lineone_moment Et øjeblik…
+@lineconnectivity_connected Forbundet
+@lineconnectivity_connecting Forbinder...
+@lineconnectivity_updating Opdaterer...
+@linesending Sender...
+@lineerror_x Fejl: %1$s
+@linemessages Beskeder
+@linepart_of_total_used %1$s af %2$s brugt
+@lineqrshow_join_contact_hint Skan dette for at indstille kontakt med %1$s
+@lineqrshow_join_group_hint Skan dette for at deltage i gruppen \"%1$s\".
+@lineconnectivity_not_connected Ikke forbundet
+@linegroup_name_changed_by_you Gruppenavn ændret fra \"%1$s\" til \"%2$s\" af mig.
+@linegroup_name_changed_by_other Gruppenavn ændret fra \"%1$s\" til \"%2$s\" af %3$s.
+@linegroup_image_changed_by_you Gruppebillede ændret af mig.
+@linegroup_image_changed_by_other Gruppebillede ændret af %1$s.
+@lineadd_member_by_you Medlem %1$s tilføjet af mig.
+@lineadd_member_by_other Medlem %1$s tilføjet af %2$s.
+@lineremove_member_by_you Medlem %1$s fjernet af mig.
+@lineremove_member_by_other Medlem %1$s fjernet af %2$s.
+@linegroup_image_deleted_by_you Gruppebillede slettet af mig.
+@linegroup_image_deleted_by_other Gruppebillede slettet af %1$s.
+@lineephemeral_timer_disabled_by_you Tidsudløb for beskeder er deaktiveret af mig.
+@lineephemeral_timer_disabled_by_other Tidsudløb for beskeder er deaktiveret af %1$s.
+@lineephemeral_timer_seconds_by_you Tidsudløb for beskeder sat til %1$s s af mig.
+@lineephemeral_timer_seconds_by_other Tidsudløb for beskeder sat til %1$s s af %2$s.
+@lineephemeral_timer_1_minute_by_you Tidsudløb for beskeder sat til 1 minut af mig.
+@lineephemeral_timer_1_minute_by_other Tidsudløb for beskeder sat til 1 minut af %1$s.
+@lineephemeral_timer_1_hour_by_you Tidsudløb for beskeder sat til 1 time af mig.
+@lineephemeral_timer_1_hour_by_other Tidsudløb for beskeder sat til 1 time af %1$s.
+@lineephemeral_timer_1_day_by_you Tidsudløb for beskeder sat til 1 dag af mig.
+@lineephemeral_timer_1_day_by_other Tidsudløb for beskeder sat til 1 dag af %1$s.
+@lineephemeral_timer_1_week_by_you Tidsudløb for beskeder sat til 1 uge af mig.
+@lineephemeral_timer_1_week_by_other Tidsudløb for beskeder sat til 1 uge af %1$s.
+@lineephemeral_timer_minutes_by_you Beskeder sat til at udløbe efter %1$s minutter af mig.
+@lineephemeral_timer_minutes_by_other Beskeder sat til at udløbe efter %1$s minutter af %2$s.
+@lineephemeral_timer_hours_by_you Beskeder sat til at udløbe efter %1$s timer af mig.
+@lineephemeral_timer_hours_by_other Beskeder sat til at udløbe efter %1$s timer af %2$s.
+@lineephemeral_timer_days_by_you Beskeder sat til at udløbe efter %1$s dage af mig.
+@lineephemeral_timer_days_by_other Beskeder sat til at udløbe efter %1$s dage af %2$s.
+@lineephemeral_timer_weeks_by_you Beskeder sat til at udløbe efter %1$s uger af mig.
+@lineephemeral_timer_weeks_by_other Beskeder sat til at udløbe efter %1$s uger af %2$s.
+@lineprotection_enabled_by_you Chat-beskyttelse sluttet til af mig.
+@lineprotection_enabled_by_other Chat-beskyttelse sluttet til af %1$s.
+@lineprotection_disabled_by_you Chat-beskyttelse slået fra af mig.
+@lineprotection_disabled_by_other Chat-beskyttelse slået fra af %1$s.
+@end

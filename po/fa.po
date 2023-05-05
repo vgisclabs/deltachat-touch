@@ -1,0 +1,578 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Translations made by the DeltaChat Community on Transifex
+# https://app.transifex.com/delta-chat/public/
+# This file is distributed under the same license as the deltatouch.lotharketterer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: deltatouch.lotharketterer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-04 10:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../qml/Main.qml:38 deltatouch.desktop.in.h:1
+msgid "DeltaTouch"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211
+msgid "No account configured"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211 ../qml/Main.qml:254
+#: ../qml/pages/AccountConfig.qml:120
+msgid "no username set"
+msgstr ""
+
+#: ../qml/Main.qml:205 ../qml/Main.qml:212
+msgid "Click Settings to manage accounts"
+msgstr ""
+
+#: ../qml/Main.qml:359
+msgid "Archived Chats"
+msgstr "گفتگو‌های بایگانی شده"
+
+#: ../qml/Main.qml:551
+msgid "Request"
+msgstr "درخواست"
+
+#: ../qml/Main.qml:625 ../qml/pages/AddChat.qml:35
+msgid "New Chat"
+msgstr "گفتگوی جدید"
+
+#: ../qml/delegates/delegOtherAudio.qml:130
+#: ../qml/delegates/delegOtherImage.qml:155
+#: ../qml/delegates/delegOtherTextMsg.qml:115
+#: ../qml/delegates/delegOtherUnknown.qml:114
+#: ../qml/delegates/delegSelfAudio.qml:93
+#: ../qml/delegates/delegSelfImage.qml:134
+#: ../qml/delegates/delegSelfTextMsg.qml:90
+#: ../qml/delegates/delegSelfUnknown.qml:91
+msgid "Forwarded Message"
+msgstr "پیام هدایت شده"
+
+#: ../qml/delegates/delegOtherAudio.qml:180
+#: ../qml/delegates/delegOtherImage.qml:205
+#: ../qml/delegates/delegOtherTextMsg.qml:165
+#: ../qml/delegates/delegOtherUnknown.qml:164
+#: ../qml/delegates/delegSelfAudio.qml:146
+#: ../qml/delegates/delegSelfImage.qml:185
+#: ../qml/delegates/delegSelfTextMsg.qml:142
+#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
+#: ../qml/pages/GroupAddMember.qml:125
+msgid "Unknown"
+msgstr "ناشناس"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Audio"
+msgstr "صدا"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Voice Message"
+msgstr "پیام صوتی"
+
+#: ../qml/delegates/delegUnreadMsgsBar.qml:48
+msgid "Unread Messages"
+msgstr ""
+
+#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
+#: ../qml/pages/SettingsPage.qml:86
+msgid "About DeltaTouch"
+msgstr ""
+
+#: ../qml/pages/About.qml:60
+msgid "License:"
+msgstr ""
+
+#: ../qml/pages/About.qml:71
+msgid "Source code:"
+msgstr ""
+
+#: ../qml/pages/About.qml:91
+msgid "Report bugs here:"
+msgstr ""
+
+#: ../qml/pages/About.qml:114
+msgid "This app is powered by deltachat-core"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:130
+msgid "Known Accounts"
+msgstr "اکانت‌های شناخته شده"
+
+#: ../qml/pages/AccountConfig.qml:42
+msgid "Help"
+msgstr "کمک"
+
+#: ../qml/pages/AccountConfig.qml:49 ../qml/pages/AddAccount.qml:33
+msgid "Add Account"
+msgstr "افزودن حساب کاربری"
+
+#: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
+#: ../qml/pages/PickerBackupFile.qml:100
+msgid "Error"
+msgstr "خطا"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "Info"
+msgstr "درباره"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "None"
+msgstr "هیچ‌کدام"
+
+#: ../qml/pages/AccountConfig.qml:191
+msgid "Account is not configured."
+msgstr "حساب تنظیم نشده است"
+
+#: ../qml/pages/AddAccount.qml:57
+msgid "Log into your E-Mail Account"
+msgstr "به سرور خود وارد شوید"
+
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/PickerBackupFile.qml:35
+#: ../qml/pages/PickerBackupFile.qml:108
+msgid "Restore from Backup"
+msgstr "وارد کردن نسخه پشتیبانی"
+
+#: ../qml/pages/AddAccount.qml:59
+msgid "Scan Invitation Code"
+msgstr "اسکن کردن کد دعوت"
+
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:608
+#: ../qml/pages/BlockContactPopup.qml:36
+#: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmChatDeletion.qml:56
+#: ../qml/pages/ConfirmLeaveGroup.qml:46
+#: ../qml/pages/ConfirmMemberDeletion.qml:55
+#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
+#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
+#: ../qml/pages/UnblockContactPopup.qml:38
+msgid "Cancel"
+msgstr "لغو"
+
+#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:35
+msgid "New Group"
+msgstr "گروه جدید"
+
+#: ../qml/pages/AddChat.qml:86
+msgid "New Verified Group"
+msgstr "گروه تایید شده جدید"
+
+#: ../qml/pages/AddChat.qml:103 ../qml/pages/GroupAddMember.qml:77
+msgid "Enter name or e-mail address"
+msgstr "نام یا نشانی رایانامه را وارد کنید"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:45
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:715
+#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
+msgid "No, chats only"
+msgstr "نه، فقط گفتگوها"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:48
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:729
+#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
+msgid "For accepted contacts"
+msgstr "برای مخاطبین پذیرفته شده"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:51
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:743
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
+msgid "All"
+msgstr "همه"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:76
+msgid "Log In"
+msgstr "ورود"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
+msgid "Log in with an existing e-mail account"
+msgstr "ورود با یک رایانامه موجود"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:130
+msgid "E-Mail Address"
+msgstr "نشانی رایانامه"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:154
+msgid "Password"
+msgstr "رمزعبور"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:214
+msgid ""
+"For known e-mail providers additional settings are set up automatically. "
+"Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
+"provider or friends for help."
+msgstr "برای ارائه دهندگان شناخته شده تنظبمات اضافه به صورت خودکار انجام می‌شود. گاهی اوقات آی‌مپ باید در تنظیمات رایانامه شما فعال شود. از ارائه دهنده ایمیل یا دوستانتان در این مورد کمک بگیرید. \nآی‌مپ=IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:238
+#: ../qml/pages/SettingsPage.qml:170
+msgid "Show Classic E-Mails"
+msgstr "نمایش ایمیل‌های معمولی"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:270
+msgid "Advanced"
+msgstr "پیشرفته"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:291
+msgid "Inbox"
+msgstr "ورودی"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:297
+msgid "IMAP Login Name"
+msgstr "IMAP Login Name"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:304
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:371
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
+msgid "Default (same as above)"
+msgstr "پیش‌فرض(مانند بالا)"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:309
+msgid "IMAP Server"
+msgstr "IMAP Server"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:316
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:336
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:415
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+msgid "Automatic"
+msgstr "خودکار"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:321
+msgid "IMAP Port"
+msgstr "IMAP port "
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:328
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:407
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:500
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:513
+msgid "Standard (%1)"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:334
+msgid "IMAP Security"
+msgstr "IMAP Security"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:339
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:418
+msgid "Off"
+msgstr "خاموش"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+msgid "Outbox"
+msgstr "خروجی"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:364
+msgid "SMTP Login Name"
+msgstr "SMTP Login Name"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+msgid "SMTP Password"
+msgstr "SMTP Password"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:388
+msgid "SMTP Server"
+msgstr "SMTP Server"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+msgid "SMTP Port"
+msgstr "SMTP Port"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
+msgid "SMTP Security"
+msgstr "SMTP Security"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:430
+msgid "Certificate Checks"
+msgstr "بررسی تاییدیه"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:433
+msgid "Strict"
+msgstr "سخت‌گیرانه"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:434
+msgid "Accept invalid certificates"
+msgstr "پذیرش تاییدیه‌های نادرست"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:469
+msgid "Use SOCKS5"
+msgstr "استفاده از SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:488
+msgid ""
+"SOCKS5 support is currently experimental. Please use at your own risk. If "
+"you type in an address in the e-mail field, there will be DNS lookup that "
+"won't get tunneled through SOCKS5."
+msgstr "پشتیبانی از قابلیت SOCKS5 هنوز آزمایشی است. لطفا در صورت استفاده،‌خطرات را بپذیرید. اگر یک آدرس را در بخش رایانامه وارد کنید همچنان  DNS lookup  رخ می‌دهد که ممکن است از طریق SOCKS5 صورت نگیرد. "
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+msgid "SOCKS5 Host"
+msgstr "SOCKS5 Host"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:506
+msgid "SOCKS5 Port"
+msgstr "SOCKS5 Port"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:520
+msgid "SOCKS5 User"
+msgstr "SOCKS5 User"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:532
+msgid "SOCKS5 Password"
+msgstr "SOCKS5 Password"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:619
+#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/Profile.qml:239
+msgid "OK"
+msgstr "تایید"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:691
+msgid "Configuring..."
+msgstr ""
+
+#: ../qml/pages/BlockContactPopup.qml:31
+msgid "Block this contact? You will no longer receive messages from them."
+msgstr "مخاطب مسدود شود؟ شما دیگر پیامی از این مخاطب دریافت نخواهید کرد."
+
+#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:50
+msgid "Block Contact"
+msgstr "انسداد مخاطب"
+
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:245
+msgid "Blocked Contacts"
+msgstr "مخاطبین مسدود شده"
+
+#: ../qml/pages/BlockedContacts.qml:46
+msgid "Blocked contacts will appear here."
+msgstr "اگر مخاطبی را مسدود کنید اینجا نمایش داده می‌شود"
+
+#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:104
+#: ../qml/pages/CreateOrEditGroup.qml:36
+msgid "Edit Group"
+msgstr "ویرایش گروه"
+
+#: ../qml/pages/ChatInfosActions.qml:75 ../qml/pages/ConfirmLeaveGroup.qml:36
+msgid "Leave Group"
+msgstr "ترک گروه"
+
+#: ../qml/pages/ChatInfosActions.qml:89
+msgid "Show Encryption Info"
+msgstr "نمایش مشخصات رمزگذاری"
+
+#: ../qml/pages/ChatView.qml:648
+msgid "Accept"
+msgstr "پذیرش"
+
+#: ../qml/pages/ChatView.qml:664 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ConfirmMemberDeletion.qml:45
+msgid "Delete"
+msgstr "حذف"
+
+#: ../qml/pages/ChatView.qml:679
+msgid "Block"
+msgstr "مسدود کردن"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:35
+#: ../qml/pages/ConfirmAccountDeletion.qml:51
+msgid "Delete Account"
+msgstr "حذف حساب کاربری"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:39
+msgid "Are you sure you want to delete your account data?"
+msgstr "آیا از حذف حساب کاربری اطمینان دارید؟"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:45
+msgid ""
+"All account data of \"%1\" on this device will be deleted, including your "
+"end-to-end encryption setup, contacts, chats, messages and media. This "
+"action cannot be undone."
+msgstr "همه اطلاعات حساب مربوط به \"%1\" روی این دستگاه پاک می‌شود که شامل تنظیمات رمزگذاری گیرنده به گیرنده ، مخاطبین، پیام‌ها و رسانه می‌شود. این عمل قابل بازگشت نیست."
+
+#: ../qml/pages/ConfirmChatDeletion.qml:36
+#: ../qml/pages/ConfirmChatDeletion.qml:46
+msgid "Delete Chat"
+msgstr "حذف کل گفتگو"
+
+#: ../qml/pages/ConfirmChatDeletion.qml:40
+#: ../qml/pages/ConfirmMsgDeletion.qml:40
+msgid "Are you sure you want to delete \"%1\"?"
+msgstr "اطمینان دارید می‌خواهید \"%1\" را پاک کنید؟"
+
+#: ../qml/pages/ConfirmLeaveGroup.qml:32
+msgid "Are you sure you want to leave this group?"
+msgstr "مطمئن هستید می‌خواهید این گروه را ترک کنید؟"
+
+#: ../qml/pages/ConfirmMemberDeletion.qml:39
+msgid "Remove %1 from group?"
+msgstr "حذف %1 از گروه؟"
+
+#: ../qml/pages/ConfirmMsgDeletion.qml:36
+#: ../qml/pages/ConfirmMsgDeletion.qml:46
+msgid "Delete Message"
+msgstr "حذف پیام"
+
+#: ../qml/pages/CreateOrEditGroup.qml:100
+msgid "QR Invite Code"
+msgstr "کد دعوت کیوآر"
+
+#: ../qml/pages/CreateOrEditGroup.qml:200
+msgid "Group Name"
+msgstr "نام گروه"
+
+#: ../qml/pages/CreateOrEditGroup.qml:223
+msgid "%1 member"
+msgstr "%1 عضو"
+
+#: ../qml/pages/CreateOrEditGroup.qml:224
+msgid "%1 members"
+msgstr "%1 عضو"
+
+#: ../qml/pages/CreateOrEditGroup.qml:241 ../qml/pages/GroupAddMember.qml:34
+msgid "Add Members"
+msgstr "افزودن اعضا"
+
+#: ../qml/pages/CreateOrEditGroup.qml:331
+msgid "Please enter a name for the group."
+msgstr "لطفا نامی برای گروه وارد کنید. "
+
+#: ../qml/pages/CreateOrEditGroup.qml:355
+msgid "Change Group Image"
+msgstr "حذف تصویر گروه"
+
+#: ../qml/pages/CreateOrEditGroup.qml:368
+msgid "Remove Group Image"
+msgstr "حذف تصویر گروه"
+
+#: ../qml/pages/ForwardMessage.qml:41
+msgid "Forward to…"
+msgstr "هدایت به..."
+
+#: ../qml/pages/ForwardMessage.qml:49
+msgid "Close"
+msgstr "بستن"
+
+#: ../qml/pages/ForwardMessage.qml:71
+msgid "Search"
+msgstr "جستجو"
+
+#: ../qml/pages/MessageInfosActions.qml:35
+msgid "Copy Text"
+msgstr "رونوشت گرفتن از متن"
+
+#: ../qml/pages/MessageInfosActions.qml:42
+msgid "Export Attachment"
+msgstr "صادر کردن ضمیمه"
+
+#: ../qml/pages/MessageInfosActions.qml:68
+msgid "Message Details"
+msgstr "جزئیات پیام"
+
+#: ../qml/pages/NotImplemented.qml:27
+msgid "Not Implemented Yet"
+msgstr ""
+
+#: ../qml/pages/NotImplemented.qml:36
+msgid "Sorry, not implemented yet :-("
+msgstr ""
+
+#: ../qml/pages/PickerAudioToExport.qml:42
+#: ../qml/pages/PickerAudioToSend.qml:34
+#: ../qml/pages/PickerBackupToExport.qml:42
+#: ../qml/pages/PickerFileToExport.qml:42 ../qml/pages/PickerFileToSend.qml:34
+#: ../qml/pages/PickerImageToExport.qml:42
+#: ../qml/pages/PickerImageToSend.qml:34
+msgid "Select"
+msgstr "انتخاب"
+
+#: ../qml/pages/PickerBackupFile.qml:101
+msgid "The selected file is not a valid backup file."
+msgstr ""
+
+#: ../qml/pages/PickerChatPic.qml:34
+msgid "Select Group Image"
+msgstr "انتخاب تصویر گروه"
+
+#: ../qml/pages/PickerProfilePic.qml:34
+msgid "Select your new profile image"
+msgstr "انتخاب تصویر پروفایل جدید"
+
+#: ../qml/pages/Profile.qml:48
+msgid "Edit Profile"
+msgstr "ویرایش نمایه"
+
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:270
+msgid "Profile"
+msgstr "نمایه"
+
+#: ../qml/pages/Profile.qml:122
+msgid "Select Profile Image"
+msgstr "انتخاب تصویر نمایه"
+
+#: ../qml/pages/Profile.qml:137
+msgid "Delete Profile Image"
+msgstr "حذف تصویر نمایه"
+
+#: ../qml/pages/Profile.qml:152
+msgid "Your Name"
+msgstr "اسم شما"
+
+#: ../qml/pages/Profile.qml:191
+msgid "Signature Text"
+msgstr "متن امضا"
+
+#: ../qml/pages/ProgressBackupExport.qml:43
+#: ../qml/pages/ProgressBackupImport.qml:43
+msgid "Failed"
+msgstr ""
+
+#: ../qml/pages/ProgressBackupExport.qml:48
+msgid ""
+"A backup helps you to set up a new installation on this or on another "
+"device.\n"
+"\n"
+"The backup will contain all messages, contacts and chats and your end-to-end "
+"Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
+"as possible."
+msgstr "تهیه نسخه پشتیبان به شما  کمک می‌کند روی این دستگاه یا دستگاه دیگر نرم‌افزار را دوباره نصب کنید.\n\n نسخه پشتیبان حاوی همه پیام‌ها، مخاطبین، گفتگوها و سیستم رمزگذاری خودکار گیرنده به گیرنده  شما خواهد بود. فایل پشتیبانی را در یک جای امن نگه دارید و در اسرع وقت آن را پاک کنید."
+
+#: ../qml/pages/SettingsPage.qml:73
+msgid "Settings"
+msgstr "تنظیمات"
+
+#: ../qml/pages/SettingsPage.qml:111
+msgid "Sync All"
+msgstr "به روزرسانی همه "
+
+#: ../qml/pages/SettingsPage.qml:157
+msgid "Account specific settings"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:197
+msgid "Read Receipts"
+msgstr "رسید خوانده شدن"
+
+#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:356
+msgid "Export Backup"
+msgstr "صادر کردن نسخه پشتیبان"
+
+#: ../qml/pages/UnblockContactPopup.qml:33
+msgid ""
+"Unblock this contact? You will then be able to receive messages from them."
+msgstr "رفع مسدودیت مخاطب؟ دوباره قادر خواهید بود پیام‌های ارسال شده توسط این مخاطب را دریافت کنید."
+
+#: ../qml/pages/UnblockContactPopup.qml:44
+msgid "Unblock Contact"
+msgstr "لغو انسداد مخاطب"
+

@@ -1,0 +1,15 @@
+@linechat_no_messages సందేశాలు లేవు
+@lineself నేను
+@linedraft డ్రాఫ్ట్
+@linevoice_message మాట సందేశం
+@lineimage చిత్రం
+@linegif Gif
+@linevideo వీడియో
+@lineaudio ఆడియో
+@linefile ఫైల్
+@lineencrypted_message ఎంక్రిప్ట్ చెసిన సందేశం
+@lineqrscan_fingerprint_label ఫింగర్‌ప్రింట్స్
+@linechat_archived_chats_title ఆర్కైవ్ చేసిన చాట్స్
+@linelocation స్థానం
+@lineone_moment ఒక్క క్షణం ...
+@end

@@ -1,0 +1,578 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Translations made by the DeltaChat Community on Transifex
+# https://app.transifex.com/delta-chat/public/
+# This file is distributed under the same license as the deltatouch.lotharketterer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: deltatouch.lotharketterer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-04 10:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ckb\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../qml/Main.qml:38 deltatouch.desktop.in.h:1
+msgid "DeltaTouch"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211
+msgid "No account configured"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211 ../qml/Main.qml:254
+#: ../qml/pages/AccountConfig.qml:120
+msgid "no username set"
+msgstr ""
+
+#: ../qml/Main.qml:205 ../qml/Main.qml:212
+msgid "Click Settings to manage accounts"
+msgstr ""
+
+#: ../qml/Main.qml:359
+msgid "Archived Chats"
+msgstr "وتووێژە ئەرشیڤکراوەکان"
+
+#: ../qml/Main.qml:551
+msgid "Request"
+msgstr ""
+
+#: ../qml/Main.qml:625 ../qml/pages/AddChat.qml:35
+msgid "New Chat"
+msgstr "وتووێژی نوێ"
+
+#: ../qml/delegates/delegOtherAudio.qml:130
+#: ../qml/delegates/delegOtherImage.qml:155
+#: ../qml/delegates/delegOtherTextMsg.qml:115
+#: ../qml/delegates/delegOtherUnknown.qml:114
+#: ../qml/delegates/delegSelfAudio.qml:93
+#: ../qml/delegates/delegSelfImage.qml:134
+#: ../qml/delegates/delegSelfTextMsg.qml:90
+#: ../qml/delegates/delegSelfUnknown.qml:91
+msgid "Forwarded Message"
+msgstr "پەیامی هاوبەشکراو"
+
+#: ../qml/delegates/delegOtherAudio.qml:180
+#: ../qml/delegates/delegOtherImage.qml:205
+#: ../qml/delegates/delegOtherTextMsg.qml:165
+#: ../qml/delegates/delegOtherUnknown.qml:164
+#: ../qml/delegates/delegSelfAudio.qml:146
+#: ../qml/delegates/delegSelfImage.qml:185
+#: ../qml/delegates/delegSelfTextMsg.qml:142
+#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
+#: ../qml/pages/GroupAddMember.qml:125
+msgid "Unknown"
+msgstr "نەناسراو"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Audio"
+msgstr "دەنگ"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Voice Message"
+msgstr "پەیامی دەنگی"
+
+#: ../qml/delegates/delegUnreadMsgsBar.qml:48
+msgid "Unread Messages"
+msgstr ""
+
+#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
+#: ../qml/pages/SettingsPage.qml:86
+msgid "About DeltaTouch"
+msgstr ""
+
+#: ../qml/pages/About.qml:60
+msgid "License:"
+msgstr ""
+
+#: ../qml/pages/About.qml:71
+msgid "Source code:"
+msgstr ""
+
+#: ../qml/pages/About.qml:91
+msgid "Report bugs here:"
+msgstr ""
+
+#: ../qml/pages/About.qml:114
+msgid "This app is powered by deltachat-core"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:130
+msgid "Known Accounts"
+msgstr "هەژمارە ناسراوەکان"
+
+#: ../qml/pages/AccountConfig.qml:42
+msgid "Help"
+msgstr "یارمەتی"
+
+#: ../qml/pages/AccountConfig.qml:49 ../qml/pages/AddAccount.qml:33
+msgid "Add Account"
+msgstr "زیادکردنی هەژمار"
+
+#: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
+#: ../qml/pages/PickerBackupFile.qml:100
+msgid "Error"
+msgstr "هەڵە"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "Info"
+msgstr "زانیاری"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "None"
+msgstr "هیچیان"
+
+#: ../qml/pages/AccountConfig.qml:191
+msgid "Account is not configured."
+msgstr ""
+
+#: ../qml/pages/AddAccount.qml:57
+msgid "Log into your E-Mail Account"
+msgstr "بچۆ ژوورەوە بۆ سێرڤێرەکەی خۆت"
+
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/PickerBackupFile.qml:35
+#: ../qml/pages/PickerBackupFile.qml:108
+msgid "Restore from Backup"
+msgstr "هاوردەکردنی یەدەک"
+
+#: ../qml/pages/AddAccount.qml:59
+msgid "Scan Invitation Code"
+msgstr ""
+
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:608
+#: ../qml/pages/BlockContactPopup.qml:36
+#: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmChatDeletion.qml:56
+#: ../qml/pages/ConfirmLeaveGroup.qml:46
+#: ../qml/pages/ConfirmMemberDeletion.qml:55
+#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
+#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
+#: ../qml/pages/UnblockContactPopup.qml:38
+msgid "Cancel"
+msgstr "وازبێنە"
+
+#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:35
+msgid "New Group"
+msgstr "کۆڕی نوێ"
+
+#: ../qml/pages/AddChat.qml:86
+msgid "New Verified Group"
+msgstr "کۆڕی پشتڕاستکراوەی نوێ"
+
+#: ../qml/pages/AddChat.qml:103 ../qml/pages/GroupAddMember.qml:77
+msgid "Enter name or e-mail address"
+msgstr "ناو یان ئیمەیل بنووسە"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:45
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:715
+#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
+msgid "No, chats only"
+msgstr "نا، بەس چاتەکان"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:48
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:729
+#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
+msgid "For accepted contacts"
+msgstr "بۆ بەردەنگە پەسندکراوەکان"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:51
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:743
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
+msgid "All"
+msgstr "هەموو"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:76
+msgid "Log In"
+msgstr "بچۆ ژوورەوە"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
+msgid "Log in with an existing e-mail account"
+msgstr "بچۆ ژوورەوە بە ناونیشانی ئیمەیلێکەوە"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:130
+msgid "E-Mail Address"
+msgstr "پۆستی ئەلیکترۆنی"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:154
+msgid "Password"
+msgstr "تێپەڕوشە"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:214
+msgid ""
+"For known e-mail providers additional settings are set up automatically. "
+"Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
+"provider or friends for help."
+msgstr "بۆ دابینکەرە ناسراوەکانی ئیمەیلەکان، ڕێکخستنە زیادییەکان خۆکارانە ڕێکدەخرێن. هەندێجار دەبێت IMAP لەنێو ڕێکخستنەکانی وێبدا چالاک بکرێنەوە. بۆ ڕێنمایی وەرگرتن، لەگەڵ دابینکەری ئیمەیلەکەتان یان هاوڕێکانتان ڕاوێژ بکەن."
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:238
+#: ../qml/pages/SettingsPage.qml:170
+msgid "Show Classic E-Mails"
+msgstr "پیشاندانی ئیمەیلە کلاسیکەکان"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:270
+msgid "Advanced"
+msgstr "پێشکەوتوو"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:291
+msgid "Inbox"
+msgstr "هاتنگە"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:297
+msgid "IMAP Login Name"
+msgstr "ناوی چوونەژوورەوەی IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:304
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:371
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
+msgid "Default (same as above)"
+msgstr "بنەڕەتی (وەکوو سەرەوە)"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:309
+msgid "IMAP Server"
+msgstr "سێرڤەری IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:316
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:336
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:415
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+msgid "Automatic"
+msgstr "خۆکار"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:321
+msgid "IMAP Port"
+msgstr "پۆرتی IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:328
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:407
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:500
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:513
+msgid "Standard (%1)"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:334
+msgid "IMAP Security"
+msgstr "ئاسایشی IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:339
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:418
+msgid "Off"
+msgstr "ناچالاک"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+msgid "Outbox"
+msgstr "ناردنگە"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:364
+msgid "SMTP Login Name"
+msgstr "ناوی چوونەژوورەوەی SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+msgid "SMTP Password"
+msgstr "تێپەڕوشەی SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:388
+msgid "SMTP Server"
+msgstr "سێرڤەری SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+msgid "SMTP Port"
+msgstr "پۆرتی SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
+msgid "SMTP Security"
+msgstr "ئاسایشی SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:430
+msgid "Certificate Checks"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:433
+msgid "Strict"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:434
+msgid "Accept invalid certificates"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:469
+msgid "Use SOCKS5"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:488
+msgid ""
+"SOCKS5 support is currently experimental. Please use at your own risk. If "
+"you type in an address in the e-mail field, there will be DNS lookup that "
+"won't get tunneled through SOCKS5."
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+msgid "SOCKS5 Host"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:506
+msgid "SOCKS5 Port"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:520
+msgid "SOCKS5 User"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:532
+msgid "SOCKS5 Password"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:619
+#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/Profile.qml:239
+msgid "OK"
+msgstr "باشە"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:691
+msgid "Configuring..."
+msgstr ""
+
+#: ../qml/pages/BlockContactPopup.qml:31
+msgid "Block this contact? You will no longer receive messages from them."
+msgstr "ئەم بەردەنگە ئاستەنگ دەکەیت؟ ئیدی هیچ پەیامێک لەلایەن ئەم بەردەنگەوە بە تۆ ناگات."
+
+#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:50
+msgid "Block Contact"
+msgstr "ئاستەنگ کردنی بەردەنگ"
+
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:245
+msgid "Blocked Contacts"
+msgstr "هەژمارە ئاستەنگکراوەکان"
+
+#: ../qml/pages/BlockedContacts.qml:46
+msgid "Blocked contacts will appear here."
+msgstr "ئەگەر هەژمارێک ئاستەنگ بکەیت، لێرەدا پیشان دەدرێت."
+
+#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:104
+#: ../qml/pages/CreateOrEditGroup.qml:36
+msgid "Edit Group"
+msgstr "دەستکاری کۆڕ"
+
+#: ../qml/pages/ChatInfosActions.qml:75 ../qml/pages/ConfirmLeaveGroup.qml:36
+msgid "Leave Group"
+msgstr "بەجێهێشتنی کۆڕ"
+
+#: ../qml/pages/ChatInfosActions.qml:89
+msgid "Show Encryption Info"
+msgstr "پیشاندانی زانیاری شفرەکردن"
+
+#: ../qml/pages/ChatView.qml:648
+msgid "Accept"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:664 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ConfirmMemberDeletion.qml:45
+msgid "Delete"
+msgstr "بیسڕەوە"
+
+#: ../qml/pages/ChatView.qml:679
+msgid "Block"
+msgstr "ئاستەنگ کردن"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:35
+#: ../qml/pages/ConfirmAccountDeletion.qml:51
+msgid "Delete Account"
+msgstr "سڕینەوەی هەژمار"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:39
+msgid "Are you sure you want to delete your account data?"
+msgstr "دڵنیای دەتەوێت داتاکانی هەژمارەکەت بسڕیتەوە؟"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:45
+msgid ""
+"All account data of \"%1\" on this device will be deleted, including your "
+"end-to-end encryption setup, contacts, chats, messages and media. This "
+"action cannot be undone."
+msgstr "هەموو داتاکانی هەژماری \"%1\" لەسەر ئەم ئامێرەدا دەسڕدرێتەوە؛ هەموو ڕێکخستنەکانی شفرەی ئەمسەر-ئەوسەر و هەموو بەردەنگ و وتووێژ و پەیام و ڕەنگاڵەکان و ئیدی ناگەڕێنەوە."
+
+#: ../qml/pages/ConfirmChatDeletion.qml:36
+#: ../qml/pages/ConfirmChatDeletion.qml:46
+msgid "Delete Chat"
+msgstr "سڕینەوەی وتووێژ"
+
+#: ../qml/pages/ConfirmChatDeletion.qml:40
+#: ../qml/pages/ConfirmMsgDeletion.qml:40
+msgid "Are you sure you want to delete \"%1\"?"
+msgstr "دڵنیای دەتەوێت \"%1\" بسڕیتەوە؟"
+
+#: ../qml/pages/ConfirmLeaveGroup.qml:32
+msgid "Are you sure you want to leave this group?"
+msgstr "دڵنیای دەتەوێت ئەم کۆڕە بەجێ بێڵیت؟"
+
+#: ../qml/pages/ConfirmMemberDeletion.qml:39
+msgid "Remove %1 from group?"
+msgstr "%1لە کۆڕ دەخەیتەدەر؟"
+
+#: ../qml/pages/ConfirmMsgDeletion.qml:36
+#: ../qml/pages/ConfirmMsgDeletion.qml:46
+msgid "Delete Message"
+msgstr "سڕینەوەی پەیام"
+
+#: ../qml/pages/CreateOrEditGroup.qml:100
+msgid "QR Invite Code"
+msgstr "کۆدی QRی بانگهێشت کردن"
+
+#: ../qml/pages/CreateOrEditGroup.qml:200
+msgid "Group Name"
+msgstr "ناوی کۆڕ"
+
+#: ../qml/pages/CreateOrEditGroup.qml:223
+msgid "%1 member"
+msgstr "%1ئەندام"
+
+#: ../qml/pages/CreateOrEditGroup.qml:224
+msgid "%1 members"
+msgstr "%1ئەندام"
+
+#: ../qml/pages/CreateOrEditGroup.qml:241 ../qml/pages/GroupAddMember.qml:34
+msgid "Add Members"
+msgstr "ئەندام زیاد بکە"
+
+#: ../qml/pages/CreateOrEditGroup.qml:331
+msgid "Please enter a name for the group."
+msgstr "تکایە ناوێک بنووسە بۆ کۆڕەکە."
+
+#: ../qml/pages/CreateOrEditGroup.qml:355
+msgid "Change Group Image"
+msgstr "گۆڕینی ناوی کۆڕ"
+
+#: ../qml/pages/CreateOrEditGroup.qml:368
+msgid "Remove Group Image"
+msgstr "سڕینەوەی وێنەی کۆڕ"
+
+#: ../qml/pages/ForwardMessage.qml:41
+msgid "Forward to…"
+msgstr "هەناردن بۆ..."
+
+#: ../qml/pages/ForwardMessage.qml:49
+msgid "Close"
+msgstr "داخستن"
+
+#: ../qml/pages/ForwardMessage.qml:71
+msgid "Search"
+msgstr "گەڕان"
+
+#: ../qml/pages/MessageInfosActions.qml:35
+msgid "Copy Text"
+msgstr ""
+
+#: ../qml/pages/MessageInfosActions.qml:42
+msgid "Export Attachment"
+msgstr "هەناردە کردنی پێوەلکاو"
+
+#: ../qml/pages/MessageInfosActions.qml:68
+msgid "Message Details"
+msgstr "وردەکارییەکانی پەیامەکە"
+
+#: ../qml/pages/NotImplemented.qml:27
+msgid "Not Implemented Yet"
+msgstr ""
+
+#: ../qml/pages/NotImplemented.qml:36
+msgid "Sorry, not implemented yet :-("
+msgstr ""
+
+#: ../qml/pages/PickerAudioToExport.qml:42
+#: ../qml/pages/PickerAudioToSend.qml:34
+#: ../qml/pages/PickerBackupToExport.qml:42
+#: ../qml/pages/PickerFileToExport.qml:42 ../qml/pages/PickerFileToSend.qml:34
+#: ../qml/pages/PickerImageToExport.qml:42
+#: ../qml/pages/PickerImageToSend.qml:34
+msgid "Select"
+msgstr "هەڵبژاردن"
+
+#: ../qml/pages/PickerBackupFile.qml:101
+msgid "The selected file is not a valid backup file."
+msgstr ""
+
+#: ../qml/pages/PickerChatPic.qml:34
+msgid "Select Group Image"
+msgstr "هەڵبژاردنی وێنەی کۆڕ"
+
+#: ../qml/pages/PickerProfilePic.qml:34
+msgid "Select your new profile image"
+msgstr "وێنەی لادیمەنە نوێکەت هەڵبژێرە"
+
+#: ../qml/pages/Profile.qml:48
+msgid "Edit Profile"
+msgstr ""
+
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:270
+msgid "Profile"
+msgstr "لادیمەن"
+
+#: ../qml/pages/Profile.qml:122
+msgid "Select Profile Image"
+msgstr "هەڵبژاردنی وێنەی لادیمەن"
+
+#: ../qml/pages/Profile.qml:137
+msgid "Delete Profile Image"
+msgstr "سڕینەوەی وێنەی لادیمەن"
+
+#: ../qml/pages/Profile.qml:152
+msgid "Your Name"
+msgstr "ناو"
+
+#: ../qml/pages/Profile.qml:191
+msgid "Signature Text"
+msgstr "دەقی واژۆ"
+
+#: ../qml/pages/ProgressBackupExport.qml:43
+#: ../qml/pages/ProgressBackupImport.qml:43
+msgid "Failed"
+msgstr ""
+
+#: ../qml/pages/ProgressBackupExport.qml:48
+msgid ""
+"A backup helps you to set up a new installation on this or on another "
+"device.\n"
+"\n"
+"The backup will contain all messages, contacts and chats and your end-to-end "
+"Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
+"as possible."
+msgstr "یەدەک یارمەتیت دەدات تاکوو نەرمامێرەکە لەسەر ئەم ئامێرە یان ئامێرێکی دیکە دەبمەزرێنیتەوە.\n\n یەدەکەکە بریتی دەبێت لە هەموو پەیامەکان و بەردەنگەکان و وتووێژەکان و ڕێکخستنی ئۆتۆکریپتی ئەمسەر-ئەوسەر. پەڕگەی یەدەکەکە لە شوێنێکی قایمدا بپارێزە یان بە زووترین کات بیسڕەوە."
+
+#: ../qml/pages/SettingsPage.qml:73
+msgid "Settings"
+msgstr "ڕێکخستنەکان"
+
+#: ../qml/pages/SettingsPage.qml:111
+msgid "Sync All"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:157
+msgid "Account specific settings"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:197
+msgid "Read Receipts"
+msgstr "وەرگرنامەی خوێندنەوە"
+
+#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:356
+msgid "Export Backup"
+msgstr "هەناردەکردنی یەدەک"
+
+#: ../qml/pages/UnblockContactPopup.qml:33
+msgid ""
+"Unblock this contact? You will then be able to receive messages from them."
+msgstr "ئاستەنگ لەسەر ئەم بەردەنگە لادەبەیت؟ دیسان پەیامەکانی ئەم بەردەنگەت پێ دەگات."
+
+#: ../qml/pages/UnblockContactPopup.qml:44
+msgid "Unblock Contact"
+msgstr "لابردنی ئاستەنگ"
+

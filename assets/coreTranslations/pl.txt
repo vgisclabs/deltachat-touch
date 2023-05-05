@@ -1,0 +1,132 @@
+@linechat_no_messages Brak wiadomości.
+@lineself Ja
+@linedraft Szkic
+@linevoice_message Wiadomość głosowa
+@lineimage Obraz
+@linegif Gif
+@linevideo Wideo
+@lineaudio Audio
+@linefile Plik
+@lineencrypted_message Zaszyfrowana wiadomość
+@lineqrscan_fingerprint_label Odciski palca
+@linesystemmsg_cannot_decrypt Tej wiadomości nie można odszyfrować.
+
+• Możesz teraz pomóc odpowiadając po prostu na tą wiadomość i poprosić nadawcę o ponowne wysłanie wiadomości.
+
+• W przypadku ponownego zainstalowania Delta Chat lub innego programu mailowego na tym lub innym urządzeniu, może być konieczne wysłanie stąd klucza automatycznego szyfrowania.
+@linesystemmsg_read_receipt_subject Potwierdzenie odczytu
+@linesystemmsg_read_receipt_body To jest potwierdzenie odczytu dla wiadomości ”%1$s„.
+
+To potwierdzenie odczytu tylko informuje, że wiadomość została wyświetlona na urządzeniu odbiorcy. Nie ma gwarancji, że odbiorca przeczytał treść wiadomości.
+@lineautocrypt_prefer_e2ee Preferuj pełne szyfrowanie
+@linechat_archived_chats_title Zarchiwizowane czaty
+@lineautocrypt_asm_subject Wiadomość konfiguracyjna automatycznego szyfrowania
+@lineautocrypt_asm_general_body Jest to wiadomość konfiguracyjna automatycznego szyfrowania służąca do przesyłania klucza między klientami.
+
+Aby odszyfrować i użyć klucza, otwórz wiadomość w kliencie zgodnym z automatycznym szyfrowaniem i wprowadź kod konfiguracyjny przedstawiony na urządzeniu generującym.
+@linelogin_error_cannot_login Nie można się zalogować jako „%1$s. Sprawdź, czy adres e-mail i hasło są poprawne.
+@linedevice_talk Komunikaty urządzenia
+@linesaved_messages Zapisane wiadomości
+@linecontact_verified Kontakt %1$s zweryfikowany.
+@linecontact_not_verified Nie można zweryfikować %1$s
+@linecontact_setup_changed Zmieniono konfigurację dla %1$s
+@linedevice_talk_explain Wiadomości w tym czacie są generowane lokalnie przez twoją aplikację Delta Chat. Twórcy używają go do informowania o aktualizacjach aplikacji i problemach podczas użytkowania.
+@linedevice_talk_welcome_message Witamy w Delta Chat! - Delta Chat wygląda i działa podobnie jak inne popularne komunikatory, ale nie miesza się w scentralizowaną kontrolę, śledzenie ani sprzedaż ciebie, przyjaciół, kolegów lub rodziny dużym organizacjom.
+
+Technicznie Delta Chat jest aplikacją e-mail z nowoczesnym interfejsem czatu. Jeśli chcesz, wyślij e-mail w nowej sukience 👻.
+
+Korzystaj z Delta Chat z każdym spośród miliardów ludzi: po prostu użyj ich adresu e-mail. Odbiorcy nie muszą instalować Delta Chat, odwiedzać stron internetowych ani rejestrować się gdziekolwiek - oczywiście, jeśli im się spodoba, możesz ich skierować na 👉 https://get.delta.chat.
+@linesystemmsg_unknown_sender_for_chat Nieznany nadawca tego czatu. Więcej szczegółów znajdziesz w sekcji „Informacje”.
+@linesystemmsg_subject_for_new_contact Wiadomość od %1$s
+@linesystemmsg_failed_sending_to Nie udało się wysłać wiadomości do %1$s.
+@linevideochat_invitation Zaproszenie do czatu wideo
+@linevideochat_invitation_body Masz zaproszenie do czatu wideo, naciśnij %1$s, aby dołączyć.
+@lineconfiguration_failed_with_error Konfiguracja nie powiodła się. Błąd: %1$s
+@linereply_noun Odpowiedź
+@lineforwarded Przekazana
+@linelocation Lokalizacja
+@linesticker Naklejka
+@linedevicemsg_bad_time ⚠️ Data lub godzina urządzenia wydaje się być niedokładna (%1$s).
+
+Dostosuj zegar ⏰🔧, aby upewnić się, że wiadomości są prawidłowo odbierane.
+@linedevicemsg_update_reminder ⚠️ Twoja wersja Delta Chat może być nieaktualna.
+
+Może to powodować problemy, ponieważ Twoi partnerzy czatu korzystają z nowszych wersji, a Ty nie masz najnowszych funkcji 😳
+Sprawdź aktualizacje na stronie https://get.delta.chat lub w sklepie z aplikacjami.
+@linedevicemsg_self_deleted Usunięto czat „Zapisane wiadomości”.
+
+ℹ️ Aby ponownie użyć funkcji „Zapisane wiadomości”, utwórz nowy czat ze sobą.
+@linedevicemsg_storage_exceeding ⚠️ Limit pamięci u twojego dostawcy wkrótce zostanie przekroczony, wykorzystano już %1$s%%.
+
+Możesz nie być w stanie otrzymywać wiadomości, gdy pamięć jest pełna.
+
+👉 Sprawdzić, czy możesz usunąć stare dane w interfejsie internetowym dostawcy i rozważyć włączenie opcji \"Ustawienia » Czaty i media » Usuwanie starych wiadomości\". W dowolnym momencie możesz sprawdzić swoje bieżące wykorzystanie pamięci w \"Ustawienia » Łączność\".
+@linen_bytes_message Wiadomość %1$s
+@linedownload_max_available_until Maksymalna ilość do pobrania dostępna do %1$s
+@lineincoming_messages Wiadomości przychodzące
+@lineoutgoing_messages Wiadomości wychodzące
+@linestorage_on_domain Zajętość skrzynki %1$s
+@lineone_moment Jedną chwilę…
+@lineconnectivity_connected Połączony
+@lineconnectivity_connecting Łączenie…
+@lineconnectivity_updating Aktualizowanie…
+@linesending Wysyłanie…
+@linelast_msg_sent_successfully Twoja ostatnia wiadomość została pomyślnie wysłana
+@lineerror_x Błąd: %1$s
+@linenot_supported_by_provider Nieobsługiwane przez twojego dostawcę.
+@linemessages Wiadomości
+@linebroadcast_list Lista rozgłoszeniowa
+@linepart_of_total_used %1$s z %2$s 
+@linesecure_join_started Użytkownik %1$s zaprosił cię do dołączenia do tej grupy.
+
+Czekam na odpowiedź urządzenia %2$s…
+@linesecure_join_replies Użytkownik %1$s odpowiedział, czekając na dodanie do grupy…
+@lineqrshow_join_contact_hint Zeskanuj go w celu skonfigurowania kontaktu z %1$s
+@lineqrshow_join_group_hint Zeskanuj go, aby dołączyć do grupy „%1$s”.
+@lineconnectivity_not_connected Nie połączony
+@lineaeap_addr_changed %1$s zmieniła swój adres z %2$s na %3$s
+@lineaeap_explanation Zmieniłeś swój adres e-mail z %1$s na %2$s.
+
+Jeśli teraz wyślesz wiadomość do zweryfikowanej grupy, kontakty tam zawarte automatycznie zastąpią stary adres Twoim nowym.
+
+Bardzo zalecane jest, aby ustawić swojego starego dostawcę emaila tak, aby przekazywał wszystkie emaile na Twój nowy adres email. W przeciwnym razie możesz przegapić wiadomości od kontaktów, które jeszcze nie dostały Twojego nowego adresu.
+@linegroup_name_changed_by_you Zmieniono nazwę grupy z „%1$s“ na „%2$s“.
+@linegroup_name_changed_by_other Nazwa grupy zmieniona z „%1$s“ na „%2$s“ przez %3$s.
+@linegroup_image_changed_by_you Zmieniono obraz grupy.
+@linegroup_image_changed_by_other Obraz grupy zmieniony przez %1$s.
+@lineadd_member_by_you Dodano członka %1$s.
+@lineadd_member_by_other Użytkownik %2$s dodał członka %1$s.
+@lineremove_member_by_you Usunięto członka %1$s.
+@lineremove_member_by_other Użytkownik %2$s usunął członka %1$s.
+@linegroup_left_by_you Opuszczono grupę
+@linegroup_left_by_other Grupa opuszczona przez %1$s.
+@linegroup_image_deleted_by_you Usunięto obraz grupy.
+@linegroup_image_deleted_by_other Użytkownik %1$s usunął obraz grupy.
+@linelocation_enabled_by_you Włączono strumieniowanie lokalizacji.
+@linelocation_enabled_by_other Strumieniowanie lokalizacji włączone przez %1$s.
+@lineephemeral_timer_disabled_by_you Wyłączono zegar znikających wiadomości.
+@lineephemeral_timer_disabled_by_other Zegar znikających wiadomości został wyłączony przez %1$s.
+@lineephemeral_timer_seconds_by_you Ustawiono zegar znikających wiadomości na %1$s s.
+@lineephemeral_timer_seconds_by_other Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s s.
+@lineephemeral_timer_1_minute_by_you Ustawiono zegar znikających wiadomości na 1 minutę.
+@lineephemeral_timer_1_minute_by_other Użytkownik %1$s ustawił zegar znikających wiadomości na 1 minutę.
+@lineephemeral_timer_1_hour_by_you Ustawiono zegar znikających wiadomości na 1 godzinę.
+@lineephemeral_timer_1_hour_by_other Użytkownik %1$s ustawił zegar znikających wiadomości na 1 godzinę.
+@lineephemeral_timer_1_day_by_you Ustawiono zegar znikających wiadomości na 1 dzień.
+@lineephemeral_timer_1_day_by_other Użytkownik %1$s ustawił zegar znikających wiadomości na 1 dzień.
+@lineephemeral_timer_1_week_by_you Ustawiono zegar znikających wiadomości na 1 tydzień.
+@lineephemeral_timer_1_week_by_other Użytkownik %1$s ustawił zegar znikających wiadomości na 1 tydzień.
+@lineephemeral_timer_minutes_by_you Ustawiono zegar znikających wiadomości na %1$s min.
+@lineephemeral_timer_minutes_by_other Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s min.
+@lineephemeral_timer_hours_by_you Ustawiono zegar znikających wiadomości na %1$s godz.
+@lineephemeral_timer_hours_by_other Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s godz.
+@lineephemeral_timer_days_by_you Ustawiono zegar znikających wiadomości na %1$s dni.
+@lineephemeral_timer_days_by_other  Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s dni.
+@lineephemeral_timer_weeks_by_you Ustawiono zegar znikających wiadomości na %1$s tyg.
+@lineephemeral_timer_weeks_by_other  Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s tyg.
+@lineprotection_enabled_by_you Włączono ochronę czatu.
+@lineprotection_enabled_by_other Ochrona czatu włączona przez %1$s.
+@lineprotection_disabled_by_you Wyłączono ochronę czatu.
+@lineprotection_disabled_by_other Ochrona czatu wyłączona przez %1$s.
+@linemultidevice_qr_subtitle Zeskanuj, aby skonfigurować kolejne urządzenie dla %1$s
+@end

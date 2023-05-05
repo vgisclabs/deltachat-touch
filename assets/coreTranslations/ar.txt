@@ -1,0 +1,14 @@
+@lineself أنا
+@linedraft مسودة
+@linevoice_message رسالة صوتية
+@lineimage صورة
+@linegif صورة GIF
+@linevideo فيديو
+@lineaudio الصوت
+@linefile ملف
+@lineencrypted_message رسالة مشفرة
+@lineqrscan_fingerprint_label البصمة
+@linelocation المَوقع
+@lineone_moment لحظة…
+@lineerror_x خطأ: %1$s
+@end

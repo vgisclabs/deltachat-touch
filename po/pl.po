@@ -1,0 +1,578 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Translations made by the DeltaChat Community on Transifex
+# https://app.transifex.com/delta-chat/public/
+# This file is distributed under the same license as the deltatouch.lotharketterer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: deltatouch.lotharketterer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-04 10:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../qml/Main.qml:38 deltatouch.desktop.in.h:1
+msgid "DeltaTouch"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211
+msgid "No account configured"
+msgstr ""
+
+#: ../qml/Main.qml:204 ../qml/Main.qml:211 ../qml/Main.qml:254
+#: ../qml/pages/AccountConfig.qml:120
+msgid "no username set"
+msgstr ""
+
+#: ../qml/Main.qml:205 ../qml/Main.qml:212
+msgid "Click Settings to manage accounts"
+msgstr ""
+
+#: ../qml/Main.qml:359
+msgid "Archived Chats"
+msgstr "Zarchiwizowane czaty"
+
+#: ../qml/Main.qml:551
+msgid "Request"
+msgstr "Prośba"
+
+#: ../qml/Main.qml:625 ../qml/pages/AddChat.qml:35
+msgid "New Chat"
+msgstr "Nowy czat"
+
+#: ../qml/delegates/delegOtherAudio.qml:130
+#: ../qml/delegates/delegOtherImage.qml:155
+#: ../qml/delegates/delegOtherTextMsg.qml:115
+#: ../qml/delegates/delegOtherUnknown.qml:114
+#: ../qml/delegates/delegSelfAudio.qml:93
+#: ../qml/delegates/delegSelfImage.qml:134
+#: ../qml/delegates/delegSelfTextMsg.qml:90
+#: ../qml/delegates/delegSelfUnknown.qml:91
+msgid "Forwarded Message"
+msgstr "Przekazano wiadomość"
+
+#: ../qml/delegates/delegOtherAudio.qml:180
+#: ../qml/delegates/delegOtherImage.qml:205
+#: ../qml/delegates/delegOtherTextMsg.qml:165
+#: ../qml/delegates/delegOtherUnknown.qml:164
+#: ../qml/delegates/delegSelfAudio.qml:146
+#: ../qml/delegates/delegSelfImage.qml:185
+#: ../qml/delegates/delegSelfTextMsg.qml:142
+#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
+#: ../qml/pages/GroupAddMember.qml:125
+msgid "Unknown"
+msgstr "Nieznany"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Audio"
+msgstr "Audio"
+
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Voice Message"
+msgstr "Wiadomość głosowa"
+
+#: ../qml/delegates/delegUnreadMsgsBar.qml:48
+msgid "Unread Messages"
+msgstr ""
+
+#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
+#: ../qml/pages/SettingsPage.qml:86
+msgid "About DeltaTouch"
+msgstr ""
+
+#: ../qml/pages/About.qml:60
+msgid "License:"
+msgstr ""
+
+#: ../qml/pages/About.qml:71
+msgid "Source code:"
+msgstr ""
+
+#: ../qml/pages/About.qml:91
+msgid "Report bugs here:"
+msgstr ""
+
+#: ../qml/pages/About.qml:114
+msgid "This app is powered by deltachat-core"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:130
+msgid "Known Accounts"
+msgstr "Znane konta"
+
+#: ../qml/pages/AccountConfig.qml:42
+msgid "Help"
+msgstr "Pomoc"
+
+#: ../qml/pages/AccountConfig.qml:49 ../qml/pages/AddAccount.qml:33
+msgid "Add Account"
+msgstr "Dodaj konto"
+
+#: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
+#: ../qml/pages/PickerBackupFile.qml:100
+msgid "Error"
+msgstr "Błąd"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "Info"
+msgstr "Informacje"
+
+#: ../qml/pages/AccountConfig.qml:85
+msgid "None"
+msgstr "Brak"
+
+#: ../qml/pages/AccountConfig.qml:191
+msgid "Account is not configured."
+msgstr "Konto nie jest skonfigurowane."
+
+#: ../qml/pages/AddAccount.qml:57
+msgid "Log into your E-Mail Account"
+msgstr "Zaloguj się na swoje konto e-mail"
+
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/PickerBackupFile.qml:35
+#: ../qml/pages/PickerBackupFile.qml:108
+msgid "Restore from Backup"
+msgstr "Przywróć z kopii zapasowej"
+
+#: ../qml/pages/AddAccount.qml:59
+msgid "Scan Invitation Code"
+msgstr "Zeskanuj kod zaproszenia"
+
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:608
+#: ../qml/pages/BlockContactPopup.qml:36
+#: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmChatDeletion.qml:56
+#: ../qml/pages/ConfirmLeaveGroup.qml:46
+#: ../qml/pages/ConfirmMemberDeletion.qml:55
+#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
+#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
+#: ../qml/pages/UnblockContactPopup.qml:38
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:35
+msgid "New Group"
+msgstr "Nowa grupa"
+
+#: ../qml/pages/AddChat.qml:86
+msgid "New Verified Group"
+msgstr "Nowa zweryfikowana grupa"
+
+#: ../qml/pages/AddChat.qml:103 ../qml/pages/GroupAddMember.qml:77
+msgid "Enter name or e-mail address"
+msgstr "Podaj nazwę lub adres e-mail"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:45
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:715
+#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
+msgid "No, chats only"
+msgstr "Nie, tylko czaty"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:48
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:729
+#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
+msgid "For accepted contacts"
+msgstr "Dla zaakceptowanych kontaktów"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:51
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:743
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
+msgid "All"
+msgstr "Wszystkie"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:76
+msgid "Log In"
+msgstr "Zaloguj się"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
+msgid "Log in with an existing e-mail account"
+msgstr "Zaloguj się przy użyciu istniejącego konta e-mail"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:130
+msgid "E-Mail Address"
+msgstr "Adres e-mail"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:154
+msgid "Password"
+msgstr "Hasło"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:214
+msgid ""
+"For known e-mail providers additional settings are set up automatically. "
+"Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
+"provider or friends for help."
+msgstr "Dla znanych dostawców usług poczty elektronicznej poniższe ustawienia są ustawiane automatycznie. Czasami IMAP musi być włączony w interfejsie WWW. O pomoc należy zwrócić się do usługodawcy e-mail lub znajomych."
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:238
+#: ../qml/pages/SettingsPage.qml:170
+msgid "Show Classic E-Mails"
+msgstr "Pokaż klasyczne e-maile"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:270
+msgid "Advanced"
+msgstr "Zaawansowane"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:291
+msgid "Inbox"
+msgstr "Skrzynka odbiorcza"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:297
+msgid "IMAP Login Name"
+msgstr "Nazwa użytkownika IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:304
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:371
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
+msgid "Default (same as above)"
+msgstr "Domyślna (taka sama jak powyżej)"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:309
+msgid "IMAP Server"
+msgstr "Serwer IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:316
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:336
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:415
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+msgid "Automatic"
+msgstr "Automatyczne"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:321
+msgid "IMAP Port"
+msgstr "Port IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:328
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:407
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:500
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:513
+msgid "Standard (%1)"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:334
+msgid "IMAP Security"
+msgstr "Bezpieczeństwo IMAP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:339
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:418
+msgid "Off"
+msgstr "Wyłączone"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+msgid "Outbox"
+msgstr "Skrzynka nadawcza"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:364
+msgid "SMTP Login Name"
+msgstr "Nazwa użytkownika SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+msgid "SMTP Password"
+msgstr "Hasło SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:388
+msgid "SMTP Server"
+msgstr "Serwer SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+msgid "SMTP Port"
+msgstr "Port SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
+msgid "SMTP Security"
+msgstr "Bezpieczeństwo SMTP"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:430
+msgid "Certificate Checks"
+msgstr "Sprawdzanie certyfikatów"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:433
+msgid "Strict"
+msgstr "Dokładne"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:434
+msgid "Accept invalid certificates"
+msgstr "Zaakceptuj nieprawidłowe certyfikaty"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:469
+msgid "Use SOCKS5"
+msgstr "Użyj SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:488
+msgid ""
+"SOCKS5 support is currently experimental. Please use at your own risk. If "
+"you type in an address in the e-mail field, there will be DNS lookup that "
+"won't get tunneled through SOCKS5."
+msgstr "Obsługa SOCKS5 jest obecnie eksperymentalna. Proszę używać na własne ryzyko. Jeśli wpiszesz adres w polu e-mail, nastąpi wyszukiwanie DNS, które nie będzie tunelowane przez SOCKS5."
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+msgid "SOCKS5 Host"
+msgstr "Host SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:506
+msgid "SOCKS5 Port"
+msgstr "Port SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:520
+msgid "SOCKS5 User"
+msgstr "Użytkownik SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:532
+msgid "SOCKS5 Password"
+msgstr "Hasło SOCKS5"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:619
+#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/Profile.qml:239
+msgid "OK"
+msgstr "OK"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:691
+msgid "Configuring..."
+msgstr ""
+
+#: ../qml/pages/BlockContactPopup.qml:31
+msgid "Block this contact? You will no longer receive messages from them."
+msgstr "Zablokować ten kontakt? Nie będziesz już odbierać wiadomości od tego kontaktu."
+
+#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:50
+msgid "Block Contact"
+msgstr "Blokuj kontakt"
+
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:245
+msgid "Blocked Contacts"
+msgstr "Zablokowane kontakty"
+
+#: ../qml/pages/BlockedContacts.qml:46
+msgid "Blocked contacts will appear here."
+msgstr "Jeśli zablokujesz kontakty, zostaną one pokazane tutaj."
+
+#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:104
+#: ../qml/pages/CreateOrEditGroup.qml:36
+msgid "Edit Group"
+msgstr "Edytuj grupę"
+
+#: ../qml/pages/ChatInfosActions.qml:75 ../qml/pages/ConfirmLeaveGroup.qml:36
+msgid "Leave Group"
+msgstr "Opuść grupę"
+
+#: ../qml/pages/ChatInfosActions.qml:89
+msgid "Show Encryption Info"
+msgstr "Pokaż informacje o szyfrowaniu"
+
+#: ../qml/pages/ChatView.qml:648
+msgid "Accept"
+msgstr "Akceptuj"
+
+#: ../qml/pages/ChatView.qml:664 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ConfirmMemberDeletion.qml:45
+msgid "Delete"
+msgstr "Usuń"
+
+#: ../qml/pages/ChatView.qml:679
+msgid "Block"
+msgstr "Zablokuj"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:35
+#: ../qml/pages/ConfirmAccountDeletion.qml:51
+msgid "Delete Account"
+msgstr "Usuń konto"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:39
+msgid "Are you sure you want to delete your account data?"
+msgstr "Czy na pewno chcesz usunąć dane swojego konta?"
+
+#: ../qml/pages/ConfirmAccountDeletion.qml:45
+msgid ""
+"All account data of \"%1\" on this device will be deleted, including your "
+"end-to-end encryption setup, contacts, chats, messages and media. This "
+"action cannot be undone."
+msgstr "Wszystkie dane konta „%1” na tym urządzeniu zostaną usunięte, w tym konfiguracja szyfrowania end-to-end, kontakty, czaty, wiadomości i multimedia. Tej operacji nie można cofnąć."
+
+#: ../qml/pages/ConfirmChatDeletion.qml:36
+#: ../qml/pages/ConfirmChatDeletion.qml:46
+msgid "Delete Chat"
+msgstr "Usuń czat"
+
+#: ../qml/pages/ConfirmChatDeletion.qml:40
+#: ../qml/pages/ConfirmMsgDeletion.qml:40
+msgid "Are you sure you want to delete \"%1\"?"
+msgstr "Czy na pewno chcesz usunąć „%1”?"
+
+#: ../qml/pages/ConfirmLeaveGroup.qml:32
+msgid "Are you sure you want to leave this group?"
+msgstr "Czy na pewno chcesz opuścić tę grupę?"
+
+#: ../qml/pages/ConfirmMemberDeletion.qml:39
+msgid "Remove %1 from group?"
+msgstr "Usunąć %1 z grupy?"
+
+#: ../qml/pages/ConfirmMsgDeletion.qml:36
+#: ../qml/pages/ConfirmMsgDeletion.qml:46
+msgid "Delete Message"
+msgstr "Usuń wiadomość"
+
+#: ../qml/pages/CreateOrEditGroup.qml:100
+msgid "QR Invite Code"
+msgstr "Kod QR zaproszenia"
+
+#: ../qml/pages/CreateOrEditGroup.qml:200
+msgid "Group Name"
+msgstr "Nazwa grupy"
+
+#: ../qml/pages/CreateOrEditGroup.qml:223
+msgid "%1 member"
+msgstr "%1 członek"
+
+#: ../qml/pages/CreateOrEditGroup.qml:224
+msgid "%1 members"
+msgstr ""
+
+#: ../qml/pages/CreateOrEditGroup.qml:241 ../qml/pages/GroupAddMember.qml:34
+msgid "Add Members"
+msgstr "Dodaj członków"
+
+#: ../qml/pages/CreateOrEditGroup.qml:331
+msgid "Please enter a name for the group."
+msgstr "Podaj nazwę dla grupy"
+
+#: ../qml/pages/CreateOrEditGroup.qml:355
+msgid "Change Group Image"
+msgstr "Zmień obraz grupy"
+
+#: ../qml/pages/CreateOrEditGroup.qml:368
+msgid "Remove Group Image"
+msgstr "Usuń obraz grupy"
+
+#: ../qml/pages/ForwardMessage.qml:41
+msgid "Forward to…"
+msgstr "Przekaż do…"
+
+#: ../qml/pages/ForwardMessage.qml:49
+msgid "Close"
+msgstr "Zamknij"
+
+#: ../qml/pages/ForwardMessage.qml:71
+msgid "Search"
+msgstr "Szukaj"
+
+#: ../qml/pages/MessageInfosActions.qml:35
+msgid "Copy Text"
+msgstr "Kopiuj tekst"
+
+#: ../qml/pages/MessageInfosActions.qml:42
+msgid "Export Attachment"
+msgstr "Eksportuj załącznik"
+
+#: ../qml/pages/MessageInfosActions.qml:68
+msgid "Message Details"
+msgstr "Szczegóły wiadomości"
+
+#: ../qml/pages/NotImplemented.qml:27
+msgid "Not Implemented Yet"
+msgstr ""
+
+#: ../qml/pages/NotImplemented.qml:36
+msgid "Sorry, not implemented yet :-("
+msgstr ""
+
+#: ../qml/pages/PickerAudioToExport.qml:42
+#: ../qml/pages/PickerAudioToSend.qml:34
+#: ../qml/pages/PickerBackupToExport.qml:42
+#: ../qml/pages/PickerFileToExport.qml:42 ../qml/pages/PickerFileToSend.qml:34
+#: ../qml/pages/PickerImageToExport.qml:42
+#: ../qml/pages/PickerImageToSend.qml:34
+msgid "Select"
+msgstr "Zaznacz"
+
+#: ../qml/pages/PickerBackupFile.qml:101
+msgid "The selected file is not a valid backup file."
+msgstr ""
+
+#: ../qml/pages/PickerChatPic.qml:34
+msgid "Select Group Image"
+msgstr "Wybierz obraz grupy"
+
+#: ../qml/pages/PickerProfilePic.qml:34
+msgid "Select your new profile image"
+msgstr "Wybierz nowe zdjęcie profilowe"
+
+#: ../qml/pages/Profile.qml:48
+msgid "Edit Profile"
+msgstr "Edytuj profil"
+
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:270
+msgid "Profile"
+msgstr "Profil"
+
+#: ../qml/pages/Profile.qml:122
+msgid "Select Profile Image"
+msgstr "Wybierz zdjęcie profilowe"
+
+#: ../qml/pages/Profile.qml:137
+msgid "Delete Profile Image"
+msgstr "Usuń zdjęcie profilowe"
+
+#: ../qml/pages/Profile.qml:152
+msgid "Your Name"
+msgstr "Twoja nazwa"
+
+#: ../qml/pages/Profile.qml:191
+msgid "Signature Text"
+msgstr "Tekst podpisu"
+
+#: ../qml/pages/ProgressBackupExport.qml:43
+#: ../qml/pages/ProgressBackupImport.qml:43
+msgid "Failed"
+msgstr ""
+
+#: ../qml/pages/ProgressBackupExport.qml:48
+msgid ""
+"A backup helps you to set up a new installation on this or on another "
+"device.\n"
+"\n"
+"The backup will contain all messages, contacts and chats and your end-to-end "
+"Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
+"as possible."
+msgstr "Kopia zapasowa pomaga skonfigurować nową instalację na tym lub na innym urządzeniu.\n\nKopia zapasowa będzie zawierała wszystkie wiadomości, kontakty i czaty oraz pełną konfigurację  funkcji automatycznego szyfrowania. Przechowuj plik kopii zapasowej w bezpiecznym miejscu lub usuń go jak najszybciej."
+
+#: ../qml/pages/SettingsPage.qml:73
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: ../qml/pages/SettingsPage.qml:111
+msgid "Sync All"
+msgstr "Synchronizuj wszystkie"
+
+#: ../qml/pages/SettingsPage.qml:157
+msgid "Account specific settings"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:197
+msgid "Read Receipts"
+msgstr "Potwierdzenie odczytu"
+
+#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:356
+msgid "Export Backup"
+msgstr "Eksport kopii zapasowej"
+
+#: ../qml/pages/UnblockContactPopup.qml:33
+msgid ""
+"Unblock this contact? You will then be able to receive messages from them."
+msgstr "Odblokować ten kontakt? Ponownie będzie można odbierać wiadomości od tego kontaktu."
+
+#: ../qml/pages/UnblockContactPopup.qml:44
+msgid "Unblock Contact"
+msgstr "Odblokuj kontakt"
+

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-23 16:12+0000\n"
+"POT-Creation-Date: 2023-05-04 10:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,16 +25,13 @@ msgstr ""
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:204 ../qml/Main.qml:211
-msgid "[No username set]"
+#: ../qml/Main.qml:204 ../qml/Main.qml:211 ../qml/Main.qml:254
+#: ../qml/pages/AccountConfig.qml:120
+msgid "no username set"
 msgstr ""
 
 #: ../qml/Main.qml:205 ../qml/Main.qml:212
 msgid "Click Settings to manage accounts"
-msgstr ""
-
-#: ../qml/Main.qml:254 ../qml/pages/AccountConfig.qml:120
-msgid "no username set"
 msgstr ""
 
 #: ../qml/Main.qml:359
@@ -60,38 +57,27 @@ msgstr ""
 msgid "Forwarded Message"
 msgstr ""
 
-#: ../qml/delegates/delegOtherAudio.qml:179
-#: ../qml/delegates/delegOtherImage.qml:204
-#: ../qml/delegates/delegOtherTextMsg.qml:164
-#: ../qml/delegates/delegOtherUnknown.qml:163
-#: ../qml/delegates/delegSelfAudio.qml:144
-#: ../qml/delegates/delegSelfImage.qml:184
-#: ../qml/delegates/delegSelfTextMsg.qml:141
-#: ../qml/delegates/delegSelfUnknown.qml:141
-msgid "Me"
-msgstr ""
-
-#: ../qml/delegates/delegOtherAudio.qml:179
-#: ../qml/delegates/delegOtherImage.qml:204
-#: ../qml/delegates/delegOtherTextMsg.qml:164
-#: ../qml/delegates/delegOtherUnknown.qml:163
-#: ../qml/delegates/delegSelfAudio.qml:144
-#: ../qml/delegates/delegSelfImage.qml:184
-#: ../qml/delegates/delegSelfTextMsg.qml:141
-#: ../qml/delegates/delegSelfUnknown.qml:141 ../qml/pages/AddChat.qml:142
+#: ../qml/delegates/delegOtherAudio.qml:180
+#: ../qml/delegates/delegOtherImage.qml:205
+#: ../qml/delegates/delegOtherTextMsg.qml:165
+#: ../qml/delegates/delegOtherUnknown.qml:164
+#: ../qml/delegates/delegSelfAudio.qml:146
+#: ../qml/delegates/delegSelfImage.qml:185
+#: ../qml/delegates/delegSelfTextMsg.qml:142
+#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
 #: ../qml/pages/GroupAddMember.qml:125
 msgid "Unknown"
 msgstr ""
 
-#: ../qml/delegates/delegOtherAudio.qml:226
-#: ../qml/delegates/delegSelfAudio.qml:193
-msgid "Audio "
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Audio"
 msgstr ""
 
-#: ../qml/delegates/delegOtherAudio.qml:226
-#: ../qml/delegates/delegSelfAudio.qml:193
-msgid "Voice message "
+#: ../qml/delegates/delegOtherAudio.qml:232
+#: ../qml/delegates/delegSelfAudio.qml:200
+msgid "Voice Message"
 msgstr ""
 
 #: ../qml/delegates/delegUnreadMsgsBar.qml:48
@@ -100,7 +86,7 @@ msgstr ""
 
 #: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
 #: ../qml/pages/SettingsPage.qml:86
-msgid "About"
+msgid "About DeltaTouch"
 msgstr ""
 
 #: ../qml/pages/About.qml:60
@@ -119,7 +105,7 @@ msgstr ""
 msgid "This app is powered by deltachat-core"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:37
+#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:130
 msgid "Known Accounts"
 msgstr ""
 
@@ -145,7 +131,7 @@ msgid "None"
 msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:191
-msgid "Account is not configured"
+msgid "Account is not configured."
 msgstr ""
 
 #: ../qml/pages/AddAccount.qml:57
@@ -161,16 +147,28 @@ msgstr ""
 msgid "Scan Invitation Code"
 msgstr ""
 
-#: ../qml/pages/AddChat.qml:51 ../qml/pages/CreateOrEditGroup.qml:35
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:608
+#: ../qml/pages/BlockContactPopup.qml:36
+#: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmChatDeletion.qml:56
+#: ../qml/pages/ConfirmLeaveGroup.qml:46
+#: ../qml/pages/ConfirmMemberDeletion.qml:55
+#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
+#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
+#: ../qml/pages/UnblockContactPopup.qml:38
+msgid "Cancel"
+msgstr ""
+
+#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:35
 msgid "New Group"
 msgstr ""
 
-#: ../qml/pages/AddChat.qml:72
+#: ../qml/pages/AddChat.qml:86
 msgid "New Verified Group"
 msgstr ""
 
-#: ../qml/pages/AddChat.qml:89 ../qml/pages/GroupAddMember.qml:77
-msgid "Enter name or e-mail"
+#: ../qml/pages/AddChat.qml:103 ../qml/pages/GroupAddMember.qml:77
+msgid "Enter name or e-mail address"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:45
@@ -332,20 +330,10 @@ msgstr ""
 msgid "SOCKS5 Password"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:608
-#: ../qml/pages/BlockContactPopup.qml:36
-#: ../qml/pages/ConfirmAccountDeletion.qml:61
-#: ../qml/pages/ConfirmChatDeletion.qml:56
-#: ../qml/pages/ConfirmLeaveGroup.qml:46
-#: ../qml/pages/ConfirmMemberDeletion.qml:55
-#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
-#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
-#: ../qml/pages/UnblockContactPopup.qml:38
-msgid "Cancel"
-msgstr ""
-
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:619
-msgid "Ok"
+#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/Profile.qml:239
+msgid "OK"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:691
@@ -381,16 +369,16 @@ msgstr ""
 msgid "Show Encryption Info"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:639
+#: ../qml/pages/ChatView.qml:648
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:655 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:664 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:670
+#: ../qml/pages/ChatView.qml:679
 msgid "Block"
 msgstr ""
 
@@ -431,11 +419,6 @@ msgstr ""
 #: ../qml/pages/ConfirmMsgDeletion.qml:36
 #: ../qml/pages/ConfirmMsgDeletion.qml:46
 msgid "Delete Message"
-msgstr ""
-
-#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
-#: ../qml/pages/Profile.qml:239
-msgid "OK"
 msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:100
@@ -567,11 +550,7 @@ msgid "Settings"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:111
-msgid "Sync all"
-msgstr ""
-
-#: ../qml/pages/SettingsPage.qml:130
-msgid "Accounts"
+msgid "Sync All"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:157

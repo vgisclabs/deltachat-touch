@@ -128,7 +128,7 @@ MainView {
         target: Qt.application
         onStateChanged: {
             startStopIO()
-            console.log('Qt.application signal stateChanged')
+            console.log('Qt.application signal stateChanged, state is now: ' + Qt.application.state)
         }
     }
 
@@ -201,14 +201,14 @@ MainView {
                 //opacity: 0.5
             
                 // TODO should these be properties?
-                property string currentUsername: DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("[No username set]") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
+                property string currentUsername: DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
                 property string currentEmail: DeltaHandler.hasConfiguredAccount ? DeltaHandler.getCurrentEmail() : i18n.tr("Click Settings to manage accounts")
                 property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
 
                 Connections {
                     target: DeltaHandler
                     onAccountChanged: {
-                        headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("[No username set]") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
+                        headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
                         headerRect.currentEmail = DeltaHandler.hasConfiguredAccount ? DeltaHandler.getCurrentEmail() : i18n.tr("Click Settings to manage accounts")
                         headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
                     }
@@ -251,7 +251,7 @@ MainView {
                             leftMargin: units.gu(1)
                             bottom: emailLabel.top
                         }
-                        text: headerRect.currentUsername == '' ? '[' + i18n.tr('no username set') + ']' : headerRect.currentUsername
+                        text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
                         color: "#e7fcfd"
                     }
             
@@ -340,7 +340,7 @@ MainView {
         //
         //                    Action {
         //                        iconName: 'info'
-        //                        text: i18n.tr('About')
+        //                        text: i18n.tr('About DeltaTouch')
         //                        onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/About.qml'))
         //                    }
         //                ]

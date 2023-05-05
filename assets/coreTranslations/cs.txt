@@ -1,0 +1,83 @@
+@linechat_no_messages Žádná zpráva.
+@lineself Já
+@linedraft Rozepsané
+@linevoice_message Hlasová zpráva
+@lineimage Obrázek
+@linegif GIF
+@linevideo Video
+@lineaudio Zvukový záznam
+@linefile Soubor
+@lineencrypted_message Šifrovaná zpráva
+@lineqrscan_fingerprint_label Otisk
+@linesystemmsg_cannot_decrypt Zprávu nelze dešifrovat.
+
+• Může pomoct jednoduchá odpověď odesílateli s požadavkem o znovuzaslání zprávy.
+
+• Pokud jde o novou instalaci Delta Chatu či jiného e-mailového programu na tomto nebo jiném zařízení, může být nutné poslat si z nich Nastavení Autocryptu.
+@linesystemmsg_read_receipt_subject Zpráva otevřena
+@linesystemmsg_read_receipt_body Odeslaná zpráva \"%1$s\" byla příjemci zobrazena na jeho přístroji.
+
+Nicméně přečtení obsahu není zaručeno.
+@lineautocrypt_prefer_e2ee Upřednostňuj end-to-end šifrování
+@linechat_archived_chats_title Archivované hovory
+@lineautocrypt_asm_subject Nastavení Autocryptu
+@lineautocrypt_asm_general_body Toto je Nastavení Autocryptu, kterým lze přenést nastavení šifrování mezi klienty.
+
+K dešifrování a použití nastavení musíte zprávu otevřít v druhém klientu s Autocryptem a tam zadat kód zobrazený na prvním přístroji.
+@linelogin_error_cannot_login Přihlášení jako \"%1$s\" selhalo. Zkontrolujte si prosím ještě jednou e-mail a heslo.
+@linedevice_talk Zprávy přístroje
+@linesaved_messages Uložené zprávy
+@linecontact_verified %1$s ověřen.
+@linecontact_not_verified Nelze ověřit %1$s.
+@linecontact_setup_changed Změněné nastavení pro %1$s.
+@linedevice_talk_explain Zprávy v tomto hovoru jsou vytvořeny aplikací Delta Chat. Její tvůrci tak informují o aktualizacích a potížích při používání.
+@linedevice_talk_welcome_message Vítej v Delta Chatu! – Delta Chat se chová jako všeobecně známé chatovací aplikace, ale bez centralizované kontroly, sledování. Neprodává zážitky tvých přátel, kolegů, rodiny ani tvé vlastní velkým organizacím.
+
+Technicky je Delta Chat e-mailový program, ale s uživatelským rozhraním chatu. Převlečený e-mail, chceš-li. Delta Chat používej s kýmkoli z miliard lidí; prostě použij jejich e-mailovou adresu. Příjemce si nemusí Delta Chat instalovat, ani se přihlašovat přes nové webové stránky. Můžeš je však, budou-li chtít, odkázat na 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Neznámý odesilatel v tomto hovoru. Více najdeš v Popisu.
+@linesystemmsg_subject_for_new_contact Zpráva od %1$s
+@linesystemmsg_failed_sending_to Odeslání zprávy pro %1$s selhalo.
+@linevideochat_invitation Výzva k video hovoru
+@linevideochat_invitation_body Jste vyzváni k video hovoru, připojte se stiskem %1$s
+@lineconfiguration_failed_with_error Nastavení selhalo. Chyba: %1$s
+@linereply_noun Odpověď
+@linelocation Poloha
+@lineone_moment Okamžik ...
+@lineerror_x Chyba %1$s
+@lineqrshow_join_contact_hint K navázání spojení s %1$s vyfoť kód.
+@lineqrshow_join_group_hint K připojení ke skupině \"%1$s\" vyfoť kód.
+@linegroup_name_changed_by_you Názen skupiny změněn z \"%1$s\" na \"%2$s\" ode mě.
+@linegroup_name_changed_by_other Názen skupiny změněn z \"%1$s\" na \"%2$s\" od %3$s.
+@linegroup_image_changed_by_you Obrázek skupiny změněn ode mě.
+@linegroup_image_changed_by_other Obrázek skupiny změněn od %1$s.
+@lineadd_member_by_you Člen %1$s byl přidán ode mě.
+@lineadd_member_by_other Člen %1$s byl přidán od %2$s.
+@lineremove_member_by_you Člen %1$s byl odebrán ode mě.
+@lineremove_member_by_other Člen %1$s byl odebrán od %2$s.
+@linegroup_image_deleted_by_you Obrázek skupiny smazán ode mě.
+@linegroup_image_deleted_by_other Obrázek skupiny smazán od %1$s.
+@lineephemeral_timer_disabled_by_you Časovač samomazacích zpráv je vypnut ode mě.
+@lineephemeral_timer_disabled_by_other Časovač samomazacích zpráv je vypnut od %1$s.
+@lineephemeral_timer_seconds_by_you Časovač samomazacích zpráv je na %1$s s ode mě.
+@lineephemeral_timer_seconds_by_other Časovač samomazacích zpráv je na %1$s s od %2$s.
+@lineephemeral_timer_1_minute_by_you Časovač samomazacích zpráv na 1 minutu ode mě.
+@lineephemeral_timer_1_minute_by_other Časovač samomazacích zpráv na 1 minutu od %1$s.
+@lineephemeral_timer_1_hour_by_you Časovač samomazacích zpráv na 1 hodinu ode mě.
+@lineephemeral_timer_1_hour_by_other Časovač samomazacích zpráv na 1 hodinu od %1$s.
+@lineephemeral_timer_1_day_by_you Časovač samomazacích zpráv na 1 den ode mě.
+@lineephemeral_timer_1_day_by_other Časovač samomazacích zpráv na 1 den od %1$s.
+@lineephemeral_timer_1_week_by_you Časovač samomazacích zpráv na 1 týden ode mě.
+@lineephemeral_timer_1_week_by_other Časovač samomazacích zpráv na 1 týden od %1$s.
+@lineephemeral_timer_minutes_by_you Samomazací zprávy vyprší po %1$s minutách ode mě.
+@lineephemeral_timer_minutes_by_other Samomazací zprávy vyprší po %1$s minutách od %2$s.
+@lineephemeral_timer_hours_by_you Samomazací zprávy vyprší po %1$s hodinách ode mě.
+@lineephemeral_timer_hours_by_other Samomazací zprávy vyprší po %1$s hodinách od %2$s.
+@lineephemeral_timer_days_by_you Samomazací zprávy vyprší po %1$s dnech ode mě.
+@lineephemeral_timer_days_by_other Samomazací zprávy vyprší po %1$s dnech od %2$s.
+@lineephemeral_timer_weeks_by_you Samomazací zprávy vyprší po %1$s týdnech ode mě.
+@lineephemeral_timer_weeks_by_other Samomazací zprávy vyprší po %1$s týdnech od %2$s.
+@lineprotection_enabled_by_you Ochrana rozhovoru zapnuta ode mě.
+@lineprotection_enabled_by_other Ochrana rozhovoru zapnuta od %1$s.
+@lineprotection_disabled_by_you Ochrana rozhovoru vypnuta ode mě.
+@lineprotection_disabled_by_other Ochrana rozhovoru vypnuta od %1$s.
+@end

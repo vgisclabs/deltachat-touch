@@ -83,7 +83,7 @@ Page {
           //  },
             Action {
                 iconName: 'info'
-                text: i18n.tr('About')
+                text: i18n.tr('About DeltaTouch')
                 onTriggered: {
                             layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('About.qml'))
                 }
@@ -108,7 +108,7 @@ Page {
 
                 ListItemLayout {
                     id: offlineLayout
-                    title.text: i18n.tr("Sync all")
+                    title.text: i18n.tr("Sync All")
 
                     Switch {
                         id: offlineSwitch
@@ -127,7 +127,7 @@ Page {
 
                 ListItemLayout {
                     id: accountsItemLayout
-                    title.text: i18n.tr("Accounts")
+                    title.text: i18n.tr("Known Accounts")
 
                     Icon {
                         name: "go-next"

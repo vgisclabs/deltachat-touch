@@ -1,0 +1,73 @@
+@linechat_no_messages Inga meddelanden.
+@lineself Jag
+@linedraft Utkast
+@linevoice_message Röstmeddelande
+@lineimage Bild
+@linegif GIF
+@linevideo Video
+@lineaudio Ljud
+@linefile Arkiv
+@lineencrypted_message Krypterat meddelande
+@lineqrscan_fingerprint_label Fingeravtryck
+@linesystemmsg_cannot_decrypt Meddelandet kan inte avkrypteras.
+
+• Det kanske kan hjälpa, att svara på detta meddelande och be avsändaren skicka det igen.
+
+• Ifall du har ominstallerat Delta Chat eller något annat e-postprogram på denna eller någon annan enhet, kanske du behöver skicka ett nytt Autocryp inställningsmeddelande därifrån.
+@linesystemmsg_read_receipt_subject Meddelande öppnat
+@linesystemmsg_read_receipt_body \"%1$s\" meddelandet du skickade visades på mottagarens skärm.
+
+Det är ingen garanti för att innehållet har lästs.
+@lineautocrypt_prefer_e2ee Föredra slutpunkt-till-slutpunkt-kryptering
+@linechat_archived_chats_title Arkiverade chattar
+@lineautocrypt_asm_subject Inställningsmeddelande för Autocrypt
+@lineautocrypt_asm_general_body Detta är inställningsmeddelandet för Autocrypt som används för att skicka nycklar mellan klienter.
+
+För att kunna avkryptera och använda din nyckel, öppnar du meddelandet i en Autocrypt-kompatibel klient och skriver in inställningskoden som visats på den genererande enheten.
+@linelogin_error_cannot_login Kan inte logga in som \"%1$s\". Kontrollera om e-postadressen och lösenordet är korrekt.
+@linedevice_talk Enhetsmeddelanden
+@linesaved_messages Sparade meddelanden
+@linecontact_verified %1$s verifierad.
+@linecontact_not_verified Kan inte verifiera %1$s.
+@linecontact_setup_changed Ändrade inställningarna för %1$s.
+@linedevice_talk_explain Meddelanden i denna chatt är lokalt genererade av din Delta Chat-app. Dess skapare använder den för att informera om app-uppdateringar och problem vid användning.
+@linedevice_talk_welcome_message Välkommen till Delta Chat! - Delta Chat ser ut och känns som andra populära meddelandeappar, men innefattar ingen centraliserad kontroll eller spårning eller säljer dig och dina vänner, kollegor eller familj till stora organisationer/företag.
+
+Tekniskt är Delta Chat ett e-postprogram med modernt utseende. E-post i ny skrud, om du vill. 👻
+
+Använd Delta Chat med vem som helst av alla miljarder människor som har en e-postadress. Mottagaren behöver inte installera Delta Chat, besöka webbsidor eller registrera sig någonstans, men om de vill så kan du såklart visa dem till 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Okänd avsändare för denna chatt. Se info för fler detaljer.
+@linesystemmsg_subject_for_new_contact Meddelande från %1$s
+@linesystemmsg_failed_sending_to Kunde inte skicka meddelande till %1$s.
+@linevideochat_invitation Videochattinbjudan
+@linevideochat_invitation_body Du är inbjuden till en videochatt, klicka på %1$s för att ansluta.
+@linereply_noun Svara
+@lineforwarded Vidarebefodrat
+@linelocation Plats
+@lineone_moment Ett ögonblick...
+@lineerror_x Fel: %1$s
+@lineqrshow_join_contact_hint Skanna det här för att få kontakt med %1$s.
+@lineqrshow_join_group_hint Skanna det här för att ansluta till gruppen \"%1$s\".
+@linegroup_name_changed_by_you Gruppnamnet ändrades från \"%1$s\" till \"%2$s\" av mig.
+@linegroup_name_changed_by_other Gruppnamnet ändrades från \"%1$s\" till \"%2$s\" av %3$s.
+@linegroup_image_changed_by_you Gruppbilden ändrades av mig.
+@linegroup_image_changed_by_other Gruppbilden ändrades av %1$s.
+@lineadd_member_by_you Medlemmen %1$s lades till av mig.
+@lineadd_member_by_other Medlemmen %1$s lades till av %2$s.
+@lineremove_member_by_you Medlemmen %1$s togs bort av mig.
+@lineremove_member_by_other Medlemmen %1$s togs bort av %2$s.
+@linegroup_image_deleted_by_you Gruppbilden togs bort av mig.
+@linegroup_image_deleted_by_other Gruppbilden togs bort av %1$s.
+@lineephemeral_timer_disabled_by_you Tiduret för meddelandeborttagning är inaktiverat av mig.
+@lineephemeral_timer_disabled_by_other Tiduret för meddelandeborttagning är inaktiverat av %1$s.
+@lineephemeral_timer_seconds_by_you Tiduret för meddelandeborttagning är satt till %1$s s av mig.
+@lineephemeral_timer_seconds_by_other Tiduret för meddelandeborttagning är satt till %1$s s av %2$s.
+@lineephemeral_timer_1_minute_by_you Tiduret för meddelandeborttagning är satt till 1 minut av mig.
+@lineephemeral_timer_1_minute_by_other Tiduret för meddelandeborttagning är satt till 1 minut av %1$s.
+@lineephemeral_timer_1_hour_by_you Tiduret för meddelandeborttagning är satt till 1 timma av mig.
+@lineephemeral_timer_1_hour_by_other Tiduret för meddelandeborttagning är satt till 1 timma av %1$s.
+@lineephemeral_timer_1_day_by_you Tiduret för meddelandeborttagning är satt till 1 dag av mig.
+@lineephemeral_timer_1_day_by_other Tiduret för meddelandeborttagning är satt till 1 dag av %1$s.
+@lineephemeral_timer_1_week_by_you Tiduret för meddelandeborttagning är satt till 1 vecka av mig.
+@lineephemeral_timer_1_week_by_other Tiduret för meddelandeborttagning är satt till 1 vecka av %1$s.
+@end

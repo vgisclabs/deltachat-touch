@@ -1,0 +1,15 @@
+@linechat_no_messages சேதிகள் இல்லை
+@lineself நான்
+@linedraft வரைவு
+@linevoice_message குரல் செய்தி
+@lineimage படம்
+@linegif GIF
+@linevideo காணொளி
+@lineaudio ஒலி
+@linefile கோப்பு
+@lineencrypted_message மறைகுறியாக்கப்பட்ட செய்தி
+@lineqrscan_fingerprint_label கைரேகைகள்
+@linelocation இடம்
+@lineone_moment ஒரு நிமிடம் காத்திருக்கவும் ...
+@lineerror_x பிழை: %1$s
+@end

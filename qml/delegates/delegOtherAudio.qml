@@ -229,7 +229,7 @@ Item {
                     leftMargin: units.gu(1)
                     verticalCenter: playShape.verticalCenter
                 }
-                text: (model.msgViewType === DeltaHandler.AudioType ? i18n.tr("Audio ") : i18n.tr("Voice message ")) + model.duration
+                text: (model.msgViewType === DeltaHandler.AudioType ? i18n.tr("Audio") : i18n.tr("Voice Message")) + model.duration
             }
 
             Label {

@@ -1,0 +1,54 @@
+@linechat_no_messages Mezurik ez.
+@lineself Ni
+@linedraft Zirriborroa
+@linevoice_message Ahots-mezua
+@lineimage Irudia
+@linegif Gif-a
+@linevideo Bideoa
+@lineaudio Audioa
+@linefile Fitxategia
+@lineencrypted_message Zifratutako mezua
+@lineqrscan_fingerprint_label Hatz-marka
+@linesystemmsg_cannot_decrypt Ezin da mezu hau deszifratu.
+
+• Mezuari erantzun diezaiokezu eta berriro bidaltzea eskatu.
+
+• Delta Chat berrinstalatu baduzu edo beste posta programa bat instalatu baduzu gailu honetan edo beste batean, AutoCrypt ezarpen mezua handik hona birbidaltzen saiatu zaitezke.
+@linesystemmsg_read_receipt_subject Irakurragiria
+@linesystemmsg_read_receipt_body Hau \"%1$s\" mezuaren irakurragiri bat da.
+
+Honek mezua jasotzailearen gailuan bistaratu dela esan nahi du, ez edukia irakurri dela.
+@lineautocrypt_prefer_e2ee Hobetsi muturretik muturrerako zifratzea
+@linechat_archived_chats_title Artxibatutako txatak
+@lineautocrypt_asm_subject Autocrypt ezarpen mezua
+@lineautocrypt_asm_general_body Hau Autocrypt ezarpen mezua da, zure muturretik muturrerako ezarpena bezeroen artean pasatzeko erabilia.
+
+ Zure ezarpena deszifratu eta erabiltzeko, ireki mezua Autocrypt onartzen duen bezero batean eta sartu gailu sortzailean agertutako ezarpen kodea.
+@linelogin_error_cannot_login Ezin da \"%1$s\" bezala saioa hasi. Egiaztatu E-mail helbidea eta pasahitza zuzenak diren.
+@linedevice_talk Gailuaren mezuak
+@linesaved_messages Gordetako mezuak
+@linecontact_verified %1$s egiaztatuta.
+@linecontact_not_verified Ezin da %1$s egiaztatu
+@linecontact_setup_changed Aldatu %1$s(r)en ezarpena
+@linedevice_talk_explain Txat honetako mezuak zure Delta Chat aplikazioak sortu ditu lokalki. Egileek aplikazioaren eguneraketei buruz eta erabileran arazoei buruz informatzeko erabiltzen dute.
+@linedevice_talk_welcome_message Ongi etorri Delta Chat-era! Delta Chat beste bat bateko mezularitza aplikazioen itxura du, baina ez du kontrol zentralizaturik, ez dizu jarraitzen edo saltzen, ez zu ez zure lagunak, lankideak edo familia elkarte handi bati.
+
+Teknikoki, Delta Chat e-mail aplikazio bat da interfaze berri batekin. E-maila jantzi berri batekin esan genezake 👻
+
+Erabili Delta Chat milaka miloika pertsonekin,  erabili bere e-mail helbidea eta kitto. Hartzaileek ez dute zertan Delta Chat instalatu behar, ez webguneak bisitatu edo izena eman inon. Hala ere, jakina, instalatu nahi badute hona bideratu ditzakezu 👉 https://get.delta.chat
+@linelocation Kokalekua
+@lineone_moment Unetxo bat...
+@lineerror_x Errorea: %1$s
+@lineqrshow_join_contact_hint Eskaneatu hau %1$s erabiltzailearen kontaktua ezartzeko
+@lineqrshow_join_group_hint Eskaneatu hau \"%1$s\" taldera elkartzeko.
+@linegroup_name_changed_by_you Nik: Taldearen izena \"%1$s\" izatetik \"%2$s\" izatera aldatu da
+@linegroup_name_changed_by_other %3$s(e)k: Taldearen izena \"%1$s\" izatetik \"%2$s\" izatera aldatu da
+@linegroup_image_changed_by_you Nik: Taldearen irudia aldatuta
+@linegroup_image_changed_by_other %1$s(e)k: Taldearen irudia aldatuta
+@lineadd_member_by_you Nik: %1$s kidea gehituta
+@lineadd_member_by_other %2$s(e)k: %1$s kidea gehituta
+@lineremove_member_by_you Nik: %1$s kidea kenduta
+@lineremove_member_by_other %2$s(e)k: %1$s kidea kenduta
+@linegroup_image_deleted_by_you Nik: Taldearen irudia ezabatuta
+@linegroup_image_deleted_by_other %1$s(e)k: Taldearen irudia ezabatuta
+@end

@@ -11,5 +11,55 @@
         <file>read_white.svg</file>
         <file>sent_black.svg</file>
         <file>sent_white.svg</file>
+        <file>coreTranslations/ar.txt</file>
+        <file>coreTranslations/az.txt</file>
+        <file>coreTranslations/be.txt</file>
+        <file>coreTranslations/bg.txt</file>
+        <file>coreTranslations/bn.txt</file>
+        <file>coreTranslations/ca.txt</file>
+        <file>coreTranslations/ckb.txt</file>
+        <file>coreTranslations/cs.txt</file>
+        <file>coreTranslations/da.txt</file>
+        <file>coreTranslations/de.txt</file>
+        <file>coreTranslations/el.txt</file>
+        <file>coreTranslations/eo.txt</file>
+        <file>coreTranslations/es.txt</file>
+        <file>coreTranslations/eu.txt</file>
+        <file>coreTranslations/fa.txt</file>
+        <file>coreTranslations/fi.txt</file>
+        <file>coreTranslations/fr.txt</file>
+        <file>coreTranslations/gl.txt</file>
+        <file>coreTranslations/grc.txt</file>
+        <file>coreTranslations/he.txt</file>
+        <file>coreTranslations/hr.txt</file>
+        <file>coreTranslations/hu.txt</file>
+        <file>coreTranslations/id.txt</file>
+        <file>coreTranslations/it.txt</file>
+        <file>coreTranslations/ja_JP.txt</file>
+        <file>coreTranslations/km.txt</file>
+        <file>coreTranslations/kn.txt</file>
+        <file>coreTranslations/ko.txt</file>
+        <file>coreTranslations/la.txt</file>
+        <file>coreTranslations/lt.txt</file>
+        <file>coreTranslations/nah.txt</file>
+        <file>coreTranslations/nb.txt</file>
+        <file>coreTranslations/nl_NL.txt</file>
+        <file>coreTranslations/pl.txt</file>
+        <file>coreTranslations/pt_BR.txt</file>
+        <file>coreTranslations/pt.txt</file>
+        <file>coreTranslations/ru.txt</file>
+        <file>coreTranslations/sc.txt</file>
+        <file>coreTranslations/sk.txt</file>
+        <file>coreTranslations/sq.txt</file>
+        <file>coreTranslations/sr.txt</file>
+        <file>coreTranslations/sv.txt</file>
+        <file>coreTranslations/ta.txt</file>
+        <file>coreTranslations/te.txt</file>
+        <file>coreTranslations/tg.txt</file>
+        <file>coreTranslations/tr.txt</file>
+        <file>coreTranslations/uk.txt</file>
+        <file>coreTranslations/zh_CN.txt</file>
+        <file>coreTranslations/zh_HK.txt</file>
+        <file>coreTranslations/zh_TW.txt</file>
     </qresource>
 </RCC>

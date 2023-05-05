@@ -1,0 +1,18 @@
+@linechat_no_messages Nincs üzenet.
+@lineself Én
+@linedraft Piszkozat
+@linevoice_message Hangüzenet
+@lineimage Kép
+@linegif Gif
+@linevideo Videó
+@lineaudio Hang
+@linefile Fájl
+@lineencrypted_message Titkosított üzenet
+@lineqrscan_fingerprint_label Ujjlenyomat.
+@linechat_archived_chats_title Archivált beszélgetések
+@linecontact_verified %1$s ellenőrizve.
+@linecontact_not_verified %1$s nem ellenőrizhető
+@linelocation Hely
+@lineone_moment Egy pillanat...
+@lineerror_x Hiba: %1$s
+@end

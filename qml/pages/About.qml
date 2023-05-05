@@ -25,7 +25,7 @@ Page {
     id: aboutPage
     header: PageHeader {
         id: aboutHeader
-        title: i18n.tr('About')
+        title: i18n.tr('About DeltaTouch')
     }
 
     property string deltaversion: DeltaHandler.getCurrentConfig("sys.version")

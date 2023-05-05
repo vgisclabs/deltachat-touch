@@ -1,0 +1,13 @@
+@linechat_no_messages Nema poruka.
+@lineself Ja
+@linedraft Skica
+@lineimage Slika
+@linegif Gif
+@linevideo Video
+@linefile Datoteka
+@lineqrscan_fingerprint_label Otisak prsta
+@linesaved_messages Sačuvane poruke
+@linelocation Lokacija
+@lineone_moment Samo trenutak...
+@lineerror_x Greška: %1$s
+@end

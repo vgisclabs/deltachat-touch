@@ -1,0 +1,117 @@
+@linechat_no_messages គ្មានសារ
+@lineself ខ្ញុំ
+@linedraft ពង្រាង
+@linevoice_message សារជាសម្លេង
+@lineimage រូបភាព
+@linegif រូបភាពចលនា
+@linevideo វីដេអូ
+@lineaudio សម្លេង
+@linefile ឯកសារ
+@lineencrypted_message សារដែលបានធ្វើឲ្យសម្ងាត់
+@lineqrscan_fingerprint_label ស្នាមម្រាមដៃ
+@linesystemmsg_cannot_decrypt សារនេះមិនអាចត្រូវបានឌិគ្រីប
+
+• វាអាចជួយឆ្លើយតបជំនួសសារនេះ និងសួរអ្នកផ្ញើដើម្បីផ្ញើសារម្តងទៀត
+
+• ក្នុងករណីអ្នកបានតម្លើងសា Delta Chat ម្តងទៀត ឬកម្មវិធីអុីម៉េលមួយទៀត លើឧបករណ៍នេះ ឬឧបករណ៍មួយផ្សេងទៀត អ្នកប្រហែលជាចង់ផ្ញើ សារការតម្លើងអ៊ិនគ្រីបស្វ័យប្រវត្តិ  (ផ្ញើនិងទទួលដោយសម្ងាត់) ពីទីនោះ។
+@linesystemmsg_read_receipt_subject សារត្រូវបានបើក
+@linesystemmsg_read_receipt_body \"%1$s\" សារដែលអ្នកបានផ្ញើត្រូវបានបង្ហាញនៅលើ អេក្រង់របស់អ្នកទទួល
+
+នេះមិនមែនជាការធានាថា មាតិកាត្រួវបានអានទេ។
+@lineautocrypt_prefer_e2ee ចូលចិត្តការអ៊ិនគ្រីបច្រើនជាង
+@linechat_archived_chats_title ការសន្ទនាដែលបានទុកក្នុងប័ណ្ណសារ
+@lineautocrypt_asm_subject ផ្ញើសារអ៊ិនគ្រីបស្វ័យប្រវត្តិសម្រាប់ការរៀបចំ
+@lineautocrypt_asm_general_body នេះជាសាររៀបចំចាក់អ៊ិនគ្រីបស្វ័យប្រវត្តិសម្រាប់ចែកចាយចាត់ការរៀបចំចាក់ឧបករណ៍ដល់ឧបករណ៍ជាមួយឧបករណ៍ផ្សេងទៀត។
+
+ដើម្បីឌិគ្រីប (ការទទួលសារដែលបានធ្វើជាសារសញ្ញាសម្ងាត់ដល់អាចអានបានវិញ) និងប្រើប្រាសការរៀបចំចាក់របសអ្នក បើកសារនៅក្នុងកម្មវិធីដែលស្គាល់អ៊ិនគ្រីបស្វ័យប្រវត្តិ និងកូដការរៀបចំដែលបានអំណោយពីឧបករណ៍បានបង្កើតវា។
+@linelogin_error_cannot_login មិនអាចកត់ចូលជា \"%1$s\" ។ សូមផ្ទៀតផ្ទាត់មើលអស័យដ្ឋានអុីម៉េល និងពាក្យសម្ងាត់ឲ្យបានត្រឹមត្រូវ។
+@linedevice_talk សារពីឧបករណ៍
+@linesaved_messages សារដែលបានរក្សាទុករួចហើយ
+@linecontact_verified %1$s បានផ្ទៀងផ្ទាត់
+@linecontact_not_verified មិនអាចផ្ទៀងផ្ទាត់ %1$s
+@linecontact_setup_changed បានដូរការរៀបចំសម្រាប់ %1$s
+@linedevice_talk_explain សារក្នុងការសន្ទនានេះ បានបង្កើតទិនេះដោយ សា Delta Chat ។ អ្នកបង្កើតវា ប្រើវាដើម្បីជូនដំណឹងពីការធ្វើបច្ចុប្បន្នភាពកម្មវិធី និងបញ្ហាកំឡុងពេលប្រើ។
+@linedevice_talk_welcome_message ស្វាគមន៍មកកាន់ សា Delta Chat ! - សា Delta Chat មើលទៅដូចកម្មវិធីសន្ទនាពេញនិយមផ្សេងទៀតដែរ ប៉ុន្តែមិនជាប់ស្មុគស្មាញនឹងការត្រួតត្រាជាកណ្តាល តាមដាន រឺលក់អ្នក មិត្តភក្តិ មិត្តរួមការងារ រឺគ្រួសារ ទៅឲ្យអង្គការធំ។
+
+បច្ចេកទេស សា Delta Chat គឺ កម្មវិធីអុីម៉ែលជាមួយនឹងចំណុចប្រទាក់ការសន្ទនាទាន់សម័យ។ អ្នកនឹងត្រូវការតែអុីម៉េលតែប៉ុណ្ណោះ! 👻
+
+ប្រើប្រាស់សាហារីសង្ឃ ជាមួយនរណាម្នាក់ក្នុងចំណោមមនុស្សរាប់ពាន់លានអ្នក: ដោយគ្រាន់តែប្រើអស័យដ្ឋានអុីម៉េលរបស់ពួកគេ។ អ្នកទទួលបានសារដោយមិនតម្រូវបញ្ជូលកម្មវិធី សា Delta Chat ទស្សនាគេហទំព័រ ឬចុះឈ្មោះសិននៅកន្លែងណាក៏បាន - ទោះបីជា ការពិតប្រសិនបើពួកគេចូលចិត្ត អ្នកអាចចង្អុរពួកគេទៅកាន់ 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat មិនស្គាល់អ្នកផ្ញើការសន្ទនានេះ។ មើល \'ពត៌មាន\' សម្រាប់ពត៌មានលំអិត
+@linesystemmsg_subject_for_new_contact សារពី %1$s
+@linesystemmsg_failed_sending_to បានបរាបានក្នុងការផ្ញើសារទៅ %1$s
+@linevideochat_invitation ការអញ្ជើញសន្ទនាវីដេអូ
+@linevideochat_invitation_body អ្នកត្រូវបានអញ្ជើញដើម្បីសន្ទនាជាវីដេអូ។ ចុច %1$s ដើម្បីចូលរួម។
+@lineconfiguration_failed_with_error ការកំណត់រចនាសម្ព័ន្ឌ បរាជ័យ។ កំហុស៖ %1$s
+@linereply_noun ចម្លើយតប
+@lineforwarded បានបញ្ជូនបន្ត
+@linelocation ទីតាំង
+@linesticker ស្លាក
+@linedevicemsg_bad_time ⚠️ កាលបរិច្ឆេទ ឬពេលវេលានៃឧបករណ៍របស់អ្នកហាក់ដូចជាមិនត្រឹមត្រូវ (%1$s)។
+
+ កែតម្រូវនាឡិការបស់អ្នក ⏰🔧 ដើម្បីធានាថា សាររបស់អ្នកត្រូវបានទទួលត្រឹមត្រូវ។
+@linedevicemsg_update_reminder ⚠️កំណែ Delta Chat របស់អ្នកប្រហែលជាហួសសម័យហើយ។
+
+ នេះអាចបណ្តាលឱ្យមានបញ្ហាដោយសារតែដៃគូជជែករបស់អ្នកប្រើកំណែថ្មីជាង - ហើយអ្នកកំពុងបាត់លក្ខណៈពិសេសចុងក្រោយ 😳
+ សូមពិនិត្យមើល https://get.delta.chat ឬហាងកម្មវិធីរបស់អ្នកដើម្បីទទួលបានព័ត៌មានថ្មីៗ ។
+@linedevicemsg_self_deleted អ្នកបានលុប \"សារដែលបានរក្សាទុក\" សន្ទនា។
+
+ℹ️ ដើម្បីប្រើមុខងារ \"សារដែលបានរក្សាទុក\" ជាថ្មីម្តងទៀត សូមបង្កើតសន្ទនាថ្មីជាមួយខ្លួនអ្នក។
+@linedevicemsg_storage_exceeding ⚠️️ឃ្លាំងផ្ទុករបស់កម្មវិធីផ្តល់សេវាឲ្យអ្នក ជិតអស់ហើយត្រូវបានប្រើ %1$s%% រួចហើយ។
+
+ អ្នកប្រហែលជាមិនអាចទទួលបានសារទេនៅពេលប្រើទំហំផ្ទុក ១០០%% ។
+
+👉 សូមពិនិត្យមើលថាតើ អ្នកអាចលុបទិន្នន័យចាស់នៅក្នុងចំណុចប្រទាក់គេហទំព័ររបស់កម្មវិធីផ្តល់សេវាកម្មហើយពិចារណាបើក \"ការកំណត់ / លុបសារចាស់ \"។ អ្នកអាចពិនិត្យមើលការប្រើប្រាស់ទំហំផ្ទុកបច្ចុប្បន្នរបស់អ្នកបានគ្រប់ពេលនៅ \"ការកំណត់ / ការតភ្ជាប់និងសេវាកម្ម\" ។
+@linen_bytes_message សារ %1$s
+@linedownload_max_available_until ទាញយកអតិបរមា អាចប្រើបានរហូតដល់ %1$s
+@lineincoming_messages សារចូល
+@lineoutgoing_messages សារចេញ
+@linestorage_on_domain ទំហំផ្ទុកនៅលើ %1$s
+@lineone_moment សូមមួយភ្លែត...
+@lineconnectivity_connected បានតភ្ជាប់
+@lineconnectivity_connecting កំពុងស្វែងរកការតភ្ជាប់…
+@lineconnectivity_updating កំពុងធ្វើបច្ចុប្បន្នភាព…
+@linesending កំពុងបញ្ជូន…
+@linelast_msg_sent_successfully បានផ្ញើសារចុងក្រោយដោយជោគជ័យ។
+@lineerror_x កំហុស: %1$s
+@linenot_supported_by_provider មិនត្រូវបានគាំទ្រ ដោយកម្មវិធីផ្តល់សេវារបស់អ្នកទេ។
+@linemessages សារ
+@linebroadcast_list បញ្ជីចាក់ផ្សាយ
+@linepart_of_total_used បានប្រើ %1$s នៃ %2$s
+@lineqrshow_join_contact_hint ស្គេនទីនេះដើម្បីរៀបចំទំនាក់ទំនងជាមួយ %1$s
+@lineqrshow_join_group_hint ស្គេនទីនេះដើម្បីចូលរួមក្រុម \"%1$s\" នេះ។
+@lineconnectivity_not_connected មិនបានតភ្ជាប់
+@linegroup_name_changed_by_you ឈ្មោះក្រុមត្រូវបានប្តូរពី \"%1$s\" ទៅកាន់ \"%2$s\" ដោយខ្ញុំ
+@linegroup_name_changed_by_other ឈ្មោះក្រុមត្រូវបានប្តូរពី \"%1$s\" ទៅកាន់ \"%2$s\" ដោយ %3$s
+@linegroup_image_changed_by_you រូបភាពក្រុមត្រូវបានប្តូរ ដោយខ្ញុំ
+@linegroup_image_changed_by_other រូបភាពក្រុមត្រូវបានប្តូរ ដោយ %1$s
+@lineadd_member_by_you សមាជិក %1$s ត្រូវបានបន្ថែម ដោយខ្ញុំ
+@lineadd_member_by_other សមាជិក %1$s ត្រូវបានបន្ថែម ដោយ %2$s
+@lineremove_member_by_you សមាជិក %1$s ត្រូវបានយកចេញ ដោយខ្ញុំ
+@lineremove_member_by_other សមាជិក %1$s ត្រូវបានយកចេញ ដោយ %2$s
+@linegroup_image_deleted_by_you រូបភាពក្រុមត្រូវបានលុប ដោយខ្ញុំ
+@linegroup_image_deleted_by_other រូបភាពក្រុមត្រូវបានលុប ដោយ %1$s
+@lineephemeral_timer_disabled_by_you បានបិទបាត់កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈ ដោយខ្ញុំ
+@lineephemeral_timer_disabled_by_other បានបិទបាត់កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈ ដោយ %1$s
+@lineephemeral_timer_seconds_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s វិនាទី។ ដោយខ្ញុំ
+@lineephemeral_timer_seconds_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s វិនាទី។ ដោយ %2$s
+@lineephemeral_timer_1_minute_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ ១នាទី។ ដោយខ្ញុំ
+@lineephemeral_timer_1_minute_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ ១នាទី។ ដោយ %1$s
+@lineephemeral_timer_1_hour_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ ១ម៉ោង។ ដោយខ្ញុំ
+@lineephemeral_timer_1_hour_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ ១ម៉ោង។ ដោយ %1$s
+@lineephemeral_timer_1_day_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ ១ថ្ងៃ។ ដោយខ្ញុំ
+@lineephemeral_timer_1_day_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ ១ថ្ងៃ។ ដោយ %1$s
+@lineephemeral_timer_1_week_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ ១សប្តាហ៍។ ដោយខ្ញុំ
+@lineephemeral_timer_1_week_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ ១សប្តាហ៍។ ដោយ %1$s
+@lineephemeral_timer_minutes_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s នាទី។ ដោយខ្ញុំ
+@lineephemeral_timer_minutes_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s នាទី។ ដោយ %2$s
+@lineephemeral_timer_hours_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s ម៉ោង។ ដោយខ្ញុំ
+@lineephemeral_timer_hours_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s ម៉ោង។ ដោយ %2$s
+@lineephemeral_timer_days_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s ថ្ងៃ។ ដោយខ្ញុំ
+@lineephemeral_timer_days_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s ថ្ងៃ។ ដោយ %2$s
+@lineephemeral_timer_weeks_by_you កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s ថ្ងៃ។ ដោយខ្ញុំ
+@lineephemeral_timer_weeks_by_other កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈបាន កំណត់ទៅ %1$s ថ្ងៃ។ ដោយ %2$s
+@lineprotection_enabled_by_you ការការពារសន្ទនាត្រូវបានបើក ដោយខ្ញុំ
+@lineprotection_enabled_by_other ការការពារសន្ទនាត្រូវបានបើក ដោយ %1$s
+@lineprotection_disabled_by_you ការការពារសន្ទនាត្រូវបានបិទ ដោយខ្ញុំ
+@lineprotection_disabled_by_other ការការពារសន្ទនាត្រូវបានបិទ ដោយ %1$s
+@end

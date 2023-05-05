@@ -1,0 +1,132 @@
+@linechat_no_messages Keine Nachrichten.
+@lineself Ich
+@linedraft Entwurf
+@linevoice_message Sprachnachricht
+@lineimage Bild
+@linegif GIF
+@linevideo Video
+@lineaudio Audio
+@linefile Datei
+@lineencrypted_message Verschlüsselte Nachricht
+@lineqrscan_fingerprint_label Fingerabdruck
+@linesystemmsg_cannot_decrypt Diese Nachricht kann nicht entschlüsselt werden.
+
+• Es könnte bereits helfen, einfach auf diese Nachricht zu antworten und die/den AbsenderIn zu bitten, die Nachricht erneut zu senden.
+
+• Falls Delta Chat oder ein anderes E-Mail-Programm auf diesem oder einem anderen Gerät neu installiert wurde, kann von dort aus eine Autocrypt Setup-Nachricht gesendet werden.
+@linesystemmsg_read_receipt_subject Empfangsbestätigung
+@linesystemmsg_read_receipt_body Ihre Nachricht \"%1$s\" wurde auf dem Empfangsgerät angezeigt.
+
+Das ist keine Garantie dafür, dass sie auch gelesen wurde.
+@lineautocrypt_prefer_e2ee Ende-zu-Ende-Verschlüsselung bevorzugen
+@linechat_archived_chats_title Archivierte Chats
+@lineautocrypt_asm_subject Autocrypt-Setup-Nachricht
+@lineautocrypt_asm_general_body Dies ist die Autocrypt-Setup-Nachricht, um das Ende-zu-Ende-Setup von einem Gerät auf das andere zu übertragen.
+
+Um das Setup zu entschlüsseln und zu verwenden, öffnen Sie diese Nachricht in einer Autocrypt-kompatiblen App und geben Sie den Setup-Code ein, der auf dem anderen Gerät angezeigt wurde.
+@linelogin_error_cannot_login Login als \"%1$s\" nicht möglich. Bitte E-Mail-Adresse und Passwort auf Richtigkeit überprüfen.
+@linedevice_talk Systemnachrichten
+@linesaved_messages Gespeicherte Nachrichten
+@linecontact_verified %1$s verifiziert.
+@linecontact_not_verified Kann %1$s nicht verifizieren
+@linecontact_setup_changed Geändertes Setup für %1$s
+@linedevice_talk_explain Nachrichten in diesem Chat werden lokal von der Delta Chat-App erzeugt. Ihre Entwickler informieren damit über App-Updates und Probleme während der Nutzung.
+@linedevice_talk_welcome_message Willkommen – Delta Chat sieht aus und funktioniert wie andere populäre Messenger - aber ohne zentrale Überwachung, ohne Tracking, ohne die Daten von Ihnen, Ihren FreundInnen, KollegInnen oder Familienmitgliedern an irgendwelche Firmen zu verkaufen.
+
+Technisch gesehen ist Delta Chat ein E-Mail-Programm unter einer modernen Chat-Oberfläche - sozusagen E-Mail in neuem Gewand 👻
+
+Mit Delta Chat haben Sie Milliarden potentieller ChatpartnerInnen: Verwenden Sie einfach deren E-Mail-Adresse - die EmpfängerInnen selbst müssen Delta Chat dazu nicht installieren oder sich irgendwo anmelden. Sie können sie aber natürlich gerne auf 👉 https://get.delta.chat hinweisen
+@linesystemmsg_unknown_sender_for_chat Absender ist für diesen Chat unbekannt. Siehe \"Info\" für weitere Details,
+@linesystemmsg_subject_for_new_contact Nachricht von %1$s
+@linesystemmsg_failed_sending_to Nachricht senden an %1$s fehlgeschlagen.
+@linevideochat_invitation Videochat-Einladung
+@linevideochat_invitation_body Sie sind zu einem Videochat eingeladen, klicken Sie auf %1$s , um teilzunehmen.
+@lineconfiguration_failed_with_error Konfiguration fehlgeschlagen. Fehler: %1$s
+@linereply_noun Antwort
+@lineforwarded Weitergeleitet
+@linelocation Ort
+@linesticker Sticker
+@linedevicemsg_bad_time ⚠️ Ihr Gerät scheint ein falsches Datum oder eine falsche Uhrzeit (%1$s) zu verwenden.
+
+Stellen Sie Ihre Uhr ⏰🔧 richtig ein, um sicherzustellen, dass Ihre Nachrichten korrekt empfangen werden.
+@linedevicemsg_update_reminder ⚠️ Ihre Delta-Chat-Version ist möglicherweise veraltet.
+
+Dies kann zu Problemen führen, wenn Ihre Chat-PartnerInnen neuere Versionen verwenden - und Ihnen die neuesten Funktionen fehlen. 😳
+Bitte überprüfen Sie https://get.delta.chat oder Ihren App-Store auf Updates.
+@linedevicemsg_self_deleted Sie haben den Chat \"Gespeicherte Nachrichten\" gelöscht.
+
+ℹ️ Um die Funktion \"Gespeicherte Nachrichten\" erneut zu verwenden, erstellen Sie einfach einen Chat mit sich selbst.
+@linedevicemsg_storage_exceeding ⚠️ Der Speicherplatz Ihres Anbieters ist bald erschöpft; bereits %1$s%% sind verbraucht.
+
+Sie können möglicherweise keine Nachrichten mehr empfangen, wenn der Speicherplatz zu 100%% verbraucht ist.
+
+👉 Bitte prüfen Sie, ob Sie alte Daten im Webinterface des Anbieters löschen können, und erwägen Sie, \"Einstellungen / Alte Nachrichten löschen\" zu aktivieren. Den aktuellen Speicherverbrauch können Sie jederzeit unter \"Einstellungen / Verbindung\" überprüfen.
+@linen_bytes_message %1$s Nachricht
+@linedownload_max_available_until Download max. verfügbar bis %1$s
+@lineincoming_messages Eingehende Nachrichten
+@lineoutgoing_messages Ausgehende Nachrichten
+@linestorage_on_domain Speicher auf %1$s
+@lineone_moment Einen Moment …
+@lineconnectivity_connected Verbunden
+@lineconnectivity_connecting Verbinde…
+@lineconnectivity_updating Aktualisiere…
+@linesending Sende…
+@linelast_msg_sent_successfully Letzte Nachricht erfolgreich versandt.
+@lineerror_x Fehler: %1$s
+@linenot_supported_by_provider Nicht unterstützt von Ihrem Anbieter.
+@linemessages Nachrichten
+@linebroadcast_list Broadcast-Liste
+@linepart_of_total_used %1$s von %2$s verwendet
+@linesecure_join_started %1$s hat dich zu dieser Gruppe eingeladen.
+
+Warte auf die Antwort des Gerätes von %2$s...
+@linesecure_join_replies %1$s antwortet. Warte, zur Gruppe hinzugefügt zu werden...
+@lineqrshow_join_contact_hint Scannen für Chat mit %1$s
+@lineqrshow_join_group_hint Scannen, um der Gruppe \"%1$s\" beizutreten
+@lineconnectivity_not_connected Nicht verbunden
+@lineaeap_addr_changed %1$s hat die E-Mail-Adresse von %2$s nach %3$s geändert
+@lineaeap_explanation Sie haben Ihre E-Mail-Adresse von %1$s auf %2$s geändert.
+
+Wenn Sie jetzt eine Nachricht an eine verifizierte Gruppe senden, wird dort automatisch die alte durch die neue Adresse ersetzt.
+
+Es wird dringend empfohlen, Ihren alten E-Mail-Anbieter so einzurichten, dass er alle E-Mails an Ihre neue E-Mail-Adresse weiterleitet. Andernfalls könnten Sie Nachrichten von Kontakten verpassen, die Ihre neue E-Mail-Adresse noch nicht erhalten haben.
+@linegroup_name_changed_by_you Sie haben den Gruppennamen von \"%1$s\" zu \"%2$s\" geändert.
+@linegroup_name_changed_by_other Gruppenname geändert von \"%1$s\" zu \"%2$s\" von %3$s.
+@linegroup_image_changed_by_you Sie haben das Gruppenbild geändert.
+@linegroup_image_changed_by_other Gruppenbild geändert von %1$s.
+@lineadd_member_by_you Sie haben %1$s hinzugefügt.
+@lineadd_member_by_other %1$s hinzugefügt von %2$s.
+@lineremove_member_by_you Sie haben %1$s entfernt.
+@lineremove_member_by_other %1$s entfernt von %2$s.
+@linegroup_left_by_you Sie haben die Gruppe verlassen.
+@linegroup_left_by_other Gruppe verlassen von %1$s.
+@linegroup_image_deleted_by_you Sie haben das Gruppenbild gelöscht.
+@linegroup_image_deleted_by_other Gruppenbild gelöscht von %1$s.
+@linelocation_enabled_by_you Sie haben Standortübertragung aktiviert.
+@linelocation_enabled_by_other Standortübertragung aktiviert von %1$s.
+@lineephemeral_timer_disabled_by_you Sie haben verschwindende Nachrichten ausgeschaltet.
+@lineephemeral_timer_disabled_by_other Verschwindende Nachrichten ausgeschaltet von %1$s.
+@lineephemeral_timer_seconds_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf %1$s Sekunden gesetzt.
+@lineephemeral_timer_seconds_by_other Ablaufzeit verschwindender Nachrichten auf %1$s Sekunden gesetzt von %2$s.
+@lineephemeral_timer_1_minute_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf 1 Minute gesetzt.
+@lineephemeral_timer_1_minute_by_other Ablaufzeit verschwindender Nachrichten auf 1 MInute gesetzt von %1$s.
+@lineephemeral_timer_1_hour_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf 1 Stunde gesetzt.
+@lineephemeral_timer_1_hour_by_other Ablaufzeit verschwindender Nachrichten auf 1 Stunde gesetzt von %1$s.
+@lineephemeral_timer_1_day_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf 1 Tag gesetzt.
+@lineephemeral_timer_1_day_by_other Ablaufzeit verschwindender Nachrichten auf 1 Tag gesetzt von %1$s.
+@lineephemeral_timer_1_week_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf 1 Woche gesetzt.
+@lineephemeral_timer_1_week_by_other Ablaufzeit verschwindender Nachrichten auf 1 Woche gesetzt von %1$s.
+@lineephemeral_timer_minutes_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf %1$s Minuten gesetzt.
+@lineephemeral_timer_minutes_by_other Ablaufzeit verschwindender Nachrichten auf %1$s Minuten gesetzt von %2$s.
+@lineephemeral_timer_hours_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf %1$s Stunden gesetzt.
+@lineephemeral_timer_hours_by_other Ablaufzeit verschwindender Nachrichten auf %1$s Stunden gesetzt von %2$s.
+@lineephemeral_timer_days_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf %1$s Tage gesetzt.
+@lineephemeral_timer_days_by_other Ablaufzeit verschwindender Nachrichten auf %1$s Tage gesetzt von %2$s.
+@lineephemeral_timer_weeks_by_you Sie haben die Ablaufzeit verschwindender Nachrichten auf %1$s Wochen gesetzt.
+@lineephemeral_timer_weeks_by_other Ablaufzeit verschwindender Nachrichten auf %1$s Wochen gesetzt von %2$s.
+@lineprotection_enabled_by_you Sie haben die Chat-Absicherung eingeschaltet.
+@lineprotection_enabled_by_other Chat-Absicherung eingeschaltet von %1$s.
+@lineprotection_disabled_by_you Sie haben die Chat-Absicherung ausgeschaltet.
+@lineprotection_disabled_by_other Chat-Absicherung ausgeschaltet von %1$s
+@linemultidevice_qr_subtitle Scannen, um ein zweites Gerät für %1$s hinzuzufügen
+@end

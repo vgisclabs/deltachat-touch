@@ -1,0 +1,130 @@
+@linechat_no_messages Aucun message.
+@lineself Moi
+@linedraft Brouillon
+@linevoice_message Message vocal
+@lineimage Image
+@linegif Gif
+@linevideo Vidéo
+@lineaudio Son
+@linefile Fichier
+@lineencrypted_message Message chiffré
+@lineqrscan_fingerprint_label Empreinte digitale
+@linesystemmsg_cannot_decrypt Ce message ne peut pas être déchiffré.
+
+• Il peut déjà être utile de simplement répondre à ce message et demander à l\'expéditeur de l\'envoyer à nouveau.
+
+• Au cas où vous auriez réinstallé Delta Chat ou un autre programme de messagerie sur cet appareil ou un autre, vous voudrez peut-être envoyer un message de configuration d\'Autocrypt depuis ce dernier.
+@linesystemmsg_read_receipt_subject Accusé de lecture
+@linesystemmsg_read_receipt_body Ceci est un accusé de lecture pour le message \"%1$s\".
+
+Cela signifie que le message a été affiché sur l\'appareil du destinataire, pas forcément que le contenu ait été lu.
+@lineautocrypt_prefer_e2ee Préférez le chiffrement de bout en bout
+@linechat_archived_chats_title Discussions archivées
+@lineautocrypt_asm_subject Message de configuration Autocrypt
+@lineautocrypt_asm_general_body Ceci est le message de configuration Autocrypt utilisé pour transférer votre configuration de bout en bout entre clients. Pour déchiffrer et utiliser votre configuration, ouvrez le message dans un client compatible Autocrypt et entrez le code de configuration présenté sur le périphérique de génération.
+@linelogin_error_cannot_login Connexion en tant que \"%1$s\" échouée. Vérifiez s.v.p. que votre adresse courriel et votre mot de passe sont corrects.
+@linedevice_talk Messages de l\'appareil
+@linesaved_messages Messages sauvegardés
+@linecontact_verified %1$s vérifié.
+@linecontact_not_verified Ne peut pas vérifier %1$s
+@linecontact_setup_changed Configuration modifiée pour %1$s
+@linedevice_talk_explain Les messages dans cette discussion sont générés localement par votre application Delta Chat. Cela vous permet de recevoir des informations concernant les mises à jour et problèmes rencontrés à l\'utilisation.
+@linedevice_talk_welcome_message Bienvenue sur Delta Chat ! – Delta Chat ressemble à d\'autres applications de messagerie populaires, mais n\'implique pas un contrôle centralisé, le traçage ou la revente de vos données, de celles de vos amis, vos collègues ou votre famille à de grandes organisations.
+
+D\'un point de vue technique, Delta Chat est une application de courrier électronique avec une interface de discussion instantanée moderne. Un courriel retoiletté si vous voulez 👻
+
+Utilisez Delta Chat avec n\'importe qui parmi des milliards de personnes : vous avez seulement besoin de leur adresse de courriel. Les destinataires n\'ont pas besoin d\'installer Delta Chat, d\'accéder à des sites internet ni de s\'inscrire où que ce soit – mais s\'ils le souhaitent, vous pouvez évidemment les diriger vers 👉 https://get.delta.chat 
+@linesystemmsg_unknown_sender_for_chat Expéditeur inconnu de cette discussion. Voir « Info » pour plus de détails.
+@linesystemmsg_subject_for_new_contact Message de %1$s
+@linesystemmsg_failed_sending_to Échec de l\'envoi du message à %1$s.
+@linevideochat_invitation Invitation à une discussion vidéo
+@linevideochat_invitation_body Vous êtes invité à une discussion vidéo, cliquez sur %1$s pour la rejoindre.
+@lineconfiguration_failed_with_error Échec de la configuration. Erreur : %1$s
+@linereply_noun Réponse
+@lineforwarded Transféré
+@linelocation Position
+@linesticker Vignette
+@linedevicemsg_bad_time ⚠️ L\'heure ou la date de votre appareil semble erronée (%1$s).
+
+Réglez votre horloge ⏰🔧 pour que vos messages soient bien reçus.
+@linedevicemsg_update_reminder ⚠️ Votre version de Delta Chat semble être obsolète.
+
+Ceci pourrait poser des problèmes car vos contacts utilisent des versions plus récentes - et vous loupez les dernières fonctionnalités 😳
+Veuillez s\'il vous plaît faire un tour sur https://get.delta.chat ou votre magasin d\'applications pour une mise à jour.
+@linedevicemsg_self_deleted Vous avez supprimé la discussion \"Messages sauvegardés\".
+
+ℹ️ Pour utiliser la fonctionnalité \"Message enregistrés\" à nouveau, commencez une nouvelle discussion avec vous-même.
+@linedevicemsg_storage_exceeding ⚠️ Bientôt plus d\'espace de stockage chez votre fournisseur, %1$s%% utilisés.
+
+Vous ne serez peut-être plus en mesure de recevoir des messages quand votre espace de stockage sera plein.
+
+👉 Veuillez vérifier si vous avez d\'anciens éléments à supprimer directement sur l\'interface web de votre fournisseur et envisagez d\'activer \"Paramètres / Supprimer les anciens messages\". Vous pouvez vérifier à tout moment le volume d\'espace de stockage en cours d\'utilisation depuis \"Paramètres / Connectivité\".
+@linen_bytes_message %1$s message
+@linedownload_max_available_until Télécharger le plus possible jusqu\'à %1$s
+@lineincoming_messages Messages entrants
+@lineoutgoing_messages Messages sortants
+@linestorage_on_domain Espace de stockage sur %1$s
+@lineone_moment Un instant …
+@lineconnectivity_connected Connecté
+@lineconnectivity_connecting Connexion...
+@lineconnectivity_updating Mise à jour...
+@linesending Envoi...
+@linelast_msg_sent_successfully Dernier message envoyé avec succés.
+@lineerror_x Erreur : %1$s
+@linenot_supported_by_provider Non pris en charge par votre fournisseur de mail.
+@linemessages Messages
+@linebroadcast_list Liste de diffusion
+@linepart_of_total_used %1$s sur %2$s utilisé
+@linesecure_join_started %1$s vous a invité à rejoindre ce groupe.
+
+En attente de la réponse de l’appareil de %2$s…
+@linesecure_join_replies %1$s a répondu, en attente d’être ajouté au groupe…
+@lineqrshow_join_contact_hint Scanner pour discuter avec %1$s
+@lineqrshow_join_group_hint Scannez ceci pour rejoindre le groupe \"%1$s\".
+@lineconnectivity_not_connected Non connecté
+@lineaeap_addr_changed %1$s a changé son adresse de %2$s à %3$s
+@lineaeap_explanation Vous avez changé votre adresse e-mail de %1$s à %2$s.
+
+Si vous envoyez maintenant un message à un groupe vérifié, les contacts de ce groupe remplaceront automatiquement l\'ancienne adresse par la nouvelle.
+
+Il est fortement conseillé de configurer votre ancien fournisseur d\'e-mail pour qu\'il transfère tous les e-mails à votre nouvelle adresse. Sinon, vous risquez de manquer des messages de contacts qui n\'ont pas encore reçu votre nouvelle adresse.
+@linegroup_name_changed_by_you Nom du groupe modifié de « %1$s »  en « %2$s »  par vous.
+@linegroup_name_changed_by_other Nom de groupe modifié de « %1$s »  en « %2$s »  par %3$s.
+@linegroup_image_changed_by_you Image du groupe modifié par vous.
+@linegroup_image_changed_by_other Image de groupe modifiée par %1$s.
+@lineadd_member_by_you Membre %1$s ajouté par vous.
+@lineadd_member_by_other Membre %1$s ajouté par %2$s.
+@lineremove_member_by_you Membre %1$s retiré par vous.
+@lineremove_member_by_other Membre %1$s retiré par %2$s.
+@linegroup_left_by_you Vous avez quitté le groupe.
+@linegroup_left_by_other %1$s a quitté le groupe.
+@linegroup_image_deleted_by_you Vous avez supprimé l\'image du groupe.
+@linegroup_image_deleted_by_other Image du groupe supprimée par %1$s.
+@linelocation_enabled_by_you Vous avez activé l\'envoi de votre localisation.
+@linelocation_enabled_by_other %1$sa activé l\'envoi de sa localisation.
+@lineephemeral_timer_disabled_by_you Vous avez désactivé la minuterie des messages éphémères.
+@lineephemeral_timer_disabled_by_other Minuterie des messages éphémères désactivée par %1$s.
+@lineephemeral_timer_seconds_by_you Vous avez réglé le temps d\'affichage des messages éphémères à %1$s seconde(s).
+@lineephemeral_timer_seconds_by_other Minuterie des messages éphémères réglée à %1$s secondes par %2$s.
+@lineephemeral_timer_1_minute_by_you Vous avez réglé le temps d\'affichage des messages éphémères à 1 minute.
+@lineephemeral_timer_1_minute_by_other Minuterie des messages éphémères réglée à 1 minute par %1$s.
+@lineephemeral_timer_1_hour_by_you Vous avez réglé le temps d\'affichage des messages éphémères à 1 heure.
+@lineephemeral_timer_1_hour_by_other Minuterie des messages éphémères réglée à 1 heure par %1$s.
+@lineephemeral_timer_1_day_by_you Vous avez réglé le temps d\'affichage des messages éphémères à 1 jour.
+@lineephemeral_timer_1_day_by_other Minuterie des messages éphémères réglée à 1 jour par %1$s.
+@lineephemeral_timer_1_week_by_you Vous avez réglé le temps d\'affichage des messages éphémères à 1 semaine.
+@lineephemeral_timer_1_week_by_other Minuterie des messages éphémères réglée à 1 semaine par %1$s.
+@lineephemeral_timer_minutes_by_you Vous avez réglé le temps d\'affichage des messages éphémères à %1$s minutes.
+@lineephemeral_timer_minutes_by_other Minuterie des messages éphémères réglée à %1$s minutes par %2$s.
+@lineephemeral_timer_hours_by_you Vous avez réglé le temps d\'affichage des messages éphémères à %1$s heures.
+@lineephemeral_timer_hours_by_other Minuterie des messages éphémères réglée à %1$s heures par %2$s.
+@lineephemeral_timer_days_by_you Vous avez réglé le temps d\'affichage des messages éphémères à %1$s jours.
+@lineephemeral_timer_days_by_other Minuterie des messages éphémères réglée à %1$s jours par %2$s.
+@lineephemeral_timer_weeks_by_you Vous avez réglé le temps d\'affichage des messages éphémères à %1$s semaines.
+@lineephemeral_timer_weeks_by_other Minuterie des messages éphémères réglée à %1$s semaines par %2$s.
+@lineprotection_enabled_by_you Protection de discussion activée par vous.
+@lineprotection_enabled_by_other Protection de discussion activée par %1$s.
+@lineprotection_disabled_by_you Protection de discussion désactivée par vous.
+@lineprotection_disabled_by_other Protection de discussion désactivée par %1$s.
+@linemultidevice_qr_subtitle Scanner pour configurer un deuxième appareil pour %1$s
+@end

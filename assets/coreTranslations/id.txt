@@ -1,0 +1,61 @@
+@linechat_no_messages Tak ada pesan.
+@lineself Saya
+@linedraft Draf
+@linevoice_message Pesan suara
+@lineimage Gambar
+@linegif Gif
+@linevideo Video
+@lineaudio Audio
+@linefile Berkas
+@lineencrypted_message Pesan terenkripsi
+@lineqrscan_fingerprint_label Sidik jari
+@linesystemmsg_cannot_decrypt Pesan ini tidak bisa dienkripsi.
+
+• Ada baiknya menjawab pesan ini dan meminta pengirimnya untuk kirim ulang.
+
+• Dalam kasus Anda menginstal ulang Delta Chat atau program surel lain di perangkat ini atau perangkat lain, sebaiknya Anda mengirim Pengaturan Pesan Autocrypt dari sana.
+@linesystemmsg_read_receipt_subject Pesan dibuka
+@linesystemmsg_read_receipt_body Pesan \"%1$s\" yang Anda kirimkan tampak di layar penerima.
+
+Ini bukan jaminan kalau isinya dibaca.
+@lineautocrypt_prefer_e2ee Lebih baik enkripsi ujung ke ujung
+@linechat_archived_chats_title Obrolan terarsip
+@lineautocrypt_asm_subject Pengaturan Pesan Autocrypt
+@lineautocrypt_asm_general_body Inilah Autocrypt Setup Message yang digunakan utuk mentransfer pengaturan ujung ke ujung Anda antar pelanggan.
+
+Untuk membuka enkirpsi dan menggunakan pengaturan Anda, bukan pesan di Autocrypt-compliant pelanggan dan masukkan kode pengaturan yang ditampikan untuk perangkat terkait.
+@linelogin_error_cannot_login Tidak bisa login sebagai \"%1$s\". Mohon cek apakah alamat surel dan kata sandi benar.
+@linedevice_talk Pesan perangkat
+@linesaved_messages Pesan yang disimpan
+@linecontact_verified %1$sdiverifikasi.
+@linecontact_not_verified Tidak bisa memverifikasi %1$s.
+@linecontact_setup_changed Ubah pengaturan untuk %1$s.
+@linedevice_talk_explain Pesan dalam obrolan ini dihasilkan dalam aplikasi Delta Chat anda secara lokal. Para penciptanya memakai obrolan ini untuk memberi tahu aplikasi mutakhir dan masalah-masalah selama digunakan.
+@linedevice_talk_welcome_message Selamat datang di Delta Chat! – Delta Chat tampak dan terasa seperti aplikasi percakapan populer lainnya, tapi tidak menggunakan kontrol yang tersentralisasi, melacak atau menjual anda, teman, kolega atau keluarga ke organisasi-organisasi besar.
+
+Secara teknis, Delta Chat merupakan sebuah aplikasi surel dengan tampilan obrolan modern. Katakanlah surel dengan tampilan baru 👻
+
+Gunakan Delta Chat dengan siapa pun dari milyaran orang di luar sana: cukup gunakan alamat surel mereka. Penerima tak harus mengunduh Delta Chat, kunjungi laman atau daftar di mana pun - karena tentu saja, jika mereka menyukai anda, ajaklah mereka ke 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Pengirim tidak dikenal untuk obrolan ini. Lihat \'info\' untuk lebih jelasnya.
+@linesystemmsg_subject_for_new_contact Pesan dari %1$s
+@linesystemmsg_failed_sending_to Gagal mengirim pesan ke %1$s.
+@linevideochat_invitation Undangan obrolan video
+@lineconfiguration_failed_with_error Konfigurasi gagal. Error: %1$s
+@linereply_noun Balas
+@lineforwarded Diteruskan
+@linelocation Lokasi
+@lineone_moment Sebentar...
+@lineerror_x Eror: %1$s
+@lineqrshow_join_contact_hint Pindai ini untuk mengatur kontak dengan%1$s.
+@lineqrshow_join_group_hint Pindai ini untuk bergabung dengan grup \"%1$s\".
+@linegroup_name_changed_by_you Nama grup diganti dari \"%1$s\" ke \"%2$s\" oleh saya.
+@linegroup_name_changed_by_other Nama grup diganti dari \"%1$s\" ke \"%2$s\" oleh %3$s.
+@linegroup_image_changed_by_you Gambar grup telah diubah oleh saya.
+@linegroup_image_changed_by_other Gambar grup telah diubah oleh %1$s.
+@lineadd_member_by_you Member %1$s telah ditambahkan oleh saya.
+@lineadd_member_by_other Member %1$s telah ditambahkan oleh %2$s.
+@lineremove_member_by_you Member %1$s telah dikeluarkan oleh saya.
+@lineremove_member_by_other Member %1$s telah dikeluarkan oleh %2$s.
+@linegroup_image_deleted_by_you Gambar grup telah dihapus oleh saya.
+@linegroup_image_deleted_by_other Gambar grup telah dihapus oleh %1$s.
+@end

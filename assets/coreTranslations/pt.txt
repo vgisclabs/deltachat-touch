@@ -1,0 +1,46 @@
+@linechat_no_messages Sem mensagens
+@lineself Eu
+@linedraft Rascunho
+@linevoice_message Mensagem de voz
+@lineimage Imagem
+@linegif Gif
+@linevideo Vídeo
+@lineaudio Áudio
+@linefile Ficheiro
+@lineencrypted_message Mensagem encriptada
+@lineqrscan_fingerprint_label Impressão digital
+@linesystemmsg_cannot_decrypt Esta mensagem não pode ser descriptada.
+
+ • Talvez seja útil simplesmente responder a esta mensagem e solicitar que o remetente envie a mensagem novamente.
+
+ • Caso você tenha re-instalado o Delta Chat ou outro programa de e-mail neste ou noutro dispositivo poderá querer enviar uma mensagem de configuração Autocrypt do dispositvo.
+@linesystemmsg_read_receipt_subject Ler recibos
+@linesystemmsg_read_receipt_body Este é um recibo de confirmação de leitura da mensagem \"%1$s\".
+
+Esta mensagem foi exibida no dispositivo do destinatário, não necessariamente que o conteúdo foi lido.
+@lineautocrypt_prefer_e2ee Preferir encriptação ponta a ponta
+@linechat_archived_chats_title chats arquivadas
+@lineautocrypt_asm_subject Mensagem de configuração do Autocrypt
+@lineautocrypt_asm_general_body Esta é a Mensagem de Configuração de Autocrypt usada para transferir sua configuração de ponta a ponta entre clientes (dispositivos). 
+
+Para descriptar e usar, abra a mensagem em um cliente compatível com Autocrypt e insira o código de configuração apresentado no dispositivo de geração.
+@linelogin_error_cannot_login Não é possível fazer o login como \"%1$s\". Por favor, verifique se o endereço de email e a palavra-chave estão corretos.
+@linecontact_verified %1$s verificado.
+@linecontact_not_verified Não é possível verificar %1$s
+@linecontact_setup_changed Configuração alterada para %1$s
+@linelocation Local
+@lineone_moment Um momento...
+@lineerror_x Erro: %1$s
+@lineqrshow_join_contact_hint Digitalize para configurar um contato com %1$s
+@lineqrshow_join_group_hint Digitalize para se juntar ao geupo \"%1$s\".
+@linegroup_name_changed_by_you O nome do grupo mudou de \"%1$s\" para \"%2$s\" por mim.
+@linegroup_name_changed_by_other O nome do grupo mudou de \"%1$s\" para \"%2$s\" por %3$s.
+@linegroup_image_changed_by_you Imagem do grupo modificada por mim.
+@linegroup_image_changed_by_other Imagem do grupo modificada por %1$s.
+@lineadd_member_by_you Membro %1$s adicionado por mim.
+@lineadd_member_by_other Membro %1$s adicionado por %2$s.
+@lineremove_member_by_you Membro %1$s removido por mim.
+@lineremove_member_by_other Membro %1$s removido por %2$s.
+@linegroup_image_deleted_by_you Imagem do grupo apagada por mim.
+@linegroup_image_deleted_by_other Imagem do grupo apagada por %1$s.
+@end

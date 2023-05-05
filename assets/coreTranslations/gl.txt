@@ -1,0 +1,112 @@
+@linechat_no_messages Sen mensaxes.
+@lineself Eu
+@linedraft Borrador
+@linevoice_message Mensaxe de voz
+@lineimage Imaxe
+@linegif Gif
+@linevideo Vídeo
+@lineaudio Audio
+@linefile Ficheiro
+@lineencrypted_message Mensaxe cifrada
+@lineqrscan_fingerprint_label Pegada dactilar
+@linesystemmsg_cannot_decrypt Esta mensaxe non se pode descifrar.
+
+• Podería axudar que respondas a mensaxe pedindo ao remitente que a volte a enviar.
+
+• En caso dunha reinstalación Delta Chat ou outro programa de correo en este ou outro dispositivo igual debes enviar unha Mensaxe de Configuración Autocrypt desde alí.
+@linesystemmsg_read_receipt_subject Mensaxe aberta
+@linesystemmsg_read_receipt_body A mensaxe \"%1$s\" que enviaches mostrouse na pantalla do correspondente.
+
+Non hai garantía de que o contido fose lido.
+@lineautocrypt_prefer_e2ee Preferir cifrado extremo-a-extremo
+@linechat_archived_chats_title Conversas arquivadas
+@lineautocrypt_asm_subject Mensaxe de Configuración Autocrypt
+@lineautocrypt_asm_general_body Esta é a Mensaxe de Configuración Autocrypt utilizado para transferir os teus axustes de cifrado de extremo-a-extremo entre clientes.
+
+Para descifrar e utilizar os axustes abre a mensaxe nun cliente compatible con Autocrypt e introduce o código mostrado no dispositivo de orixe.
+@linelogin_error_cannot_login Non se puido acceder como \"%1$s\". Comproba o enderezo de correo e o contrasinal.
+@linedevice_talk Mensaxes do dispositivo
+@linesaved_messages Mensaxes gardadas
+@linecontact_verified %1$s verificado.
+@linecontact_not_verified Non se puido verificar %1$s.
+@linecontact_setup_changed Cambiaron os axustes para %1$s.
+@linedevice_talk_explain As mensaxes de esta conversa xéranse localmente na túa app Delta Chat. Os creadores utilízanas para informar acerca de actualizacións e problemas durante a utilización.
+@linedevice_talk_welcome_message Benvida a Delta Chat! – Delta Chat ten o aspecto de outras apps de mensaxería, pero non implica que teña un control centralizado, rastrexo ou que te venda a ti, aos teus amigos, colegas ou familia as megacorporacións.
+
+Técnicamente, Delta Chat é unha aplicación de correo electrónico cunha interface moderna de mensaxería. O correo travestido, se así o prefires 👻
+
+Utiliza Delta Chat con millóns de persoas: simplemente utiliza o seu enderezo de correo electrónico. Os correspondentes non precisan instalar Delta Chat, visitar sitios web ou rexistrarse en ningún lugar - claro que, por suposto, se queren, podes convidalos a  👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Remitente descoñecido para esta convers. Mira en \'info\' para saber máis.
+@linesystemmsg_subject_for_new_contact Mensaxe de %1$s
+@linesystemmsg_failed_sending_to Fallou o envío para %1$s.
+@linevideochat_invitation Convite a chat de vídeo
+@linevideochat_invitation_body Convidáronte a un chat de vídeo, preme %1$s para unirte.
+@lineconfiguration_failed_with_error Fallou a configuración. Erro: %1$s
+@linereply_noun Resposta
+@lineforwarded Reenviada
+@linelocation Localización
+@linesticker Adhesivo
+@linedevicemsg_bad_time ⚠️ A hora ou data no teu dispositivo poderían ser incorrectas (%1$s).
+
+Axusta o reloxio ⏰🔧 para asegurar que as túas mensaxes son recibidas correctamente.
+@linedevicemsg_update_reminder ⚠️ A túa versión de Delta Chat podería estar desactualizada.
+
+Esto podería causar problemas porque os teus correspondentes utilizan versións máis novas - e ademáis non tes as últimas características 😳
+Vai a https://get.delta.chat ou tenda de aplicacións para máis detalles.
+@linedevicemsg_self_deleted Eliminaches o chat \"Mensaxes gardadas\".
+
+ℹ️ Para usar \"Mensaxes gardadas\" de novo, crea un novo chat contigo mesmo.
+@linedevicemsg_storage_exceeding ⚠️ A almacenaxe do teu provedor vaise esgotar, xa utilizaches %1$s %%.
+
+Pode que non recibas mensaxes cando a almacenaxe chegue a 100%% utilizado.
+
+👉 Mira se podes eliminar datos antigos na interface web do teu provedor e pensa se debes activar \"Axustes / Eliminar Mensaxes Antigas\". Podes ver a almacenaxe actual utilizada en \"Axustes / Conectividade\".
+@linen_bytes_message %1$s mensaxe
+@linedownload_max_available_until Descarga o máximo dispoñible ata %1$s
+@lineincoming_messages Mensaxes entrantes
+@lineoutgoing_messages Mensaxes saíntes
+@linestorage_on_domain Almacenar en %1$s
+@lineone_moment Un momento…
+@lineconnectivity_connected Conectado
+@lineconnectivity_connecting Conectando…
+@lineconnectivity_updating Actualizando…
+@linesending Enviando...
+@linelast_msg_sent_successfully Enviouse correctamente a última mensaxe.
+@lineerror_x Fallo: %1$s
+@linenot_supported_by_provider O teu provedor non ten soporte
+@linemessages Mensaxes
+@linebroadcast_list Lista de difusión
+@linepart_of_total_used Utilizado %1$s de %2$s
+@linesecure_join_started %1$s convidoute a este grupo.
+
+Agardando a que responda o dispositivo de %2$s ...
+@linesecure_join_replies %1$s respondeu, agardando a que sexa engadido ao grupo...
+@lineqrshow_join_contact_hint Escanea esto para conectar con %1$s-
+@lineqrshow_join_group_hint Escanea esto para unirte ao grupo \"%1$s\".
+@lineconnectivity_not_connected Non conectado
+@lineaeap_addr_changed %1$s cambiou o seu enderezo de %2$s a %3$s
+@lineaeap_explanation Cambiaches o teu enderezo de email de %1$s a %2$s.
+
+Se envías unha mensaxe a un grupo verificado os contactos cambiarán automáticamente o enderezo antigo polo novo.
+
+É moi recomendable que configures o email antigo para que che reenvíe todo o correo ao novo enderezo. De non facelo poderías perder mensaxes de contactos que aínda non coñezan o teu novo enderezo.
+@linegroup_name_changed_by_you Cambiaches o nome do grupo de \"%1$s\" a \"%2$s\".
+@linegroup_name_changed_by_other %3$s cambiou o nome do grupo de \"%1$s\" a \"%2$s\".
+@linegroup_image_changed_by_you Cambiaches a imaxe do grupo.
+@linegroup_image_changed_by_other Imaxe do grupo cambiada por %1$s.
+@lineadd_member_by_you Engadiches un membro %1$s.
+@lineadd_member_by_other %1$s engadido por %2$s.
+@lineremove_member_by_you Eliminaches a %1$s.
+@lineremove_member_by_other %1$s eliminado por %2$s.
+@linegroup_left_by_you Saíches do grupo
+@linegroup_left_by_other %1$s deixou o grupo.
+@linegroup_image_deleted_by_you Eliminaches a imaxe do grupo
+@linegroup_image_deleted_by_other %1$s eliminou a imaxe do grupo.
+@linelocation_enabled_by_you Activaches a compartición da localización.
+@linelocation_enabled_by_other Difusión da localización activada por %1$s.
+@lineephemeral_timer_disabled_by_you Desactivaches o temporizador de eliminación de mensaxes.
+@lineephemeral_timer_disabled_by_other Temporizador da eliminación de mensaxes descativado por %1$s.
+@lineephemeral_timer_seconds_by_you Estableceches que as mensaxes desaparezan en  %1$s s
+@lineephemeral_timer_seconds_by_other O temporizador de desaparición de mensaxes establecido en %1$s segundos por %2$s.
+@lineephemeral_timer_1_minute_by_you Puxeches en 1 minuto o temporizador de desaparición de mensaxes.
+@end

@@ -1,0 +1,132 @@
+@linechat_no_messages Nessun messaggio.
+@lineself Io
+@linedraft Bozza
+@linevoice_message Messaggio Vocale
+@lineimage Immagine
+@linegif Gif
+@linevideo Video
+@lineaudio Audio
+@linefile File
+@lineencrypted_message Messaggio cifrato
+@lineqrscan_fingerprint_label Impronta
+@linesystemmsg_cannot_decrypt Questo messaggio non può essere decrittato.
+
+• Potrebbe essere sufficiente rispondere a questo messaggio e chiedere al mittente di rispedirlo.
+
+• Se hai reinstallato Delta Chat o usi un altro client email dovresti inviare un Messaggio di configurazione Autocrypt dal dispositivo originario.
+@linesystemmsg_read_receipt_subject Ricevuta di lettura
+@linesystemmsg_read_receipt_body Questa è una ricevuta di lettura del messaggio \"%1$s\".
+
+Ciò significa che il messaggio è stato mostrato nel dispositivo del destinatario, ma non necessariamente che il contenuto è stato letto.
+@lineautocrypt_prefer_e2ee Preferisci Cifratura End-To-End
+@linechat_archived_chats_title Chat Archiviate
+@lineautocrypt_asm_subject Messaggio di Configurazione Autocrypt
+@lineautocrypt_asm_general_body Questo è un messaggio di configurazione Autocrypt per trasferire le impostazioni end-to-end tra dispositivi.
+
+Per decifrarlo e usare le impostazioni, apri questo messaggio con un client compatibile e inserisci il codice mostrato nel dispositivo di origine.
+@linelogin_error_cannot_login Impossibile accedere come \"%1$s\". Verifica che l\'indirizzo email e la password siano corretti.
+@linedevice_talk Messaggi del Dispositivo
+@linesaved_messages Messaggi Salvati
+@linecontact_verified %1$s verificato.
+@linecontact_not_verified Impossibile verificare %1$s
+@linecontact_setup_changed Impostazioni modificate per %1$s
+@linedevice_talk_explain I messaggi in questa chat vengono generati localmente da Delta Chat. Gli sviluppatori li usano per informarti sugli aggiornamenti o sui problemi di utilizzo.
+@linedevice_talk_welcome_message Benvenuto in Delta Chat! - Delta Chat ha l\'aspetto e lo stile di altre popolari applicazioni di messaggistica, ma non costringe a un controllo centralizzato, al tracciamento o alla vendita tua, dei tuoi amici, colleghi o familiari a grandi organizzazioni.
+
+Tecnicamente, Delta Chat è un\'applicazione di posta elettronica con un\'interfaccia moderna. L\'email in una nuova veste 👻
+
+Utilizza Delta Chat con chiunque: basta conoscere il loro indirizzo e-mail. I destinatari non hanno bisogno di installare Delta Chat, visitare siti web o iscriversi da nessuna parte - ma, naturalmente se lo desiderano, puoi suggerirgli 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Mittente sconosciuto per questa chat. Vedi \'info\' per maggiori dettagli.
+@linesystemmsg_subject_for_new_contact Messaggio da %1$s
+@linesystemmsg_failed_sending_to Impossibile inviare il messaggio a %1$s.
+@linevideochat_invitation Invito alla video chat
+@linevideochat_invitation_body Sei invitato a una video chat, fai clic %1$s per partecipare.
+@lineconfiguration_failed_with_error Configurazione fallita. Errore: %1$s
+@linereply_noun Rispondi
+@lineforwarded Inoltrato
+@linelocation Posizione
+@linesticker Sticker
+@linedevicemsg_bad_time ⚠️ La data o l\'ora del tuo dispositivo sembrano imprecise (%1$s).
+
+Regola l\'orologio ⏰🔧 per assicurarti che i tuoi messaggi vengano ricevuti correttamente.
+@linedevicemsg_update_reminder ⚠️ La tua versione di Delta Chat potrebbe essere obsoleta.
+
+Ciò potrebbe causare problemi perché i tuoi partner di chat utilizzano versioni più recenti - e ti mancano le funzionalità più recenti 😳
+Controlla https://get.delta.chat o il tuo app store per gli aggiornamenti. 
+@linedevicemsg_self_deleted Hai eliminato la chat \"Messaggi salvati\".
+
+ℹ️ Per utilizzare nuovamente la funzione \"Messaggi salvati\", crea una nuova chat con te stesso.
+@linedevicemsg_storage_exceeding ⚠️ Lo spazio di archiviazione del tuo fornitore sta per essere superato, già %1$s%% vengono utilizzati.
+
+Potrebbe non essere possibile ricevere messaggi quando lo spazio di archiviazione è 100%% utilizzato.
+
+👉 Si prega di verificare se è possibile eliminare i vecchi dati nell\'interfaccia web del fornitore e considerare di abilitare \"Impostazioni / Elimina Vecchi Messaggi\". Puoi controllare l\'utilizzo corrente dello spazio di archiviazione in qualsiasi momento in \"Impostazioni / Connettività\".
+@linen_bytes_message %1$s messaggio
+@linedownload_max_available_until Download disponibile massimo fino a %1$s
+@lineincoming_messages Messaggi in arrivo
+@lineoutgoing_messages Messaggi in uscita
+@linestorage_on_domain Spazio su %1$s
+@lineone_moment Un momento…
+@lineconnectivity_connected Connesso
+@lineconnectivity_connecting Connessione…
+@lineconnectivity_updating Aggiorno…
+@linesending Invio...
+@linelast_msg_sent_successfully Ultimo messaggio inviato con successo.
+@lineerror_x Errore: %1$s
+@linenot_supported_by_provider Non supportato dal tuo fornitore.
+@linemessages Messaggi
+@linebroadcast_list Lista Trasmissione
+@linepart_of_total_used %1$s di %2$s usati
+@linesecure_join_started %1$s ti ha invitato ad unirti a questo gruppo.
+
+In attesa che il dispositivo di %2$s risponda…
+@linesecure_join_replies %1$s ha risposto, in attesa di essere aggiunto al gruppo…
+@lineqrshow_join_contact_hint Scansionalo per chattare con %1$s
+@lineqrshow_join_group_hint Scansionalo per entrare nel gruppo \"%1$s\"
+@lineconnectivity_not_connected Non connesso
+@lineaeap_addr_changed %1$s hanno cambiato il loro indirizzo da %2$s a %3$s
+@lineaeap_explanation Hai cambiato il tuo indirizzo email da %1$s a %2$s.
+
+Se ora invii un messaggio a un gruppo verificato, i contatti sostituiranno automaticamente il vecchio indirizzo con il tuo nuovo.
+
+Si consiglia vivamente di impostare il tuo vecchio provider email per inoltrare tutte le email al tuo nuovo indirizzo email. Altrimenti potresti perdere i messaggi di contatti che non hanno ancora ricevuto il tuo nuovo indirizzo.
+@linegroup_name_changed_by_you Hai cambiato il nome del gruppo da \"%1$s\" a \"%2$s\".
+@linegroup_name_changed_by_other Nome gruppo cambiato da \"%1$s\" a \"%2$s\" da %3$s.
+@linegroup_image_changed_by_you Hai cambiato l\'immagine del gruppo.
+@linegroup_image_changed_by_other Immagine del gruppo cambiata da %1$s.
+@lineadd_member_by_you Hai aggiunto un membro %1$s.
+@lineadd_member_by_other Membro %1$s aggiunto da %2$s.
+@lineremove_member_by_you Hai rimosso il membro %1$s.
+@lineremove_member_by_other Membro %1$s rimosso da %2$s.
+@linegroup_left_by_you Hai lasciato il gruppo.
+@linegroup_left_by_other Gruppo lasciato da %1$s.
+@linegroup_image_deleted_by_you Hai eliminato l\'immagine del gruppo.
+@linegroup_image_deleted_by_other Immagine gruppo eliminata da %1$s.
+@linelocation_enabled_by_you Hai abilitato la trasmissione della posizione.
+@linelocation_enabled_by_other Trasmissione della posizione abilitato da %1$s.
+@lineephemeral_timer_disabled_by_you Hai disabilitato il timer dei messaggi a scomparsa.
+@lineephemeral_timer_disabled_by_other Timer messaggi a scomparsa disabilitato da %1$s.
+@lineephemeral_timer_seconds_by_you Hai impostato il timer dei messaggi a scomparsa su %1$s s
+@lineephemeral_timer_seconds_by_other Timer messaggi a scomparsa impostato su %1$s s da %2$s.
+@lineephemeral_timer_1_minute_by_you Hai impostato il timer dei messaggi a scomparsa su 1 minuto.
+@lineephemeral_timer_1_minute_by_other Timer messaggi a scomparsa impostato su 1 minuto da %1$s.
+@lineephemeral_timer_1_hour_by_you Hai impostato il timer dei messaggi a scomparsa su 1 ora.
+@lineephemeral_timer_1_hour_by_other Timer messaggi a scomparsa impostato su 1 ora da %1$s.
+@lineephemeral_timer_1_day_by_you Hai impostato il timer dei messaggi a scomparsa su 1 giorno.
+@lineephemeral_timer_1_day_by_other Timer messaggi a scomparsa impostato su 1 giorno da %1$s.
+@lineephemeral_timer_1_week_by_you Hai impostato il timer dei messaggi a scomparsa su 1 settimana.
+@lineephemeral_timer_1_week_by_other Timer messaggi a scomparsa impostato su 1 settimana da %1$s.
+@lineephemeral_timer_minutes_by_you Hai impostato il timer dei messaggi a scomparsa su %1$s minuti.
+@lineephemeral_timer_minutes_by_other Timer messaggi a scomparsa impostato su %1$s minuti da %2$s.
+@lineephemeral_timer_hours_by_you Hai impostato il timer dei messaggi a scomparsa su  %1$s ore.
+@lineephemeral_timer_hours_by_other Timer messaggi a scomparsa impostato su %1$s ore da %2$s.
+@lineephemeral_timer_days_by_you Hai impostato il timer dei messaggi a scomparsa su %1$s giorni.
+@lineephemeral_timer_days_by_other Timer messaggi a scomparsa impostato su %1$s giorni da %2$s.
+@lineephemeral_timer_weeks_by_you Hai impostato il timer dei messaggi a scomparsa su %1$s settimane.
+@lineephemeral_timer_weeks_by_other Timer messaggi a scomparsa impostato su %1$s settimane da %2$s.
+@lineprotection_enabled_by_you Hai abilitato la protezione chat.
+@lineprotection_enabled_by_other Protezione chat abilitata da %1$s.
+@lineprotection_disabled_by_you Hai disabilitato la protezione chat.
+@lineprotection_disabled_by_other Protezione chat disabilitata da %1$s.
+@linemultidevice_qr_subtitle Scansiona per impostare un secondo dispositivo per %1$s
+@end

@@ -74,7 +74,7 @@ Page {
             top: addMemberToGroupHeader.bottom
             topMargin: units.gu(1)
         }
-        text: i18n.tr('Enter name or e-mail')
+        text: i18n.tr('Enter name or e-mail address')
     }
 
     TextField {

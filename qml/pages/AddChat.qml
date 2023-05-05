@@ -100,7 +100,7 @@ Page {
             top: newVerifiedGroupButton.bottom
             margins: units.gu(3)
         }
-        text: i18n.tr('Enter name or e-mail')
+        text: i18n.tr('Enter name or e-mail address')
     }
 
     TextField {

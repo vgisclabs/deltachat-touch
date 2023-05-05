@@ -1,0 +1,38 @@
+@linechat_no_messages هیچ پەیامێک نییە
+@lineself من
+@linedraft ڕەشنووس
+@linevoice_message پەیامی دەنگی
+@lineimage وێنە
+@linegif گیف
+@linevideo ڤیدیۆ
+@lineaudio دەنگ
+@linefile پەڕگە
+@lineencrypted_message پەیامی شفرەکراو
+@lineqrscan_fingerprint_label پەنجەمۆر
+@linesystemmsg_read_receipt_subject پەیامەکە کرایەوە
+@lineautocrypt_prefer_e2ee هەڵبژاردنی شفرەکردنی ئەمسەر-ئەوسەر
+@linechat_archived_chats_title وتووێژە ئەرشیڤکراوەکان
+@lineautocrypt_asm_subject پەیامی ڕێکخستنی ئۆتۆکریپت
+@linelogin_error_cannot_login \"%1$s\" ناتوانێت بچێتە ژوورەوە. سەرنج بدە بزانە ئیمەیل و تێپەڕوشەکە درووستە.
+@linedevice_talk پەیامەکانی ئامێرەکە
+@linesaved_messages کانگای نامەکان
+@linecontact_verified %1$s پشتڕاست کرایەوە
+@linecontact_not_verified %1$s پشتڕاست ناکرێتەوە.
+@linecontact_setup_changed ڕێکخستن بۆ %1$s گۆڕا.
+@linedevice_talk_explain پەیامەکانی نێو ئەم وتووێژە بە شێوازی ناوخۆیی لەلایەن نەرمامێری دێڵتاچاتەکەتەوە درووست کراون. درووستکەرانی نەرمامێرەکە کەڵکی لێ دەگرن بۆ ئاگادار کردنەوەی بەکارهێنەران سەبارەت بە وەشانە نوێکانی نەرمامێرەکە و کێشە و گرفتەکانی.
+@linedevice_talk_welcome_message بەخێر بێن بۆ دێڵتا چات! ڕواڵەت و بەکارهێنانی دێڵتا چات هەر وەکوو نەرمامێرە پەیامنێرە باوەکانی دیکەیە، بەڵام کۆنترۆڵی ناوەندی لەسەر نییە، شوێنی ئێوە و هاوڕێ و هاوکار و بنەماڵەکانتان ناگرێت و زانیارییەکانتان نافرۆشێت بە ڕێکخراوەکان.
+
+ لەڕاستیدا دێڵتاچات نەرمامێرێکی ئیمەیلییە بە ڕواڵەتێکی مۆدەڕنەوە. ئیمەیل بە جل و بەرگێکی نوێوە ئەگەر پێتان خۆش بێت
+
+👻 لە دێڵتا چات بۆ پێوەندی گرتن لەگەڵ هەرکەسێک کە دەتانەوێت کەڵک بگرن: بەس ئیمەلەکەیان بەکار بێنن. ئیدی وەرگرەکان پێویست ناکات دێڵتا چات دابمەرزێنن یان سەردانی ماڵپەڕێک بکەن یان لە شوێنێک ببن بە ئەندام-هەڵبەت ئەگەر پێیان خۆش بوو دەتوانن ئەم نەرمامێرەیان پێ بناسێنن👈https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat پەیامنێری ئەم وتووێژە نەناسراوە. بۆ وردەکاری زۆرتر سەیری \'زانیارییەکان\' بکە.
+@linesystemmsg_subject_for_new_contact پەیام لەلایەن %1$s
+@linesystemmsg_failed_sending_to هەناردنی پەیام بۆ %1$s سەرنەکەوت
+@linevideochat_invitation بانگهێشتی وتووێژی ڤیدیۆیی
+@linevideochat_invitation_body تۆ بانگهێشت کراوی بۆ وتووێژێکی ڤیدیۆیی، بۆ بەشدار بوون لەسەر %1$s کرتە بکە.
+@linereply_noun وەڵام دانەوە
+@linelocation شوێن
+@lineerror_x هەڵە: %1$s
+@lineqrshow_join_contact_hint بۆ ڕێکخستنی پێوەندی لەگەڵ %1$s، ئەم کۆدە سکان بکە. 
+@lineqrshow_join_group_hint بۆ بەشداربوون لە کۆڕ ئەمە سکان بکە: \"%1$s\"
+@end

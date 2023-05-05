@@ -1,0 +1,131 @@
+@linechat_no_messages Ei viestejä
+@lineself Minä
+@linedraft Luonnos
+@linevoice_message Ääniviesti
+@lineimage Kuva
+@linegif Gif
+@linevideo Video
+@lineaudio Äänite
+@linefile Tiedosto
+@lineencrypted_message Salattu viesti
+@lineqrscan_fingerprint_label Sormenjälki
+@linesystemmsg_cannot_decrypt Viestin salausta ei voi purkaa.
+
+• Pyydä lähettäjää lähettämään viesti uudelleen.
+
+• Jos asensit Delta Chatin tai toisen sähköpostisovelluksen uudelleen tälle tai toiselle laitteelle, Autocrypt-asetusviestin lähettäminen siitä sovelluksesta voi auttaa.
+@linesystemmsg_read_receipt_subject Viesti avattu
+@linesystemmsg_read_receipt_body Lähettämäsi viesti \"%1$s\" näytettiin vastaanottajan näytöllä.
+
+Tämä ei takaa, että sisältö luettiin.
+@lineautocrypt_prefer_e2ee Suosi päästä-päähän-salausta
+@linechat_archived_chats_title Arkistoidut keskustelut
+@lineautocrypt_asm_subject Autocrypt-asetusviesti
+@lineautocrypt_asm_general_body Tätä Autocrypt-asetusviestiä käytetään päästä-päähän-salauksen asetusten kopioimiseksi toiselle laitteelle.
+
+Salauksen purkamiseksi ja asetusten käyttöön ottamiseksi, avaa viesti toisella Autocrypt-yhteensopivalla sovelluksella ja anna asennuskoodi laitteelta, jolla koodi luotiin.
+@linelogin_error_cannot_login Kirjautuminen osoitteella \"%1$s\" epäonnistui. Tarkista, että sähköpostiosoite ja salasanat on kirjoitettu oikein.
+@linedevice_talk Laitteen viestit
+@linesaved_messages Tallennetut viestit
+@linecontact_verified %1$s varmistettu.
+@linecontact_not_verified Ei voida varmistaa %1$s.
+@linecontact_setup_changed Asetukset muutettu kohteessa %1$s.
+@linedevice_talk_explain Viestit tässä keskustelussa luodaan paikallisesti Delta Chat -sovelluksessa. Kehittäjät ilmoittavat niiden avulla sovelluksen päivityksistä ja mahdollisista ongelmista.
+@linedevice_talk_welcome_message Tervetuloa Delta Chatiin! – Delta Chat näyttää ja tuntuu samalta kuin suositut pikaviestintäsovellukset, kuitenkin ilman keskitettyä kontrollia, seurantaa tai käyttäjien tietojen myymistä isoille yrityksille.
+
+Teknisesti Delta Chat on sähköpostisovellus nykyaikaisella pikaviestikäyttöliittymällä. Sähköposti uusissa vaatteissa, jos niin voi sanoa 👻
+
+Delta Chat toimii miljardien ihmisten kanssa: lähetä vain viesti heidän sähköpostiosoitteeseensa. Viestien vastaanottajien ei tarvitse asentaa Delta Chatia, käydä nettisivustoilla tai liittyä mihinkään - paitsi jos he haluavat. Silloin voit ohjata heidät osoitteeseen 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Tuntematon lähettäjä. Katso \"lisätietoja\".
+@linesystemmsg_subject_for_new_contact Viesti lähettäjältä %1$s
+@linesystemmsg_failed_sending_to Viestin lähettäminen kohteeseen %1$s epäonnistui.
+@linevideochat_invitation Videokeskustelukutsu
+@linevideochat_invitation_body Sinut on kutsuttu videokeskusteluun, klikkaa %1$s liittyäksesi.
+@lineconfiguration_failed_with_error Asetusten luominen epäonnistui. Virhe: %1$s
+@linereply_noun Vastaus
+@lineforwarded Välitetty
+@linelocation Sijainti
+@linesticker Tarra
+@linedevicemsg_bad_time ⚠️ Laitteesi päivämäärä tai aika vaikuttaa olevan väärässä (%1$s).
+
+Aseta kellonaika ⏰🔧 varmistaaksesi, että viestin vastaanottaminen onnistuu.
+@linedevicemsg_update_reminder ⚠️ Delta Chat -versio saattaa olla vanhentunut.
+
+Tämä saattaa aiheuttaa ongelmia, koska muut käyttävät uudempia versioita - ja saatat jäädä paitsi uusista ominaisuuksista. 😳
+Tarkista uudet päivitykset sovelluskaupastasi tai https://get.delta.chat
+@linedevicemsg_self_deleted Poistit \"Tallennetut viestit\" -keskustelun.
+
+ℹ️ Käyttääksesi \"Tallennetut viestit\" -ominaisuutta jälleen, aloita uusi keskustelu itsesi kanssa.
+@linedevicemsg_storage_exceeding ⚠️ Palveluntarjoajasi tallennuskiintiö ylitetään pian, käytössä on jo %1$s / %%.
+
+Et välttämättä enää voi vastaanottaa viestejäsi, kun 100 %% on käytössä.
+
+👉 Kokeile poistaa viestejä palveluntarjoajasi internetkäyttöliittymästä. Kannattaa myös ehkä kytkeä päälle \"Asetukset / Poista vanhat viestit\". Voit tarkistaa tämän hetkisen tallennustilan käytön \"Asetukset / Yhteys\".
+@linen_bytes_message %1$s viesti
+@linedownload_max_available_until Latauksen yläraja ennen %1$s
+@lineincoming_messages Saapuvat viestit
+@lineoutgoing_messages Lähtevät viestit
+@linestorage_on_domain Tallennustila palvelimella %1$s
+@lineone_moment Hetki...
+@lineconnectivity_connected Yhdistetty
+@lineconnectivity_connecting Yhdistetään...
+@lineconnectivity_updating Päivitetään...
+@linesending Lähetetään
+@linelast_msg_sent_successfully Viimeinen viesti lähetetty onnistuneesti.
+@lineerror_x Virhe: %1$s
+@linenot_supported_by_provider Palveluntarjoajasi ei tue tätä.
+@linemessages Viestit
+@linebroadcast_list Kuulutuslista
+@linepart_of_total_used %1$s / %2$s käytössä
+@linesecure_join_started %1$s kutsui sinut tähän ryhmään.
+
+Odotetaan vastausta yhteystiedon %2$s laitteelta...
+@linesecure_join_replies Vastaus saatu käyttäjältä %1$s, odotetaan lisäystä ryhmään...
+@lineqrshow_join_contact_hint Skannaa aloittaaksesi keskustelun käyttäjän %1$s kanssa
+@lineqrshow_join_group_hint Skannaa liittyäksesi ryhmään \"%1$s\"
+@lineconnectivity_not_connected Ei yhdistetty
+@lineaeap_addr_changed %1$s vaihtui osoitteesta %2$s osoitteeksi %3$s
+@lineaeap_explanation Vaihdoit sähköpostiosoitteesi osoitteesta %1$s osoitteeksi %2$s.
+
+Jos lähetät viestin vahvistettuun ryhmään, ryhmän jäsenet saavat automaattisesti uuden osoitteesi.
+
+On suositeltavaa asettaa vanha tilisi välittämään kaikki viestit uuteen osoitteeseesi. Muuten et välttämättä saa viestejä niiltä yhteystiedoiltasi, joilla ei ole uutta osoitettasi.
+@linegroup_name_changed_by_you Ryhmän nimi vaihdettu: \"%1$s\" --> \"%2$s\" minun toimestani.
+@linegroup_name_changed_by_other Ryhmän nimi vaihdettu: \"%1$s\" --> \"%2$s\" käyttäjän %3$s toimesta.
+@linegroup_image_changed_by_you Ryhmän kuva vaihdettu minun toimestani.
+@linegroup_image_changed_by_other Ryhmän kuva vaihdettu käyttäjän %1$s toimesta.
+@lineadd_member_by_you Jäsen %1$s lisätty minun toimestani.
+@lineadd_member_by_other Jäsen %1$s lisätty käyttäjän %2$s toimesta.
+@lineremove_member_by_you Jäsen %1$s poistettu minun toimestani.
+@lineremove_member_by_other Jäsen %1$s poistettu käyttäjän %2$s toimesta.
+@linegroup_left_by_you Poistuit ryhmästä.
+@linegroup_left_by_other %1$s poistui ryhmästä.
+@linegroup_image_deleted_by_you Ryhmän kuva poistettu minun toimestani.
+@linegroup_image_deleted_by_other Ryhmän kuva poistettu käyttäjän %1$s toimesta.
+@linelocation_enabled_by_you Aloitit sijainnin jakamisen.
+@linelocation_enabled_by_other %1$s aloitti sijainnin jakamisen.
+@lineephemeral_timer_disabled_by_you Katoavien viestien ajastin poistettiin minun toimestani.
+@lineephemeral_timer_disabled_by_other Katoavien viestien ajastin poistettiin käyttäjän %1$s toimesta.
+@lineephemeral_timer_seconds_by_you Katoavien viestien ajastin asetettu %1$s sekuntiin minun toimestani.
+@lineephemeral_timer_seconds_by_other Katoavien viestien ajastin asetettu %1$s sekuntiin käyttäjän %2$s toimesta.
+@lineephemeral_timer_1_minute_by_you Katoavien viestien ajastin asetettu 1 minuuttiin minun toimestani.
+@lineephemeral_timer_1_minute_by_other Katoavien viestien ajastin asetettu 1 minuuttiin käyttäjän %1$s toimesta.
+@lineephemeral_timer_1_hour_by_you Katoavien viestien ajastin asetettu 1 tuntiin minun toimestani.
+@lineephemeral_timer_1_hour_by_other Katoavien viestien ajastin asetettu 1 tuntiin käyttäjän %1$s toimesta.
+@lineephemeral_timer_1_day_by_you Katoavien viestien ajastin asetettu 1 päivään minun toimestani.
+@lineephemeral_timer_1_day_by_other Katoavien viestien ajastin asetettu 1 päivään käyttäjän %1$s toimesta.
+@lineephemeral_timer_1_week_by_you Katoavien viestien ajastin asetettu 1 viikkoon minun toimestani.
+@lineephemeral_timer_1_week_by_other Katoavien viestien ajastin asetettu 1 viikkoon käyttäjän %1$s toimesta.
+@lineephemeral_timer_minutes_by_you Katoavien viestien ajastin asetettu %1$s minuuttiin minun toimestani.
+@lineephemeral_timer_minutes_by_other Katoavien viestien ajastin asetettu %1$s minuuttiin käyttäjän %2$s toimesta.
+@lineephemeral_timer_hours_by_you Katoavien viestien ajastin asetettu %1$s tuntiin minun toimestani.
+@lineephemeral_timer_hours_by_other Katoavien viestien ajastin asetettu %1$s tuntiin käyttäjän %2$s toimesta.
+@lineephemeral_timer_days_by_you Katoavien viestien ajastin asetettu %1$s päivään minun toimestani.
+@lineephemeral_timer_days_by_other Katoavien viestien ajastin asetettu %1$s päivään käyttäjän %2$s toimesta.
+@lineephemeral_timer_weeks_by_you Katoavien viestien ajastin asetettu %1$s viikkoon minun toimestani.
+@lineephemeral_timer_weeks_by_other Katoavien viestien ajastin asetettu %1$s viikkoon käyttäjän %2$s toimesta.
+@lineprotection_enabled_by_you Keskustelusuojaus käytössä minun toimestani.
+@lineprotection_enabled_by_other Keskustelusuojaus käytössä käyttäjän %1$s toimesta.
+@lineprotection_disabled_by_you Keskustelusuojaus poistettu minun toimestani.
+@lineprotection_disabled_by_other Keskustelusuojaus poistettu käyttäjän %1$s toimesta.
+@end

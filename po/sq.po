@@ -344,7 +344,7 @@ msgstr ""
 
 #: ../qml/pages/BlockContactPopup.qml:31
 msgid "Block this contact? You will no longer receive messages from them."
-msgstr "Të bllokohet ky kontakt? S\’do të merrni më mesazhe prej këtij kontakti."
+msgstr "Të bllokohet ky kontakt? S’do të merrni më mesazhe prej këtij kontakti."
 
 #: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:50
 msgid "Block Contact"

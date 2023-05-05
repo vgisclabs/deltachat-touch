@@ -9,7 +9,7 @@
             "desktop":  "deltatouch.desktop"
         }
     },
-    "version": "0.4.2",
+    "version": "0.4.3",
     "maintainer": "Lothar Ketterer <ketterer_src@mailbox.org>",
     "framework" : "@CLICK_FRAMEWORK@"
 }

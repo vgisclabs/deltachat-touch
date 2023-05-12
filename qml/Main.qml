@@ -237,7 +237,7 @@ MainView {
             
                 Rectangle {
                     id: headerRectMain
-                    width: parent.width - profilePicShape.width - units.gu(2) - settingsIconCage.width - infoIconCage.width - units.gu(1)
+                    width: parent.width - profilePicShape.width - units.gu(2) - qrIconCage.width - settingsIconCage.width - infoIconCage.width - units.gu(1)
                     anchors {
                         left: profilePicShape.right
                         leftMargin: units.gu(1)
@@ -268,6 +268,33 @@ MainView {
                     }
             
                 } // Rectangle id: headerRectMain
+            
+                Rectangle {
+                    id: qrIconCage
+                    width: units.gu(4)
+                    anchors {
+                        right: infoIconCage.left
+                        top: headerRect.top
+                        bottom: headerRect.bottom
+                    }
+                    color: headerRect.color
+            
+                    Icon {
+                        id: qrIcon
+                        name: "view-grid-symbolic"
+                        width: units.gu(2)
+                        anchors{
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
+                        }
+                        color: usernameLabel.color
+                    }
+            
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'))
+                    }
+                }
             
                 Rectangle {
                     id: infoIconCage
@@ -457,7 +484,7 @@ MainView {
                     onClicked: {
                         DeltaHandler.selectChat(index)
                         DeltaHandler.openChat()
-                        }
+                    }
 
                     leadingActions: model.chatIsArchiveLink ? undefined : leadingChatAction
                     trailingActions: model.chatIsArchiveLink ? {} : (model.chatIsArchived ? trailingChatActionsArchived : trailingChatActions)

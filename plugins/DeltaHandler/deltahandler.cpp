@@ -17,6 +17,7 @@
  */
 
 #include <vector>
+#include <fstream>
 #include "deltahandler.h"
 //#include <unistd.h> // for sleep
 
@@ -1247,8 +1248,12 @@ void DeltaHandler::chatCreationReceiver(uint32_t chatID)
 void DeltaHandler::unrefTempContext()
 {
     if (tempContext != currentContext) {
-        dc_context_unref(tempContext);
-        tempContext = nullptr;
+        if (tempContext) {
+            dc_context_unref(tempContext);
+            tempContext = nullptr;
+        } else {
+            qDebug() << "DeltaHandler::unrefTempContext() called, but tempContext is not set";
+        }
     } else {
         tempContext = nullptr;
     }
@@ -1392,6 +1397,7 @@ bool DeltaHandler::isBackupFile(QString filePath)
     if (tempContext) {
         qDebug() << "DeltaHandler::isBackupFile: tempContext is unexpectedly set, will now be unref'd";
         dc_context_unref(tempContext);
+        tempContext = nullptr;
     }
 
     uint32_t accID = dc_accounts_add_account(allAccounts);
@@ -1425,11 +1431,15 @@ bool DeltaHandler::isBackupFile(QString filePath)
 }
 
 
-void DeltaHandler::importBackup(QString filePath)
+void DeltaHandler::importBackupFromFile(QString filePath)
 {
     // imexProgress may be connected to imexBackupExportProgressReceiver,
     // disconnect it...
+    // TODO: imexBackupImportProgressReceiver is disconnected, too, because
+    // it might cause problems if it's connected twice, is this true?
+    // TODO check return values?
     bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+    disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
     
     // ... and connect it to imexBackupImportProgressReceiver instead
     bool connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
@@ -1442,7 +1452,7 @@ void DeltaHandler::importBackup(QString filePath)
     // "file:///home....", so we have to remove the first 7
     // characters
     filePath.remove(0, 7);
-    qDebug() << "DeltaHandler::importBackup: path to backup file is: " << filePath;
+    qDebug() << "DeltaHandler::importBackupFromFile: path to backup file is: " << filePath;
     m_networkingIsAllowed = false;
     // not emitting signal, but stopping io directly
     stop_io();
@@ -1477,7 +1487,11 @@ void DeltaHandler::exportBackup()
 
     // imexProgress may be connected to imexBackupImportProgressReceiver,
     // disconnect it...
+    // TODO: imexBackupExportProgressReceiver is disconnected, too, because
+    // it might cause problems if it's connected twice, is this true?
+    // TODO check return values?
     bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+    disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
     
     // ... and connect it to imexBackupExportProgressReceiver instead
     bool connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
@@ -1664,6 +1678,20 @@ void DeltaHandler::setGroupPic(QString filepath)
 }
 
 
+QString DeltaHandler::getTempGroupQrSvg()
+{
+    QString retval(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/qrGroupInvite.svg");
+    std::ofstream outfile(retval.toStdString());
+    char* tempImage = dc_get_securejoin_qr_svg(currentContext, m_tempGroupChatID);
+    outfile << tempImage;
+    outfile.close();
+    dc_str_unref(tempImage);
+
+    retval.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length());
+    return retval;
+}
+
+
 void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
 {
 
@@ -1716,7 +1744,6 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
             }
         }
         if (hasToBeAdded) {
-            qDebug() << "========= will now add: " << m_groupmembermodel->getNameOfIndex(i);
             dc_add_contact_to_chat(currentContext, m_tempGroupChatID, finalMemberList[i]);
         }
     }
@@ -1733,7 +1760,6 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
             }
         }
         if (hasToBeRemoved) {
-            qDebug() << "========= will now REMOVE ID: " << dc_array_get_id(tempContactsArray, i);
             dc_remove_contact_from_chat(currentContext, m_tempGroupChatID, dc_array_get_id(tempContactsArray, i));
         }
     }
@@ -1772,6 +1798,329 @@ void DeltaHandler::prepareContactsmodelForGroupMemberAddition()
 }
 
 
+void DeltaHandler::continueQrCodeAction()
+{
+    switch (m_qrTempState) {
+        case DT_QR_ASK_VERIFYCONTACT:
+            currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
+            // dc_join_securejoin() returns 0 on error, so don't call
+            // openChat() in this case
+            if (currentChatID != 0) {
+                openChat();
+            }
+            break;
+        case DT_QR_ASK_VERIFYGROUP:
+            currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
+            // dc_join_securejoin() returns 0 on error, so don't call
+            // openChat() in this case
+            if (currentChatID != 0) {
+                openChat();
+            }
+            break;
+        case DT_QR_FPR_OK:
+            // TODO: what to do here?
+            // => nothing for the moment because no translated strings exist
+            // for the action suggested in the documentation
+            //currentChatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
+            //openChat();
+            break;
+        case DT_QR_FPR_MISMATCH:
+            // nothing to do here
+            break;
+        case DT_QR_FPR_WITHOUT_ADDR:
+            // nothing to do here
+            break;
+        case DT_QR_ACCOUNT:
+            prepareTempContextConfig();
+            if (1 == dc_set_config_from_qr(tempContext, m_qrTempText.toUtf8().constData())) {
+                emit finishedSetConfigFromQr(true);
+            } else {
+                // dc_set_config_from_qr() exited with an error
+                // TODO: what now? should the account that was created
+                // via prepareTempContextConfig() been deleted? Currently,
+                // it will stay. See also the comment in QrShowScan.qml:
+                // If dc_set_config_from_qr() succeeds, but login fails, it's
+                // the same.
+                emit finishedSetConfigFromQr(false);
+            }
+            break;
+        case DT_QR_BACKUP:
+            prepareQrBackupImport();
+            break;
+        case DT_QR_WEBRTC_INSTANCE:
+            // TODO not implemented yet
+            break;
+        case DT_QR_ADDR:
+            break;
+        case DT_QR_TEXT:
+            // nothing to do here
+            break;
+        case DT_QR_URL:
+            // nothing to do here
+            break;
+        case DT_QR_ERROR:
+            // nothing to do here
+            break;
+        case DT_QR_WITHDRAW_VERIFYCONTACT:
+            dc_set_config_from_qr(currentContext, m_qrTempText.toUtf8().constData());
+            break;
+        case DT_QR_WITHDRAW_VERIFYGROUP:
+            dc_set_config_from_qr(currentContext, m_qrTempText.toUtf8().constData());
+            break;
+        case DT_QR_REVIVE_VERIFYCONTACT:
+            dc_set_config_from_qr(currentContext, m_qrTempText.toUtf8().constData());
+            break;
+        case DT_QR_REVIVE_VERIFYGROUP:
+            dc_set_config_from_qr(currentContext, m_qrTempText.toUtf8().constData());
+            break;
+        case DT_QR_LOGIN:
+            prepareTempContextConfig();
+            if (1 == dc_set_config_from_qr(tempContext, m_qrTempText.toUtf8().constData())) {
+                emit finishedSetConfigFromQr(true);
+            } else {
+                // dc_set_config_from_qr() exited with an error
+                // TODO: what now? should the account that was created
+                // via prepareTempContextConfig() been deleted? Currently,
+                // it will stay. See also the comment in QrShowScan.qml:
+                // If dc_set_config_from_qr() succeeds, but login fails, it's
+                // the same.
+                emit finishedSetConfigFromQr(false);
+            }
+            break;
+        default:
+            // nothing to do
+            break;
+    }
+}
+
+
+QString DeltaHandler::getQrInviteSvg()
+{
+    QString retval(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/qrInvite.svg");
+    std::ofstream outfile(retval.toStdString());
+    char* tempImage = dc_get_securejoin_qr_svg(currentContext, 0);
+    outfile << tempImage;
+    outfile.close();
+    dc_str_unref(tempImage);
+
+    retval.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length());
+    return retval;
+}
+
+
+QString DeltaHandler::getQrInviteTxt()
+{
+    char* tempText = dc_get_securejoin_qr(currentContext, 0);
+    QString retval(tempText);
+    dc_str_unref(tempText);
+    return retval;
+}
+
+
+QString DeltaHandler::getQrContactEmail()
+{
+    dc_contact_t* tempContact = dc_get_contact(currentContext, m_qrTempContactID);
+    QString retval;
+    if (tempContact) {
+        char* tempText = dc_contact_get_addr(tempContact);
+        retval = tempText;
+        if (tempText) {
+            dc_str_unref(tempText);
+        }
+        dc_contact_unref(tempContact);
+    } else {
+        retval = "";
+    }
+
+    return retval;
+}
+
+
+QString DeltaHandler::getQrTextOne()
+{
+    return m_qrTempLotTextOne;
+}
+
+
+int DeltaHandler::evaluateQrCode(QString clipboardData)
+{
+    m_qrTempText = clipboardData;
+    dc_lot_t* tempLot = dc_check_qr(currentContext, m_qrTempText.toUtf8().constData());
+    int lotState = dc_lot_get_state(tempLot);
+
+    switch (lotState) {
+        case DC_QR_ASK_VERIFYCONTACT:
+            m_qrTempState = QrState::DT_QR_ASK_VERIFYCONTACT;
+            break;
+        case DC_QR_ASK_VERIFYGROUP:
+            m_qrTempState = QrState::DT_QR_ASK_VERIFYGROUP;
+            break;
+        case DC_QR_FPR_OK:
+            m_qrTempState = QrState::DT_QR_FPR_OK;
+            break;
+        case DC_QR_FPR_MISMATCH:
+            m_qrTempState = QrState::DT_QR_FPR_MISMATCH;
+            break;
+        case DC_QR_FPR_WITHOUT_ADDR:
+            m_qrTempState = QrState::DT_QR_FPR_WITHOUT_ADDR;
+            break;
+        case DC_QR_ACCOUNT:
+            m_qrTempState = QrState::DT_QR_ACCOUNT;
+            break;
+        case DC_QR_BACKUP:
+            m_qrTempState = QrState::DT_QR_BACKUP;
+            break;
+        case DC_QR_WEBRTC_INSTANCE:
+            m_qrTempState = QrState::DT_QR_WEBRTC_INSTANCE;
+            break;
+        case DC_QR_ADDR:
+            m_qrTempState = QrState::DT_QR_ADDR;
+            break;
+        case DC_QR_TEXT:
+            m_qrTempState = QrState::DT_QR_TEXT;
+            break;
+        case DC_QR_URL:
+            m_qrTempState = QrState::DT_QR_URL;
+            break;
+        case DC_QR_ERROR:
+            m_qrTempState = QrState::DT_QR_ERROR;
+            break;
+        case DC_QR_WITHDRAW_VERIFYCONTACT:
+            m_qrTempState = QrState::DT_QR_WITHDRAW_VERIFYCONTACT;
+            break;
+        case DC_QR_WITHDRAW_VERIFYGROUP:
+            m_qrTempState = QrState::DT_QR_WITHDRAW_VERIFYGROUP;
+            break;
+        case DC_QR_REVIVE_VERIFYCONTACT:
+            m_qrTempState = QrState::DT_QR_REVIVE_VERIFYCONTACT;
+            break;
+        case DC_QR_REVIVE_VERIFYGROUP:
+            m_qrTempState = QrState::DT_QR_REVIVE_VERIFYGROUP;
+            break;
+        case DC_QR_LOGIN:
+            m_qrTempState = QrState::DT_QR_LOGIN;
+            break;
+        default:
+            m_qrTempState = QrState::DT_UNKNOWN;
+    }
+
+    char* tempText = dc_lot_get_text1(tempLot);
+    if (tempText) {
+        m_qrTempLotTextOne = tempText;
+        dc_str_unref(tempText);
+    }
+
+    m_qrTempContactID = dc_lot_get_id(tempLot);
+    
+    dc_lot_unref(tempLot);
+
+    return m_qrTempState;
+}
+
+
+void DeltaHandler::prepareQrBackupImport()
+{
+    if (tempContext) {
+        qDebug() << "DeltaHandler::prepareQrBackupImport: tempContext is unexpectedly set, will now be unref'd";
+        dc_context_unref(tempContext);
+        tempContext = nullptr;
+    }
+
+    uint32_t accID = dc_accounts_add_account(allAccounts);
+    
+    if (0 == accID) {
+        qDebug() << "DeltaHandler::prepareQrBackupImport: Could not create new account.";
+        // TODO: add boolean parameter to readyForQrBackupImport(), emit the signal
+        // here with false and handle it accordingly in the GUI?
+        return;
+    }
+
+    tempContext = dc_accounts_get_account(allAccounts, accID);
+    
+    emit readyForQrBackupImport();
+}
+
+
+void DeltaHandler::startQrBackupImport()
+{
+    // imexProgress may be connected to imexBackupExportProgressReceiver or imexBackupImportProgressReceiver
+    // disconnect it.
+    // As dc_receive_backup() is blocking, imexProgress signals from eventThread will
+    // not be processed anyway, so the return value from dc_receive_backup() will
+    // be evaluated.
+    // TODO check return values?
+    // TODO disconnect the slots directly after completion of the corresponding actions
+    bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+    disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+ 
+    m_networkingIsAllowed = false;
+    // not emitting signal, but stopping io directly
+    stop_io();
+    
+    // TODO check return value?
+    int importSuccess = dc_receive_backup(tempContext, m_qrTempText.toUtf8().constData());
+    if (0 == importSuccess) {
+        // If the backup import was not successful, re-select the
+        // currently active (and configured) account and delete the
+        // new account that has been prepared for the importing
+        // process.
+        if (currentContext) {
+            uint32_t tempAccID = dc_get_id(currentContext);
+            dc_accounts_select_account(allAccounts, tempAccID);
+        }
+        
+        if (tempContext) {
+            int tempAccID = dc_get_id(tempContext);
+            dc_context_unref(tempContext);
+            tempContext = nullptr;
+            dc_accounts_remove_account(allAccounts, tempAccID);
+        }
+        m_networkingIsAllowed = true;
+        emit networkingIsAllowedChanged();
+    } else {
+        beginResetModel();
+
+        if (currentChatlist) {
+            dc_chatlist_unref(currentChatlist);
+        }
+        
+        if (currentContext) {
+            dc_context_unref(currentContext);
+        }
+
+        currentContext = tempContext;
+        tempContext = nullptr;
+        m_contactsmodel->updateContext(currentContext);
+
+        currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+
+        chatmodelIsConfigured = false;
+
+        if (!m_hasConfiguredAccount) {
+            m_hasConfiguredAccount = true;
+            emit hasConfiguredAccountChanged();
+        }
+        endResetModel();
+
+        emit newConfiguredAccount();
+        emit accountChanged();
+        m_networkingIsAllowed = true;
+        emit networkingIsAllowedChanged();
+    }
+}
+
+
+void DeltaHandler::cancelQrImport()
+{
+    dc_stop_ongoing_process(tempContext);
+    // TODO: check whether this is enough - this would be
+    // the case if an imex progress event will be sent with
+    // progress = 0, then imexBackupImportProgressReceiver will
+    // take care of unreffing tempContext and deleting the account.
+    // Otherwise, this would have to be done here.
+}
+
+
 GroupMemberModel* DeltaHandler::groupmembermodel()
 {
     return m_groupmembermodel;
@@ -1779,6 +2128,11 @@ GroupMemberModel* DeltaHandler::groupmembermodel()
 
 /* ============ End New Group / Editing Group ============= */
 
+
+EmitterThread* DeltaHandler::emitterthread()
+{
+    return eventThread;
+}
 
 void DeltaHandler::updateCurrentChatMessageCount()
 {

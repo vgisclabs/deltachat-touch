@@ -25,6 +25,15 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
+    // TODO: set title according to the step, possible values are:
+    // Preparing account…
+    // Waiting for receiver…
+    // Receiver connected…
+    // Transferring…
+    // Currently, however, the documentation does not detail when
+    // to switch strings, so it's set to this one
+    title: i18n.tr("Transferring…")
+
     ProgressBar {
         id: progBar
         minimumValue: 0
@@ -33,24 +42,40 @@ Dialog {
     }
 
     Component.onCompleted: {
-        DeltaHandler.imexEventReceived.connect(updateProgress)
-        DeltaHandler.importBackupFromFile(backupPickerPage.source)
+        DeltaHandler.emitterthread.imexProgress.connect(updateProgress)
+            DeltaHandler.startQrBackupImport()
     }
 
     function updateProgress(progValue) {
         progBar.value = progValue
         if (progValue == 0) {
-            // TODO string not translated yet
-            dialog.text = i18n.tr('Failed')
+            // TODO: better string available?
+            dialog.title = i18n.tr("Error")
             progBar.visible = false
             backButton.visible = true
+            cancelButton.visible = false
         }
         else if (progValue == 1000) {
             // TODO string not translated yet
-            dialog.text = "Success!"
+            dialog.title = "Success!"
             progBar.visible = false
             okButton.visible = true
+            cancelButton.visible = false
+        } else {
+            cancelButton.visible = true
         }
+    }
+
+    Button {
+        id: cancelButton
+        text: "Cancel"
+        color: theme.palette.normal.negative
+        onClicked: {
+            DeltaHandler.cancelQrImport()
+            PopupUtils.close(dialog)
+            layout.removePages(layout.primaryPage)
+        }
+        visible: false
     }
 
     Button {
@@ -71,7 +96,7 @@ Dialog {
         color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)
-            layout.removePages(backupPickerPage)
+            layout.removePages(layout.primaryPage)
         }
         visible: false
     }

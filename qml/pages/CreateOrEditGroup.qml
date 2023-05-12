@@ -99,7 +99,7 @@ Page {
                 iconName: 'view-grid-symbolic'
                 text: i18n.tr("QR Invite Code")
                 onTriggered: {
-                    // TODO 
+                    layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl("QrGroupInvite.qml"))
                 }
             }
         ]

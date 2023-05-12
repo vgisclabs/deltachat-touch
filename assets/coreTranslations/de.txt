@@ -82,7 +82,7 @@ Sie können möglicherweise keine Nachrichten mehr empfangen, wenn der Speicherp
 Warte auf die Antwort des Gerätes von %2$s...
 @linesecure_join_replies %1$s antwortet. Warte, zur Gruppe hinzugefügt zu werden...
 @lineqrshow_join_contact_hint Scannen für Chat mit %1$s
-@lineqrshow_join_group_hint Scannen, um der Gruppe \"%1$s\" beizutreten
+@lineqrshow_join_group_hint Scannen, um der Gruppe "%1$s" beizutreten
 @lineconnectivity_not_connected Nicht verbunden
 @lineaeap_addr_changed %1$s hat die E-Mail-Adresse von %2$s nach %3$s geändert
 @lineaeap_explanation Sie haben Ihre E-Mail-Adresse von %1$s auf %2$s geändert.

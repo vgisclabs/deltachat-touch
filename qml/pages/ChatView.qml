@@ -186,17 +186,23 @@ Page {
                 property int parentWidth: parent.width
                 property Audio msgAudio: messageAudio
                 property bool anchorToRight: {
-                    if (model.isInfo) {
-                        return false
+                    if (!model.isUnreadMsgsBar) {
+                        if (model.isInfo) {
+                            return false
+                        } else {
+                            return model.isSelf
+                        }
                     } else {
-                        return model.isSelf
+                        return false
                     }
                 }
                 height: childrenRect.height // TODO: QML complains about a binding loop for property "height"
                 anchors.right: anchorToRight ? parent.right : undefined
                 anchors.left: anchorToRight ? undefined : parent.left
                 source: 
-                    if (model.isInfo) {
+                    if (model.isUnreadMsgsBar){
+                        return "../delegates/delegUnreadMsgsBar.qml"
+                    } else if (model.isInfo) {
                         return "../delegates/delegInfoMsg.qml"
                     } else if (model.isSelf) {
                         messageListItem.leadingActions = leadingMsgAction
@@ -219,9 +225,7 @@ Page {
                         }
                         
                     } // end if (model.isSelf)
-                    else if (model.isUnreadMsgsBar){
-                        return "../delegates/delegUnreadMsgsBar.qml"
-                    } else { // message is not from self and not the "Unread Messages" bar
+                    else { // message is not from self and not the "Unread Messages" bar
                         messageListItem.leadingActions = leadingMsgAction
                         messageListItem.trailingActions = trailingMsgActions
 

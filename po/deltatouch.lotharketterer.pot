@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-04 10:59+0000\n"
+"POT-Creation-Date: 2023-05-12 19:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,15 +34,15 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:359
+#: ../qml/Main.qml:386
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:551
+#: ../qml/Main.qml:578
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:625 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:652 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
@@ -66,7 +66,8 @@ msgstr ""
 #: ../qml/delegates/delegSelfTextMsg.qml:142
 #: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
-#: ../qml/pages/GroupAddMember.qml:125
+#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:417
+#: ../qml/pages/QrShowScan.qml:430
 msgid "Unknown"
 msgstr ""
 
@@ -119,6 +120,8 @@ msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
 #: ../qml/pages/PickerBackupFile.qml:100
+#: ../qml/pages/ProgressQrBackupImport.qml:52 ../qml/pages/QrShowScan.qml:238
+#: ../qml/pages/QrShowScan.qml:339 ../qml/pages/QrShowScan.qml:489
 msgid "Error"
 msgstr ""
 
@@ -147,7 +150,7 @@ msgstr ""
 msgid "Scan Invitation Code"
 msgstr ""
 
-#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:608
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
 #: ../qml/pages/BlockContactPopup.qml:36
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
 #: ../qml/pages/ConfirmChatDeletion.qml:56
@@ -155,7 +158,7 @@ msgstr ""
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
 #: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
 #: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
-#: ../qml/pages/UnblockContactPopup.qml:38
+#: ../qml/pages/QrConfirmPopup.qml:45 ../qml/pages/UnblockContactPopup.qml:38
 msgid "Cancel"
 msgstr ""
 
@@ -172,19 +175,19 @@ msgid "Enter name or e-mail address"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:45
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:715
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:776
 #: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
 msgid "No, chats only"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:48
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:729
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:790
 #: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
 msgid "For accepted contacts"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:51
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:743
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:804
 #: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
 msgid "All"
 msgstr ""
@@ -193,150 +196,151 @@ msgstr ""
 msgid "Log In"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:91
+#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/Profile.qml:239 ../qml/pages/QrConfirmPopup.qml:76
+msgid "OK"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:178
 msgid "Log in with an existing e-mail account"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:130
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:191
 msgid "E-Mail Address"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:154
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:215
 msgid "Password"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:214
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:275
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:238
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:299
 #: ../qml/pages/SettingsPage.qml:170
 msgid "Show Classic E-Mails"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:270
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:331
 msgid "Advanced"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:291
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:352
 msgid "Inbox"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:297
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
 msgid "IMAP Login Name"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:304
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:371
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:365
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:444
 msgid "Default (same as above)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:309
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:370
 msgid "IMAP Server"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:316
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:336
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:415
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:377
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:397
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:456
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:476
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
 msgid "Automatic"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:321
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:382
 msgid "IMAP Port"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:328
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:407
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:500
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:513
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:389
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:468
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:574
 msgid "Standard (%1)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:334
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
 msgid "IMAP Security"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:339
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:418
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
 msgid "Off"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:419
 msgid "Outbox"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:364
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:425
 msgid "SMTP Login Name"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:437
 msgid "SMTP Password"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:388
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:449
 msgid "SMTP Server"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:461
 msgid "SMTP Port"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:474
 msgid "SMTP Security"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:430
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
 msgid "Certificate Checks"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:433
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:494
 msgid "Strict"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:434
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:495
 msgid "Accept invalid certificates"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:469
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:530
 msgid "Use SOCKS5"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:488
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:549
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:554
 msgid "SOCKS5 Host"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:506
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:567
 msgid "SOCKS5 Port"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:520
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:581
 msgid "SOCKS5 User"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:532
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:593
 msgid "SOCKS5 Password"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:619
-#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
-#: ../qml/pages/Profile.qml:239
-msgid "OK"
-msgstr ""
-
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:691
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:752
+#: ../qml/pages/QrShowScan.qml:481
 msgid "Configuring..."
 msgstr ""
 
@@ -369,16 +373,16 @@ msgstr ""
 msgid "Show Encryption Info"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:648
+#: ../qml/pages/ChatView.qml:652
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:664 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:668 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:679
+#: ../qml/pages/ChatView.qml:683
 msgid "Block"
 msgstr ""
 
@@ -421,7 +425,8 @@ msgstr ""
 msgid "Delete Message"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:100
+#: ../qml/pages/CreateOrEditGroup.qml:100 ../qml/pages/QrGroupInvite.qml:42
+#: ../qml/pages/QrShowScan.qml:73 ../qml/pages/QrShowScan.qml:105
 msgid "QR Invite Code"
 msgstr ""
 
@@ -481,7 +486,7 @@ msgstr ""
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:291
 msgid "Sorry, not implemented yet :-("
 msgstr ""
 
@@ -531,7 +536,7 @@ msgid "Signature Text"
 msgstr ""
 
 #: ../qml/pages/ProgressBackupExport.qml:43
-#: ../qml/pages/ProgressBackupImport.qml:43
+#: ../qml/pages/ProgressBackupImport.qml:44
 msgid "Failed"
 msgstr ""
 
@@ -543,6 +548,136 @@ msgid ""
 "The backup will contain all messages, contacts and chats and your end-to-end "
 "Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
 "as possible."
+msgstr ""
+
+#: ../qml/pages/ProgressQrBackupImport.qml:35
+msgid "Transferring…"
+msgstr ""
+
+#: ../qml/pages/QrConfirmPopup.qml:57 ../qml/pages/QrShowScan.qml:456
+msgid "Copy to Clipboard"
+msgstr ""
+
+#: ../qml/pages/QrConfirmPopup.qml:69
+msgid "Open Url in Browser"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:112
+msgid "Scan QR Code"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:161
+msgid ""
+"Scanning QR codes directly is not supported yet. Please use another app (e."
+"g., Tagger) to scan and copy the code to the clipboard, then paste it here "
+"using the button below."
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:174
+msgid "Paste from Clipboard"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:186
+msgid "Chat with %1?"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:212
+msgid "Do you want to join the group \"%1\"?"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:224
+msgid "The fingerprint of %1 is valid!"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:225 ../qml/pages/QrShowScan.qml:251
+msgid "Fingerprint"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:237
+msgid "The scanned fingerprint does not match the last seen for %1."
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:250
+msgid ""
+"This QR code contains a fingerprint but no e-mail address.\n"
+"\n"
+"For an out-of-band-verification, please establish an encrypted connection to "
+"the recipient first."
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:263
+msgid "Create new e-mail address on \"%1\" and log in there?"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:277
+msgid "Copy the account from the other device to this device?"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:278
+msgid "Add as Second Device"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:307
+msgid ""
+"Scanned QR code text:\n"
+"\n"
+"%1"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:308 ../qml/pages/QrShowScan.qml:323
+#: ../qml/pages/QrShowScan.qml:418 ../qml/pages/QrShowScan.qml:431
+msgid "QR Code"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:322
+msgid ""
+"Scanned QR code URL:\n"
+"\n"
+"%1"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:338
+msgid "Error: %1"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:351
+msgid ""
+"This QR code can be scanned by others to contact you.\n"
+"\n"
+"You can deactivate the QR code here and reactivate it by scanning it again."
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:352 ../qml/pages/QrShowScan.qml:365
+msgid "Deactivate QR Code"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:364
+msgid ""
+"This QR code can be scanned by others to join the group \"%1\".\n"
+"\n"
+"You can deactivate the QR code here and reactivate it by scanning it again."
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:377
+msgid ""
+"This QR code could be scanned by others to contact you.\n"
+"\n"
+"The QR code is not active on this device."
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:378 ../qml/pages/QrShowScan.qml:391
+msgid "Activate QR Code"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:390
+msgid ""
+"This QR code could be scanned by others to join the group \"%1\".\n"
+"\n"
+"The QR code is not active on this device."
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:403
+msgid "Log into \"%1\"?"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:73

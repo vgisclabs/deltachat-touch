@@ -53,6 +53,9 @@ public:
     enum MsgState { StatePending, StateFailed, StateDelivered, StateReceived };
     Q_ENUM(MsgState)
 
+    enum QrState { DT_QR_ASK_VERIFYCONTACT, DT_QR_ASK_VERIFYGROUP, DT_QR_FPR_OK, DT_QR_FPR_MISMATCH, DT_QR_FPR_WITHOUT_ADDR, DT_QR_ACCOUNT, DT_QR_BACKUP, DT_QR_WEBRTC_INSTANCE, DT_QR_ADDR, DT_QR_TEXT, DT_QR_URL, DT_QR_ERROR, DT_QR_WITHDRAW_VERIFYCONTACT, DT_QR_WITHDRAW_VERIFYGROUP, DT_QR_REVIVE_VERIFYCONTACT, DT_QR_REVIVE_VERIFYGROUP, DT_QR_LOGIN, DT_UNKNOWN };
+    Q_ENUM(QrState)
+
     // invoked by a tap/click on a list item representing a chat
     // on the chat overview page
     Q_INVOKABLE void selectChat(int myindex);
@@ -112,7 +115,7 @@ public:
 
     Q_INVOKABLE bool isBackupFile(QString filePath);
 
-    Q_INVOKABLE void importBackup(QString filePath);
+    Q_INVOKABLE void importBackupFromFile(QString filePath);
 
     Q_INVOKABLE void chatAcceptContactRequest();
 
@@ -183,7 +186,23 @@ public:
 
     Q_INVOKABLE void setGroupPic(QString filepath);
 
+    Q_INVOKABLE QString getTempGroupQrSvg();
+
     /* ============ End New Group / Editing Group ============= */
+
+    /* ========================================================
+     * ================ QR code related stuff =================
+     * ======================================================== */
+    Q_INVOKABLE QString getQrInviteSvg();
+    Q_INVOKABLE QString getQrInviteTxt();
+    Q_INVOKABLE QString getQrContactEmail();
+    Q_INVOKABLE QString getQrTextOne();
+    Q_INVOKABLE int evaluateQrCode(QString clipboardData);
+    Q_INVOKABLE void continueQrCodeAction();
+    Q_INVOKABLE void prepareQrBackupImport();
+    Q_INVOKABLE void startQrBackupImport();
+    Q_INVOKABLE void cancelQrImport();
+    /* ============ End QR code related stuff ================= */
 
     void unselectAccount(uint32_t accID);
 
@@ -196,12 +215,17 @@ public:
     Q_PROPERTY(ContactsModel* contactsmodel READ contactsmodel NOTIFY contactsmodelChanged);
     Q_PROPERTY(BlockedContactsModel* blockedcontactsmodel READ blockedcontactsmodel NOTIFY blockedcontactsmodelChanged);
     Q_PROPERTY(GroupMemberModel* groupmembermodel READ groupmembermodel NOTIFY groupmembermodelChanged);
+    // Reason: GUI needs to connect to signal imexProgress from eventThread directly because
+    // dc_receive_backup() blocks, so the DeltaHandler singleton will not pass the progress events
+    // until dc_receive_backup() returns, and at this point, everything has already happened
+    Q_PROPERTY(EmitterThread* emitterthread READ emitterthread NOTIFY emitterthreadChanged);
 
     ChatModel* chatmodel();
     AccountsModel* accountsmodel();
     ContactsModel* contactsmodel();
     BlockedContactsModel* blockedcontactsmodel();
     GroupMemberModel* groupmembermodel();
+    EmitterThread* emitterthread();
 
     Q_PROPERTY(bool hasConfiguredAccount READ hasConfiguredAccount NOTIFY hasConfiguredAccountChanged);
     Q_PROPERTY(bool networkingIsAllowed READ networkingIsAllowed NOTIFY networkingIsAllowedChanged);
@@ -222,6 +246,7 @@ signals:
     void contactsmodelChanged();
     void blockedcontactsmodelChanged();
     void groupmembermodelChanged();
+    void emitterthreadChanged();
     void chatlistShowsArchivedOnly(bool showsArchived);
 
     void hasConfiguredAccountChanged();
@@ -246,7 +271,6 @@ signals:
      * ============== New Group / Editing Group ===============
      * ======================================================== */
     void newChatPic(QString newPath);
-    
     /* ============ End New Group / Editing Group ============= */
 
     // for exporting backup, will be emitted
@@ -254,6 +278,13 @@ signals:
     // the event DC_EVENT_IMEX_FILE_WRITTEN has
     // been received
     void backupFileWritten();
+
+    /* ========================================================
+     * ================ QR code related stuff =================
+     * ======================================================== */
+    void finishedSetConfigFromQr(bool successful);
+    void readyForQrBackupImport();
+    /* ============ End QR code related stuff ================= */
 
 public slots:
     void unrefTempContext();
@@ -306,6 +337,12 @@ private:
     // for creation of new group or editing of group
     uint32_t m_tempGroupChatID;
     bool creatingNewGroup;
+
+    // for scanning QR codes
+    int m_qrTempState;
+    uint32_t m_qrTempContactID;
+    QString m_qrTempText;
+    QString m_qrTempLotTextOne;
 };
 
 #endif // DELTAHANDLER_H

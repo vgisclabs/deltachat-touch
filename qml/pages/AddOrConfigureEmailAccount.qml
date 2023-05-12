@@ -79,19 +79,80 @@ Page {
         // has to explicitly choose cancel or ok.
         leadingActionBar.actions: undefined
 
-//        trailingActionBar.actions: [
-//            Action {
-//                iconName: 'settings'
-//                text: i18n.tr('Settings')
-//                onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('SettingsPage.qml'))
-//            },
-//
-//            Action {
-//                iconName: 'info'
-//                text: i18n.tr('About DeltaTouch')
-//                onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('About.qml'))
-//            }
-//        ]
+        //trailingActionBar.numberOfSlots: 2
+        trailingActionBar.actions: [
+            Action {
+                iconName: 'close'
+                text: i18n.tr('Cancel')
+                onTriggered: layout.removePages(addEmailPage)
+            },
+            Action {
+                iconName: 'ok'
+                text: i18n.tr('OK')
+                onTriggered: {
+                    DeltaHandler.prepareTempContextConfig()
+
+                    // unsetting the focus of each field as per past experience,
+                    // incomplete text may be retrieved otherwise. Not sure
+                    // whether this is the correct procedure though.
+                    emailField.focus = false
+                    DeltaHandler.setTempContextConfig("addr", emailField.text)
+
+                    passwordField.focus = false
+                    DeltaHandler.setTempContextConfig("mail_pw", passwordField.text)
+
+                    DeltaHandler.setTempContextConfig("show_emails", showClassicMailsCurrentSetting.toString(10))
+
+                    if (advancedOptionsOpened) {
+                        imapLoginNameField.focus = false
+                        DeltaHandler.setTempContextConfig("mail_user", imapLoginNameField.text)
+
+                        imapServerField.focus = false
+                        DeltaHandler.setTempContextConfig("mail_server", imapServerField.text)
+
+                        imapPortField.focus = false
+                        DeltaHandler.setTempContextConfig("mail_port", imapPortField.text)
+
+                        DeltaHandler.setTempContextConfig("mail_security", imapSecSelector.selectedIndex.toString(10))
+
+                        smtpLoginField.focus = false
+                        DeltaHandler.setTempContextConfig("send_user", smtpLoginField.text)
+
+                        smtpPasswordField.focus = false
+                        DeltaHandler.setTempContextConfig("send_pw", smtpPasswordField.text)
+
+                        smtpServerField.focus = false
+                        DeltaHandler.setTempContextConfig("send_server", smtpServerField.text)
+
+                        smtpPortField.focus = false
+                        DeltaHandler.setTempContextConfig("send_port", smtpPortField.text)
+                        
+                        DeltaHandler.setTempContextConfig("send_security", smtpSecSelector.selectedIndex.toString(10))
+                        DeltaHandler.setTempContextConfig("imap_certificate_checks", (certCheckSelector.selectedIndex == 2 ? "3" : certCheckSelector.selectedIndex.toString(10)))
+                        DeltaHandler.setTempContextConfig("smtp_certificate_checks", (certCheckSelector.selectedIndex == 2 ? "3" : certCheckSelector.selectedIndex.toString(10)))
+
+                        DeltaHandler.setTempContextConfig("socks5_enabled", socksSwitch.checked ? "1" : "0")
+
+                        socksHostField.focus = false
+                        DeltaHandler.setTempContextConfig("socks5_host", socksHostField.text)
+
+                        socksPortField.focus = false
+                        DeltaHandler.setTempContextConfig("socks5_port", socksPortField.text)
+
+                        socksUsernameField.focus = false
+                        DeltaHandler.setTempContextConfig("socks5_user", socksUsernameField.text)
+
+                        socksPasswordField.focus = false
+                        DeltaHandler.setTempContextConfig("socks5_password", socksPasswordField.text)
+                    }
+                    
+                    // now DeltaHandler.configureTempContext() needs to be called,
+                    // will be done in the popup
+                    PopupUtils.open(configProgress)
+                    //layout.removePages(chatlistPage)
+                }
+            }
+        ]
     } //PageHeader id:header
         
     Flickable {
@@ -585,102 +646,6 @@ Page {
                 } // end Rectangle id: socksPasswordFieldRect
 
             } // end Column id: advancedOptionsColumn
-
-            Rectangle {
-                id: okCancelRect
-                height: cancelButton.height
-                width: cancelButton.width + okButton.width + units.gu(3)
-                color: theme.palette.normal.background
-                anchors {
-                    left: parent.left
-                    leftMargin: units.gu(4)
-                    top: advancedOptionsColumn.bottom
-                    topMargin: units.gu(3)
-                }
-
-                Button {
-                    id: cancelButton
-                    width: (implicitWidth > okButton.implicitWidth ? implicitWidth : okButton.implicitWidth) + units.gu(2)
-                    anchors {
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                    }
-                    text: i18n.tr('Cancel')
-                    onClicked: layout.removePages(addEmailPage)
-                }
-
-                Button {
-                    id: okButton
-                    width: (implicitWidth > okButton.implicitWidth ? implicitWidth : okButton.implicitWidth) + units.gu(2)
-                    anchors {
-                        right: parent.right
-                        verticalCenter: parent.verticalCenter
-                    }
-                    text: i18n.tr('OK')
-                    onClicked: {
-                        DeltaHandler.prepareTempContextConfig()
-
-                        // unsetting the focus of each field as per past experience,
-                        // incomplete text may be retrieved otherwise. Not sure
-                        // whether this is the correct procedure though.
-                        emailField.focus = false
-                        DeltaHandler.setTempContextConfig("addr", emailField.text)
-
-                        passwordField.focus = false
-                        DeltaHandler.setTempContextConfig("mail_pw", passwordField.text)
-
-                        DeltaHandler.setTempContextConfig("show_emails", showClassicMailsCurrentSetting.toString(10))
-
-                        if (advancedOptionsOpened) {
-                            imapLoginNameField.focus = false
-                            DeltaHandler.setTempContextConfig("mail_user", imapLoginNameField.text)
-
-                            imapServerField.focus = false
-                            DeltaHandler.setTempContextConfig("mail_server", imapServerField.text)
-
-                            imapPortField.focus = false
-                            DeltaHandler.setTempContextConfig("mail_port", imapPortField.text)
-
-                            DeltaHandler.setTempContextConfig("mail_security", imapSecSelector.selectedIndex.toString(10))
-
-                            smtpLoginField.focus = false
-                            DeltaHandler.setTempContextConfig("send_user", smtpLoginField.text)
-
-                            smtpPasswordField.focus = false
-                            DeltaHandler.setTempContextConfig("send_pw", smtpPasswordField.text)
-
-                            smtpServerField.focus = false
-                            DeltaHandler.setTempContextConfig("send_server", smtpServerField.text)
-
-                            smtpPortField.focus = false
-                            DeltaHandler.setTempContextConfig("send_port", smtpPortField.text)
-                            
-                            DeltaHandler.setTempContextConfig("send_security", smtpSecSelector.selectedIndex.toString(10))
-                            DeltaHandler.setTempContextConfig("imap_certificate_checks", (certCheckSelector.selectedIndex == 2 ? "3" : certCheckSelector.selectedIndex.toString(10)))
-                            DeltaHandler.setTempContextConfig("smtp_certificate_checks", (certCheckSelector.selectedIndex == 2 ? "3" : certCheckSelector.selectedIndex.toString(10)))
-
-                            DeltaHandler.setTempContextConfig("socks5_enabled", socksSwitch.checked ? "1" : "0")
-
-                            socksHostField.focus = false
-                            DeltaHandler.setTempContextConfig("socks5_host", socksHostField.text)
-
-                            socksPortField.focus = false
-                            DeltaHandler.setTempContextConfig("socks5_port", socksPortField.text)
-
-                            socksUsernameField.focus = false
-                            DeltaHandler.setTempContextConfig("socks5_user", socksUsernameField.text)
-
-                            socksPasswordField.focus = false
-                            DeltaHandler.setTempContextConfig("socks5_password", socksPasswordField.text)
-                        }
-                        
-                        // now DeltaHandler.configureTempContext() needs to be called,
-                        // will be done in the popup
-                        PopupUtils.open(configProgress)
-                        //layout.removePages(chatlistPage)
-                    }
-                }
-            } // end Rectangle id: okCancelRect
         } // end Item id: contentFlick
     } // end Flickable id:flickable
 
@@ -751,5 +716,4 @@ Page {
             }
         }
     }
-    
 } // end of Page id: addEmailPage

@@ -143,7 +143,7 @@ void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
 
     connectSuccess = connect(m_deltaHandler, SIGNAL(updatedAccountConfig(uint32_t)), this, SLOT(updatedAccount(uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "Chatmodel::configure: Could not connect signal newConfiguredAccount to slot newAccount";
+        qDebug() << "Chatmodel::configure: Could not connect signal updatedAccountConfig to slot updatedAccount";
     }
 
 //    bool connectSuccess = connect(deltaHandler, SIGNAL(newMsgReceived(unsigned int)), this, SLOT(newMessage(unsigned int)));

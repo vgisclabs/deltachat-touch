@@ -31,7 +31,8 @@ set_target_properties(${PLUGIN} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PLUGIN})
 find_package(Qt5 COMPONENTS Qml REQUIRED)
 find_package(Qt5 COMPONENTS Quick REQUIRED)
 find_package(Qt5 COMPONENTS DBus REQUIRED)
-target_link_libraries(${PLUGIN} Qt5::Qml Qt5::Quick Qt5::DBus deltachat)
+find_package(Qt5 COMPONENTS Multimedia REQUIRED)
+target_link_libraries(${PLUGIN} Qt5::Qml Qt5::Quick Qt5::DBus Qt5::Multimedia deltachat)
 
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH

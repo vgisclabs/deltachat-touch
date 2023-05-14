@@ -22,6 +22,7 @@ import Ubuntu.Components.Popups 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
+import Qt.labs.platform 1.1
 import QtMultimedia 5.12
 //import "../delegates"
 
@@ -34,6 +35,7 @@ Page {
     property string chatname: DeltaHandler.chatName()
     property bool currentlyQuotingMessage: false
     property bool attachmentMode: false
+    property bool audioRecordMode: false
 
 
     signal leavingChatViewPage()
@@ -58,6 +60,11 @@ Page {
 
     Component.onDestruction: {
         messageAudio.stop()
+
+        if (audioRecordMode) {
+            audioRecordBox.stopAndCleanupVoiceRecording()
+        }
+
         DeltaHandler.chatmodel.setDraft(messageEnterField.text)
         // TODO is this signal needed? Could be used
         // to unref currentMessageDraft
@@ -95,7 +102,6 @@ Page {
         //    Action {
         //        iconName: 'help'
         //        text: i18n.tr('Help')
-        //        // TODO make help page for the Account config page
         //        onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
         //    },
 
@@ -260,9 +266,6 @@ Page {
         delegate: delegateListItem
         verticalLayoutDirection: ListView.BottomToTop
         spacing: units.gu(1)
-        // TODO: check if this works now with the newer version
-        // of QtQuick? Then we might not need to reverse the index
-        //Component.onCompleted: positionViewAtEnd()
 
         Component.onCompleted: {
             if (DeltaHandler.chatmodel.getUnreadMessageBarIndex() > 0) {
@@ -312,7 +315,7 @@ Page {
 
     Rectangle {
         id: messageCreatorBox
-        height: messageEnterField.height + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(2) : 0) + units.gu(1)
+        height: audioRecordMode ? audioRecordBox.height : messageEnterField.height + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(2) : 0) + units.gu(1)
         width: parent.width
         color: theme.palette.normal.background
         anchors{
@@ -378,6 +381,7 @@ Page {
                 id: cancelQuoteShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
+                color: theme.palette.normal.overlay
 
                 anchors {
                     top: parent.top
@@ -422,12 +426,13 @@ Page {
                 id: attachIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
+                color: theme.palette.normal.overlay
 
                 anchors{
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
-                visible: currentlyQuotingMessage ? false : true
+                visible: audioRecordMode ? false : currentlyQuotingMessage ? false : true
 
                 Icon{
                     id: attachIcon
@@ -443,7 +448,6 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            // TODO
                             attachmentMode = !attachmentMode
                         }
                         enabled: currentlyQuotingMessage ? false : true
@@ -464,7 +468,7 @@ Page {
             }
             autoSize: true
             maximumLineCount: 5
-            visible: !attachmentMode
+            visible: !attachmentMode && !audioRecordMode
         }
 
         // TODO: why is this Rectangle needed?
@@ -477,13 +481,14 @@ Page {
                 top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
                 topMargin: quotedMessageBox.visible ? units.gu(2) : 0
             }
-            visible: !attachmentMode
+            visible: !attachmentMode && !audioRecordMode
             color: theme.palette.normal.background
 
             UbuntuShape {
                 id: sendIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
+                color: theme.palette.normal.overlay
                 anchors{
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
@@ -527,17 +532,17 @@ Page {
                 right: messageCreatorBox.right
                 rightMargin: units.gu(1)
                 top: messageCreatorBox.top
-                topMargin: units.gu(0.5)
             }
 
             color: theme.palette.normal.background
 
-            visible: attachmentMode
+            visible: attachmentMode && !audioRecordMode
 
             UbuntuShape{
                 id: sendImageIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
+                color: theme.palette.normal.overlay
 
                 anchors{
                     right: filetypeToSendCage.right
@@ -568,6 +573,7 @@ Page {
                 id: sendAudioIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
+                color: theme.palette.normal.overlay
 
                 anchors{
                     right: sendImageIconShape.left
@@ -595,10 +601,11 @@ Page {
                 }
             } // end UbuntuShape id: sendAudioIconShape
 
-            UbuntuShape{
+            UbuntuShape {
                 id: sendFileIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
+                color: theme.palette.normal.overlay
 
                 anchors{
                     right: sendAudioIconShape.left
@@ -625,8 +632,373 @@ Page {
                     }
                 }
             } // end UbuntuShape id: sendFileIconShape
+
+            UbuntuShape {
+                id: voiceMessageIconShape
+                width: FontUtils.sizeToPixels("x-large") * 1.2
+                height: width
+                color: theme.palette.normal.overlay
+
+                anchors{
+                    right: sendFileIconShape.left
+                    rightMargin: units.gu(2)
+                    verticalCenter: parent.verticalCenter
+                }
+
+                Icon{
+                    id: voiceMessageIcon
+                    width: parent.width - units.gu(1)
+                    height: width
+                    name: "audio-input-microphone-symbolic"
+                    anchors{
+                        horizontalCenter: voiceMessageIconShape.horizontalCenter
+                        verticalCenter: voiceMessageIconShape.verticalCenter
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            messageAudio.stop()
+                            DeltaHandler.prepareAudioRecording()
+                            attachmentMode = false
+                            audioRecordMode = true
+                        }
+                        enabled: true
+                    }
+                }
+            } // end UbuntuShape id: voiceMessageIconShape
         } // end Rectangle id: filetypeToSendCage
+        
+
+    /* ======================================================
+       ============== Voice Message Recording ===============
+       ====================================================== */
+
+        UbuntuShape {
+            // separate close icon at (almost) the same position as
+            // the regular one, just to reduce the complexity of the
+            // statements for "enabled" and "onClicked"
+            id: leaveRecIconShape
+            width: FontUtils.sizeToPixels("x-large") * 1.2
+            height: width
+            color: theme.palette.normal.overlay
+
+            visible: audioRecordMode
+            opacity: !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying ? 1 : 0.5
+
+            anchors{
+                left: messageCreatorBox.left
+                leftMargin: units.gu(1)
+                bottom: parent.bottom
+                bottomMargin: units.gu(1)
+            }
+
+            Icon {
+                width: parent.width - units.gu(1)
+                height: width
+                name: "close"
+                anchors{
+                    horizontalCenter: leaveRecIconShape.horizontalCenter
+                    verticalCenter: leaveRecIconShape.verticalCenter
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (audioRecordBox.hasRecord) {
+                            PopupUtils.open(popoverComponentConfirmLeavingRecording, leaveRecIconShape)
+                        } else {
+                            // need to call dismiss even if hasRecord is false because a recording
+                            // might have been finished, but deleted afterwards, in which case the
+                            // QAudioRecorder object in C++ has been created
+                            DeltaHandler.dismissAudioRecording()
+                            audioRecordMode = false
+                        }
+                    }
+                    enabled: audioRecordMode && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
+                }
+            }
+        } // end UbuntuShape id: sendRecIconShape
+
+        UbuntuShape {
+            // separate send icon at (almost) the same position as
+            // the regular one, just to reduce the complexity of the
+            // statements for "enabled" and "onClicked"
+            id: sendRecIconShape
+            width: FontUtils.sizeToPixels("x-large") * 1.2
+            height: width
+            color: theme.palette.normal.overlay
+
+            visible: audioRecordMode
+            opacity: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying ? 1 : 0.5
+
+            anchors{
+                right: messageCreatorBox.right
+                rightMargin: units.gu(1)
+                bottom: parent.bottom
+                bottomMargin: units.gu(1)
+            }
+
+            Icon {
+                width: parent.width - units.gu(1)
+                height: width
+                name: "send"
+                anchors{
+                    horizontalCenter: sendRecIconShape.horizontalCenter
+                    verticalCenter: sendRecIconShape.verticalCenter
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        DeltaHandler.sendAudioRecording(audioRecordBox.voiceMessageFile)
+                        audioRecordBox.stopAndCleanupVoiceRecording()
+                        audioRecordMode = false
+                    }
+                    enabled: audioRecordMode && audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
+                }
+            }
+        } // end UbuntuShape id: sendRecIconShape
+
+        UbuntuShape {
+            id: floatingInfoRecordingShape
+            height: units.gu(10)
+            width: height
+
+            anchors {
+                bottom: audioRecordBox.top
+                bottomMargin: units.gu(10)
+                horizontalCenter: parent.horizontalCenter
+            }
+
+            color: root.darkmode? "white" : "black"
+            visible: audioRecordBox.isRecording
+
+            Icon{
+                width: parent.width - units.gu(1)
+                height: width
+                name: "media-record"
+                anchors{
+                    horizontalCenter: floatingInfoRecordingShape.horizontalCenter
+                    verticalCenter: floatingInfoRecordingShape.verticalCenter
+                }
+            }
+
+            SequentialAnimation {
+                loops: Animation.Infinite
+                running: true
+                PropertyAnimation {
+                    target: floatingInfoRecordingShape
+                    property: "opacity"
+                    to: 1
+                    duration: 1000
+                }
+                PropertyAnimation {
+                    target: floatingInfoRecordingShape
+                    property: "opacity"
+                    to: 0.3
+                    duration: 1000
+                }
+            }
+        }
+
+        Rectangle {
+            id: audioRecordBox
+            height: startRecIconShape.height + units.gu(2)
+            width: units.gu(1) + deleteRecIconShape.width + units.gu(1) + startRecIconShape.width + units.gu(1) + stopRecIconShape.width + units.gu(1) + playRecIconShape.width + units.gu(1)
+
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                verticalCenter: parent.verticalCenter
+            }
+
+            visible: audioRecordMode
+            border.color: "grey" //root.darkmode ? "white" : "black"
+            border.width: units.gu(0.1)
+            color: theme.palette.normal.background
+
+            property bool isRecording: false
+            property bool hasRecord: false
+            property bool recordIsPlaying: false
+            property string voiceMessageFile: ""
+
+            function stopVoiceRecordingOrPlaying() {
+                if (audioRecordBox.isRecording) {
+                    DeltaHandler.stopAudioRecording()
+                    audioRecordBox.isRecording = false
+                } else if (audioRecordBox.recordIsPlaying) {
+                    recordedAudio.stop()
+                }
+            }
+
+            function stopAndCleanupVoiceRecording() {
+                if (audioRecordBox.isRecording) {
+                    DeltaHandler.stopAudioRecording()
+                    audioRecordBox.isRecording = false
+                } else if (audioRecordBox.recordIsPlaying) {
+                    recordedAudio.stop()
+                }
+                DeltaHandler.dismissAudioRecording()
+                audioRecordBox.hasRecord = false
+            }
+
+            Connections {
+                target: recordedAudio
+
+                onPlaybackStateChanged: {
+                    if (recordedAudio.playbackState === Audio.PlayingState) {
+                        audioRecordBox.recordIsPlaying = true
+                    } else {
+                        audioRecordBox.recordIsPlaying = false
+                    }
+                }
+            }
+
+            UbuntuShape {
+                id: deleteRecIconShape
+                width: FontUtils.sizeToPixels("x-large") * 1.2
+                height: width
+                color: theme.palette.normal.overlay
+
+                opacity: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying ? 1 : 0.5
+
+                anchors{
+                    left: parent.left
+                    leftMargin: units.gu(1)
+                    bottom: parent.bottom
+                    bottomMargin: units.gu(1)
+                }
+
+                Icon {
+                    width: parent.width - units.gu(1)
+                    height: width
+                    name: "delete"
+                    anchors{
+                        horizontalCenter: deleteRecIconShape.horizontalCenter
+                        verticalCenter: deleteRecIconShape.verticalCenter
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            // TODO: delete the file in the cache?
+                            //DeltaHandler.deleteAudioRecording()
+                            PopupUtils.open(popoverComponentConfirmDeletion, deleteRecIconShape)
+                        }
+                        enabled: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
+                    }
+                }
+            } // end UbuntuShape id: deleteRecIconShape
+
+            UbuntuShape {
+                id: startRecIconShape
+                width: FontUtils.sizeToPixels("x-large") * 1.2
+                height: width
+                color: theme.palette.normal.overlay
+
+                opacity: !audioRecordBox.hasRecord && !audioRecordBox.isRecording ? 1 : 0.5
+
+                anchors{
+                    left: deleteRecIconShape.right
+                    leftMargin: units.gu(1)
+                    bottom: parent.bottom
+                    bottomMargin: units.gu(1)
+                }
+
+                Icon{
+                    width: parent.width - units.gu(1)
+                    height: width
+                    name: "media-record"
+                    anchors{
+                        horizontalCenter: startRecIconShape.horizontalCenter
+                        verticalCenter: startRecIconShape.verticalCenter
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            audioRecordBox.voiceMessageFile = DeltaHandler.startAudioRecording()
+                            audioRecordBox.isRecording = true
+                        }
+                        enabled: !audioRecordBox.hasRecord && !audioRecordBox.isRecording
+                    }
+                }
+            } // end UbuntuShape id: startRecIconShape
+
+            UbuntuShape {
+                id: stopRecIconShape
+                width: FontUtils.sizeToPixels("x-large") * 1.2
+                height: width
+                color: theme.palette.normal.overlay
+
+                opacity: (audioRecordBox.isRecording || audioRecordBox.recordIsPlaying) ? 1 : 0.5
+
+                anchors{
+                    left: startRecIconShape.right
+                    leftMargin: units.gu(1)
+                    bottom: parent.bottom
+                    bottomMargin: units.gu(1)
+                }
+
+                Icon{
+                    width: parent.width - units.gu(1)
+                    height: width
+                    name: "media-playback-stop"
+                    anchors{
+                        horizontalCenter: stopRecIconShape.horizontalCenter
+                        verticalCenter: stopRecIconShape.verticalCenter
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if (audioRecordBox.isRecording) {
+                                DeltaHandler.stopAudioRecording()
+                                audioRecordBox.isRecording = false
+                                audioRecordBox.hasRecord = true
+                            } else if (audioRecordBox.recordIsPlaying) {
+                                recordedAudio.stop()
+                            }
+                        }
+                        enabled: (audioRecordBox.isRecording || audioRecordBox.recordIsPlaying)
+                    }
+                }
+            } // end UbuntuShape id: startRecIconShape
+
+            UbuntuShape {
+                id: playRecIconShape
+                width: FontUtils.sizeToPixels("x-large") * 1.2
+                height: width
+                color: theme.palette.normal.overlay
+
+                opacity: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying ? 1 : 0.5
+
+                anchors{
+                    left: stopRecIconShape.right
+                    leftMargin: units.gu(1)
+                    bottom: parent.bottom
+                    bottomMargin: units.gu(1)
+                }
+
+                Icon{
+                    width: parent.width - units.gu(1)
+                    height: width
+                    name: "media-playback-start"
+                    anchors{
+                        horizontalCenter: playRecIconShape.horizontalCenter
+                        verticalCenter: playRecIconShape.verticalCenter
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            recordedAudio.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, audioRecordBox.voiceMessageFile))
+                            console.log("============== voiceMessageFile is: ", audioRecordBox.voiceMessageFile)
+                            recordedAudio.play()
+                        }
+                        enabled: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
+                    }
+                }
+            } // end UbuntuShape id: playRecIconShape
+        } // end UbuntuShape id: audioRecordBox
+
+    /* ============ End Voice Message Recording ============= */
+
     } // end Rectangle id: messageCreatorBox
+
 
     Rectangle {
         id: requestReactionRect
@@ -691,6 +1063,13 @@ Page {
 
     Audio {
         id: messageAudio
+        onPlaying: {
+            audioRecordBox.stopVoiceRecordingOrPlaying()
+        }
+    }
+
+    Audio {
+        id: recordedAudio
     }
 
     function millisecsToString(time) {
@@ -781,4 +1160,71 @@ Page {
             color: root.darkmode ? "black" : "white"
         }
     } // end UbuntuShape id: audioPlayerShape
+
+    Component {
+        id: popoverComponentConfirmLeavingRecording
+        Popover {
+            id: popoverConfirmLeavingRecording
+            Column {
+                id: containerLayoutLeavingRecording
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+                ListItem {
+                    height: layout2.height
+                    // should be automatically be themed with something like
+                    // theme.palette.normal.overlay, but this
+                    // doesn't seem to work for Ambiance (and importing
+                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout1
+                        // TODO string not translated yet
+                        title.text: i18n.tr("Click to leave without sending")
+                    }
+                    onClicked: {
+                        audioRecordBox.stopAndCleanupVoiceRecording()
+                        audioRecordMode = false
+                        PopupUtils.close(popoverConfirmLeavingRecording)
+                    }
+                }
+            }
+        }
+    } // end Component id: popoverComponentConfirmDeletion
+
+    Component {
+        id: popoverComponentConfirmDeletion
+        Popover {
+            id: popoverConfirmDeletion
+            Column {
+                id: containerLayoutDeletion
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+                ListItem {
+                    height: layout1.height
+                    // should be automatically be themed with something like
+                    // theme.palette.normal.overlay, but this
+                    // doesn't seem to work for Ambiance (and importing
+                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout1
+                        // TODO string not translated yet
+                        title.text: i18n.tr("Click to delete")
+                    }
+                    onClicked: {
+                        audioRecordBox.hasRecord = false
+                        audioRecordBox.voiceMessageFile = ""
+                        PopupUtils.close(popoverConfirmDeletion)
+                    }
+                }
+            }
+        }
+    } // end Component id: popoverComponentConfirmDeletion
+
 } // end Page id: chatViewPage

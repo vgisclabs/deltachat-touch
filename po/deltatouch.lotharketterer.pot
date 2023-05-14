@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-12 19:50+0000\n"
+"POT-Creation-Date: 2023-05-14 14:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,28 +21,28 @@ msgstr ""
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:204 ../qml/Main.qml:211
+#: ../qml/Main.qml:217 ../qml/Main.qml:224
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:204 ../qml/Main.qml:211 ../qml/Main.qml:254
+#: ../qml/Main.qml:217 ../qml/Main.qml:224 ../qml/Main.qml:267
 #: ../qml/pages/AccountConfig.qml:120
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:205 ../qml/Main.qml:212
+#: ../qml/Main.qml:218 ../qml/Main.qml:225
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:386
+#: ../qml/Main.qml:399
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:578
+#: ../qml/Main.qml:591
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:652 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:665 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
@@ -66,8 +66,8 @@ msgstr ""
 #: ../qml/delegates/delegSelfTextMsg.qml:142
 #: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
-#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:417
-#: ../qml/pages/QrShowScan.qml:430
+#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
+#: ../qml/pages/QrShowScan.qml:429
 msgid "Unknown"
 msgstr ""
 
@@ -120,8 +120,8 @@ msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
 #: ../qml/pages/PickerBackupFile.qml:100
-#: ../qml/pages/ProgressQrBackupImport.qml:52 ../qml/pages/QrShowScan.qml:238
-#: ../qml/pages/QrShowScan.qml:339 ../qml/pages/QrShowScan.qml:489
+#: ../qml/pages/ProgressQrBackupImport.qml:53 ../qml/pages/QrShowScan.qml:237
+#: ../qml/pages/QrShowScan.qml:338 ../qml/pages/QrShowScan.qml:488
 msgid "Error"
 msgstr ""
 
@@ -175,19 +175,19 @@ msgid "Enter name or e-mail address"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:45
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:776
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:680
 #: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
 msgid "No, chats only"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:48
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:790
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:694
 #: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
 msgid "For accepted contacts"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:51
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:804
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:708
 #: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
 msgid "All"
 msgstr ""
@@ -339,8 +339,8 @@ msgstr ""
 msgid "SOCKS5 Password"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:752
-#: ../qml/pages/QrShowScan.qml:481
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:656
+#: ../qml/pages/QrShowScan.qml:480
 msgid "Configuring..."
 msgstr ""
 
@@ -360,7 +360,7 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:104
+#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:110
 #: ../qml/pages/CreateOrEditGroup.qml:36
 msgid "Edit Group"
 msgstr ""
@@ -373,17 +373,25 @@ msgstr ""
 msgid "Show Encryption Info"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:652
+#: ../qml/pages/ChatView.qml:1024
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:668 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1040 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:683
+#: ../qml/pages/ChatView.qml:1055
 msgid "Block"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1185
+msgid "Click to leave without sending"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1218
+msgid "Click to delete"
 msgstr ""
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:35
@@ -426,7 +434,7 @@ msgid "Delete Message"
 msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:100 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrShowScan.qml:73 ../qml/pages/QrShowScan.qml:105
+#: ../qml/pages/QrShowScan.qml:72 ../qml/pages/QrShowScan.qml:104
 msgid "QR Invite Code"
 msgstr ""
 
@@ -486,7 +494,7 @@ msgstr ""
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:291
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:290
 msgid "Sorry, not implemented yet :-("
 msgstr ""
 
@@ -554,7 +562,7 @@ msgstr ""
 msgid "Transferring…"
 msgstr ""
 
-#: ../qml/pages/QrConfirmPopup.qml:57 ../qml/pages/QrShowScan.qml:456
+#: ../qml/pages/QrConfirmPopup.qml:57 ../qml/pages/QrShowScan.qml:455
 msgid "Copy to Clipboard"
 msgstr ""
 
@@ -562,42 +570,42 @@ msgstr ""
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:112
+#: ../qml/pages/QrShowScan.qml:111
 msgid "Scan QR Code"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:161
+#: ../qml/pages/QrShowScan.qml:160
 msgid ""
 "Scanning QR codes directly is not supported yet. Please use another app (e."
 "g., Tagger) to scan and copy the code to the clipboard, then paste it here "
 "using the button below."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:174
+#: ../qml/pages/QrShowScan.qml:173
 msgid "Paste from Clipboard"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:186
+#: ../qml/pages/QrShowScan.qml:185
 msgid "Chat with %1?"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:212
+#: ../qml/pages/QrShowScan.qml:211
 msgid "Do you want to join the group \"%1\"?"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:224
+#: ../qml/pages/QrShowScan.qml:223
 msgid "The fingerprint of %1 is valid!"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:225 ../qml/pages/QrShowScan.qml:251
+#: ../qml/pages/QrShowScan.qml:224 ../qml/pages/QrShowScan.qml:250
 msgid "Fingerprint"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:237
+#: ../qml/pages/QrShowScan.qml:236
 msgid "The scanned fingerprint does not match the last seen for %1."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:250
+#: ../qml/pages/QrShowScan.qml:249
 msgid ""
 "This QR code contains a fingerprint but no e-mail address.\n"
 "\n"
@@ -605,78 +613,78 @@ msgid ""
 "the recipient first."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:263
+#: ../qml/pages/QrShowScan.qml:262
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:277
+#: ../qml/pages/QrShowScan.qml:276
 msgid "Copy the account from the other device to this device?"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:278
+#: ../qml/pages/QrShowScan.qml:277
 msgid "Add as Second Device"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:307
+#: ../qml/pages/QrShowScan.qml:306
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:308 ../qml/pages/QrShowScan.qml:323
-#: ../qml/pages/QrShowScan.qml:418 ../qml/pages/QrShowScan.qml:431
+#: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
+#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
 msgid "QR Code"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:322
+#: ../qml/pages/QrShowScan.qml:321
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:338
+#: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:351
+#: ../qml/pages/QrShowScan.qml:350
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:352 ../qml/pages/QrShowScan.qml:365
+#: ../qml/pages/QrShowScan.qml:351 ../qml/pages/QrShowScan.qml:364
 msgid "Deactivate QR Code"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:364
+#: ../qml/pages/QrShowScan.qml:363
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:377
+#: ../qml/pages/QrShowScan.qml:376
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:378 ../qml/pages/QrShowScan.qml:391
+#: ../qml/pages/QrShowScan.qml:377 ../qml/pages/QrShowScan.qml:390
 msgid "Activate QR Code"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:390
+#: ../qml/pages/QrShowScan.qml:389
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
 "The QR code is not active on this device."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:403
+#: ../qml/pages/QrShowScan.qml:402
 msgid "Log into \"%1\"?"
 msgstr ""
 

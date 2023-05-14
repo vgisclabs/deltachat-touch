@@ -22,7 +22,7 @@
 //#include <unistd.h> // for sleep
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}
+    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_audioRecorder {nullptr}
 {
     qRegisterMetaType<uint32_t>("uint32_t");
     //qRegisterMetaType<size_t>("size_t");
@@ -2121,6 +2121,70 @@ void DeltaHandler::cancelQrImport()
 }
 
 
+void DeltaHandler::prepareAudioRecording()
+{
+    m_audioRecorder = new QAudioRecorder;
+    QAudioEncoderSettings audioSettings;
+//    QStringList codeclist = m_audioRecorder->supportedAudioCodecs();
+//    for (int i = 0; i < codeclist.size(); ++i) {
+//        qDebug() << "codec " << i << ": " << codeclist.at(i);
+//    }
+//
+//    QStringList containerlist = m_audioRecorder->supportedContainers();
+//    for (int i = 0; i < containerlist.size(); ++i) {
+//        qDebug() << "container " << i << ": " << containerlist.at(i);
+//    }
+
+    audioSettings.setCodec("audio/x-vorbis");
+    audioSettings.setEncodingMode(QMultimedia::ConstantQualityEncoding);
+    audioSettings.setQuality(QMultimedia::VeryLowQuality);
+
+    m_audioRecorder->setEncodingSettings(audioSettings);
+    m_audioRecorder->setContainerFormat("audio/ogg");
+}
+
+
+QString DeltaHandler::startAudioRecording()
+{
+
+    QString outfile("/voice_message.ogg");
+    QString retval = outfile;
+    outfile.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    m_audioRecorder->setOutputLocation(QUrl(outfile));
+
+    m_audioRecorder->record();
+
+    return retval;
+}
+
+
+void DeltaHandler::stopAudioRecording()
+{
+    m_audioRecorder->stop();
+}
+
+
+void DeltaHandler::dismissAudioRecording()
+{
+    if (m_audioRecorder) {
+        delete m_audioRecorder;
+        m_audioRecorder = nullptr;
+    }
+}
+
+
+void DeltaHandler::sendAudioRecording(QString filepath)
+{
+    dc_msg_t* msg = dc_msg_new(currentContext, DC_MSG_VOICE);
+
+    filepath.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    dc_msg_set_file(msg, filepath.toUtf8().constData(), NULL);
+    dc_send_msg(currentContext, currentChatID, msg);
+     
+    dc_msg_unref(msg);
+}
+
+
 GroupMemberModel* DeltaHandler::groupmembermodel()
 {
     return m_groupmembermodel;
@@ -2378,6 +2442,7 @@ void DeltaHandler::setCoreTranslations()
                     //     dc_set_stock_translation(currentContext, DC_STR_NOMESSAGES, stringText.toUtf8().constData());
                     // } else if (stringName == "self") {
                     //     dc_set_stock_translation(currentContext, DC_STR_SELF, stringText.toUtf8().constData());
+                    // }
                     // etc.
 #include "ifElseSetCoreTranslation.cpp"
                 }

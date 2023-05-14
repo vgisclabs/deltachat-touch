@@ -36,7 +36,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '0.4.3'
+    property string version: '0.5.1'
 
     // Color scheme
     property bool darkmode: (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
@@ -128,7 +128,20 @@ MainView {
         target: Qt.application
         onStateChanged: {
             startStopIO()
-            console.log('Qt.application signal stateChanged, state is now: ' + Qt.application.state)
+            let currState;
+            // see Qt::ApplicationState
+            if (Qt.application.state == Qt.ApplicationActive) {
+                currState = "ApplicationActive"
+            } else if (Qt.application.state == Qt.ApplicationSuspended) {
+                currState = "ApplicationSuspended"
+            } else if (Qt.application.state == Qt.ApplicationHidden) {
+                currState = "ApplicationHidden"
+            } else if (Qt.application.state == Qt.ApplicationInactive) {
+                currState = "ApplicationInactive"
+            } else {
+                currState = "Unknown state " + Qt.application.state
+            }
+            console.log('Qt.application signal stateChanged, state is now: ' + currState)
         }
     }
 

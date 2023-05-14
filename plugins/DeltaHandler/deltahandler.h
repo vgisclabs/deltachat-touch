@@ -21,6 +21,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QAudioRecorder>
 #include <string>
 #include "chatmodel.h"
 #include "accountsmodel.h"
@@ -204,6 +205,16 @@ public:
     Q_INVOKABLE void cancelQrImport();
     /* ============ End QR code related stuff ================= */
 
+    /* ========================================================
+     * =============== Audio message recording ================
+     * ======================================================== */
+    Q_INVOKABLE void prepareAudioRecording();
+    Q_INVOKABLE void dismissAudioRecording();
+    Q_INVOKABLE QString startAudioRecording();
+    Q_INVOKABLE void stopAudioRecording();
+    Q_INVOKABLE void sendAudioRecording(QString filepath);
+    /* ============ End audio message recording =============== */
+
     void unselectAccount(uint32_t accID);
 
     // QAbstractListModel interface
@@ -343,6 +354,9 @@ private:
     uint32_t m_qrTempContactID;
     QString m_qrTempText;
     QString m_qrTempLotTextOne;
+
+    // for recording of audio messages
+    QAudioRecorder* m_audioRecorder;
 };
 
 #endif // DELTAHANDLER_H

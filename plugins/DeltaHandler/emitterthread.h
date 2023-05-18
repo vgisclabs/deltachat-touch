@@ -43,6 +43,7 @@ class EmitterThread : public QThread {
             void imexProgress(int permill);
             void imexFileWritten(QString filepath);
             void contactsChanged();
+            void errorEvent(QString errorMessage);
 
     private:
         dc_accounts_t* accounts;

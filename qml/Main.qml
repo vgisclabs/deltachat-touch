@@ -36,7 +36,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '0.5.1'
+    property string version: '0.5.2'
 
     // Color scheme
     property bool darkmode: (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
@@ -170,7 +170,6 @@ MainView {
             console.log('DeltaHandler signal openChatViewRequest received')
         }
     }
-
 
     AdaptivePageLayout {
         id: layout
@@ -690,5 +689,45 @@ MainView {
 
         startStopIO()
         hintTimer.start()
+    }
+
+    Connections {
+        target: DeltaHandler.emitterthread
+        onErrorEvent: {
+            errorShape.visible = true
+            errorLabel.text = i18n.tr("Error: %1").arg(errorMessage)
+        }
+    }
+
+    UbuntuShape {
+        id: errorShape
+        width: parent.width - units.gu(2)
+        height: errorLabel.contentHeight + units.gu(2)
+        anchors {
+            top: parent.top
+            topMargin: units.gu(10)
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        color: theme.palette.normal.negative
+        visible: false
+
+        Label {
+            id: errorLabel
+            width: errorShape.width - units.gu(2)
+            anchors {
+                left: errorShape.left
+                leftMargin: units.gu(1)
+                top: errorShape.top
+                topMargin: units.gu(1)
+            }
+            color: theme.palette.normal.negativeText
+            wrapMode: Text.Wrap
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: errorShape.visible = false
+        }
     }
 } // end of MainView id: root

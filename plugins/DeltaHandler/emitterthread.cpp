@@ -92,6 +92,9 @@ void EmitterThread::run()
                     qDebug() << "Emitter: DC_EVENT_ERROR";
                     eventData2Str = dc_event_get_data2_str(event); 
                     qDebug() << "Emitter: " << eventData2Str;
+
+                    emit errorEvent(eventData2Str);
+
                     break;
                     
                 case DC_EVENT_ERROR_SELF_NOT_IN_GROUP:

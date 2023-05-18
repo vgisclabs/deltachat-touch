@@ -2121,10 +2121,12 @@ void DeltaHandler::cancelQrImport()
 }
 
 
-void DeltaHandler::prepareAudioRecording()
+void DeltaHandler::prepareAudioRecording(int recordingQuality)
 {
     m_audioRecorder = new QAudioRecorder;
     QAudioEncoderSettings audioSettings;
+
+//    // To see the list of supported codecs and containers
 //    QStringList codeclist = m_audioRecorder->supportedAudioCodecs();
 //    for (int i = 0; i < codeclist.size(); ++i) {
 //        qDebug() << "codec " << i << ": " << codeclist.at(i);
@@ -2135,10 +2137,23 @@ void DeltaHandler::prepareAudioRecording()
 //        qDebug() << "container " << i << ": " << containerlist.at(i);
 //    }
 
-    audioSettings.setCodec("audio/x-vorbis");
-    audioSettings.setEncodingMode(QMultimedia::ConstantQualityEncoding);
-    audioSettings.setQuality(QMultimedia::VeryLowQuality);
-
+    audioSettings.setCodec("audio/x-opus");
+    audioSettings.setEncodingMode(QMultimedia::AverageBitRateEncoding);
+    switch (recordingQuality) {
+        case VoiceMessageQuality::LowRecordingQuality:
+            audioSettings.setBitRate(8000);
+            break;
+        case VoiceMessageQuality::BalancedRecordingQuality:
+            audioSettings.setBitRate(20000);
+            break;
+        case VoiceMessageQuality::HighRecordingQuality:
+            audioSettings.setBitRate(40000);
+            break;
+        default:
+            audioSettings.setBitRate(20000);
+            break;
+    }
+    
     m_audioRecorder->setEncodingSettings(audioSettings);
     m_audioRecorder->setContainerFormat("audio/ogg");
 }
@@ -2147,7 +2162,7 @@ void DeltaHandler::prepareAudioRecording()
 QString DeltaHandler::startAudioRecording()
 {
 
-    QString outfile("/voice_message.ogg");
+    QString outfile("/voice_message.opus");
     QString retval = outfile;
     outfile.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     m_audioRecorder->setOutputLocation(QUrl(outfile));

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-14 14:32+0000\n"
+"POT-Creation-Date: 2023-05-17 16:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,28 +21,28 @@ msgstr ""
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:217 ../qml/Main.qml:224
+#: ../qml/Main.qml:220 ../qml/Main.qml:227
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:217 ../qml/Main.qml:224 ../qml/Main.qml:267
+#: ../qml/Main.qml:220 ../qml/Main.qml:227 ../qml/Main.qml:270
 #: ../qml/pages/AccountConfig.qml:120
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:218 ../qml/Main.qml:225
+#: ../qml/Main.qml:221 ../qml/Main.qml:228
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:399
+#: ../qml/Main.qml:402
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:591
+#: ../qml/Main.qml:594
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:665 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:668 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
@@ -71,13 +71,13 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: ../qml/delegates/delegOtherAudio.qml:232
-#: ../qml/delegates/delegSelfAudio.qml:200
+#: ../qml/delegates/delegOtherAudio.qml:233
+#: ../qml/delegates/delegSelfAudio.qml:201
 msgid "Audio"
 msgstr ""
 
-#: ../qml/delegates/delegOtherAudio.qml:232
-#: ../qml/delegates/delegSelfAudio.qml:200
+#: ../qml/delegates/delegOtherAudio.qml:233
+#: ../qml/delegates/delegSelfAudio.qml:201
 msgid "Voice Message"
 msgstr ""
 
@@ -85,8 +85,8 @@ msgstr ""
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
-#: ../qml/pages/SettingsPage.qml:86
+#: ../qml/pages/About.qml:28 ../qml/pages/AdvancedSettings.qml:79
+#: ../qml/pages/Profile.qml:65 ../qml/pages/SettingsPage.qml:86
 msgid "About DeltaTouch"
 msgstr ""
 
@@ -176,19 +176,19 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:45
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:680
-#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
+#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:324
 msgid "No, chats only"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:694
-#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
+#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:338
 msgid "For accepted contacts"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:51
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:708
-#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:352
 msgid "All"
 msgstr ""
 
@@ -227,6 +227,7 @@ msgid "Show Classic E-Mails"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:331
+#: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:290
 msgid "Advanced"
 msgstr ""
 
@@ -342,6 +343,22 @@ msgstr ""
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:656
 #: ../qml/pages/QrShowScan.qml:480
 msgid "Configuring..."
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:50 ../qml/pages/AdvancedSettings.qml:196
+msgid "Worse quality, small size"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:53 ../qml/pages/AdvancedSettings.qml:182
+msgid "Balanced"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:56 ../qml/pages/AdvancedSettings.qml:168
+msgid "High"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:105
+msgid "Voice Message Quality"
 msgstr ""
 
 #: ../qml/pages/BlockContactPopup.qml:31
@@ -704,7 +721,7 @@ msgstr ""
 msgid "Read Receipts"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:356
+#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:376
 msgid "Export Backup"
 msgstr ""
 

@@ -658,7 +658,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             messageAudio.stop()
-                            DeltaHandler.prepareAudioRecording()
+                            DeltaHandler.prepareAudioRecording(root.voiceMessageQuality)
                             attachmentMode = false
                             audioRecordMode = true
                         }
@@ -1173,14 +1173,14 @@ Page {
                     right: parent.right
                 }
                 ListItem {
-                    height: layout2.height
+                    height: layout31.height
                     // should be automatically be themed with something like
                     // theme.palette.normal.overlay, but this
                     // doesn't seem to work for Ambiance (and importing
                     // Ubuntu.Components.Themes 1.3 doesn't solve it). 
                     color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                     ListItemLayout {
-                        id: layout1
+                        id: layout31
                         // TODO string not translated yet
                         title.text: i18n.tr("Click to leave without sending")
                     }

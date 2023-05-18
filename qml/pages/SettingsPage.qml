@@ -281,6 +281,26 @@ Page {
                 }
             }
 
+            ListItem {
+                height: advancedLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: advancedLayout
+                    title.text: i18n.tr("Advanced")
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AdvancedSettings.qml"))
+                }
+            }
+
             Component {
                 id: popoverComponentClassicMail
                 Popover {

@@ -70,9 +70,12 @@ MainView {
 
     property bool showBottomEdgeHint: true
 
+    property int voiceMessageQuality: DeltaHandler.BalancedRecordingQuality
+
     Settings {
         id: settings
         property alias synca: root.syncAll
+        property alias voiceMessQual: root.voiceMessageQuality
     }
 
     width: units.gu(45)

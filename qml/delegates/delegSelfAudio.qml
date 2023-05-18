@@ -197,7 +197,8 @@ UbuntuShape {
             leftMargin: units.gu(1)
             verticalCenter: playShape.verticalCenter
         }
-        text: (model.msgViewType === DeltaHandler.AudioType ? i18n.tr("Audio") : i18n.tr("Voice Message")) + " " + model.duration
+        // duration as queried via dc_msg_get_duration() is 0 in most cases, omit for now
+        text: (model.msgViewType === DeltaHandler.AudioType ? i18n.tr("Audio") : i18n.tr("Voice Message"))// + " " + model.duration
         color: msgLabel.color
     }
 

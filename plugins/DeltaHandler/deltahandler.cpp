@@ -276,6 +276,10 @@ DeltaHandler::~DeltaHandler()
     if (m_groupmembermodel) {
         delete m_groupmembermodel;
     }
+
+    if (m_audioRecorder) {
+        delete m_audioRecorder;
+    }
 }
 
 int DeltaHandler::rowCount(const QModelIndex &parent) const

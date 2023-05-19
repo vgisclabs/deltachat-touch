@@ -19,9 +19,10 @@
 #include "chatmodel.h"
 #include <stdio.h> // for remove()
 //#include <unistd.h> // for sleep
+#include <limits> // for invalidating data_row
 
 ChatModel::ChatModel(QObject* parent)
-    : QAbstractListModel(parent), currentMsgContext {nullptr}, chatID {0}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}
+    : QAbstractListModel(parent), currentMsgContext {nullptr}, chatID {0}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}
 { 
 };
 
@@ -30,6 +31,11 @@ ChatModel::~ChatModel()
     if (currentMsgContext) {
         dc_context_unref(currentMsgContext);
     }
+
+    if (data_tempMsg) {
+        dc_msg_unref(data_tempMsg);
+    }
+
 }
 
 int ChatModel::rowCount(const QModelIndex &parent) const
@@ -82,11 +88,29 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
     dc_msg_t* tempMsg {nullptr};
     uint32_t tempMsgID {0};
 
-    // don't try to get the msg from DC if it's
-    // the Unread Message bar
-    if (row != m_unreadMessageBarIndex) {
-        tempMsgID = msgVector[row];
-        tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
+    // checking if the cached dc_msg_t* (i.e., data_tempMsg) can be used;
+    // this is the case if row == data_row and data_row != max int
+    if (row != data_row || std::numeric_limits<int>::max() == data_row) {
+        // the cached data_tempMsg cannot be used
+        
+        // don't try to get the msg from DC if it's
+        // the Unread Message bar
+        if (row != m_unreadMessageBarIndex) {
+            tempMsgID = msgVector[row];
+            tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
+
+            if (data_tempMsg) {
+                dc_msg_unref(data_tempMsg);
+                data_tempMsg = nullptr;
+            }
+
+            data_row = row;
+            data_tempMsgID = tempMsgID;
+            data_tempMsg = tempMsg;
+        } 
+    } else { // row == data_row, so the cached dc_msg_t* is valid
+        tempMsg = data_tempMsg;
+        tempMsgID = data_tempMsgID;
     }
 
     QString tempQString;
@@ -467,11 +491,6 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
         tempText = nullptr;
     }
 
-    if (tempMsg) {
-        dc_msg_unref(tempMsg);
-        tempMsg = nullptr;
-    }
-
     return retval;
 }
 
@@ -490,6 +509,13 @@ void ChatModel::messageStatusChangedSlot(int msgID)
 void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* deltaHandler, bool cIsContactRequest)
 {
     beginResetModel();
+
+    // invalidate the cached data_tempMsg
+    data_row = std::numeric_limits<int>::max();
+    if (data_tempMsg) {
+        dc_msg_unref(data_tempMsg);
+        data_tempMsg = nullptr;
+    }
 
     m_isContactRequest = cIsContactRequest;
 
@@ -602,6 +628,13 @@ void ChatModel::acceptChat() {
 // of this method)
 void ChatModel::newMessage(int msgID)
 {
+    // invalidate the cached data_tempMsg
+    data_row = std::numeric_limits<int>::max();
+    if (data_tempMsg) {
+        dc_msg_unref(data_tempMsg);
+        data_tempMsg = nullptr;
+    }
+
     dc_array_t* newMsgArray = dc_get_chat_msgs(currentMsgContext, chatID, 0, 0);
     size_t newMsgCount = dc_array_get_cnt(newMsgArray);
 

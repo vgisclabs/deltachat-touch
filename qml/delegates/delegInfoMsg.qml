@@ -33,7 +33,7 @@ UbuntuShape {
     anchors {
         left: parent.left
         leftMargin: (parentWidth - width)/2
-        bottom: parent.bottom
+        top: parent.top
     }
     backgroundColor: root.darkmode ? "#c0c0c0" : "#505050"
     aspect: UbuntuShape.Flat

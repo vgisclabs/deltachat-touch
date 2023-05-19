@@ -43,7 +43,7 @@ UbuntuShape {
     anchors {
         right: parent.right
         rightMargin: units.gu(1)
-        bottom: parent.bottom
+        top: parent.top
     }
     backgroundColor: {
         switch (model.messageState) {

@@ -32,7 +32,7 @@ Item {
     width: parent.width
     anchors {
         left: parent.left
-        bottom: parent.bottom
+        top: parent.top
     }
 
     UbuntuShape {
@@ -76,7 +76,7 @@ Item {
         anchors {
             left: avatarShape.right
             leftMargin: units.gu(1)
-            bottom: parent.bottom
+            top: parent.top
         }
         // no background for the msgbox in case of images
 

@@ -36,7 +36,7 @@ Item {
     anchors {
         right: parent.right
         rightMargin: units.gu(1)
-        bottom: parent.bottom
+        top: parent.top
     }
     // no background for the msgbox in case of images
     

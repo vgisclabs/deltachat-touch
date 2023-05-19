@@ -34,7 +34,7 @@ Rectangle {
         // definition for the Loader in ChatView.qml. Centering
         // won't work (except if the centers are set for the Loader?)
         left: parent.left
-        bottom: parent.bottom
+        top: parent.top
     }
     color: root.unreadMessageCounterColor
 

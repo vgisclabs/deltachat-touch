@@ -214,40 +214,47 @@ Page {
                         messageListItem.leadingActions = leadingMsgAction
                         messageListItem.trailingActions = trailingMsgActions
 
-                        switch (model.msgViewType) {
-                            case DeltaHandler.TextType:
-                                return "../delegates/delegSelfTextMsg.qml"
-                                break;
-                            case DeltaHandler.ImageType:
-                                return "../delegates/delegSelfImage.qml"
-                                break;
-                            case DeltaHandler.AudioType:
-                            case DeltaHandler.VoiceType:
-                                return "../delegates/delegSelfAudio.qml"
-                                break;
-                            default:
-                                return "../delegates/delegSelfUnknown.qml"
-                                break;
+                        if (model.isDownloaded) {
+                            switch (model.msgViewType) {
+                                case DeltaHandler.TextType:
+                                    return "../delegates/delegSelfTextMsg.qml"
+                                    break;
+                                case DeltaHandler.ImageType:
+                                    return "../delegates/delegSelfImage.qml"
+                                    break;
+                                case DeltaHandler.AudioType:
+                                case DeltaHandler.VoiceType:
+                                    return "../delegates/delegSelfAudio.qml"
+                                    break;
+                                default:
+                                    return "../delegates/delegSelfUnknown.qml"
+                                    break;
+                            }
+                        } else {
+                                return "../delegates/delegSelfToDownload.qml"
                         }
-                        
                     } // end if (model.isSelf)
                     else { // message is not from self and not the "Unread Messages" bar
                         messageListItem.leadingActions = leadingMsgAction
                         messageListItem.trailingActions = trailingMsgActions
 
-                        switch (model.msgViewType) {
-                            case DeltaHandler.TextType:
-                                return "../delegates/delegOtherTextMsg.qml"
-                                break;
-                            case DeltaHandler.ImageType:
-                                return "../delegates/delegOtherImage.qml"
-                                break;
-                            case DeltaHandler.AudioType:
-                            case DeltaHandler.VoiceType:
-                                return "../delegates/delegOtherAudio.qml"
-                                break;
-                            default:
-                                return "../delegates/delegOtherUnknown.qml"
+                        if (model.isDownloaded) {
+                            switch (model.msgViewType) {
+                                case DeltaHandler.TextType:
+                                    return "../delegates/delegOtherTextMsg.qml"
+                                    break;
+                                case DeltaHandler.ImageType:
+                                    return "../delegates/delegOtherImage.qml"
+                                    break;
+                                case DeltaHandler.AudioType:
+                                case DeltaHandler.VoiceType:
+                                    return "../delegates/delegOtherAudio.qml"
+                                    break;
+                                default:
+                                    return "../delegates/delegOtherUnknown.qml"
+                            }
+                        } else {
+                                return "../delegates/delegOtherToDownload.qml"
                         }
                     } // end message is not from self
                 asynchronous: false

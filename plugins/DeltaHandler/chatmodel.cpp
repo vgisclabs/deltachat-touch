@@ -50,6 +50,8 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[IsSelfRole] = "isSelf";
     roles[IsInfoRole] = "isInfo";
+    roles[IsDownloadedRole] = "isDownloaded";
+    roles[DownloadStateRole] = "downloadState";
     roles[IsForwardedRole] = "isForwarded";
     roles[MessageSeenRole] = "messageSeen";
     roles[MessageStateRole] = "messageState";
@@ -165,6 +167,35 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                 retval = true;
             } else {
                 retval = false;
+            }
+            break;
+
+        case ChatModel::IsDownloadedRole: 
+            if (dc_msg_get_download_state(tempMsg) == DC_DOWNLOAD_DONE) {
+                retval = true;
+            } else {
+                retval = false;
+            }
+            break;
+
+        case ChatModel::DownloadStateRole:
+            tempInt = dc_msg_get_download_state(tempMsg);
+            switch(tempInt) {
+                case DC_DOWNLOAD_DONE:
+                    retval = DeltaHandler::DownloadState::DownloadDone;
+                    break;
+
+                case DC_DOWNLOAD_AVAILABLE:
+                    retval = DeltaHandler::DownloadState::DownloadAvailable;
+                    break;
+
+                case DC_DOWNLOAD_IN_PROGRESS:
+                    retval = DeltaHandler::DownloadState::DownloadInProgress;
+                    break;
+
+                case DC_DOWNLOAD_FAILURE:
+                    retval = DeltaHandler::DownloadState::DownloadFailure;
+                    break;
             }
             break;
 
@@ -718,9 +749,6 @@ void ChatModel::newMessage(int msgID)
 
 void ChatModel::deleteMessage(int myindex)
 {
-    uint32_t tempMsgID = msgVector[myindex];
-    dc_delete_msgs(currentMsgContext, &tempMsgID, 1);
-
     // Couldn't figure out how to handle the 
     // Unread Message bar re-positioning in
     // newMessage(). The latter will be called
@@ -729,6 +757,9 @@ void ChatModel::deleteMessage(int myindex)
     // solution, we just delete the Unread Message
     // bar when deleting messages.
     m_unreadMessageBarIndex = -1;
+
+    uint32_t tempMsgID = msgVector[myindex];
+    dc_delete_msgs(currentMsgContext, &tempMsgID, 1);
 }
 
 
@@ -1120,6 +1151,13 @@ void ChatModel::forwardMessage(uint32_t chatIdToForwardTo)
 {
     qDebug() << "ChatModel::forwardMessage(): Forwarding message ID " << messageIdToForward << " to chat ID " << chatIdToForwardTo;
     dc_forward_msgs(currentMsgContext, &messageIdToForward, 1, chatIdToForwardTo);
+}
+
+
+void ChatModel::downloadFullMessage(int myindex)
+{
+    uint32_t tempMsgID = msgVector[myindex];
+    dc_download_full_msg(currentMsgContext, tempMsgID);
 }
 
 

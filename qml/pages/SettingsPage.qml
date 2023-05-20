@@ -36,9 +36,11 @@ Page {
     Component.onCompleted: {
         offlineSwitch.checked = root.syncAll
         updateShowClassicMailsCurrentSetting()
+        updateAutoDownloadCurrentSetting()
     }
 
     property string showClassicMailsCurrentSetting: ""
+    property string autoDownloadCurrentSetting: ""
 
     // Opens the file export dialog once the backup
     // file has been written to the cache.
@@ -65,6 +67,39 @@ Page {
             default:
                 showClassicMailsCurrentSetting = "?"
                 break
+        }
+    }
+
+    function updateAutoDownloadCurrentSetting() {
+        switch (DeltaHandler.getCurrentConfig("download_limit")) {
+            case "0":
+                autoDownloadCurrentSetting = i18n.tr("All")
+                break;
+
+            case "40960":
+                autoDownloadCurrentSetting = i18n.tr("Up to %1").arg("40 KiB")
+                break;
+
+            case "163840":
+                autoDownloadCurrentSetting = i18n.tr("Up to %1, most worse quality images").arg("160 KiB")
+                break;
+
+
+            case "655360":
+                autoDownloadCurrentSetting = i18n.tr("Up to %1, most balanced quality images").arg("640 KiB")
+                break;
+
+            case "5242880":
+                autoDownloadCurrentSetting = i18n.tr("Up to %1").arg("5 MiB")
+                break;
+
+            case "26214400":
+                autoDownloadCurrentSetting = i18n.tr("Up to %1").arg("25 MiB")
+                break;
+
+            default:
+                autoDownloadCurrentSetting = "?"
+                break;
         }
     }
 
@@ -185,6 +220,34 @@ Page {
                 }
                 onClicked: {
                     PopupUtils.open(popoverComponentClassicMail, showClassicMailsItem)
+                }
+            }
+
+            ListItem {
+                id: autoDownloadItem
+                height: autoDownloadLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: autoDownloadLayout
+                    title.text: i18n.tr("Auto-Download Messages")
+
+                    Label {
+                        id: autoDownloadLabel
+                        width: settingsPage.width/4
+                        text: autoDownloadCurrentSetting
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                    }
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+                onClicked: {
+                    PopupUtils.open(popoverComponentAutoDownload, autoDownloadItem)
                 }
             }
 
@@ -355,6 +418,108 @@ Page {
                                 DeltaHandler.setCurrentConfig("show_emails", "2")
                                 PopupUtils.close(popoverClassicMail)
                                 updateShowClassicMailsCurrentSetting()
+                            }
+                        }
+                    }
+                }
+            }
+
+            Component {
+                id: popoverComponentAutoDownload
+                Popover {
+                    id: popoverAutoDownload
+                    Column {
+                        id: containerLayoutAuto
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            right: parent.right
+                        }
+                        ListItem {
+                            height: layout41.height
+                            // should be automatically be themed with something like
+                            // theme.palette.normal.overlay, but this
+                            // doesn't seem to work for Ambiance (and importing
+                            // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout41
+                                title.text: i18n.tr("All")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("download_limit", "0")
+                                PopupUtils.close(popoverAutoDownload)
+                                updateAutoDownloadCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout42.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout42
+                                title.text: i18n.tr("Up to %1").arg("40 KiB")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("download_limit", "40960")
+                                PopupUtils.close(popoverAutoDownload)
+                                updateAutoDownloadCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout43.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout43
+                                title.text: i18n.tr("Up to %1, most worse quality images").arg("160 KiB")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("download_limit", "163840")
+                                PopupUtils.close(popoverAutoDownload)
+                                updateAutoDownloadCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout44.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout44
+                                title.text: i18n.tr("Up to %1, most balanced quality images").arg("640 KiB")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("download_limit", "655360")
+                                PopupUtils.close(popoverAutoDownload)
+                                updateAutoDownloadCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout45.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout45
+                                title.text: i18n.tr("Up to %1").arg("5 MiB")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("download_limit", "5242880")
+                                PopupUtils.close(popoverAutoDownload)
+                                updateAutoDownloadCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout46.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout46
+                                title.text: i18n.tr("Up to %1").arg("25 MiB")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("download_limit", "26214400")
+                                PopupUtils.close(popoverAutoDownload)
+                                updateAutoDownloadCurrentSetting()
                             }
                         }
                     }

@@ -47,11 +47,13 @@
         <file>delegates/delegOtherAudio.qml</file>
         <file>delegates/delegOtherImage.qml</file>
         <file>delegates/delegOtherTextMsg.qml</file>
+        <file>delegates/delegOtherToDownload.qml</file>
         <file>delegates/delegOtherUnknown.qml</file>
         <file>delegates/delegUnreadMsgsBar.qml</file>
         <file>delegates/delegSelfAudio.qml</file>
         <file>delegates/delegSelfImage.qml</file>
         <file>delegates/delegSelfTextMsg.qml</file>
+        <file>delegates/delegSelfToDownload.qml</file>
         <file>delegates/delegSelfUnknown.qml</file>
     </qresource>
 </RCC>

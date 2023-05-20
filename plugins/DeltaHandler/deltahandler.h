@@ -54,6 +54,9 @@ public:
     enum MsgState { StatePending, StateFailed, StateDelivered, StateReceived };
     Q_ENUM(MsgState)
 
+    enum DownloadState { DownloadDone, DownloadAvailable, DownloadInProgress, DownloadFailure };
+    Q_ENUM(DownloadState)
+
     enum QrState { DT_QR_ASK_VERIFYCONTACT, DT_QR_ASK_VERIFYGROUP, DT_QR_FPR_OK, DT_QR_FPR_MISMATCH, DT_QR_FPR_WITHOUT_ADDR, DT_QR_ACCOUNT, DT_QR_BACKUP, DT_QR_WEBRTC_INSTANCE, DT_QR_ADDR, DT_QR_TEXT, DT_QR_URL, DT_QR_ERROR, DT_QR_WITHDRAW_VERIFYCONTACT, DT_QR_WITHDRAW_VERIFYGROUP, DT_QR_REVIVE_VERIFYCONTACT, DT_QR_REVIVE_VERIFYGROUP, DT_QR_LOGIN, DT_UNKNOWN };
     Q_ENUM(QrState)
 

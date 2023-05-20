@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-17 16:46+0000\n"
+"POT-Creation-Date: 2023-05-20 19:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,29 +21,33 @@ msgstr ""
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:220 ../qml/Main.qml:227
+#: ../qml/Main.qml:219 ../qml/Main.qml:226
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:220 ../qml/Main.qml:227 ../qml/Main.qml:270
+#: ../qml/Main.qml:219 ../qml/Main.qml:226 ../qml/Main.qml:269
 #: ../qml/pages/AccountConfig.qml:120
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:221 ../qml/Main.qml:228
+#: ../qml/Main.qml:220 ../qml/Main.qml:227
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:402
+#: ../qml/Main.qml:401
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:594
+#: ../qml/Main.qml:593
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:668 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:667 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
+msgstr ""
+
+#: ../qml/Main.qml:698 ../qml/pages/QrShowScan.qml:337
+msgid "Error: %1"
 msgstr ""
 
 #: ../qml/delegates/delegOtherAudio.qml:130
@@ -81,12 +85,29 @@ msgstr ""
 msgid "Voice Message"
 msgstr ""
 
+#: ../qml/delegates/delegOtherToDownload.qml:43
+#: ../qml/delegates/delegSelfToDownload.qml:49
+msgid "Download"
+msgstr ""
+
+#: ../qml/delegates/delegOtherToDownload.qml:46
+#: ../qml/delegates/delegSelfToDownload.qml:52
+msgid "Download failed"
+msgstr ""
+
+#: ../qml/delegates/delegOtherToDownload.qml:49
+#: ../qml/delegates/delegOtherToDownload.qml:133
+#: ../qml/delegates/delegSelfToDownload.qml:55
+#: ../qml/delegates/delegSelfToDownload.qml:110
+msgid " - Downloading…"
+msgstr ""
+
 #: ../qml/delegates/delegUnreadMsgsBar.qml:48
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/About.qml:28 ../qml/pages/AdvancedSettings.qml:79
-#: ../qml/pages/Profile.qml:65 ../qml/pages/SettingsPage.qml:86
+#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
+#: ../qml/pages/SettingsPage.qml:201
 msgid "About DeltaTouch"
 msgstr ""
 
@@ -106,7 +127,7 @@ msgstr ""
 msgid "This app is powered by deltachat-core"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:130
+#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:245
 msgid "Known Accounts"
 msgstr ""
 
@@ -154,6 +175,8 @@ msgstr ""
 #: ../qml/pages/BlockContactPopup.qml:36
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
 #: ../qml/pages/ConfirmChatDeletion.qml:56
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:80
+#: ../qml/pages/ConfirmDeleteFromServer.qml:80
 #: ../qml/pages/ConfirmLeaveGroup.qml:46
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
 #: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
@@ -176,19 +199,20 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:45
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:680
-#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:324
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:664
 msgid "No, chats only"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:694
-#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:338
+#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:678
 msgid "For accepted contacts"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:51
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:708
-#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:352
+#: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
+#: ../qml/pages/SettingsPage.qml:692 ../qml/pages/SettingsPage.qml:720
 msgid "All"
 msgstr ""
 
@@ -197,6 +221,8 @@ msgid "Log In"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:91
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:69
+#: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
 #: ../qml/pages/Profile.qml:239 ../qml/pages/QrConfirmPopup.qml:76
 msgid "OK"
@@ -222,12 +248,13 @@ msgid ""
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:299
-#: ../qml/pages/SettingsPage.qml:170
+#: ../qml/pages/SettingsPage.qml:391
 msgid "Show Classic E-Mails"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:331
-#: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:290
+#: ../qml/pages/AdvancedSettings.qml:64 ../qml/pages/SettingsPage.qml:618
+#: ../qml/pages/SettingsPage.qml:630
 msgid "Advanced"
 msgstr ""
 
@@ -345,19 +372,19 @@ msgstr ""
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:50 ../qml/pages/AdvancedSettings.qml:196
+#: ../qml/pages/AdvancedSettings.qml:48 ../qml/pages/AdvancedSettings.qml:174
 msgid "Worse quality, small size"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:53 ../qml/pages/AdvancedSettings.qml:182
+#: ../qml/pages/AdvancedSettings.qml:51 ../qml/pages/AdvancedSettings.qml:160
 msgid "Balanced"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:56 ../qml/pages/AdvancedSettings.qml:168
+#: ../qml/pages/AdvancedSettings.qml:54 ../qml/pages/AdvancedSettings.qml:146
 msgid "High"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:105
+#: ../qml/pages/AdvancedSettings.qml:103
 msgid "Voice Message Quality"
 msgstr ""
 
@@ -369,7 +396,8 @@ msgstr ""
 msgid "Block Contact"
 msgstr ""
 
-#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:245
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:293
+#: ../qml/pages/SettingsPage.qml:305
 msgid "Blocked Contacts"
 msgstr ""
 
@@ -390,24 +418,24 @@ msgstr ""
 msgid "Show Encryption Info"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1024
+#: ../qml/pages/ChatView.qml:1032
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1040 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1048 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1055
+#: ../qml/pages/ChatView.qml:1063
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1185
+#: ../qml/pages/ChatView.qml:1193
 msgid "Click to leave without sending"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1218
+#: ../qml/pages/ChatView.qml:1226
 msgid "Click to delete"
 msgstr ""
 
@@ -435,6 +463,46 @@ msgstr ""
 #: ../qml/pages/ConfirmChatDeletion.qml:40
 #: ../qml/pages/ConfirmMsgDeletion.qml:40
 msgid "Are you sure you want to delete \"%1\"?"
+msgstr ""
+
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:36
+#: ../qml/pages/SettingsPage.qml:514
+msgid "Delete Messages from Device"
+msgstr ""
+
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:40
+msgid ""
+"Do you want to delete %1 messages now and all newly fetched messages \"%2\" "
+"in the future?\n"
+"\n"
+"• This includes all media\n"
+"\n"
+"• Messages will be deleted whether they were seen or not\n"
+"\n"
+"• \"Saved messages\" will be skipped from local deletion"
+msgstr ""
+
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:62
+#: ../qml/pages/ConfirmDeleteFromServer.qml:62
+msgid "I understand, delete all these messages"
+msgstr ""
+
+#: ../qml/pages/ConfirmDeleteFromServer.qml:36
+#: ../qml/pages/SettingsPage.qml:542
+msgid "Delete Messages from Server"
+msgstr ""
+
+#: ../qml/pages/ConfirmDeleteFromServer.qml:40
+msgid ""
+"Do you want to delete %1 messages now and all newly fetched messages \"%2\" "
+"in the future?\n"
+"\n"
+"⚠️ This includes e-mails, media and \"Saved messages\" in all server folders\n"
+"\n"
+"⚠️ Do not use this function if you want to keep data on the server\n"
+"\n"
+"⚠️ Do not use this function if you are using other e-mail clients besides "
+"Delta Chat"
 msgstr ""
 
 #: ../qml/pages/ConfirmLeaveGroup.qml:32
@@ -536,11 +604,11 @@ msgstr ""
 msgid "Select your new profile image"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:48
+#: ../qml/pages/Profile.qml:48 ../qml/pages/SettingsPage.qml:350
 msgid "Edit Profile"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:270
+#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:338
 msgid "Profile"
 msgstr ""
 
@@ -661,10 +729,6 @@ msgid ""
 "%1"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:337
-msgid "Error: %1"
-msgstr ""
-
 #: ../qml/pages/QrShowScan.qml:350
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
@@ -705,23 +769,111 @@ msgstr ""
 msgid "Log into \"%1\"?"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:73
+#: ../qml/pages/SettingsPage.qml:84 ../qml/pages/SettingsPage.qml:97
+#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:734
+#: ../qml/pages/SettingsPage.qml:776 ../qml/pages/SettingsPage.qml:790
+msgid "Up to %1"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:748
+msgid "Up to %1, most worse quality images"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:762
+msgid "Up to %1, most balanced quality images"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:113 ../qml/pages/SettingsPage.qml:145
+#: ../qml/pages/SettingsPage.qml:819 ../qml/pages/SettingsPage.qml:953
+msgid "Never"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
+#: ../qml/pages/SettingsPage.qml:833 ../qml/pages/SettingsPage.qml:839
+#: ../qml/pages/SettingsPage.qml:1030 ../qml/pages/SettingsPage.qml:1036
+msgid "After 1 hour"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
+#: ../qml/pages/SettingsPage.qml:854 ../qml/pages/SettingsPage.qml:860
+#: ../qml/pages/SettingsPage.qml:1051 ../qml/pages/SettingsPage.qml:1057
+msgid "After 1 day"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
+#: ../qml/pages/SettingsPage.qml:875 ../qml/pages/SettingsPage.qml:881
+#: ../qml/pages/SettingsPage.qml:1072 ../qml/pages/SettingsPage.qml:1078
+msgid "After 1 week"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
+#: ../qml/pages/SettingsPage.qml:896 ../qml/pages/SettingsPage.qml:902
+#: ../qml/pages/SettingsPage.qml:1093 ../qml/pages/SettingsPage.qml:1099
+msgid "After 4 weeks"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
+#: ../qml/pages/SettingsPage.qml:917 ../qml/pages/SettingsPage.qml:923
+#: ../qml/pages/SettingsPage.qml:1114 ../qml/pages/SettingsPage.qml:1120
+msgid "After 1 year"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:137 ../qml/pages/SettingsPage.qml:181
+msgid "?"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:967
+#: ../qml/pages/SettingsPage.qml:973
+msgid "At once"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:988
+#: ../qml/pages/SettingsPage.qml:994
+msgid "After 30 seconds"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1009
+#: ../qml/pages/SettingsPage.qml:1015
+msgid "After 1 minute"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:188
 msgid "Settings"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:111
+#: ../qml/pages/SettingsPage.qml:226
 msgid "Sync All"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:157
+#: ../qml/pages/SettingsPage.qml:272
 msgid "Account specific settings"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:197
+#: ../qml/pages/SettingsPage.qml:378
+msgid "Chats"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:419
+msgid "Auto-Download Messages"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:454
+msgid "Privacy"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:466
 msgid "Read Receipts"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:376
+#: ../qml/pages/SettingsPage.qml:501
+msgid "Delete Old Messages"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:577
+msgid "Backup"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:590 ../qml/pages/SettingsPage.qml:1145
 msgid "Export Backup"
 msgstr ""
 

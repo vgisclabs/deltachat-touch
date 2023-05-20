@@ -506,6 +506,13 @@ void DeltaHandler::prepareBlockedContactsModel()
 }
 
 
+int DeltaHandler::getDeletionEstimation(QString secondsAsString, int fromServer)
+{
+    ulong seconds = secondsAsString.toULong();
+    return dc_estimate_deletion_cnt(currentContext, fromServer, seconds);
+}
+
+
 BlockedContactsModel* DeltaHandler::blockedcontactsmodel()
 {
     return m_blockedcontactsmodel;

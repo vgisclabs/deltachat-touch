@@ -37,10 +37,14 @@ Page {
         offlineSwitch.checked = root.syncAll
         updateShowClassicMailsCurrentSetting()
         updateAutoDownloadCurrentSetting()
+        updateDeleteFromDeviceCurrentSetting()
+        updateDeleteFromServerCurrentSetting()
     }
 
     property string showClassicMailsCurrentSetting: ""
     property string autoDownloadCurrentSetting: ""
+    property string deleteFromDeviceCurrentSetting: ""
+    property string deleteFromServerCurrentSetting: ""
 
     // Opens the file export dialog once the backup
     // file has been written to the cache.
@@ -102,6 +106,82 @@ Page {
                 break;
         }
     }
+    
+    function updateDeleteFromDeviceCurrentSetting() {
+        switch (DeltaHandler.getCurrentConfig("delete_device_after")) {
+            case "0":
+                deleteFromDeviceCurrentSetting = i18n.tr("Never")
+                break;
+
+            case "3600":
+                deleteFromDeviceCurrentSetting = i18n.tr("After 1 hour")
+                break;
+
+            case "86400":
+                deleteFromDeviceCurrentSetting = i18n.tr("After 1 day")
+                break;
+
+            case "604800":
+                deleteFromDeviceCurrentSetting = i18n.tr("After 1 week")
+                break;
+
+            case "2419200":
+                deleteFromDeviceCurrentSetting = i18n.tr("After 4 weeks")
+                break;
+
+            case "31536000":
+                deleteFromDeviceCurrentSetting = i18n.tr("After 1 year")
+                break;
+
+            default: 
+                deleteFromDeviceCurrentSetting = i18n.tr("?")
+                break;
+        }
+    }
+
+    function updateDeleteFromServerCurrentSetting() {
+        switch (DeltaHandler.getCurrentConfig("delete_server_after")) {
+            case "0":
+                deleteFromServerCurrentSetting = i18n.tr("Never")
+                break;
+
+            case "1":
+                deleteFromServerCurrentSetting = i18n.tr("At once")
+                break;
+
+            case "30":
+                deleteFromServerCurrentSetting = i18n.tr("After 30 seconds")
+                break;
+
+            case "60":
+                deleteFromServerCurrentSetting = i18n.tr("After 1 minute")
+                break;
+
+            case "3600":
+                deleteFromServerCurrentSetting = i18n.tr("After 1 hour")
+                break;
+
+            case "86400":
+                deleteFromServerCurrentSetting = i18n.tr("After 1 day")
+                break;
+
+            case "604800":
+                deleteFromServerCurrentSetting = i18n.tr("After 1 week")
+                break;
+
+            case "2419200":
+                deleteFromServerCurrentSetting = i18n.tr("After 4 weeks")
+                break;
+
+            case "31536000":
+                deleteFromServerCurrentSetting = i18n.tr("After 1 year")
+                break;
+
+            default: 
+                deleteFromServerCurrentSetting = i18n.tr("?")
+                break;
+        }
+    }
 
     header: PageHeader {
         id: settingsHeader
@@ -130,7 +210,7 @@ Page {
         id: flickable
         anchors.fill: parent
         anchors.topMargin: (settingsPage.header.flickable ? 0 : settingsPage.header.height)
-        anchors.bottomMargin: units.gu(2)
+        //anchors.bottomMargin: units.gu(2)
         contentHeight: flickContent.childrenRect.height
 
         Column {
@@ -190,6 +270,112 @@ Page {
                     // TODO: string not translated
                     // TODO: maybe solve issue in a different way?
                     text: i18n.tr("Account specific settings")
+                    //font.bold: true
+                    fontSize: "large"
+                }
+                color: theme.palette.normal.background
+            }
+
+            Rectangle {
+                id: prefBlockedSectionHeader
+                height: prefBlockedSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefBlockedSectionHeaderLabel
+                    anchors {
+                        top: prefBlockedSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefBlockedSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Blocked Contacts")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
+            ListItem {
+                height: blockedContactsLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: blockedContactsLayout
+                    title.text: i18n.tr("Blocked Contacts")
+                    //text.color: "red" //DeltaHandler.hasConfiguredAccount ? theme.palette.normal.baseText : theme.palette.disabled.baseText
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    DeltaHandler.prepareBlockedContactsModel()
+                    // the BlockedContacts page will be opened when
+                    // the signal blockedcontactsmodelChanged is received
+                    // see Connections below
+                }
+                enabled: DeltaHandler.hasConfiguredAccount
+            }
+
+            Rectangle {
+                id: prefProfileSectionHeader
+                height: prefProfileSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefProfileSectionHeaderLabel
+                    anchors {
+                        top: prefProfileSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefProfileSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Profile")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
+            ListItem {
+                height: profilesLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: profilesLayout
+                    title.text: i18n.tr("Edit Profile")
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("Profile.qml"))
+                }
+            }
+
+            Rectangle {
+                id: prefChatsSectionHeader
+                height: prefChatsSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefChatsSectionHeaderLabel
+                    anchors {
+                        top: prefChatsSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefChatsSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Chats")
                     font.bold: true
                 }
                 color: theme.palette.normal.background
@@ -251,6 +437,26 @@ Page {
                 }
             }
 
+            Rectangle {
+                id: prefPrivacySectionHeader
+                height: prefPrivacySectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefPrivacySectionHeaderLabel
+                    anchors {
+                        top: prefPrivacySectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefPrivacySectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Privacy")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
             ListItem {
                 height: readReceiptsLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
@@ -278,6 +484,102 @@ Page {
                 }
             }
 
+            Rectangle {
+                id: prefDelOldSectionHeader
+                height: prefDelOldSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefDelOldSectionHeaderLabel
+                    anchors {
+                        top: prefDelOldSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefDelOldSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Delete Old Messages")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
+            ListItem {
+                id: deleteFromDeviceItem
+                height: deleteFromDeviceLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: deleteFromDeviceLayout
+                    title.text: i18n.tr("Delete Messages from Device")
+
+                    Label {
+                        id: deleteFromDeviceLabel
+                        width: settingsPage.width/4
+                        text: deleteFromDeviceCurrentSetting
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                    }
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+                onClicked: {
+                    PopupUtils.open(popoverComponentDeleteFromDevice, deleteFromDeviceItem)
+                }
+            }
+
+            ListItem {
+                id: deleteFromServerItem
+                height: deleteFromServerLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: deleteFromServerLayout
+                    title.text: i18n.tr("Delete Messages from Server")
+
+                    Label {
+                        id: deleteFromServerLabel
+                        width: settingsPage.width/4
+                        text: deleteFromServerCurrentSetting
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                    }
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+                onClicked: {
+                    PopupUtils.open(popoverComponentDeleteFromServer, deleteFromServerItem)
+                }
+            }
+
+            Rectangle {
+                id: prefBackupSectionHeader
+                height: prefBackupSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefBackupSectionHeaderLabel
+                    anchors {
+                        top: prefBackupSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefBackupSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Backup")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
             ListItem {
                 id: exportBackupItem
                 height: exportBackupLayout.height + (divider.visible ? divider.height : 0)
@@ -299,49 +601,24 @@ Page {
                 }
             }
 
-            ListItem {
-                height: blockedContactsLayout.height + (divider.visible ? divider.height : 0)
-                width: settingsPage.width
-
-                ListItemLayout {
-                    id: blockedContactsLayout
-                    title.text: i18n.tr("Blocked Contacts")
-                    //text.color: "red" //DeltaHandler.hasConfiguredAccount ? theme.palette.normal.baseText : theme.palette.disabled.baseText
-
-                    Icon {
-                        name: "go-next"
-                        SlotsLayout.position: SlotsLayout.Trailing;
-                        width: units.gu(2)
+            Rectangle {
+                id: prefAdvancedSectionHeader
+                height: prefAdvancedSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefAdvancedSectionHeaderLabel
+                    anchors {
+                        top: prefAdvancedSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefAdvancedSectionHeader.left
+                        leftMargin: units.gu(1)
                     }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Advanced")
+                    font.bold: true
                 }
-
-                onClicked: {
-                    DeltaHandler.prepareBlockedContactsModel()
-                    // the BlockedContacts page will be opened when
-                    // the signal blockedcontactsmodelChanged is received
-                    // see Connections below
-                }
-                enabled: DeltaHandler.hasConfiguredAccount
-            }
-
-            ListItem {
-                height: profilesLayout.height + (divider.visible ? divider.height : 0)
-                width: settingsPage.width
-
-                ListItemLayout {
-                    id: profilesLayout
-                    title.text: i18n.tr("Profile")
-
-                    Icon {
-                        name: "go-next"
-                        SlotsLayout.position: SlotsLayout.Trailing;
-                        width: units.gu(2)
-                    }
-                }
-
-                onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("Profile.qml"))
-                }
+                color: theme.palette.normal.background
             }
 
             ListItem {
@@ -437,10 +714,6 @@ Page {
                         }
                         ListItem {
                             height: layout41.height
-                            // should be automatically be themed with something like
-                            // theme.palette.normal.overlay, but this
-                            // doesn't seem to work for Ambiance (and importing
-                            // Ubuntu.Components.Themes 1.3 doesn't solve it). 
                             color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                             ListItemLayout {
                                 id: layout41
@@ -525,8 +798,339 @@ Page {
                     }
                 }
             }
-        }
-    }
+
+            Component {
+                id: popoverComponentDeleteFromDevice
+                Popover {
+                    id: popoverDeleteFromDevice
+                    Column {
+                        id: containerLayoutDelDevice
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            right: parent.right
+                        }
+
+                        ListItem {
+                            height: layout51.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout51
+                                title.text: i18n.tr("Never")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("delete_device_after", "0")
+                                PopupUtils.close(popoverDeleteFromDevice)
+                                updateDeleteFromDeviceCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout52.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout52
+                                title.text: i18n.tr("After 1 hour")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "3600", "deleteAfterXTime": i18n.tr("After 1 hour")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromDevice)
+                                    updateDeleteFromDeviceCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout53.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout53
+                                title.text: i18n.tr("After 1 day")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "86400", "deleteAfterXTime": i18n.tr("After 1 day")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromDevice)
+                                    updateDeleteFromDeviceCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout54.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout54
+                                title.text: i18n.tr("After 1 week")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "604800", "deleteAfterXTime": i18n.tr("After 1 week")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromDevice)
+                                    updateDeleteFromDeviceCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout55.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout55
+                                title.text: i18n.tr("After 4 weeks")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "2419200", "deleteAfterXTime": i18n.tr("After 4 weeks")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromDevice)
+                                    updateDeleteFromDeviceCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout56.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout56
+                                title.text: i18n.tr("After 1 year")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "31536000", "deleteAfterXTime": i18n.tr("After 1 year")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromDevice)
+                                    updateDeleteFromDeviceCurrentSetting()
+                                })
+                            }
+                        }
+                    }
+                }
+            }
+
+            Component {
+                id: popoverComponentDeleteFromServer
+                Popover {
+                    id: popoverDeleteFromServer
+                    Column {
+                        id: containerLayoutDelServer
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            right: parent.right
+                        }
+
+                        ListItem {
+                            height: layout61.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout61
+                                title.text: i18n.tr("Never")
+                            }
+                            onClicked: {
+                                DeltaHandler.setCurrentConfig("delete_server_after", "0")
+                                PopupUtils.close(popoverDeleteFromServer)
+                                updateDeleteFromServerCurrentSetting()
+                            }
+                        }
+
+                        ListItem {
+                            height: layout62.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout62
+                                title.text: i18n.tr("At once")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "1", "deleteAfterXTime": i18n.tr("At once")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromServer)
+                                    updateDeleteFromServerCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout63.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout63
+                                title.text: i18n.tr("After 30 seconds")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "30", "deleteAfterXTime": i18n.tr("After 30 seconds")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromServer)
+                                    updateDeleteFromServerCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout64.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout64
+                                title.text: i18n.tr("After 1 minute")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "60", "deleteAfterXTime": i18n.tr("After 1 minute")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromServer)
+                                    updateDeleteFromServerCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout65.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout65
+                                title.text: i18n.tr("After 1 hour")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "3600", "deleteAfterXTime": i18n.tr("After 1 hour")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromServer)
+                                    updateDeleteFromServerCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout66.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout66
+                                title.text: i18n.tr("After 1 day")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "86400", "deleteAfterXTime": i18n.tr("After 1 day")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromServer)
+                                    updateDeleteFromServerCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout67.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout67
+                                title.text: i18n.tr("After 1 week")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "604800", "deleteAfterXTime": i18n.tr("After 1 week")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromServer)
+                                    updateDeleteFromServerCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout68.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout68
+                                title.text: i18n.tr("After 4 weeks")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "2419200", "deleteAfterXTime": i18n.tr("After 4 weeks")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromServer)
+                                    updateDeleteFromServerCurrentSetting()
+                                })
+                            }
+                        }
+
+                        ListItem {
+                            height: layout69.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout69
+                                title.text: i18n.tr("After 1 year")
+                            }
+                            onClicked: {
+                                let popup = PopupUtils.open(
+                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                                    null,
+                                    { "deleteAfterXSeconds": "31536000", "deleteAfterXTime": i18n.tr("After 1 year")}
+                                )
+                                popup.confirmed.connect(function() {
+                                    PopupUtils.close(popup)
+                                    PopupUtils.close(popoverDeleteFromServer)
+                                    updateDeleteFromServerCurrentSetting()
+                                })
+                            }
+                        }
+                    } // end Column id: containerLayoutDelServer
+                } // end Popover id: popoverDeleteFromServer
+            } // end Component id: popoverComponentDeleteFromServer
+        } // end Column id: flickContent
+    } // end Flickable id: flickable
 
     Connections {
         target: DeltaHandler

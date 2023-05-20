@@ -159,6 +159,8 @@ public:
     // in method)
     Q_INVOKABLE void prepareBlockedContactsModel();
 
+    Q_INVOKABLE int getDeletionEstimation(QString secondsAsString, int fromServer);
+
     /* ========================================================
      * =================== Profile editing ====================
      * ======================================================== */

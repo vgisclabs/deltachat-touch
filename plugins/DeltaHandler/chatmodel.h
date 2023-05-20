@@ -131,14 +131,6 @@ private:
     ChatlistModel* m_chatlistmodel;
     uint32_t messageIdToForward;
 
-    // For caching the dc_msg_t* used in data() because the method is
-    // being called repeatedly for the same message, but different
-    // roles. Mutable is needed because the data() method is
-    // const.
-    mutable int data_row;
-    mutable uint32_t data_tempMsgID;
-    mutable dc_msg_t* data_tempMsg;
-
     QString copyToCache(QString fromFile) const;
 };
 

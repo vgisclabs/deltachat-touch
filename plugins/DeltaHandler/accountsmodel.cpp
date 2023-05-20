@@ -131,6 +131,12 @@ void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
     m_accountsArray = dc_accounts_get_all(m_accountsManager);
     m_deltaHandler = dHandler;
 
+    // disconnect in case configure() is not called for the first time. Otherwise, multiple
+    // connections would be created.
+    disconnect(m_deltaHandler, SIGNAL(newUnconfiguredAccount()), this, SLOT(newAccount()));
+    disconnect(m_deltaHandler, SIGNAL(newConfiguredAccount()), this, SLOT(newAccount()));
+    disconnect(m_deltaHandler, SIGNAL(updatedAccountConfig(uint32_t)), this, SLOT(updatedAccount(uint32_t)));
+
     bool connectSuccess = connect(m_deltaHandler, SIGNAL(newUnconfiguredAccount()), this, SLOT(newAccount()));
     if (!connectSuccess) {
         qDebug() << "Chatmodel::configure: Could not connect signal newUnconfiguredAccount to slot newAccount";
@@ -145,11 +151,6 @@ void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
     if (!connectSuccess) {
         qDebug() << "Chatmodel::configure: Could not connect signal updatedAccountConfig to slot updatedAccount";
     }
-
-//    bool connectSuccess = connect(deltaHandler, SIGNAL(newMsgReceived(unsigned int)), this, SLOT(newMessage(unsigned int)));
-//    if (!connectSuccess) {
-//        qDebug() << "Chatmodel::configure: Could not connect signal newMsgReceived to slot newMessage";
-//    }
 }
 
 

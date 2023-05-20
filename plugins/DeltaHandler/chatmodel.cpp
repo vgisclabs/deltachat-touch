@@ -590,8 +590,11 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
         ++currentMsgCount;
     }
 
-
     dc_array_unref(msgArray);
+
+    // disconnect in case configure() is not called for the first time. Otherwise, multiple
+    // connections would be created.
+    disconnect(deltaHandler, SIGNAL(newMsgReceived(int)), this, SLOT(newMessage(int)));
 
     bool connectSuccess = connect(deltaHandler, SIGNAL(newMsgReceived(int)), this, SLOT(newMessage(int)));
     if (!connectSuccess) {
@@ -654,10 +657,6 @@ void ChatModel::newMessage(int msgID)
                     m_unreadMessageBarIndex = -1;
                 }
 
-                emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
-                if (i <  currentMsgCount - 1) {
-                    emit QAbstractItemModel::dataChanged(index(i+1, 0), index(i+1, 0));
-                }
                 break;
             }
         }
@@ -675,7 +674,6 @@ void ChatModel::newMessage(int msgID)
             ++currentMsgCount;
             endInsertRows();
             if (i <  currentMsgCount - 1) {
-                emit QAbstractItemModel::dataChanged(index(i+1, 0), index(i+1, 0));
             }
         }
     }
@@ -700,7 +698,6 @@ void ChatModel::newMessage(int msgID)
                     std::vector<uint32_t>::iterator it;
                     it = msgVector.begin();
                     msgVector.insert(it + i + 1, 0);
-                    emit QAbstractItemModel::dataChanged(index(i+2, 0), index(i+2, 0));
                 }
                 m_unreadMessageBarIndex = i+1;
                 ++currentMsgCount;
@@ -713,6 +710,12 @@ void ChatModel::newMessage(int msgID)
     }
 
     dc_array_unref(newMsgArray);
+
+    // model is not reset because this would be problematic if the
+    // current view is not at the bottom, but scrolled somewhere
+    for (size_t i = 0; i < currentMsgCount ; ++i) {
+        emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
+    }
 }
 
 void ChatModel::deleteMessage(int myindex)

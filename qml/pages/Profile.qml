@@ -53,18 +53,23 @@ Page {
 
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
-          //  Action {
-          //      iconName: 'help'
-          //      text: i18n.tr('Help')
-          //      onTriggered: {
-          //          layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('Help.qml'))
-          //      }
-          //  },
             Action {
-                iconName: 'info'
-                text: i18n.tr('About DeltaTouch')
+                iconName: 'close'
+                text: i18n.tr('Cancel')
                 onTriggered: {
-                            layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('About.qml'))
+                    onClicked: layout.removePages(layout.primaryPage)
+                }
+            },
+            Action {
+                iconName: 'ok'
+                text: i18n.tr('OK')
+                onTriggered: {
+                    usernameField.focus = false
+                    signatureField.focus = false
+                    DeltaHandler.setProfileValue("displayname", usernameField.text)
+                    DeltaHandler.setProfileValue("selfstatus", signatureField.text)
+                    DeltaHandler.finalizeProfileEdit()
+                    layout.removePages(layout.primaryPage)
                 }
             }
         ]
@@ -110,41 +115,94 @@ Page {
                 sourceFillMode: UbuntuShape.PreserveAspectCrop
             }
 
-            Button {
-                id: selectPicButton
-                width: (implicitWidth > deletePicButton.implicitWidth ? implicitWidth : deletePicButton.implicitWidth) + units.gu(2)
+
+            Rectangle {
+                // ugly hack to be able to position
+                // editImageShape with an offset of 
+                // just units.gu(1)
+                id: positionHelperEditImage
+                height: units.gu(2)
+                width: height
                 anchors {
-                    top: profilePic.bottom
-                    topMargin: units.gu(2)
-                    left: parent.left
-                    leftMargin: units.gu(2)
+                    verticalCenter: profilePic.top
+                    horizontalCenter: profilePic.right
                 }
-                text: i18n.tr("Select Profile Image")
-                onClicked: {
-                    layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('PickerProfilePic.qml'))
+                color: theme.palette.normal.background
+            }
+
+            UbuntuShape {
+                id: editImageShape
+                height: units.gu(4)
+                width: height
+                anchors {
+                    top: positionHelperEditImage.top
+                    right: positionHelperEditImage.right
+                }
+                //color: theme.palette.normal.background
+                color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+
+                Icon {
+                    anchors.fill: parent
+                    name: "edit"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        PopupUtils.open(componentProfilePicActions, editImageShape)
+                    }
                 }
             }
-            
-            Button {
-                id: deletePicButton
-                width: (selectPicButton.implicitWidth > implicitWidth ? selectPicButton.implicitWidth : implicitWidth) + units.gu(2)
-                anchors {
-                    top: selectPicButton.bottom
-                    topMargin: units.gu(2)
-                    left: parent.left
-                    leftMargin: units.gu(2)
-                }
-                text: i18n.tr("Delete Profile Image")
-                onClicked: {
-                    DeltaHandler.setProfileValue("selfavatar", "")
-                    profilePicImage.source = ""
-                }
-            }
+
+            Component {
+                id: componentProfilePicActions
+                Popover {
+                    id: popoverProfilePicActions
+                    Column {
+                        id: containerLayout
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            right: parent.right
+                        }
+                        ListItem {
+                            height: layout1.height
+                            // should be automatically be themed with something like
+                            // theme.palette.normal.overlay, but this
+                            // doesn't seem to work for Ambiance (and importing
+                            // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout1
+                                title.text: i18n.tr("Select Profile Image")
+                            }
+                            onClicked: {
+                                PopupUtils.close(popoverProfilePicActions)
+                                layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('PickerProfilePic.qml'))
+                            }
+                        }
+
+                        ListItem {
+                            height: layout2.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout2
+                                title.text: i18n.tr("Delete Profile Image")
+                            }
+                            onClicked: {
+                                PopupUtils.close(popoverProfilePicActions)
+                                DeltaHandler.setProfileValue("selfavatar", "")
+                                profilePicImage.source = ""
+                            }
+                        }
+                    }
+                } // Popover id: containerLayout
+            } // Component id: popoverChatPicActions
 
             Label {
                 id: usernameLabel
                 anchors {
-                    top: deletePicButton.bottom
+                    top: profilePic.bottom
                     topMargin: units.gu(3)
                     left: parent.left
                     leftMargin: units.gu(2)
@@ -202,51 +260,6 @@ Page {
                 }
                 text: DeltaHandler.getCurrentSignature()
             }
-
-            Rectangle {
-                id: okCancelRect
-                height: cancelButton.height
-                width: cancelButton.width + okButton.width + units.gu(3)
-                anchors {
-                    //top: signatureField.bottom
-                    top: signatureField.bottom
-                    topMargin: units.gu(3)
-                    left: parent.left
-                    leftMargin: units.gu(4)
-                }
-                color: theme.palette.normal.background
-
-
-                Button {
-                    id: cancelButton
-                    width: (implicitWidth > okButton.implicitWidth ? implicitWidth : okButton.implicitWidth) + units.gu(2)
-                    anchors {
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                    }
-                    text: i18n.tr('Cancel')
-                    // TODO
-                    onClicked: layout.removePages(layout.primaryPage)
-                }
-
-                Button {
-                    id: okButton
-                    width: (cancelButton.implicitWidth > implicitWidth ? cancelButton.implicitWidth : implicitWidth) + units.gu(2)
-                    anchors {
-                        right: parent.right
-                        verticalCenter: parent.verticalCenter
-                    }
-                    text: i18n.tr('OK')
-                    onClicked: {
-                        usernameField.focus = false
-                        signatureField.focus = false
-                        DeltaHandler.setProfileValue("displayname", usernameField.text)
-                        DeltaHandler.setProfileValue("selfstatus", signatureField.text)
-                        DeltaHandler.finalizeProfileEdit()
-                        layout.removePages(layout.primaryPage)
-                    }
-                }
-            } // Rectangle id: okCancelRect
         } // Item id: flickContent
 
         Timer {

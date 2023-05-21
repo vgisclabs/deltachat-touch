@@ -185,7 +185,7 @@ Page {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                PopupUtils.open(popoverChatPicActions, editImageShape)
+                PopupUtils.open(componentChatPicActions, editImageShape)
             }
         }
     }
@@ -333,9 +333,9 @@ Page {
     }
 
     Component {
-        id: popoverChatPicActions
+        id: componentChatPicActions
         Popover {
-            id: popoverClassicMail
+            id: popoverChatPicActions
             Column {
                 id: containerLayout
                 anchors {
@@ -355,7 +355,7 @@ Page {
                         title.text: i18n.tr("Change Group Image")
                     }
                     onClicked: {
-                        PopupUtils.close(popoverClassicMail)
+                        PopupUtils.close(popoverChatPicActions)
                         layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('PickerChatPic.qml'))
                     }
                 }
@@ -368,12 +368,12 @@ Page {
                         title.text: i18n.tr("Remove Group Image")
                     }
                     onClicked: {
-                        PopupUtils.close(popoverClassicMail)
+                        PopupUtils.close(popoverChatPicActions)
                         hasChatPic = false
                         chatPicImage.source = ""
                     }
                 }
             }
         } // Popover id: containerLayout
-    } // Component id: popoverChatPicActions
+    } // Component id: componentChatPicActions
 } // Page id: createGroupPage

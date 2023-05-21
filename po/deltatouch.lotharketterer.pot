@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-20 19:06+0000\n"
+"POT-Creation-Date: 2023-05-21 20:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,32 +21,32 @@ msgstr ""
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:219 ../qml/Main.qml:226
+#: ../qml/Main.qml:229 ../qml/Main.qml:236
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:219 ../qml/Main.qml:226 ../qml/Main.qml:269
+#: ../qml/Main.qml:229 ../qml/Main.qml:236 ../qml/Main.qml:279
 #: ../qml/pages/AccountConfig.qml:120
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:220 ../qml/Main.qml:227
+#: ../qml/Main.qml:230 ../qml/Main.qml:237
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:401
+#: ../qml/Main.qml:411
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:593
+#: ../qml/Main.qml:603
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:667 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:677 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:698 ../qml/pages/QrShowScan.qml:337
+#: ../qml/Main.qml:709 ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr ""
 
@@ -82,6 +82,7 @@ msgstr ""
 
 #: ../qml/delegates/delegOtherAudio.qml:233
 #: ../qml/delegates/delegSelfAudio.qml:201
+#: ../qml/pages/AdvancedSettings.qml:110
 msgid "Voice Message"
 msgstr ""
 
@@ -106,8 +107,7 @@ msgstr ""
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
-#: ../qml/pages/SettingsPage.qml:201
+#: ../qml/pages/About.qml:28 ../qml/pages/SettingsPage.qml:201
 msgid "About DeltaTouch"
 msgstr ""
 
@@ -180,7 +180,7 @@ msgstr ""
 #: ../qml/pages/ConfirmLeaveGroup.qml:46
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
 #: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
-#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
+#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:58
 #: ../qml/pages/QrConfirmPopup.qml:45 ../qml/pages/UnblockContactPopup.qml:38
 msgid "Cancel"
 msgstr ""
@@ -224,7 +224,7 @@ msgstr ""
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
-#: ../qml/pages/Profile.qml:239 ../qml/pages/QrConfirmPopup.qml:76
+#: ../qml/pages/Profile.qml:65 ../qml/pages/QrConfirmPopup.qml:76
 msgid "OK"
 msgstr ""
 
@@ -372,20 +372,66 @@ msgstr ""
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:48 ../qml/pages/AdvancedSettings.qml:174
+#: ../qml/pages/AdvancedSettings.qml:48 ../qml/pages/AdvancedSettings.qml:418
 msgid "Worse quality, small size"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:51 ../qml/pages/AdvancedSettings.qml:160
+#: ../qml/pages/AdvancedSettings.qml:51 ../qml/pages/AdvancedSettings.qml:404
 msgid "Balanced"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:54 ../qml/pages/AdvancedSettings.qml:146
+#: ../qml/pages/AdvancedSettings.qml:54 ../qml/pages/AdvancedSettings.qml:390
 msgid "High"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:103
+#: ../qml/pages/AdvancedSettings.qml:123
 msgid "Voice Message Quality"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:158
+msgid "Autocrypt"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:171
+msgid "Prefer End-To-End Encryption"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:208
+msgid "IMAP Folder Handling"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:221
+msgid "Watch Sent Folder"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:253
+msgid "Send Copy to Self"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:254
+msgid "Required when using this account on multiple devices."
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:287
+msgid "Move automatically to DeltaChat Folder"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:288
+msgid "Chat conversations are moved to avoid cluttering the Inbox"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:321
+msgid "Only Fetch from DeltaChat Folder"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:322
+msgid ""
+"Ignore other folders. Requires your server to move chat messages to the "
+"DeltaChat folder."
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:360
+msgid "Manage Keys"
 msgstr ""
 
 #: ../qml/pages/BlockContactPopup.qml:31
@@ -608,23 +654,23 @@ msgstr ""
 msgid "Edit Profile"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:338
+#: ../qml/pages/Profile.qml:96 ../qml/pages/SettingsPage.qml:338
 msgid "Profile"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:122
+#: ../qml/pages/Profile.qml:177
 msgid "Select Profile Image"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:137
+#: ../qml/pages/Profile.qml:190
 msgid "Delete Profile Image"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:152
+#: ../qml/pages/Profile.qml:210
 msgid "Your Name"
 msgstr ""
 
-#: ../qml/pages/Profile.qml:191
+#: ../qml/pages/Profile.qml:249
 msgid "Signature Text"
 msgstr ""
 

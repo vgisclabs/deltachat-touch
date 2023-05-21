@@ -940,6 +940,7 @@ void DeltaHandler::deleteChat(int myindex)
 
 void DeltaHandler::setCurrentConfig(QString key, QString newValue)
 {
+    qDebug() << "DeltaHandler::setCurrentConfig() called for key " << key;
 
     if ("selfavatar" == key) {
         // have to check for the special case where the
@@ -962,10 +963,29 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
         }
     }
 
+    // sentbox_watch, mvbox_move and only_fetch_mvbox changes require restarting IO
+    bool restartIOrequired = false;
+    if ("sentbox_watch" == key || "mvbox_move" == key || "only_fetch_mvbox" == key) {
+        // TODO: maybe check every key whether newValue is already the current value?
+        // Then only restartIOrequired would have to be set here
+        char* tempText = dc_get_config(currentContext, key.toUtf8().constData());
+        QString tempString = tempText;
+        dc_str_unref(tempText);
+        if (tempString != newValue) {
+            restartIOrequired = true;
+        }
+    }
+
     int success = dc_set_config(currentContext, key.toUtf8().constData(), newValue.toUtf8().constData());
 
     if (!success) {
         qDebug() << "DeltaHandler::setCurrentConfig: ERROR: Setting key " << key << " to " << newValue << " was not successful.";
+    }
+
+    // only restart IO if it is actually started
+    if (restartIOrequired && m_networkingIsStarted) {
+        stop_io();
+        start_io();
     }
  
     // TODO: emit only if profile pic or displayname changed?

@@ -93,6 +93,26 @@ Page {
             id: flickContent
             width: parent.width
 
+            Rectangle {
+                id: prefVoiceMessagesSectionHeader
+                height: prefVoiceMessagesSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefVoiceMessagesSectionHeaderLabel
+                    anchors {
+                        top: prefVoiceMessagesSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefVoiceMessagesSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Voice Message")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
             ListItem {
                 id: voiceMessageQualityItem
                 height: voiceMessageQualityLayout.height + (divider.visible ? divider.height : 0)
@@ -120,9 +140,233 @@ Page {
                     PopupUtils.open(popoverComponentVoiceMessageQuality, voiceMessageQualityItem)
                 }
             }
+
+            Rectangle {
+                id: prefAutocryptSectionHeader
+                height: prefAutocryptSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefAutocryptSectionHeaderLabel
+                    anchors {
+                        top: prefAutocryptSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefAutocryptSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Autocrypt")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
+            ListItem {
+                id: autocryptItem
+                height: autocryptLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: autocryptLayout
+                    title.text: i18n.tr("Prefer End-To-End Encryption")
+
+
+                    Switch {
+                        id: autocryptSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: (DeltaHandler.getCurrentConfig("e2ee_enabled") === "1")
+                        onCheckedChanged: {
+                            if (autocryptSwitch.checked) {
+                                // need to check whether it is really needed to change the setting
+                                // because checkedChanged may be emitted when setting the switch via
+                                // DeltaHandler.getCurrentConfig()
+                                if (DeltaHandler.getCurrentConfig("e2ee_enabled") != "1") {
+                                    DeltaHandler.setCurrentConfig("e2ee_enabled", "1")
+                                }
+                            } else {
+                                if (DeltaHandler.getCurrentConfig("e2ee_enabled") != "0") {
+                                    DeltaHandler.setCurrentConfig("e2ee_enabled", "0")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                id: prefImapFolderSectionHeader
+                height: prefImapFolderSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefImapFolderSectionHeaderLabel
+                    anchors {
+                        top: prefImapFolderSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefImapFolderSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    text: i18n.tr("IMAP Folder Handling")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
+            ListItem {
+                id: sentFolderItem
+                height: sentFolderLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: sentFolderLayout
+                    title.text: i18n.tr("Watch Sent Folder")
+
+
+                    Switch {
+                        id: sentFolderSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: (DeltaHandler.getCurrentConfig("sentbox_watch") === "1")
+                        onCheckedChanged: {
+                            if (sentFolderSwitch.checked) {
+                                // need to check whether it is really needed to change the setting
+                                // because checkedChanged may be emitted when setting the switch via
+                                // DeltaHandler.getCurrentConfig()
+                                if (DeltaHandler.getCurrentConfig("sentbox_watch") != "1") {
+                                    DeltaHandler.setCurrentConfig("sentbox_watch", "1")
+                                }
+                            } else {
+                                if (DeltaHandler.getCurrentConfig("sentbox_watch") != "0") {
+                                    DeltaHandler.setCurrentConfig("sentbox_watch", "0")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                id: copyToSelfItem
+                height: copyToSelfLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: copyToSelfLayout
+                    title.text: i18n.tr("Send Copy to Self")
+                    summary.text: i18n.tr("Required when using this account on multiple devices.")
+                    summary.wrapMode: Text.WordWrap
+
+
+                    Switch {
+                        id: copyToSelfSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: (DeltaHandler.getCurrentConfig("bcc_self") === "1")
+                        onCheckedChanged: {
+                            if (copyToSelfSwitch.checked) {
+                                // need to check whether it is really needed to change the setting
+                                // because checkedChanged may be emitted when setting the switch via
+                                // DeltaHandler.getCurrentConfig()
+                                if (DeltaHandler.getCurrentConfig("bcc_self") != "1") {
+                                    DeltaHandler.setCurrentConfig("bcc_self", "1")
+                                }
+                            } else {
+                                if (DeltaHandler.getCurrentConfig("bcc_self") != "0") {
+                                    DeltaHandler.setCurrentConfig("bcc_self", "0")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                id: autoFolderMovesItem
+                height: autoFolderMovesLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: autoFolderMovesLayout
+                    title.text: i18n.tr("Move automatically to DeltaChat Folder")
+                    summary.text: i18n.tr("Chat conversations are moved to avoid cluttering the Inbox")
+                    summary.wrapMode: Text.WordWrap
+
+
+                    Switch {
+                        id: autoFolderMovesSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: (DeltaHandler.getCurrentConfig("mvbox_move") === "1")
+                        onCheckedChanged: {
+                            if (autoFolderMoveswitch.checked) {
+                                // need to check whether it is really needed to change the setting
+                                // because checkedChanged may be emitted when setting the switch via
+                                // DeltaHandler.getCurrentConfig()
+                                if (DeltaHandler.getCurrentConfig("mvbox_move") != "1") {
+                                    DeltaHandler.setCurrentConfig("mvbox_move", "1")
+                                }
+                            } else {
+                                if (DeltaHandler.getCurrentConfig("mvbox_move") != "0") {
+                                    DeltaHandler.setCurrentConfig("mvbox_move", "0")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                id: onlyDCfolderItem
+                height: onlyDCfolderLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: onlyDCfolderLayout
+                    title.text: i18n.tr("Only Fetch from DeltaChat Folder")
+                    summary.text: i18n.tr("Ignore other folders. Requires your server to move chat messages to the DeltaChat folder.")
+                    summary.wrapMode: Text.WordWrap
+
+
+                    Switch {
+                        id: onlyDCfolderSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: (DeltaHandler.getCurrentConfig("only_fetch_mvbox") === "1")
+                        onCheckedChanged: {
+                            if (onlyDCfolderwitch.checked) {
+                                // need to check whether it is really needed to change the setting
+                                // because checkedChanged may be emitted when setting the switch via
+                                // DeltaHandler.getCurrentConfig()
+                                if (DeltaHandler.getCurrentConfig("only_fetch_mvbox") != "1") {
+                                    DeltaHandler.setCurrentConfig("only_fetch_mvbox", "1")
+                                }
+                            } else {
+                                if (DeltaHandler.getCurrentConfig("only_fetch_mvbox") != "0") {
+                                    DeltaHandler.setCurrentConfig("only_fetch_mvbox", "0")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                id: manageKeysSectionHeader
+                height: manageKeysSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: manageKeysSectionHeaderLabel
+                    anchors {
+                        top: manageKeysSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: manageKeysSectionHeader.left
+                        leftMargin: units.gu(1)
+                    }
+                    text: i18n.tr("Manage Keys")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
+
+
         }
     }
-
 
     Component {
         id: popoverComponentVoiceMessageQuality
@@ -136,7 +380,7 @@ Page {
                 }
                 ListItem {
                     height: layout11.height
-                    // should be automatically be themed with something like
+                    // should be automatically themed with something like
                     // theme.palette.normal.overlay, but this
                     // doesn't seem to work for Ambiance (and importing
                     // Ubuntu.Components.Themes 1.3 doesn't solve it). 

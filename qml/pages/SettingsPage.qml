@@ -229,8 +229,12 @@ Page {
                         id: offlineSwitch
                         SlotsLayout.position: SlotsLayout.Trailing
                         onCheckedChanged: {
-                            root.syncAll = offlineSwitch.checked
-                            root.startStopIO()
+                            // avoid actions upon initial setting of switch
+                            // because this will trigger checkedChanged, too
+                            if (offlineSwitch.checked != root.syncAll) {
+                                root.syncAll = offlineSwitch.checked
+                                root.startStopIO()
+                            }
                         }
                     }
                 }
@@ -469,15 +473,18 @@ Page {
                         id: readReceiptsSwitch
                         SlotsLayout.position: SlotsLayout.Trailing
                         checked: (DeltaHandler.getCurrentConfig("mdns_enabled") === "1")
-                        // TODO: If checked is set like this, checkedChanged will be triggered
-                        // when it is set to true. Maybe set in onCompleted, guarded by a property
-                        // (e.g., noActionOnCheckedChanged) which is evaluated in onCheckedChanged
-                        // below?
                         onCheckedChanged: {
                             if (readReceiptsSwitch.checked) {
-                                DeltaHandler.setCurrentConfig("mdns_enabled", "1")
+                                // need to check whether it is really needed to change the setting
+                                // because checkedChanged may be emitted when setting the switch via
+                                // DeltaHandler.getCurrentConfig()
+                                if (DeltaHandler.getCurrentConfig("mdns_enabled") != "1") {
+                                    DeltaHandler.setCurrentConfig("mdns_enabled", "1")
+                                }
                             } else {
-                                DeltaHandler.setCurrentConfig("mdns_enabled", "0")
+                                if (DeltaHandler.getCurrentConfig("mdns_enabled") != "0") {
+                                    DeltaHandler.setCurrentConfig("mdns_enabled", "0")
+                                }
                             }
                         }
                     }

@@ -39,7 +39,17 @@ MainView {
     property string version: '0.5.2'
 
     // Color scheme
-    property bool darkmode: (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
+    //
+    // The bool darkmode will be set in onCompleted. If it is set here
+    // (i.e., with binding) it will change if the theme is changed by,
+    // e.g., ThemeSwitcher, and all colors depending on it will change,
+    // too. For some strange reason, the UITK components don't do the
+    // live switching (at least in xenial), so there would be a
+    // mismatch.
+    // Trying to set theme.name or Theme.name in onStateChanged resulted
+    // in darkmode not doing the live switch instead of UITK doing it as
+    // well??
+    property bool darkmode
     property string otherMessageBackgroundColor: root.darkmode ? "#3b3b3b" : "#e9e9e9" //"#d3d3d3"
     property string selfMessagePendingBackgroundColor: root.darkmode ? "#86d3db" : "#f0fafb"
     property string selfMessageSentBackgroundColor: root.darkmode ? "#0ca7b6" : "#cbecf0" //"#0ca7b6" : "#e1f4f6"
@@ -683,6 +693,7 @@ MainView {
     }
     
     Component.onCompleted: {
+        darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
         if (!DeltaHandler.hasConfiguredAccount) {
             layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
         }

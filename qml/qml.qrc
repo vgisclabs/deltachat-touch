@@ -38,6 +38,8 @@
         <file>pages/ProgressConfigAccount.qml</file>
         <file>pages/ProgressBackupImport.qml</file>
         <file>pages/ProgressBackupExport.qml</file>
+        <file>pages/ProgressKeysImport.qml</file>
+        <file>pages/ProgressKeysExport.qml</file>
         <file>pages/ProgressQrBackupImport.qml</file>
         <file>pages/Profile.qml</file>
         <file>pages/QrConfirmPopup.qml</file>

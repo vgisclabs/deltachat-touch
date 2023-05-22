@@ -27,22 +27,40 @@ DeltaHandler::DeltaHandler(QObject* parent)
     qRegisterMetaType<uint32_t>("uint32_t");
     //qRegisterMetaType<size_t>("size_t");
 
+    {
+        // prepare directory for the user to put keys to import into
+        QString keysToImportDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+        keysToImportDir.append("/keys_to_import");
+
+        if (!QFile::exists(keysToImportDir)) {
+            qDebug() << "DeltaHandler::DeltaHandler(): Directory in cache for putting keys to import into not existing, creating it now";
+            QDir keysdir;
+            bool mkdirsuccess = keysdir.mkpath(keysToImportDir);
+            if (mkdirsuccess) {
+                qDebug() << "DeltaHandler::DeltaHandler(): Directory " << keysToImportDir << " successfully created";
+            }
+            else {
+                // TODO: any follow-up action?
+                qDebug() << "DeltaHandler::DeltaHandler(): Error: Could not create directory " << keysToImportDir;
+            }
+        }
+    }
     // Must use QStandardPaths::AppConfigLocation to get the config dir. With
     // QStandardPaths::ConfigLocation, we just get /home/phablet/.config
     QString configdir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    qDebug() << "Config directory set to: " << configdir;
+    qDebug() << "DeltaHandler::DeltaHandler(): Config directory set to: " << configdir;
 
     //settings = new QSettings("deltatouch.lotharketterer", "deltatouch.lotharketterer");
 
     if (!QFile::exists(configdir)) {
-        qDebug() << "Config directory not existing, creating it now";
+        qDebug() << "DeltaHandler::DeltaHandler(): Config directory not existing, creating it now";
         QDir tempdir;
         bool success = tempdir.mkpath(configdir);
         if (success) {
-            qDebug() << "Config directory successfully created";
+            qDebug() << "DeltaHandler::DeltaHandler(): Config directory successfully created";
         }
         else {
-            qDebug() << "Could not create config directory, exiting";
+            qDebug() << "DeltaHandler::DeltaHandler(): Could not create config directory, exiting";
             exit(1);
         }
     }
@@ -510,6 +528,44 @@ int DeltaHandler::getDeletionEstimation(QString secondsAsString, int fromServer)
 {
     ulong seconds = secondsAsString.toULong();
     return dc_estimate_deletion_cnt(currentContext, fromServer, seconds);
+}
+
+
+void DeltaHandler::importKeys()
+{
+    QString keysToImportDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    keysToImportDir.append("/keys_to_import");
+    dc_imex(currentContext, DC_IMEX_IMPORT_SELF_KEYS, keysToImportDir.toUtf8().constData(), NULL);
+}
+
+
+QString DeltaHandler::prepareExportKeys()
+{
+    QDateTime timestamp = QDateTime::currentDateTime();
+    QString dateAsString = timestamp.toString("yyyyMMdd-hhmmss");
+
+    bool dirAlreadyExisting = true;
+    QString keysToExportDir("");
+    int i {0};
+    
+    while (i < 50 && dirAlreadyExisting) {
+        keysToExportDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+        keysToExportDir.append("/keys-exported-");
+        keysToExportDir.append(dateAsString);
+        dirAlreadyExisting = QFile::exists(keysToExportDir);
+        ++i;
+    }
+
+    QDir tempdir;
+    tempdir.mkpath(keysToExportDir);
+
+    return keysToExportDir;
+}
+
+
+void DeltaHandler::startExportKeys(QString dirToExportTo)
+{
+    dc_imex(currentContext, DC_IMEX_EXPORT_SELF_KEYS, dirToExportTo.toUtf8().constData(), NULL);
 }
 
 

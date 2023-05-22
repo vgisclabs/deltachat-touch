@@ -161,6 +161,11 @@ public:
 
     Q_INVOKABLE int getDeletionEstimation(QString secondsAsString, int fromServer);
 
+    Q_INVOKABLE void importKeys();
+
+    Q_INVOKABLE QString prepareExportKeys();
+    Q_INVOKABLE void startExportKeys(QString dirToExportTo);
+
     /* ========================================================
      * =================== Profile editing ====================
      * ======================================================== */

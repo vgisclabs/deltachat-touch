@@ -21,6 +21,7 @@ import Ubuntu.Components 1.3
 import QtQuick.Layouts 1.3
 import Ubuntu.Components.Popups 1.3
 import Qt.labs.settings 1.0
+import Qt.labs.platform 1.1
 import QtMultimedia 5.12
 import QtQml.Models 2.12
 
@@ -290,11 +291,11 @@ Page {
 
 
                     Switch {
-                        id: autoFolderMovesSwitch
+                        id: autoFolderMoveSwitch
                         SlotsLayout.position: SlotsLayout.Trailing
                         checked: (DeltaHandler.getCurrentConfig("mvbox_move") === "1")
                         onCheckedChanged: {
-                            if (autoFolderMoveswitch.checked) {
+                            if (autoFolderMoveSwitch.checked) {
                                 // need to check whether it is really needed to change the setting
                                 // because checkedChanged may be emitted when setting the switch via
                                 // DeltaHandler.getCurrentConfig()
@@ -363,6 +364,33 @@ Page {
                 color: theme.palette.normal.background
             }
 
+            ListItem {
+                id: keysExportItem
+                height: keysExportLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: keysExportLayout
+                    title.text: i18n.tr("Export Secret Keys")
+                }
+                onClicked: {
+                    PopupUtils.open(Qt.resolvedUrl("ProgressKeysExport.qml"))
+                }
+            }
+
+            ListItem {
+                id: keysImportItem
+                height: keysImportLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: keysImportLayout
+                    title.text: i18n.tr("Import Secret Keys")
+                }
+                onClicked: {
+                    PopupUtils.open(Qt.resolvedUrl("ProgressKeysImport.qml"))
+                }
+            }
 
 
         }

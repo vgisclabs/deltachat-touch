@@ -91,8 +91,7 @@ Dialog {
 
     Button {
         id: backButton
-        // TODO string not translated yet
-        text: 'Back'
+        text: i18n.tr("Back")
         color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)

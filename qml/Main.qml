@@ -36,7 +36,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '0.5.2'
+    property string version: '0.6.0'
 
     // Color scheme
     //

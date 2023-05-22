@@ -66,7 +66,7 @@ Dialog {
     // imex process would be helpful?
     Button {
         id: backButton
-        text: 'Back'
+        text: i18n.tr("Back")
         color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)

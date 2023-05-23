@@ -30,47 +30,40 @@ Dialog {
         minimumValue: 0
         maximumValue: 1000
         value: 0
+        visible: false
     }
 
-    Component.onCompleted: {
-        DeltaHandler.imexEventReceived.connect(updateProgress)
-        DeltaHandler.exportBackup()
-    }
+    text: i18n.tr("A backup helps you to set up a new installation on this or on another device.\n\nThe backup will contain all messages, contacts and chats and your end-to-end Autocrypt setup. Keep the backup file in a safe place or delete it as soon as possible.")
 
     function updateProgress(progValue) {
         progBar.value = progValue
         if (progValue == 0) {
-            dialog.text = i18n.tr('Failed')
-            progBar.visible = false
-            backButton.visible = true
+            PopupUtils.close(dialog)
         }
         else if (progValue == 1000) {
-            dialog.text = i18n.tr("A backup helps you to set up a new installation on this or on another device.\n\nThe backup will contain all messages, contacts and chats and your end-to-end Autocrypt setup. Keep the backup file in a safe place or delete it as soon as possible.")
-            progBar.visible = false
-            okButton.visible = true
+            PopupUtils.close(dialog)
         }
     }
 
     Button {
         id: okButton
-        text: 'OK'
+        text: i18n.tr("Start Backup")
         color: theme.palette.normal.positive
         onClicked: {
-            PopupUtils.close(dialog)
+            dialog.text = ""
+            progBar.visible = true
+            DeltaHandler.imexEventReceived.connect(updateProgress)
+            DeltaHandler.exportBackup()
+            okButton.visible = false
+            backButton.visible = false
         }
-        visible: false
     }
 
-    // TODO: is this needed? maybe a
-    // cancel button that actually cancels the
-    // imex process would be helpful?
     Button {
         id: backButton
-        text: i18n.tr("Back")
-        color: theme.palette.normal.negative
+        text: i18n.tr("Cancel")
         onClicked: {
             PopupUtils.close(dialog)
         }
-        visible: false
     }
 }

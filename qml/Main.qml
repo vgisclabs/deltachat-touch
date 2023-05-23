@@ -56,7 +56,7 @@ MainView {
     property string selfMessageSeenBackgroundColor: root.darkmode ? "#06545b" : "#2bb2c0"
     property string selfMessageSentTextColor: root.darkmode ? "black" : "black"
     property string selfMessageSeenTextColor: root.darkmode ? "white" : "black"
-    property string unreadMessageCounterColor: root.darkmode ? "#000080" : "#968cd9"
+    property string unreadMessageCounterColor: "#053f45" //root.darkmode ? "#000080" : "#968cd9"
 
     // If there are any archived chats, a pseudo-chat "Archived Chats" will
     // be shown in the list of chats. When clicked, only the archived chats
@@ -634,6 +634,7 @@ MainView {
                                     text: model.newMsgCount > 99 ? "99+" : model.newMsgCount
                                     fontSize: "small"
                                     font.bold: true
+                                    color: "white"
                                 }
 
                             }

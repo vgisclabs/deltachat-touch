@@ -37,12 +37,12 @@ Page {
         title: i18n.tr("Known Accounts")
 
         trailingActionBar.actions: [
-            Action {
-                iconName: 'help'
-                text: i18n.tr('Help')
-                // TODO make help page for the Account config page
-                onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
-            },
+//            Action {
+//                iconName: 'help'
+//                text: i18n.tr('Help')
+//                // TODO make help page for the Account config page
+//                onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
+//            },
 
             Action {
                 iconName: 'add'

@@ -188,22 +188,22 @@ Page {
         title: i18n.tr("Settings")
 
         //trailingActionBar.numberOfSlots: 2
-        trailingActionBar.actions: [
-          //  Action {
-          //      iconName: 'help'
-          //      text: i18n.tr('Help')
-          //      onTriggered: {
-          //          layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('Help.qml'))
-          //      }
-          //  },
-            Action {
-                iconName: 'info'
-                text: i18n.tr('About DeltaTouch')
-                onTriggered: {
-                            layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('About.qml'))
-                }
-            }
-        ]
+//        trailingActionBar.actions: [
+//          //  Action {
+//          //      iconName: 'help'
+//          //      text: i18n.tr('Help')
+//          //      onTriggered: {
+//          //          layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('Help.qml'))
+//          //      }
+//          //  },
+//            Action {
+//                iconName: 'info'
+//                text: i18n.tr('About DeltaTouch')
+//                onTriggered: {
+//                            layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('About.qml'))
+//                }
+//            }
+//        ]
     }
 
     Flickable {
@@ -224,6 +224,7 @@ Page {
                 ListItemLayout {
                     id: offlineLayout
                     title.text: i18n.tr("Sync All")
+                    title.font.bold: true
 
                     Switch {
                         id: offlineSwitch
@@ -247,6 +248,7 @@ Page {
                 ListItemLayout {
                     id: accountsItemLayout
                     title.text: i18n.tr("Known Accounts")
+                    title.font.bold: true
 
                     Icon {
                         name: "go-next"
@@ -280,25 +282,25 @@ Page {
                 color: theme.palette.normal.background
             }
 
-            Rectangle {
-                id: prefBlockedSectionHeader
-                height: prefBlockedSectionHeaderLabel.contentHeight + units.gu(3)
-                width: parent.width
-                Label {
-                    id: prefBlockedSectionHeaderLabel
-                    anchors {
-                        top: prefBlockedSectionHeader.top
-                        topMargin: units.gu(3)
-                        left: prefBlockedSectionHeader.left
-                        leftMargin: units.gu(1)
-                    }
-                    // TODO: string not translated
-                    // TODO: maybe solve issue in a different way?
-                    text: i18n.tr("Blocked Contacts")
-                    font.bold: true
-                }
-                color: theme.palette.normal.background
-            }
+//            Rectangle {
+//                id: prefBlockedSectionHeader
+//                height: prefBlockedSectionHeaderLabel.contentHeight + units.gu(3)
+//                width: parent.width
+//                Label {
+//                    id: prefBlockedSectionHeaderLabel
+//                    anchors {
+//                        top: prefBlockedSectionHeader.top
+//                        topMargin: units.gu(3)
+//                        left: prefBlockedSectionHeader.left
+//                        leftMargin: units.gu(1)
+//                    }
+//                    // TODO: string not translated
+//                    // TODO: maybe solve issue in a different way?
+//                    text: i18n.tr("Blocked Contacts")
+//                    font.bold: true
+//                }
+//                color: theme.palette.normal.background
+//            }
 
             ListItem {
                 height: blockedContactsLayout.height + (divider.visible ? divider.height : 0)
@@ -307,7 +309,7 @@ Page {
                 ListItemLayout {
                     id: blockedContactsLayout
                     title.text: i18n.tr("Blocked Contacts")
-                    //text.color: "red" //DeltaHandler.hasConfiguredAccount ? theme.palette.normal.baseText : theme.palette.disabled.baseText
+                    title.font.bold: true
 
                     Icon {
                         name: "go-next"
@@ -325,25 +327,25 @@ Page {
                 enabled: DeltaHandler.hasConfiguredAccount
             }
 
-            Rectangle {
-                id: prefProfileSectionHeader
-                height: prefProfileSectionHeaderLabel.contentHeight + units.gu(3)
-                width: parent.width
-                Label {
-                    id: prefProfileSectionHeaderLabel
-                    anchors {
-                        top: prefProfileSectionHeader.top
-                        topMargin: units.gu(3)
-                        left: prefProfileSectionHeader.left
-                        leftMargin: units.gu(1)
-                    }
-                    // TODO: string not translated
-                    // TODO: maybe solve issue in a different way?
-                    text: i18n.tr("Profile")
-                    font.bold: true
-                }
-                color: theme.palette.normal.background
-            }
+//            Rectangle {
+//                id: prefProfileSectionHeader
+//                height: prefProfileSectionHeaderLabel.contentHeight + units.gu(3)
+//                width: parent.width
+//                Label {
+//                    id: prefProfileSectionHeaderLabel
+//                    anchors {
+//                        top: prefProfileSectionHeader.top
+//                        topMargin: units.gu(3)
+//                        left: prefProfileSectionHeader.left
+//                        leftMargin: units.gu(1)
+//                    }
+//                    // TODO: string not translated
+//                    // TODO: maybe solve issue in a different way?
+//                    text: i18n.tr("Profile")
+//                    font.bold: true
+//                }
+//                color: theme.palette.normal.background
+//            }
 
             ListItem {
                 height: profilesLayout.height + (divider.visible ? divider.height : 0)
@@ -352,6 +354,7 @@ Page {
                 ListItemLayout {
                     id: profilesLayout
                     title.text: i18n.tr("Edit Profile")
+                    title.font.bold: true
 
                     Icon {
                         name: "go-next"
@@ -375,7 +378,7 @@ Page {
                         top: prefChatsSectionHeader.top
                         topMargin: units.gu(3)
                         left: prefChatsSectionHeader.left
-                        leftMargin: units.gu(1)
+                        leftMargin: units.gu(2)
                     }
                     // TODO: string not translated
                     // TODO: maybe solve issue in a different way?
@@ -389,6 +392,7 @@ Page {
                 id: showClassicMailsItem
                 height: showClassicMailsLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: showClassicMailsLayout
@@ -451,7 +455,7 @@ Page {
                         top: prefPrivacySectionHeader.top
                         topMargin: units.gu(3)
                         left: prefPrivacySectionHeader.left
-                        leftMargin: units.gu(1)
+                        leftMargin: units.gu(2)
                     }
                     // TODO: string not translated
                     // TODO: maybe solve issue in a different way?
@@ -501,7 +505,7 @@ Page {
                         top: prefDelOldSectionHeader.top
                         topMargin: units.gu(3)
                         left: prefDelOldSectionHeader.left
-                        leftMargin: units.gu(1)
+                        leftMargin: units.gu(2)
                     }
                     // TODO: string not translated
                     // TODO: maybe solve issue in a different way?
@@ -515,6 +519,7 @@ Page {
                 id: deleteFromDeviceItem
                 height: deleteFromDeviceLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: deleteFromDeviceLayout
@@ -567,25 +572,25 @@ Page {
                 }
             }
 
-            Rectangle {
-                id: prefBackupSectionHeader
-                height: prefBackupSectionHeaderLabel.contentHeight + units.gu(3)
-                width: parent.width
-                Label {
-                    id: prefBackupSectionHeaderLabel
-                    anchors {
-                        top: prefBackupSectionHeader.top
-                        topMargin: units.gu(3)
-                        left: prefBackupSectionHeader.left
-                        leftMargin: units.gu(1)
-                    }
-                    // TODO: string not translated
-                    // TODO: maybe solve issue in a different way?
-                    text: i18n.tr("Backup")
-                    font.bold: true
-                }
-                color: theme.palette.normal.background
-            }
+//            Rectangle {
+//                id: prefBackupSectionHeader
+//                height: prefBackupSectionHeaderLabel.contentHeight + units.gu(3)
+//                width: parent.width
+//                Label {
+//                    id: prefBackupSectionHeaderLabel
+//                    anchors {
+//                        top: prefBackupSectionHeader.top
+//                        topMargin: units.gu(3)
+//                        left: prefBackupSectionHeader.left
+//                        leftMargin: units.gu(1)
+//                    }
+//                    // TODO: string not translated
+//                    // TODO: maybe solve issue in a different way?
+//                    text: i18n.tr("Backup")
+//                    font.bold: true
+//                }
+//                color: theme.palette.normal.background
+//            }
 
             ListItem {
                 id: exportBackupItem
@@ -595,6 +600,7 @@ Page {
                 ListItemLayout {
                     id: exportBackupLayout
                     title.text: i18n.tr("Export Backup")
+                    title.font.bold: true
 
                     Icon {
                         name: "go-next"
@@ -608,25 +614,25 @@ Page {
                 }
             }
 
-            Rectangle {
-                id: prefAdvancedSectionHeader
-                height: prefAdvancedSectionHeaderLabel.contentHeight + units.gu(3)
-                width: parent.width
-                Label {
-                    id: prefAdvancedSectionHeaderLabel
-                    anchors {
-                        top: prefAdvancedSectionHeader.top
-                        topMargin: units.gu(3)
-                        left: prefAdvancedSectionHeader.left
-                        leftMargin: units.gu(1)
-                    }
-                    // TODO: string not translated
-                    // TODO: maybe solve issue in a different way?
-                    text: i18n.tr("Advanced")
-                    font.bold: true
-                }
-                color: theme.palette.normal.background
-            }
+//            Rectangle {
+//                id: prefAdvancedSectionHeader
+//                height: prefAdvancedSectionHeaderLabel.contentHeight + units.gu(3)
+//                width: parent.width
+//                Label {
+//                    id: prefAdvancedSectionHeaderLabel
+//                    anchors {
+//                        top: prefAdvancedSectionHeader.top
+//                        topMargin: units.gu(3)
+//                        left: prefAdvancedSectionHeader.left
+//                        leftMargin: units.gu(1)
+//                    }
+//                    // TODO: string not translated
+//                    // TODO: maybe solve issue in a different way?
+//                    text: i18n.tr("Advanced")
+//                    font.bold: true
+//                }
+//                color: theme.palette.normal.background
+//            }
 
             ListItem {
                 height: advancedLayout.height + (divider.visible ? divider.height : 0)
@@ -635,6 +641,7 @@ Page {
                 ListItemLayout {
                     id: advancedLayout
                     title.text: i18n.tr("Advanced")
+                    title.font.bold: true
 
                     Icon {
                         name: "go-next"

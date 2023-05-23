@@ -94,25 +94,25 @@ Page {
             id: flickContent
             width: parent.width
 
-            Rectangle {
-                id: prefVoiceMessagesSectionHeader
-                height: prefVoiceMessagesSectionHeaderLabel.contentHeight + units.gu(3)
-                width: parent.width
-                Label {
-                    id: prefVoiceMessagesSectionHeaderLabel
-                    anchors {
-                        top: prefVoiceMessagesSectionHeader.top
-                        topMargin: units.gu(3)
-                        left: prefVoiceMessagesSectionHeader.left
-                        leftMargin: units.gu(1)
-                    }
-                    // TODO: string not translated
-                    // TODO: maybe solve issue in a different way?
-                    text: i18n.tr("Voice Message")
-                    font.bold: true
-                }
-                color: theme.palette.normal.background
-            }
+//            Rectangle {
+//                id: prefVoiceMessagesSectionHeader
+//                height: prefVoiceMessagesSectionHeaderLabel.contentHeight + units.gu(3)
+//                width: parent.width
+//                Label {
+//                    id: prefVoiceMessagesSectionHeaderLabel
+//                    anchors {
+//                        top: prefVoiceMessagesSectionHeader.top
+//                        topMargin: units.gu(3)
+//                        left: prefVoiceMessagesSectionHeader.left
+//                        leftMargin: units.gu(1)
+//                    }
+//                    // TODO: string not translated
+//                    // TODO: maybe solve issue in a different way?
+//                    text: i18n.tr("Voice Message")
+//                    font.bold: true
+//                }
+//                color: theme.palette.normal.background
+//            }
 
             ListItem {
                 id: voiceMessageQualityItem
@@ -122,6 +122,7 @@ Page {
                 ListItemLayout {
                     id: voiceMessageQualityLayout
                     title.text: i18n.tr("Voice Message Quality")
+                    title.font.bold: true
 
                     Label {
                         id: voiceMessageQualityLabel
@@ -152,7 +153,7 @@ Page {
                         top: prefAutocryptSectionHeader.top
                         topMargin: units.gu(3)
                         left: prefAutocryptSectionHeader.left
-                        leftMargin: units.gu(1)
+                        leftMargin: units.gu(2)
                     }
                     // TODO: string not translated
                     // TODO: maybe solve issue in a different way?
@@ -204,7 +205,7 @@ Page {
                         top: prefImapFolderSectionHeader.top
                         topMargin: units.gu(3)
                         left: prefImapFolderSectionHeader.left
-                        leftMargin: units.gu(1)
+                        leftMargin: units.gu(2)
                     }
                     text: i18n.tr("IMAP Folder Handling")
                     font.bold: true
@@ -216,6 +217,7 @@ Page {
                 id: sentFolderItem
                 height: sentFolderLayout.height + (divider.visible ? divider.height : 0)
                 width: advancedSettingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: sentFolderLayout
@@ -248,6 +250,7 @@ Page {
                 id: copyToSelfItem
                 height: copyToSelfLayout.height + (divider.visible ? divider.height : 0)
                 width: advancedSettingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: copyToSelfLayout
@@ -282,6 +285,7 @@ Page {
                 id: autoFolderMovesItem
                 height: autoFolderMovesLayout.height + (divider.visible ? divider.height : 0)
                 width: advancedSettingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: autoFolderMovesLayout
@@ -356,7 +360,7 @@ Page {
                         top: manageKeysSectionHeader.top
                         topMargin: units.gu(3)
                         left: manageKeysSectionHeader.left
-                        leftMargin: units.gu(1)
+                        leftMargin: units.gu(2)
                     }
                     text: i18n.tr("Manage Keys")
                     font.bold: true
@@ -368,10 +372,17 @@ Page {
                 id: keysExportItem
                 height: keysExportLayout.height + (divider.visible ? divider.height : 0)
                 width: advancedSettingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: keysExportLayout
                     title.text: i18n.tr("Export Secret Keys")
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
                 }
                 onClicked: {
                     PopupUtils.open(Qt.resolvedUrl("ProgressKeysExport.qml"))
@@ -386,6 +397,12 @@ Page {
                 ListItemLayout {
                     id: keysImportLayout
                     title.text: i18n.tr("Import Secret Keys")
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
                 }
                 onClicked: {
                     PopupUtils.open(Qt.resolvedUrl("ProgressKeysImport.qml"))

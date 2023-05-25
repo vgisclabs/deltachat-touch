@@ -36,7 +36,7 @@ Rectangle {
         left: parent.left
         top: parent.top
     }
-    color: root.unreadMessageCounterColor
+    color: root.unreadMessageBarColor
 
     Label {
         id: msgLabel

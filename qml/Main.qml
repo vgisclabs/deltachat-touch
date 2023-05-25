@@ -57,6 +57,7 @@ MainView {
     property string selfMessageSentTextColor: root.darkmode ? "black" : "black"
     property string selfMessageSeenTextColor: root.darkmode ? "white" : "black"
     property string unreadMessageCounterColor: "#053f45" //root.darkmode ? "#000080" : "#968cd9"
+    property string unreadMessageBarColor: root.darkmode ? "#000080" : "#968cd9"
 
     // If there are any archived chats, a pseudo-chat "Archived Chats" will
     // be shown in the list of chats. When clicked, only the archived chats

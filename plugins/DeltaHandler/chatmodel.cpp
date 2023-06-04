@@ -35,7 +35,6 @@ ChatModel::~ChatModel()
     if (data_tempMsg) {
         dc_msg_unref(data_tempMsg);
     }
-
 }
 
 int ChatModel::rowCount(const QModelIndex &parent) const
@@ -127,23 +126,6 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
     int tempInt {0};
     
     QVariant retval;
-
-//    Not used for the time being because due to the ListView
-//    preloading messages that are not in view yet, this also
-//    marks messages that have not been presented to the user
-//    yet. Currently, upon opening a chat view, all messages
-//    in the chat are marked as seen directly until a better
-//    solution is found.
-//    Note that if this solution is brought back, it may also
-//    need changes in acceptChat().
-//    // Marking message as seen
-//    // TODO: use different approach to mark messages as
-//    // seen? Maybe mark all as seen when opening a chat?
-//    // Also, place the view at the first unread message?
-//    if (!m_isContactRequest && dc_msg_get_state(tempMsg) != DC_STATE_IN_SEEN && !(dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF) && row != m_unreadMessageBarIndex) {
-//        dc_markseen_msgs(currentMsgContext, &tempMsgID, 1);
-//        emit messageMarkedSeen();
-//    }
 
     switch(role) {
         case ChatModel::IsSelfRole:
@@ -538,11 +520,13 @@ void ChatModel::messageStatusChangedSlot(int msgID)
 }
 
 
-void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* deltaHandler, bool cIsContactRequest)
+void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool cIsContactRequest)
 {
+    m_dhandler = deltaHandler;
+
     beginResetModel();
 
-    // invalidate the cached data_tempMsg
+    // invalidate the cached data_tempMsg (see ChatModel::data())
     data_row = std::numeric_limits<int>::max();
     if (data_tempMsg) {
         dc_msg_unref(data_tempMsg);
@@ -577,34 +561,44 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
     // to reverse the order.
     for (size_t i = 0; i < currentMsgCount; ++i) {
         msgVector[currentMsgCount - (i + 1)] = dc_array_get_id(msgArray, i);
-        
-        if (!m_hasUnreadMessages) {
-            dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, msgVector[currentMsgCount - (i + 1)]);
-            if (dc_msg_get_state(tempMsg) != DC_STATE_IN_SEEN && !(dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF)) {
-                m_hasUnreadMessages = true;
-                m_unreadMessageBarIndex = currentMsgCount - (i + 1);
 
-                // needed to re-create the Unread Message bar in newMessage()
-                m_firstUnreadMessageID = msgVector[currentMsgCount - (i + 1)];
-                m_hasUnreadMessages = true;
+        // go through all messages from the oldest to the newest
+        // to check for the first unread message, but only if it's
+        // not a contact request, because then the messages will only
+        // be marked seen if the request is accepted
+        if (!m_hasUnreadMessages && !m_isContactRequest) {
+            for (size_t j = 0; j < unreadMsgs.size(); ++j) {
+                if (unreadMsgs[j] == msgVector[currentMsgCount - (i + 1)]) {
+                    m_hasUnreadMessages = true;
+                    m_unreadMessageBarIndex = currentMsgCount - (i + 1);
+
+                    // needed to re-create the Unread Message bar in newMessage()
+                    m_firstUnreadMessageID = msgVector[currentMsgCount - (i + 1)];
+                    break;
+                }
             }
-            dc_msg_unref(tempMsg);
         }
     }
 
-    // Marking all unread messages as seen. For simplicity reasons,
-    // all message IDs from the first unread one to the most recent one
-    // are marked as seen.
-    if (m_hasUnreadMessages) {
-        for (int i = 0; i <= m_unreadMessageBarIndex; ++i) {
-            dc_markseen_msgs(currentMsgContext, msgVector.data() + i, 1);
+    // Marking all unread messages of this chat as seen if it's not a
+    // contact request (in the latter case, m_hasUnreadMessages should
+    // be false even though the messages have not been marked as seen,
+    // see the previous loop; still checking for m_isContactRequest
+    // for clarity and in case the above loop changes)
+    if (m_hasUnreadMessages && !m_isContactRequest) {
+        
+        for (size_t i = 0; i < unreadMsgs.size(); ++i) {
+            dc_markseen_msgs(currentMsgContext, unreadMsgs.data() + i, 1);
         }
+        emit markedAllMessagesSeen();
+    } else if (!m_isContactRequest) {
+        // to check whether there are messages that are included in the count from
+        // dc_get_fresh_msg_count, but are not in the freshMsgs vector
         emit markedAllMessagesSeen();
     }
 
-
     // insert an info message "Unread messages" above the first unread message
-    if (m_hasUnreadMessages) {
+    if (m_hasUnreadMessages && !m_isContactRequest) {
         if (m_unreadMessageBarIndex == currentMsgCount - 1) {
             msgVector.push_back(0);
         } else {
@@ -618,13 +612,9 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
 
     dc_array_unref(msgArray);
 
-    // disconnect in case configure() is not called for the first time. Otherwise, multiple
-    // connections would be created.
-    disconnect(deltaHandler, SIGNAL(newMsgReceived(int)), this, SLOT(newMessage(int)));
-
-    bool connectSuccess = connect(deltaHandler, SIGNAL(newMsgReceived(int)), this, SLOT(newMessage(int)));
+    bool connectSuccess = connect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
     if (!connectSuccess) {
-        qDebug() << "Chatmodel::configure: Could not connect signal newMsgReceived to slot newMessage";
+        qDebug() << "Chatmodel::configure: Could not connect signal msgsChanged to slot newMessage";
     }
 
     endResetModel();
@@ -700,10 +690,6 @@ void ChatModel::newMessage(int msgID)
             beginInsertRows(QModelIndex(), i, i);
             msgVector.insert(it+i, tempNewMsgID);
 
-            // TODO: check whether it's a self message?
-            dc_markseen_msgs(currentMsgContext, &tempNewMsgID, 1);
-            emit messageMarkedSeen();
-
             ++currentMsgCount;
             endInsertRows();
             if (i <  currentMsgCount - 1) {
@@ -743,6 +729,22 @@ void ChatModel::newMessage(int msgID)
     }
 
     dc_array_unref(newMsgArray);
+
+    // mark new message as seen
+    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, msgID);
+    if (dc_msg_get_state(tempMsg) != DC_STATE_IN_SEEN && !(dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF)) {
+        const uint32_t tempMsgID = msgID;
+        // only mark seen + remove the notification if the app is not 
+        // in background
+        if (QGuiApplication::applicationState() == Qt::ApplicationActive) {
+            dc_markseen_msgs(currentMsgContext, &tempMsgID, 1);
+            emit markedAllMessagesSeen();
+        } else {
+            msgsToMarkSeenLater.push_back(tempMsgID);
+        }
+    }
+    dc_msg_unref(tempMsg);
+
 
     // model is not reset because this would be problematic if the
     // current view is not at the bottom, but scrolled somewhere
@@ -1222,4 +1224,32 @@ bool ChatModel::draftHasQuote()
     }
 
     return retval;
+}
+
+
+void ChatModel::appIsActiveAgainActions() {
+    // Purpose of this method: Messages that have been received for the
+    // currently active chat while the app was in background are marked
+    // seen and their push notifications are removed. IDs of such
+    // messages are stored in msgsToMarkSeenLater.
+    if (m_chatIsBeingViewed) {
+        for (size_t i = 0; i < msgsToMarkSeenLater.size(); ++i) {
+            dc_markseen_msgs(currentMsgContext, msgsToMarkSeenLater.data() + i, 1);
+        }
+        msgsToMarkSeenLater.clear();
+        emit markedAllMessagesSeen();
+    }
+}
+
+
+void ChatModel::chatViewIsOpened()
+{
+    m_chatIsBeingViewed = true;
+}
+
+
+void ChatModel::chatViewIsClosed()
+{
+    m_chatIsBeingViewed = false;
+    disconnect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
 }

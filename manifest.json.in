@@ -7,9 +7,13 @@
         "deltatouch": {
             "apparmor": "deltatouch.apparmor",
             "desktop":  "deltatouch.desktop"
+        },
+        "push": {
+            "apparmor": "push-apparmor.json",
+            "push-helper": "push.json"
         }
     },
-    "version": "0.6.0",
+    "version": "0.6.5",
     "maintainer": "Lothar Ketterer <ketterer_src@mailbox.org>",
     "framework" : "@CLICK_FRAMEWORK@"
 }

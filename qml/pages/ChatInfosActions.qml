@@ -31,6 +31,7 @@ Dialog {
     property bool isDeviceTalk: DeltaHandler.chatIsDeviceTalk(chatIndex)
     property bool isSelfTalk: DeltaHandler.chatIsSelfTalk(chatIndex)
     property bool selfInGroup: false
+    property bool isMuted: DeltaHandler.chatIsMuted(chatIndex)
 
     Component.onCompleted: {
         if (isGroup) {
@@ -85,6 +86,20 @@ Dialog {
     }
 
     Button {
+        id: muteButton
+        text: isMuted ? i18n.tr("Unmute") : i18n.tr("Mute Notifications")
+        onClicked: {
+            if (isMuted) {
+                DeltaHandler.chatSetMuteDuration(chatIndex, 0)
+                PopupUtils.close(dialog)
+            } else {
+                PopupUtils.open(popoverComponentMuteDuration, muteButton)
+            }
+        }
+        visible: !isDeviceTalk && !isSelfTalk
+    }
+
+    Button {
         id: showEncryptionInfoButton
         text: i18n.tr("Show Encryption Info")
         onClicked: {
@@ -105,4 +120,102 @@ Dialog {
             PopupUtils.close(dialog)
         }
     }
+
+    Component {
+        id: popoverComponentMuteDuration
+        Popover {
+            id: popoverMuteDuration
+            Column {
+                id: containerLayoutMuteDuration
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+                ListItem {
+                    height: layout81.height
+                    color: root.darkmode ? theme.palette.normal.background : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout81
+                        title.text: i18n.tr("Off")
+                    }
+                    onClicked: {
+                        DeltaHandler.chatSetMuteDuration(chatIndex, 0)
+                        PopupUtils.close(popoverMuteDuration)
+                        PopupUtils.close(dialog)
+                    }
+                }
+
+                ListItem {
+                    height: layout82.height
+                    color: root.darkmode ? theme.palette.normal.background : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout82
+                        title.text: i18n.tr("Mute for 1 hour")
+                    }
+                    onClicked: {
+                        DeltaHandler.chatSetMuteDuration(chatIndex, 3600)
+                        PopupUtils.close(popoverMuteDuration)
+                        PopupUtils.close(dialog)
+                    }
+                }
+
+                ListItem {
+                    height: layout83.height
+                    color: root.darkmode ? theme.palette.normal.background : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout83
+                        title.text: i18n.tr("Mute for 2 hours")
+                    }
+                    onClicked: {
+                        DeltaHandler.chatSetMuteDuration(chatIndex, 7200)
+                        PopupUtils.close(popoverMuteDuration)
+                        PopupUtils.close(dialog)
+                    }
+                }
+
+                ListItem {
+                    height: layout84.height
+                    color: root.darkmode ? theme.palette.normal.background : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout84
+                        title.text: i18n.tr("Mute for 1 day")
+                    }
+                    onClicked: {
+                        DeltaHandler.chatSetMuteDuration(chatIndex, 86400)
+                        PopupUtils.close(popoverMuteDuration)
+                        PopupUtils.close(dialog)
+                    }
+                }
+
+                ListItem {
+                    height: layout85.height
+                    color: root.darkmode ? theme.palette.normal.background : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout85
+                        title.text: i18n.tr("Mute for 7 days")
+                    }
+                    onClicked: {
+                        DeltaHandler.chatSetMuteDuration(chatIndex, 604800)
+                        PopupUtils.close(popoverMuteDuration)
+                        PopupUtils.close(dialog)
+                    }
+                }
+
+                ListItem {
+                    height: layout86.height
+                    color: root.darkmode ? theme.palette.normal.background : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout86
+                        title.text: i18n.tr("Mute forever")
+                    }
+                    onClicked: {
+                        DeltaHandler.chatSetMuteDuration(chatIndex, -1)
+                        PopupUtils.close(popoverMuteDuration)
+                        PopupUtils.close(dialog)
+                    }
+                }
+            } // end Column id: containerLayoutMuteDuration
+        } // end Popover id: popoverMuteDuration
+    } // end Component id: popoverComponentMuteDuration
 }

@@ -35,8 +35,13 @@ MainView {
     automaticOrientation: true
     anchorToKeyboard: true
 
+    signal appStateNowActive()
+
+    // see periodicTimer
+    signal periodicTimerSignal()
+
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '0.6.0'
+    property string version: '0.6.5'
 
     // Color scheme
     //
@@ -83,10 +88,20 @@ MainView {
 
     property int voiceMessageQuality: DeltaHandler.BalancedRecordingQuality
 
+    property bool sendPushNotifications: false
+    property bool detailedPushNotifications: true
+    property bool aggregatePushNotifications: false
+
+    // to protect against clicks on multiple chat lines
+    property bool chatOpenAlreadyClicked: false
+
     Settings {
         id: settings
         property alias synca: root.syncAll
         property alias voiceMessQual: root.voiceMessageQuality
+        property alias sendPushNotif: root.sendPushNotifications
+        property alias detailedPushNotif: root.detailedPushNotifications
+        property alias aggregatePushNotif: root.aggregatePushNotifications
     }
 
     width: units.gu(45)
@@ -94,7 +109,8 @@ MainView {
 
     function startStopIO() {
         if (DeltaHandler.networkingIsStarted) { // network is up, check if it needs to be stopped
-            if (Qt.application.state != Qt.ApplicationActive || !DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode) || !root.syncAll) {
+            //if (Qt.application.state != Qt.ApplicationActive || !DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode) || !root.syncAll) {
+            if (!DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode) || !root.syncAll) {
                 DeltaHandler.stop_io();
                 console.log('startStopIO(): network is currently up, calling stop_io()')
             }
@@ -103,7 +119,8 @@ MainView {
             }
         }
         else { // network is down, check if it can be brought up
-            if (Qt.application.state == Qt.ApplicationActive && DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode) && root.syncAll) {
+            //if (Qt.application.state == Qt.ApplicationActive && DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode) && root.syncAll) {
+            if (DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode) && root.syncAll) {
                 DeltaHandler.start_io()
                 console.log('startStopIO(): network is currently down, calling start_io()')
             }
@@ -113,7 +130,6 @@ MainView {
         }
     }
 
-
     Connections {
         target: Connectivity
         onOnlineChanged: {
@@ -122,6 +138,13 @@ MainView {
         }
     }
     
+    Connections {
+        target: DeltaHandler
+        onChatViewClosed: {
+            root.chatOpenAlreadyClicked = false;
+        }
+    }
+
     Connections {
         target: DeltaHandler
         onHasConfiguredAccountChanged: {
@@ -146,14 +169,21 @@ MainView {
             // see Qt::ApplicationState
             if (Qt.application.state == Qt.ApplicationActive) {
                 currState = "ApplicationActive"
+                appStateNowActive()
+                periodicTimerSignal()
+                periodicTimer.start()
             } else if (Qt.application.state == Qt.ApplicationSuspended) {
                 currState = "ApplicationSuspended"
+                periodicTimer.stop()
             } else if (Qt.application.state == Qt.ApplicationHidden) {
                 currState = "ApplicationHidden"
+                periodicTimer.stop()
             } else if (Qt.application.state == Qt.ApplicationInactive) {
                 currState = "ApplicationInactive"
+                periodicTimer.stop()
             } else {
                 currState = "Unknown state " + Qt.application.state
+                periodicTimer.stop()
             }
             console.log('Qt.application signal stateChanged, state is now: ' + currState)
         }
@@ -170,7 +200,6 @@ MainView {
         target: DeltaHandler.contactsmodel
         onChatCreationSuccess: {
             bottomEdge.collapse()
-            console.log('DeltaHandler.contactsmodel signal chatCreationSuccess received')
         }
     }
 
@@ -178,7 +207,6 @@ MainView {
         target: DeltaHandler
         onOpenChatViewRequest: {
             layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'))
-            console.log('DeltaHandler signal openChatViewRequest received')
         }
     }
 
@@ -508,8 +536,11 @@ MainView {
                     height: chatlistLayout.height //+ (divider.visible ? divider.height : 0)
                     divider.visible: true
                     onClicked: {
-                        DeltaHandler.selectChat(index)
-                        DeltaHandler.openChat()
+                        if (!root.chatOpenAlreadyClicked) {
+                            root.chatOpenAlreadyClicked = true
+                            DeltaHandler.selectChat(index)
+                            DeltaHandler.openChat()
+                        }
                     }
 
                     leadingActions: model.chatIsArchiveLink ? undefined : leadingChatAction
@@ -555,6 +586,20 @@ MainView {
                             width: (((pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) > contactRequestLabel.contentWidth ? ((pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) : contactRequestLabel.contentWidth) + units.gu(1)
                             height: units.gu(6)
                             color: chatListItem.color 
+
+                            Icon {
+                                id: mutedIcon
+                                height: timestamp.contentHeight
+                                anchors {
+                                    right: pinnedIcon.visible ? pinnedIcon.left : timestamp.left
+                                    rightMargin: units.gu(0.5)
+                                    top: dateAndMsgCount.top
+                                }
+                                name: "audio-speakers-muted-symbolic"
+                                color: root.darkmode ? "white" : "black"
+                                visible: model.chatIsMuted
+
+                            }
 
                             Icon {
                                 id: pinnedIcon
@@ -693,6 +738,18 @@ MainView {
         triggeredOnStart: false
         onTriggered: showBottomEdgeHint = false
     }
+
+    // Update the list of chats every 5 minutes. Reason is
+    // for example, to capture the end of a mute duration (there's
+    // no signal/event when a mute duration expires, so it's
+    // necessary to, e.g.,  periodically check)
+    Timer {
+        id: periodicTimer
+        interval: 300000
+        repeat: true
+        triggeredOnStart: false
+        onTriggered: periodicTimerSignal()
+    }
     
     Component.onCompleted: {
         darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
@@ -702,6 +759,15 @@ MainView {
 
         startStopIO()
         hintTimer.start()
+
+        root.appStateNowActive.connect(DeltaHandler.chatmodel.appIsActiveAgainActions)
+
+        DeltaHandler.setEnablePushNotifications(sendPushNotifications)
+        DeltaHandler.setDetailedPushNotifications(detailedPushNotifications)
+        DeltaHandler.setAggregatePushNotifications(aggregatePushNotifications)
+
+        root.periodicTimerSignal.connect(DeltaHandler.periodicTimerActions)
+        periodicTimer.start()
     }
 
     Connections {

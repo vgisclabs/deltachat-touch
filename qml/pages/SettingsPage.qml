@@ -446,6 +446,109 @@ Page {
             }
 
             Rectangle {
+                id: prefNotifsSectionHeader
+                height: prefNotifsSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefNotifsSectionHeaderLabel
+                    anchors {
+                        top: prefNotifsSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefNotifsSectionHeader.left
+                        leftMargin: units.gu(2)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Notifications")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
+
+            ListItem {
+                height: sysNotifsEnabledLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: sysNotifsEnabledLayout
+                    title.text: i18n.tr("Enable system notifications for new messages")
+
+                    Switch {
+                        id: sysNotifsEnabledSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.sendPushNotifications
+                        onCheckedChanged: {
+                            if (sysNotifsEnabledSwitch.checked != root.sendPushNotifications) {
+                            // need to check whether it is really needed to change the setting
+                            // because checkedChanged is be emitted when setting the switch at
+                            // initialization
+                                root.sendPushNotifications = sysNotifsEnabledSwitch.checked
+                                DeltaHandler.setEnablePushNotifications(root.sendPushNotifications)
+                                if (root.sendPushNotifications) {
+                                    PopupUtils.open(
+                                        Qt.resolvedUrl('InfoPopup.qml'),
+                                        null,
+                                        { text: i18n.tr("To receive system notifications, background suspension must be disabled for the app and the app must be running.") }
+                                    )
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                height: sysNotifsDetailedLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: sysNotifsDetailedLayout
+                    title.text: i18n.tr("Show message content in notification")
+                    summary.text: i18n.tr("Shows sender and first words of the message in notifications")
+                    summary.wrapMode: Text.WordWrap
+                    enabled: root.sendPushNotifications
+
+                    Switch {
+                        id: sysNotifsDetailedSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.detailedPushNotifications
+                        onCheckedChanged: {
+                            if (sysNotifsDetailedSwitch.checked != root.detailedPushNotifications) {
+                                root.detailedPushNotifications = sysNotifsDetailedSwitch.checked
+                                DeltaHandler.setDetailedPushNotifications(root.detailedPushNotifications)
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                height: sysNotifsAggregatedLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: sysNotifsAggregatedLayout
+                    title.text: i18n.tr("Aggregate system notifications")
+                    summary.text: i18n.tr("Only the most recent notification will persist")
+                    summary.wrapMode: Text.WordWrap
+                    enabled: root.sendPushNotifications
+
+                    Switch {
+                        id: sysNotifsAggregatedSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.aggregatePushNotifications
+                        onCheckedChanged: {
+                            if (sysNotifsAggregatedSwitch.checked != root.AggregatedPushNotifications) {
+                                root.aggregatePushNotifications = sysNotifsAggregatedSwitch.checked
+                                DeltaHandler.setAggregatePushNotifications(root.aggregatePushNotifications)
+                            }
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
                 id: prefPrivacySectionHeader
                 height: prefPrivacySectionHeaderLabel.contentHeight + units.gu(3)
                 width: parent.width

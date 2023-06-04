@@ -47,6 +47,7 @@ Page {
 
     Component.onCompleted: {
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatViewIsClosed)
+        chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatmodel.chatViewIsClosed)
         if (DeltaHandler.chatmodel.hasDraft) {
             messageEnterField.text = DeltaHandler.chatmodel.getDraft()
 
@@ -511,25 +512,26 @@ Page {
                         verticalCenter: parent.verticalCenter
                         horizontalCenter: parent.horizontalCenter
                     }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            // without removing the focus from the TextArea,
-                            // the text passed to DeltaHandler.sendMessage
-                            // may be incomplete
-                            messageEnterField.focus = false
-                            DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
-                            // clear() does not work as we are using the TextArea
-                            // from Ubuntu.Components, not the one from
-                            // QtQuickControls
-                            //messageEnterField.clear()
-                            messageEnterField.text = ''
-                        }
-
-                        enabled: messageEnterField.text != ""
-                    }
                 } // end Icon id: sendIcon
             } // end UbuntuShape id: sendIconShape
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    // without removing the focus from the TextArea,
+                    // the text passed to DeltaHandler.sendMessage
+                    // may be incomplete
+                    messageEnterField.focus = false
+                    DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
+                    // clear() does not work as we are using the TextArea
+                    // from Ubuntu.Components, not the one from
+                    // QtQuickControls
+                    //messageEnterField.clear()
+                    messageEnterField.text = ''
+                }
+
+                enabled: messageEnterField.text != ""
+            }
         } // end Rectangle id: sendIconCage
 
         Rectangle {

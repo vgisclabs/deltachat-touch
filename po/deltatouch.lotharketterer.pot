@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 16:45+0000\n"
+"POT-Creation-Date: 2023-06-04 15:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,36 +17,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:38 deltatouch.desktop.in.h:1
+#: ../plugins/DeltaHandler/contactsmodel.cpp:81
+msgid "New Contact"
+msgstr ""
+
+#: ../plugins/DeltaHandler/contactsmodel.cpp:96
+msgid "Type e-mail address above"
+msgstr ""
+
+#: ../plugins/DeltaHandler/deltahandler.cpp:1051
+msgid "New message"
+msgstr ""
+
+#: ../qml/Main.qml:43 deltatouch.desktop.in.h:1
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:229 ../qml/Main.qml:236
+#: ../qml/Main.qml:258 ../qml/Main.qml:265
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:229 ../qml/Main.qml:236 ../qml/Main.qml:279
+#: ../qml/Main.qml:258 ../qml/Main.qml:265 ../qml/Main.qml:308
 #: ../qml/pages/AccountConfig.qml:120
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:230 ../qml/Main.qml:237
+#: ../qml/Main.qml:259 ../qml/Main.qml:266
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:411
+#: ../qml/Main.qml:440
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:603
+#: ../qml/Main.qml:649
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:678 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:724 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:710 ../qml/pages/QrShowScan.qml:337
+#: ../qml/Main.qml:777 ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr ""
 
@@ -196,20 +208,20 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:45
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:680
-#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:678
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:781
 msgid "No, chats only"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:694
-#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:692
+#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:795
 msgid "For accepted contacts"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:51
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:708
 #: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
-#: ../qml/pages/SettingsPage.qml:706 ../qml/pages/SettingsPage.qml:734
+#: ../qml/pages/SettingsPage.qml:809 ../qml/pages/SettingsPage.qml:837
 msgid "All"
 msgstr ""
 
@@ -251,7 +263,7 @@ msgid "Show Classic E-Mails"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:331
-#: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:643
+#: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:746
 msgid "Advanced"
 msgstr ""
 
@@ -298,6 +310,7 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:400
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:479
+#: ../qml/pages/ChatInfosActions.qml:140
 msgid "Off"
 msgstr ""
 
@@ -443,7 +456,7 @@ msgstr ""
 msgid "Block this contact? You will no longer receive messages from them."
 msgstr ""
 
-#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:50
+#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:51
 msgid "Block Contact"
 msgstr ""
 
@@ -455,37 +468,69 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:110
+#: ../qml/pages/ChatInfosActions.qml:64 ../qml/pages/ChatView.qml:111
 #: ../qml/pages/CreateOrEditGroup.qml:36
 msgid "Edit Group"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:75 ../qml/pages/ConfirmLeaveGroup.qml:36
+#: ../qml/pages/ChatInfosActions.qml:76 ../qml/pages/ConfirmLeaveGroup.qml:36
 msgid "Leave Group"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:89
+#: ../qml/pages/ChatInfosActions.qml:90
+msgid "Mute Notifications"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActions.qml:90
+msgid "Unmute"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActions.qml:104
 msgid "Show Encryption Info"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1032
+#: ../qml/pages/ChatInfosActions.qml:154
+msgid "Mute for 1 minute"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActions.qml:168
+msgid "Mute for 1 hour"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActions.qml:182
+msgid "Mute for 2 hours"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActions.qml:196
+msgid "Mute for 1 day"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActions.qml:210
+msgid "Mute for 7 days"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActions.qml:224
+msgid "Mute forever"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1034
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1048 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1050 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1063
+#: ../qml/pages/ChatView.qml:1065
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1193
+#: ../qml/pages/ChatView.qml:1195
 msgid "Click to leave without sending"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1226
+#: ../qml/pages/ChatView.qml:1228
 msgid "Click to delete"
 msgstr ""
 
@@ -516,7 +561,7 @@ msgid "Are you sure you want to delete \"%1\"?"
 msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
-#: ../qml/pages/SettingsPage.qml:526
+#: ../qml/pages/SettingsPage.qml:629
 msgid "Delete Messages from Device"
 msgstr ""
 
@@ -538,7 +583,7 @@ msgid "I understand, delete all these messages"
 msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
-#: ../qml/pages/SettingsPage.qml:554
+#: ../qml/pages/SettingsPage.qml:657
 msgid "Delete Messages from Server"
 msgstr ""
 
@@ -861,51 +906,51 @@ msgid "Log into \"%1\"?"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:84 ../qml/pages/SettingsPage.qml:97
-#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:748
-#: ../qml/pages/SettingsPage.qml:790 ../qml/pages/SettingsPage.qml:804
+#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:851
+#: ../qml/pages/SettingsPage.qml:893 ../qml/pages/SettingsPage.qml:907
 msgid "Up to %1"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:762
+#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:865
 msgid "Up to %1, most worse quality images"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:776
+#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:879
 msgid "Up to %1, most balanced quality images"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:113 ../qml/pages/SettingsPage.qml:145
-#: ../qml/pages/SettingsPage.qml:833 ../qml/pages/SettingsPage.qml:967
+#: ../qml/pages/SettingsPage.qml:936 ../qml/pages/SettingsPage.qml:1070
 msgid "Never"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
-#: ../qml/pages/SettingsPage.qml:847 ../qml/pages/SettingsPage.qml:853
-#: ../qml/pages/SettingsPage.qml:1044 ../qml/pages/SettingsPage.qml:1050
+#: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
+#: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
 msgid "After 1 hour"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
-#: ../qml/pages/SettingsPage.qml:868 ../qml/pages/SettingsPage.qml:874
-#: ../qml/pages/SettingsPage.qml:1065 ../qml/pages/SettingsPage.qml:1071
+#: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
+#: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
 msgid "After 1 day"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
-#: ../qml/pages/SettingsPage.qml:889 ../qml/pages/SettingsPage.qml:895
-#: ../qml/pages/SettingsPage.qml:1086 ../qml/pages/SettingsPage.qml:1092
+#: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
+#: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
 msgid "After 1 week"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
-#: ../qml/pages/SettingsPage.qml:910 ../qml/pages/SettingsPage.qml:916
-#: ../qml/pages/SettingsPage.qml:1107 ../qml/pages/SettingsPage.qml:1113
+#: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
+#: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
 msgid "After 4 weeks"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
-#: ../qml/pages/SettingsPage.qml:931 ../qml/pages/SettingsPage.qml:937
-#: ../qml/pages/SettingsPage.qml:1128 ../qml/pages/SettingsPage.qml:1134
+#: ../qml/pages/SettingsPage.qml:1034 ../qml/pages/SettingsPage.qml:1040
+#: ../qml/pages/SettingsPage.qml:1231 ../qml/pages/SettingsPage.qml:1237
 msgid "After 1 year"
 msgstr ""
 
@@ -913,18 +958,18 @@ msgstr ""
 msgid "?"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:981
-#: ../qml/pages/SettingsPage.qml:987
+#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1084
+#: ../qml/pages/SettingsPage.qml:1090
 msgid "At once"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1002
-#: ../qml/pages/SettingsPage.qml:1008
+#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
+#: ../qml/pages/SettingsPage.qml:1111
 msgid "After 30 seconds"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1023
-#: ../qml/pages/SettingsPage.qml:1029
+#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
+#: ../qml/pages/SettingsPage.qml:1132
 msgid "After 1 minute"
 msgstr ""
 
@@ -949,18 +994,48 @@ msgid "Auto-Download Messages"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:462
-msgid "Privacy"
+msgid "Notifications"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:474
+msgid "Enable system notifications for new messages"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:491
+msgid ""
+"To receive system notifications, background suspension must be disabled for "
+"the app and the app must be running."
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:507
+msgid "Show message content in notification"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:508
+msgid "Shows sender and first words of the message in notifications"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:532
+msgid "Aggregate system notifications"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:533
+msgid "Only the most recent notification will persist"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:565
+msgid "Privacy"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:577
 msgid "Read Receipts"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:512
+#: ../qml/pages/SettingsPage.qml:615
 msgid "Delete Old Messages"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:602 ../qml/pages/SettingsPage.qml:1159
+#: ../qml/pages/SettingsPage.qml:705 ../qml/pages/SettingsPage.qml:1262
 msgid "Export Backup"
 msgstr ""
 

@@ -23,6 +23,7 @@
 #include <QtGui>
 #include <QAudioRecorder>
 #include <string>
+#include <vector>
 #include "chatmodel.h"
 #include "accountsmodel.h"
 #include "blockedcontactsmodel.h"
@@ -74,6 +75,10 @@ public:
     Q_INVOKABLE void unarchiveChat(int myindex);
 
     Q_INVOKABLE void pinUnpinChat(int myindex);
+
+    Q_INVOKABLE bool chatIsMuted(int myindex);
+
+    Q_INVOKABLE void chatSetMuteDuration(int myindex, int64_t secondsToMute);
 
     Q_INVOKABLE void closeArchive();
 
@@ -166,6 +171,9 @@ public:
     Q_INVOKABLE QString prepareExportKeys();
     Q_INVOKABLE void startExportKeys(QString dirToExportTo);
 
+    Q_INVOKABLE void createNotification(QString summary, QString body, QString tag, QString icon);
+    Q_INVOKABLE void removeNotification(QString tag = "");
+
     /* ========================================================
      * =================== Profile editing ====================
      * ======================================================== */
@@ -228,6 +236,10 @@ public:
     Q_INVOKABLE void sendAudioRecording(QString filepath);
     /* ============ End audio message recording =============== */
 
+    Q_INVOKABLE void setEnablePushNotifications(bool enabled);
+    Q_INVOKABLE void setDetailedPushNotifications(bool detailed);
+    Q_INVOKABLE void setAggregatePushNotifications(bool aggregated);
+
     void unselectAccount(uint32_t accID);
 
     // QAbstractListModel interface
@@ -277,7 +289,7 @@ signals:
     void networkingIsAllowedChanged();
     void networkingIsStartedChanged();
     void accountChanged();
-    void newMsgReceived(int msgID);
+    void msgsChanged(int msgID);
     void messageRead(int msgID);
     void messageDelivered(int msgID);
     void messageFailed(int msgID);
@@ -288,9 +300,10 @@ signals:
     void updatedAccountConfig(uint32_t);
     void chatIsContactRequestChanged();
     void openChatViewRequest();
+    void chatViewClosed();
     void newTempProfilePic(QString);
     void chatBlockContactDone();
-    
+
     /* ========================================================
      * ============== New Group / Editing Group ===============
      * ======================================================== */
@@ -316,11 +329,16 @@ public slots:
 
     void prepareContactsmodelForGroupMemberAddition();
 
+    // Main.qml emits a signal every 5 minutes that is connected
+    // to this slot
+    void periodicTimerActions();
+
 protected:
     QHash<int, QByteArray> roleNames() const;
 
 private slots:
-    void newMessage(uint32_t accID, int chatID, int msgID);
+    void messagesChanged(uint32_t accID, int chatID, int msgID);
+    void incomingMessage(uint32_t accID, int chatID, int msgID);
     void messageReadByRecipient(uint32_t accID, int chatID, int msgID);
     void messageDeliveredToServer(uint32_t accID, int chatID, int msgID);
     void messageFailedSlot(uint32_t accID, int chatID, int msgID);
@@ -352,11 +370,13 @@ private:
     bool m_configuringNewAccount;
     bool m_showArchivedChats;
     QString m_tempExportPath;
-    //QSettings* settings;
+    QSettings* settings;
     QHash<QString, QString> m_changedProfileValues;
 
-    bool isExistingChat(uint32_t chatID);
-    void setCoreTranslations();
+    // contains all unseen message IDs of currentContext and their
+    // corresponding chat IDs
+    // TODO: better type than vector?
+    std::vector<std::array<uint32_t, 2>> freshMsgs;
 
     // for creation of new group or editing of group
     uint32_t m_tempGroupChatID;
@@ -368,8 +388,21 @@ private:
     QString m_qrTempText;
     QString m_qrTempLotTextOne;
 
+    // Tag of the most recent notification
+    QString m_lastTag;
+    bool m_enablePushNotifications;
+    bool m_detailedPushNotifications;
+    bool m_aggregatePushNotifications;
+    // if true, the previous push notification is removed when creating a new one
+    bool m_aggregateNotifications;
+
     // for recording of audio messages
     QAudioRecorder* m_audioRecorder;
+
+    bool isExistingChat(uint32_t chatID);
+    void setCoreTranslations();
+    void contextSetupTasks();
+    void sendNotification(uint32_t accID, int chatID, int msgID);
 };
 
 #endif // DELTAHANDLER_H

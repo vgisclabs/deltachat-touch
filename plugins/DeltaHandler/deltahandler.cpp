@@ -20,14 +20,30 @@
 #include <fstream>
 #include "deltahandler.h"
 //#include <unistd.h> // for sleep
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusMessage>
+
+namespace C {
+#include <libintl.h>
+}
+
 
 DeltaHandler::DeltaHandler(QObject* parent)
     : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_audioRecorder {nullptr}
 {
     qRegisterMetaType<uint32_t>("uint32_t");
+    qRegisterMetaType<int64_t>("int64_t");
     //qRegisterMetaType<size_t>("size_t");
 
     {
+        // to be able to access the files under assets
+        Q_INIT_RESOURCE(assets);
+
+        // make the logo accessible in the cache (needed for
+        // notifications)
+        QFile logoFile(":assets/logo.svg");
+        logoFile.copy(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logo.svg");
+
         // prepare directory for the user to put keys to import into
         QString keysToImportDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
         keysToImportDir.append("/keys_to_import");
@@ -50,7 +66,12 @@ DeltaHandler::DeltaHandler(QObject* parent)
     QString configdir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     qDebug() << "DeltaHandler::DeltaHandler(): Config directory set to: " << configdir;
 
-    //settings = new QSettings("deltatouch.lotharketterer", "deltatouch.lotharketterer");
+    settings = new QSettings("deltatouch.lotharketterer", "deltatouch.lotharketterer");
+
+    // stored via QSettings, otherwise removing the previous push notification
+    // when receiving a new one would not work as m_lastTag would
+    // not be preserved across a restart
+    m_lastTag = settings->value("settingsLastTag").toByteArray();
 
     if (!QFile::exists(configdir)) {
         qDebug() << "DeltaHandler::DeltaHandler(): Config directory not existing, creating it now";
@@ -111,7 +132,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     allAccounts = dc_accounts_new(NULL, qPrintable(configdir));
 
     if (!allAccounts) {
-        qDebug() << "DeltaHandler::DeltaHander: Fatal error trying to create account manager.";
+        qDebug() << "DeltaHandler::DeltaHandler: Fatal error trying to create account manager.";
         exit(1);
     }
 
@@ -119,21 +140,21 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     size_t noOfAccounts = m_accountsmodel->rowCount(QModelIndex());
 
-    qDebug() << "DeltaHander::DeltaHander: Found " << noOfAccounts << " account(s)";
+    qDebug() << "DeltaHandler::DeltaHandler: Found " << noOfAccounts << " account(s)";
 
 
     eventThread = new EmitterThread();
     eventThread->setAccounts(allAccounts);
 
-    bool connectSuccess = connect(eventThread, SIGNAL(newMsg(uint32_t, int, int)), this, SLOT(newMessage(uint32_t, int, int)));
+    bool connectSuccess = connect(eventThread, SIGNAL(newMsg(uint32_t, int, int)), this, SLOT(incomingMessage(uint32_t, int, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal newMsg to slot newMessage";
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal newMsg to slot incomingMessage";
         exit(1);
     }
 
-    connectSuccess = connect(eventThread, SIGNAL(msgsChanged(uint32_t, int, int)), this, SLOT(newMessage(uint32_t, int, int)));
+    connectSuccess = connect(eventThread, SIGNAL(msgsChanged(uint32_t, int, int)), this, SLOT(messagesChanged(uint32_t, int, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgsChanged to slot newMessage";
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgsChanged to slot messagesChanged";
         exit(1);
     }
 
@@ -155,13 +176,13 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
-    connectSuccess = connect(m_chatmodel, SIGNAL(messageMarkedSeen()), this, SLOT(updateCurrentChatMessageCount()));
+    connectSuccess = connect(m_chatmodel, SIGNAL(markedAllMessagesSeen()), this, SLOT(resetCurrentChatMessageCount()));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal messageMarkedSeen to slot updateCurrentChatMessageCount";
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal markedAllMessagesSeen to slot resetCurrentChatMessageCount";
         exit(1);
     }
 
-    connectSuccess = connect(m_chatmodel, SIGNAL(markedAllMessagesSeen()), this, SLOT(resetCurrentChatMessageCount()));
+    connectSuccess = connect(this, SIGNAL(openChatViewRequest()), m_chatmodel, SLOT(chatViewIsOpened()));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal markedAllMessagesSeen to slot resetCurrentChatMessageCount";
         exit(1);
@@ -212,9 +233,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     }
     else {
         currentContext = dc_accounts_get_selected_account(allAccounts);
-        // TODO: check whether m_contactsmodel is updated each time currentContext changes
-        // probably set currentContext via a separate function?
-        m_contactsmodel->updateContext(currentContext);
+        contextSetupTasks();
 
         setCoreTranslations();
 
@@ -241,7 +260,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
                     dc_context_unref(currentContext);
                     currentContext = tempContext;
                     tempContext = nullptr;
-                    m_contactsmodel->updateContext(currentContext);
+                    contextSetupTasks();
 
                     qDebug() << "DeltaHandler::DeltaHandler: ...found one!";
                     break;
@@ -514,7 +533,7 @@ void DeltaHandler::prepareBlockedContactsModel()
     }
 
     if (!currentContext) {
-        qDebug() << "DeltaHander::blockedcontactsmodel(): FATAL ERROR: currentContext is not set, exiting.";
+        qDebug() << "DeltaHandler::blockedcontactsmodel(): FATAL ERROR: currentContext is not set, exiting.";
         exit(1);
     }
     
@@ -668,7 +687,15 @@ void DeltaHandler::openChat()
         bool contactRequest = dc_chat_is_contact_request(tempChat);
         dc_chat_unref(tempChat);
 
-        m_chatmodel->configure(currentChatID, currentContext, this, contactRequest);
+        std::vector<uint32_t> freshMessagesOfChat;
+
+        for (size_t i = 0; i < freshMsgs.size(); ++i) {
+            if (freshMsgs[i][1] == currentChatID) {
+                freshMessagesOfChat.push_back(freshMsgs[i][0]);
+            }
+        }
+
+        m_chatmodel->configure(currentChatID, currentContext, this, freshMessagesOfChat, contactRequest);
         chatmodelIsConfigured = true;
 
         emit openChatViewRequest();
@@ -682,7 +709,7 @@ void DeltaHandler::archiveChat(int myindex)
     // - call beginResetModel() / endResetModel
     // - unref the chatlist and get it again
     // because changing the visibility will trigger
-    // DC_EVENT_MSGS_CHANGED, causing the newMessage() method to reset
+    // DC_EVENT_MSGS_CHANGED, causing the messagesChanged() slot to reset
     // the model and the chatlist
     dc_set_chat_visibility(currentContext, dc_chatlist_get_chat_id(currentChatlist, myindex), DC_CHAT_VISIBILITY_ARCHIVED);
 }
@@ -708,6 +735,44 @@ void DeltaHandler::pinUnpinChat(int myindex)
     }
 
     dc_chat_unref(tempChat);
+}
+
+
+bool DeltaHandler::chatIsMuted(int myindex)
+{
+    uint32_t tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, tempChatID);
+
+    // dc_chat_is_muted returns 1 if muted, 0 if not
+    bool retbool = dc_chat_is_muted(tempChat) == 1;
+
+    dc_chat_unref(tempChat);
+
+    return retbool;
+}
+
+
+void DeltaHandler::chatSetMuteDuration(int myindex, int64_t secondsToMute)
+{
+    uint32_t tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    
+    int success = dc_set_chat_mute_duration(currentContext, tempChatID, secondsToMute);
+
+    if (0 == success) {
+        qDebug() << "DeltaHandler::chatSetMuteDuration(): ERROR:Setting the mute duration failed";
+    }
+
+    beginResetModel();
+
+    dc_chatlist_unref(currentChatlist);
+
+    if (m_showArchivedChats) {
+        currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+    } else {
+        currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+    }
+
+    endResetModel();
 }
 
 
@@ -766,9 +831,20 @@ void DeltaHandler::selectAccount(int myindex)
         dc_context_unref(currentContext);
     }
 
+    // guard context change by stopping io to avoid
+    // new messages coming in while creating the unread message
+    // vector
+    bool restartNetwork = m_networkingIsStarted;
+    if (m_networkingIsStarted) {
+        stop_io();
+    }
     currentContext = tempContext;
     tempContext = nullptr;
-    m_contactsmodel->updateContext(currentContext);
+    contextSetupTasks();
+
+    if (restartNetwork) {
+        start_io();
+    }
 
     currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
 
@@ -782,10 +858,12 @@ void DeltaHandler::selectAccount(int myindex)
 }
 
 
-void DeltaHandler::newMessage(uint32_t accID, int chatID, int msgID)
+void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
 {
     uint32_t currentAccID = dc_get_id(currentContext);
-
+   
+    // needs to be done in any case, whether a notification is 
+    // created or not
     if (currentAccID == accID) {
         // need to reset the model because
         // - a chat may have been deleted (chatID would be 0 then)
@@ -794,7 +872,7 @@ void DeltaHandler::newMessage(uint32_t accID, int chatID, int msgID)
         //   the new message counter and the message preview may be
         //   affected.
         beginResetModel();
-        
+
         if (currentChatlist) {
             dc_chatlist_unref(currentChatlist);
         }
@@ -818,12 +896,185 @@ void DeltaHandler::newMessage(uint32_t accID, int chatID, int msgID)
         // and msgID will be 0).
         // TODO: Create new signal with more suitable name?
         if (chatmodelIsConfigured && (currentChatID == chatID || 0 == chatID)) {
-            emit newMsgReceived(msgID);
+            emit msgsChanged(msgID);
         }
 
     } else { // message(s) for context other than the current one
-        qDebug() << "DeltaHandler::newMessage(): signal newMsg received with accID: " << accID << ", chatID: " << chatID << "msgID: " << msgID;
+        qDebug() << "DeltaHandler::messagesChanged(): signal newMsg received with accID: " << accID << ", chatID: " << chatID << "msgID: " << msgID;
     }
+}
+
+
+void DeltaHandler::incomingMessage(uint32_t accID, int chatID, int msgID)
+{
+    uint32_t currentAccID = dc_get_id(currentContext);
+   
+    // needs to be done in any case, whether a notification is 
+    // created or not
+    if (currentAccID == accID) {
+        // insert the new message into the vector containing all
+        // unread messages of this context
+        if (0 != chatID && 0 != msgID) {
+            std::array<uint32_t, 2> tempStdArr {msgID, chatID};
+            freshMsgs.push_back(tempStdArr);
+        }
+    }
+
+    sendNotification(accID, chatID, msgID);
+
+    messagesChanged(accID, chatID, msgID);
+}
+
+
+void DeltaHandler::sendNotification(uint32_t accID, int chatID, int msgID)
+{
+    if (!m_enablePushNotifications) {
+        // disabled in the settings
+        return;
+    }
+
+    uint32_t currentAccID = dc_get_id(currentContext);
+
+    if (accID == currentAccID && chatID == currentChatID && chatmodelIsConfigured && QGuiApplication::applicationState() == Qt::ApplicationActive) {
+        // don't send a notification if the user is looking at the chat
+        return;
+    }
+
+    if (accID == currentAccID && !chatmodelIsConfigured && QGuiApplication::applicationState() == Qt::ApplicationActive) {
+        // don't send a notification if the user is looking at the chatlist of
+        // the account for which a message was received
+        return;
+    }
+
+    dc_context_t* tempContext = dc_accounts_get_account(allAccounts, accID);
+
+    if (!tempContext) {
+        qDebug() << "DeltaHandler::sendNotification(): ERROR: tempContect is NULL";
+        return;
+    }
+
+    dc_chat_t* tempChat = dc_get_chat(tempContext, chatID);
+
+    if (!tempChat) {
+        qDebug() << "DeltaHandler::sendNotification(): ERROR: tempChat is NULL";
+        dc_context_unref(tempContext);
+        return;
+    }
+
+    if (dc_chat_is_muted(tempChat)) {
+        // don't create notification if the chat is muted
+        dc_chat_unref(tempChat);
+        dc_context_unref(tempContext);
+        return;
+    }
+
+    QString accNumberString;
+    accNumberString.setNum(accID);
+
+    QString chatNumberString;
+    chatNumberString.setNum(chatID);
+
+    QString msgNumberString;
+    msgNumberString.setNum(msgID);
+
+    // the email address of the user
+    QString accNameString("?");
+    char* tempText = dc_get_config(tempContext, "mail_user");
+    if (tempText) {
+        accNameString = tempText;
+        dc_str_unref(tempText);
+        tempText = nullptr;
+    } 
+
+    QString chatNameString("?");
+    tempText = dc_chat_get_name(tempChat);
+    if (tempText) {
+        chatNameString = tempText;
+        dc_str_unref(tempText);
+        tempText = nullptr;
+    }
+
+    dc_msg_t* tempMsg = dc_get_msg(tempContext, msgID);
+    if (!tempMsg) {
+        qDebug() << "DeltaHandler::sendNotification(): ERROR: tempMsg is NULL";
+        dc_chat_unref(tempChat);
+        dc_context_unref(tempContext);
+        return;
+    }
+
+    dc_lot_t* tempLot = dc_msg_get_summary(tempMsg, tempChat);
+
+    QString fromString;
+    tempText = dc_msg_get_override_sender_name(tempMsg);
+    if (!tempText) {
+        tempText = dc_contact_get_display_name(dc_get_contact(tempContext, dc_msg_get_from_id(tempMsg)));
+        fromString = tempText;
+    } else {
+        fromString = "~";
+        fromString += tempText;
+        dc_str_unref(tempText);
+        tempText = nullptr;
+    }
+
+    QString messageExcerpt("?");
+    tempText = dc_lot_get_text2(tempLot);
+    if (tempText) {
+        messageExcerpt = tempText;
+        dc_str_unref(tempText);
+        tempText = nullptr;
+    }
+
+    QString icon("");
+
+    if (m_detailedPushNotifications) {
+    // only show name of sender + content of message
+    // if m_detailedPushNotifications is set
+    //
+    // Get the avatar of the user or group
+        tempText = dc_chat_get_profile_image(tempChat);
+        if (tempText) {
+            icon = tempText;
+            dc_str_unref(tempText);
+            tempText = nullptr;
+        }
+
+        createNotification(fromString, messageExcerpt, accNumberString + "_" + chatNumberString + "_" + msgNumberString, icon);
+    } else { // if (m_detailedPushNotifications)
+        // m_detailedPushNotifications is not set, just send generic notification
+        //
+        // Instead of the avatar of the user or group, the DeltaTouch icon is used
+        QString icon;
+        QFile logoFile(":assets/logo.svg");
+        logoFile.copy(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logo.svg");
+        icon = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logo.svg";
+
+        createNotification(C::gettext("New message"), C::gettext("New message"), accNumberString + "_" + chatNumberString + "_" + msgNumberString, icon);
+    }
+
+    dc_msg_unref(tempMsg);
+    dc_chat_unref(tempChat);
+    dc_context_unref(tempContext);
+
+    if (tempLot) {
+        dc_lot_unref(tempLot);
+    }
+}
+
+void DeltaHandler::setEnablePushNotifications(bool enabled)
+{
+    m_enablePushNotifications = enabled;
+}
+
+
+void DeltaHandler::setDetailedPushNotifications(bool detailed)
+{
+    m_detailedPushNotifications = detailed;
+}
+
+
+void DeltaHandler::setAggregatePushNotifications(bool aggregate)
+{
+    m_aggregateNotifications = aggregate;
 }
 
 
@@ -834,7 +1085,6 @@ void DeltaHandler::messageReadByRecipient(uint32_t accID, int chatID, int msgID)
     if (currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
         emit messageRead(msgID);
     }
-    
 }
 
 
@@ -1214,9 +1464,17 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
         // necessary for the following sequences, so we skip it
         // to avoid making the code unnecessarily complicated - it's
         // too complicated already :-(
+        bool restartNetwork = m_networkingIsStarted;
+        if (m_networkingIsStarted) {
+            stop_io();
+        }
         currentContext = tempContext;
         tempContext = nullptr;
-        m_contactsmodel->updateContext(currentContext);
+        contextSetupTasks();
+
+        if (restartNetwork) {
+            start_io();
+        }
 
         currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
 
@@ -1276,9 +1534,17 @@ void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
             dc_context_unref(currentContext);
         }
 
+        bool restartNetwork = m_networkingIsStarted;
+        if (m_networkingIsStarted) {
+            stop_io();
+        }
         currentContext = tempContext;
         tempContext = nullptr;
-        m_contactsmodel->updateContext(currentContext);
+        contextSetupTasks();
+
+        if (restartNetwork) {
+            start_io();
+        }
 
         currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
 
@@ -1321,7 +1587,7 @@ void DeltaHandler::chatCreationReceiver(uint32_t chatID)
 {
     // Resetting model, re-loading currentChatlist not
     // needed because the emitter emits the signal
-    // newMsg which is connected to the slot newMessage.
+    // newMsg which is connected to the slot incomingMessage.
     // The slot will take care of adding the new
     // chat to the chatlist.
      
@@ -1408,16 +1674,37 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
         if (foundConfiguredAccount) {
             qDebug() << "DeltaHandler::unselectAccount: Choosing configured account " << accountToSwitchTo << "as new selected account.";
             dc_context_unref(currentContext);
+
+            bool restartNetwork = m_networkingIsStarted;
+            if (m_networkingIsStarted) {
+                stop_io();
+            }
             currentContext = tempContext;
-            m_contactsmodel->updateContext(currentContext);
+            // TODO: why not setting tempContext to nullptr here?
+            //tempContext = nullptr;
+            contextSetupTasks();
+
+            if (restartNetwork) {
+                start_io();
+            }
+
             currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
         }
         else {
             qDebug() << "DeltaHandler::unselectAccount: No configured account available. Choosing unconfigured account " << accountToSwitchTo << "as new selected account.";
             // If no configured account was found, tempContext is already unref'd
             dc_context_unref(currentContext);
+
+            bool restartNetwork = m_networkingIsStarted;
+            if (m_networkingIsStarted) {
+                stop_io();
+            }
             currentContext = dc_accounts_get_account(allAccounts, accountToSwitchTo);
-            m_contactsmodel->updateContext(currentContext);
+            contextSetupTasks();
+
+            if (restartNetwork) {
+                start_io();
+            }
         }
 
         // setting tempContext to nullptr here to avoid having to do
@@ -2175,9 +2462,17 @@ void DeltaHandler::startQrBackupImport()
             dc_context_unref(currentContext);
         }
 
+        bool restartNetwork = m_networkingIsStarted;
+        if (m_networkingIsStarted) {
+            stop_io();
+        }
         currentContext = tempContext;
         tempContext = nullptr;
-        m_contactsmodel->updateContext(currentContext);
+        contextSetupTasks();
+
+        if (restartNetwork) {
+            start_io();
+        }
 
         currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
 
@@ -2312,7 +2607,83 @@ void DeltaHandler::updateCurrentChatMessageCount()
 
 void DeltaHandler::resetCurrentChatMessageCount()
 {
-    // Currently this call is sufficient
+    // removing notifications and removing the msgIDs from
+    // the vector freshMsgs
+    size_t i = 0;
+    size_t endpos = freshMsgs.size();
+    while (i < endpos) {
+        if (freshMsgs[i][1] == currentChatID) {
+            // assemble the tag of the message (see sendNotification())
+            QString accNumberString;
+            accNumberString.setNum(dc_get_id(currentContext));
+
+            QString chatNumberString;
+            chatNumberString.setNum(currentChatID);
+
+            QString msgNumberString;
+            msgNumberString.setNum(freshMsgs[i][0]);
+            removeNotification(accNumberString + "_" + chatNumberString + "_" + msgNumberString);
+
+            // remove the message from freshMsgs
+            std::vector<std::array<uint32_t, 2>>::iterator it;
+            it = freshMsgs.begin();
+            freshMsgs.erase(it + i);
+            --endpos;
+
+        } else {
+            // only increase i if no item is removed from freshMsgs
+            ++i;
+        }
+    }
+
+    // If dc_get_fresh_msg_cnt is not 0, then there are messages that
+    // are not marked as seen, but were not present in freshMsgs. To find
+    // those, the list of messages has to be parsed. Reason for them to
+    // not be part of freshMsgs according to DC documentation (seems as if
+    // some messages are not returned by dc_get_fresh_msgs(), but are counted
+    // into dc_get_fresh_msg_cnt()):
+    //
+    // >> Messages belonging to muted chats or to the contact requests are not
+    // >> returned; these messages should not be notified and also badge counters
+    // >> should not include these messages.
+
+    int freshMsgCount = dc_get_fresh_msg_cnt(currentContext, currentChatID);
+    if (freshMsgCount != 0) {
+        dc_array_t* tempArray = dc_get_chat_msgs(currentContext, currentChatID, 0, 0);
+
+        // start with the newest message, stop the loop if the end of the array
+        // has been reached OR if the number of unseen messages given by
+        // freshMsgCount has been found
+        //
+        // It's not possible to start with i = dc_array_get_cnt and set i >= 0
+        // as abort condition because i is unsigned. Therefore, i is counted
+        // from 0 up to the array size, but the access is inverted.
+        size_t arraySize = dc_array_get_cnt(tempArray);
+        for (size_t i = 0; i < arraySize && freshMsgCount > 0; ++i) {
+            uint32_t tempMsgID = dc_array_get_id(tempArray, arraySize - (i+1));
+            dc_msg_t* tempMsg = dc_get_msg(currentContext, tempMsgID);
+            if (dc_msg_get_state(tempMsg) != DC_STATE_IN_SEEN && !(dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF)) {
+                --freshMsgCount;
+                // mark as seen
+                dc_markseen_msgs(currentContext, &tempMsgID, 1);
+
+                // remove notification that might be present, for that
+                // assemble the tag of the message (see sendNotification())
+                QString accNumberString;
+                accNumberString.setNum(dc_get_id(currentContext));
+
+                QString chatNumberString;
+                chatNumberString.setNum(currentChatID);
+
+                QString msgNumberString;
+                msgNumberString.setNum(tempMsgID);
+                removeNotification(accNumberString + "_" + chatNumberString + "_" + msgNumberString);
+            }
+            dc_msg_unref(tempMsg);
+        }
+        dc_array_unref(tempArray);
+    }
+    // notify the view about changes in the model
     updateCurrentChatMessageCount();
 }
 
@@ -2331,6 +2702,7 @@ void DeltaHandler::changedContacts()
 void DeltaHandler::chatViewIsClosed()
 {
     chatmodelIsConfigured = false;
+    emit chatViewClosed();
 }
 
 
@@ -2478,9 +2850,6 @@ void DeltaHandler::setCoreTranslations()
     langAndCountry.prepend(":assets/coreTranslations/");
     langOnly.prepend(":assets/coreTranslations/");
 
-    // to be able to access the files under assets
-    Q_INIT_RESOURCE(assets);
-
     QFile coreLangFile;
 
     // try with lang_COUNTRY first; if not found, try lang
@@ -2578,5 +2947,119 @@ void DeltaHandler::setCoreTranslations()
         }
     } else {
         qDebug() << "DeltaHandler::setCoreTranslations(): ERROR: could not open translation file";
+    }
+}
+
+
+void DeltaHandler::createNotification(QString summary, QString body, QString tag, QString icon)
+{
+    qDebug() << "DeltaHandler::createNotification(): creating tag " << tag;
+    qDebug() << "DeltaHandler::createNotification(): icon is " << icon;
+    QDBusConnection bus = QDBusConnection::sessionBus();
+
+    QString appid("deltatouch.lotharketterer_deltatouch");
+    QString path;
+    QDBusMessage message;
+
+    // TODO: don't rely on QSysInfo - create separate branch
+    // in git for focal (20.04)
+    if (QSysInfo::productVersion() == "16.04") {
+        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
+        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "Post");
+    } else {
+        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
+        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "Post");
+    }
+
+    // replace_tag doesn't work, maybe it's positioned wrongly?
+    QString mynotif("{\"message\": \"foobar\", \"notification\":{\"tag\": \"" + tag + "\", \"card\": {\"summary\": \"" + summary + "\", \"body\": \"" + body + "\", \"popup\": true, \"persist\": true, \"icon\": \"" + icon + "\"}, \"sound\": true, \"vibrate\": {\"pattern\": [200], \"duration\": 200, \"repeat\": 1 }}}");
+
+    message << appid << mynotif;
+    bus.send(message);
+//    QDBusPendingCall pcall = bus.asyncCall(message);
+//    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
+//    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
+    
+    if (m_lastTag != "" && m_aggregateNotifications) {
+        removeNotification(m_lastTag);
+    }
+    m_lastTag = tag;
+    settings->setValue("settingsLastTag", m_lastTag);
+}
+
+void DeltaHandler::removeNotification(QString tag)
+{
+    qDebug() << "DeltaHandler::removeNotification(): removing tag " << tag;
+    // remove the notification with m_lastTag as default
+    if (tag == "") {
+        tag = m_lastTag;
+    }
+
+    QDBusConnection bus = QDBusConnection::sessionBus();
+
+    QString appid("deltatouch.lotharketterer_deltatouch");
+    QString path;
+    QDBusMessage message;
+
+    if (QSysInfo::productVersion() == "16.04") {
+        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
+        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "ClearPersistent");
+    } else {
+        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
+        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "ClearPersistent");
+    }
+
+    message << appid << tag;
+    bus.send(message);
+//    QDBusPendingCall pcall = bus.asyncCall(message);
+//    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
+//    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
+
+}
+
+
+void DeltaHandler::contextSetupTasks()
+{
+    m_contactsmodel->updateContext(currentContext);
+
+    dc_array_t* tempArray = dc_get_fresh_msgs(currentContext);
+
+    freshMsgs.resize(dc_array_get_cnt(tempArray));
+
+    for (size_t i = 0; i < freshMsgs.size(); ++i) {
+        uint32_t tempMsgID = dc_array_get_id(tempArray, i);
+        dc_msg_t* tempMsg = dc_get_msg(currentContext, tempMsgID);
+        if (tempMsg) {
+            uint32_t tempChatID = dc_msg_get_chat_id(tempMsg);
+            std::array<uint32_t, 2> tempStdArr {tempMsgID, tempChatID};
+            freshMsgs[i] = tempStdArr;
+            dc_msg_unref(tempMsg);
+        } else {
+            qDebug() << "DeltaHandler::contextSetupTasks(): ERROR obtaining the chat ID for the unread msg ID " << tempMsg;
+            std::array<uint32_t, 2> tempStdArr {tempMsgID, 0};
+            freshMsgs[i] = tempStdArr;
+        }
+    }
+
+    dc_array_unref(tempArray);
+}
+
+
+void DeltaHandler::periodicTimerActions()
+{
+    // reset the model to check for things like expired
+    // mutes (otherwise the striked-through loudspeaker
+    // would remain until the next context switch or restart)
+    if (m_hasConfiguredAccount && currentChatlist) {
+        beginResetModel();
+        dc_chatlist_unref(currentChatlist);
+
+        if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+            currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+        } else {
+            currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+        }
+
+        endResetModel();
     }
 }

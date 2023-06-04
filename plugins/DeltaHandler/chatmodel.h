@@ -87,7 +87,7 @@ public:
     // presents a list of chats to forward messages to
     Q_PROPERTY(ChatlistModel* chatlistmodel READ chatlistmodel);
 
-    void configure(uint32_t chatID, dc_context_t* context, DeltaHandler* deltaHandler, bool isContactRequest = false);
+    void configure(uint32_t chatID, dc_context_t* context, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool isContactRequest = false);
     
     bool chatIsContactRequest();
     bool hasDraft();
@@ -102,9 +102,11 @@ public:
 
 public slots:
     void messageStatusChangedSlot(int msgID);
+    void appIsActiveAgainActions();
+    void chatViewIsOpened();
+    void chatViewIsClosed();
 
 signals:
-    void messageMarkedSeen() const;
     void markedAllMessagesSeen();
     void jumpToMsg(int myindex);
     void draftHasQuoteChanged();
@@ -116,14 +118,17 @@ private slots:
     void newMessage(int msgID);
 
 private:
+    DeltaHandler* m_dhandler;
     dc_context_t* currentMsgContext;
     uint32_t chatID;
+    bool m_chatIsBeingViewed;
     size_t currentMsgCount;
     std::vector<uint32_t> msgVector;
     bool m_isContactRequest;
     int m_unreadMessageBarIndex;
     uint32_t m_firstUnreadMessageID;
     bool m_hasUnreadMessages;
+
     QString m_tempExportPath;
     dc_msg_t* currentMessageDraft;
 
@@ -131,10 +136,18 @@ private:
     ChatlistModel* m_chatlistmodel;
     uint32_t messageIdToForward;
 
+    // for storing msgIDs that are to be marked
+    // seen later. Used when new messages arrive while
+    // the app is in background (if background suspension
+    // is disabled). The messages will be marked seen
+    // and their notifications will be removed when the
+    // app is actyive again.
+    std::vector<uint32_t> msgsToMarkSeenLater;
+
     // For caching the dc_msg_t* used in data() because the method is
     // being called repeatedly for the same message, but different
     // roles. Mutable is needed because the data() method is
-    //   const.
+    // const.
     mutable int data_row;
     mutable uint32_t data_tempMsgID;
     mutable dc_msg_t* data_tempMsg;

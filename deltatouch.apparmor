@@ -5,6 +5,7 @@
         "connectivity",
         "content_exchange_source",
         "content_exchange",
-        "microphone" ],
+        "microphone",
+        "push-notification-client" ],
     "policy_version": 16.04
 }

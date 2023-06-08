@@ -41,7 +41,7 @@ MainView {
     signal periodicTimerSignal()
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '0.6.5'
+    property string version: '0.7.0'
 
     // Color scheme
     //

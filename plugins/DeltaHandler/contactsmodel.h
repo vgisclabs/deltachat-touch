@@ -42,11 +42,13 @@ public:
 
     // IsAlreadyMemberOfGroupRole and IsToBeAddedToGroupRole
     // are used in the page to add contacts to a group chat
-    enum { DisplayNameRole, ProfilePicRole, EmailAddressRole, AvatarColorRole, AvatarInitialRole, IsAlreadyMemberOfGroupRole, IsToBeAddedToGroupRole};
+    enum { DisplayNameRole, ProfilePicRole, EmailAddressRole, AvatarColorRole, AvatarInitialRole, IsAlreadyMemberOfGroupRole, IsToBeAddedToGroupRole, IsVerifiedRole};
 
     // QAbstractListModel interface
     virtual int rowCount(const QModelIndex &parent) const;
     virtual QVariant data(const QModelIndex &index, int role) const;
+
+    Q_INVOKABLE void setVerifiedOnly(bool verifOnly);
 
     void updateContext(dc_context_t* cContext);
 
@@ -69,7 +71,8 @@ protected:
 
 private:
     dc_context_t* m_context;
-    dc_array_t* m_contactsArray;
+
+    std::vector<uint32_t> m_contactsVector;
 
     // Used to add a custom entry into the beginning of
     // the list. Will be 0 by default and 1 if m_contactsArray
@@ -78,6 +81,8 @@ private:
     // query string. Is set by updateQuery(QString) and
     // used in data(const QModelIndex, int) and rowCount(QModelIndex).
     int m_offset;
+
+    bool m_verifiedOnly;
 
     QString m_query;
 

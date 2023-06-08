@@ -68,8 +68,8 @@ Page {
             // reset the text in the TextField, otherwise the
             // selection would also be active for the add members list
             enterNameOrEmailField.text = ""
-            DeltaHandler.startCreateGroup()
-            layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), {"createNewGroup": true})
+            DeltaHandler.startCreateGroup(false)
+            layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), {"createNewGroup": true, "createVerifiedGroup": false})
         }
     }
 
@@ -89,7 +89,8 @@ Page {
             // reset the text in the TextField, otherwise the
             // selection would also be active for the add members list
             enterNameOrEmailField.text = ""
-            layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("NotImplemented.qml"))
+            DeltaHandler.startCreateGroup(true)
+            layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), {"createNewGroup": true, "createVerifiedGroup": true})
         }
     }
 
@@ -155,6 +156,15 @@ Page {
                 id: contactsListItemLayout
                 title.text: model.displayname == '' ? i18n.tr('Unknown') : model.displayname
                 subtitle.text: model.address
+                
+                Image {
+                    id: verifiedSymbol
+                    source: Qt.resolvedUrl('../../assets/verified.png')
+                    visible: model.isVerified
+                    SlotsLayout.position: SlotsLayout.Trailing
+                    height: units.gu(3)
+                    width: height
+                }
 
                 UbuntuShape {
                     id: profPicShape

@@ -74,6 +74,15 @@ Page {
 
     Connections {
         target: DeltaHandler.chatmodel
+        onChatDataChanged: {
+            leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
+            leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
+            trailingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) == 0
+        }
+    }
+
+    Connections {
+        target: DeltaHandler.chatmodel
         onJumpToMsg: {
             messageJump(myindex)
         }
@@ -99,12 +108,44 @@ Page {
         id: header
         title: chatname
  
+        leadingActionBar.numberOfSlots: 3
+        leadingActionBar.actions: [
+            Action {
+                id: leadingVerifiedAction
+                iconSource: Qt.resolvedUrl("../../assets/verified.png")
+                text: i18n.tr("Verified Contact")
+                visible: DeltaHandler.chatIsVerified()
+            },
+
+            Action {
+                id: leadingEphemeralAction
+                iconName: "timer"
+                text: i18n.tr("Disappearing Messages")
+                visible: DeltaHandler.getChatEphemeralTimer(-1) != 0
+                onTriggered: {
+                    PopupUtils.open(Qt.resolvedUrl("EphemeralTimerSettings.qml"))
+                }
+            },
+
+            Action {
+                iconName: "go-previous"
+                text: i18n.tr("Back")
+                onTriggered: {
+                    layout.removePages(chatViewPage)
+                }
+            }
+        ]
+
         trailingActionBar.actions: [
-        //    Action {
-        //        iconName: 'help'
-        //        text: i18n.tr('Help')
-        //        onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
-        //    },
+            Action {
+                id: trailingEphemeralAction
+                iconName: "timer"
+                text: i18n.tr("Disappearing Messages")
+                visible: DeltaHandler.getChatEphemeralTimer(-1) == 0
+                onTriggered: {
+                    PopupUtils.open(Qt.resolvedUrl("EphemeralTimerSettings.qml"))
+                }
+            },
 
             Action {
                 iconName: 'edit'

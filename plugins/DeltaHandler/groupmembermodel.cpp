@@ -44,6 +44,7 @@ QHash<int, QByteArray> GroupMemberModel::roleNames() const
     roles[AvatarColorRole] = "avatarColor";
     roles[AvatarInitialRole] = "avatarInitial";
     roles[IsSelfRole] = "isSelf";
+    roles[IsVerifiedRole] = "isVerified";
 
     return roles;
 }
@@ -111,6 +112,14 @@ QVariant GroupMemberModel::data(const QModelIndex &index, int role) const
 
         case GroupMemberModel::IsSelfRole:
             retval = (tempContactID == DC_CONTACT_ID_SELF);
+            break;
+
+        case GroupMemberModel::IsVerifiedRole:
+            if (2 == dc_contact_is_verified(tempContact)) {
+                retval = true;
+            } else {
+                retval = false;
+            }
             break;
 
         default:

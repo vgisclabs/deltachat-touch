@@ -31,8 +31,9 @@ Page {
 
     property bool hasChatPic: false
     property bool createNewGroup: false
+    property bool createVerifiedGroup: false
 
-    property string headerNew: i18n.tr("New Group")
+    property string headerNew: createVerifiedGroup ? i18n.tr("New Verified Group") : i18n.tr("New Group")
     property string headerEdit: i18n.tr("Edit Group")
 
     signal prepareAddMembers()
@@ -69,7 +70,12 @@ Page {
 
         // Switch off the back icon to avoid unclear situation. User
         // has to explicitly choose cancel or ok.
-        leadingActionBar.actions: undefined
+        leadingActionBar.actions: [
+            Action {
+                iconSource: Qt.resolvedUrl('../../assets/verified.png')
+                visible: DeltaHandler.tempGroupIsVerified()
+            }
+        ]
 
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
@@ -319,6 +325,15 @@ Page {
                     sourceFillMode: UbuntuShape.PreserveAspectCrop
                     aspect: UbuntuShape.Flat
                 } // end of UbuntuShape id: profPicShape
+
+                Image {
+                    id: verifiedSymbol
+                    source: Qt.resolvedUrl('../../assets/verified.png')
+                    visible: model.isVerified
+                    height: units.gu(3)
+                    width: height
+                    SlotsLayout.position: SlotsLayout.Trailing
+                }
             } // ListItemLayout id: memberListItemLayout
         } // ListItem memberItem
     } // Component memberDelegate

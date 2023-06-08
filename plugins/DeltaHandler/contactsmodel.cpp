@@ -20,23 +20,20 @@
 //#include <unistd.h> // for sleep
 
 ContactsModel::ContactsModel(QObject* parent)
-    : QAbstractListModel(parent), m_context {nullptr}, m_contactsArray {nullptr}, m_offset {0}, m_query {""}
+    : QAbstractListModel(parent), m_context {nullptr}, m_offset {0}, m_verifiedOnly {false}, m_query {""}
 { 
     m_newMembers.resize(0);
 };
 
 ContactsModel::~ContactsModel()
 {
-    if (m_contactsArray) {
-        dc_array_unref(m_contactsArray);
-    }
 }
 
 
 int ContactsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return dc_array_get_cnt(m_contactsArray) + m_offset;
+    return m_contactsVector.size() + m_offset;
 }
 
 QHash<int, QByteArray> ContactsModel::roleNames() const
@@ -49,6 +46,7 @@ QHash<int, QByteArray> ContactsModel::roleNames() const
     roles[AvatarInitialRole] = "avatarInitial";
     roles[IsAlreadyMemberOfGroupRole] = "isAlreadyMemberOfGroup";
     roles[IsToBeAddedToGroupRole] = "isToBeAddedToGroup";
+    roles[IsVerifiedRole] = "isVerified";
 
     return roles;
 }
@@ -57,7 +55,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     
-    if(row < 0 || row >= dc_array_get_cnt(m_contactsArray) + m_offset) {
+    if(row < 0 || row >= m_contactsVector.size() + m_offset) {
         return QVariant();
     }
 
@@ -115,6 +113,10 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
             case ContactsModel::IsToBeAddedToGroupRole:
                 retval = false;
                 break;
+                
+            case ContactsModel::IsVerifiedRole:
+                retval = false;
+                break;
 
             default:
                 retval = QVariant();
@@ -130,7 +132,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
     char* tempText {nullptr};
     uint32_t tempColor {0};
 
-    uint32_t tempContactID = dc_array_get_id(m_contactsArray, row - m_offset);
+    uint32_t tempContactID = m_contactsVector[row - m_offset];
     dc_contact_t* tempContact = dc_get_contact(m_context, tempContactID);
 
     switch(role) {
@@ -194,6 +196,14 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
             }
             break;
 
+        case ContactsModel::IsVerifiedRole:
+            if (2 == dc_contact_is_verified(tempContact)) {
+                retval = true;
+            } else {
+                retval = false;
+            }
+            break;
+
         default:
             retval = QVariant();
             qDebug() << "ContactsModel::data switch reached default";
@@ -210,15 +220,47 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
 }
 
 
+void ContactsModel::setVerifiedOnly(bool verifOnly)
+{
+    if (m_verifiedOnly == verifOnly) {
+        // nothing to do in this case
+        return;
+    }
+
+
+    m_verifiedOnly = verifOnly;
+
+    if (m_context) {
+        beginResetModel();
+
+        // update of m_contactsVector is done via updateContext
+        updateContext(m_context);
+
+        endResetModel();
+    }
+}
+
+
 void ContactsModel::updateContext(dc_context_t* cContext)
 {
     beginResetModel();
-    if (m_contactsArray) {
-        dc_array_unref(m_contactsArray);
+    m_context = cContext;
+
+    dc_array_t* contactsArray;
+
+    if (m_verifiedOnly) {
+        contactsArray = dc_get_contacts(m_context, DC_GCL_VERIFIED_ONLY, NULL);
+    } else {
+        contactsArray = dc_get_contacts(m_context, 0, NULL);
     }
 
-    m_context = cContext;
-    m_contactsArray = dc_get_contacts(m_context, 0, NULL);
+    m_contactsVector.resize(dc_array_get_cnt(contactsArray));
+
+    for (size_t i = 0; i < m_contactsVector.size(); ++i) {
+        m_contactsVector[i] = dc_array_get_id(contactsArray, i);
+    }
+    dc_array_unref(contactsArray);
+
     endResetModel();
 }
 
@@ -252,34 +294,64 @@ void ContactsModel::updateQuery(QString query) {
     m_query = query;
 
     beginResetModel();
-    dc_array_unref(m_contactsArray);
     
     uint32_t tempContactID {0};
     dc_contact_t* tempContact {nullptr};
     char* tempText {nullptr};
     QString tempQString {""};
 
+    dc_array_t* contactsArray;
+
     if (query != "") {
-        m_contactsArray = dc_get_contacts(m_context, 0, query.toUtf8().constData());
-        m_offset = 1;
+        if (m_verifiedOnly) {
+            contactsArray = dc_get_contacts(m_context, DC_GCL_VERIFIED_ONLY, query.toUtf8().constData());
+        } else {
+            contactsArray = dc_get_contacts(m_context, 0, query.toUtf8().constData());
+        }
 
-        // Check whether the entered string equals any of the email
-        // addresses in the array. If yes, don't show the additional
-        // line with a newly to be added contact (i.e., set m_offset
-        // to 0)
-        for (size_t i = 0; i < dc_array_get_cnt(m_contactsArray); ++i) {
-            tempContactID = dc_array_get_id(m_contactsArray, i);
-            tempContact = dc_get_contact(m_context, tempContactID);
-            tempText = dc_contact_get_addr(tempContact);
-            tempQString = tempText;
+        m_contactsVector.resize(dc_array_get_cnt(contactsArray));
 
-            if (QString::compare(tempQString, query, Qt::CaseInsensitive) == 0) {
-                m_offset = 0;
-                break;
+        for (size_t i = 0; i < m_contactsVector.size(); ++i) {
+            m_contactsVector[i] = dc_array_get_id(contactsArray, i);
+        }
+        dc_array_unref(contactsArray);
+
+        if (m_verifiedOnly) {
+            m_offset = 0;
+        } else {
+            m_offset = 1;
+            
+            // Check whether the entered string equals any of the email
+            // addresses in the array. If yes, don't show the additional
+            // line with a newly to be added contact (i.e., set m_offset
+            // to 0)
+            for (size_t i = 0; i < m_contactsVector.size(); ++i) {
+                tempContactID = m_contactsVector[i];
+                tempContact = dc_get_contact(m_context, tempContactID);
+                tempText = dc_contact_get_addr(tempContact);
+                tempQString = tempText;
+
+                if (QString::compare(tempQString, query, Qt::CaseInsensitive) == 0) {
+                    m_offset = 0;
+                    break;
+                }
             }
         }
+
     } else { // query is empty string
-        m_contactsArray = dc_get_contacts(m_context, 0, NULL);
+        if (m_verifiedOnly) {
+            contactsArray = dc_get_contacts(m_context, DC_GCL_VERIFIED_ONLY, NULL);
+        } else {
+            contactsArray = dc_get_contacts(m_context, 0, NULL);
+        }
+
+        m_contactsVector.resize(dc_array_get_cnt(contactsArray));
+
+        for (size_t i = 0; i < m_contactsVector.size(); ++i) {
+            m_contactsVector[i] = dc_array_get_id(contactsArray, i);
+        }
+        dc_array_unref(contactsArray);
+        
         m_offset = 0;
     }
 
@@ -310,7 +382,7 @@ void ContactsModel::startChatWithIndex(int myindex)
             return;
         }
     } else {
-        contactID = dc_array_get_id(m_contactsArray, myindex - m_offset);
+        contactID = m_contactsVector[myindex - m_offset];
     }
 
     uint32_t chatID = dc_create_chat_by_contact_id(m_context, contactID);
@@ -360,7 +432,7 @@ void ContactsModel::addIndexToMemberlist(int myindex)
         return;
     }
 
-    tempContactID = dc_array_get_id(m_contactsArray, myindex - m_offset);
+    tempContactID = m_contactsVector[myindex - m_offset];
     
     bool isAlreadyIn = false;
     for (size_t i = 0; i < m_newMembers.size(); ++i) {
@@ -379,7 +451,7 @@ void ContactsModel::addIndexToMemberlist(int myindex)
 void ContactsModel::removeIndexFromMemberlist(int myindex)
 {
 
-    uint32_t tempContactID = dc_array_get_id(m_contactsArray, myindex - m_offset);
+    uint32_t tempContactID = m_contactsVector[myindex - m_offset];
 
     std::vector<uint32_t>::iterator it;
     bool isInList = false;

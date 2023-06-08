@@ -751,6 +751,8 @@ void ChatModel::newMessage(int msgID)
     for (size_t i = 0; i < currentMsgCount ; ++i) {
         emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
     }
+
+    emit chatDataChanged();
 }
 
 void ChatModel::deleteMessage(int myindex)

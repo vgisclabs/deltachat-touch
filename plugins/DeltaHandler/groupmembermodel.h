@@ -35,7 +35,7 @@ public:
     explicit GroupMemberModel(QObject *parent = 0);
     ~GroupMemberModel();
 
-    enum { DisplayNameRole, ProfilePicRole, EmailAddressRole, AvatarColorRole, AvatarInitialRole, IsSelfRole};
+    enum { DisplayNameRole, ProfilePicRole, EmailAddressRole, AvatarColorRole, AvatarInitialRole, IsSelfRole, IsVerifiedRole};
 
     // QAbstractListModel interface
     virtual int rowCount(const QModelIndex &parent) const;

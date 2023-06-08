@@ -158,12 +158,21 @@ Page {
                     aspect: UbuntuShape.Flat
                 } // end of UbuntuShape id: profPicShape
 
+                Image {
+                    id: verifiedSymbol
+                    source: Qt.resolvedUrl('../../assets/verified.png')
+                    visible: model.isVerified
+                    height: memberSelectedIcon.height
+                    width: height
+                    SlotsLayout.position: SlotsLayout.Trailing
+                }
+
                 Icon {
                     id: memberSelectedIcon
-                    SlotsLayout.position: SlotsLayout.Trailing
                     width: units.gu(3)
                     name: model.isAlreadyMemberOfGroup ? "select" : (model.isToBeAddedToGroup ? "select" : "select-none")
                     opacity: model.isAlreadyMemberOfGroup ? 0.5 : 1
+                    SlotsLayout.position: SlotsLayout.Trailing
                 }
             } // ListItemLayout id: contactsListItemLayout
         } // ListItem id: contactsItem

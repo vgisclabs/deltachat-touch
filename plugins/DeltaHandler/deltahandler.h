@@ -89,7 +89,14 @@ public:
     // Returns the name of the currently selected chat
     Q_INVOKABLE QString chatName();
 
+    // Returns whether the currently selected chat is verified/protected
+    Q_INVOKABLE bool chatIsVerified();
+
     Q_INVOKABLE QString getChatName(int myindex);
+
+    Q_INVOKABLE uint32_t getChatEphemeralTimer(int myindex);
+
+    Q_INVOKABLE void setChatEphemeralTimer(int myindex, uint32_t timer);
 
     Q_INVOKABLE void deleteChat(int myindex);
 
@@ -191,7 +198,7 @@ public:
      * ============== New Group / Editing Group ===============
      * ======================================================== */
 
-    Q_INVOKABLE void startCreateGroup();
+    Q_INVOKABLE void startCreateGroup(bool verifiedGroup);
     
     // will set up the currently active chat
     // (i.e., the one in currentChatID) if -1 is
@@ -205,6 +212,7 @@ public:
 
     Q_INVOKABLE QString getTempGroupPic();
     Q_INVOKABLE QString getTempGroupName();
+    Q_INVOKABLE bool tempGroupIsVerified();
 
     Q_INVOKABLE void setGroupPic(QString filepath);
 
@@ -381,6 +389,7 @@ private:
     // for creation of new group or editing of group
     uint32_t m_tempGroupChatID;
     bool creatingNewGroup;
+    bool creatingOrEditingVerifiedGroup;
 
     // for scanning QR codes
     int m_qrTempState;

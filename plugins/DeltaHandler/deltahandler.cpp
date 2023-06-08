@@ -1124,6 +1124,41 @@ QString DeltaHandler::chatName()
 }
 
 
+bool DeltaHandler::chatIsVerified()
+{
+    bool retval;
+    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+
+    if (dc_chat_get_type(tempChat) == DC_CHAT_TYPE_GROUP) {
+        if (1 == dc_chat_is_protected(tempChat)) {
+            retval = true;
+        } else {
+            retval = false;
+        }
+
+    } else if (dc_chat_get_type(tempChat) == DC_CHAT_TYPE_SINGLE) {
+        dc_array_t* tempArray = dc_get_chat_contacts(currentContext, currentChatID);
+        uint32_t tempContactID = dc_array_get_id(tempArray, 0);
+        dc_contact_t* tempContact = dc_get_contact(currentContext, tempContactID);
+
+        if (2 == dc_contact_is_verified(tempContact)) {
+            retval = true;
+        } else {
+            retval = false;
+        }
+
+        dc_contact_unref(tempContact);
+        dc_array_unref(tempArray);
+    } else {
+        retval = false;
+    }
+
+
+    dc_chat_unref(tempChat);
+    return retval;
+}
+
+
 QString DeltaHandler::getCurrentUsername()
 {
     QString retval;
@@ -1234,6 +1269,36 @@ QString DeltaHandler::getChatName(int myindex)
     }
 
     return tempQString;
+}
+
+
+uint32_t DeltaHandler::getChatEphemeralTimer(int myindex)
+{
+    uint32_t tempChatID;
+
+    if (myindex == -1) {
+        tempChatID = currentChatID;
+    } else {
+        tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    }
+
+    return dc_get_chat_ephemeral_timer(currentContext, tempChatID);
+}
+
+
+void DeltaHandler::setChatEphemeralTimer(int myindex, uint32_t timer)
+{
+    uint32_t tempChatID;
+
+    if (myindex == -1) {
+        tempChatID = currentChatID;
+    } else {
+        tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
+    }
+
+    if (timer != getChatEphemeralTimer(myindex)) {
+        dc_set_chat_ephemeral_timer(currentContext, tempChatID, timer);
+    }
 }
 
 
@@ -1961,12 +2026,14 @@ void DeltaHandler::finalizeProfileEdit()
  * ======================================================== */
 
 
-void DeltaHandler::startCreateGroup()
+void DeltaHandler::startCreateGroup(bool verifiedGroup)
 {
     creatingNewGroup = true;
+    creatingOrEditingVerifiedGroup = verifiedGroup;
     m_groupmembermodel = new GroupMemberModel();
     m_groupmembermodel->setConfig(currentContext, true);
 
+    m_contactsmodel->setVerifiedOnly(verifiedGroup);
     m_contactsmodel->resetNewMemberList();
     m_contactsmodel->setMembersAlreadyInGroup(m_groupmembermodel->getMembersAlreadyInGroup());
     
@@ -1993,6 +2060,16 @@ void DeltaHandler::startEditGroup(int myindex)
 
     m_groupmembermodel = new GroupMemberModel();
     m_groupmembermodel->setConfig(currentContext, false, m_tempGroupChatID);
+
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_tempGroupChatID);
+    if (1 == dc_chat_is_protected(tempChat)) {
+        m_contactsmodel->setVerifiedOnly(true);
+        creatingOrEditingVerifiedGroup = true;
+    } else {
+        m_contactsmodel->setVerifiedOnly(false);
+        creatingOrEditingVerifiedGroup = false;
+    }
+    dc_chat_unref(tempChat);
 
     m_contactsmodel->resetNewMemberList();
     m_contactsmodel->setMembersAlreadyInGroup(m_groupmembermodel->getMembersAlreadyInGroup());
@@ -2044,6 +2121,12 @@ QString DeltaHandler::getTempGroupName()
 }
 
 
+bool DeltaHandler::tempGroupIsVerified()
+{
+    return creatingOrEditingVerifiedGroup;
+}
+
+
 void DeltaHandler::setGroupPic(QString filepath)
 {
     filepath.remove(0, 7);
@@ -2070,7 +2153,12 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
 {
 
     if (creatingNewGroup) {
-        m_tempGroupChatID = dc_create_group_chat(currentContext, 0, groupName.toUtf8().constData());
+        if (creatingOrEditingVerifiedGroup) {
+            m_tempGroupChatID = dc_create_group_chat(currentContext, 1, groupName.toUtf8().constData());
+        } else {
+            m_tempGroupChatID = dc_create_group_chat(currentContext, 0, groupName.toUtf8().constData());
+        }
+
         if ("" != imagePath) {
             imagePath.remove(0, 7);
             dc_set_chat_profile_image(currentContext, m_tempGroupChatID, imagePath.toUtf8().constData());
@@ -2140,6 +2228,7 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
 
     dc_array_unref(tempContactsArray);
     delete m_groupmembermodel;
+    m_contactsmodel->setVerifiedOnly(false);
 }
 
 
@@ -2163,6 +2252,7 @@ void DeltaHandler::leaveGroup(int myindex)
 void DeltaHandler::stopCreateOrEditGroup()
 {
     delete m_groupmembermodel;
+    m_contactsmodel->setVerifiedOnly(false);
 }
 
 

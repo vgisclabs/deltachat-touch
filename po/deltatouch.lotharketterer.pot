@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-04 15:40+0000\n"
+"POT-Creation-Date: 2023-06-08 13:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../plugins/DeltaHandler/contactsmodel.cpp:81
+#: ../plugins/DeltaHandler/contactsmodel.cpp:79
 msgid "New Contact"
 msgstr ""
 
-#: ../plugins/DeltaHandler/contactsmodel.cpp:96
+#: ../plugins/DeltaHandler/contactsmodel.cpp:94
 msgid "Type e-mail address above"
 msgstr ""
 
@@ -80,8 +80,8 @@ msgstr ""
 #: ../qml/delegates/delegSelfAudio.qml:146
 #: ../qml/delegates/delegSelfImage.qml:185
 #: ../qml/delegates/delegSelfTextMsg.qml:142
-#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
+#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:157
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
 #: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
 #: ../qml/pages/QrShowScan.qml:429
 msgid "Unknown"
@@ -186,7 +186,7 @@ msgstr ""
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
 #: ../qml/pages/ConfirmLeaveGroup.qml:46
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
-#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
+#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:84
 #: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:58
 #: ../qml/pages/ProgressBackupExport.qml:64
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:45
@@ -194,15 +194,15 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:35
+#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Group"
 msgstr ""
 
-#: ../qml/pages/AddChat.qml:86
+#: ../qml/pages/AddChat.qml:86 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Verified Group"
 msgstr ""
 
-#: ../qml/pages/AddChat.qml:103 ../qml/pages/GroupAddMember.qml:77
+#: ../qml/pages/AddChat.qml:104 ../qml/pages/GroupAddMember.qml:77
 msgid "Enter name or e-mail address"
 msgstr ""
 
@@ -232,7 +232,7 @@ msgstr ""
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:91
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
-#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
 #: ../qml/pages/Profile.qml:65 ../qml/pages/ProgressKeysExport.qml:78
 #: ../qml/pages/QrConfirmPopup.qml:76
 msgid "OK"
@@ -311,6 +311,9 @@ msgstr ""
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:400
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:479
 #: ../qml/pages/ChatInfosActions.qml:140
+#: ../qml/pages/EphemeralTimerSettings.qml:35
+#: ../qml/pages/EphemeralTimerSettings.qml:128
+#: ../qml/pages/EphemeralTimerSettings.qml:132
 msgid "Off"
 msgstr ""
 
@@ -468,8 +471,8 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:64 ../qml/pages/ChatView.qml:111
-#: ../qml/pages/CreateOrEditGroup.qml:36
+#: ../qml/pages/ChatInfosActions.qml:64 ../qml/pages/ChatView.qml:152
+#: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr ""
 
@@ -490,47 +493,58 @@ msgid "Show Encryption Info"
 msgstr ""
 
 #: ../qml/pages/ChatInfosActions.qml:154
-msgid "Mute for 1 minute"
-msgstr ""
-
-#: ../qml/pages/ChatInfosActions.qml:168
 msgid "Mute for 1 hour"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:182
+#: ../qml/pages/ChatInfosActions.qml:168
 msgid "Mute for 2 hours"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:196
+#: ../qml/pages/ChatInfosActions.qml:182
 msgid "Mute for 1 day"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:210
+#: ../qml/pages/ChatInfosActions.qml:196
 msgid "Mute for 7 days"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:224
+#: ../qml/pages/ChatInfosActions.qml:210
 msgid "Mute forever"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1034
+#: ../qml/pages/ChatView.qml:116
+msgid "Verified Contact"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:123 ../qml/pages/ChatView.qml:143
+#: ../qml/pages/EphemeralTimerSettings.qml:27
+msgid "Disappearing Messages"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:132 ../qml/pages/ProgressBackupImport.qml:69
+#: ../qml/pages/ProgressConfigAccount.qml:68
+#: ../qml/pages/ProgressQrBackupImport.qml:94
+msgid "Back"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1075
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1050 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1091 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1065
+#: ../qml/pages/ChatView.qml:1106
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1195
+#: ../qml/pages/ChatView.qml:1236
 msgid "Click to leave without sending"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1228
+#: ../qml/pages/ChatView.qml:1269
 msgid "Click to delete"
 msgstr ""
 
@@ -613,37 +627,99 @@ msgstr ""
 msgid "Delete Message"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:100 ../qml/pages/QrGroupInvite.qml:42
+#: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
 #: ../qml/pages/QrShowScan.qml:72 ../qml/pages/QrShowScan.qml:104
 msgid "QR Invite Code"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:200
+#: ../qml/pages/CreateOrEditGroup.qml:206
 msgid "Group Name"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:223
+#: ../qml/pages/CreateOrEditGroup.qml:229
 msgid "%1 member"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:224
+#: ../qml/pages/CreateOrEditGroup.qml:230
 msgid "%1 members"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:241 ../qml/pages/GroupAddMember.qml:34
+#: ../qml/pages/CreateOrEditGroup.qml:247 ../qml/pages/GroupAddMember.qml:34
 msgid "Add Members"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:331
+#: ../qml/pages/CreateOrEditGroup.qml:346
 msgid "Please enter a name for the group."
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:355
+#: ../qml/pages/CreateOrEditGroup.qml:370
 msgid "Change Group Image"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:368
+#: ../qml/pages/CreateOrEditGroup.qml:383
 msgid "Remove Group Image"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:39
+#: ../qml/pages/EphemeralTimerSettings.qml:142
+#: ../qml/pages/EphemeralTimerSettings.qml:146
+#: ../qml/pages/EphemeralTimerSettings.qml:216
+#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
+#: ../qml/pages/SettingsPage.qml:1111
+msgid "After 30 seconds"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:43
+#: ../qml/pages/EphemeralTimerSettings.qml:156
+#: ../qml/pages/EphemeralTimerSettings.qml:160
+#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
+#: ../qml/pages/SettingsPage.qml:1132
+msgid "After 1 minute"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:47
+#: ../qml/pages/EphemeralTimerSettings.qml:170
+#: ../qml/pages/EphemeralTimerSettings.qml:174
+#: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
+#: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
+#: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
+msgid "After 1 hour"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:51
+#: ../qml/pages/EphemeralTimerSettings.qml:184
+#: ../qml/pages/EphemeralTimerSettings.qml:188
+#: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
+#: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
+#: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
+msgid "After 1 day"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:55
+#: ../qml/pages/EphemeralTimerSettings.qml:198
+#: ../qml/pages/EphemeralTimerSettings.qml:202
+#: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
+#: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
+#: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
+msgid "After 1 week"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:59
+#: ../qml/pages/EphemeralTimerSettings.qml:212
+#: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
+#: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
+#: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
+msgid "After 4 weeks"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:63
+msgid "After %1 seconds"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:80
+msgid ""
+"Applies to all members of this chat if they use Delta Chat; they can still "
+"copy, save, and forward messages or use other e-mail clients."
 msgstr ""
 
 #: ../qml/pages/ForwardMessage.qml:41
@@ -739,12 +815,6 @@ msgstr ""
 
 #: ../qml/pages/ProgressBackupImport.qml:44
 msgid "Failed"
-msgstr ""
-
-#: ../qml/pages/ProgressBackupImport.qml:69
-#: ../qml/pages/ProgressConfigAccount.qml:68
-#: ../qml/pages/ProgressQrBackupImport.qml:94
-msgid "Back"
 msgstr ""
 
 #: ../qml/pages/ProgressKeysExport.qml:40
@@ -924,30 +994,6 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
-#: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
-#: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
-msgid "After 1 hour"
-msgstr ""
-
-#: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
-#: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
-#: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
-msgid "After 1 day"
-msgstr ""
-
-#: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
-#: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
-#: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
-msgid "After 1 week"
-msgstr ""
-
-#: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
-#: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
-#: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
-msgid "After 4 weeks"
-msgstr ""
-
 #: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
 #: ../qml/pages/SettingsPage.qml:1034 ../qml/pages/SettingsPage.qml:1040
 #: ../qml/pages/SettingsPage.qml:1231 ../qml/pages/SettingsPage.qml:1237
@@ -961,16 +1007,6 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1084
 #: ../qml/pages/SettingsPage.qml:1090
 msgid "At once"
-msgstr ""
-
-#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
-#: ../qml/pages/SettingsPage.qml:1111
-msgid "After 30 seconds"
-msgstr ""
-
-#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
-#: ../qml/pages/SettingsPage.qml:1132
-msgid "After 1 minute"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:188

@@ -110,6 +110,7 @@ signals:
     void markedAllMessagesSeen();
     void jumpToMsg(int myindex);
     void draftHasQuoteChanged();
+    void chatDataChanged();
 
 protected:
     QHash<int, QByteArray> roleNames() const;

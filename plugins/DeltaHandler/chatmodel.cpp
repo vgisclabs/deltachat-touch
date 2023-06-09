@@ -513,7 +513,9 @@ void ChatModel::messageStatusChangedSlot(int msgID)
 {
     for (size_t i = 0; i < currentMsgCount; ++i) {
         if (msgID == msgVector[i]) {
-            emit QAbstractListModel::dataChanged(index(i, 0), index(i, 0));
+            QVector<int> roleVector;
+            roleVector.append(ChatModel::MessageStateRole);
+            emit dataChanged(index(i, 0), index(i, 0), roleVector);
             break;
         }
     }
@@ -672,7 +674,11 @@ void ChatModel::newMessage(int msgID)
 
         for (j = i; j < currentMsgCount; ++j) {
             if (tempNewMsgID == msgVector[j]) {
-                msgVector[i] = msgVector[j];
+                if (j != i) {
+                    beginMoveRows(QModelIndex(), j, j, QModelIndex(), i);
+                    msgVector[i] = msgVector[j];
+                    endMoveRows();
+                }
 
                 // need to unset m_unreadMessageBarIndex in case
                 // it is overwritten
@@ -698,7 +704,7 @@ void ChatModel::newMessage(int msgID)
     }
 
     if (currentMsgCount > newMsgCount) {
-        beginRemoveRows(QModelIndex(), newMsgCount - 1, currentMsgCount - 1);
+        beginRemoveRows(QModelIndex(), newMsgCount, currentMsgCount - 1);
         msgVector.resize(newMsgCount);
         currentMsgCount = newMsgCount;
         endRemoveRows();
@@ -746,11 +752,11 @@ void ChatModel::newMessage(int msgID)
     dc_msg_unref(tempMsg);
 
 
-    // model is not reset because this would be problematic if the
-    // current view is not at the bottom, but scrolled somewhere
-    for (size_t i = 0; i < currentMsgCount ; ++i) {
-        emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
-    }
+//    // model is not reset because this would be problematic if the
+//    // current view is not at the bottom, but scrolled somewhere
+//    for (size_t i = 0; i < currentMsgCount ; ++i) {
+//        emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
+//    }
 
     emit chatDataChanged();
 }

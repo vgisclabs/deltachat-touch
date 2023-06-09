@@ -25,17 +25,15 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
-    property int chatIndex
-
-    property bool isGroup: DeltaHandler.chatIsGroup(chatIndex)
-    property bool isDeviceTalk: DeltaHandler.chatIsDeviceTalk(chatIndex)
-    property bool isSelfTalk: DeltaHandler.chatIsSelfTalk(chatIndex)
+    property bool isGroup: DeltaHandler.momentaryChatIsGroup()
+    property bool isDeviceTalk: DeltaHandler.momentaryChatIsDeviceTalk()
+    property bool isSelfTalk: DeltaHandler.momentaryChatIsSelfTalk()
     property bool selfInGroup: false
-    property bool isMuted: DeltaHandler.chatIsMuted(chatIndex)
+    property bool isMuted: DeltaHandler.momentaryChatIsMuted()
 
     Component.onCompleted: {
         if (isGroup) {
-            selfInGroup = DeltaHandler.selfIsInGroup(chatIndex)
+            selfInGroup = DeltaHandler.momentaryChatSelfIsInGroup()
         }
     }
     
@@ -50,11 +48,7 @@ Dialog {
         id: blockContactButton
         text: i18n.tr("Block Contact")
         onClicked: {
-            PopupUtils.open(
-                Qt.resolvedUrl("BlockContactPopup.qml"),
-                null,
-                { indexToBlock: chatIndex }
-            )
+            PopupUtils.open(Qt.resolvedUrl("BlockContactPopup.qml"))
         }
         visible: !isGroup && !(isDeviceTalk || isSelfTalk)
     }
@@ -63,7 +57,7 @@ Dialog {
         id: editGroupButton
         text: i18n.tr("Edit Group")
         onClicked: {
-            DeltaHandler.startEditGroup(chatIndex)
+            DeltaHandler.momentaryChatStartEditGroup()
             layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false })
             PopupUtils.close(dialog)
         }
@@ -75,11 +69,7 @@ Dialog {
         id: leaveGroupButton
         text: i18n.tr("Leave Group")
         onClicked: {
-            PopupUtils.open(
-                Qt.resolvedUrl("ConfirmLeaveGroup.qml"),
-                null,
-                { indexToLeave: chatIndex }
-            )
+            PopupUtils.open(Qt.resolvedUrl("ConfirmLeaveGroup.qml"))
         }
         visible: isGroup
         enabled: selfInGroup
@@ -90,7 +80,7 @@ Dialog {
         text: isMuted ? i18n.tr("Unmute") : i18n.tr("Mute Notifications")
         onClicked: {
             if (isMuted) {
-                DeltaHandler.chatSetMuteDuration(chatIndex, 0)
+                DeltaHandler.momentaryChatSetMuteDuration(0)
                 PopupUtils.close(dialog)
             } else {
                 PopupUtils.open(popoverComponentMuteDuration, muteButton)
@@ -103,7 +93,7 @@ Dialog {
         id: showEncryptionInfoButton
         text: i18n.tr("Show Encryption Info")
         onClicked: {
-            let tempString = DeltaHandler.getChatEncInfo(chatIndex)
+            let tempString = DeltaHandler.getMomentaryChatEncInfo()
             PopupUtils.open(
                 Qt.resolvedUrl("InfoPopup.qml"),
                 null,
@@ -140,7 +130,7 @@ Dialog {
                         title.text: i18n.tr("Off")
                     }
                     onClicked: {
-                        DeltaHandler.chatSetMuteDuration(chatIndex, 0)
+                        DeltaHandler.momentaryChatSetMuteDuration(0)
                         PopupUtils.close(popoverMuteDuration)
                         PopupUtils.close(dialog)
                     }
@@ -154,7 +144,7 @@ Dialog {
                         title.text: i18n.tr("Mute for 1 hour")
                     }
                     onClicked: {
-                        DeltaHandler.chatSetMuteDuration(chatIndex, 3600)
+                        DeltaHandler.momentaryChatSetMuteDuration(3600)
                         PopupUtils.close(popoverMuteDuration)
                         PopupUtils.close(dialog)
                     }
@@ -168,7 +158,7 @@ Dialog {
                         title.text: i18n.tr("Mute for 2 hours")
                     }
                     onClicked: {
-                        DeltaHandler.chatSetMuteDuration(chatIndex, 7200)
+                        DeltaHandler.momentaryChatSetMuteDuration(7200)
                         PopupUtils.close(popoverMuteDuration)
                         PopupUtils.close(dialog)
                     }
@@ -182,7 +172,7 @@ Dialog {
                         title.text: i18n.tr("Mute for 1 day")
                     }
                     onClicked: {
-                        DeltaHandler.chatSetMuteDuration(chatIndex, 86400)
+                        DeltaHandler.momentaryChatSetMuteDuration(86400)
                         PopupUtils.close(popoverMuteDuration)
                         PopupUtils.close(dialog)
                     }
@@ -196,7 +186,7 @@ Dialog {
                         title.text: i18n.tr("Mute for 7 days")
                     }
                     onClicked: {
-                        DeltaHandler.chatSetMuteDuration(chatIndex, 604800)
+                        DeltaHandler.momentaryChatSetMuteDuration(604800)
                         PopupUtils.close(popoverMuteDuration)
                         PopupUtils.close(dialog)
                     }
@@ -210,7 +200,7 @@ Dialog {
                         title.text: i18n.tr("Mute forever")
                     }
                     onClicked: {
-                        DeltaHandler.chatSetMuteDuration(chatIndex, -1)
+                        DeltaHandler.momentaryChatSetMuteDuration(-1)
                         PopupUtils.close(popoverMuteDuration)
                         PopupUtils.close(dialog)
                     }

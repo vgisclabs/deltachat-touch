@@ -26,8 +26,11 @@ Dialog {
     id: dialog
 
     property int indexToUnblock: -1
+    property string nameToUnblock: ""
 
     signal unblockContact(int index)
+
+    title: nameToUnblock
 
     Label {
         text: i18n.tr("Unblock this contact? You will then be able to receive messages from them.")

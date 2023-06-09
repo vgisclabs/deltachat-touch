@@ -193,6 +193,7 @@ MainView {
         target: DeltaHandler
         onChatlistShowsArchivedOnly: {
             showArchiveCloseLine = showsArchived;
+            root.chatOpenAlreadyClicked = false
         }
     }
 
@@ -466,11 +467,8 @@ MainView {
                     onTriggered: {
                         // the index is passed as parameter and can
                         // be accessed via 'value'
-                        PopupUtils.open(
-                            Qt.resolvedUrl('pages/ConfirmChatDeletion.qml'),
-                            null,
-                            { 'chatArrayIndex': value, }
-                        )
+                        DeltaHandler.setChatIDMomentaryIndex(value)
+                        PopupUtils.open(Qt.resolvedUrl('pages/ConfirmChatDeletion.qml'))
                     }
                 }
             }
@@ -483,45 +481,44 @@ MainView {
                         onTriggered: {
                             // the index is passed as parameter and can
                             // be accessed via 'value'
-                            DeltaHandler.archiveChat(value)
+                            DeltaHandler.setChatIDMomentaryIndex(value)
+                            DeltaHandler.archiveMomentaryChat()
                         }
                     },
                     Action {
                         iconName: "pinned"
                         onTriggered: {
-                            DeltaHandler.pinUnpinChat(value)
+                            DeltaHandler.setChatIDMomentaryIndex(value)
+                            DeltaHandler.pinUnpinMomentaryChat()
                         }
                     },
                     Action {
                         iconName: "navigation-menu"
                         onTriggered: {
-                            PopupUtils.open(
-                                Qt.resolvedUrl('pages/ChatInfosActions.qml'),
-                                null,
-                                { chatIndex: value }
-                            )
+                            DeltaHandler.setChatIDMomentaryIndex(value)
+                            PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActions.qml'))
                         }
                     }
                 ]
             }
 
             ListItemActions {
+                // TODO: solve via visibility of actions instead of 
+                // multiple ListItemActions?
                 id: trailingChatActionsArchived
                 actions: [
                     Action {
                         iconName: "folder-symbolic"
                         onTriggered: {
-                            DeltaHandler.unarchiveChat(value)
+                            DeltaHandler.setChatIDMomentaryIndex(value)
+                            DeltaHandler.unarchiveMomentaryChat()
                         }
                     },
                     Action {
                         iconName: "navigation-menu"
                         onTriggered: {
-                            PopupUtils.open(
-                                Qt.resolvedUrl('pages/ChatInfosActions.qml'),
-                                null,
-                                { chatIndex: value }
-                            )
+                            DeltaHandler.setChatIDMomentaryIndex(value)
+                            PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActions.qml'))
                         }
                     }
                 ]
@@ -540,7 +537,7 @@ MainView {
                             root.chatOpenAlreadyClicked = true
                             DeltaHandler.selectChat(index)
                             DeltaHandler.openChat()
-                        }
+                        } 
                     }
 
                     leadingActions: model.chatIsArchiveLink ? undefined : leadingChatAction

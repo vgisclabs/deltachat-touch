@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 13:17+0000\n"
+"POT-Creation-Date: 2023-06-09 19:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Type e-mail address above"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1051
+#: ../plugins/DeltaHandler/deltahandler.cpp:1053
 msgid "New message"
 msgstr ""
 
@@ -33,32 +33,32 @@ msgstr ""
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:258 ../qml/Main.qml:265
+#: ../qml/Main.qml:259 ../qml/Main.qml:266
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:258 ../qml/Main.qml:265 ../qml/Main.qml:308
+#: ../qml/Main.qml:259 ../qml/Main.qml:266 ../qml/Main.qml:309
 #: ../qml/pages/AccountConfig.qml:120
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:259 ../qml/Main.qml:266
+#: ../qml/Main.qml:260 ../qml/Main.qml:267
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:440
+#: ../qml/Main.qml:441
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:649
+#: ../qml/Main.qml:646
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:724 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:721 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:777 ../qml/pages/QrShowScan.qml:337
+#: ../qml/Main.qml:774 ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr ""
 
@@ -81,9 +81,9 @@ msgstr ""
 #: ../qml/delegates/delegSelfImage.qml:185
 #: ../qml/delegates/delegSelfTextMsg.qml:142
 #: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:157
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
-#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
-#: ../qml/pages/QrShowScan.qml:429
+#: ../qml/pages/BlockedContacts.qml:63 ../qml/pages/BlockedContacts.qml:69
+#: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
+#: ../qml/pages/QrShowScan.qml:416 ../qml/pages/QrShowScan.qml:429
 msgid "Unknown"
 msgstr ""
 
@@ -179,18 +179,18 @@ msgid "Scan Invitation Code"
 msgstr ""
 
 #: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
-#: ../qml/pages/BlockContactPopup.qml:36
+#: ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
-#: ../qml/pages/ConfirmChatDeletion.qml:56
+#: ../qml/pages/ConfirmChatDeletion.qml:54
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:80
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
-#: ../qml/pages/ConfirmLeaveGroup.qml:46
+#: ../qml/pages/ConfirmLeaveGroup.qml:44
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
 #: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:84
 #: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:58
 #: ../qml/pages/ProgressBackupExport.qml:64
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:45
-#: ../qml/pages/UnblockContactPopup.qml:38
+#: ../qml/pages/UnblockContactPopup.qml:41
 msgid "Cancel"
 msgstr ""
 
@@ -310,7 +310,7 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:400
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:479
-#: ../qml/pages/ChatInfosActions.qml:140
+#: ../qml/pages/ChatInfosActions.qml:130
 #: ../qml/pages/EphemeralTimerSettings.qml:35
 #: ../qml/pages/EphemeralTimerSettings.qml:128
 #: ../qml/pages/EphemeralTimerSettings.qml:132
@@ -455,11 +455,11 @@ msgstr ""
 msgid "Import Secret Keys"
 msgstr ""
 
-#: ../qml/pages/BlockContactPopup.qml:31
+#: ../qml/pages/BlockContactPopup.qml:28
 msgid "Block this contact? You will no longer receive messages from them."
 msgstr ""
 
-#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:51
+#: ../qml/pages/BlockContactPopup.qml:37 ../qml/pages/ChatInfosActions.qml:49
 msgid "Block Contact"
 msgstr ""
 
@@ -471,44 +471,44 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:64 ../qml/pages/ChatView.qml:152
+#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:152
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:76 ../qml/pages/ConfirmLeaveGroup.qml:36
+#: ../qml/pages/ChatInfosActions.qml:70 ../qml/pages/ConfirmLeaveGroup.qml:34
 msgid "Leave Group"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:90
+#: ../qml/pages/ChatInfosActions.qml:80
 msgid "Mute Notifications"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:90
+#: ../qml/pages/ChatInfosActions.qml:80
 msgid "Unmute"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:104
+#: ../qml/pages/ChatInfosActions.qml:94
 msgid "Show Encryption Info"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:154
+#: ../qml/pages/ChatInfosActions.qml:144
 msgid "Mute for 1 hour"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:168
+#: ../qml/pages/ChatInfosActions.qml:158
 msgid "Mute for 2 hours"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:182
+#: ../qml/pages/ChatInfosActions.qml:172
 msgid "Mute for 1 day"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:196
+#: ../qml/pages/ChatInfosActions.qml:186
 msgid "Mute for 7 days"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:210
+#: ../qml/pages/ChatInfosActions.qml:200
 msgid "Mute forever"
 msgstr ""
 
@@ -564,12 +564,12 @@ msgid ""
 "action cannot be undone."
 msgstr ""
 
-#: ../qml/pages/ConfirmChatDeletion.qml:36
-#: ../qml/pages/ConfirmChatDeletion.qml:46
+#: ../qml/pages/ConfirmChatDeletion.qml:34
+#: ../qml/pages/ConfirmChatDeletion.qml:44
 msgid "Delete Chat"
 msgstr ""
 
-#: ../qml/pages/ConfirmChatDeletion.qml:40
+#: ../qml/pages/ConfirmChatDeletion.qml:38
 #: ../qml/pages/ConfirmMsgDeletion.qml:40
 msgid "Are you sure you want to delete \"%1\"?"
 msgstr ""
@@ -614,7 +614,7 @@ msgid ""
 "Delta Chat"
 msgstr ""
 
-#: ../qml/pages/ConfirmLeaveGroup.qml:32
+#: ../qml/pages/ConfirmLeaveGroup.qml:30
 msgid "Are you sure you want to leave this group?"
 msgstr ""
 
@@ -1075,11 +1075,11 @@ msgstr ""
 msgid "Export Backup"
 msgstr ""
 
-#: ../qml/pages/UnblockContactPopup.qml:33
+#: ../qml/pages/UnblockContactPopup.qml:36
 msgid ""
 "Unblock this contact? You will then be able to receive messages from them."
 msgstr ""
 
-#: ../qml/pages/UnblockContactPopup.qml:44
+#: ../qml/pages/UnblockContactPopup.qml:47
 msgid "Unblock Contact"
 msgstr ""

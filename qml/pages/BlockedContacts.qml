@@ -60,7 +60,7 @@ Page {
                 PopupUtils.open(
                     Qt.resolvedUrl("UnblockContactPopup.qml"),
                     null,
-                    { indexToUnblock: index }
+                    { indexToUnblock: index, nameToUnblock: model.displayname == '' ? i18n.tr('Unknown') : model.displayname }
                 )
             }
 

@@ -24,13 +24,8 @@ import DeltaHandler 1.0
 
 Dialog {
     id: dialog
-
-    property int indexToBlock: -1
-
-    Label {
+    title: DeltaHandler.getMomentaryChatName()
         text: i18n.tr("Block this contact? You will no longer receive messages from them.")
-        wrapMode: Text.Wrap
-    }
 
     Button {
         text: i18n.tr("Cancel")
@@ -42,7 +37,7 @@ Dialog {
         text: i18n.tr('Block Contact')
         color: theme.palette.normal.negative
         onClicked: {
-            DeltaHandler.chatBlockContact(indexToBlock)
+            DeltaHandler.momentaryChatBlockContact()
             PopupUtils.close(dialog)
         }
     }

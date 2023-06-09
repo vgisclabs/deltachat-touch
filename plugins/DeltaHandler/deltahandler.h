@@ -64,21 +64,24 @@ public:
     enum VoiceMessageQuality { LowRecordingQuality, BalancedRecordingQuality, HighRecordingQuality };
     Q_ENUM(VoiceMessageQuality)
 
+    // see m_chatIDMomentaryIndex below
+    Q_INVOKABLE void setChatIDMomentaryIndex(int myindex);
+
     // invoked by a tap/click on a list item representing a chat
     // on the chat overview page
     Q_INVOKABLE void selectChat(int myindex);
 
     Q_INVOKABLE void openChat();
 
-    Q_INVOKABLE void archiveChat(int myindex);
+    Q_INVOKABLE void archiveMomentaryChat();
 
-    Q_INVOKABLE void unarchiveChat(int myindex);
+    Q_INVOKABLE void unarchiveMomentaryChat();
 
-    Q_INVOKABLE void pinUnpinChat(int myindex);
+    Q_INVOKABLE void pinUnpinMomentaryChat();
 
-    Q_INVOKABLE bool chatIsMuted(int myindex);
+    Q_INVOKABLE bool momentaryChatIsMuted();
 
-    Q_INVOKABLE void chatSetMuteDuration(int myindex, int64_t secondsToMute);
+    Q_INVOKABLE void momentaryChatSetMuteDuration(int64_t secondsToMute);
 
     Q_INVOKABLE void closeArchive();
 
@@ -92,13 +95,13 @@ public:
     // Returns whether the currently selected chat is verified/protected
     Q_INVOKABLE bool chatIsVerified();
 
-    Q_INVOKABLE QString getChatName(int myindex);
+    Q_INVOKABLE QString getMomentaryChatName();
 
     Q_INVOKABLE uint32_t getChatEphemeralTimer(int myindex);
 
     Q_INVOKABLE void setChatEphemeralTimer(int myindex, uint32_t timer);
 
-    Q_INVOKABLE void deleteChat(int myindex);
+    Q_INVOKABLE void deleteMomentaryChat();
 
     // Returns the username of the current context
     Q_INVOKABLE QString getCurrentUsername();
@@ -147,23 +150,28 @@ public:
     Q_INVOKABLE QString getUrlToExport();
 
     // expects the index of the chat in the chatlist
-    Q_INVOKABLE QString getChatEncInfo(int myindex);
+    Q_INVOKABLE QString getMomentaryChatEncInfo();
 
-    // expects the index of the chat in the chatlist
-    Q_INVOKABLE bool chatIsDeviceTalk(int myindex);
+    Q_INVOKABLE bool momentaryChatIsDeviceTalk();
 
-    // expects the index of the chat in the chatlist
-    Q_INVOKABLE bool chatIsSelfTalk(int myindex);
+    Q_INVOKABLE bool momentaryChatIsSelfTalk();
 
     // expects the index of the chat in the chatlist,
     // will check for the currently active chat
     // (i.e., the one in currentChatID) if -1 is
     // passed
+    // TODO: other parameter than -1 is not used anymore, see momentaryChatIsGroup
+    // => adapt?
     Q_INVOKABLE bool chatIsGroup(int myindex);
 
+    Q_INVOKABLE bool momentaryChatIsGroup();
+
+    // TODO combine with momentaryChatSelfIsInGroup?
     Q_INVOKABLE bool selfIsInGroup(int myindex);
 
-    Q_INVOKABLE void chatBlockContact(int myindex);
+    Q_INVOKABLE bool momentaryChatSelfIsInGroup();
+
+    Q_INVOKABLE void momentaryChatBlockContact();
 
     // Has to be called before using the
     // blockedcontactsmodel.
@@ -203,12 +211,15 @@ public:
     // will set up the currently active chat
     // (i.e., the one in currentChatID) if -1 is
     // passed
+    // TODO: combine with momentaryChatStartEditGroup() ?
     Q_INVOKABLE void startEditGroup(int myindex);
+
+    Q_INVOKABLE void momentaryChatStartEditGroup();
 
     Q_INVOKABLE void finalizeGroupEdit(QString groupName, QString imagePath);
     Q_INVOKABLE void stopCreateOrEditGroup();
 
-    Q_INVOKABLE void leaveGroup(int myindex);
+    Q_INVOKABLE void momentaryChatLeaveGroup();
 
     Q_INVOKABLE QString getTempGroupPic();
     Q_INVOKABLE QString getTempGroupName();
@@ -390,6 +401,14 @@ private:
     uint32_t m_tempGroupChatID;
     bool creatingNewGroup;
     bool creatingOrEditingVerifiedGroup;
+
+    // Stores the chat ID of the chatlist index for which
+    // an action was triggered. Reason is that QML does not
+    // have the type uint32_t, and using the chatlist index
+    // is unsafe because the index of the selected chat might
+    // change in the background while the user is still
+    // in some action page
+    uint32_t m_chatIDMomentaryIndex;
 
     // for scanning QR codes
     int m_qrTempState;

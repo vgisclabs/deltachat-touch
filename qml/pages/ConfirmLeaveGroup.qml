@@ -25,9 +25,7 @@ import DeltaHandler 1.0
 Dialog {
     id: confirmLeaveGroup
 
-    property int indexToLeave
-
-    title: DeltaHandler.getChatName(indexToLeave)
+    title: DeltaHandler.getMomentaryChatName()
 
     text: i18n.tr("Are you sure you want to leave this group?")
 
@@ -36,7 +34,7 @@ Dialog {
         text: i18n.tr("Leave Group")
         color: theme.palette.normal.negative
         onClicked: {
-            DeltaHandler.leaveGroup(indexToLeave)
+            DeltaHandler.momentaryChatLeaveGroup()
             PopupUtils.close(confirmLeaveGroup)
         }
     }

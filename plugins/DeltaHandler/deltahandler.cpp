@@ -662,6 +662,12 @@ void DeltaHandler::sendAttachment(QString filepath, MsgViewType attachType)
 }
 
 
+void DeltaHandler::setChatIDMomentaryIndex(int myindex)
+{
+    m_chatIDMomentaryIndex = dc_chatlist_get_chat_id(currentChatlist, myindex);
+}
+
+
 void DeltaHandler::selectChat(int myindex)
 {
     currentChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
@@ -703,7 +709,7 @@ void DeltaHandler::openChat()
 }
 
 
-void DeltaHandler::archiveChat(int myindex)
+void DeltaHandler::archiveMomentaryChat()
 {
     // It is not needed to 
     // - call beginResetModel() / endResetModel
@@ -711,37 +717,35 @@ void DeltaHandler::archiveChat(int myindex)
     // because changing the visibility will trigger
     // DC_EVENT_MSGS_CHANGED, causing the messagesChanged() slot to reset
     // the model and the chatlist
-    dc_set_chat_visibility(currentContext, dc_chatlist_get_chat_id(currentChatlist, myindex), DC_CHAT_VISIBILITY_ARCHIVED);
+    dc_set_chat_visibility(currentContext, m_chatIDMomentaryIndex, DC_CHAT_VISIBILITY_ARCHIVED);
 }
 
 
-void DeltaHandler::unarchiveChat(int myindex)
+void DeltaHandler::unarchiveMomentaryChat()
 {
-    // see comments in archiveChat(int)
-    dc_set_chat_visibility(currentContext, dc_chatlist_get_chat_id(currentChatlist, myindex), DC_CHAT_VISIBILITY_NORMAL);
+    // see comments in archiveMomentaryChat(int)
+    dc_set_chat_visibility(currentContext, m_chatIDMomentaryIndex, DC_CHAT_VISIBILITY_NORMAL);
 }
 
 
-void DeltaHandler::pinUnpinChat(int myindex)
+void DeltaHandler::pinUnpinMomentaryChat()
 {
-    // see comments in archiveChat(int)
-    uint32_t tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
-    dc_chat_t* tempChat = dc_get_chat(currentContext, tempChatID);
+    // see comments in archiveMomentaryChat(int)
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_chatIDMomentaryIndex);
 
     if (DC_CHAT_VISIBILITY_PINNED == dc_chat_get_visibility(tempChat)) {
-        dc_set_chat_visibility(currentContext, dc_chatlist_get_chat_id(currentChatlist, myindex), DC_CHAT_VISIBILITY_NORMAL);
+        dc_set_chat_visibility(currentContext, m_chatIDMomentaryIndex, DC_CHAT_VISIBILITY_NORMAL);
     } else {
-        dc_set_chat_visibility(currentContext, dc_chatlist_get_chat_id(currentChatlist, myindex), DC_CHAT_VISIBILITY_PINNED);
+        dc_set_chat_visibility(currentContext, m_chatIDMomentaryIndex, DC_CHAT_VISIBILITY_PINNED);
     }
 
     dc_chat_unref(tempChat);
 }
 
 
-bool DeltaHandler::chatIsMuted(int myindex)
+bool DeltaHandler::momentaryChatIsMuted()
 {
-    uint32_t tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
-    dc_chat_t* tempChat = dc_get_chat(currentContext, tempChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_chatIDMomentaryIndex);
 
     // dc_chat_is_muted returns 1 if muted, 0 if not
     bool retbool = dc_chat_is_muted(tempChat) == 1;
@@ -752,11 +756,9 @@ bool DeltaHandler::chatIsMuted(int myindex)
 }
 
 
-void DeltaHandler::chatSetMuteDuration(int myindex, int64_t secondsToMute)
+void DeltaHandler::momentaryChatSetMuteDuration(int64_t secondsToMute)
 {
-    uint32_t tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
-    
-    int success = dc_set_chat_mute_duration(currentContext, tempChatID, secondsToMute);
+    int success = dc_set_chat_mute_duration(currentContext, m_chatIDMomentaryIndex, secondsToMute);
 
     if (0 == success) {
         qDebug() << "DeltaHandler::chatSetMuteDuration(): ERROR:Setting the mute duration failed";
@@ -1252,11 +1254,10 @@ bool DeltaHandler::networkingIsStarted()
 }
 
 
-QString DeltaHandler::getChatName(int myindex)
+QString DeltaHandler::getMomentaryChatName()
 {
     QString tempQString;
-    uint32_t tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
-    dc_chat_t* tempChat = dc_get_chat(currentContext, tempChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_chatIDMomentaryIndex);
 
     if (tempChat) {
         char* tempText = dc_chat_get_name(tempChat);
@@ -1302,10 +1303,9 @@ void DeltaHandler::setChatEphemeralTimer(int myindex, uint32_t timer)
 }
 
 
-void DeltaHandler::deleteChat(int myindex)
+void DeltaHandler::deleteMomentaryChat()
 {
-    uint32_t tempChatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
-    dc_delete_chat(currentContext, tempChatID);
+    dc_delete_chat(currentContext, m_chatIDMomentaryIndex);
 }
 
 
@@ -2082,6 +2082,36 @@ void DeltaHandler::startEditGroup(int myindex)
 }
 
 
+void DeltaHandler::momentaryChatStartEditGroup()
+{
+    creatingNewGroup = false;
+
+    m_tempGroupChatID = m_chatIDMomentaryIndex;
+
+    m_groupmembermodel = new GroupMemberModel();
+    m_groupmembermodel->setConfig(currentContext, false, m_tempGroupChatID);
+
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_tempGroupChatID);
+    if (1 == dc_chat_is_protected(tempChat)) {
+        m_contactsmodel->setVerifiedOnly(true);
+        creatingOrEditingVerifiedGroup = true;
+    } else {
+        m_contactsmodel->setVerifiedOnly(false);
+        creatingOrEditingVerifiedGroup = false;
+    }
+    dc_chat_unref(tempChat);
+
+    m_contactsmodel->resetNewMemberList();
+    m_contactsmodel->setMembersAlreadyInGroup(m_groupmembermodel->getMembersAlreadyInGroup());
+    
+    bool connectSuccess = connect(m_contactsmodel, SIGNAL(addContactToGroup(uint32_t)), m_groupmembermodel, SLOT(addMember(uint32_t)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember";
+        exit(1);
+    }
+}
+
+
 QString DeltaHandler::getTempGroupPic()
 {
     if (creatingNewGroup) {
@@ -2232,20 +2262,9 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
 }
 
 
-void DeltaHandler::leaveGroup(int myindex)
+void DeltaHandler::momentaryChatLeaveGroup()
 {
-    uint32_t chatID {0};
-
-    // will leave the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
-    // passed
-    if (-1 == myindex) {
-        chatID = currentChatID;
-    } else {
-        chatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
-    }
-
-    dc_remove_contact_from_chat(currentContext, chatID, DC_CONTACT_ID_SELF);
+    dc_remove_contact_from_chat(currentContext, m_chatIDMomentaryIndex, DC_CONTACT_ID_SELF);
 }
 
 
@@ -2796,25 +2815,22 @@ void DeltaHandler::chatViewIsClosed()
 }
 
 
-QString DeltaHandler::getChatEncInfo(int myindex)
+QString DeltaHandler::getMomentaryChatEncInfo()
 {
-    char* tempText = dc_get_chat_encrinfo(currentContext, dc_chatlist_get_chat_id(currentChatlist, myindex));
-    
-    QString retval = tempText;
+    char* tempText;
+    QString retval;
 
-    if (tempText) {
-        dc_str_unref(tempText);
-    }
-
-    dc_array_t* contactsArray = dc_get_chat_contacts(currentContext, dc_chatlist_get_chat_id(currentChatlist, myindex));
-
+    dc_array_t* contactsArray = dc_get_chat_contacts(currentContext, m_chatIDMomentaryIndex);
 
     uint32_t contactID {0};
 
     for (size_t i = 0; i < dc_array_get_cnt(contactsArray); ++i) {
-        retval += "\n\n";
         contactID = dc_array_get_id(contactsArray, i);
+        if (DC_CONTACT_ID_SELF == contactID) {
+            continue;
+        }
         tempText = dc_get_contact_encrinfo(currentContext, contactID);
+        retval += "\n\n";
         retval += tempText;
         if (tempText) {
             dc_str_unref(tempText);
@@ -2830,10 +2846,9 @@ QString DeltaHandler::getChatEncInfo(int myindex)
 }
 
 
-bool DeltaHandler::chatIsDeviceTalk(int myindex)
+bool DeltaHandler::momentaryChatIsDeviceTalk()
 {
-    uint32_t chatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
-    dc_chat_t* tempChat = dc_get_chat(currentContext, chatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_chatIDMomentaryIndex);
     
     bool retval = dc_chat_is_device_talk(tempChat);
 
@@ -2845,10 +2860,9 @@ bool DeltaHandler::chatIsDeviceTalk(int myindex)
 }
 
 
-bool DeltaHandler::chatIsSelfTalk(int myindex)
+bool DeltaHandler::momentaryChatIsSelfTalk()
 {
-    uint32_t chatID = dc_chatlist_get_chat_id(currentChatlist, myindex);
-    dc_chat_t* tempChat = dc_get_chat(currentContext, chatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_chatIDMomentaryIndex);
     
     bool retval = dc_chat_is_self_talk(tempChat);
 
@@ -2874,6 +2888,20 @@ bool DeltaHandler::chatIsGroup(int myindex)
     }
 
     dc_chat_t* tempChat = dc_get_chat(currentContext, chatID);
+
+    bool retval = (dc_chat_get_type(tempChat) == DC_CHAT_TYPE_GROUP);
+
+    if (tempChat) {
+        dc_chat_unref(tempChat);
+    }
+
+    return retval;
+}
+
+
+bool DeltaHandler::momentaryChatIsGroup()
+{
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_chatIDMomentaryIndex);
 
     bool retval = (dc_chat_get_type(tempChat) == DC_CHAT_TYPE_GROUP);
 
@@ -2915,9 +2943,28 @@ bool DeltaHandler::selfIsInGroup(int myindex)
 }
 
 
-void DeltaHandler::chatBlockContact(int myindex)
+bool DeltaHandler::momentaryChatSelfIsInGroup()
 {
-    dc_block_chat(currentContext, dc_chatlist_get_chat_id(currentChatlist, myindex));
+    dc_array_t* tempContactsArray = dc_get_chat_contacts(currentContext, m_chatIDMomentaryIndex);
+    
+    bool isInGroup = false;
+
+    for (size_t i = 0; i < dc_array_get_cnt(tempContactsArray); ++i) {
+        if (DC_CONTACT_ID_SELF == dc_array_get_id(tempContactsArray, i)) {
+            isInGroup = true;
+            break;
+        }
+    }
+
+    dc_array_unref(tempContactsArray);
+
+    return isInGroup;
+}
+
+
+void DeltaHandler::momentaryChatBlockContact()
+{
+    dc_block_chat(currentContext, m_chatIDMomentaryIndex);
     emit chatBlockContactDone();
 }
 

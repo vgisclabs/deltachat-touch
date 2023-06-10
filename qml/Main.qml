@@ -696,6 +696,21 @@ MainView {
                 delegate: delegateListItem
             }
 
+            Rectangle {
+                height: parent.height - headerRect.height
+                width: parent.width
+                anchors {
+                    top: headerRect.bottom
+                    left: parent.left
+                }
+                color: theme.palette.normal.background
+                visible: root.chatOpenAlreadyClicked
+                Label {
+                    anchors.centerIn: parent
+                    text: i18n.tr("Loading…")
+                }
+            }
+
             // BottomEdge originally from FluffyChat (C) Christian Pauly,
             // licensed under GPLv3
             // https://gitlab.com/KrilleFear/fluffychat
@@ -705,7 +720,7 @@ MainView {
                 height: parent.height
                 //contentUrl: Qt.resolvedUrl('pages/AddChat.qml')
                 preloadContent: false
-                enabled: DeltaHandler.hasConfiguredAccount
+                enabled: DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
                 contentComponent: Rectangle {
                     width: chatlistPage.width
                     height: chatlistPage.height

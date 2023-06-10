@@ -268,6 +268,10 @@ Page {
                                 case DeltaHandler.VoiceType:
                                     return "../delegates/delegSelfAudio.qml"
                                     break;
+                                case DeltaHandler.StickerType:
+                                case DeltaHandler.GifType:
+                                    return "../delegates/delegSelfAnimatedImage.qml"
+                                    break;
                                 default:
                                     return "../delegates/delegSelfUnknown.qml"
                                     break;
@@ -291,6 +295,10 @@ Page {
                                 case DeltaHandler.AudioType:
                                 case DeltaHandler.VoiceType:
                                     return "../delegates/delegOtherAudio.qml"
+                                    break;
+                                case DeltaHandler.StickerType:
+                                case DeltaHandler.GifType:
+                                    return "../delegates/delegOtherAnimatedImage.qml"
                                     break;
                                 default:
                                     return "../delegates/delegOtherUnknown.qml"

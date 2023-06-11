@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-10 15:05+0000\n"
+"POT-Creation-Date: 2023-06-11 15:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,44 +25,44 @@ msgstr ""
 msgid "Type e-mail address above"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1053
+#: ../plugins/DeltaHandler/deltahandler.cpp:1117
 msgid "New message"
 msgstr ""
 
-#: ../qml/Main.qml:43 deltatouch.desktop.in.h:1
+#: ../qml/Main.qml:49 deltatouch.desktop.in.h:1
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:259 ../qml/Main.qml:266
+#: ../qml/Main.qml:280 ../qml/Main.qml:287
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:259 ../qml/Main.qml:266 ../qml/Main.qml:309
+#: ../qml/Main.qml:280 ../qml/Main.qml:287 ../qml/Main.qml:334
 #: ../qml/pages/AccountConfig.qml:120
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:260 ../qml/Main.qml:267
+#: ../qml/Main.qml:281 ../qml/Main.qml:288
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:441
+#: ../qml/Main.qml:537
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:646
+#: ../qml/Main.qml:742
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:710
+#: ../qml/Main.qml:806
 msgid "Loading…"
 msgstr ""
 
-#: ../qml/Main.qml:736 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:832 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:789 ../qml/pages/QrShowScan.qml:337
+#: ../qml/Main.qml:889 ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr ""
 

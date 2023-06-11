@@ -40,6 +40,12 @@ MainView {
     // see periodicTimer
     signal periodicTimerSignal()
 
+    signal chatlistQueryTextHasChanged(string query)
+
+    function clearChatlistQuery() {
+        chatlistSearchField.text = "";
+    }
+
     property string appName: i18n.tr('DeltaTouch')
     property string version: '0.7.0'
 
@@ -245,14 +251,29 @@ MainView {
              * ============================================================= */
             header: Rectangle {
                 id: headerRect
-                height: units.gu(6)
+                height: units.gu(6) + (chatlistSearchField.visible ? units.gu(1) + chatlistSearchField.height + units.gu(1) + dividerItem.height : 0)
                 width: chatlistPage.width
                 anchors {
                     left: chatlistPage.left
                     right: chatlistPage.right
                     top: chatlistPage.top
                 }
-                color: "#053f45" //"#06545b" //"#032c30" //"#0ca7b6"
+
+                Rectangle {
+
+                    // introduced to set the background color of top
+                    // part of the header, but not the background of the
+                    // search bar
+                    id: headerTopBackgroundColor
+                    height: units.gu(6)
+                    width: headerRect.width
+                    anchors {
+                        top: headerRect.top
+                        left: headerRect.left
+                    }
+                    color: "#053f45" //"#06545b" //"#032c30" //"#0ca7b6"
+                }
+
                 //opacity: 0.5
             
                 // TODO should these be properties?
@@ -273,6 +294,7 @@ MainView {
                     id: headerMouse
                     anchors.fill: headerRect
                     onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+                    enabled: !root.chatOpenAlreadyClicked
                 }
             
                 UbuntuShape {
@@ -282,7 +304,8 @@ MainView {
                     anchors {
                         left: headerRect.left
                         leftMargin: units.gu(2.5)
-                        verticalCenter: headerRect.verticalCenter
+                        top: headerRect.top
+                        topMargin: units.gu(0.5)
                     }
                     source: Image {
                         source: headerRect.currentProfilePic
@@ -293,11 +316,13 @@ MainView {
                 Rectangle {
                     id: headerRectMain
                     width: parent.width - profilePicShape.width - units.gu(2) - qrIconCage.width - settingsIconCage.width - infoIconCage.width - units.gu(1)
+                    height: units.gu(6)
                     anchors {
                         left: profilePicShape.right
                         leftMargin: units.gu(1)
-                        bottom: headerRect.bottom
+                        top: headerRect.top
                     }
+                    color: headerTopBackgroundColor.color
                   
                     Label {
                         id: usernameLabel
@@ -325,14 +350,47 @@ MainView {
                 } // Rectangle id: headerRectMain
             
                 Rectangle {
+                    id: searchIconCage
+                    width: units.gu(4)
+                    anchors {
+                        right: qrIconCage.left
+                        top: headerRectMain.top
+                        bottom: headerRectMain.bottom
+                    }
+                    color: headerTopBackgroundColor.color
+            
+                    Icon {
+                        id: searchIcon
+                        name: "find"
+                        width: units.gu(2)
+                        anchors{
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
+                        }
+                        color: usernameLabel.color
+                    }
+            
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if (chatlistSearchField.visible) {
+                                chatlistSearchField.text = ""
+                            }
+                            chatlistSearchField.visible = !chatlistSearchField.visible
+                        }
+                        enabled: !root.chatOpenAlreadyClicked
+                    }
+                }
+            
+                Rectangle {
                     id: qrIconCage
                     width: units.gu(4)
                     anchors {
                         right: infoIconCage.left
-                        top: headerRect.top
-                        bottom: headerRect.bottom
+                        top: headerRectMain.top
+                        bottom: headerRectMain.bottom
                     }
-                    color: headerRect.color
+                    color: headerTopBackgroundColor.color
             
                     Icon {
                         id: qrIcon
@@ -348,6 +406,7 @@ MainView {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'))
+                        enabled: !root.chatOpenAlreadyClicked
                     }
                 }
             
@@ -356,10 +415,10 @@ MainView {
                     width: units.gu(4)
                     anchors {
                         right: settingsIconCage.left
-                        top: headerRect.top
-                        bottom: headerRect.bottom
+                        top: headerRectMain.top
+                        bottom: headerRectMain.bottom
                     }
-                    color: headerRect.color
+                    color: headerTopBackgroundColor.color
             
                     Icon {
                         id: infoIcon
@@ -375,6 +434,7 @@ MainView {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/About.qml'))
+                        enabled: !root.chatOpenAlreadyClicked
                     }
                 }
             
@@ -385,9 +445,9 @@ MainView {
                         right: headerRect.right
                         rightMargin: units.gu(1)
                         top: headerRect.top
-                        bottom: headerRect.bottom
+                        bottom: headerRectMain.bottom
                     }
-                    color: headerRect.color //"#032c30" //"#0ca7b6"
+                    color: headerTopBackgroundColor.color //"#032c30" //"#0ca7b6"
             
                     Icon {
                         id: settingsIcon
@@ -402,7 +462,43 @@ MainView {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/SettingsPage.qml'))
+                        enabled: !root.chatOpenAlreadyClicked
                     }
+                }
+
+                TextField {
+                    id: chatlistSearchField
+                    width: parent.width < units.gu(45) ? parent.width - units.gu(4) : units.gu(41)
+                    anchors {
+                        left: parent.left
+                        leftMargin: units.gu(2)
+                        top: headerRectMain.bottom
+                        topMargin: units.gu(1)
+                    }
+
+                    // Without inputMethodHints set to Qg.ImhNoPredictiveText, the
+                    // clear button only works in x86_64, but not aarch64 and armhf.
+                    // For the latter two, if the displayed text does not contain a
+                    // blank, it just doesn't vanish when the button is pressed, but
+                    // cannot be removed by backspace either. Pressing another
+                    // character will then clear the field and the pressed character
+                    // will appear.
+                    inputMethodHints: Qt.ImhNoPredictiveText
+                    onDisplayTextChanged: {
+                        root.chatlistQueryTextHasChanged(displayText)
+                    }
+                    visible: false
+                    enabled: DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
+                }
+
+                ListItem {
+                    id: dividerItem
+                    height: divider.height
+                    anchors {
+                        top: chatlistSearchField.bottom
+                        topMargin: units.gu(1)
+                    }
+                    visible: chatlistSearchField.visible
                 }
             } // end of Rectangle id:headerRect
             /* ======================= END HEADER =========================== */
@@ -779,6 +875,10 @@ MainView {
         DeltaHandler.setAggregatePushNotifications(aggregatePushNotifications)
 
         root.periodicTimerSignal.connect(DeltaHandler.periodicTimerActions)
+
+        root.chatlistQueryTextHasChanged.connect(DeltaHandler.updateChatlistQueryText)
+        DeltaHandler.clearChatlistQueryRequest.connect(root.clearChatlistQuery)
+
         periodicTimer.start()
     }
 

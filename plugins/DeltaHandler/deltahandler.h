@@ -335,6 +335,9 @@ signals:
     // been received
     void backupFileWritten();
 
+    // requests the search bar to be cleared (e.g., by Main.qml)
+    void clearChatlistQueryRequest();
+
     /* ========================================================
      * ================ QR code related stuff =================
      * ======================================================== */
@@ -351,6 +354,8 @@ public slots:
     // Main.qml emits a signal every 5 minutes that is connected
     // to this slot
     void periodicTimerActions();
+
+    void updateChatlistQueryText(QString query);
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -409,6 +414,9 @@ private:
     // change in the background while the user is still
     // in some action page
     uint32_t m_chatIDMomentaryIndex;
+
+    // for searching the chatlist
+    QString m_query;
 
     // for scanning QR codes
     int m_qrTempState;

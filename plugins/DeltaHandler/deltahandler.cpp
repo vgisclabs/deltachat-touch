@@ -29,7 +29,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_audioRecorder {nullptr}
+    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_audioRecorder {nullptr}
 {
     qRegisterMetaType<uint32_t>("uint32_t");
     qRegisterMetaType<int64_t>("int64_t");
@@ -676,11 +676,20 @@ void DeltaHandler::selectChat(int myindex)
 
 void DeltaHandler::openChat()
 {
+
     if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
         // If the archive link has been clicked, reset
         // the model to show the archived chats only.
         m_showArchivedChats = true;
         beginResetModel();
+
+        // only clear the search string when switching to the archive
+        // view, but not when opening a normal chat
+        if (m_query != "") {
+            m_query = "";
+            emit clearChatlistQueryRequest();
+        }
+
         dc_chatlist_unref(currentChatlist);
         currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
         endResetModel();
@@ -769,9 +778,17 @@ void DeltaHandler::momentaryChatSetMuteDuration(int64_t secondsToMute)
     dc_chatlist_unref(currentChatlist);
 
     if (m_showArchivedChats) {
-        currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+        if (m_query == "") {
+            currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+        } else {
+            currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
+        }
     } else {
-        currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+        if (m_query == "") {
+            currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+        } else {
+            currentChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
+        }
     }
 
     endResetModel();
@@ -781,10 +798,20 @@ void DeltaHandler::momentaryChatSetMuteDuration(int64_t secondsToMute)
 void DeltaHandler::closeArchive()
 {
     m_showArchivedChats = false;
+
     beginResetModel();
+
+    // clear the query before obtaining a new chatlist
+    if (m_query != "") {
+        m_query = "";
+        emit clearChatlistQueryRequest();
+    }
+
     dc_chatlist_unref(currentChatlist);
     currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+
     endResetModel();
+
     emit chatlistShowsArchivedOnly(m_showArchivedChats);
 }
 
@@ -848,6 +875,12 @@ void DeltaHandler::selectAccount(int myindex)
         start_io();
     }
 
+    // clear the query before obtaining a new chatlist
+    if (m_query != "") {
+        m_query = "";
+        emit clearChatlistQueryRequest();
+    }
+
     currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
 
     chatmodelIsConfigured = false;
@@ -880,15 +913,44 @@ void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
         }
         
         if (m_showArchivedChats) {
-            currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
-            if (0 == dc_chatlist_get_cnt(currentChatlist)) {
-                m_showArchivedChats = false;
-                dc_chatlist_unref(currentChatlist);
-                currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
-                emit chatlistShowsArchivedOnly(m_showArchivedChats);
+
+            // If archived chats are not muted, they will be un-archived
+            // automatically if a new message is received. For this
+            // reason, when the user is looking at the archived chats
+            // and a new message is received, it is checked whether the
+            // newly gotten chatlist is empty. If so, it means that all
+            // chats that were in the archive before have now been
+            // un-archived due to new messages. In this case, the
+            // archive view is closed automatically and the view
+            // switches to the standard, non-archived chats.
+            //
+            // However, this cannot be done when the user has entered
+            // something into the chat search bar because the chatlist
+            // might be empty just due to zero search chats matching the
+            // entered string. So in case the search string (m_query) is
+            // not empty, there's no automatic closure of the archive
+            // view. 
+            // TODO: maybe there's a better solution?
+
+            if (m_query == "") {
+                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+                if (0 == dc_chatlist_get_cnt(currentChatlist)) {
+                    m_showArchivedChats = false;
+                    dc_chatlist_unref(currentChatlist);
+                    currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+                    emit chatlistShowsArchivedOnly(m_showArchivedChats);
+                }
+            } else {
+                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
             }
+
         } else {
-            currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+            // we're in the standard (i.e., non-archive) view
+            if (m_query == "") {
+                currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+            } else {
+                currentChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
+            }
         }
         
         endResetModel();
@@ -1541,6 +1603,12 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
             start_io();
         }
 
+        // clear the query before obtaining a new chatlist
+        if (m_query != "") {
+            m_query = "";
+            emit clearChatlistQueryRequest();
+        }
+
         currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
 
         chatmodelIsConfigured = false;
@@ -1609,6 +1677,12 @@ void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
 
         if (restartNetwork) {
             start_io();
+        }
+
+        // clear the query before obtaining a new chatlist
+        if (m_query != "") {
+            m_query = "";
+            emit clearChatlistQueryRequest();
         }
 
         currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
@@ -1751,6 +1825,12 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
 
             if (restartNetwork) {
                 start_io();
+            }
+
+            // clear the query before obtaining a new chatlist
+            if (m_query != "") {
+                m_query = "";
+                emit clearChatlistQueryRequest();
             }
 
             currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
@@ -2583,6 +2663,12 @@ void DeltaHandler::startQrBackupImport()
             start_io();
         }
 
+        // clear the query before obtaining a new chatlist
+        if (m_query != "") {
+            m_query = "";
+            emit clearChatlistQueryRequest();
+        }
+
         currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
 
         chatmodelIsConfigured = false;
@@ -2802,7 +2888,11 @@ void DeltaHandler::changedContacts()
     if (currentChatlist) {
         beginResetModel();
         dc_chatlist_unref(currentChatlist);
-        currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+        if (m_query == "") {
+            currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+        } else {
+            currentChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
+        }
         endResetModel();
     }
 }
@@ -3192,9 +3282,56 @@ void DeltaHandler::periodicTimerActions()
         dc_chatlist_unref(currentChatlist);
 
         if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
-            currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+            if (m_query == "") {
+                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+            } else {
+                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
+            }
         } else {
-            currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+            if (m_query == "") {
+                currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+            } else {
+                currentChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
+            }
+        }
+
+        endResetModel();
+    }
+}
+
+
+void DeltaHandler::updateChatlistQueryText(QString query)
+{
+    // need to check if something has changed and exit, if not.
+    // Otherwise the app will crash because a click on an item in the
+    // list will trigger onDisplayTextChanged, which is connected to
+    // this method. At the same time, the click on the item will try
+    // to access the index of the list via onClicked, but the list is
+    // just about to reset by this method here.
+    if (query == m_query) {
+        return;
+    }
+
+    m_query = query;
+
+    if (m_hasConfiguredAccount && currentChatlist) {
+        beginResetModel();
+
+        dc_chatlist_unref(currentChatlist);
+
+        // if the query is empty, need to pass NULL instead of empty string
+        if (m_query == "") {
+            if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+            } else {
+                currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+            }
+        } else {
+            if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
+            } else {
+                currentChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
+            }
         }
 
         endResetModel();

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-11 15:42+0000\n"
+"POT-Creation-Date: 2023-06-11 16:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Type e-mail address above"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1117
+#: ../plugins/DeltaHandler/deltahandler.cpp:1115
 msgid "New message"
 msgstr ""
 
@@ -46,23 +46,27 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:537
+#: ../qml/Main.qml:487 ../qml/pages/ForwardMessage.qml:71
+msgid "Search"
+msgstr ""
+
+#: ../qml/Main.qml:538
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:742
+#: ../qml/Main.qml:743
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:806
+#: ../qml/Main.qml:807
 msgid "Loading…"
 msgstr ""
 
-#: ../qml/Main.qml:832 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:833 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:889 ../qml/pages/QrShowScan.qml:337
+#: ../qml/Main.qml:890 ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr ""
 
@@ -736,10 +740,6 @@ msgstr ""
 
 #: ../qml/pages/ForwardMessage.qml:49
 msgid "Close"
-msgstr ""
-
-#: ../qml/pages/ForwardMessage.qml:71
-msgid "Search"
 msgstr ""
 
 #: ../qml/pages/MessageInfosActions.qml:35

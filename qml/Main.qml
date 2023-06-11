@@ -484,6 +484,7 @@ MainView {
                     // character will then clear the field and the pressed character
                     // will appear.
                     inputMethodHints: Qt.ImhNoPredictiveText
+                    placeholderText: i18n.tr("Search")
                     onDisplayTextChanged: {
                         root.chatlistQueryTextHasChanged(displayText)
                     }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-11 16:20+0000\n"
+"POT-Creation-Date: 2023-06-12 20:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:487 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:487 ../qml/pages/ChatView.qml:173
+#: ../qml/pages/ChatView.qml:215 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr ""
 
@@ -78,7 +79,7 @@ msgstr ""
 #: ../qml/delegates/delegSelfAnimatedImage.qml:134
 #: ../qml/delegates/delegSelfAudio.qml:93
 #: ../qml/delegates/delegSelfImage.qml:134
-#: ../qml/delegates/delegSelfTextMsg.qml:90
+#: ../qml/delegates/delegSelfTextMsg.qml:94
 #: ../qml/delegates/delegSelfUnknown.qml:91
 msgid "Forwarded Message"
 msgstr ""
@@ -91,7 +92,7 @@ msgstr ""
 #: ../qml/delegates/delegSelfAnimatedImage.qml:185
 #: ../qml/delegates/delegSelfAudio.qml:146
 #: ../qml/delegates/delegSelfImage.qml:185
-#: ../qml/delegates/delegSelfTextMsg.qml:142
+#: ../qml/delegates/delegSelfTextMsg.qml:146
 #: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:157
 #: ../qml/pages/BlockedContacts.qml:63 ../qml/pages/BlockedContacts.qml:69
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
@@ -483,7 +484,7 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:152
+#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:156
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr ""
@@ -524,39 +525,39 @@ msgstr ""
 msgid "Mute forever"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:116
+#: ../qml/pages/ChatView.qml:120
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:123 ../qml/pages/ChatView.qml:143
+#: ../qml/pages/ChatView.qml:127 ../qml/pages/ChatView.qml:147
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:132 ../qml/pages/ProgressBackupImport.qml:69
+#: ../qml/pages/ChatView.qml:136 ../qml/pages/ProgressBackupImport.qml:69
 #: ../qml/pages/ProgressConfigAccount.qml:68
 #: ../qml/pages/ProgressQrBackupImport.qml:94
 msgid "Back"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1083
+#: ../qml/pages/ChatView.qml:1266
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1099 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1282 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1114
+#: ../qml/pages/ChatView.qml:1297
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1244
+#: ../qml/pages/ChatView.qml:1427
 msgid "Click to leave without sending"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1277
+#: ../qml/pages/ChatView.qml:1460
 msgid "Click to delete"
 msgstr ""
 

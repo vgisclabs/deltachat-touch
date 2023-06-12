@@ -45,20 +45,24 @@ UbuntuShape {
         top: parent.top
     }
     backgroundColor: {
-        switch (model.messageState) {
-            case DeltaHandler.StatePending:
-                return root.selfMessagePendingBackgroundColor;
-                break;
-            case DeltaHandler.StateDelivered:
-                return root.selfMessageSentBackgroundColor;
-                break;
-            case DeltaHandler.StateReceived:
-                return root.selfMessageSeenBackgroundColor;
-                break;
-            // TODO: different layout for failed messages?
-            case DeltaHandler.StateFailed:
-                return root.selfMessagePendingBackgroundColor;
-                break;
+        if (model.isSearchResult) {
+            return "red"
+        } else {
+            switch (model.messageState) {
+                case DeltaHandler.StatePending:
+                    return root.selfMessagePendingBackgroundColor;
+                    break;
+                case DeltaHandler.StateDelivered:
+                    return root.selfMessageSentBackgroundColor;
+                    break;
+                case DeltaHandler.StateReceived:
+                    return root.selfMessageSeenBackgroundColor;
+                    break;
+                // TODO: different layout for failed messages?
+                case DeltaHandler.StateFailed:
+                    return root.selfMessagePendingBackgroundColor;
+                    break;
+            }
         }
     }
     backgroundMode: UbuntuShape.SolidColor

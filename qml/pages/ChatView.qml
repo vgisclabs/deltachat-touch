@@ -40,6 +40,8 @@ Page {
 
     signal leavingChatViewPage()
 
+    signal messageQueryTextChanged(string query)
+
     function messageJump(jumpIndex) {
         view.positionViewAtIndex(jumpIndex, ListView.End)
 
@@ -57,6 +59,8 @@ Page {
                 quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
             }
         }
+
+        chatViewPage.messageQueryTextChanged.connect(DeltaHandler.chatmodel.updateQuery)
     }
 
     Component.onDestruction: {
@@ -162,8 +166,187 @@ Page {
                     }
                     return false
                 }
+            },
+
+            Action {
+                iconName: 'find'
+                text: i18n.tr("Search")
+                onTriggered: {
+                    if (searchRect.visible) {
+                        messageQueryField.text = ""
+                    }
+                    searchRect.visible = !searchRect.visible
+                }
             }
         ]
+    }
+
+    Rectangle {
+        id: searchRect
+        width: chatViewPage.width
+        height: units.gu(1) + messageQueryField.height + units.gu(1) + dividerItem.height
+        anchors {
+            top: header.bottom
+            left: chatViewPage.left
+        }
+        color: theme.palette.normal.background
+        visible: false
+
+        TextField {
+            id: messageQueryField
+            width: parent.width - units.gu(3) - skipToLastRect.width - units.gu(1) - nextMsgRect.width - units.gu(1) - (searchStatusLabel.visible ? searchStatusLabel.contentWidth + units.gu(1) : 0) - prevMsgRect.width - units.gu(1) - skipToFirstIcon.width - units.gu(1)
+            anchors {
+                left: parent.left
+                leftMargin: units.gu(2)
+                top: searchRect.top
+                topMargin: units.gu(1)
+            }
+
+            // Without inputMethodHints set to Qg.ImhNoPredictiveText, the
+            // clear button only works in x86_64, but not aarch64 and armhf.
+            // For the latter two, if the displayed text does not contain a
+            // blank, it just doesn't vanish when the button is pressed, but
+            // cannot be removed by backspace either. Pressing another
+            // character will then clear the field and the pressed character
+            // will appear.
+            inputMethodHints: Qt.ImhNoPredictiveText
+            onDisplayTextChanged: {
+                messageQueryTextChanged(displayText)            }
+            placeholderText: i18n.tr("Search")
+        }
+
+        Rectangle {
+            id: skipToFirstRect
+            width: units.gu(2)
+            height: searchRect.height
+
+            anchors {
+                right: prevMsgRect.left
+                rightMargin: units.gu(1)
+                top: searchRect.top
+            }
+            color: searchRect.color
+    
+            Icon {
+                id: skipToFirstIcon
+                name: "media-skip-backward"
+                width: units.gu(2)
+                anchors{
+                    horizontalCenter: parent.horizontalCenter
+                    verticalCenter: parent.verticalCenter
+                }
+                color: root.darkmode ? "white" : "black"
+            }
+            MouseArea {
+                anchors.fill: parent
+                //onClicked: // TODO
+            }
+        }
+
+        Rectangle {
+            id: prevMsgRect
+            width: units.gu(2)
+            height: searchRect.height
+
+            anchors {
+                right: searchStatusLabel.visible ? searchStatusLabel.left : nextMsgRect.left
+                rightMargin: units.gu(1)
+                top: searchRect.top
+            }
+            color: searchRect.color
+    
+            Icon {
+                id: prevMsgIcon
+                name: "media-playback-start-rtl"
+                width: units.gu(2)
+                anchors{
+                    horizontalCenter: parent.horizontalCenter
+                    verticalCenter: parent.verticalCenter
+                }
+                color: root.darkmode ? "white" : "black"
+            }
+            MouseArea {
+                anchors.fill: parent
+                //onClicked: // TODO
+            }
+        }
+
+        Label {
+            id: searchStatusLabel
+            anchors {
+                right: nextMsgRect.left
+                rightMargin: units.gu(1)
+                verticalCenter: searchRect.verticalCenter
+            }
+            text: "not used yet"
+        }
+
+        Rectangle {
+            id: nextMsgRect
+            width: units.gu(2)
+            height: searchRect.height
+
+            anchors {
+                right: skipToLastRect.left
+                rightMargin: units.gu(1)
+                top: searchRect.top
+            }
+            color: searchRect.color
+    
+            Icon {
+                id: nextMsgIcon
+                name: "media-playback-start"
+                width: units.gu(2)
+                anchors{
+                    horizontalCenter: parent.horizontalCenter
+                    verticalCenter: parent.verticalCenter
+                }
+                color: root.darkmode ? "white" : "black"
+            }
+            MouseArea {
+                anchors.fill: parent
+                //onClicked: // TODO
+            }
+        }
+
+        Rectangle {
+            id: skipToLastRect
+            width: units.gu(2)
+            height: searchRect.height
+
+            anchors {
+                right: searchRect.right
+                rightMargin: units.gu(1)
+                top: searchRect.top
+            }
+            color: searchRect.color
+    
+            Icon {
+                id: skipToLastIcon
+                name: "media-skip-forward"
+                width: units.gu(2)
+                anchors{
+                    horizontalCenter: parent.horizontalCenter
+                    verticalCenter: parent.verticalCenter
+                }
+                color: root.darkmode ? "white" : "black"
+            }
+            MouseArea {
+                anchors.fill: parent
+                //onClicked: // TODO
+            }
+        }
+
+        ListItem {
+            id: dividerItem
+            height: divider.height
+            anchors {
+                top: messageQueryField.bottom
+                topMargin: units.gu(1)
+            }
+            divider.visible: true
+        }
+        
     }
 
     Image {
@@ -315,10 +498,10 @@ Page {
     ListView {
         id: view
         clip: true
-        anchors.top: header.bottom
+        anchors.top: searchRect.visible ? searchRect.bottom : header.bottom
         topMargin: units.gu(1)
         width: parent.width
-        height: chatlistPage.height - (header.height) - units.gu(1) - (messageCreatorBox.visible ? messageCreatorBox.height : requestReactionRect.height)
+        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(1) - (messageCreatorBox.visible ? messageCreatorBox.height : requestReactionRect.height)
         model: DeltaHandler.chatmodel
         delegate: delegateListItem
         verticalLayoutDirection: ListView.BottomToTop

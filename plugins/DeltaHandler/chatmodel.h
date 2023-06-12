@@ -37,7 +37,7 @@ public:
     ~ChatModel();
 
     // TODO remove MessageSeenRole
-    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole };
+    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole };
 
     Q_INVOKABLE void deleteMessage(int myindex);
 
@@ -106,6 +106,9 @@ public slots:
     void chatViewIsOpened();
     void chatViewIsClosed();
 
+    // handles entries into the search field in ChatView
+    void updateQuery(QString query);
+
 signals:
     void markedAllMessagesSeen();
     void jumpToMsg(int myindex);
@@ -154,6 +157,11 @@ private:
     mutable dc_msg_t* data_tempMsg;
 
     QString copyToCache(QString fromFile) const;
+
+    // for searching messages
+    QString m_query;
+    dc_array_t* oldSearchMsgArray;
+    dc_array_t* currentSearchMsgArray;
 };
 
 #endif // CHATMODEL_H

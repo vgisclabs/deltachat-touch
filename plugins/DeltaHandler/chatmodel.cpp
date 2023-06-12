@@ -22,7 +22,7 @@
 #include <limits> // for invalidating data_row
 
 ChatModel::ChatModel(QObject* parent)
-    : QAbstractListModel(parent), currentMsgContext {nullptr}, chatID {0}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}
+    : QAbstractListModel(parent), currentMsgContext {nullptr}, chatID {0}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
 { 
 };
 
@@ -34,6 +34,14 @@ ChatModel::~ChatModel()
 
     if (data_tempMsg) {
         dc_msg_unref(data_tempMsg);
+    }
+
+    if (oldSearchMsgArray) {
+        dc_array_unref(oldSearchMsgArray);
+    }
+
+    if (currentSearchMsgArray) {
+        dc_array_unref(currentSearchMsgArray);
     }
 }
 
@@ -73,6 +81,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[ImageWidthRole] = "imagewidth";
     roles[AvatarColorRole] = "avatarColor";
     roles[AvatarInitialRole] = "avatarInitial";
+    roles[IsSearchResultRole] = "isSearchResult";
 
     return roles;
 }
@@ -482,6 +491,18 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                 tempQString = QString(tempQString.at(0)).toUpper();
             }
             retval = tempQString;
+            break;
+
+        case ChatModel::IsSearchResultRole:
+            retval = false;
+            if (currentSearchMsgArray) {
+                for (size_t i = 0; i < dc_array_get_cnt(currentSearchMsgArray); ++i) {
+                    if (tempMsgID == dc_array_get_id(currentSearchMsgArray, i)) {
+                        retval = true;
+                        break;
+                    }
+                }
+            }
             break;
 
         default:
@@ -1260,4 +1281,166 @@ void ChatModel::chatViewIsClosed()
 {
     m_chatIsBeingViewed = false;
     disconnect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
+}
+
+
+void ChatModel::updateQuery(QString query)
+{
+    if (query == m_query) {
+        return;
+    }
+
+    // is used multiple times below for dataChanged()
+    QVector<int> roleVector;
+    roleVector.append(ChatModel::IsSearchResultRole);
+
+    if (oldSearchMsgArray) {
+        dc_array_unref(oldSearchMsgArray);
+    }
+    oldSearchMsgArray = currentSearchMsgArray;
+
+    m_query = query;
+
+    if (query == "") {
+        // have to set currentSearchMsgArray to nullptr
+        // before emitting dataChanged() (but NOT
+        // unref it as it points to the same address
+        // as oldSearchMsgArray!)
+        currentSearchMsgArray = nullptr;
+
+        if (oldSearchMsgArray) {
+            // Situation: Search string has been cleared,
+            // but previously, there were search results.
+            // We have to invalidate them.
+            for (size_t i = 0; i < dc_array_get_cnt(oldSearchMsgArray); ++i) {
+                uint32_t tempOldID = dc_array_get_id(oldSearchMsgArray, i);
+                for (size_t j = 0; j < currentMsgCount; ++j) {
+                    if (tempOldID == msgVector[j]) {
+                        emit dataChanged(index(j, 0), index(j, 0), roleVector);
+                        break;
+                    }
+                }
+            }
+        }
+        return;
+    } 
+    
+    // query contains a string, otherwise the method would
+    // have returned above
+
+    // must not unref currentSearchMsgArray here as it has been
+    // copied to oldSearchMsgArray
+    currentSearchMsgArray = dc_search_msgs(currentMsgContext, chatID, m_query.toUtf8().constData());
+
+    if (!currentSearchMsgArray) {
+        // currentSearchMsgArray == NULL => no results found
+        if (oldSearchMsgArray) {
+            // Situation: new search string did not give any results,
+            // but the one before had results.
+            //
+            // This means that at the moment, the msgIDs in
+            // oldSearchMsgArray are shown as search results in the
+            // ChatView => get the index of each msgID and emit
+            // dataChanged() so the messages are not shown as matching the
+            // search anymore
+            for (size_t i = 0; i < dc_array_get_cnt(oldSearchMsgArray); ++i) {
+                uint32_t tempOldID = dc_array_get_id(oldSearchMsgArray, i);
+                for (size_t j = 0; j < currentMsgCount; ++j) {
+                    if (tempOldID == msgVector[j]) {
+                        emit dataChanged(index(j, 0), index(j, 0), roleVector);
+                        break;
+                    }
+                }
+            } // end getting the index of each msgID and emitting dataChanged()
+
+            // TODO: handle search counter, tell the ChatView that no
+            // messages match the search string
+
+            // all done, return
+            return; 
+        } else {
+            // Situation: neither old nor new search gave any results,
+            // nothing to do, the method can return
+            return;
+        }
+    } else {
+        // results were found, currentSearchMsgArray is not empty
+        if (oldSearchMsgArray) {
+            // Situation: There are  current search results and previous
+            // search results. We have to unset all previous results
+            // that are not in the list of the current ones, and vice
+            // versa. Note that it is not guaranteed that the current
+            // search results are a subset of the previous ones - the
+            // user might have entered something in the middle of the
+            // previous string, or something from the previous string
+            // might have been deleted.
+            //
+            // All msgIDs that are part of the previous search, but not
+            // of this one have to be unset, and the new ones that are
+            // not in the previous set have to be marked.
+
+            // First, check for message IDs that are only in the old
+            // array:
+            for (size_t i = 0; i < dc_array_get_cnt(oldSearchMsgArray); ++i) {
+                uint32_t tempOldID = dc_array_get_id(oldSearchMsgArray, i);
+                size_t j;
+                for (j = 0; j < dc_array_get_cnt(currentSearchMsgArray); ++j) {
+                    uint32_t tempNewID = dc_array_get_id(currentSearchMsgArray, j);
+                    if (tempOldID == tempNewID) {
+                        break;
+                    }
+                }
+                if (j == dc_array_get_cnt(currentSearchMsgArray)) {
+                    // if we're here it means that index i of
+                    // oldSearchMsgArray is not in
+                    // currentSearchMsgArray, so we have to
+                    // emit dataChanged(). For this, the index
+                    // of the tempOldID has to be obtained:
+                    for (size_t k = 0; k < currentMsgCount; ++k) {
+                        if (tempOldID == msgVector[k]) {
+                            emit dataChanged(index(k, 0), index(k, 0), roleVector);
+                            break;
+                        }
+                    }
+                }
+            }
+            // now check for messages that are only in the new array
+            for (size_t i = 0; i < dc_array_get_cnt(currentSearchMsgArray); ++i) {
+                uint32_t tempNewID = dc_array_get_id(currentSearchMsgArray, i);
+                size_t j;
+                for (j = 0; j < dc_array_get_cnt(oldSearchMsgArray); ++j) {
+                    uint32_t tempOldID = dc_array_get_id(oldSearchMsgArray, j);
+                    if (tempOldID == tempNewID) {
+                        break;
+                    }
+                }
+                if (j == dc_array_get_cnt(oldSearchMsgArray)) {
+                    // if we're here it means that index i of
+                    // currentSearchMsgArray is not in
+                    // oldSearchMsgArray, so we have to
+                    // emit dataChanged(). For this, the index
+                    // of the tempNewID has to be obtained:
+                    for (size_t k = 0; k < currentMsgCount; ++k) {
+                        if (tempNewID == msgVector[k]) {
+                            emit dataChanged(index(k, 0), index(k, 0), roleVector);
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            // Situation: we have new search results, but no old ones,
+            // so we just have to mark all IDs in the
+            // currentSearchMsgArray
+            for (size_t i = 0; i < dc_array_get_cnt(currentSearchMsgArray); ++i) {
+                uint32_t tempNewID = dc_array_get_id(currentSearchMsgArray, i);
+                for (size_t j = 0; j < currentMsgCount; ++j) {
+                    if (tempNewID == msgVector[j]) {
+                        emit dataChanged(index(j, 0), index(j, 0), roleVector);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

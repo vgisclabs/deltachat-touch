@@ -61,20 +61,24 @@ UbuntuShape {
     }
 
     backgroundColor: {
-        switch (model.messageState) {
-            case DeltaHandler.StatePending:
-                return root.selfMessagePendingBackgroundColor;
-                break;
-            case DeltaHandler.StateDelivered:
-                return root.selfMessageSentBackgroundColor;
-                break;
-            case DeltaHandler.StateReceived:
-                return root.selfMessageSeenBackgroundColor;
-                break;
-            // TODO: different layout for failed messages?
-            case DeltaHandler.StateFailed:
-                return root.selfMessagePendingBackgroundColor;
-                break;
+        if (model.isSearchResult) {
+            return root.searchResultMessageColor
+        } else {
+            switch (model.messageState) {
+                case DeltaHandler.StatePending:
+                    return root.selfMessagePendingBackgroundColor;
+                    break;
+                case DeltaHandler.StateDelivered:
+                    return root.selfMessageSentBackgroundColor;
+                    break;
+                case DeltaHandler.StateReceived:
+                    return root.selfMessageSeenBackgroundColor;
+                    break;
+                // TODO: different layout for failed messages?
+                case DeltaHandler.StateFailed:
+                    return root.selfMessagePendingBackgroundColor;
+                    break;
+            }
         }
     }
     backgroundMode: UbuntuShape.SolidColor
@@ -111,7 +115,7 @@ UbuntuShape {
             msgLabel.linkColor = root.darkmode ? (model.messageSeen ? "#8080f7" : "#000055") : "#0000ff"
         }
         // TODO: solve with model.messageState instead of model.message.seen?
-        color: model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
+        color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
         wrapMode: Text.Wrap
     }
 
@@ -146,7 +150,7 @@ UbuntuShape {
                     return Qt.resolvedUrl('../../assets/sent_black.svg');
                     break;
                 case DeltaHandler.StateReceived:
-                    if (root.darkmode) {
+                    if (root.darkmode && !model.isSearchResult) {
                         return Qt.resolvedUrl('../../assets/read_white.svg');
                         break;
                     } else {

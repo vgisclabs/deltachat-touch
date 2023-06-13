@@ -41,10 +41,16 @@ Page {
     signal leavingChatViewPage()
 
     signal messageQueryTextChanged(string query)
+    signal searchJumpRequest(int posType)
 
     function messageJump(jumpIndex) {
         view.positionViewAtIndex(jumpIndex, ListView.End)
 
+    }
+
+    function updateSearchStatusLabel(current, total) {
+        searchStatusLabel.text = current + "/" + total
+       
     }
 
     Component.onCompleted: {
@@ -61,10 +67,13 @@ Page {
         }
 
         chatViewPage.messageQueryTextChanged.connect(DeltaHandler.chatmodel.updateQuery)
+        DeltaHandler.chatmodel.searchCountUpdate.connect(updateSearchStatusLabel)
+        chatViewPage.searchJumpRequest.connect(DeltaHandler.chatmodel.searchJumpSlot)
     }
 
     Component.onDestruction: {
         messageAudio.stop()
+        messageQueryField.text = "" 
 
         if (audioRecordMode) {
             audioRecordBox.stopAndCleanupVoiceRecording()
@@ -217,7 +226,7 @@ Page {
 
         Rectangle {
             id: skipToFirstRect
-            width: units.gu(2)
+            width: units.gu(2.5)
             height: searchRect.height
 
             anchors {
@@ -226,11 +235,12 @@ Page {
                 top: searchRect.top
             }
             color: searchRect.color
+            visible: messageQueryField.text != ""
     
             Icon {
                 id: skipToFirstIcon
                 name: "media-skip-backward"
-                width: units.gu(2)
+                width: units.gu(2.5)
                 anchors{
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
@@ -239,13 +249,16 @@ Page {
             }
             MouseArea {
                 anchors.fill: parent
-                //onClicked: // TODO
+                onClicked: {
+                    messageQueryField.focus = false
+                    searchJumpRequest(DeltaHandler.PositionFirst)
+                }
             }
         }
 
         Rectangle {
             id: prevMsgRect
-            width: units.gu(2)
+            width: units.gu(2.5)
             height: searchRect.height
 
             anchors {
@@ -254,11 +267,12 @@ Page {
                 top: searchRect.top
             }
             color: searchRect.color
+            visible: messageQueryField.text != ""
     
             Icon {
                 id: prevMsgIcon
                 name: "media-playback-start-rtl"
-                width: units.gu(2)
+                width: units.gu(2.5)
                 anchors{
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
@@ -267,7 +281,10 @@ Page {
             }
             MouseArea {
                 anchors.fill: parent
-                //onClicked: // TODO
+                onClicked: {
+                    messageQueryField.focus = false
+                    searchJumpRequest(DeltaHandler.PositionPrev)
+                }
             }
         }
 
@@ -278,12 +295,13 @@ Page {
                 rightMargin: units.gu(1)
                 verticalCenter: searchRect.verticalCenter
             }
-            text: "not used yet"
+            text: "0/0"
+            visible: messageQueryField.text != ""
         }
 
         Rectangle {
             id: nextMsgRect
-            width: units.gu(2)
+            width: units.gu(2.5)
             height: searchRect.height
 
             anchors {
@@ -292,11 +310,12 @@ Page {
                 top: searchRect.top
             }
             color: searchRect.color
+            visible: messageQueryField.text != ""
     
             Icon {
                 id: nextMsgIcon
                 name: "media-playback-start"
-                width: units.gu(2)
+                width: units.gu(2.5)
                 anchors{
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
@@ -305,13 +324,16 @@ Page {
             }
             MouseArea {
                 anchors.fill: parent
-                //onClicked: // TODO
+                onClicked: {
+                    messageQueryField.focus = false
+                    searchJumpRequest(DeltaHandler.PositionNext)
+                }
             }
         }
 
         Rectangle {
             id: skipToLastRect
-            width: units.gu(2)
+            width: units.gu(2.5)
             height: searchRect.height
 
             anchors {
@@ -320,11 +342,12 @@ Page {
                 top: searchRect.top
             }
             color: searchRect.color
+            visible: messageQueryField.text != ""
     
             Icon {
                 id: skipToLastIcon
                 name: "media-skip-forward"
-                width: units.gu(2)
+                width: units.gu(2.5)
                 anchors{
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
@@ -333,7 +356,10 @@ Page {
             }
             MouseArea {
                 anchors.fill: parent
-                //onClicked: // TODO
+                onClicked: {
+                    messageQueryField.focus = false
+                    searchJumpRequest(DeltaHandler.PositionLast)
+                }
             }
         }
 

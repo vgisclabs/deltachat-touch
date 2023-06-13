@@ -35,7 +35,7 @@ UbuntuShape {
         leftMargin: (parentWidth - width)/2
         top: parent.top
     }
-    backgroundColor: root.darkmode ? "#c0c0c0" : "#505050"
+    backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.darkmode ? "#c0c0c0" : "#505050"
     aspect: UbuntuShape.Flat
     radius: "large"
 
@@ -51,7 +51,7 @@ UbuntuShape {
             topMargin: units.gu(0.5)
         }
         text: model.text
-        color: root.darkmode ? "black" : "white"
+        color: model.isSearchResult ? "black" : root.darkmode ? "black" : "white"
         wrapMode: Text.Wrap
     }
 

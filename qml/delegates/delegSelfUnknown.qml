@@ -46,20 +46,24 @@ UbuntuShape {
         top: parent.top
     }
     backgroundColor: {
-        switch (model.messageState) {
-            case DeltaHandler.StatePending:
-                return root.selfMessagePendingBackgroundColor;
-                break;
-            case DeltaHandler.StateDelivered:
-                return root.selfMessageSentBackgroundColor;
-                break;
-            case DeltaHandler.StateReceived:
-                return root.selfMessageSeenBackgroundColor;
-                break;
-            // TODO: different layout for failed messages?
-            case DeltaHandler.StateFailed:
-                return root.selfMessagePendingBackgroundColor;
-                break;
+        if (model.isSearchResult) {
+            return root.searchResultMessageColor
+        } else {
+            switch (model.messageState) {
+                case DeltaHandler.StatePending:
+                    return root.selfMessagePendingBackgroundColor;
+                    break;
+                case DeltaHandler.StateDelivered:
+                    return root.selfMessageSentBackgroundColor;
+                    break;
+                case DeltaHandler.StateReceived:
+                    return root.selfMessageSeenBackgroundColor;
+                    break;
+                // TODO: different layout for failed messages?
+                case DeltaHandler.StateFailed:
+                    return root.selfMessagePendingBackgroundColor;
+                    break;
+            }
         }
     }
     backgroundMode: UbuntuShape.SolidColor
@@ -162,7 +166,7 @@ UbuntuShape {
         }
         text: model.summarytext
         wrapMode: Text.Wrap
-        color: model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
+        color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
         font.italic: true
     }
 
@@ -226,7 +230,7 @@ UbuntuShape {
                     return Qt.resolvedUrl('../../assets/sent_black.svg');
                     break;
                 case DeltaHandler.StateReceived:
-                    if (root.darkmode) {
+                    if (root.darkmode && !model.isSearchResult) {
                         return Qt.resolvedUrl('../../assets/read_white.svg');
                         break;
                     } else {

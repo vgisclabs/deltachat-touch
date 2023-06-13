@@ -85,7 +85,7 @@ Item {
             leftMargin: units.gu(1)
             top: parent.top
         }
-        backgroundColor: root.otherMessageBackgroundColor
+        backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.otherMessageBackgroundColor
         backgroundMode: UbuntuShape.SolidColor
         aspect: UbuntuShape.Flat
         radius: "medium"
@@ -112,6 +112,7 @@ Item {
                 topMargin: units.gu(1)
             }
             text: i18n.tr("Forwarded Message")
+            color: msgLabel.color
             font.bold: true
             visible: model.isForwarded
         }
@@ -139,6 +140,7 @@ Item {
                 top: quoteRectangle.top
             }
             text: model.quotedText
+            color: msgLabel.color
             wrapMode: Text.Wrap
             visible: text != ""
 
@@ -167,6 +169,7 @@ Item {
                 }
             } 
 
+            color: msgLabel.color
             fontSize: "x-small"
             font.bold: true
             visible: quoteLabel.visible
@@ -181,6 +184,7 @@ Item {
                 topMargin: quoteLabel.visible ? units.gu(1) : (forwardLabel.visible ? units.gu(0.5) : units.gu(1))
             }
             text: model.summarytext
+            color: msgLabel.color
             font.italic: true
             width: parentWidth - avatarShape.width - units.gu(5)
             wrapMode: Text.Wrap
@@ -195,6 +199,7 @@ Item {
                 topMargin: units.gu(1)
             }
             text: model.text
+            color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
             visible: text != ""
             width: parentWidth - avatarShape.width - units.gu(5)
             wrapMode: Text.Wrap
@@ -221,6 +226,7 @@ Item {
                 bottom: username.bottom
             }
             //textSize: Label.Small
+            color: msgLabel.color
             fontSize: "x-small"
             text: model.date
         }

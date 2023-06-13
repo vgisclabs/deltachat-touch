@@ -52,9 +52,13 @@ public:
     enum MsgViewType { AudioType, FileType, GifType, ImageType, StickerType, TextType, VideoType, VideochatInvitationType, VoiceType, WebXdcType, UnknownType };
     Q_ENUM(MsgViewType)
 
+    // TODO: belongs to ChatModel, but ChatModel isn't registered as
+    // a module in Qt (yet?).
     enum MsgState { StatePending, StateFailed, StateDelivered, StateReceived };
     Q_ENUM(MsgState)
 
+    // TODO: belongs to ChatModel, but ChatModel isn't registered as
+    // a module in Qt (yet?).
     enum DownloadState { DownloadDone, DownloadAvailable, DownloadInProgress, DownloadFailure };
     Q_ENUM(DownloadState)
 
@@ -63,6 +67,11 @@ public:
 
     enum VoiceMessageQuality { LowRecordingQuality, BalancedRecordingQuality, HighRecordingQuality };
     Q_ENUM(VoiceMessageQuality)
+
+    // TODO: belongs to ChatModel, but ChatModel isn't registered as
+    // a module in Qt (yet?).
+    enum SearchJumpToPosition { PositionFirst, PositionPrev, PositionNext, PositionLast };
+    Q_ENUM(SearchJumpToPosition)
 
     // see m_chatIDMomentaryIndex below
     Q_INVOKABLE void setChatIDMomentaryIndex(int myindex);

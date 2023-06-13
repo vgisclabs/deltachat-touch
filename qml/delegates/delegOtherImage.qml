@@ -98,7 +98,7 @@ Item {
             }
 
             backgroundMode: UbuntuShape.SolidColor
-            backgroundColor: root.otherMessageBackgroundColor
+            backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.otherMessageBackgroundColor
             aspect: UbuntuShape.Flat
 
             // If it's only the image, the radius has to be smaller as
@@ -153,6 +153,7 @@ Item {
                     topMargin: units.gu(1)
                 }
                 text: i18n.tr("Forwarded Message")
+                color: msgLabel.color
                 font.bold: true
                 visible: model.isForwarded
             }
@@ -180,6 +181,7 @@ Item {
                     top: quoteRectangle.top
                 }
                 text: model.quotedText
+                color: msgLabel.color
                 wrapMode: Text.Wrap
                 visible: text != ""
 
@@ -208,6 +210,7 @@ Item {
                     }
                 } 
 
+                color: msgLabel.color
                 fontSize: "x-small"
                 font.bold: true
                 visible: quoteLabel.visible
@@ -223,6 +226,7 @@ Item {
                     topMargin: quoteLabel.visible ? units.gu(1) : (forwardLabel.visible ? units.gu(0.5) : units.gu(1))
                 }
                 visible: model.text != ""
+                color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
                 text: model.text
                 // TODO: 'QML Label: Binding loop detected for property "width"'
                 //width: contentWidth > parentWidth - units.gu(2) ? parentWidth - units.gu(2) : contentWidth
@@ -251,6 +255,7 @@ Item {
                     bottom: username.bottom
                 }
                 //textSize: Label.Small
+                color: msgLabel.color
                 fontSize: "x-small"
                 text: model.date
             }

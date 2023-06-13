@@ -62,20 +62,24 @@ Item {
         }
 
         backgroundColor: {
-            switch (model.messageState) {
-                case DeltaHandler.StatePending:
-                    return root.selfMessagePendingBackgroundColor;
-                    break;
-                case DeltaHandler.StateDelivered:
-                    return root.selfMessageSentBackgroundColor;
-                    break;
-                case DeltaHandler.StateReceived:
-                    return root.selfMessageSeenBackgroundColor;
-                    break;
-                // TODO: different layout for failed messages?
-                case DeltaHandler.StateFailed:
-                    return root.selfMessagePendingBackgroundColor;
-                    break;
+            if (model.isSearchResult) {
+                return root.searchResultMessageColor
+            } else {
+                switch (model.messageState) {
+                    case DeltaHandler.StatePending:
+                        return root.selfMessagePendingBackgroundColor;
+                        break;
+                    case DeltaHandler.StateDelivered:
+                        return root.selfMessageSentBackgroundColor;
+                        break;
+                    case DeltaHandler.StateReceived:
+                        return root.selfMessageSeenBackgroundColor;
+                        break;
+                    // TODO: different layout for failed messages?
+                    case DeltaHandler.StateFailed:
+                        return root.selfMessagePendingBackgroundColor;
+                        break;
+                }
             }
         }
         backgroundMode: UbuntuShape.SolidColor
@@ -204,7 +208,7 @@ Item {
                 topMargin: quoteLabel.visible ? units.gu(1) : (forwardLabel.visible ? units.gu(0.5) : units.gu(1))
             }
             text: model.text
-            color: model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
+            color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
             visible: model.text != ""
             wrapMode: Text.Wrap
         }
@@ -240,7 +244,7 @@ Item {
                         return Qt.resolvedUrl('../../assets/sent_black.svg');
                         break;
                     case DeltaHandler.StateReceived:
-                        if (root.darkmode) {
+                        if (root.darkmode && !model.isSearchResult) {
                             return Qt.resolvedUrl('../../assets/read_white.svg');
                             break;
                         } else {

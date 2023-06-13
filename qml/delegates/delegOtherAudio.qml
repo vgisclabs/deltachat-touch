@@ -103,7 +103,7 @@ Item {
             }
 
             backgroundMode: UbuntuShape.SolidColor
-            backgroundColor: root.otherMessageBackgroundColor
+            backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.otherMessageBackgroundColor
             aspect: UbuntuShape.Flat
 
             Rectangle {
@@ -128,6 +128,7 @@ Item {
                     topMargin: units.gu(1)
                 }
                 text: i18n.tr("Forwarded Message")
+                color: msgLabel.color
                 font.bold: true
                 visible: model.isForwarded
             }
@@ -155,6 +156,7 @@ Item {
                     top: quoteRectangle.top
                 }
                 text: model.quotedText
+                color: msgLabel.color
                 wrapMode: Text.Wrap
                 visible: text != ""
 
@@ -183,6 +185,7 @@ Item {
                     }
                 } 
 
+                color: msgLabel.color
                 fontSize: "x-small"
                 font.bold: true
                 visible: quoteLabel.visible
@@ -231,6 +234,7 @@ Item {
                 }
                 // duration as queried via dc_msg_get_duration() is 0 in most cases, omit for now
                 text: (model.msgViewType === DeltaHandler.AudioType ? i18n.tr("Audio") : i18n.tr("Voice Message"))// + " " + model.duration
+                color: msgLabel.color
             }
 
             Label {
@@ -244,6 +248,7 @@ Item {
                 }
                 visible: model.text != ""
                 text: model.text
+                color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
                 wrapMode: Text.Wrap
             }
 
@@ -269,6 +274,7 @@ Item {
                     bottom: username.bottom
                 }
                 //textSize: Label.Small
+                color: msgLabel.color
                 fontSize: "x-small"
                 text: model.date
             }

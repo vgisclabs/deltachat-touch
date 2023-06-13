@@ -1321,6 +1321,8 @@ void ChatModel::updateQuery(QString query)
                     }
                 }
             }
+            dc_array_unref(oldSearchMsgArray);
+            oldSearchMsgArray = nullptr;
         }
         return;
     } 
@@ -1331,6 +1333,15 @@ void ChatModel::updateQuery(QString query)
     // must not unref currentSearchMsgArray here as it has been
     // copied to oldSearchMsgArray
     currentSearchMsgArray = dc_search_msgs(currentMsgContext, chatID, m_query.toUtf8().constData());
+    m_searchCountTotal = dc_array_get_cnt(currentSearchMsgArray);
+    if (m_searchCountTotal > 0) {
+        m_searchCountCurrent = m_searchCountTotal - 1;
+        emit searchCountUpdate(m_searchCountCurrent + 1, m_searchCountTotal);
+        int tempIndex = getIndexOfMsgID(dc_array_get_id(currentSearchMsgArray, m_searchCountCurrent));
+        emit jumpToMsg(tempIndex);
+    } else {
+        emit searchCountUpdate(0, 0);
+    }
 
     if (!currentSearchMsgArray) {
         // currentSearchMsgArray == NULL => no results found
@@ -1443,4 +1454,57 @@ void ChatModel::updateQuery(QString query)
             }
         }
     }
+}
+
+
+void ChatModel::searchJumpSlot(int posType)
+{
+    if (m_searchCountTotal == 0) {
+        return;
+    }
+
+    switch (posType) {
+        case DeltaHandler::SearchJumpToPosition::PositionFirst:
+            m_searchCountCurrent = 0;
+            emit jumpToMsg(getIndexOfMsgID(dc_array_get_id(currentSearchMsgArray, 0)));
+            emit searchCountUpdate(m_searchCountCurrent + 1, m_searchCountTotal);
+            break;
+
+        case DeltaHandler::SearchJumpToPosition::PositionPrev:
+            if (m_searchCountCurrent > 0) {
+                --m_searchCountCurrent;
+            }
+            emit jumpToMsg(getIndexOfMsgID(dc_array_get_id(currentSearchMsgArray, m_searchCountCurrent)));
+            emit searchCountUpdate(m_searchCountCurrent + 1, m_searchCountTotal);
+            break;
+
+        case DeltaHandler::SearchJumpToPosition::PositionNext:
+            if (m_searchCountCurrent + 1 < m_searchCountTotal) {
+                ++m_searchCountCurrent;
+            }
+            emit jumpToMsg(getIndexOfMsgID(dc_array_get_id(currentSearchMsgArray, m_searchCountCurrent)));
+            emit searchCountUpdate(m_searchCountCurrent + 1, m_searchCountTotal);
+            break;
+
+        case DeltaHandler::SearchJumpToPosition::PositionLast:
+            m_searchCountCurrent = m_searchCountTotal - 1;
+            emit searchCountUpdate(m_searchCountCurrent + 1, m_searchCountTotal);
+            emit jumpToMsg(getIndexOfMsgID(dc_array_get_id(currentSearchMsgArray, m_searchCountCurrent)));
+            break;
+
+        default:
+            break;
+    }
+}
+
+
+int ChatModel::getIndexOfMsgID(uint32_t msgID)
+{
+    for (size_t i = 0; i < currentMsgCount; ++i) {
+        if (msgID == msgVector[i]) {
+            return i;
+        }
+    }
+    // if we're here, the msgID was not found in msgVector
+    return -1;
 }

@@ -108,12 +108,14 @@ public slots:
 
     // handles entries into the search field in ChatView
     void updateQuery(QString query);
+    void searchJumpSlot(int posType);
 
 signals:
     void markedAllMessagesSeen();
     void jumpToMsg(int myindex);
     void draftHasQuoteChanged();
     void chatDataChanged();
+    void searchCountUpdate(int current, int total);
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -162,6 +164,13 @@ private:
     QString m_query;
     dc_array_t* oldSearchMsgArray;
     dc_array_t* currentSearchMsgArray;
+    // total number of entries in currentSearchMsgArray
+    int m_searchCountTotal;
+    // current index for cycling through search results
+    int m_searchCountCurrent;
+
+    int getIndexOfMsgID(uint32_t msgID);
 };
+
 
 #endif // CHATMODEL_H

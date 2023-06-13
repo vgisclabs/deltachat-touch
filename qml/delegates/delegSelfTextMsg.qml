@@ -46,7 +46,7 @@ UbuntuShape {
     }
     backgroundColor: {
         if (model.isSearchResult) {
-            return "red"
+            return root.searchResultMessageColor
         } else {
             switch (model.messageState) {
                 case DeltaHandler.StatePending:
@@ -166,7 +166,7 @@ UbuntuShape {
         }
         text: model.text
         // TODO: solve with model.messageState instead of model.message.seen?
-        color: model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
+        color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
         wrapMode: Text.Wrap
     }
 
@@ -215,7 +215,7 @@ UbuntuShape {
                     return Qt.resolvedUrl('../../assets/sent_black.svg');
                     break;
                 case DeltaHandler.StateReceived:
-                    if (root.darkmode) {
+                    if (root.darkmode && !model.isSearchResult) {
                         return Qt.resolvedUrl('../../assets/read_white.svg');
                         break;
                     } else {

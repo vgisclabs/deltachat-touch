@@ -99,7 +99,7 @@ Item {
             leftMargin: units.gu(1)
             top: parent.top
         }
-        backgroundColor: root.otherMessageBackgroundColor
+        backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.otherMessageBackgroundColor
         backgroundMode: UbuntuShape.SolidColor
         aspect: UbuntuShape.Flat
         radius: "medium"
@@ -128,6 +128,7 @@ Item {
                 topMargin: units.gu(1)
             }
             text: model.summarytext + delegItem.stateText
+            color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
             onLinkActivated: {
                 DeltaHandler.chatmodel.downloadFullMessage(index)
                 delegItem.stateText = i18n.tr(" - Downloading…")
@@ -157,6 +158,7 @@ Item {
                 bottom: username.bottom
             }
             //textSize: Label.Small
+            color: msgLabel.color
             fontSize: "x-small"
             text: model.date
         }

@@ -183,8 +183,11 @@ Page {
                 onTriggered: {
                     if (searchRect.visible) {
                         messageQueryField.text = ""
+                        searchRect.visible = false
+                    } else {
+                        searchRect.visible = true
+                        messageQueryField.focus = true
                     }
-                    searchRect.visible = !searchRect.visible
                 }
             }
         ]

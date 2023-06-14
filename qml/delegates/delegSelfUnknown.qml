@@ -183,6 +183,7 @@ UbuntuShape {
         wrapMode: Text.Wrap
         color: summaryLabel.color
         visible: text != ""
+        onLinkActivated: Qt.openUrlExternally(link)
     }
 
     Icon {

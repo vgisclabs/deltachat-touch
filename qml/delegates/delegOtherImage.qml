@@ -231,6 +231,7 @@ Item {
                 // TODO: 'QML Label: Binding loop detected for property "width"'
                 //width: contentWidth > parentWidth - units.gu(2) ? parentWidth - units.gu(2) : contentWidth
                 wrapMode: Text.Wrap
+                onLinkActivated: Qt.openUrlExternally(link)
             }
 
             Label {

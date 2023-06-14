@@ -250,6 +250,7 @@ Item {
                 text: model.text
                 color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
                 wrapMode: Text.Wrap
+                onLinkActivated: Qt.openUrlExternally(link)
             }
 
             Label {

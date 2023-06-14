@@ -203,6 +203,7 @@ Item {
             visible: text != ""
             width: parentWidth - avatarShape.width - units.gu(5)
             wrapMode: Text.Wrap
+            onLinkActivated: Qt.openUrlExternally(link)
         }
 
         Label {

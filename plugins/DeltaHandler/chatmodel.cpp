@@ -133,6 +133,9 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
     uint32_t tempColor {0};
     QColor tempQColor;
     int tempInt {0};
+    // TODO: use message-parser instead
+    QRegExp weblinkRegExp("((?:http|https|ftp|ftps)://\\S+)");
+    QRegExp alreadyFormattedAsLink("href=\"");
     
     QVariant retval;
 
@@ -469,7 +472,21 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
         case ChatModel::TextRole:
             tempText = dc_msg_get_text(tempMsg);
             tempQString = tempText;
+            // TODO: use message-parser instead
+            //
+            // Check first whether the text is already formatted as link,
+            // i.e., <a href="...
+            // This is done by checking whether the message contains href="
+            // If there are several links, and only one of them is already
+            // formatted, the others are not be formatted by this solution,
+            // but as QRegExp does not support negative lookbehind, I don't
+            // see a simple solution. It's a temporary solution anyway
+            // that is to be replaced by message-parser in the future.
+            if (!tempQString.contains(alreadyFormattedAsLink)) {
+                tempQString.replace(weblinkRegExp, "<a href=\"\\1\">\\1</a>");
+            }
             retval = tempQString;
+
             break;
 
         case ChatModel::AvatarColorRole:

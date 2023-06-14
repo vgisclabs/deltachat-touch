@@ -219,6 +219,7 @@ UbuntuShape {
         text: model.text
         color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
         wrapMode: Text.Wrap
+        onLinkActivated: Qt.openUrlExternally(link)
     }
 
     Icon {

@@ -23,6 +23,8 @@
         <file>pages/ErrorMessage.qml</file>
         <file>pages/ForwardMessage.qml</file>
         <file>pages/GroupAddMember.qml</file>
+        <file>pages/ImageViewer.qml</file>
+        <file>pages/ImageViewerAnimated.qml</file>
         <file>pages/InfoPopup.qml</file>
         <file>pages/MessageInfosActions.qml</file>
         <file>pages/NotImplemented.qml</file>

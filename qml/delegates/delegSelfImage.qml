@@ -282,5 +282,10 @@ Item {
         source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.filepath)
         width: model.imagewidth > (parentWidth - units.gu(5)) ? (parentWidth - units.gu(5)) : model.imagewidth
         fillMode: Image.PreserveAspectFit
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: layout.addPageToCurrentColumn(chatPage, Qt.resolvedUrl("../pages/ImageViewer.qml"), { "imageSource": msgImage.source })
+        }
     }
 } // end Item id: msgbox

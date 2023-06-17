@@ -445,6 +445,7 @@ Page {
                 // TODO rename
                 property int parentWidth: parent.width
                 property Audio msgAudio: messageAudio
+                property Page chatPage: chatViewPage
                 property bool anchorToRight: {
                     if (!model.isUnreadMsgsBar) {
                         if (model.isInfo) {
@@ -1463,7 +1464,7 @@ Page {
                 }
             }
         }
-    } // end Component id: popoverComponentConfirmDeletion
+    } // end Component id: popoverComponentConfirmLeavingRecording
 
     Component {
         id: popoverComponentConfirmDeletion
@@ -1497,5 +1498,4 @@ Page {
             }
         }
     } // end Component id: popoverComponentConfirmDeletion
-
 } // end Page id: chatViewPage

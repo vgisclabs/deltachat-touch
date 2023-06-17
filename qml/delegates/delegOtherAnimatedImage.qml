@@ -285,6 +285,11 @@ Item {
             width: model.imagewidth > parentWidth - avatarShape.width - units.gu(5) ? parentWidth - avatarShape.width - units.gu(5) : model.imagewidth
             fillMode: Image.PreserveAspectFit
             cache: false
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: layout.addPageToCurrentColumn(chatPage, Qt.resolvedUrl("../pages/ImageViewerAnimated.qml"), { "imageSource": msgImage.source })
+            }
         }
 
     } // end Item id: msgbox

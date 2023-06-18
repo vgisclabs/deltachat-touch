@@ -184,7 +184,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     connectSuccess = connect(this, SIGNAL(openChatViewRequest()), m_chatmodel, SLOT(chatViewIsOpened()));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal markedAllMessagesSeen to slot resetCurrentChatMessageCount";
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal openChatViewRequest to slot chatViewIsOpened";
         exit(1);
     }
 
@@ -1743,8 +1743,6 @@ void DeltaHandler::unrefTempContext()
         if (tempContext) {
             dc_context_unref(tempContext);
             tempContext = nullptr;
-        } else {
-            qDebug() << "DeltaHandler::unrefTempContext() called, but tempContext is not set";
         }
     } else {
         tempContext = nullptr;
@@ -2508,7 +2506,28 @@ QString DeltaHandler::getQrTextOne()
 int DeltaHandler::evaluateQrCode(QString clipboardData)
 {
     m_qrTempText = clipboardData;
-    dc_lot_t* tempLot = dc_check_qr(currentContext, m_qrTempText.toUtf8().constData());
+
+    dc_lot_t* tempLot;
+    uint32_t accID;
+
+    // Needed if there's no account yet, as dc_check_qr requires
+    // a context to be passed.
+    dc_context_t* helperContext {nullptr};
+
+    if (currentContext) {
+        tempLot = dc_check_qr(currentContext, m_qrTempText.toUtf8().constData());
+    } else {
+        accID = dc_accounts_add_account(allAccounts);
+        // The created account will be removed at the end of the function.
+        // TODO: check whether this situation can be handled via tempContext
+        // (currently probably not because the logic from previous versions of
+        // DeltaTouch assumes that if tempContext is set, we're in the middle
+        // of configuring an account by manually setting username, password etc.,
+        // see prepareTempContextConfig())
+        helperContext = dc_accounts_get_account(allAccounts, accID);
+        tempLot = dc_check_qr(helperContext, m_qrTempText.toUtf8().constData());
+    }
+
     int lotState = dc_lot_get_state(tempLot);
 
     switch (lotState) {
@@ -2576,6 +2595,11 @@ int DeltaHandler::evaluateQrCode(QString clipboardData)
     m_qrTempContactID = dc_lot_get_id(tempLot);
     
     dc_lot_unref(tempLot);
+
+    if (helperContext) {
+        dc_context_unref(helperContext);
+        dc_accounts_remove_account(allAccounts, accID);
+    }
 
     return m_qrTempState;
 }

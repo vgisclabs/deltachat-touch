@@ -178,7 +178,7 @@ Page {
 
                 switch (qrstate) {
                     case DeltaHandler.DT_QR_ASK_VERIFYCONTACT:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_ASK_VERIFYCONTACT")
+                        console.log("qr state is DT_QR_ASK_VERIFYCONTACT")
                         let popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -204,7 +204,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_ASK_VERIFYGROUP:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_ASK_VERIFYGROUP")
+                        console.log("qr state is DT_QR_ASK_VERIFYGROUP")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -216,7 +216,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_FPR_OK:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_FPR_OK")
+                        console.log("qr state is DT_QR_FPR_OK")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -229,7 +229,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_FPR_MISMATCH:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_FPR_MISMATCH")
+                        console.log("qr state is DT_QR_FPR_MISMATCH")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -242,7 +242,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_FPR_WITHOUT_ADDR:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_FPR_WITHOUT_ADDR")
+                        console.log("qr state is DT_QR_FPR_WITHOUT_ADDR")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -255,7 +255,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_ACCOUNT:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_ACCOUNT")
+                        console.log("qr state is DT_QR_ACCOUNT")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -269,7 +269,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_BACKUP:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_BACKUP")
+                        console.log("qr state is DT_QR_BACKUP")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -293,13 +293,13 @@ Page {
                             PopupUtils.close(popup)
                             timer.start()
                         })
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_WEBRTC_INSTANCE")
+                        console.log("qr state is DT_QR_WEBRTC_INSTANCE")
                         break;
                     case DeltaHandler.DT_QR_ADDR:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_ADDR")
+                        console.log("qr state is DT_QR_ADDR")
                         break;
                     case DeltaHandler.DT_QR_TEXT:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_TEXT")
+                        console.log("qr state is DT_QR_TEXT")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -314,7 +314,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_URL:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_URL")
+                        console.log("qr state is DT_QR_URL")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -330,7 +330,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_ERROR:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_ERROR")
+                        console.log("qr state is DT_QR_ERROR")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -343,7 +343,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_WITHDRAW_VERIFYCONTACT:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_WITHDRAW_VERIFYCONTACT")
+                        console.log("qr state is DT_QR_WITHDRAW_VERIFYCONTACT")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -356,7 +356,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_WITHDRAW_VERIFYGROUP:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_WITHDRAW_VERIFYGROUP")
+                        console.log("qr state is DT_QR_WITHDRAW_VERIFYGROUP")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -369,7 +369,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_REVIVE_VERIFYCONTACT:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_REVIVE_VERIFYCONTACT")
+                        console.log("qr state is DT_QR_REVIVE_VERIFYCONTACT")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -382,7 +382,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_REVIVE_VERIFYGROUP:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_REVIVE_VERIFYGROUP")
+                        console.log("qr state is DT_QR_REVIVE_VERIFYGROUP")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -395,7 +395,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_QR_LOGIN:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_QR_LOGIN")
+                        console.log("qr state is DT_QR_LOGIN")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -409,7 +409,7 @@ Page {
                         })
                         break;
                     case DeltaHandler.DT_UNKNOWN:
-                        console.log("DeltaHandler::continueQrCodeAction(): qr state is DT_UNKNOWN")
+                        console.log("qr state is DT_UNKNOWN")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,
@@ -422,7 +422,7 @@ Page {
                         })
                         break;
                     default: 
-                        console.log("DeltaHandler::continueQrCodeAction(): Received unknown QR state")
+                        console.log("Received unknown QR state")
                         popup = PopupUtils.open(
                             Qt.resolvedUrl("QrConfirmPopup.qml"),
                             null,

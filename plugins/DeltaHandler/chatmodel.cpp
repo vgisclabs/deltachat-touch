@@ -22,7 +22,7 @@
 #include <limits> // for invalidating data_row
 
 ChatModel::ChatModel(QObject* parent)
-    : QAbstractListModel(parent), currentMsgContext {nullptr}, chatID {0}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
+    : QAbstractListModel(parent), currentMsgContext {nullptr}, chatID {0}, m_chatIsBeingViewed {false}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
 { 
 };
 

@@ -55,8 +55,9 @@ Page {
         dynamicRoles: true
         Component.onCompleted: {
             addAccountModel.append({ "name": i18n.tr("Log into your E-Mail Account"), "linkToPage": "AddOrConfigureEmailAccount.qml" } )
+            addAccountModel.append({ "name": i18n.tr("Add as Second Device"), "linkToPage": "AddAccountAsSecondDevice.qml" } )
             addAccountModel.append({ "name": i18n.tr("Restore from Backup"), "linkToPage": "PickerBackupFile.qml" } )
-            addAccountModel.append({ "name": i18n.tr("Scan Invitation Code"), "linkToPage": "NotImplemented.qml" } )
+            addAccountModel.append({ "name": i18n.tr("Scan Invitation Code"), "linkToPage": "AddAccountViaQrInvitationCode.qml" } )
         }
     }
     

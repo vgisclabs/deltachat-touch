@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-18 10:15+0000\n"
+"POT-Creation-Date: 2023-06-18 18:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgid "No account configured"
 msgstr ""
 
 #: ../qml/Main.qml:281 ../qml/Main.qml:288 ../qml/Main.qml:335
-#: ../qml/pages/AccountConfig.qml:120
+#: ../qml/pages/AccountConfig.qml:119
 msgid "no username set"
 msgstr ""
 
@@ -67,7 +67,9 @@ msgstr ""
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:891 ../qml/pages/QrShowScan.qml:337
+#: ../qml/Main.qml:891 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:139
+#: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr ""
 
@@ -93,10 +95,13 @@ msgstr ""
 #: ../qml/delegates/delegSelfAudio.qml:150
 #: ../qml/delegates/delegSelfImage.qml:189
 #: ../qml/delegates/delegSelfTextMsg.qml:146
-#: ../qml/delegates/delegSelfUnknown.qml:146 ../qml/pages/AddChat.qml:157
-#: ../qml/pages/BlockedContacts.qml:63 ../qml/pages/BlockedContacts.qml:69
-#: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
-#: ../qml/pages/QrShowScan.qml:416 ../qml/pages/QrShowScan.qml:429
+#: ../qml/delegates/delegSelfUnknown.qml:146
+#: ../qml/pages/AddAccountAsSecondDevice.qml:156
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:165
+#: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
+#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
+#: ../qml/pages/QrShowScan.qml:429
 msgid "Unknown"
 msgstr ""
 
@@ -151,30 +156,36 @@ msgstr ""
 msgid "This app is powered by deltachat-core"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:250
+#: ../qml/pages/AccountConfig.qml:36 ../qml/pages/SettingsPage.qml:250
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:49 ../qml/pages/AddAccount.qml:33
+#: ../qml/pages/AccountConfig.qml:48 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
+#: ../qml/pages/AccountConfig.qml:84 ../qml/pages/AccountConfig.qml:187
+#: ../qml/pages/AddAccountAsSecondDevice.qml:144
+#: ../qml/pages/AddAccountAsSecondDevice.qml:168
+#: ../qml/pages/AddAccountAsSecondDevice.qml:203
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:140
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:177
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:212
 #: ../qml/pages/PickerBackupFile.qml:100
 #: ../qml/pages/ProgressQrBackupImport.qml:53 ../qml/pages/QrShowScan.qml:237
 #: ../qml/pages/QrShowScan.qml:338 ../qml/pages/QrShowScan.qml:488
 msgid "Error"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:85
+#: ../qml/pages/AccountConfig.qml:84
 msgid "Info"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:85
+#: ../qml/pages/AccountConfig.qml:84
 msgid "None"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:191
+#: ../qml/pages/AccountConfig.qml:190
 msgid "Account is not configured."
 msgstr ""
 
@@ -182,13 +193,70 @@ msgstr ""
 msgid "Log into your E-Mail Account"
 msgstr ""
 
-#: ../qml/pages/AddAccount.qml:58 ../qml/pages/PickerBackupFile.qml:35
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:130
+#: ../qml/pages/QrShowScan.qml:277
+msgid "Add as Second Device"
+msgstr ""
+
+#: ../qml/pages/AddAccount.qml:59 ../qml/pages/PickerBackupFile.qml:35
 #: ../qml/pages/PickerBackupFile.qml:108
 msgid "Restore from Backup"
 msgstr ""
 
-#: ../qml/pages/AddAccount.qml:59
+#: ../qml/pages/AddAccount.qml:60
 msgid "Scan Invitation Code"
+msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:72
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:67
+#: ../qml/pages/QrShowScan.qml:111
+msgid "Scan QR Code"
+msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:105
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:100
+#: ../qml/pages/QrShowScan.qml:160
+msgid ""
+"Scanning QR codes directly is not supported yet. Please use another app (e."
+"g., Tagger) to scan and copy the code to the clipboard, then paste it here "
+"using the button below."
+msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:118
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:113
+#: ../qml/pages/QrShowScan.qml:173
+msgid "Paste from Clipboard"
+msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:129
+#: ../qml/pages/QrShowScan.qml:276
+msgid "Copy the account from the other device to this device?"
+msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:157
+#: ../qml/pages/AddAccountAsSecondDevice.qml:169
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:166
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:178
+#: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
+#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
+msgid "QR Code"
+msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:195
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:204
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:656
+#: ../qml/pages/QrShowScan.qml:480
+msgid "Configuring..."
+msgstr ""
+
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:126
+#: ../qml/pages/QrShowScan.qml:262
+msgid "Create new e-mail address on \"%1\" and log in there?"
+msgstr ""
+
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:151
+#: ../qml/pages/QrShowScan.qml:402
+msgid "Log into \"%1\"?"
 msgstr ""
 
 #: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
@@ -391,11 +459,6 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:593
 msgid "SOCKS5 Password"
-msgstr ""
-
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:656
-#: ../qml/pages/QrShowScan.qml:480
-msgid "Configuring..."
 msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:463
@@ -755,7 +818,7 @@ msgstr ""
 msgid "Export Attachment"
 msgstr ""
 
-#: ../qml/pages/MessageInfosActions.qml:74
+#: ../qml/pages/MessageInfosActions.qml:71
 msgid "Message Details"
 msgstr ""
 
@@ -874,21 +937,6 @@ msgstr ""
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:111
-msgid "Scan QR Code"
-msgstr ""
-
-#: ../qml/pages/QrShowScan.qml:160
-msgid ""
-"Scanning QR codes directly is not supported yet. Please use another app (e."
-"g., Tagger) to scan and copy the code to the clipboard, then paste it here "
-"using the button below."
-msgstr ""
-
-#: ../qml/pages/QrShowScan.qml:173
-msgid "Paste from Clipboard"
-msgstr ""
-
 #: ../qml/pages/QrShowScan.qml:185
 msgid "Chat with %1?"
 msgstr ""
@@ -917,28 +965,11 @@ msgid ""
 "the recipient first."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:262
-msgid "Create new e-mail address on \"%1\" and log in there?"
-msgstr ""
-
-#: ../qml/pages/QrShowScan.qml:276
-msgid "Copy the account from the other device to this device?"
-msgstr ""
-
-#: ../qml/pages/QrShowScan.qml:277
-msgid "Add as Second Device"
-msgstr ""
-
 #: ../qml/pages/QrShowScan.qml:306
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
-msgstr ""
-
-#: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
-#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
-msgid "QR Code"
 msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:321
@@ -982,10 +1013,6 @@ msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
 "The QR code is not active on this device."
-msgstr ""
-
-#: ../qml/pages/QrShowScan.qml:402
-msgid "Log into \"%1\"?"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:84 ../qml/pages/SettingsPage.qml:97

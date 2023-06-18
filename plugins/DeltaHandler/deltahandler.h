@@ -387,6 +387,8 @@ private slots:
 private:
     dc_accounts_t* allAccounts;
     dc_context_t* currentContext;
+    // TODO: rename tempContext, name's too similar to
+    // local variables used in functions (tempText, tempLot etc.)
     dc_context_t* tempContext; // for creation of new account
     dc_chatlist_t* currentChatlist;
     EmitterThread* eventThread;

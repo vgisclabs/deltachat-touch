@@ -393,11 +393,8 @@ Page {
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
-                PopupUtils.open(
-                    Qt.resolvedUrl('ConfirmMsgDeletion.qml'),
-                    null,
-                    { 'msgArrayIndex': value, }
-                )
+                DeltaHandler.chatmodel.setMomentaryMessage(value)
+                PopupUtils.open(Qt.resolvedUrl('ConfirmMsgDeletion.qml'))
             }
         }
     }
@@ -414,18 +411,16 @@ Page {
             Action {
                 iconName: "navigation-menu"
                 onTriggered: {
-                    PopupUtils.open(
-                        Qt.resolvedUrl('MessageInfosActions.qml'),
-                        null,
-                        { messageIndex: value }
-                    )
+                    DeltaHandler.chatmodel.setMomentaryMessage(value)
+                    PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'))
                 }
             },
             Action {
                 iconName: "mail-forward"
                 onTriggered: {
-                    DeltaHandler.chatmodel.prepareForwarding(value)
-                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('ForwardMessage.qml'))
+                    if (DeltaHandler.chatmodel.prepareForwarding(value)) {
+                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('ForwardMessage.qml'))
+                    }
                 }
             }
         ]

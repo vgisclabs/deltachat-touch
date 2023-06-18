@@ -547,6 +547,12 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
 }
 
 
+void ChatModel::setMomentaryMessage(int myindex)
+{
+    m_MomentaryMsgId = msgVector[myindex];
+}
+
+
 void ChatModel::messageStatusChangedSlot(int msgID)
 {
     for (size_t i = 0; i < currentMsgCount; ++i) {
@@ -799,28 +805,17 @@ void ChatModel::newMessage(int msgID)
     emit chatDataChanged();
 }
 
-void ChatModel::deleteMessage(int myindex)
+void ChatModel::deleteMomentaryMessage()
 {
-    // Couldn't figure out how to handle the 
-    // Unread Message bar re-positioning in
-    // newMessage(). The latter will be called
-    // via a signal because deleting messages will
-    // trigger a msgs_changed event. As a temporary
-    // solution, we just delete the Unread Message
-    // bar when deleting messages.
-    m_unreadMessageBarIndex = -1;
-
-    uint32_t tempMsgID = msgVector[myindex];
-    dc_delete_msgs(currentMsgContext, &tempMsgID, 1);
+    dc_delete_msgs(currentMsgContext, &m_MomentaryMsgId, 1);
 }
 
 
-QString ChatModel::getMessageSummarytext(int myindex)
+QString ChatModel::getMomentarySummarytext()
 {
-    uint32_t tempMsgID = msgVector[myindex];
-    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
+    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, m_MomentaryMsgId);
 
-    char* tempText {nullptr};
+    char* tempText;
     QString summarytext = "";
 
     tempText = dc_msg_get_summarytext(tempMsg, 80);
@@ -830,11 +825,29 @@ QString ChatModel::getMessageSummarytext(int myindex)
         dc_str_unref(tempText);
     }
 
-    if (tempMsg) {
-        dc_msg_unref(tempMsg);
-    }
+    dc_msg_unref(tempMsg);
 
     return summarytext;
+}
+
+
+QString ChatModel::getMomentaryText()
+{
+    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, m_MomentaryMsgId);
+
+    char* tempText;
+    QString msgtext = "";
+
+    tempText = dc_msg_get_text(tempMsg);
+
+    if (tempText) {
+        msgtext = tempText;
+        dc_str_unref(tempText);
+    }
+
+    dc_msg_unref(tempMsg);
+
+    return msgtext;
 }
 
 
@@ -850,21 +863,13 @@ int ChatModel::getUnreadMessageBarIndex()
 }
 
 
-void ChatModel::setUrlToExport(int myindex)
+bool ChatModel::setUrlToExport()
 {
-    dc_msg_t* tempMsg {nullptr};
-    uint32_t tempMsgID {0};
-    char* tempText {nullptr};
+    dc_msg_t* tempMsg;
+    char* tempText;
 
-    if (myindex != m_unreadMessageBarIndex) {
-        tempMsgID = msgVector[myindex];
-        tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
-    } else {
-        return;
-    }
-
+    tempMsg = dc_get_msg(currentMsgContext, m_MomentaryMsgId);
     tempText = dc_msg_get_file(tempMsg);
-
     m_tempExportPath = tempText;
     
     // see ProfilePicRole above
@@ -872,12 +877,16 @@ void ChatModel::setUrlToExport(int myindex)
 
     if (tempText) {
         dc_str_unref(tempText);
-        tempText = nullptr;
     }
 
     if (tempMsg) {
         dc_msg_unref(tempMsg);
-        tempMsg = nullptr;
+    }
+
+    if (m_tempExportPath != "") {
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -888,8 +897,86 @@ QString ChatModel::getUrlToExport()
 }
 
 
+int ChatModel::getMomentaryViewType()
+{
+    dc_msg_t* tempMsg;
+    tempMsg = dc_get_msg(currentMsgContext, m_MomentaryMsgId);
+
+    int retval;
+
+    switch (dc_msg_get_viewtype(tempMsg)) {
+        case DC_MSG_AUDIO:
+            retval = DeltaHandler::MsgViewType::AudioType;
+            break;
+
+        case DC_MSG_FILE:
+            retval = DeltaHandler::MsgViewType::FileType;
+            break;
+        
+        case DC_MSG_GIF:
+            retval = DeltaHandler::MsgViewType::GifType;
+            break;
+        
+        case DC_MSG_IMAGE:
+            retval = DeltaHandler::MsgViewType::ImageType;
+            break;
+        
+        case DC_MSG_STICKER:
+            retval = DeltaHandler::MsgViewType::StickerType;
+            break;
+        
+        case DC_MSG_TEXT:
+            retval = DeltaHandler::MsgViewType::TextType;
+            break;
+
+        case DC_MSG_VIDEO:
+            retval = DeltaHandler::MsgViewType::VideoType;
+            break;
+        
+        case DC_MSG_VIDEOCHAT_INVITATION:
+            retval = DeltaHandler::MsgViewType::VideochatInvitationType;
+            break;
+        
+        case DC_MSG_VOICE:
+            retval = DeltaHandler::MsgViewType::VoiceType;
+            break;
+
+        case DC_MSG_WEBXDC:
+            retval = DeltaHandler::MsgViewType::WebXdcType;
+            break;
+
+        default:
+            qDebug() << "ChatModel: Unknown message type " << dc_msg_get_viewtype(tempMsg);
+            retval = DeltaHandler::MsgViewType::UnknownType;
+            break;
+    }
+
+    if (tempMsg) {
+        dc_msg_unref(tempMsg);
+    }
+
+    return retval;
+}
+
+
+QString ChatModel::getMomentaryInfo()
+{
+    char* tempText = dc_get_msg_info(currentMsgContext, m_MomentaryMsgId);
+    QString tempQString = tempText;
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+    
+    return tempQString;
+}
+
+
 QVariant ChatModel::callData(int myindex, QString role)
 {
+    // TODO: maybe this is not used anymore due to the
+    // introduction of m_MomentaryMsgId?
+    //
     // Up to now, I didn't manage to call data(QModelIndex &index, int
     // role) from QML. I could neither find a way to create a
     // QModelIndex in QML nor to refer to the enum with the roles from
@@ -1024,14 +1111,14 @@ void ChatModel::setDraft(QString draftText)
 
 void ChatModel::setQuote(int myindex)
 {
+    uint32_t tempMsgID {0};
+    tempMsgID = msgVector[myindex];
+
     if (!currentMessageDraft) {
         currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
     }
 
-    dc_msg_t* tempMsg {nullptr};
-    uint32_t tempMsgID {0};
-
-    tempMsgID = msgVector[myindex];
+    dc_msg_t* tempMsg;
     tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
 
     dc_msg_set_quote(currentMessageDraft, tempMsg);
@@ -1166,9 +1253,21 @@ void ChatModel::initiateQuotedMsgJump(int myindex)
 }
 
 
-void ChatModel::prepareForwarding(int myindex)
+bool ChatModel::prepareForwarding(int myindex)
 {
     qDebug() << "ChatModel::prepareForwarding: preparing to forward the message with index: " << myindex;
+
+    if (myindex < 0 || myindex >= currentMsgCount) {
+        return false;
+    }
+
+    // don't try to get the msg from DC if it's
+    // the Unread Message bar
+    if (myindex != m_unreadMessageBarIndex) {
+        messageIdToForward = msgVector[myindex];
+    } else {
+        return false;
+    }
 
     if (m_chatlistmodel) {
         delete m_chatlistmodel;
@@ -1178,15 +1277,7 @@ void ChatModel::prepareForwarding(int myindex)
     m_chatlistmodel = new ChatlistModel();
     m_chatlistmodel->configure(currentMsgContext, DC_GCL_FOR_FORWARDING | DC_GCL_NO_SPECIALS);
 
-    if (myindex < 0 || myindex >= currentMsgCount) {
-        return;
-    }
-
-    // don't try to get the msg from DC if it's
-    // the Unread Message bar
-    if (myindex != m_unreadMessageBarIndex) {
-        messageIdToForward = msgVector[myindex];
-    }
+    return true;
 }
 
 

@@ -25,12 +25,11 @@ import DeltaHandler 1.0
 Dialog {
     id: confirmMsgDel
 
-    property int msgArrayIndex
     property string msgText
 
     Component.onCompleted: {
         // TODO: andere Methode aufrufen
-        msgText = DeltaHandler.chatmodel.getMessageSummarytext(msgArrayIndex)
+        msgText = DeltaHandler.chatmodel.getMomentarySummarytext()
     }
 
     title: i18n.tr("Delete Message")
@@ -46,7 +45,7 @@ Dialog {
         text: i18n.tr("Delete Message")
         color: theme.palette.normal.negative
         onClicked: {
-            DeltaHandler.chatmodel.deleteMessage(msgArrayIndex)
+            DeltaHandler.chatmodel.deleteMomentaryMessage()
             PopupUtils.close(confirmMsgDel)
         }
     }

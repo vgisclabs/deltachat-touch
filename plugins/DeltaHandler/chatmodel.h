@@ -39,15 +39,23 @@ public:
     // TODO remove MessageSeenRole
     enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole };
 
-    Q_INVOKABLE void deleteMessage(int myindex);
+    Q_INVOKABLE void setMomentaryMessage(int myindex);
 
-    Q_INVOKABLE QString getMessageSummarytext(int myindex);
+    Q_INVOKABLE void deleteMomentaryMessage();
+
+    Q_INVOKABLE QString getMomentarySummarytext();
+
+    Q_INVOKABLE QString getMomentaryText();
+
+    Q_INVOKABLE int getMomentaryViewType();
+
+    Q_INVOKABLE QString getMomentaryInfo();
 
     Q_INVOKABLE int getUnreadMessageCount();
 
     Q_INVOKABLE int getUnreadMessageBarIndex();
 
-    Q_INVOKABLE void setUrlToExport(int myindex);
+    Q_INVOKABLE bool setUrlToExport();
 
     Q_INVOKABLE QString getUrlToExport();
 
@@ -67,7 +75,7 @@ public:
 
     Q_INVOKABLE void initiateQuotedMsgJump(int myindex);
 
-    Q_INVOKABLE void prepareForwarding(int myindex);
+    Q_INVOKABLE bool prepareForwarding(int myindex);
 
     Q_INVOKABLE void forwardingFinished();
 
@@ -170,6 +178,14 @@ private:
     int m_searchCountCurrent;
 
     int getIndexOfMsgID(uint32_t msgID);
+    
+    // Stores the message ID of the chatview index for which
+    // an action was triggered. Reason is that QML does not
+    // have the type uint32_t, and using the chatview index
+    // is unsafe because the index of the selected message might
+    // change in the background while the user is still
+    // in some action page
+    uint32_t m_MomentaryMsgId;
 };
 
 

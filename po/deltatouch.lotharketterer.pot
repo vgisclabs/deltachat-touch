@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-17 16:29+0000\n"
+"POT-Creation-Date: 2023-06-18 10:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,8 +46,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:188
-#: ../qml/pages/ChatView.qml:233 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:182
+#: ../qml/pages/ChatView.qml:227 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr ""
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
 #: ../qml/pages/ConfirmLeaveGroup.qml:44
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
-#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:84
+#: ../qml/pages/ConfirmMsgDeletion.qml:55 ../qml/pages/CreateOrEditGroup.qml:84
 #: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:58
 #: ../qml/pages/ProgressBackupExport.qml:64
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:45
@@ -484,7 +484,7 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:171
+#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:165
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr ""
@@ -525,39 +525,39 @@ msgstr ""
 msgid "Mute forever"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:135
+#: ../qml/pages/ChatView.qml:129
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:142 ../qml/pages/ChatView.qml:162
+#: ../qml/pages/ChatView.qml:136 ../qml/pages/ChatView.qml:156
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:151 ../qml/pages/ProgressBackupImport.qml:69
+#: ../qml/pages/ChatView.qml:145 ../qml/pages/ProgressBackupImport.qml:69
 #: ../qml/pages/ProgressConfigAccount.qml:68
 #: ../qml/pages/ProgressQrBackupImport.qml:94
 msgid "Back"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1302
+#: ../qml/pages/ChatView.qml:1291
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1318 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1307 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1333
+#: ../qml/pages/ChatView.qml:1322
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1463
+#: ../qml/pages/ChatView.qml:1452
 msgid "Click to leave without sending"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1496
+#: ../qml/pages/ChatView.qml:1485
 msgid "Click to delete"
 msgstr ""
 
@@ -583,7 +583,7 @@ msgid "Delete Chat"
 msgstr ""
 
 #: ../qml/pages/ConfirmChatDeletion.qml:38
-#: ../qml/pages/ConfirmMsgDeletion.qml:40
+#: ../qml/pages/ConfirmMsgDeletion.qml:39
 msgid "Are you sure you want to delete \"%1\"?"
 msgstr ""
 
@@ -635,8 +635,8 @@ msgstr ""
 msgid "Remove %1 from group?"
 msgstr ""
 
-#: ../qml/pages/ConfirmMsgDeletion.qml:36
-#: ../qml/pages/ConfirmMsgDeletion.qml:46
+#: ../qml/pages/ConfirmMsgDeletion.qml:35
+#: ../qml/pages/ConfirmMsgDeletion.qml:45
 msgid "Delete Message"
 msgstr ""
 
@@ -747,15 +747,15 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../qml/pages/MessageInfosActions.qml:35
+#: ../qml/pages/MessageInfosActions.qml:33
 msgid "Copy Text"
 msgstr ""
 
-#: ../qml/pages/MessageInfosActions.qml:42
+#: ../qml/pages/MessageInfosActions.qml:45
 msgid "Export Attachment"
 msgstr ""
 
-#: ../qml/pages/MessageInfosActions.qml:68
+#: ../qml/pages/MessageInfosActions.qml:74
 msgid "Message Details"
 msgstr ""
 

@@ -25,49 +25,52 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
-    property int messageIndex
-
     Component.onCompleted: {
     }
 
     Button {
         id: copyToClipboardButton
         text: i18n.tr("Copy Text")
-        onClicked: Clipboard.push(DeltaHandler.chatmodel.callData(messageIndex, "text"))
-        enabled: DeltaHandler.chatmodel.callData(messageIndex, "text") != ""
+
+        onClicked: {
+            Clipboard.push(DeltaHandler.chatmodel.getMomentaryText())
+            PopupUtils.close(dialog)
+        }
+
+        enabled: DeltaHandler.chatmodel.getMomentaryText() != ""
     }
 
     Button {
         id: exportFileButton
         text: i18n.tr('Export Attachment')
         onClicked: {
-            DeltaHandler.chatmodel.setUrlToExport(messageIndex)
-            switch (DeltaHandler.chatmodel.callData(messageIndex, "msgViewType")) {
-                // what about StickerType, is this an image?
-                case DeltaHandler.GifType:
-                case DeltaHandler.ImageType:
-                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerImageToExport.qml'))
-                    break;
-                    
-                case DeltaHandler.AudioType:
-                case DeltaHandler.VoiceType:
-                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerAudioToExport.qml'))
-                    break;
+            if (DeltaHandler.chatmodel.setUrlToExport()) {
+                switch (DeltaHandler.chatmodel.getMomentaryViewType()) {
+                    case DeltaHandler.GifType:
+                    case DeltaHandler.ImageType:
+                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerImageToExport.qml'))
+                        break;
+                        
+                    case DeltaHandler.AudioType:
+                    case DeltaHandler.VoiceType:
+                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerAudioToExport.qml'))
+                        break;
 
-                default:
-                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToExport.qml'))
-                    break;
+                    default:
+                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToExport.qml'))
+                        break;
+                }
             }
             PopupUtils.close(dialog)
         }
-        enabled: DeltaHandler.chatmodel.callData(messageIndex, "msgViewType") != DeltaHandler.TextType
+        enabled: DeltaHandler.chatmodel.getMomentaryViewType() != DeltaHandler.TextType
     }
 
     Button {
         id: showInfoButton
         text: i18n.tr("Message Details")
         onClicked: {
-            let tempString = DeltaHandler.chatmodel.callData(messageIndex, "messageInfo")
+            let tempString = DeltaHandler.chatmodel.getMomentaryInfo()
             PopupUtils.open(
                 Qt.resolvedUrl("InfoPopup.qml"),
                 null,

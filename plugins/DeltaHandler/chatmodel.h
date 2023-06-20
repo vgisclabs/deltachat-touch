@@ -37,7 +37,7 @@ public:
     ~ChatModel();
 
     // TODO remove MessageSeenRole
-    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole };
+    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole };
 
     Q_INVOKABLE void setMomentaryMessage(int myindex);
 

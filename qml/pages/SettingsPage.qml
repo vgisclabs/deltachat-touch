@@ -364,7 +364,7 @@ Page {
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("Profile.qml"))
+                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("ProfileSelf.qml"))
                 }
             }
 

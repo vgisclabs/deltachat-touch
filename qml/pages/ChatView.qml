@@ -120,7 +120,7 @@ Page {
     header: PageHeader {
         id: header
         title: chatname
- 
+
         leadingActionBar.numberOfSlots: 3
         leadingActionBar.actions: [
             Action {

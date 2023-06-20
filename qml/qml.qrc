@@ -46,7 +46,8 @@
         <file>pages/ProgressKeysImport.qml</file>
         <file>pages/ProgressKeysExport.qml</file>
         <file>pages/ProgressQrBackupImport.qml</file>
-        <file>pages/Profile.qml</file>
+        <file>pages/ProfileSelf.qml</file>
+        <file>pages/ProfileOther.qml</file>
         <file>pages/QrConfirmPopup.qml</file>
         <file>pages/QrGroupInvite.qml</file>
         <file>pages/QrShowScan.qml</file>

@@ -25,6 +25,10 @@ int main(int argc, char *argv[])
     QGuiApplication *app = new QGuiApplication(argc, (char**)argv);
     app->setApplicationName("deltatouch.lotharketterer");
 
+    qRegisterMetaType<uint32_t>("uint32_t");
+    qRegisterMetaType<int64_t>("int64_t");
+    //qRegisterMetaType<size_t>("size_t");
+
     qDebug() << "Starting app from main.cpp";
 
     QQuickView *view = new QQuickView();

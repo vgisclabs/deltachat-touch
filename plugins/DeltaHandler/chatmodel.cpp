@@ -82,6 +82,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[AvatarColorRole] = "avatarColor";
     roles[AvatarInitialRole] = "avatarInitial";
     roles[IsSearchResultRole] = "isSearchResult";
+    roles[ContactIdRole] = "contactID";
 
     return roles;
 }
@@ -520,6 +521,10 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                     }
                 }
             }
+            break;
+
+        case ChatModel::ContactIdRole:
+            retval = dc_msg_get_from_id(tempMsg);
             break;
 
         default:

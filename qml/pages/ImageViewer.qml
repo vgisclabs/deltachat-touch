@@ -40,11 +40,21 @@ Page {
                 onTriggered: {
                     layout.addPageToCurrentColumn(imageViewer, Qt.resolvedUrl("PickerImageToExport.qml"), {"url": imageViewerImage.source})
                 }
+                // for some reason, ContentHub doesn't work if the image viewer is
+                // called from ProfileOther.qml. Error message is:
+                // file:///usr/lib/arm-linux-gnueabihf/qt5/qml/Ubuntu/Components/Popups/1.3/Dialog.qml:239:13:
+                // QML Column: Cannot specify top, bottom, verticalCenter, fill
+                // or centerIn anchors for items inside Column. Column will not
+                // function.
+                // Disable downloading of profile images until a solution has been found.
+                // TODO: find solution
+                visible: enableDownloading
             }
         ]
     }
 
     property string imageSource
+    property bool enableDownloading: true
 
     Image {
         id: imageViewerImage

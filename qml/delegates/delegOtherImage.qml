@@ -61,6 +61,11 @@ Item {
             anchors.centerIn: parent
         }
 
+        MouseArea {
+            anchors.fill: parent
+            onClicked: layout.addPageToCurrentColumn(chatPage, Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": model.contactID })
+        }
+
         color: model.avatarColor
 
         sourceFillMode: UbuntuShape.PreserveAspectCrop

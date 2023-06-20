@@ -199,7 +199,7 @@ public:
     Q_INVOKABLE void removeNotification(QString tag = "");
 
     /* ========================================================
-     * =================== Profile editing ====================
+     * ===============Self Profile editing ====================
      * ======================================================== */
     Q_INVOKABLE QString getCurrentSignature();
 
@@ -209,7 +209,36 @@ public:
 
     Q_INVOKABLE void finalizeProfileEdit();
 
-    /* ================ End Profile editing ================== */
+    /* ============== End Self Profile editing ================ */
+
+    /* ========================================================
+     * ============== Other Profile editing ===================
+     * ======================================================== */
+
+    Q_INVOKABLE QString getOtherDisplayname(uint32_t userID);
+
+    Q_INVOKABLE QString getOtherProfilePic(uint32_t userID);
+
+    Q_INVOKABLE QString getOtherInitial(uint32_t userID);
+
+    Q_INVOKABLE QString getOtherColor(uint32_t userID);
+
+    Q_INVOKABLE QString getOtherAddress(uint32_t userID);
+
+    Q_INVOKABLE QString getOtherStatus(uint32_t userID);
+
+    Q_INVOKABLE QString getOtherVerifiedBy(uint32_t userID);
+
+    Q_INVOKABLE QString getOtherLastSeen(uint32_t userID);
+
+    Q_INVOKABLE bool otherContactIsDevice(uint32_t userID);
+
+    // Sets the username to newName and returns it.
+    // Passing empty string will reset the username back to the
+    // one received by the network and returns it, if it exists.
+    Q_INVOKABLE QString setOtherUsername(uint32_t userID, QString newName);
+
+    /* ============== End Other Profile editing =============== */
 
     /* ========================================================
      * ============== New Group / Editing Group ===============

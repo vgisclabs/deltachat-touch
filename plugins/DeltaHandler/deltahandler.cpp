@@ -31,10 +31,6 @@ namespace C {
 DeltaHandler::DeltaHandler(QObject* parent)
     : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_audioRecorder {nullptr}
 {
-    qRegisterMetaType<uint32_t>("uint32_t");
-    qRegisterMetaType<int64_t>("int64_t");
-    //qRegisterMetaType<size_t>("size_t");
-
     {
         // to be able to access the files under assets
         Q_INIT_RESOURCE(assets);
@@ -196,7 +192,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     connectSuccess = connect(this, SIGNAL(messageDelivered(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal messageDeliveredToServer to slot messageDeliveredSlot";
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal messageDelivered to slot messageStatusChangedSlot";
         exit(1);
     }
 
@@ -1190,33 +1186,14 @@ QString DeltaHandler::chatName()
 
 bool DeltaHandler::chatIsVerified()
 {
-    bool retval;
+    bool retval = false;
     dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
 
     if (dc_chat_get_type(tempChat) == DC_CHAT_TYPE_GROUP) {
         if (1 == dc_chat_is_protected(tempChat)) {
             retval = true;
-        } else {
-            retval = false;
-        }
-
-    } else if (dc_chat_get_type(tempChat) == DC_CHAT_TYPE_SINGLE) {
-        dc_array_t* tempArray = dc_get_chat_contacts(currentContext, currentChatID);
-        uint32_t tempContactID = dc_array_get_id(tempArray, 0);
-        dc_contact_t* tempContact = dc_get_contact(currentContext, tempContactID);
-
-        if (2 == dc_contact_is_verified(tempContact)) {
-            retval = true;
-        } else {
-            retval = false;
-        }
-
-        dc_contact_unref(tempContact);
-        dc_array_unref(tempArray);
-    } else {
-        retval = false;
-    }
-
+        } 
+    } 
 
     dc_chat_unref(tempChat);
     return retval;
@@ -2098,6 +2075,232 @@ void DeltaHandler::finalizeProfileEdit()
 }
 /* ================ End Profile editing ================== */
 
+
+/* ========================================================
+ * ============== Other Profile editing ===================
+ * ======================================================== */
+
+QString DeltaHandler::getOtherDisplayname(uint32_t userID)
+{
+    dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+    QString retval {""};
+    char* tempText {nullptr};
+
+    if (tempContact) {
+        tempText = dc_contact_get_display_name(tempContact);
+        retval = tempText;
+        dc_contact_unref(tempContact);
+    }
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+
+    return retval;
+}
+
+QString DeltaHandler::getOtherProfilePic(uint32_t userID)
+{
+    dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+    QString retval {""};
+    char* tempText {nullptr};
+
+    if (tempContact) {
+        tempText = dc_contact_get_profile_image(tempContact);
+
+        if (tempText) {
+            retval = tempText;
+            
+            // For some reason, the QML part doesn't like the path
+            // as given by dc_contact_get_profile_image.
+            // The file is located in the config dir, so we remove the
+            // top level of the config dir part and put it back
+            // together in QML again.
+            // No idea what the difference is - should be exactly the same.
+            retval.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length());
+            dc_str_unref(tempText);
+        }
+        dc_contact_unref(tempContact);
+    }
+
+    return retval;
+}
+
+
+QString DeltaHandler::getOtherInitial(uint32_t userID)
+{
+    dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+    QString retval {""};
+
+    if (tempContact) {
+        char* tempText = dc_contact_get_display_name(tempContact);
+
+        if (tempText) {
+            retval = tempText;
+            dc_str_unref(tempText);
+        }
+        dc_contact_unref(tempContact);
+    }
+
+    if (retval == "") {
+        retval = "#";
+    } else {
+        retval = QString(retval.at(0)).toUpper();
+    }
+
+    return retval;
+}
+
+
+QString DeltaHandler::getOtherColor(uint32_t userID)
+{
+    uint32_t tempColor {0};
+    QColor tempQColor;
+    QString retval {""};
+    dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+
+    if (tempContact) {
+        tempColor = dc_contact_get_color(tempContact);
+        tempQColor = QColor((tempColor >> 16) % 256, (tempColor >> 8) % 256, tempColor % 256, 0);
+        retval = QString(tempQColor.name());
+        dc_contact_unref(tempContact);
+    }
+
+    return retval;
+}
+
+
+QString DeltaHandler::getOtherAddress(uint32_t userID)
+{
+    dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+    QString retval {""};
+    char* tempText {nullptr};
+
+    if (tempContact) {
+        tempText = dc_contact_get_addr(tempContact);
+        retval = tempText;
+        dc_contact_unref(tempContact);
+    }
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+
+    return retval;
+}
+
+
+QString DeltaHandler::getOtherStatus(uint32_t userID)
+{
+    dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+    QString retval {""};
+    char* tempText {nullptr};
+
+    if (tempContact) {
+        tempText = dc_contact_get_status(tempContact);
+        retval = tempText;
+        dc_contact_unref(tempContact);
+    }
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+
+    return retval;
+}
+
+
+QString DeltaHandler::getOtherVerifiedBy(uint32_t userID)
+{
+    dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+    QString retval {""};
+    char* tempText {nullptr};
+
+    if (tempContact) {
+        tempText = dc_contact_get_verifier_addr(tempContact);
+        retval = tempText;
+        dc_contact_unref(tempContact);
+    }
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+
+    return retval;
+}
+
+
+QString DeltaHandler::getOtherLastSeen(uint32_t userID)
+{
+    dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+    QString retval {""};
+    uint64_t timestampSecs {0};
+
+    if (tempContact) {
+        timestampSecs = dc_contact_get_last_seen(tempContact);
+        dc_contact_unref(tempContact);
+        if (timestampSecs == 0) {
+            retval = "";
+        } else {
+            QDateTime timestampDate;
+            timestampDate = QDateTime::fromSecsSinceEpoch(timestampSecs);
+            if (timestampDate.date() == QDate::currentDate()) {
+                retval = timestampDate.toString("hh:mm");
+                // TODO: if <option_for_am/pm> ...("hh:mm ap")
+                // => check the QLocale Class
+            }
+            else if (timestampDate.date().daysTo(QDate::currentDate()) < 7) {
+                // TODO: "...hh:mm ap " as above
+                retval = timestampDate.toString("ddd hh:mm");
+            }
+            else {
+                retval = timestampDate.toString("dd MMM yy" );
+            }
+        }
+    }
+
+    return retval;
+}
+
+
+bool DeltaHandler::otherContactIsDevice(uint32_t userID)
+{
+    return userID == DC_CONTACT_ID_DEVICE;
+}
+
+
+// Sets the username to newName and returns it.
+// Passing empty string will reset the username back to the
+// one received by the network and returns it, if it exists.
+QString DeltaHandler::setOtherUsername(uint32_t userID, QString newName)
+{
+    uint32_t tempID;
+    QString retval;
+
+    if (newName != "") {
+        tempID = dc_create_contact(currentContext, newName.toUtf8().constData(), getOtherAddress(userID).toUtf8().constData());
+        retval = newName;
+    } else {
+        tempID = dc_create_contact(currentContext, NULL, getOtherAddress(userID).toUtf8().constData());
+        
+        dc_contact_t* tempContact = dc_get_contact(currentContext, userID);
+        char* tempText {nullptr};
+
+        if (tempContact) {
+            tempText = dc_contact_get_auth_name(tempContact);
+            retval = tempText;
+            dc_contact_unref(tempContact);
+        }
+
+        if (tempText) {
+            dc_str_unref(tempText);
+        }
+    }
+
+    return retval;
+}
+
+/* ============== End Other Profile editing =============== */
 
 /* ========================================================
  * ============== New Group / Editing Group ===============

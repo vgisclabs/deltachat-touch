@@ -555,6 +555,14 @@ void ChatModel::setMomentaryMessage(int myindex)
 
 void ChatModel::messageStatusChangedSlot(int msgID)
 {
+
+    // invalidate the cached data_tempMsg (see ChatModel::data())
+    data_row = std::numeric_limits<int>::max();
+    if (data_tempMsg) {
+        dc_msg_unref(data_tempMsg);
+        data_tempMsg = nullptr;
+    }
+
     for (size_t i = 0; i < currentMsgCount; ++i) {
         if (msgID == msgVector[i]) {
             QVector<int> roleVector;

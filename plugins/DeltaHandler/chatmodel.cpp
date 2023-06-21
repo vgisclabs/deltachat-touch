@@ -570,9 +570,7 @@ void ChatModel::messageStatusChangedSlot(int msgID)
 
     for (size_t i = 0; i < currentMsgCount; ++i) {
         if (msgID == msgVector[i]) {
-            QVector<int> roleVector;
-            roleVector.append(ChatModel::MessageStateRole);
-            emit dataChanged(index(i, 0), index(i, 0), roleVector);
+            emit dataChanged(index(i, 0), index(i, 0));
             break;
         }
     }

@@ -3520,28 +3520,16 @@ void DeltaHandler::contextSetupTasks()
 
 void DeltaHandler::periodicTimerActions()
 {
-    // reset the model to check for things like expired
-    // mutes (otherwise the striked-through loudspeaker
-    // would remain until the next context switch or restart)
+    // currently the only periodically triggered
+    // action is to check for changes in ChatIsMutedRole
     if (m_hasConfiguredAccount && currentChatlist) {
-        beginResetModel();
-        dc_chatlist_unref(currentChatlist);
 
-        if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
-            if (m_query == "") {
-                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
-            } else {
-                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
-            }
-        } else {
-            if (m_query == "") {
-                currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
-            } else {
-                currentChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
-            }
+        QVector<int> roleVector;
+        roleVector.append(DeltaHandler::ChatIsMutedRole);
+
+        for (size_t i = 0; i < dc_chatlist_get_cnt(currentChatlist); ++i) {
+            emit dataChanged(index(i, 0), index(i, 0), roleVector);
         }
-
-        endResetModel();
     }
 }
 

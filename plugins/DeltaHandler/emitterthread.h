@@ -44,6 +44,7 @@ class EmitterThread : public QThread {
             void imexFileWritten(QString filepath);
             void contactsChanged();
             void errorEvent(QString errorMessage);
+            void chatDataModified(uint32_t accID, int chatID);
 
     private:
         dc_accounts_t* accounts;

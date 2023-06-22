@@ -154,6 +154,12 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
+    connectSuccess = connect(eventThread, SIGNAL(chatDataModified(uint32_t, int)), this, SLOT(chatDataModifiedReceived(uint32_t, int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal chatModified to slot chatDataModifiedReceived";
+        exit(1);
+    }
+
     connectSuccess = connect(eventThread, SIGNAL(configureProgress(int, QString)), this, SLOT(progressEvent(int, QString)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal configureProgress to slot progressEvent";
@@ -961,6 +967,16 @@ void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
 
     } else { // message(s) for context other than the current one
         qDebug() << "DeltaHandler::messagesChanged(): signal newMsg received with accID: " << accID << ", chatID: " << chatID << "msgID: " << msgID;
+    }
+}
+
+
+void DeltaHandler::chatDataModifiedReceived(uint32_t accID, int chatID)
+{
+    uint32_t currentAccID = dc_get_id(currentContext);
+   
+    if (currentAccID == accID && currentChatID == chatID) {
+        emit chatDataChanged();
     }
 }
 
@@ -2297,6 +2313,8 @@ QString DeltaHandler::setOtherUsername(uint32_t userID, QString newName)
         }
     }
 
+    emit chatDataChanged();
+
     return retval;
 }
 
@@ -2478,6 +2496,7 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
         QString tempQString = getTempGroupName();
         if (groupName != tempQString) {
             dc_set_chat_name(currentContext, m_tempGroupChatID, groupName.toUtf8().constData());
+            emit chatDataChanged();
         }
 
         // if the group image has been modified, imagePath will be

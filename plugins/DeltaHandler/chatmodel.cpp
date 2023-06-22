@@ -874,6 +874,59 @@ int ChatModel::getUnreadMessageBarIndex()
 }
 
 
+bool ChatModel::chatCanSend()
+{
+    dc_chat_t* tempChat = dc_get_chat(currentMsgContext, chatID);
+
+    if (!tempChat) {
+        qDebug() << "ChatModel::chatIsDeviceTalk(): ERROR getting chat, returning false.";
+        return false;
+    }
+
+    bool retval = (1 == dc_chat_can_send(tempChat));
+    dc_chat_unref(tempChat);
+
+    return retval;
+}
+
+
+bool ChatModel::chatIsDeviceTalk()
+{
+    dc_chat_t* tempChat = dc_get_chat(currentMsgContext, chatID);
+
+    if (!tempChat) {
+        qDebug() << "ChatModel::chatIsDeviceTalk(): ERROR getting chat, returning false.";
+        return false;
+    }
+
+    bool retval = (1 == dc_chat_is_device_talk(tempChat));
+    dc_chat_unref(tempChat);
+    
+    return retval;
+}
+
+
+bool ChatModel::selfIsInGroup()
+{
+    // assumes that the current chat really is a group
+
+    dc_array_t* tempContactsArray = dc_get_chat_contacts(currentMsgContext, chatID);
+    
+    bool isInGroup = false;
+
+    for (size_t i = 0; i < dc_array_get_cnt(tempContactsArray); ++i) {
+        if (DC_CONTACT_ID_SELF == dc_array_get_id(tempContactsArray, i)) {
+            isInGroup = true;
+            break;
+        }
+    }
+
+    dc_array_unref(tempContactsArray);
+
+    return isInGroup;
+}
+
+
 bool ChatModel::setUrlToExport()
 {
     dc_msg_t* tempMsg;

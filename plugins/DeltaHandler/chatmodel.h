@@ -55,6 +55,14 @@ public:
 
     Q_INVOKABLE int getUnreadMessageBarIndex();
 
+    // TODO: similar things like chatIsContactRequest are
+    // currently Q_PROPERTY, and in DeltaHandler
+    Q_INVOKABLE bool chatCanSend();
+
+    Q_INVOKABLE bool chatIsDeviceTalk();
+
+    Q_INVOKABLE bool selfIsInGroup();
+
     Q_INVOKABLE bool setUrlToExport();
 
     Q_INVOKABLE QString getUrlToExport();

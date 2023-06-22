@@ -45,6 +45,7 @@ void EmitterThread::run()
                 case DC_EVENT_CHAT_MODIFIED:
                     qDebug() << "Emitter: DC_EVENT_CHAT_MODIFIED";
                     qDebug() << "Emitter: chat id: " << dc_event_get_data1_int(event);
+                    emit chatDataModified(dc_event_get_account_id(event), dc_event_get_data1_int(event));
                     break;
 
                 case DC_EVENT_CONFIGURE_PROGRESS:

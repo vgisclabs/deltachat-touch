@@ -342,6 +342,11 @@ signals:
     void emitterthreadChanged();
     void chatlistShowsArchivedOnly(bool showsArchived);
 
+    // emitted if
+    // - the event DC_EVENT_CHAT_MODIFIED is received
+    // - a username was modified by the user
+    void chatDataChanged();
+
     void hasConfiguredAccountChanged();
     void networkingIsAllowedChanged();
     void networkingIsStartedChanged();
@@ -400,6 +405,7 @@ protected:
 
 private slots:
     void messagesChanged(uint32_t accID, int chatID, int msgID);
+    void chatDataModifiedReceived(uint32_t, int);
     void incomingMessage(uint32_t accID, int chatID, int msgID);
     void messageReadByRecipient(uint32_t accID, int chatID, int msgID);
     void messageDeliveredToServer(uint32_t accID, int chatID, int msgID);

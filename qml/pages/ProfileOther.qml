@@ -192,6 +192,7 @@ Page {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        usernameField.focus = false
                         username = DeltaHandler.setOtherUsername(contactID, usernameField.text)
                         editMode = false
                     }

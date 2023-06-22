@@ -36,6 +36,8 @@ Page {
     property bool currentlyQuotingMessage: false
     property bool attachmentMode: false
     property bool audioRecordMode: false
+    property bool chatCanSend: DeltaHandler.chatmodel.chatCanSend()
+    property bool isContactRequest: DeltaHandler.chatIsContactRequest
 
 
     signal leavingChatViewPage()
@@ -86,8 +88,12 @@ Page {
     }
 
     Connections {
-        target: DeltaHandler.chatmodel
+        target: DeltaHandler
         onChatDataChanged: {
+            // CAVE: is emitted by both DeltaHandler and ChatModel
+            chatname = DeltaHandler.chatName()
+            chatCanSend = DeltaHandler.chatmodel.chatCanSend()
+            isContactRequest = DeltaHandler.chatIsContactRequest
             leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
             leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
             trailingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) == 0
@@ -96,6 +102,17 @@ Page {
 
     Connections {
         target: DeltaHandler.chatmodel
+
+        onChatDataChanged: {
+            // CAVE: is emitted by both DeltaHandler and ChatModel
+            chatname = DeltaHandler.chatName()
+            chatCanSend = DeltaHandler.chatmodel.chatCanSend()
+            isContactRequest = DeltaHandler.chatIsContactRequest
+            leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
+            leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
+            trailingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) == 0
+        }
+
         onJumpToMsg: {
             messageJump(myindex)
         }
@@ -526,7 +543,7 @@ Page {
         anchors.top: searchRect.visible ? searchRect.bottom : header.bottom
         topMargin: units.gu(1)
         width: parent.width
-        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(1) - (messageCreatorBox.visible ? messageCreatorBox.height : requestReactionRect.height)
+        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(1) - (messageCreatorBox.visible ? messageCreatorBox.height : 0) - (requestReactionRect.visible ? requestReactionRect.height : 0) - (cannotSendBox.visible ? cannotSendBox.height : 0)
         model: DeltaHandler.chatmodel
         delegate: delegateListItem
         verticalLayoutDirection: ListView.BottomToTop
@@ -580,6 +597,41 @@ Page {
     } // end UbuntuShape id: toBottomButton
 
     Rectangle {
+        id: cannotSendBox
+        height: cannotSendLabel.contentHeight + units.gu(2)
+        width: parent.width
+        color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+        anchors{
+            left: parent.left
+            right: parent.right
+            top: view.bottom
+            topMargin: units.gu(1)
+        }
+        visible: !chatCanSend && !isContactRequest
+
+        Label {
+            id: cannotSendLabel
+            width: cannotSendBox.width - units.gu(2)
+            anchors {
+                top: cannotSendBox.top
+                topMargin: units.gu(1)
+                left: cannotSendBox.left
+                leftMargin: units.gu(1)
+            }
+            text: {
+                if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
+                    return i18n.tr("This chat contains locally generated messages; writing is disabled.")
+                } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
+                    return i18n.tr("You must be in this group to post a message. To join, ask another member.")
+                } else {
+                    return ""
+                }
+            }
+            wrapMode: Text.WordWrap
+        }
+    } // end Rectangle id: cannotSendBox
+
+    Rectangle {
         id: messageCreatorBox
         height: audioRecordMode ? audioRecordBox.height : messageEnterField.height + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(2) : 0) + units.gu(1)
         width: parent.width
@@ -590,7 +642,7 @@ Page {
             top: view.bottom
             topMargin: units.gu(1)
         }
-        visible: !DeltaHandler.chatIsContactRequest
+        visible: !isContactRequest && chatCanSend
 
         Rectangle {
             id: quotedMessageBox
@@ -1253,7 +1305,6 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             recordedAudio.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, audioRecordBox.voiceMessageFile))
-                            console.log("============== voiceMessageFile is: ", audioRecordBox.voiceMessageFile)
                             recordedAudio.play()
                         }
                         enabled: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
@@ -1278,7 +1329,7 @@ Page {
             top: view.bottom
             topMargin: units.gu(1)
         }
-        visible: DeltaHandler.chatIsContactRequest
+        visible: isContactRequest
 
         Button {
             id: acceptRequestButton

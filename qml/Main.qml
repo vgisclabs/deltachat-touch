@@ -760,7 +760,7 @@ MainView {
                                     right: dateAndMsgCount.right
                                     //rightMargin: units.gu(1)
                                 }
-                                backgroundColor: model.chatIsMuted ? "grey" : root.unreadMessageCounterColor
+                                backgroundColor: model.chatIsMuted ? (root.darkmode ? "#202020" : "#e0e0e0") : root.unreadMessageCounterColor
                                 
                                 property bool shouldBeVisible: !model.isContactRequest && model.newMsgCount > 0
                                 visible: shouldBeVisible
@@ -775,7 +775,7 @@ MainView {
                                     text: model.newMsgCount > 99 ? "99+" : model.newMsgCount
                                     fontSize: "small"
                                     font.bold: true
-                                    color: "white"
+                                    color: model.chatIsMuted && !root.darkmode ? "black" : "white"
                                 }
 
                             }

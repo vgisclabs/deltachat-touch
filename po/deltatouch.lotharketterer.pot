@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 19:58+0000\n"
+"POT-Creation-Date: 2023-06-23 19:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgid "No account configured"
 msgstr ""
 
 #: ../qml/Main.qml:281 ../qml/Main.qml:288 ../qml/Main.qml:335
-#: ../qml/pages/AccountConfig.qml:120
+#: ../qml/pages/AccountConfig.qml:133
 msgid "no username set"
 msgstr ""
 
@@ -46,28 +46,28 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:197
-#: ../qml/pages/ChatView.qml:242 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:489 ../qml/pages/ChatView.qml:199
+#: ../qml/pages/ChatView.qml:244 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr ""
 
-#: ../qml/Main.qml:539
+#: ../qml/Main.qml:540
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:744
+#: ../qml/Main.qml:745
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:808
+#: ../qml/Main.qml:809
 msgid "Loading…"
 msgstr ""
 
-#: ../qml/Main.qml:834 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:835 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:891 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/Main.qml:892 ../qml/pages/AddAccountAsSecondDevice.qml:143
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:139
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
@@ -160,11 +160,18 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:49 ../qml/pages/AddAccount.qml:33
+#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:162
+#: ../qml/pages/ProgressBackupImport.qml:69
+#: ../qml/pages/ProgressConfigAccount.qml:68
+#: ../qml/pages/ProgressQrBackupImport.qml:94
+msgid "Back"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:62 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
+#: ../qml/pages/AccountConfig.qml:98 ../qml/pages/AccountConfig.qml:201
 #: ../qml/pages/AddAccountAsSecondDevice.qml:144
 #: ../qml/pages/AddAccountAsSecondDevice.qml:168
 #: ../qml/pages/AddAccountAsSecondDevice.qml:203
@@ -177,15 +184,15 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:85
+#: ../qml/pages/AccountConfig.qml:98
 msgid "Info"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:85
+#: ../qml/pages/AccountConfig.qml:98
 msgid "None"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:191
+#: ../qml/pages/AccountConfig.qml:204
 msgid "Account is not configured."
 msgstr ""
 
@@ -547,7 +554,7 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:180
+#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:182
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr ""
@@ -588,48 +595,42 @@ msgstr ""
 msgid "Mute forever"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:144
+#: ../qml/pages/ChatView.qml:146
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:151 ../qml/pages/ChatView.qml:171
+#: ../qml/pages/ChatView.qml:153 ../qml/pages/ChatView.qml:173
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:160 ../qml/pages/ProgressBackupImport.qml:69
-#: ../qml/pages/ProgressConfigAccount.qml:68
-#: ../qml/pages/ProgressQrBackupImport.qml:94
-msgid "Back"
-msgstr ""
-
-#: ../qml/pages/ChatView.qml:621
+#: ../qml/pages/ChatView.qml:623
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:623
+#: ../qml/pages/ChatView.qml:625
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1340
+#: ../qml/pages/ChatView.qml:1342
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1356 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1358 ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1371
+#: ../qml/pages/ChatView.qml:1373
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1501
+#: ../qml/pages/ChatView.qml:1503
 msgid "Click to leave without sending"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1534
+#: ../qml/pages/ChatView.qml:1536
 msgid "Click to delete"
 msgstr ""
 

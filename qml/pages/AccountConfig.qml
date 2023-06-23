@@ -41,10 +41,10 @@ Page {
                 iconName: "go-previous"
                 text: i18n.tr("Back")
                 onTriggered: {
-                    // only allow leaving account configuration
-                    // if there's a configured account
                     layout.removePages(accountConfigPage)
                 }
+                // only allow leaving account configuration
+                // if there's a configured account
                 visible: DeltaHandler.hasConfiguredAccount
             }
         ]

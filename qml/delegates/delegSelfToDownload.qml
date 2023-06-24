@@ -52,7 +52,7 @@ UbuntuShape {
             stateText = " - <a href=\"%1\">%1</a>".arg(i18n.tr("Download failed"))
             msgLabel.linkColor = root.darkmode ? (model.messageSeen ? "#f78080" : "#aa0000") : "#ff0000"
         } else if (downState === DeltaHandler.DownloadInProgress) {
-            stateText = i18n.tr(" - Downloading…")
+            stateText = " - " + i18n.tr("Downloading…")
             msgLabel.linkColor = root.darkmode ? (model.messageSeen ? "#bbbbf7" : "#0000aa") : "#0000ff"
         } else {
             stateText = "?"
@@ -111,7 +111,7 @@ UbuntuShape {
         text: model.summarytext + msgbox.stateText
         onLinkActivated: {
             DeltaHandler.chatmodel.downloadFullMessage(index)
-            msgbox.stateText = i18n.tr(" - Downloading…")
+            msgbox.stateText = " - " + i18n.tr("Downloading…")
             msgLabel.linkColor = root.darkmode ? (model.messageSeen ? "#8080f7" : "#000055") : "#0000ff"
         }
         // TODO: solve with model.messageState instead of model.message.seen?

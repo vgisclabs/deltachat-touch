@@ -1532,8 +1532,7 @@ Page {
                     color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                     ListItemLayout {
                         id: layout1
-                        // TODO string not translated yet
-                        title.text: i18n.tr("Click to delete")
+                        title.text: i18n.tr("Delete")
                     }
                     onClicked: {
                         audioRecordBox.hasRecord = false

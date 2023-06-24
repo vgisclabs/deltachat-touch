@@ -46,7 +46,7 @@ Item {
             stateText = " - <a href=\"%1\">%1</a>".arg(i18n.tr("Download failed"))
             msgLabel.linkColor = root.darkmode ? "#f7aaaa" : "#ff0000"
         } else if (downState === DeltaHandler.DownloadInProgress) {
-            stateText = i18n.tr(" - Downloading…")
+            stateText = " - " + i18n.tr("Downloading…")
             msgLabel.linkColor = root.darkmode ? "#aaaaff" : "#0000ff"
         } else {
             stateText = "?"
@@ -136,7 +136,7 @@ Item {
             color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
             onLinkActivated: {
                 DeltaHandler.chatmodel.downloadFullMessage(index)
-                delegItem.stateText = i18n.tr(" - Downloading…")
+                delegItem.stateText = " - " + i18n.tr("Downloading…")
                 msgLabel.linkColor = root.darkmode ? "#8080f7" : "#0000ff"
             }
             wrapMode: Text.Wrap

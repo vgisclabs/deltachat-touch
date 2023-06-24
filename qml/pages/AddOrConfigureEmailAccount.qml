@@ -386,7 +386,7 @@ Page {
                     id: imapPortField
                     width: emailField.width
                     text: DeltaHandler.getTempContextConfig("mail_port")
-                    placeholderText: i18n.tr("Standard (%1)").arg((imapSecSelector.selectedIndex == 0 || imapSecSelector.selectedIndex == 1 ? "993" : "143"))
+                    placeholderText: i18n.tr("Default (%1)").arg((imapSecSelector.selectedIndex == 0 || imapSecSelector.selectedIndex == 1 ? "993" : "143"))
                     validator: IntValidator {bottom: 0; top: 65535}
                 }
 

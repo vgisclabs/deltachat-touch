@@ -807,11 +807,25 @@ void ChatModel::newMessage(int msgID)
     dc_msg_unref(tempMsg);
 
 
-//    // model is not reset because this would be problematic if the
-//    // current view is not at the bottom, but scrolled somewhere
-//    for (size_t i = 0; i < currentMsgCount ; ++i) {
-//        emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
-//    }
+    // The event DC_EVENT_MSGS_CHANGED, which eventually leads to the
+    // execution of this method here, is also created if a partly
+    // downloaded message has been fully downloaded.  Thus, data_changed
+    // has to be emitted, either for the specific message ID (if > 0) or
+    // for all of them. The model is not reset because this would be
+    // problematic if the current view is not at the bottom, but
+    // scrolled somewhere
+    if (0 == msgID) {
+        for (size_t i = 0; i < currentMsgCount ; ++i) {
+            emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
+        }
+    } else {
+        for (size_t i = 0; i < currentMsgCount ; ++i) {
+            if (msgVector[i] == msgID) {
+                emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
+                break;
+            }
+        }
+    }
 
     emit chatDataChanged();
 }

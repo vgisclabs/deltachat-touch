@@ -15,7 +15,7 @@
 
 • I tilfælde at Delta Chat eller andet e-mail program på denne enhed eller en anden er blevet gen-installeret bør der sendes en Autocrypt opsætning besked derfra.
 @linesystemmsg_read_receipt_subject Besked åbnet
-@linesystemmsg_read_receipt_body Beskeden \"%1$s\" du har sendt blev vist på modtagerens skærm.
+@linesystemmsg_read_receipt_body Beskeden "%1$s" du har sendt blev vist på modtagerens skærm.
 
 Dette er ikke en garanti for at indholdet blev læst.
 @lineautocrypt_prefer_e2ee Foretræk end-to-end kryptering
@@ -24,7 +24,7 @@ Dette er ikke en garanti for at indholdet blev læst.
 @lineautocrypt_asm_general_body Dette er Autocrypt opsætning besked brugt til at overføre ende-til-ende opsætning mellem klienter.
 
 For at af kryptere og bruge opsætning åben beskeden i en Autocrypt kompatibel klient og indtast opsæt koden vist på den genererende enhed.
-@linelogin_error_cannot_login Kan ikke logge ind som  \"%1$s\". Kontroller om e-mailadresse og adgangskode er korrekt.
+@linelogin_error_cannot_login Kan ikke logge ind som  "%1$s". Kontroller om e-mailadresse og adgangskode er korrekt.
 @linedevice_talk Enhedsbeskeder
 @linesaved_messages Gemte beskeder
 @linecontact_verified %1$s bekræftet.
@@ -57,10 +57,10 @@ Brug Delta Chat med hvem som helst ud af milliarder af mennesker: brug blot dere
 @linemessages Beskeder
 @linepart_of_total_used %1$s af %2$s brugt
 @lineqrshow_join_contact_hint Skan dette for at indstille kontakt med %1$s
-@lineqrshow_join_group_hint Skan dette for at deltage i gruppen \"%1$s\".
+@lineqrshow_join_group_hint Skan dette for at deltage i gruppen "%1$s".
 @lineconnectivity_not_connected Ikke forbundet
-@linegroup_name_changed_by_you Gruppenavn ændret fra \"%1$s\" til \"%2$s\" af mig.
-@linegroup_name_changed_by_other Gruppenavn ændret fra \"%1$s\" til \"%2$s\" af %3$s.
+@linegroup_name_changed_by_you Gruppenavn ændret fra "%1$s" til "%2$s" af mig.
+@linegroup_name_changed_by_other Gruppenavn ændret fra "%1$s" til "%2$s" af %3$s.
 @linegroup_image_changed_by_you Gruppebillede ændret af mig.
 @linegroup_image_changed_by_other Gruppebillede ændret af %1$s.
 @lineadd_member_by_you Medlem %1$s tilføjet af mig.

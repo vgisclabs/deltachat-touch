@@ -15,7 +15,7 @@
 
 • En caso de que haya reinstalado Delta Chat u otro programa de correo en este u otro dispositivo, puede que quiera enviar un Mensaje de Configuración de Autocrypt desde allí.
 @linesystemmsg_read_receipt_subject Recibo de lectura
-@linesystemmsg_read_receipt_body El mensaje \"%1$s\" que enviaste se mostró en la pantalla del destinatario.
+@linesystemmsg_read_receipt_body El mensaje "%1$s" que enviaste se mostró en la pantalla del destinatario.
 
 Esto no garantiza que el contenido haya sido leído.
 @lineautocrypt_prefer_e2ee Preferir el cifrado de extremo a extremo
@@ -24,7 +24,7 @@ Esto no garantiza que el contenido haya sido leído.
 @lineautocrypt_asm_general_body Este es el Mensaje de Configuración de Autocrypt utilizado para transferir su configuración de extremo a extremo entre clientes.
 
 Para descifrar y usar su configuración, abra el mensaje en un cliente compatible con Autocrypt e ingrese el código de configuración presentado en el dispositivo que lo generó.
-@linelogin_error_cannot_login No se puede iniciar sesión como \"%1$s\". Por favor, compruebe si la dirección de correo y la contraseña son correctas.
+@linelogin_error_cannot_login No se puede iniciar sesión como "%1$s". Por favor, compruebe si la dirección de correo y la contraseña son correctas.
 @linedevice_talk Mensajes del dispositivo
 @linesaved_messages Mensajes guardados
 @linecontact_verified %1$s verificado.
@@ -36,7 +36,7 @@ Para descifrar y usar su configuración, abra el mensaje en un cliente compatibl
 Técnicamente, Delta Chat es una aplicación de correo electrónico con una interfaz de chat moderna. Correo electrónico en un nuevo vestido si quieres 👻
 
 Usa Delta Chat con cualquiera de miles de millones de personas: solo necesitas su dirección de correo electrónico. Los destinatarios no necesitan instalar Delta Chat, visitar sitios web o registrarse en ningún lugar - sin embargo, por supuesto, si lo desean, puedes indicarles 👉 https://get.delta.chat
-@linesystemmsg_unknown_sender_for_chat Remitente desconocido. Mira \"info\" para más detalles.
+@linesystemmsg_unknown_sender_for_chat Remitente desconocido. Mira "info" para más detalles.
 @linesystemmsg_subject_for_new_contact Mensaje de %1$s
 @linesystemmsg_failed_sending_to Falla en enviar el mensaje a %1$s.
 @linevideochat_invitation Invitación a videollamada
@@ -53,14 +53,14 @@ Ajusta tu reloj ⏰🔧 para asegurarte que los mensajes sean recibidos correcta
 
 Eso puede crear problemas porque tus contactos usan nuevas versiones - y tú te estás perdiendo las últimas novedades 😳
 Chequea https://get.delta.chat o tu tienda de aplicaciones para actualizaciones.
-@linedevicemsg_self_deleted Eliminaste los chats de los \"Mensajes guardados\". 
+@linedevicemsg_self_deleted Eliminaste los chats de los "Mensajes guardados". 
 
-ℹ️ Para volver a usar los\"Mensajes guardados\", debes crear un chat contigo mismo.
+ℹ️ Para volver a usar los"Mensajes guardados", debes crear un chat contigo mismo.
 @linedevicemsg_storage_exceeding ⚠️ El almacenamiento de tu proveedor está por excederse, ya tienes %1$s%% en uso.
 
 Quizás no puedas recibir mensajes cuando el almacenamiento esté al 100%% de uso.
 
-👉 Por favor chequea si puedes eliminar los datos antiguos en la página web del proveedor y considera habilitar \"Ajustes / Eliminar mensajes antiguos\". Puedes chequear tu almacenamiento actual en cualquier momento en \"Ajustes / Conectividad\".
+👉 Por favor chequea si puedes eliminar los datos antiguos en la página web del proveedor y considera habilitar "Ajustes / Eliminar mensajes antiguos". Puedes chequear tu almacenamiento actual en cualquier momento en "Ajustes / Conectividad".
 @linen_bytes_message Mensaje de %1$s
 @linedownload_max_available_until Descarga disponible hasta %1$s
 @lineincoming_messages Mensajes entrantes
@@ -82,7 +82,7 @@ Quizás no puedas recibir mensajes cuando el almacenamiento esté al 100%% de us
 Esperando que el dispositivo de %2$s responda…
 @linesecure_join_replies %1$s respondió, esperando ser agregado al grupo…
 @lineqrshow_join_contact_hint Escanea esto para configurar un contacto con %1$s
-@lineqrshow_join_group_hint Escanea esto para unirte al grupo verificado \"%1$s\".
+@lineqrshow_join_group_hint Escanea esto para unirte al grupo verificado "%1$s".
 @lineconnectivity_not_connected Desconectado
 @lineaeap_addr_changed %1$s cambió su dirección de %2$s a %3$s
 @lineaeap_explanation Has cambiado tu dirección de correo electrónico de %1$s a %2$s.
@@ -90,8 +90,8 @@ Esperando que el dispositivo de %2$s responda…
 Si ahora envías un mensaje a un grupo verificado, los contactos de éste sustituirán automáticamente la antigua por tu nueva dirección.
 
 Es muy recomendable que configures tu antiguo proveedor de correo electrónico para que reenvíe todos los mensajes a tu nueva dirección. De lo contrario, podrías perderte los mensajes de los contactos que aún no han recibido tu nueva dirección.
-@linegroup_name_changed_by_you Cambiaste el nombre del grupo de \"%1$s\" a \"%2$s\".
-@linegroup_name_changed_by_other El nombre del grupo fue cambiado de \"%1$s\" a \"%2$s\" por %3$s.
+@linegroup_name_changed_by_you Cambiaste el nombre del grupo de "%1$s" a "%2$s".
+@linegroup_name_changed_by_other El nombre del grupo fue cambiado de "%1$s" a "%2$s" por %3$s.
 @linegroup_image_changed_by_you Cambiaste la imagen del grupo.
 @linegroup_image_changed_by_other Imagen del grupo cambiada por %1$s.
 @lineadd_member_by_you Añadiste al miembro %1$s.

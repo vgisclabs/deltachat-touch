@@ -15,7 +15,7 @@
 
 • Dalam kasus Anda menginstal ulang Delta Chat atau program surel lain di perangkat ini atau perangkat lain, sebaiknya Anda mengirim Pengaturan Pesan Autocrypt dari sana.
 @linesystemmsg_read_receipt_subject Pesan dibuka
-@linesystemmsg_read_receipt_body Pesan \"%1$s\" yang Anda kirimkan tampak di layar penerima.
+@linesystemmsg_read_receipt_body Pesan "%1$s" yang Anda kirimkan tampak di layar penerima.
 
 Ini bukan jaminan kalau isinya dibaca.
 @lineautocrypt_prefer_e2ee Lebih baik enkripsi ujung ke ujung
@@ -24,7 +24,7 @@ Ini bukan jaminan kalau isinya dibaca.
 @lineautocrypt_asm_general_body Inilah Autocrypt Setup Message yang digunakan utuk mentransfer pengaturan ujung ke ujung Anda antar pelanggan.
 
 Untuk membuka enkirpsi dan menggunakan pengaturan Anda, bukan pesan di Autocrypt-compliant pelanggan dan masukkan kode pengaturan yang ditampikan untuk perangkat terkait.
-@linelogin_error_cannot_login Tidak bisa login sebagai \"%1$s\". Mohon cek apakah alamat surel dan kata sandi benar.
+@linelogin_error_cannot_login Tidak bisa login sebagai "%1$s". Mohon cek apakah alamat surel dan kata sandi benar.
 @linedevice_talk Pesan perangkat
 @linesaved_messages Pesan yang disimpan
 @linecontact_verified %1$sdiverifikasi.
@@ -47,9 +47,9 @@ Gunakan Delta Chat dengan siapa pun dari milyaran orang di luar sana: cukup guna
 @lineone_moment Sebentar...
 @lineerror_x Eror: %1$s
 @lineqrshow_join_contact_hint Pindai ini untuk mengatur kontak dengan%1$s.
-@lineqrshow_join_group_hint Pindai ini untuk bergabung dengan grup \"%1$s\".
-@linegroup_name_changed_by_you Nama grup diganti dari \"%1$s\" ke \"%2$s\" oleh saya.
-@linegroup_name_changed_by_other Nama grup diganti dari \"%1$s\" ke \"%2$s\" oleh %3$s.
+@lineqrshow_join_group_hint Pindai ini untuk bergabung dengan grup "%1$s".
+@linegroup_name_changed_by_you Nama grup diganti dari "%1$s" ke "%2$s" oleh saya.
+@linegroup_name_changed_by_other Nama grup diganti dari "%1$s" ke "%2$s" oleh %3$s.
 @linegroup_image_changed_by_you Gambar grup telah diubah oleh saya.
 @linegroup_image_changed_by_other Gambar grup telah diubah oleh %1$s.
 @lineadd_member_by_you Member %1$s telah ditambahkan oleh saya.

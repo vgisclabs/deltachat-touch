@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-23 19:33+0000\n"
+"POT-Creation-Date: 2023-06-24 21:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,28 +46,28 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:489 ../qml/pages/ChatView.qml:199
+#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:199
 #: ../qml/pages/ChatView.qml:244 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr ""
 
-#: ../qml/Main.qml:540
+#: ../qml/Main.qml:539
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:745
+#: ../qml/Main.qml:744
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:809
+#: ../qml/Main.qml:808
 msgid "Loading…"
 msgstr ""
 
-#: ../qml/Main.qml:835 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:834 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:892 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/Main.qml:891 ../qml/pages/AddAccountAsSecondDevice.qml:143
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:139
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
@@ -129,7 +129,7 @@ msgstr ""
 #: ../qml/delegates/delegOtherToDownload.qml:139
 #: ../qml/delegates/delegSelfToDownload.qml:55
 #: ../qml/delegates/delegSelfToDownload.qml:114
-msgid " - Downloading…"
+msgid "Downloading…"
 msgstr ""
 
 #: ../qml/delegates/delegUnreadMsgsBar.qml:48
@@ -386,10 +386,7 @@ msgid "IMAP Port"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:389
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:468
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:574
-msgid "Standard (%1)"
+msgid "Default (%1)"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:395
@@ -423,6 +420,12 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:461
 msgid "SMTP Port"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:468
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:574
+msgid "Standard (%1)"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:474
@@ -617,7 +620,8 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1358 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1358 ../qml/pages/ChatView.qml:1535
+#: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
@@ -628,10 +632,6 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:1503
 msgid "Click to leave without sending"
-msgstr ""
-
-#: ../qml/pages/ChatView.qml:1536
-msgid "Click to delete"
 msgstr ""
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:35

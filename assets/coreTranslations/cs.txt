@@ -15,7 +15,7 @@
 
 • Pokud jde o novou instalaci Delta Chatu či jiného e-mailového programu na tomto nebo jiném zařízení, může být nutné poslat si z nich Nastavení Autocryptu.
 @linesystemmsg_read_receipt_subject Zpráva otevřena
-@linesystemmsg_read_receipt_body Odeslaná zpráva \"%1$s\" byla příjemci zobrazena na jeho přístroji.
+@linesystemmsg_read_receipt_body Odeslaná zpráva "%1$s" byla příjemci zobrazena na jeho přístroji.
 
 Nicméně přečtení obsahu není zaručeno.
 @lineautocrypt_prefer_e2ee Upřednostňuj end-to-end šifrování
@@ -24,7 +24,7 @@ Nicméně přečtení obsahu není zaručeno.
 @lineautocrypt_asm_general_body Toto je Nastavení Autocryptu, kterým lze přenést nastavení šifrování mezi klienty.
 
 K dešifrování a použití nastavení musíte zprávu otevřít v druhém klientu s Autocryptem a tam zadat kód zobrazený na prvním přístroji.
-@linelogin_error_cannot_login Přihlášení jako \"%1$s\" selhalo. Zkontrolujte si prosím ještě jednou e-mail a heslo.
+@linelogin_error_cannot_login Přihlášení jako "%1$s" selhalo. Zkontrolujte si prosím ještě jednou e-mail a heslo.
 @linedevice_talk Zprávy přístroje
 @linesaved_messages Uložené zprávy
 @linecontact_verified %1$s ověřen.
@@ -45,9 +45,9 @@ Technicky je Delta Chat e-mailový program, ale s uživatelským rozhraním chat
 @lineone_moment Okamžik ...
 @lineerror_x Chyba %1$s
 @lineqrshow_join_contact_hint K navázání spojení s %1$s vyfoť kód.
-@lineqrshow_join_group_hint K připojení ke skupině \"%1$s\" vyfoť kód.
-@linegroup_name_changed_by_you Názen skupiny změněn z \"%1$s\" na \"%2$s\" ode mě.
-@linegroup_name_changed_by_other Názen skupiny změněn z \"%1$s\" na \"%2$s\" od %3$s.
+@lineqrshow_join_group_hint K připojení ke skupině "%1$s" vyfoť kód.
+@linegroup_name_changed_by_you Názen skupiny změněn z "%1$s" na "%2$s" ode mě.
+@linegroup_name_changed_by_other Názen skupiny změněn z "%1$s" na "%2$s" od %3$s.
 @linegroup_image_changed_by_you Obrázek skupiny změněn ode mě.
 @linegroup_image_changed_by_other Obrázek skupiny změněn od %1$s.
 @lineadd_member_by_you Člen %1$s byl přidán ode mě.

@@ -53,9 +53,9 @@ Upravte si hodiny ⏰🔧, aby ste zaistili správne prijímanie správ.
 
 Môže to spôsobiť problémy, pretože vaši chatový partneri používajú novšie verzie – a vám chýbajú najnovšie funkcie 😳
 Aktualizácie nájdete na https://get.delta.chat alebo obchode s aplikáciami . 
-@linedevicemsg_self_deleted Odstránili ste konverzáciu \"Uložené správy\".
+@linedevicemsg_self_deleted Odstránili ste konverzáciu "Uložené správy".
 
-ℹ️ Aby ste využili funkciu \"Uložené správy\" znova, vytvorte novú konverzáciu so sebou.
+ℹ️ Aby ste využili funkciu "Uložené správy" znova, vytvorte novú konverzáciu so sebou.
 @linedevicemsg_storage_exceeding ⚠️ Úložisko vašeho poskytovateľa čoskoro prekročí limit, už%1$s%%  sú využité.
 
  Je možné, že nebudete môcť prijímať správy, ak bude úložisko 100 %% využité.

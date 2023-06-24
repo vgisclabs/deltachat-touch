@@ -15,14 +15,14 @@
 
 • Au cas où vous auriez réinstallé Delta Chat ou un autre programme de messagerie sur cet appareil ou un autre, vous voudrez peut-être envoyer un message de configuration d\'Autocrypt depuis ce dernier.
 @linesystemmsg_read_receipt_subject Accusé de lecture
-@linesystemmsg_read_receipt_body Ceci est un accusé de lecture pour le message \"%1$s\".
+@linesystemmsg_read_receipt_body Ceci est un accusé de lecture pour le message "%1$s".
 
 Cela signifie que le message a été affiché sur l\'appareil du destinataire, pas forcément que le contenu ait été lu.
 @lineautocrypt_prefer_e2ee Préférez le chiffrement de bout en bout
 @linechat_archived_chats_title Discussions archivées
 @lineautocrypt_asm_subject Message de configuration Autocrypt
 @lineautocrypt_asm_general_body Ceci est le message de configuration Autocrypt utilisé pour transférer votre configuration de bout en bout entre clients. Pour déchiffrer et utiliser votre configuration, ouvrez le message dans un client compatible Autocrypt et entrez le code de configuration présenté sur le périphérique de génération.
-@linelogin_error_cannot_login Connexion en tant que \"%1$s\" échouée. Vérifiez s.v.p. que votre adresse courriel et votre mot de passe sont corrects.
+@linelogin_error_cannot_login Connexion en tant que "%1$s" échouée. Vérifiez s.v.p. que votre adresse courriel et votre mot de passe sont corrects.
 @linedevice_talk Messages de l\'appareil
 @linesaved_messages Messages sauvegardés
 @linecontact_verified %1$s vérifié.
@@ -51,14 +51,14 @@ Réglez votre horloge ⏰🔧 pour que vos messages soient bien reçus.
 
 Ceci pourrait poser des problèmes car vos contacts utilisent des versions plus récentes - et vous loupez les dernières fonctionnalités 😳
 Veuillez s\'il vous plaît faire un tour sur https://get.delta.chat ou votre magasin d\'applications pour une mise à jour.
-@linedevicemsg_self_deleted Vous avez supprimé la discussion \"Messages sauvegardés\".
+@linedevicemsg_self_deleted Vous avez supprimé la discussion "Messages sauvegardés".
 
-ℹ️ Pour utiliser la fonctionnalité \"Message enregistrés\" à nouveau, commencez une nouvelle discussion avec vous-même.
+ℹ️ Pour utiliser la fonctionnalité "Message enregistrés" à nouveau, commencez une nouvelle discussion avec vous-même.
 @linedevicemsg_storage_exceeding ⚠️ Bientôt plus d\'espace de stockage chez votre fournisseur, %1$s%% utilisés.
 
 Vous ne serez peut-être plus en mesure de recevoir des messages quand votre espace de stockage sera plein.
 
-👉 Veuillez vérifier si vous avez d\'anciens éléments à supprimer directement sur l\'interface web de votre fournisseur et envisagez d\'activer \"Paramètres / Supprimer les anciens messages\". Vous pouvez vérifier à tout moment le volume d\'espace de stockage en cours d\'utilisation depuis \"Paramètres / Connectivité\".
+👉 Veuillez vérifier si vous avez d\'anciens éléments à supprimer directement sur l\'interface web de votre fournisseur et envisagez d\'activer "Paramètres / Supprimer les anciens messages". Vous pouvez vérifier à tout moment le volume d\'espace de stockage en cours d\'utilisation depuis "Paramètres / Connectivité".
 @linen_bytes_message %1$s message
 @linedownload_max_available_until Télécharger le plus possible jusqu\'à %1$s
 @lineincoming_messages Messages entrants
@@ -80,7 +80,7 @@ Vous ne serez peut-être plus en mesure de recevoir des messages quand votre esp
 En attente de la réponse de l’appareil de %2$s…
 @linesecure_join_replies %1$s a répondu, en attente d’être ajouté au groupe…
 @lineqrshow_join_contact_hint Scanner pour discuter avec %1$s
-@lineqrshow_join_group_hint Scannez ceci pour rejoindre le groupe \"%1$s\".
+@lineqrshow_join_group_hint Scannez ceci pour rejoindre le groupe "%1$s".
 @lineconnectivity_not_connected Non connecté
 @lineaeap_addr_changed %1$s a changé son adresse de %2$s à %3$s
 @lineaeap_explanation Vous avez changé votre adresse e-mail de %1$s à %2$s.
@@ -100,8 +100,8 @@ Il est fortement conseillé de configurer votre ancien fournisseur d\'e-mail pou
 @linegroup_left_by_other %1$s a quitté le groupe.
 @linegroup_image_deleted_by_you Vous avez supprimé l\'image du groupe.
 @linegroup_image_deleted_by_other Image du groupe supprimée par %1$s.
-@linelocation_enabled_by_you Vous avez activé l\'envoi de votre localisation.
-@linelocation_enabled_by_other %1$sa activé l\'envoi de sa localisation.
+@linelocation_enabled_by_you Vous avez activé l\'envoi de votre position.
+@linelocation_enabled_by_other %1$sa activé l\'envoi de sa position.
 @lineephemeral_timer_disabled_by_you Vous avez désactivé la minuterie des messages éphémères.
 @lineephemeral_timer_disabled_by_other Minuterie des messages éphémères désactivée par %1$s.
 @lineephemeral_timer_seconds_by_you Vous avez réglé le temps d\'affichage des messages éphémères à %1$s seconde(s).

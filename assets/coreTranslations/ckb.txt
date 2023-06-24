@@ -13,7 +13,7 @@
 @lineautocrypt_prefer_e2ee هەڵبژاردنی شفرەکردنی ئەمسەر-ئەوسەر
 @linechat_archived_chats_title وتووێژە ئەرشیڤکراوەکان
 @lineautocrypt_asm_subject پەیامی ڕێکخستنی ئۆتۆکریپت
-@linelogin_error_cannot_login \"%1$s\" ناتوانێت بچێتە ژوورەوە. سەرنج بدە بزانە ئیمەیل و تێپەڕوشەکە درووستە.
+@linelogin_error_cannot_login "%1$s" ناتوانێت بچێتە ژوورەوە. سەرنج بدە بزانە ئیمەیل و تێپەڕوشەکە درووستە.
 @linedevice_talk پەیامەکانی ئامێرەکە
 @linesaved_messages کانگای نامەکان
 @linecontact_verified %1$s پشتڕاست کرایەوە
@@ -34,5 +34,5 @@
 @linelocation شوێن
 @lineerror_x هەڵە: %1$s
 @lineqrshow_join_contact_hint بۆ ڕێکخستنی پێوەندی لەگەڵ %1$s، ئەم کۆدە سکان بکە. 
-@lineqrshow_join_group_hint بۆ بەشداربوون لە کۆڕ ئەمە سکان بکە: \"%1$s\"
+@lineqrshow_join_group_hint بۆ بەشداربوون لە کۆڕ ئەمە سکان بکە: "%1$s"
 @end

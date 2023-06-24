@@ -21,7 +21,7 @@
 @lineautocrypt_asm_general_body Bu, müvəqqəti quraşdırma üçün müştərilər arasında köçürmək üçün istifadə edilən Autocrypt Setup Mesajıdır. 
 
 Senfikanızı çözmək və istifadə etmək üçün autocrypt uyğun müştəri içərisində mesajı açın və yaradan cihazda göstərilən quraşdırma kodunu daxil edin.
-@linelogin_error_cannot_login  \"%1$s\" kimi giriş alınmadı. E-poçt ünvanı və parolun düzgün olub olmadığını yoxlayın.
+@linelogin_error_cannot_login  "%1$s" kimi giriş alınmadı. E-poçt ünvanı və parolun düzgün olub olmadığını yoxlayın.
 @linesaved_messages Saxlanılmış mesajlar
 @linecontact_verified %1$s yoxlanıldı.
 @linecontact_not_verified %1$sDoğrula bilmir
@@ -30,9 +30,9 @@ Senfikanızı çözmək və istifadə etmək üçün autocrypt uyğun müştəri
 @lineone_moment Gözləyin...
 @lineerror_x Xəta: %1$s
 @lineqrshow_join_contact_hint %1$silə əlaqə qurmaq üçün bunu skan edin
-@lineqrshow_join_group_hint  \"%1$s\" qrupuna qoşulmaq üçün bunu skan edin. 
-@linegroup_name_changed_by_you Qrupun adı \"%1$s\" - dən \"%2$s\" - yə deyişildi məndən. 
-@linegroup_name_changed_by_other Qrupun adı \"%1$s\" - dən \"%2$s\" - yə deyişildi ilə %3$s.
+@lineqrshow_join_group_hint  "%1$s" qrupuna qoşulmaq üçün bunu skan edin. 
+@linegroup_name_changed_by_you Qrupun adı "%1$s" - dən "%2$s" - yə deyişildi məndən. 
+@linegroup_name_changed_by_other Qrupun adı "%1$s" - dən "%2$s" - yə deyişildi ilə %3$s.
 @linegroup_image_changed_by_you Qrup şəkili dəyişildi məndən. 
 @linegroup_image_changed_by_other Qrup şəkili dəyişildi ilə %1$s.
 @lineadd_member_by_you Üzv %1$s əlavə olundu məndən. 

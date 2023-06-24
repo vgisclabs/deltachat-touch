@@ -15,7 +15,7 @@
 
 • Se hai reinstallato Delta Chat o usi un altro client email dovresti inviare un Messaggio di configurazione Autocrypt dal dispositivo originario.
 @linesystemmsg_read_receipt_subject Ricevuta di lettura
-@linesystemmsg_read_receipt_body Questa è una ricevuta di lettura del messaggio \"%1$s\".
+@linesystemmsg_read_receipt_body Questa è una ricevuta di lettura del messaggio "%1$s".
 
 Ciò significa che il messaggio è stato mostrato nel dispositivo del destinatario, ma non necessariamente che il contenuto è stato letto.
 @lineautocrypt_prefer_e2ee Preferisci Cifratura End-To-End
@@ -24,7 +24,7 @@ Ciò significa che il messaggio è stato mostrato nel dispositivo del destinatar
 @lineautocrypt_asm_general_body Questo è un messaggio di configurazione Autocrypt per trasferire le impostazioni end-to-end tra dispositivi.
 
 Per decifrarlo e usare le impostazioni, apri questo messaggio con un client compatibile e inserisci il codice mostrato nel dispositivo di origine.
-@linelogin_error_cannot_login Impossibile accedere come \"%1$s\". Verifica che l\'indirizzo email e la password siano corretti.
+@linelogin_error_cannot_login Impossibile accedere come "%1$s". Verifica che l\'indirizzo email e la password siano corretti.
 @linedevice_talk Messaggi del Dispositivo
 @linesaved_messages Messaggi Salvati
 @linecontact_verified %1$s verificato.
@@ -53,14 +53,14 @@ Regola l\'orologio ⏰🔧 per assicurarti che i tuoi messaggi vengano ricevuti 
 
 Ciò potrebbe causare problemi perché i tuoi partner di chat utilizzano versioni più recenti - e ti mancano le funzionalità più recenti 😳
 Controlla https://get.delta.chat o il tuo app store per gli aggiornamenti. 
-@linedevicemsg_self_deleted Hai eliminato la chat \"Messaggi salvati\".
+@linedevicemsg_self_deleted Hai eliminato la chat "Messaggi salvati".
 
-ℹ️ Per utilizzare nuovamente la funzione \"Messaggi salvati\", crea una nuova chat con te stesso.
+ℹ️ Per utilizzare nuovamente la funzione "Messaggi salvati", crea una nuova chat con te stesso.
 @linedevicemsg_storage_exceeding ⚠️ Lo spazio di archiviazione del tuo fornitore sta per essere superato, già %1$s%% vengono utilizzati.
 
 Potrebbe non essere possibile ricevere messaggi quando lo spazio di archiviazione è 100%% utilizzato.
 
-👉 Si prega di verificare se è possibile eliminare i vecchi dati nell\'interfaccia web del fornitore e considerare di abilitare \"Impostazioni / Elimina Vecchi Messaggi\". Puoi controllare l\'utilizzo corrente dello spazio di archiviazione in qualsiasi momento in \"Impostazioni / Connettività\".
+👉 Si prega di verificare se è possibile eliminare i vecchi dati nell\'interfaccia web del fornitore e considerare di abilitare "Impostazioni / Elimina Vecchi Messaggi". Puoi controllare l\'utilizzo corrente dello spazio di archiviazione in qualsiasi momento in "Impostazioni / Connettività".
 @linen_bytes_message %1$s messaggio
 @linedownload_max_available_until Download disponibile massimo fino a %1$s
 @lineincoming_messages Messaggi in arrivo
@@ -82,7 +82,7 @@ Potrebbe non essere possibile ricevere messaggi quando lo spazio di archiviazion
 In attesa che il dispositivo di %2$s risponda…
 @linesecure_join_replies %1$s ha risposto, in attesa di essere aggiunto al gruppo…
 @lineqrshow_join_contact_hint Scansionalo per chattare con %1$s
-@lineqrshow_join_group_hint Scansionalo per entrare nel gruppo \"%1$s\"
+@lineqrshow_join_group_hint Scansionalo per entrare nel gruppo "%1$s"
 @lineconnectivity_not_connected Non connesso
 @lineaeap_addr_changed %1$s hanno cambiato il loro indirizzo da %2$s a %3$s
 @lineaeap_explanation Hai cambiato il tuo indirizzo email da %1$s a %2$s.
@@ -90,8 +90,8 @@ In attesa che il dispositivo di %2$s risponda…
 Se ora invii un messaggio a un gruppo verificato, i contatti sostituiranno automaticamente il vecchio indirizzo con il tuo nuovo.
 
 Si consiglia vivamente di impostare il tuo vecchio provider email per inoltrare tutte le email al tuo nuovo indirizzo email. Altrimenti potresti perdere i messaggi di contatti che non hanno ancora ricevuto il tuo nuovo indirizzo.
-@linegroup_name_changed_by_you Hai cambiato il nome del gruppo da \"%1$s\" a \"%2$s\".
-@linegroup_name_changed_by_other Nome gruppo cambiato da \"%1$s\" a \"%2$s\" da %3$s.
+@linegroup_name_changed_by_you Hai cambiato il nome del gruppo da "%1$s" a "%2$s".
+@linegroup_name_changed_by_other Nome gruppo cambiato da "%1$s" a "%2$s" da %3$s.
 @linegroup_image_changed_by_you Hai cambiato l\'immagine del gruppo.
 @linegroup_image_changed_by_other Immagine del gruppo cambiata da %1$s.
 @lineadd_member_by_you Hai aggiunto un membro %1$s.

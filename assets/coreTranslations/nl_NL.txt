@@ -24,7 +24,7 @@ Dit betekent echter niet dat het ook gelezen is.
 @lineautocrypt_asm_general_body Dit is het Autocrypt-instelbericht dat wordt gebruikt om je instellingen over te zetten.
 
 Om te ontsleutelen en te gebruiken, open je het bericht in een met Autocrypt compatibele app en voer je de code in die wordt getoond op het apparaat dat de code heeft gegenereerd.
-@linelogin_error_cannot_login Kan niet inloggen als \"%1$s\". Controleer het e-mailadres en wachtwoord.
+@linelogin_error_cannot_login Kan niet inloggen als "%1$s". Controleer het e-mailadres en wachtwoord.
 @linedevice_talk Berichten op apparaat
 @linesaved_messages Opgeslagen berichten
 @linecontact_verified %1$s is goedgekeurd.

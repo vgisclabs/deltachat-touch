@@ -15,7 +15,7 @@
 
 • Delta Chat\'i ya da başka bir e-posta programını bu ya da başka bir aygıta yeniden kurduysanız, oradan bir Autocrypt Ayarlama İletisi göndermek isteyebilirsiniz.
 @linesystemmsg_read_receipt_subject İleti açıldı
-@linesystemmsg_read_receipt_body Gönderdiğiniz \"%1$s\" iletisi alıcının ekranında görüntülendi.
+@linesystemmsg_read_receipt_body Gönderdiğiniz "%1$s" iletisi alıcının ekranında görüntülendi.
 
 Bu, içeriğin okunduğunun güvencesi değildir.
 @lineautocrypt_prefer_e2ee Uçtan Uca Şifrelemeyi Yeğle
@@ -24,7 +24,7 @@ Bu, içeriğin okunduğunun güvencesi değildir.
 @lineautocrypt_asm_general_body Bu, uçtan uca ayarlamanızı istemciler arasında aktarmak için kullanılan Autocrypt Ayarlama İletisi\'dir.
 
 Şifreyi çözmek ve ayarlamanızı kullanmak için iletiyi Autocrypt uyumlu bir istemcide açın ve oluşturan aygıtta sunulan ayarlama kodunu girin.
-@linelogin_error_cannot_login \"%1$s\" olarak oturum açılamıyor. Lütfen e-posta adresinin ve parolanın doğru olup olmadığını denetleyin.
+@linelogin_error_cannot_login "%1$s" olarak oturum açılamıyor. Lütfen e-posta adresinin ve parolanın doğru olup olmadığını denetleyin.
 @linedevice_talk Aygıt İletileri
 @linesaved_messages Kaydedilen İletiler
 @linecontact_verified %1$s doğrulandı.
@@ -53,14 +53,14 @@ Milyarlarca insanın herhangi biriyle Delta Chat kullanın: Yalnızca onların e
 
 Bu, sorunlara neden olabilir; çünkü sohbet ortaklarınız daha yeni sürümleri kullanıyor - ve en yeni özellikleri kaybediyorsunuz 😳
 Güncelleştirmeler için lütfen https://get.delta.chat ya da uygulama mağazanızı denetleyin.
-@linedevicemsg_self_deleted \"Kaydedilen iletiler\" sohbetini sildiniz.
+@linedevicemsg_self_deleted "Kaydedilen iletiler" sohbetini sildiniz.
 
-ℹ️ \"Kaydedilen iletiler\" özelliğini yeniden kullanmak için kendinizle yeni bir sohbet oluşturun.
+ℹ️ "Kaydedilen iletiler" özelliğini yeniden kullanmak için kendinizle yeni bir sohbet oluşturun.
 @linedevicemsg_storage_exceeding ⚠️ Sağlayıcınızın depolama alanı tükenmek üzere: %1$s%% zaten kullanılıyor.
 
 Depolama alanı dolarsa iletileri alamayabilirsiniz.
 
-👉 Lütfen sağlayıcınızın web arabiriminden eski verileri silip silemeyeceğinizi denetleyin ve \"Ayarlar / Eski İletileri Sil\"i etkinleştirmeyi düşünün. Şu anki depolama alanı kullanımınızı herhangi bir zamanda \"Ayarlar / Bağlanabilirlik\"ten denetleyebilirsiniz.
+👉 Lütfen sağlayıcınızın web arabiriminden eski verileri silip silemeyeceğinizi denetleyin ve "Ayarlar / Eski İletileri Sil"i etkinleştirmeyi düşünün. Şu anki depolama alanı kullanımınızı herhangi bir zamanda "Ayarlar / Bağlanabilirlik"ten denetleyebilirsiniz.
 @linen_bytes_message %1$s ileti
 @linedownload_max_available_until İndirme en fazla %1$s zamanına kadar kullanılabilir
 @lineincoming_messages Gelen İletiler
@@ -82,7 +82,7 @@ Depolama alanı dolarsa iletileri alamayabilirsiniz.
 %2$s kişisinin aygıtının yanıt vermesi bekleniyor…
 @linesecure_join_replies %1$s yanıtladı; gruba eklenmesi bekleniyor…
 @lineqrshow_join_contact_hint %1$s ile sohbet etmek için bunu tarayın
-@lineqrshow_join_group_hint \"%1$s\" grubuna katılmak için bunu tarayın
+@lineqrshow_join_group_hint "%1$s" grubuna katılmak için bunu tarayın
 @lineconnectivity_not_connected Bağlı değil
 @lineaeap_addr_changed %1$s, %2$s adresini %3$s olarak değiştirdi
 @lineaeap_explanation %1$s e-posta adresinizi %2$s olarak değiştirdiniz.
@@ -90,8 +90,8 @@ Depolama alanı dolarsa iletileri alamayabilirsiniz.
 Şimdi bir doğrulanan gruba ileti gönderirseniz, oradaki kişiler yeni adresinizle eskisini otomatik olarak değiştirecek.
 
 Tüm e-postaları yeni e-posta adresinize iletmek için eski e-posta sağlayıcınızı ayarlamanız önemle önerilir. Yoksa henüz yeni adresinizi almamış olan kişilerin iletilerini kaçırabilirsiniz.
-@linegroup_name_changed_by_you \"%1$s\" grup adını \"%2$s\" olarak değiştirdiniz.
-@linegroup_name_changed_by_other %3$s tarafından \"%1$s\" grup adı \"%2$s\" olarak değiştirildi.
+@linegroup_name_changed_by_you "%1$s" grup adını "%2$s" olarak değiştirdiniz.
+@linegroup_name_changed_by_other %3$s tarafından "%1$s" grup adı "%2$s" olarak değiştirildi.
 @linegroup_image_changed_by_you Grup görselini değiştirdiniz.
 @linegroup_image_changed_by_other %1$s tarafından grup görseli değiştirildi.
 @lineadd_member_by_you %1$s üyesini eklediniz.

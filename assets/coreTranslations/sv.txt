@@ -15,7 +15,7 @@
 
 • Ifall du har ominstallerat Delta Chat eller något annat e-postprogram på denna eller någon annan enhet, kanske du behöver skicka ett nytt Autocryp inställningsmeddelande därifrån.
 @linesystemmsg_read_receipt_subject Meddelande öppnat
-@linesystemmsg_read_receipt_body \"%1$s\" meddelandet du skickade visades på mottagarens skärm.
+@linesystemmsg_read_receipt_body "%1$s" meddelandet du skickade visades på mottagarens skärm.
 
 Det är ingen garanti för att innehållet har lästs.
 @lineautocrypt_prefer_e2ee Föredra slutpunkt-till-slutpunkt-kryptering
@@ -24,7 +24,7 @@ Det är ingen garanti för att innehållet har lästs.
 @lineautocrypt_asm_general_body Detta är inställningsmeddelandet för Autocrypt som används för att skicka nycklar mellan klienter.
 
 För att kunna avkryptera och använda din nyckel, öppnar du meddelandet i en Autocrypt-kompatibel klient och skriver in inställningskoden som visats på den genererande enheten.
-@linelogin_error_cannot_login Kan inte logga in som \"%1$s\". Kontrollera om e-postadressen och lösenordet är korrekt.
+@linelogin_error_cannot_login Kan inte logga in som "%1$s". Kontrollera om e-postadressen och lösenordet är korrekt.
 @linedevice_talk Enhetsmeddelanden
 @linesaved_messages Sparade meddelanden
 @linecontact_verified %1$s verifierad.
@@ -47,9 +47,9 @@ Använd Delta Chat med vem som helst av alla miljarder människor som har en e-p
 @lineone_moment Ett ögonblick...
 @lineerror_x Fel: %1$s
 @lineqrshow_join_contact_hint Skanna det här för att få kontakt med %1$s.
-@lineqrshow_join_group_hint Skanna det här för att ansluta till gruppen \"%1$s\".
-@linegroup_name_changed_by_you Gruppnamnet ändrades från \"%1$s\" till \"%2$s\" av mig.
-@linegroup_name_changed_by_other Gruppnamnet ändrades från \"%1$s\" till \"%2$s\" av %3$s.
+@lineqrshow_join_group_hint Skanna det här för att ansluta till gruppen "%1$s".
+@linegroup_name_changed_by_you Gruppnamnet ändrades från "%1$s" till "%2$s" av mig.
+@linegroup_name_changed_by_other Gruppnamnet ändrades från "%1$s" till "%2$s" av %3$s.
 @linegroup_image_changed_by_you Gruppbilden ändrades av mig.
 @linegroup_image_changed_by_other Gruppbilden ändrades av %1$s.
 @lineadd_member_by_you Medlemmen %1$s lades till av mig.

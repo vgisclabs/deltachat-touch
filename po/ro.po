@@ -14,22 +14,22 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: pt_BR\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../plugins/DeltaHandler/contactsmodel.cpp:79
 msgid "New Contact"
-msgstr "Novo contato"
+msgstr "Contact Nou"
 
 #: ../plugins/DeltaHandler/contactsmodel.cpp:94
 msgid "Type e-mail address above"
-msgstr "Digite o e-mail acima"
+msgstr "Introduceți adresa de e-mail de mai sus"
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:1127
 msgid "New message"
-msgstr "Nova mensagem"
+msgstr ""
 
 #: ../qml/Main.qml:49 deltatouch.desktop.in.h:1
 msgid "DeltaTouch"
@@ -51,29 +51,29 @@ msgstr ""
 #: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:199
 #: ../qml/pages/ChatView.qml:244 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
-msgstr "Procurar"
+msgstr "Căutați"
 
 #: ../qml/Main.qml:539
 msgid "Archived Chats"
-msgstr "Conversas arquivadas"
+msgstr "Chat-uri Arhivate"
 
 #: ../qml/Main.qml:744
 msgid "Request"
-msgstr "Solicitar"
+msgstr "Cerere"
 
 #: ../qml/Main.qml:808
 msgid "Loading…"
-msgstr "Carregando..."
+msgstr "Încărcare…"
 
 #: ../qml/Main.qml:834 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
-msgstr "Nova conversa"
+msgstr "Chat Nou"
 
 #: ../qml/Main.qml:891 ../qml/pages/AddAccountAsSecondDevice.qml:143
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:139
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
-msgstr "Erro: %1"
+msgstr "Eroare: %1"
 
 #: ../qml/delegates/delegOtherAnimatedImage.qml:160
 #: ../qml/delegates/delegOtherAudio.qml:135
@@ -86,7 +86,7 @@ msgstr "Erro: %1"
 #: ../qml/delegates/delegSelfTextMsg.qml:94
 #: ../qml/delegates/delegSelfUnknown.qml:95
 msgid "Forwarded Message"
-msgstr "Mensagem encaminhada"
+msgstr "Mesaj redirecționat"
 
 #: ../qml/delegates/delegOtherAnimatedImage.qml:212
 #: ../qml/delegates/delegOtherAudio.qml:187
@@ -105,34 +105,34 @@ msgstr "Mensagem encaminhada"
 #: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
 #: ../qml/pages/QrShowScan.qml:429
 msgid "Unknown"
-msgstr "Desconhecido"
+msgstr "Necunoscut"
 
 #: ../qml/delegates/delegOtherAudio.qml:241
 #: ../qml/delegates/delegSelfAudio.qml:205
 msgid "Audio"
-msgstr "Áudio"
+msgstr "Audio"
 
 #: ../qml/delegates/delegOtherAudio.qml:241
 #: ../qml/delegates/delegSelfAudio.qml:205
 msgid "Voice Message"
-msgstr "Mensagem de voz"
+msgstr "Mesaj vocal"
 
 #: ../qml/delegates/delegOtherToDownload.qml:43
 #: ../qml/delegates/delegSelfToDownload.qml:49
 msgid "Download"
-msgstr "Descarregar"
+msgstr "Descărcați"
 
 #: ../qml/delegates/delegOtherToDownload.qml:46
 #: ../qml/delegates/delegSelfToDownload.qml:52
 msgid "Download failed"
-msgstr "Falha no Download"
+msgstr ""
 
 #: ../qml/delegates/delegOtherToDownload.qml:49
 #: ../qml/delegates/delegOtherToDownload.qml:139
 #: ../qml/delegates/delegSelfToDownload.qml:55
 #: ../qml/delegates/delegSelfToDownload.qml:114
 msgid "Downloading…"
-msgstr "Descarregando…"
+msgstr "Descărcarea…"
 
 #: ../qml/delegates/delegUnreadMsgsBar.qml:48
 msgid "Unread Messages"
@@ -160,18 +160,18 @@ msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:250
 msgid "Known Accounts"
-msgstr "Contas conhecidas"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:162
 #: ../qml/pages/ProgressBackupImport.qml:69
 #: ../qml/pages/ProgressConfigAccount.qml:68
 #: ../qml/pages/ProgressQrBackupImport.qml:94
 msgid "Back"
-msgstr "Voltar"
+msgstr "Înapoi"
 
 #: ../qml/pages/AccountConfig.qml:62 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
-msgstr "Adicionar conta"
+msgstr "Adăugați un cont"
 
 #: ../qml/pages/AccountConfig.qml:98 ../qml/pages/AccountConfig.qml:201
 #: ../qml/pages/AddAccountAsSecondDevice.qml:144
@@ -184,43 +184,43 @@ msgstr "Adicionar conta"
 #: ../qml/pages/ProgressQrBackupImport.qml:53 ../qml/pages/QrShowScan.qml:237
 #: ../qml/pages/QrShowScan.qml:338 ../qml/pages/QrShowScan.qml:488
 msgid "Error"
-msgstr "Erro"
+msgstr "Eroare"
 
 #: ../qml/pages/AccountConfig.qml:98
 msgid "Info"
-msgstr "Informação"
+msgstr "Informații"
 
 #: ../qml/pages/AccountConfig.qml:98
 msgid "None"
-msgstr "Nenhum"
+msgstr "Nici unul"
 
 #: ../qml/pages/AccountConfig.qml:204
 msgid "Account is not configured."
-msgstr "A conta não está configurada."
+msgstr ""
 
 #: ../qml/pages/AddAccount.qml:57
 msgid "Log into your E-Mail Account"
-msgstr "Acesse seu servidor"
+msgstr "Autentificați-vă în contul dumneavoastră de e-mail"
 
 #: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:130
 #: ../qml/pages/QrShowScan.qml:277
 msgid "Add as Second Device"
-msgstr "Adicionar como Outro Dispositivo"
+msgstr "Adăugați ca Dispozitiv Secundar"
 
 #: ../qml/pages/AddAccount.qml:59 ../qml/pages/PickerBackupFile.qml:35
 #: ../qml/pages/PickerBackupFile.qml:108
 msgid "Restore from Backup"
-msgstr "Importar da Cópia de Segurança"
+msgstr "Restaurarea din copia de rezervă"
 
 #: ../qml/pages/AddAccount.qml:60
 msgid "Scan Invitation Code"
-msgstr "Escanear Código De Convite"
+msgstr "Scanați Codul Invitației"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:72
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:67
 #: ../qml/pages/QrShowScan.qml:111
 msgid "Scan QR Code"
-msgstr "Escanear código QR"
+msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:105
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:100
@@ -235,12 +235,12 @@ msgstr ""
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:113
 #: ../qml/pages/QrShowScan.qml:173
 msgid "Paste from Clipboard"
-msgstr "Colar a partir da área de transferência"
+msgstr "Copiere din clipboard"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:129
 #: ../qml/pages/QrShowScan.qml:276
 msgid "Copy the account from the other device to this device?"
-msgstr "Copiar a conta de outro dispositivo para este dispositivo?"
+msgstr "Copiați contul de pe celălalt dispozitiv pe acest dispozitiv?"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:157
 #: ../qml/pages/AddAccountAsSecondDevice.qml:169
@@ -249,7 +249,7 @@ msgstr "Copiar a conta de outro dispositivo para este dispositivo?"
 #: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
 #: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
 msgid "QR Code"
-msgstr "Código QR"
+msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:195
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:204
@@ -261,12 +261,12 @@ msgstr ""
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:126
 #: ../qml/pages/QrShowScan.qml:262
 msgid "Create new e-mail address on \"%1\" and log in there?"
-msgstr "Criar novo endereço de e-mail em \"%1\" e entrar nele?"
+msgstr ""
 
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:151
 #: ../qml/pages/QrShowScan.qml:402
 msgid "Log into \"%1\"?"
-msgstr "Conectar-se em \"%1\"?"
+msgstr ""
 
 #: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
 #: ../qml/pages/BlockContactPopup.qml:31
@@ -282,42 +282,42 @@ msgstr "Conectar-se em \"%1\"?"
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:45
 #: ../qml/pages/UnblockContactPopup.qml:41
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Anulați"
 
 #: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Group"
-msgstr "Novo grupo"
+msgstr "Grup Nou"
 
 #: ../qml/pages/AddChat.qml:86 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Verified Group"
-msgstr "Novo grupo verificado"
+msgstr "Noul Grup Verificat"
 
 #: ../qml/pages/AddChat.qml:104 ../qml/pages/GroupAddMember.qml:77
 msgid "Enter name or e-mail address"
-msgstr "Insira um nome ou e-mail"
+msgstr "Introduceți numele sau adresa de e-mail"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:45
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:680
 #: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:781
 msgid "No, chats only"
-msgstr "Não, somente conversas"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:694
 #: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:795
 msgid "For accepted contacts"
-msgstr "Para contatos aceitos"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:51
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:708
 #: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
 #: ../qml/pages/SettingsPage.qml:809 ../qml/pages/SettingsPage.qml:837
 msgid "All"
-msgstr "Todos"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:76
 msgid "Log In"
-msgstr "Acessar"
+msgstr "Autentificare"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:91
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
@@ -330,50 +330,50 @@ msgstr "OK"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:178
 msgid "Log in with an existing e-mail account"
-msgstr "Acesse com uma conta de email existente"
+msgstr "Conectați-vă cu un cont de e-mail existent"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:191
 msgid "E-Mail Address"
-msgstr "Endereço de email"
+msgstr "Adresă de e-mail"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:215
 msgid "Password"
-msgstr "Senha"
+msgstr "Parolă"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:275
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
-msgstr "Para os provedores de e-mail mais conhecidos as configurações adicionais são detectadas automaticamente. Por vezes, o IMAP precisa estar ativado nas configurações do servidor. Consulte seu provedor de e-mail ou amigos para obter ajuda."
+msgstr "În cazul furnizorilor de e-mail cunoscuți, setările suplimentare sunt configurate automat. Uneori, IMAP trebuie să fie activat în setările web. Consultați furnizorul dumneavoastră de e-mail sau prietenii pentru ajutor."
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:299
 #: ../qml/pages/SettingsPage.qml:399
 msgid "Show Classic E-Mails"
-msgstr "Exibir e-mails normais"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:331
 #: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:746
 msgid "Advanced"
-msgstr "Avançado"
+msgstr "Avansată"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:352
 msgid "Inbox"
-msgstr "Caixa de entrada"
+msgstr "Inbox"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:358
 msgid "IMAP Login Name"
-msgstr "Login IMAP"
+msgstr "Nume de autentificare IMAP"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:365
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:432
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:444
 msgid "Default (same as above)"
-msgstr "Padrão (igual acima)"
+msgstr "Implicit (la fel ca mai sus)"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:370
 msgid "IMAP Server"
-msgstr "Servidor IMAP"
+msgstr "Serverul IMAP"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:377
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:397
@@ -381,19 +381,19 @@ msgstr "Servidor IMAP"
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:476
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:493
 msgid "Automatic"
-msgstr "Automático"
+msgstr "Automat"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:382
 msgid "IMAP Port"
-msgstr "Porta IMAP"
+msgstr "Portul IMAP"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:389
 msgid "Default (%1)"
-msgstr "Padrão (%1)"
+msgstr "Implicit (%1)"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:395
 msgid "IMAP Security"
-msgstr "Segurança IMAP"
+msgstr "Securitate IMAP "
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:400
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:479
@@ -402,27 +402,27 @@ msgstr "Segurança IMAP"
 #: ../qml/pages/EphemeralTimerSettings.qml:128
 #: ../qml/pages/EphemeralTimerSettings.qml:132
 msgid "Off"
-msgstr "Desligado"
+msgstr "Închideți"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:419
 msgid "Outbox"
-msgstr "Caixa de saída"
+msgstr "Outbox"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:425
 msgid "SMTP Login Name"
-msgstr "Login SMTP"
+msgstr "Nume de autentificare SMTP"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:437
 msgid "SMTP Password"
-msgstr "Senha SMTP"
+msgstr "Parolă SMTP"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:449
 msgid "SMTP Server"
-msgstr "Servidor SMTP"
+msgstr "Serverul SMTP "
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:461
 msgid "SMTP Port"
-msgstr "Porta SMTP"
+msgstr "Portul SMTP "
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:468
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:561
@@ -432,58 +432,58 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:474
 msgid "SMTP Security"
-msgstr "Segurança SMTP"
+msgstr "Securitate SMTP"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:491
 msgid "Certificate Checks"
-msgstr "Verificações de certificado"
+msgstr "Verificări de certificate"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:494
 msgid "Strict"
-msgstr "Rigoroso"
+msgstr "Strict"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:495
 msgid "Accept invalid certificates"
-msgstr "Aceitar certificados inválidos"
+msgstr "Acceptarea certificatelor nevalabile"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:530
 msgid "Use SOCKS5"
-msgstr "Usar SOCKS5"
+msgstr "Utilizați SOCKS5"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:549
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
-msgstr "O suporte a SOCKS5 é atualmente experimental. Por favor, use a seu próprio risco. Se você digitar um endereço no campo de e-mail, haverá uma pesquisa de DNS que não será encapsulada pelo SOCKS5. "
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:554
 msgid "SOCKS5 Host"
-msgstr "Servidor SOCKS5 "
+msgstr "Gazdă SOCKS5"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:567
 msgid "SOCKS5 Port"
-msgstr "Porta SOCKS5"
+msgstr "Portul SOCKS5"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:581
 msgid "SOCKS5 User"
-msgstr "Usuário SOCKS5"
+msgstr "Utilizator SOCKS5"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:593
 msgid "SOCKS5 Password"
-msgstr "Senha SOCKS5"
+msgstr "Parolă SOCKS5"
 
 #: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:463
 msgid "Worse quality, small size"
-msgstr "Pior qualidade, tamanho pequeno"
+msgstr "Calitate mai proastă, dimensiuni mici"
 
 #: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:449
 msgid "Balanced"
-msgstr "Equilibrado"
+msgstr "Echilibrată"
 
 #: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:435
 msgid "High"
-msgstr "Alto"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:124
 msgid "Voice Message Quality"
@@ -491,146 +491,146 @@ msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:160
 msgid "Autocrypt"
-msgstr "Autocrypt"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:173
 msgid "Prefer End-To-End Encryption"
-msgstr "Preferir criptografia ponta a ponta"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:210
 msgid "IMAP Folder Handling"
-msgstr "Gerenciar pastas IMAP"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:224
 msgid "Watch Sent Folder"
-msgstr "Verificar a caixa de saída"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:257
 msgid "Send Copy to Self"
-msgstr "Enviar cópia para mim"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:258
 msgid "Required when using this account on multiple devices."
-msgstr "Necessário ao utilizar esta conta em múltiplos dispositivos."
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:292
 msgid "Move automatically to DeltaChat Folder"
-msgstr "Mover automaticamente para a pasta DeltaChat"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:293
 msgid "Chat conversations are moved to avoid cluttering the Inbox"
-msgstr "Conversas serão movidas para evitar desordem na caixa de entrada"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:326
 msgid "Only Fetch from DeltaChat Folder"
-msgstr "Apenas pegar da pasta DeltaChat"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:327
 msgid ""
 "Ignore other folders. Requires your server to move chat messages to the "
 "DeltaChat folder."
-msgstr "Ignore outras pastas. Requer que seu servidor mova mensagens de bate-papo para a pasta DeltaChat. "
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:365
 msgid "Manage Keys"
-msgstr "Gerenciar chaves"
+msgstr "Gestionați Cheile"
 
 #: ../qml/pages/AdvancedSettings.qml:379
 msgid "Export Secret Keys"
-msgstr "Exportar chaves secretas"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:399 ../qml/pages/ProgressKeysImport.qml:59
 msgid "Import Secret Keys"
-msgstr "Importar chaves secretas"
+msgstr ""
 
 #: ../qml/pages/BlockContactPopup.qml:28
 msgid "Block this contact? You will no longer receive messages from them."
-msgstr "Bloquear este contato? Você não receberá mais mensagens dele."
+msgstr "Să blochez acest contact? Nu veți mai primi mesaje de la această persoană."
 
 #: ../qml/pages/BlockContactPopup.qml:37 ../qml/pages/ChatInfosActions.qml:49
 msgid "Block Contact"
-msgstr "Bloquear contato"
+msgstr "Blocare Contact"
 
 #: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:311
 msgid "Blocked Contacts"
-msgstr "Contatos bloqueados"
+msgstr "Contacte blocate"
 
 #: ../qml/pages/BlockedContacts.qml:46
 msgid "Blocked contacts will appear here."
-msgstr "Se você bloquear contatos, eles serão mostrados aqui."
+msgstr "Contactele blocate vor apărea aici."
 
 #: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:182
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
-msgstr "Modificar grupo"
+msgstr "Editați grupul"
 
 #: ../qml/pages/ChatInfosActions.qml:70 ../qml/pages/ConfirmLeaveGroup.qml:34
 msgid "Leave Group"
-msgstr "Sair do grupo"
+msgstr "Părăsiți Grupul"
 
 #: ../qml/pages/ChatInfosActions.qml:80
 msgid "Mute Notifications"
-msgstr "Silenciar notificações"
+msgstr "Dezactivarea Notificărilor"
 
 #: ../qml/pages/ChatInfosActions.qml:80
 msgid "Unmute"
-msgstr "Reativar notificações"
+msgstr "Dezactivați"
 
 #: ../qml/pages/ChatInfosActions.qml:94
 msgid "Show Encryption Info"
-msgstr "Exibir informações de criptografia"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActions.qml:144
 msgid "Mute for 1 hour"
-msgstr "Silenciar por 1 hora"
+msgstr "Silențios timp de 1 oră"
 
 #: ../qml/pages/ChatInfosActions.qml:158
 msgid "Mute for 2 hours"
-msgstr "Silenciar por 2 horas"
+msgstr "Silențios timp de 2 ore"
 
 #: ../qml/pages/ChatInfosActions.qml:172
 msgid "Mute for 1 day"
-msgstr "Silenciar por 1 dia"
+msgstr "Silențios pentru 1 zi"
 
 #: ../qml/pages/ChatInfosActions.qml:186
 msgid "Mute for 7 days"
-msgstr "Silenciar por 7 dias"
+msgstr "Silențios timp de 7 zile"
 
 #: ../qml/pages/ChatInfosActions.qml:200
 msgid "Mute forever"
-msgstr "Silenciar para sempre"
+msgstr "Silențios pentru totdeauna"
 
 #: ../qml/pages/ChatView.qml:146
 msgid "Verified Contact"
-msgstr "Contato verificado"
+msgstr "Contact verificat"
 
 #: ../qml/pages/ChatView.qml:153 ../qml/pages/ChatView.qml:173
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
-msgstr "Mensagens efêmeras"
+msgstr "Mesaje dispărute"
 
 #: ../qml/pages/ChatView.qml:623
 msgid "This chat contains locally generated messages; writing is disabled."
-msgstr "Esta conversa contém mensagens geradas localmente. Portanto, você não pode escrever nenhuma mensagem."
+msgstr "Acest chat conține mesaje generate local; scrierea este dezactivată."
 
 #: ../qml/pages/ChatView.qml:625
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
-msgstr "Você não pode escrever porque não está neste grupo. Para entrar, peça a outro membro."
+msgstr "Trebuie să fiți în acest grup pentru a posta un mesaj. Pentru a vă alătura, întrebați un alt membru."
 
 #: ../qml/pages/ChatView.qml:1342
 msgid "Accept"
-msgstr "Aceitar"
+msgstr "Acceptați"
 
 #: ../qml/pages/ChatView.qml:1358 ../qml/pages/ChatView.qml:1535
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
-msgstr "Apagar"
+msgstr "Ștergeți"
 
 #: ../qml/pages/ChatView.qml:1373
 msgid "Block"
-msgstr "Bloquear"
+msgstr "Bloc"
 
 #: ../qml/pages/ChatView.qml:1503
 msgid "Click to leave without sending"
@@ -639,33 +639,33 @@ msgstr ""
 #: ../qml/pages/ConfirmAccountDeletion.qml:35
 #: ../qml/pages/ConfirmAccountDeletion.qml:51
 msgid "Delete Account"
-msgstr "Apagar conta"
+msgstr "Ștergeți Contul"
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:39
 msgid "Are you sure you want to delete your account data?"
-msgstr "Tem certeza de que deseja excluir os dados da sua conta?"
+msgstr "Sunteți sigur că doriți să ștergeți datele contului dumneavoastră?"
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:45
 msgid ""
 "All account data of \"%1\" on this device will be deleted, including your "
 "end-to-end encryption setup, contacts, chats, messages and media. This "
 "action cannot be undone."
-msgstr "Todos os dados da conta de \"%1\" neste dispositivo serão excluídos, incluindo sua configuração de criptografia de ponta a ponta, contatos, bate-papos, mensagens e mídia. Essa ação não pode ser desfeita."
+msgstr "Toate datele de cont ale \"%1\" de pe acest dispozitiv vor fi șterse, inclusiv configurația de criptare end-to-end, contactele, chat-urile, mesajele și mediile. Această acțiune nu poate fi anulată."
 
 #: ../qml/pages/ConfirmChatDeletion.qml:34
 #: ../qml/pages/ConfirmChatDeletion.qml:44
 msgid "Delete Chat"
-msgstr "Apagar conversa"
+msgstr "Ștergeți Chat-ul"
 
 #: ../qml/pages/ConfirmChatDeletion.qml:38
 #: ../qml/pages/ConfirmMsgDeletion.qml:39
 msgid "Are you sure you want to delete \"%1\"?"
-msgstr "Você tem certeza que quer apagar \"%1\"?"
+msgstr "Sunteți sigur că vreți să ștergeți \"%1\"?"
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
 #: ../qml/pages/SettingsPage.qml:629
 msgid "Delete Messages from Device"
-msgstr "Apagar mensagens do dispositivo"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:40
 msgid ""
@@ -677,17 +677,17 @@ msgid ""
 "• Messages will be deleted whether they were seen or not\n"
 "\n"
 "• \"Saved messages\" will be skipped from local deletion"
-msgstr "Você quer apagar %1 mensagens agora e todas as mensagens recém-obtidas \"%2\" no futuro?\n\n• Isso inclui todas as mídias\n\n• As mensagens serão excluídas independentemente de serem sido vistas ou não\n\n• \"Mensagens salvas\" serão ignoradas da exclusão local"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:62
 #: ../qml/pages/ConfirmDeleteFromServer.qml:62
 msgid "I understand, delete all these messages"
-msgstr "Eu entendo, apague todas essas mensagens"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
 #: ../qml/pages/SettingsPage.qml:657
 msgid "Delete Messages from Server"
-msgstr "Apagar mensagens do servidor"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:40
 msgid ""
@@ -700,33 +700,33 @@ msgid ""
 "\n"
 "⚠️ Do not use this function if you are using other e-mail clients besides "
 "Delta Chat"
-msgstr "Você quer apagar %1  mensagens agora e todas as mensagens recém-obtidas \"%2\" no futuro?\n\n⚠️ Isso inclui e-mails, mídia e \"Mensagens salvas\" em todas as pastas do servidor\n\n⚠️ Não use esta função se quiser manter os dados no servidor\n\n⚠️ Não use esta função se estiver usando outros clientes de e-mail além do Delta Chat"
+msgstr ""
 
 #: ../qml/pages/ConfirmLeaveGroup.qml:30
 msgid "Are you sure you want to leave this group?"
-msgstr "Quer mesmo sair do grupo?"
+msgstr "Ești sigur că vrei să părăsești acest grup?"
 
 #: ../qml/pages/ConfirmMemberDeletion.qml:39
 msgid "Remove %1 from group?"
-msgstr "Remover %1 do grupo?"
+msgstr "Scoateți  %1 din grup?"
 
 #: ../qml/pages/ConfirmMsgDeletion.qml:35
 #: ../qml/pages/ConfirmMsgDeletion.qml:45
 msgid "Delete Message"
-msgstr "Apagar mensagem"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
 #: ../qml/pages/QrShowScan.qml:72 ../qml/pages/QrShowScan.qml:104
 msgid "QR Invite Code"
-msgstr "Código QR de convite"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:206
 msgid "Group Name"
-msgstr "Nome do grupo"
+msgstr "Numele Grup"
 
 #: ../qml/pages/CreateOrEditGroup.qml:229
 msgid "%1 member"
-msgstr "%1 participantes"
+msgstr "%1 membru"
 
 #: ../qml/pages/CreateOrEditGroup.qml:230
 msgid "%1 members"
@@ -734,19 +734,19 @@ msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:247 ../qml/pages/GroupAddMember.qml:34
 msgid "Add Members"
-msgstr "Adicionar participantes"
+msgstr "Adăugați Membri"
 
 #: ../qml/pages/CreateOrEditGroup.qml:346
 msgid "Please enter a name for the group."
-msgstr "Por favor, dê um nome ao grupo."
+msgstr "Vă rugăm să introduceți un nume pentru grup."
 
 #: ../qml/pages/CreateOrEditGroup.qml:370
 msgid "Change Group Image"
-msgstr "Mudar imagem do grupo"
+msgstr "Schimbarea Imaginii Grupului"
 
 #: ../qml/pages/CreateOrEditGroup.qml:383
 msgid "Remove Group Image"
-msgstr "Remover imagem do grupo"
+msgstr "Eliminați Imaginea Grupului"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:39
 #: ../qml/pages/EphemeralTimerSettings.qml:142
@@ -755,7 +755,7 @@ msgstr "Remover imagem do grupo"
 #: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
 #: ../qml/pages/SettingsPage.qml:1111
 msgid "After 30 seconds"
-msgstr "Após 30 segundos"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:43
 #: ../qml/pages/EphemeralTimerSettings.qml:156
@@ -763,7 +763,7 @@ msgstr "Após 30 segundos"
 #: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
 #: ../qml/pages/SettingsPage.qml:1132
 msgid "After 1 minute"
-msgstr "Após 1 minuto"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:47
 #: ../qml/pages/EphemeralTimerSettings.qml:170
@@ -772,7 +772,7 @@ msgstr "Após 1 minuto"
 #: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
 #: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
 msgid "After 1 hour"
-msgstr "Após 1 hora"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:51
 #: ../qml/pages/EphemeralTimerSettings.qml:184
@@ -781,7 +781,7 @@ msgstr "Após 1 hora"
 #: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
 #: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
 msgid "After 1 day"
-msgstr "Após 1 dia"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:55
 #: ../qml/pages/EphemeralTimerSettings.qml:198
@@ -790,7 +790,7 @@ msgstr "Após 1 dia"
 #: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
 #: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
 msgid "After 1 week"
-msgstr "Após 1 semana"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:59
 #: ../qml/pages/EphemeralTimerSettings.qml:212
@@ -798,7 +798,7 @@ msgstr "Após 1 semana"
 #: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
 #: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
 msgid "After 4 weeks"
-msgstr "Após 4 semanas"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:63
 msgid "After %1 seconds"
@@ -808,31 +808,31 @@ msgstr ""
 msgid ""
 "Applies to all members of this chat if they use Delta Chat; they can still "
 "copy, save, and forward messages or use other e-mail clients."
-msgstr "Essas configurações se aplicam a todos os participantes usando o Delta Chat. No entanto, eles podem copiar, salvar e encaminhar mensagens ou usar outros clientes de email."
+msgstr "Se aplică tuturor membrilor acestui chat dacă folosesc Delta Chat; aceștia pot în continuare să copieze, să salveze și să redirecționeze mesajele sau să utilizeze alți clienți de e-mail."
 
 #: ../qml/pages/ForwardMessage.qml:41
 msgid "Forward to…"
-msgstr "Encaminhar para..."
+msgstr "Înainte spre..."
 
 #: ../qml/pages/ForwardMessage.qml:49
 msgid "Close"
-msgstr "Fechar"
+msgstr "Închideți"
 
 #: ../qml/pages/ImageViewer.qml:39 ../qml/pages/ImageViewerAnimated.qml:39
 msgid "Save"
-msgstr "Salvar"
+msgstr "Salvați"
 
 #: ../qml/pages/MessageInfosActions.qml:33
 msgid "Copy Text"
-msgstr "Copiar texto"
+msgstr "Copiați textul"
 
 #: ../qml/pages/MessageInfosActions.qml:45
 msgid "Export Attachment"
-msgstr "Exportar o anexo"
+msgstr "Exportați atașamentul"
 
 #: ../qml/pages/MessageInfosActions.qml:71
 msgid "Message Details"
-msgstr "Detalhes da mensagem"
+msgstr "Detalii Mesaj"
 
 #: ../qml/pages/NotImplemented.qml:27
 msgid "Not Implemented Yet"
@@ -849,7 +849,7 @@ msgstr ""
 #: ../qml/pages/PickerImageToExport.qml:42
 #: ../qml/pages/PickerImageToSend.qml:34
 msgid "Select"
-msgstr "Selecionar"
+msgstr "Selectați"
 
 #: ../qml/pages/PickerBackupFile.qml:101
 msgid "The selected file is not a valid backup file."
@@ -857,27 +857,27 @@ msgstr ""
 
 #: ../qml/pages/PickerChatPic.qml:34
 msgid "Select Group Image"
-msgstr "Selecionar avatar de grupo"
+msgstr ""
 
 #: ../qml/pages/PickerProfilePic.qml:34
 msgid "Select your new profile image"
-msgstr "Selecione sua nova imagem do perfil"
+msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen at %1"
-msgstr "Visto pela última vez às %1"
+msgstr "Ultima dată văzut la %1"
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen: Unknown"
-msgstr "Visto pela última vez: desconhecido"
+msgstr "Ultima dată a fost văzut: Necunoscut"
 
 #: ../qml/pages/ProfileOther.qml:47
 msgid "View Profile"
-msgstr "Ver perfil"
+msgstr "Vizualizați profilul"
 
 #: ../qml/pages/ProfileOther.qml:236
 msgid "Locally generated messages"
-msgstr "Mensagens geradas localmente"
+msgstr "Mesaje generate la nivel local"
 
 #: ../qml/pages/ProfileOther.qml:266
 msgid "Verified by %1"
@@ -885,27 +885,27 @@ msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:304 ../qml/pages/ProfileSelf.qml:249
 msgid "Signature Text"
-msgstr "Assinatura"
+msgstr "Semnătură Text"
 
 #: ../qml/pages/ProfileSelf.qml:48 ../qml/pages/SettingsPage.qml:356
 msgid "Edit Profile"
-msgstr "Editar perfil"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:96
 msgid "Profile"
-msgstr "Perfil"
+msgstr "Profil"
 
 #: ../qml/pages/ProfileSelf.qml:177
 msgid "Select Profile Image"
-msgstr "Selecione a imagem do perfil"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:190
 msgid "Delete Profile Image"
-msgstr "Excluir imagem do perfil"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:210
 msgid "Your Name"
-msgstr "Seu nome"
+msgstr "Numele dumneavoastră"
 
 #: ../qml/pages/ProgressBackupExport.qml:36
 msgid ""
@@ -915,11 +915,11 @@ msgid ""
 "The backup will contain all messages, contacts and chats and your end-to-end "
 "Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
 "as possible."
-msgstr "Um becape ajudará a configurar uma nova instalação neste ou em outro dispositivo. \n\n O becape conterá todas as mensagens, contatos, conversas e a configuração de criptografia. Mantenha o arquivo de becape em um local seguro ou apague-o o mais rápido possível."
+msgstr ""
 
 #: ../qml/pages/ProgressBackupExport.qml:50
 msgid "Start Backup"
-msgstr "Fazer becape"
+msgstr ""
 
 #: ../qml/pages/ProgressBackupImport.qml:44
 msgid "Failed"
@@ -927,15 +927,15 @@ msgstr ""
 
 #: ../qml/pages/ProgressKeysExport.qml:40
 msgid "Export secret keys to \"%1\"?"
-msgstr "Exportar chaves secretas para \"%1\"?"
+msgstr ""
 
 #: ../qml/pages/ProgressKeysExport.qml:49
 msgid "Secret keys written successfully to \"%1\"."
-msgstr "Chaves secretas exportadas para \"%1\"."
+msgstr ""
 
 #: ../qml/pages/ProgressKeysExport.qml:57
 msgid "Yes"
-msgstr "Sim"
+msgstr "Da"
 
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
@@ -945,7 +945,7 @@ msgid ""
 "\n"
 "• The last imported key will be used as the new default key unless it has "
 "the word \"legacy\" in its filename."
-msgstr "Importar chaves secretas de \"%1\"?\n\n• As chaves secretas atuais não serão apagadas\n\n• A última chave importada será usada por padrão a não ser que ela tenha a palavra \"legacy\" no seu nome."
+msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
@@ -955,15 +955,15 @@ msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:51
 msgid "Secret keys imported from \"%1\"."
-msgstr "Chaves secretas importadas de \"%1\"."
+msgstr ""
 
 #: ../qml/pages/ProgressQrBackupImport.qml:35
 msgid "Transferring…"
-msgstr "Transferindo..."
+msgstr "Transferul..."
 
 #: ../qml/pages/QrConfirmPopup.qml:57 ../qml/pages/QrShowScan.qml:455
 msgid "Copy to Clipboard"
-msgstr "Copiar para a área de transferência"
+msgstr "Copiați în clipboard"
 
 #: ../qml/pages/QrConfirmPopup.qml:69
 msgid "Open Url in Browser"
@@ -971,11 +971,11 @@ msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:185
 msgid "Chat with %1?"
-msgstr "Conversar com %1?"
+msgstr "Chat cu %1?"
 
 #: ../qml/pages/QrShowScan.qml:211
 msgid "Do you want to join the group \"%1\"?"
-msgstr "Você quer ingressar no grupo \"%1\"?"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:223
 msgid "The fingerprint of %1 is valid!"
@@ -983,11 +983,11 @@ msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:224 ../qml/pages/QrShowScan.qml:250
 msgid "Fingerprint"
-msgstr "Impressão"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:236
 msgid "The scanned fingerprint does not match the last seen for %1."
-msgstr "Esta digital não confere com a última vista em %1"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:249
 msgid ""
@@ -995,82 +995,82 @@ msgid ""
 "\n"
 "For an out-of-band-verification, please establish an encrypted connection to "
 "the recipient first."
-msgstr "Este código QR tem uma impressão, mas não tem e-mail.\n\nPara uma verificação por dois canais, primeiro estabeleça uma conexão criptografada com o destinatário."
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:306
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
-msgstr "O código QR escaneado contém o seguinte texto:\n\n%1"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:321
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
-msgstr "O código QR escaneado contém a seguinte URL:\n\n%1"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:350
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
-msgstr "Este código QR pode ser lido por outras pessoas para entrar em contato com você.\n\nVocê pode desativar o código QR aqui e reativá-lo escaneando-o novamente."
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:351 ../qml/pages/QrShowScan.qml:364
 msgid "Deactivate QR Code"
-msgstr "Desativar Código QR"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:363
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
-msgstr "Este código QR pode ser lido por outras pessoas para entrar no grupo \"%1\".\n\nVocê pode desativar o código QR aqui e reativá-lo escaneando-o novamente."
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:376
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
-msgstr "Este código QR pode ser lido por outras pessoas para entrar em contato com você.\n\nO código QR não está ativo neste dispositivo."
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:377 ../qml/pages/QrShowScan.qml:390
 msgid "Activate QR Code"
-msgstr "Ativar Código QR"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:389
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
 "The QR code is not active on this device."
-msgstr "Este código QR pode ser lido por outras pessoas para se juntar ao grupo \"%1\".\n\nO código QR não está ativo neste dispositivo."
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:84 ../qml/pages/SettingsPage.qml:97
 #: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:851
 #: ../qml/pages/SettingsPage.qml:893 ../qml/pages/SettingsPage.qml:907
 msgid "Up to %1"
-msgstr "Até %1"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:865
 msgid "Up to %1, most worse quality images"
-msgstr "Até %1, imagens de pior qualidade"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:879
 msgid "Up to %1, most balanced quality images"
-msgstr "Até %1, imagens de qualidade equilibrada"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:113 ../qml/pages/SettingsPage.qml:145
 #: ../qml/pages/SettingsPage.qml:936 ../qml/pages/SettingsPage.qml:1070
 msgid "Never"
-msgstr "Nunca"
+msgstr "Niciodata"
 
 #: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
 #: ../qml/pages/SettingsPage.qml:1034 ../qml/pages/SettingsPage.qml:1040
 #: ../qml/pages/SettingsPage.qml:1231 ../qml/pages/SettingsPage.qml:1237
 msgid "After 1 year"
-msgstr "Após 1 ano"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:137 ../qml/pages/SettingsPage.qml:181
 msgid "?"
@@ -1079,15 +1079,15 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1084
 #: ../qml/pages/SettingsPage.qml:1090
 msgid "At once"
-msgstr "De uma vez só"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:188
 msgid "Settings"
-msgstr "Configurações"
+msgstr "Setări"
 
 #: ../qml/pages/SettingsPage.qml:226
 msgid "Sync All"
-msgstr "Sincronizar Tudo"
+msgstr "Sincronizare Toate"
 
 #: ../qml/pages/SettingsPage.qml:278
 msgid "Account specific settings"
@@ -1095,19 +1095,19 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:385
 msgid "Chats"
-msgstr "Conversas"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:427
 msgid "Auto-Download Messages"
-msgstr "Descarregar Mensagens Automaticamente"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:462
 msgid "Notifications"
-msgstr "Notificações"
+msgstr "Notificări"
 
 #: ../qml/pages/SettingsPage.qml:474
 msgid "Enable system notifications for new messages"
-msgstr "Ativar notificações do sistema para novas mensagens"
+msgstr "Activați notificările de sistem pentru mesajele noi"
 
 #: ../qml/pages/SettingsPage.qml:491
 msgid ""
@@ -1117,11 +1117,11 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:507
 msgid "Show message content in notification"
-msgstr "Mostrar o conteúdo da mensagem na notificação"
+msgstr "Afișați conținutul mesajului în notificare"
 
 #: ../qml/pages/SettingsPage.qml:508
 msgid "Shows sender and first words of the message in notifications"
-msgstr "Mostra o remetente e as primeiras palavras da mensagem nas notificações"
+msgstr "Afișează expeditorul și primele cuvinte ale mesajului în notificări"
 
 #: ../qml/pages/SettingsPage.qml:532
 msgid "Aggregate system notifications"
@@ -1133,26 +1133,26 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:565
 msgid "Privacy"
-msgstr "Privacidade"
+msgstr "Confidențialitate"
 
 #: ../qml/pages/SettingsPage.qml:577
 msgid "Read Receipts"
-msgstr "Confirmações de leitura"
+msgstr "Citiți Chitanțele"
 
 #: ../qml/pages/SettingsPage.qml:615
 msgid "Delete Old Messages"
-msgstr "Apagar mensagens antigas"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:705 ../qml/pages/SettingsPage.qml:1262
 msgid "Export Backup"
-msgstr "Exportar becape"
+msgstr ""
 
 #: ../qml/pages/UnblockContactPopup.qml:36
 msgid ""
 "Unblock this contact? You will then be able to receive messages from them."
-msgstr "Desbloquear este contato? Você voltará a receber mensagens dele."
+msgstr "Deblocați acest contact? Astfel, veți putea primi mesaje de la această persoană."
 
 #: ../qml/pages/UnblockContactPopup.qml:47
 msgid "Unblock Contact"
-msgstr "Desbloquear contato"
+msgstr "Deblocare Contact"
 

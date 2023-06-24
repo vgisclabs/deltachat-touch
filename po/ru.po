@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-04 10:59+0000\n"
+"POT-Creation-Date: 2023-06-24 13:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,75 +19,126 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:38 deltatouch.desktop.in.h:1
+#: ../plugins/DeltaHandler/contactsmodel.cpp:79
+msgid "New Contact"
+msgstr "Новый контакт"
+
+#: ../plugins/DeltaHandler/contactsmodel.cpp:94
+msgid "Type e-mail address above"
+msgstr "Введите адрес эл. почты, выше."
+
+#: ../plugins/DeltaHandler/deltahandler.cpp:1127
+msgid "New message"
+msgstr "Новое сообщение"
+
+#: ../qml/Main.qml:49 deltatouch.desktop.in.h:1
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:204 ../qml/Main.qml:211
+#: ../qml/Main.qml:281 ../qml/Main.qml:288
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:204 ../qml/Main.qml:211 ../qml/Main.qml:254
-#: ../qml/pages/AccountConfig.qml:120
+#: ../qml/Main.qml:281 ../qml/Main.qml:288 ../qml/Main.qml:335
+#: ../qml/pages/AccountConfig.qml:133
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:205 ../qml/Main.qml:212
+#: ../qml/Main.qml:282 ../qml/Main.qml:289
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:359
+#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:199
+#: ../qml/pages/ChatView.qml:244 ../qml/pages/ForwardMessage.qml:71
+msgid "Search"
+msgstr "Поиск"
+
+#: ../qml/Main.qml:539
 msgid "Archived Chats"
 msgstr "Чаты в архиве"
 
-#: ../qml/Main.qml:551
+#: ../qml/Main.qml:744
 msgid "Request"
 msgstr "Запрос"
 
-#: ../qml/Main.qml:625 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:808
+msgid "Loading…"
+msgstr "Загрузка…"
+
+#: ../qml/Main.qml:834 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "Новый чат"
 
-#: ../qml/delegates/delegOtherAudio.qml:130
-#: ../qml/delegates/delegOtherImage.qml:155
-#: ../qml/delegates/delegOtherTextMsg.qml:115
-#: ../qml/delegates/delegOtherUnknown.qml:114
-#: ../qml/delegates/delegSelfAudio.qml:93
-#: ../qml/delegates/delegSelfImage.qml:134
-#: ../qml/delegates/delegSelfTextMsg.qml:90
-#: ../qml/delegates/delegSelfUnknown.qml:91
+#: ../qml/Main.qml:891 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:139
+#: ../qml/pages/QrShowScan.qml:337
+msgid "Error: %1"
+msgstr "Ошибка: %1"
+
+#: ../qml/delegates/delegOtherAnimatedImage.qml:160
+#: ../qml/delegates/delegOtherAudio.qml:135
+#: ../qml/delegates/delegOtherImage.qml:160
+#: ../qml/delegates/delegOtherTextMsg.qml:120
+#: ../qml/delegates/delegOtherUnknown.qml:119
+#: ../qml/delegates/delegSelfAnimatedImage.qml:138
+#: ../qml/delegates/delegSelfAudio.qml:97
+#: ../qml/delegates/delegSelfImage.qml:138
+#: ../qml/delegates/delegSelfTextMsg.qml:94
+#: ../qml/delegates/delegSelfUnknown.qml:95
 msgid "Forwarded Message"
 msgstr "Пересланное сообщение"
 
-#: ../qml/delegates/delegOtherAudio.qml:180
-#: ../qml/delegates/delegOtherImage.qml:205
-#: ../qml/delegates/delegOtherTextMsg.qml:165
-#: ../qml/delegates/delegOtherUnknown.qml:164
-#: ../qml/delegates/delegSelfAudio.qml:146
-#: ../qml/delegates/delegSelfImage.qml:185
-#: ../qml/delegates/delegSelfTextMsg.qml:142
-#: ../qml/delegates/delegSelfUnknown.qml:142 ../qml/pages/AddChat.qml:156
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:287
-#: ../qml/pages/GroupAddMember.qml:125
+#: ../qml/delegates/delegOtherAnimatedImage.qml:212
+#: ../qml/delegates/delegOtherAudio.qml:187
+#: ../qml/delegates/delegOtherImage.qml:212
+#: ../qml/delegates/delegOtherTextMsg.qml:172
+#: ../qml/delegates/delegOtherUnknown.qml:171
+#: ../qml/delegates/delegSelfAnimatedImage.qml:189
+#: ../qml/delegates/delegSelfAudio.qml:150
+#: ../qml/delegates/delegSelfImage.qml:189
+#: ../qml/delegates/delegSelfTextMsg.qml:146
+#: ../qml/delegates/delegSelfUnknown.qml:146
+#: ../qml/pages/AddAccountAsSecondDevice.qml:156
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:165
+#: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
+#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
+#: ../qml/pages/QrShowScan.qml:429
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../qml/delegates/delegOtherAudio.qml:232
-#: ../qml/delegates/delegSelfAudio.qml:200
+#: ../qml/delegates/delegOtherAudio.qml:241
+#: ../qml/delegates/delegSelfAudio.qml:205
 msgid "Audio"
 msgstr "Аудио"
 
-#: ../qml/delegates/delegOtherAudio.qml:232
-#: ../qml/delegates/delegSelfAudio.qml:200
+#: ../qml/delegates/delegOtherAudio.qml:241
+#: ../qml/delegates/delegSelfAudio.qml:205
 msgid "Voice Message"
 msgstr "Голосовое сообщение"
+
+#: ../qml/delegates/delegOtherToDownload.qml:43
+#: ../qml/delegates/delegSelfToDownload.qml:49
+msgid "Download"
+msgstr "Загрузить"
+
+#: ../qml/delegates/delegOtherToDownload.qml:46
+#: ../qml/delegates/delegSelfToDownload.qml:52
+msgid "Download failed"
+msgstr "Загрузка не удалась"
+
+#: ../qml/delegates/delegOtherToDownload.qml:49
+#: ../qml/delegates/delegOtherToDownload.qml:139
+#: ../qml/delegates/delegSelfToDownload.qml:55
+#: ../qml/delegates/delegSelfToDownload.qml:114
+msgid "Downloading…"
+msgstr "Загрузка…"
 
 #: ../qml/delegates/delegUnreadMsgsBar.qml:48
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/About.qml:28 ../qml/pages/Profile.qml:65
-#: ../qml/pages/SettingsPage.qml:86
+#: ../qml/pages/About.qml:28
 msgid "About DeltaTouch"
 msgstr ""
 
@@ -107,32 +158,43 @@ msgstr ""
 msgid "This app is powered by deltachat-core"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:130
+#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:250
 msgid "Known Accounts"
 msgstr "Известные аккаунты"
 
-#: ../qml/pages/AccountConfig.qml:42
-msgid "Help"
-msgstr "Помощь"
+#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:162
+#: ../qml/pages/ProgressBackupImport.qml:69
+#: ../qml/pages/ProgressConfigAccount.qml:68
+#: ../qml/pages/ProgressQrBackupImport.qml:94
+msgid "Back"
+msgstr "Назад"
 
-#: ../qml/pages/AccountConfig.qml:49 ../qml/pages/AddAccount.qml:33
+#: ../qml/pages/AccountConfig.qml:62 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
 msgstr "Добавить аккаунт"
 
-#: ../qml/pages/AccountConfig.qml:85 ../qml/pages/AccountConfig.qml:188
+#: ../qml/pages/AccountConfig.qml:98 ../qml/pages/AccountConfig.qml:201
+#: ../qml/pages/AddAccountAsSecondDevice.qml:144
+#: ../qml/pages/AddAccountAsSecondDevice.qml:168
+#: ../qml/pages/AddAccountAsSecondDevice.qml:203
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:140
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:177
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:212
 #: ../qml/pages/PickerBackupFile.qml:100
+#: ../qml/pages/ProgressQrBackupImport.qml:53 ../qml/pages/QrShowScan.qml:237
+#: ../qml/pages/QrShowScan.qml:338 ../qml/pages/QrShowScan.qml:488
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../qml/pages/AccountConfig.qml:85
+#: ../qml/pages/AccountConfig.qml:98
 msgid "Info"
 msgstr "Информация"
 
-#: ../qml/pages/AccountConfig.qml:85
+#: ../qml/pages/AccountConfig.qml:98
 msgid "None"
 msgstr "Не задано"
 
-#: ../qml/pages/AccountConfig.qml:191
+#: ../qml/pages/AccountConfig.qml:204
 msgid "Account is not configured."
 msgstr "Учетная запись не настроена"
 
@@ -140,54 +202,116 @@ msgstr "Учетная запись не настроена"
 msgid "Log into your E-Mail Account"
 msgstr "Войти в ваш имэйл-аккаунт"
 
-#: ../qml/pages/AddAccount.qml:58 ../qml/pages/PickerBackupFile.qml:35
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:130
+#: ../qml/pages/QrShowScan.qml:277
+msgid "Add as Second Device"
+msgstr "Добавить как второе устройство"
+
+#: ../qml/pages/AddAccount.qml:59 ../qml/pages/PickerBackupFile.qml:35
 #: ../qml/pages/PickerBackupFile.qml:108
 msgid "Restore from Backup"
 msgstr "Импортировать резервную копию"
 
-#: ../qml/pages/AddAccount.qml:59
+#: ../qml/pages/AddAccount.qml:60
 msgid "Scan Invitation Code"
 msgstr "Сканировать код приглашения"
 
-#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:608
-#: ../qml/pages/BlockContactPopup.qml:36
+#: ../qml/pages/AddAccountAsSecondDevice.qml:72
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:67
+#: ../qml/pages/QrShowScan.qml:111
+msgid "Scan QR Code"
+msgstr "Сканировать QR-код"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:105
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:100
+#: ../qml/pages/QrShowScan.qml:160
+msgid ""
+"Scanning QR codes directly is not supported yet. Please use another app (e."
+"g., Tagger) to scan and copy the code to the clipboard, then paste it here "
+"using the button below."
+msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:118
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:113
+#: ../qml/pages/QrShowScan.qml:173
+msgid "Paste from Clipboard"
+msgstr "Вставить из буфера обмена"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:129
+#: ../qml/pages/QrShowScan.qml:276
+msgid "Copy the account from the other device to this device?"
+msgstr "Скопировать аккаунт с другого устройства на это устройство?"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:157
+#: ../qml/pages/AddAccountAsSecondDevice.qml:169
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:166
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:178
+#: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
+#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
+msgid "QR Code"
+msgstr "QR-код"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:195
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:204
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:656
+#: ../qml/pages/QrShowScan.qml:480
+msgid "Configuring..."
+msgstr ""
+
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:126
+#: ../qml/pages/QrShowScan.qml:262
+msgid "Create new e-mail address on \"%1\" and log in there?"
+msgstr "Создать новый адрес электронной почты на \"%1\" и войти?"
+
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:151
+#: ../qml/pages/QrShowScan.qml:402
+msgid "Log into \"%1\"?"
+msgstr "Войти в «%1»?"
+
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
+#: ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
-#: ../qml/pages/ConfirmChatDeletion.qml:56
-#: ../qml/pages/ConfirmLeaveGroup.qml:46
+#: ../qml/pages/ConfirmChatDeletion.qml:54
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:80
+#: ../qml/pages/ConfirmDeleteFromServer.qml:80
+#: ../qml/pages/ConfirmLeaveGroup.qml:44
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
-#: ../qml/pages/ConfirmMsgDeletion.qml:56 ../qml/pages/CreateOrEditGroup.qml:78
-#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/Profile.qml:227
-#: ../qml/pages/UnblockContactPopup.qml:38
+#: ../qml/pages/ConfirmMsgDeletion.qml:55 ../qml/pages/CreateOrEditGroup.qml:84
+#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/ProfileSelf.qml:58
+#: ../qml/pages/ProgressBackupExport.qml:64
+#: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:45
+#: ../qml/pages/UnblockContactPopup.qml:41
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:35
+#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Group"
 msgstr "Новая группа"
 
-#: ../qml/pages/AddChat.qml:86
+#: ../qml/pages/AddChat.qml:86 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Verified Group"
 msgstr "Новая проверенная группа"
 
-#: ../qml/pages/AddChat.qml:103 ../qml/pages/GroupAddMember.qml:77
+#: ../qml/pages/AddChat.qml:104 ../qml/pages/GroupAddMember.qml:77
 msgid "Enter name or e-mail address"
 msgstr "Введите имя или адрес эл. почты"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:45
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:715
-#: ../qml/pages/SettingsPage.qml:57 ../qml/pages/SettingsPage.qml:304
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:680
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:781
 msgid "No, chats only"
 msgstr "Нет, только чаты"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:48
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:729
-#: ../qml/pages/SettingsPage.qml:60 ../qml/pages/SettingsPage.qml:318
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:694
+#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:795
 msgid "For accepted contacts"
 msgstr "Для принятых контактов"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:51
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:743
-#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:332
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:708
+#: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
+#: ../qml/pages/SettingsPage.qml:809 ../qml/pages/SettingsPage.qml:837
 msgid "All"
 msgstr "Все"
 
@@ -195,162 +319,239 @@ msgstr "Все"
 msgid "Log In"
 msgstr "Логин"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:91
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:69
+#: ../qml/pages/ConfirmDeleteFromServer.qml:69
+#: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/ProfileSelf.qml:65 ../qml/pages/ProgressKeysExport.qml:78
+#: ../qml/pages/QrConfirmPopup.qml:76
+msgid "OK"
+msgstr "OK"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:178
 msgid "Log in with an existing e-mail account"
 msgstr "Войти с существующим аккаунтом эл.почты"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:130
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:191
 msgid "E-Mail Address"
 msgstr "Адрес эл.почты"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:154
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:215
 msgid "Password"
 msgstr "Пароль"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:214
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:275
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
 msgstr "Для известных почтовых систем, дополнительные настройки устанавливаются автоматически. Иногда для IMAP требуется разрешение в веб-интерфейсе. Проконсультируйтесь с технической поддержкой вашей почтовой службы или друзьями, для получения помощи."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:238
-#: ../qml/pages/SettingsPage.qml:170
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:299
+#: ../qml/pages/SettingsPage.qml:399
 msgid "Show Classic E-Mails"
 msgstr "Показывать обычную почту"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:270
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:331
+#: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:746
 msgid "Advanced"
 msgstr "Дополнительные параметры"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:291
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:352
 msgid "Inbox"
 msgstr "Входящие"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:297
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
 msgid "IMAP Login Name"
 msgstr "Логин IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:304
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:371
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:365
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:444
 msgid "Default (same as above)"
 msgstr "По умолчанию (как указано выше)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:309
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:370
 msgid "IMAP Server"
 msgstr "Сервер IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:316
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:336
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:415
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:377
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:397
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:456
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:476
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
 msgid "Automatic"
 msgstr "Автоматически"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:321
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:382
 msgid "IMAP Port"
 msgstr "Порт IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:328
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:407
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:500
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:513
-msgid "Standard (%1)"
-msgstr ""
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:389
+msgid "Default (%1)"
+msgstr "По умолчанию (%1)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:334
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
 msgid "IMAP Security"
 msgstr "Параметры безопасности IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:339
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:418
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
+#: ../qml/pages/ChatInfosActions.qml:130
+#: ../qml/pages/EphemeralTimerSettings.qml:35
+#: ../qml/pages/EphemeralTimerSettings.qml:128
+#: ../qml/pages/EphemeralTimerSettings.qml:132
 msgid "Off"
 msgstr "Выкл."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:419
 msgid "Outbox"
 msgstr "Исходящие"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:364
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:425
 msgid "SMTP Login Name"
 msgstr "Логин SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:437
 msgid "SMTP Password"
 msgstr "Пароль SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:388
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:449
 msgid "SMTP Server"
 msgstr "Сервер SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:461
 msgid "SMTP Port"
 msgstr "Порт SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:468
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:574
+msgid "Standard (%1)"
+msgstr ""
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:474
 msgid "SMTP Security"
 msgstr "Параметры безопасности SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:430
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
 msgid "Certificate Checks"
 msgstr "Проверки сертификатов"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:433
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:494
 msgid "Strict"
 msgstr "Строгий"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:434
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:495
 msgid "Accept invalid certificates"
 msgstr "Принимать недействительные сертификаты"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:469
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:530
 msgid "Use SOCKS5"
 msgstr "Использовать SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:488
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:549
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr "Поддержка SOCKS5 в настоящее время экспериментальная. Используйте на свой риск. Если вы введете адрес электронной почты, DNS-запросы, которые не туннелируются через SOCKS5, не будут произведены."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:554
 msgid "SOCKS5 Host"
 msgstr "Сервер SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:506
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:567
 msgid "SOCKS5 Port"
 msgstr "Порт SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:520
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:581
 msgid "SOCKS5 User"
 msgstr "Пользователь SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:532
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:593
 msgid "SOCKS5 Password"
 msgstr "Пароль SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:619
-#: ../qml/pages/CreateOrEditGroup.qml:86 ../qml/pages/GroupAddMember.qml:51
-#: ../qml/pages/Profile.qml:239
-msgid "OK"
-msgstr "OK"
+#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:463
+msgid "Worse quality, small size"
+msgstr "Низкого качества, с меньшим размером"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:691
-msgid "Configuring..."
+#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:449
+msgid "Balanced"
+msgstr "Сбалансированное"
+
+#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:435
+msgid "High"
+msgstr "Высокий"
+
+#: ../qml/pages/AdvancedSettings.qml:124
+msgid "Voice Message Quality"
 msgstr ""
 
-#: ../qml/pages/BlockContactPopup.qml:31
+#: ../qml/pages/AdvancedSettings.qml:160
+msgid "Autocrypt"
+msgstr "Autocrypt"
+
+#: ../qml/pages/AdvancedSettings.qml:173
+msgid "Prefer End-To-End Encryption"
+msgstr "Предпочитать сквозное шифрование"
+
+#: ../qml/pages/AdvancedSettings.qml:210
+msgid "IMAP Folder Handling"
+msgstr "Параметры папки IMAP"
+
+#: ../qml/pages/AdvancedSettings.qml:224
+msgid "Watch Sent Folder"
+msgstr "Следить за папкой Исходящие"
+
+#: ../qml/pages/AdvancedSettings.qml:257
+msgid "Send Copy to Self"
+msgstr "Отправлять копию себе"
+
+#: ../qml/pages/AdvancedSettings.qml:258
+msgid "Required when using this account on multiple devices."
+msgstr "Требуется при использовании этого аккаунта на нескольких устройствах."
+
+#: ../qml/pages/AdvancedSettings.qml:292
+msgid "Move automatically to DeltaChat Folder"
+msgstr "Автоматически Перемещать в папку DeltaChat"
+
+#: ../qml/pages/AdvancedSettings.qml:293
+msgid "Chat conversations are moved to avoid cluttering the Inbox"
+msgstr "Сообщения чатов переносятся, чтобы избежать путаницы в папке «Входящие»"
+
+#: ../qml/pages/AdvancedSettings.qml:326
+msgid "Only Fetch from DeltaChat Folder"
+msgstr "Загружать только из папки DeltaChat"
+
+#: ../qml/pages/AdvancedSettings.qml:327
+msgid ""
+"Ignore other folders. Requires your server to move chat messages to the "
+"DeltaChat folder."
+msgstr "Игнорировать другие папки. Необходимо чтобы ваш сервер перемещал сообщения в папку DeltaChat."
+
+#: ../qml/pages/AdvancedSettings.qml:365
+msgid "Manage Keys"
+msgstr "Управление ключами"
+
+#: ../qml/pages/AdvancedSettings.qml:379
+msgid "Export Secret Keys"
+msgstr "Экспортировать секретные ключи"
+
+#: ../qml/pages/AdvancedSettings.qml:399 ../qml/pages/ProgressKeysImport.qml:59
+msgid "Import Secret Keys"
+msgstr "Импортировать секретные ключи"
+
+#: ../qml/pages/BlockContactPopup.qml:28
 msgid "Block this contact? You will no longer receive messages from them."
 msgstr "Заблокировать контакт? Вы больше не сможете получать от него сообщения."
 
-#: ../qml/pages/BlockContactPopup.qml:42 ../qml/pages/ChatInfosActions.qml:50
+#: ../qml/pages/BlockContactPopup.qml:37 ../qml/pages/ChatInfosActions.qml:49
 msgid "Block Contact"
 msgstr "Заблокировать контакт"
 
-#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:245
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:311
 msgid "Blocked Contacts"
 msgstr "Заблокированные контакты"
 
@@ -358,31 +559,82 @@ msgstr "Заблокированные контакты"
 msgid "Blocked contacts will appear here."
 msgstr "Если вы заблокируете контакты, они будут показаны здесь."
 
-#: ../qml/pages/ChatInfosActions.qml:63 ../qml/pages/ChatView.qml:104
-#: ../qml/pages/CreateOrEditGroup.qml:36
+#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:182
+#: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr "Редактировать группу"
 
-#: ../qml/pages/ChatInfosActions.qml:75 ../qml/pages/ConfirmLeaveGroup.qml:36
+#: ../qml/pages/ChatInfosActions.qml:70 ../qml/pages/ConfirmLeaveGroup.qml:34
 msgid "Leave Group"
 msgstr "Покинуть группу"
 
-#: ../qml/pages/ChatInfosActions.qml:89
+#: ../qml/pages/ChatInfosActions.qml:80
+msgid "Mute Notifications"
+msgstr "Отключить уведомления"
+
+#: ../qml/pages/ChatInfosActions.qml:80
+msgid "Unmute"
+msgstr "Включить уведомления"
+
+#: ../qml/pages/ChatInfosActions.qml:94
 msgid "Show Encryption Info"
 msgstr "Показать информацию о шифровании"
 
-#: ../qml/pages/ChatView.qml:648
+#: ../qml/pages/ChatInfosActions.qml:144
+msgid "Mute for 1 hour"
+msgstr "1 час"
+
+#: ../qml/pages/ChatInfosActions.qml:158
+msgid "Mute for 2 hours"
+msgstr "На 2 часа"
+
+#: ../qml/pages/ChatInfosActions.qml:172
+msgid "Mute for 1 day"
+msgstr "На 1 день"
+
+#: ../qml/pages/ChatInfosActions.qml:186
+msgid "Mute for 7 days"
+msgstr "На 7 дней"
+
+#: ../qml/pages/ChatInfosActions.qml:200
+msgid "Mute forever"
+msgstr "Заглушить навсегда"
+
+#: ../qml/pages/ChatView.qml:146
+msgid "Verified Contact"
+msgstr "Проверенный контакт"
+
+#: ../qml/pages/ChatView.qml:153 ../qml/pages/ChatView.qml:173
+#: ../qml/pages/EphemeralTimerSettings.qml:27
+msgid "Disappearing Messages"
+msgstr "Исчезающие сообщения"
+
+#: ../qml/pages/ChatView.qml:623
+msgid "This chat contains locally generated messages; writing is disabled."
+msgstr "Этот чат содержит локально сгенерированные сообщения. Поэтому вы не можете писать сообщения."
+
+#: ../qml/pages/ChatView.qml:625
+msgid ""
+"You must be in this group to post a message. To join, ask another member."
+msgstr "Вы не можете писать, потому что вы не в этой группе. Чтобы присоединиться, попросите другого участника."
+
+#: ../qml/pages/ChatView.qml:1342
 msgid "Accept"
 msgstr "Принять"
 
-#: ../qml/pages/ChatView.qml:664 ../qml/pages/ConfirmMemberDeletion.qml:35
+#: ../qml/pages/ChatView.qml:1358 ../qml/pages/ChatView.qml:1535
+#: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "Удалить"
 
-#: ../qml/pages/ChatView.qml:679
+#: ../qml/pages/ChatView.qml:1373
 msgid "Block"
 msgstr "Заблокировать"
+
+#: ../qml/pages/ChatView.qml:1503
+msgid "Click to leave without sending"
+msgstr ""
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:35
 #: ../qml/pages/ConfirmAccountDeletion.qml:51
@@ -400,17 +652,57 @@ msgid ""
 "action cannot be undone."
 msgstr "Все данные учётной записи \"%1\" на этом устройстве будут удалены, включая настройки сквозного шифрования, контакты, чаты, сообщения и мультимедиа. Это действие не может быть отменено."
 
-#: ../qml/pages/ConfirmChatDeletion.qml:36
-#: ../qml/pages/ConfirmChatDeletion.qml:46
+#: ../qml/pages/ConfirmChatDeletion.qml:34
+#: ../qml/pages/ConfirmChatDeletion.qml:44
 msgid "Delete Chat"
 msgstr "Удалить чат"
 
-#: ../qml/pages/ConfirmChatDeletion.qml:40
-#: ../qml/pages/ConfirmMsgDeletion.qml:40
+#: ../qml/pages/ConfirmChatDeletion.qml:38
+#: ../qml/pages/ConfirmMsgDeletion.qml:39
 msgid "Are you sure you want to delete \"%1\"?"
 msgstr "Вы уверены, что хотите удалить \"%1\"?"
 
-#: ../qml/pages/ConfirmLeaveGroup.qml:32
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:36
+#: ../qml/pages/SettingsPage.qml:629
+msgid "Delete Messages from Device"
+msgstr "Удалять сообщения с устройства"
+
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:40
+msgid ""
+"Do you want to delete %1 messages now and all newly fetched messages \"%2\" "
+"in the future?\n"
+"\n"
+"• This includes all media\n"
+"\n"
+"• Messages will be deleted whether they were seen or not\n"
+"\n"
+"• \"Saved messages\" will be skipped from local deletion"
+msgstr "Вы хотите удалить %1 сообщений сейчас и все новые загруженные сообщения \"%2\" в будущем?\n\n• Это включает в себя все медиафайлы\n\n• Сообщения будут удалены независимо от того, просмотрены они или нет\n\n• \"Сохранённые сообщения\" будут пропущены при локальном удалении"
+
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:62
+#: ../qml/pages/ConfirmDeleteFromServer.qml:62
+msgid "I understand, delete all these messages"
+msgstr "Я понимаю, удалить все эти сообщения"
+
+#: ../qml/pages/ConfirmDeleteFromServer.qml:36
+#: ../qml/pages/SettingsPage.qml:657
+msgid "Delete Messages from Server"
+msgstr "Удалять сообщения с сервера"
+
+#: ../qml/pages/ConfirmDeleteFromServer.qml:40
+msgid ""
+"Do you want to delete %1 messages now and all newly fetched messages \"%2\" "
+"in the future?\n"
+"\n"
+"⚠️ This includes e-mails, media and \"Saved messages\" in all server folders\n"
+"\n"
+"⚠️ Do not use this function if you want to keep data on the server\n"
+"\n"
+"⚠️ Do not use this function if you are using other e-mail clients besides "
+"Delta Chat"
+msgstr "Вы хотите удалить %1 сообщений сейчас и все недавно доставленные сообщения \"%2\" в будущем?\n\n⚠️ Включая письма, медиафайлы и \"Сохранённые сообщения\"  во всех папках сервера\n\n⚠️ Не используйте эту функцию, если вы хотите сохранить данные на сервере\n\n⚠️ Не используйте эту функцию, если вы используете другие почтовые клиенты помимо Delta Chat"
+
+#: ../qml/pages/ConfirmLeaveGroup.qml:30
 msgid "Are you sure you want to leave this group?"
 msgstr "Вы уверены, что хотите покинуть эту группу?"
 
@@ -418,42 +710,105 @@ msgstr "Вы уверены, что хотите покинуть эту гру�
 msgid "Remove %1 from group?"
 msgstr "Удалить %1 из группы?"
 
-#: ../qml/pages/ConfirmMsgDeletion.qml:36
-#: ../qml/pages/ConfirmMsgDeletion.qml:46
+#: ../qml/pages/ConfirmMsgDeletion.qml:35
+#: ../qml/pages/ConfirmMsgDeletion.qml:45
 msgid "Delete Message"
 msgstr "Удалить сообщение"
 
-#: ../qml/pages/CreateOrEditGroup.qml:100
+#: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
+#: ../qml/pages/QrShowScan.qml:72 ../qml/pages/QrShowScan.qml:104
 msgid "QR Invite Code"
 msgstr "QR-код приглашения"
 
-#: ../qml/pages/CreateOrEditGroup.qml:200
+#: ../qml/pages/CreateOrEditGroup.qml:206
 msgid "Group Name"
 msgstr "Название группы"
 
-#: ../qml/pages/CreateOrEditGroup.qml:223
+#: ../qml/pages/CreateOrEditGroup.qml:229
 msgid "%1 member"
 msgstr "%1  участников"
 
-#: ../qml/pages/CreateOrEditGroup.qml:224
+#: ../qml/pages/CreateOrEditGroup.qml:230
 msgid "%1 members"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:241 ../qml/pages/GroupAddMember.qml:34
+#: ../qml/pages/CreateOrEditGroup.qml:247 ../qml/pages/GroupAddMember.qml:34
 msgid "Add Members"
 msgstr "Добавить участников"
 
-#: ../qml/pages/CreateOrEditGroup.qml:331
+#: ../qml/pages/CreateOrEditGroup.qml:346
 msgid "Please enter a name for the group."
 msgstr "Введите название группы"
 
-#: ../qml/pages/CreateOrEditGroup.qml:355
+#: ../qml/pages/CreateOrEditGroup.qml:370
 msgid "Change Group Image"
 msgstr "Изменить изображение группы"
 
-#: ../qml/pages/CreateOrEditGroup.qml:368
+#: ../qml/pages/CreateOrEditGroup.qml:383
 msgid "Remove Group Image"
 msgstr "Удалить изображение группы"
+
+#: ../qml/pages/EphemeralTimerSettings.qml:39
+#: ../qml/pages/EphemeralTimerSettings.qml:142
+#: ../qml/pages/EphemeralTimerSettings.qml:146
+#: ../qml/pages/EphemeralTimerSettings.qml:216
+#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
+#: ../qml/pages/SettingsPage.qml:1111
+msgid "After 30 seconds"
+msgstr "Через 30 секунд"
+
+#: ../qml/pages/EphemeralTimerSettings.qml:43
+#: ../qml/pages/EphemeralTimerSettings.qml:156
+#: ../qml/pages/EphemeralTimerSettings.qml:160
+#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
+#: ../qml/pages/SettingsPage.qml:1132
+msgid "After 1 minute"
+msgstr "Через 1 минуту"
+
+#: ../qml/pages/EphemeralTimerSettings.qml:47
+#: ../qml/pages/EphemeralTimerSettings.qml:170
+#: ../qml/pages/EphemeralTimerSettings.qml:174
+#: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
+#: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
+#: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
+msgid "After 1 hour"
+msgstr "Через 1 час"
+
+#: ../qml/pages/EphemeralTimerSettings.qml:51
+#: ../qml/pages/EphemeralTimerSettings.qml:184
+#: ../qml/pages/EphemeralTimerSettings.qml:188
+#: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
+#: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
+#: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
+msgid "After 1 day"
+msgstr "Через 1 день"
+
+#: ../qml/pages/EphemeralTimerSettings.qml:55
+#: ../qml/pages/EphemeralTimerSettings.qml:198
+#: ../qml/pages/EphemeralTimerSettings.qml:202
+#: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
+#: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
+#: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
+msgid "After 1 week"
+msgstr "Через 1 неделю"
+
+#: ../qml/pages/EphemeralTimerSettings.qml:59
+#: ../qml/pages/EphemeralTimerSettings.qml:212
+#: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
+#: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
+#: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
+msgid "After 4 weeks"
+msgstr "Через 4 недели"
+
+#: ../qml/pages/EphemeralTimerSettings.qml:63
+msgid "After %1 seconds"
+msgstr ""
+
+#: ../qml/pages/EphemeralTimerSettings.qml:80
+msgid ""
+"Applies to all members of this chat if they use Delta Chat; they can still "
+"copy, save, and forward messages or use other e-mail clients."
+msgstr "Эти настройки применяются ко всем участникам, использующим Delta Chat. Тем не менее, они могут копировать, сохранять и пересылать сообщения или использовать другие почтовые клиенты."
 
 #: ../qml/pages/ForwardMessage.qml:41
 msgid "Forward to…"
@@ -463,19 +818,19 @@ msgstr "Переслать…"
 msgid "Close"
 msgstr "Закрыть"
 
-#: ../qml/pages/ForwardMessage.qml:71
-msgid "Search"
-msgstr "Поиск"
+#: ../qml/pages/ImageViewer.qml:39 ../qml/pages/ImageViewerAnimated.qml:39
+msgid "Save"
+msgstr "Сохранить"
 
-#: ../qml/pages/MessageInfosActions.qml:35
+#: ../qml/pages/MessageInfosActions.qml:33
 msgid "Copy Text"
 msgstr "Копировать текст"
 
-#: ../qml/pages/MessageInfosActions.qml:42
+#: ../qml/pages/MessageInfosActions.qml:45
 msgid "Export Attachment"
 msgstr "Экспортировать вложение"
 
-#: ../qml/pages/MessageInfosActions.qml:68
+#: ../qml/pages/MessageInfosActions.qml:71
 msgid "Message Details"
 msgstr "Подробности сообщения"
 
@@ -483,7 +838,7 @@ msgstr "Подробности сообщения"
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:290
 msgid "Sorry, not implemented yet :-("
 msgstr ""
 
@@ -508,36 +863,51 @@ msgstr "Выбрать изображение группы"
 msgid "Select your new profile image"
 msgstr "Выбрать новое изображение профиля"
 
-#: ../qml/pages/Profile.qml:48
-msgid "Edit Profile"
-msgstr "Редактировать профиль"
+#: ../qml/pages/ProfileOther.qml:38
+msgid "Last seen at %1"
+msgstr "Последний раз был(а) в %1"
 
-#: ../qml/pages/Profile.qml:91 ../qml/pages/SettingsPage.qml:270
-msgid "Profile"
-msgstr "Профиль"
+#: ../qml/pages/ProfileOther.qml:38
+msgid "Last seen: Unknown"
+msgstr "Последний раз был(а): Неизвестно"
 
-#: ../qml/pages/Profile.qml:122
-msgid "Select Profile Image"
-msgstr "Выбрать изображение профиля"
+#: ../qml/pages/ProfileOther.qml:47
+msgid "View Profile"
+msgstr "Просмотреть профиль"
 
-#: ../qml/pages/Profile.qml:137
-msgid "Delete Profile Image"
-msgstr "Удалить фото профиля"
+#: ../qml/pages/ProfileOther.qml:236
+msgid "Locally generated messages"
+msgstr "Сообщения, созданные устройством"
 
-#: ../qml/pages/Profile.qml:152
-msgid "Your Name"
-msgstr "Ваше имя"
+#: ../qml/pages/ProfileOther.qml:266
+msgid "Verified by %1"
+msgstr "Верифицирован %1"
 
-#: ../qml/pages/Profile.qml:191
+#: ../qml/pages/ProfileOther.qml:304 ../qml/pages/ProfileSelf.qml:249
 msgid "Signature Text"
 msgstr "Текст подписи"
 
-#: ../qml/pages/ProgressBackupExport.qml:43
-#: ../qml/pages/ProgressBackupImport.qml:43
-msgid "Failed"
-msgstr ""
+#: ../qml/pages/ProfileSelf.qml:48 ../qml/pages/SettingsPage.qml:356
+msgid "Edit Profile"
+msgstr "Редактировать профиль"
 
-#: ../qml/pages/ProgressBackupExport.qml:48
+#: ../qml/pages/ProfileSelf.qml:96
+msgid "Profile"
+msgstr "Профиль"
+
+#: ../qml/pages/ProfileSelf.qml:177
+msgid "Select Profile Image"
+msgstr "Выбрать изображение профиля"
+
+#: ../qml/pages/ProfileSelf.qml:190
+msgid "Delete Profile Image"
+msgstr "Удалить фото профиля"
+
+#: ../qml/pages/ProfileSelf.qml:210
+msgid "Your Name"
+msgstr "Ваше имя"
+
+#: ../qml/pages/ProgressBackupExport.qml:36
 msgid ""
 "A backup helps you to set up a new installation on this or on another "
 "device.\n"
@@ -545,34 +915,244 @@ msgid ""
 "The backup will contain all messages, contacts and chats and your end-to-end "
 "Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
 "as possible."
-msgstr "Резервное копирование позволяет восстанавливать предыдущие настройки приложения во время новой установки на этом или другом устройстве.\n\nРезервная копия содержит все сообщения, контакты и чаты, а также параметры шифрования Autocrypt.  После того, как резервная копия будет создана, как можно скорее перенесите её в надёжное место."
+msgstr "Резервное копирование позволяет восстанавливать предыдущие настройки приложения во время новой установки на этом или другом устройстве.\n\nРезервная копия содержит все сообщения, контакты и чаты, а также параметры сквозного шифрования Autocrypt.  После того, как резервная копия будет создана, как можно скорее перенесите её в надёжное место."
 
-#: ../qml/pages/SettingsPage.qml:73
+#: ../qml/pages/ProgressBackupExport.qml:50
+msgid "Start Backup"
+msgstr "Начать резервное копирование"
+
+#: ../qml/pages/ProgressBackupImport.qml:44
+msgid "Failed"
+msgstr ""
+
+#: ../qml/pages/ProgressKeysExport.qml:40
+msgid "Export secret keys to \"%1\"?"
+msgstr "Экспортировать секретные ключи в папку «%1»?"
+
+#: ../qml/pages/ProgressKeysExport.qml:49
+msgid "Secret keys written successfully to \"%1\"."
+msgstr "Секретные ключи успешно сохранены в папку «%1»."
+
+#: ../qml/pages/ProgressKeysExport.qml:57
+msgid "Yes"
+msgstr "Да"
+
+#: ../qml/pages/ProgressKeysImport.qml:41
+msgid ""
+"Import secret keys from \"%1\"?\n"
+"\n"
+"• Existing secret keys will not be deleted\n"
+"\n"
+"• The last imported key will be used as the new default key unless it has "
+"the word \"legacy\" in its filename."
+msgstr "Импортировать секретные ключи из папки \"%1\"?\n\n• Существующие секретные ключи не будут удалены\n\n• Последний импортированный ключ будет использован как новый ключ по умолчанию, если он не содержит слова \"legacy\" в названии файла."
+
+#: ../qml/pages/ProgressKeysImport.qml:41
+msgid ""
+"To import secret keys, please place them into the directory \"%1\". Make "
+"sure that no other files are present in this directory."
+msgstr ""
+
+#: ../qml/pages/ProgressKeysImport.qml:51
+msgid "Secret keys imported from \"%1\"."
+msgstr "Секретные ключи импортированы из папки «%1»."
+
+#: ../qml/pages/ProgressQrBackupImport.qml:35
+msgid "Transferring…"
+msgstr "Передача..."
+
+#: ../qml/pages/QrConfirmPopup.qml:57 ../qml/pages/QrShowScan.qml:455
+msgid "Copy to Clipboard"
+msgstr "Скопировать в буфер обмена"
+
+#: ../qml/pages/QrConfirmPopup.qml:69
+msgid "Open Url in Browser"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:185
+msgid "Chat with %1?"
+msgstr "Создать чат с %1?"
+
+#: ../qml/pages/QrShowScan.qml:211
+msgid "Do you want to join the group \"%1\"?"
+msgstr "Присоединиться к группе «%1»?"
+
+#: ../qml/pages/QrShowScan.qml:223
+msgid "The fingerprint of %1 is valid!"
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:224 ../qml/pages/QrShowScan.qml:250
+msgid "Fingerprint"
+msgstr "Отпечаток"
+
+#: ../qml/pages/QrShowScan.qml:236
+msgid "The scanned fingerprint does not match the last seen for %1."
+msgstr "Отсканированный отпечаток не совпадает с последним известным отпечатком %1"
+
+#: ../qml/pages/QrShowScan.qml:249
+msgid ""
+"This QR code contains a fingerprint but no e-mail address.\n"
+"\n"
+"For an out-of-band-verification, please establish an encrypted connection to "
+"the recipient first."
+msgstr "QR-код содержит отпечаток ключа, но не содержит адрес электронной почты.\n\nДля проверки подлинности с использованием альтернативного канала связи следует сначала установить с получателем защищённое соединение."
+
+#: ../qml/pages/QrShowScan.qml:306
+msgid ""
+"Scanned QR code text:\n"
+"\n"
+"%1"
+msgstr "Текст из QR-кода:\n\n%1"
+
+#: ../qml/pages/QrShowScan.qml:321
+msgid ""
+"Scanned QR code URL:\n"
+"\n"
+"%1"
+msgstr "URL из QR-кода:\n\n%1"
+
+#: ../qml/pages/QrShowScan.qml:350
+msgid ""
+"This QR code can be scanned by others to contact you.\n"
+"\n"
+"You can deactivate the QR code here and reactivate it by scanning it again."
+msgstr "Этот QR код могут сканировать другие люди, чтобы связаться с вами.\n\nВы можете деактивировать QR код здесь и активировать вновь, отсканировав его снова."
+
+#: ../qml/pages/QrShowScan.qml:351 ../qml/pages/QrShowScan.qml:364
+msgid "Deactivate QR Code"
+msgstr "Деактивировать QR-код"
+
+#: ../qml/pages/QrShowScan.qml:363
+msgid ""
+"This QR code can be scanned by others to join the group \"%1\".\n"
+"\n"
+"You can deactivate the QR code here and reactivate it by scanning it again."
+msgstr "Этот QR-код могут отсканировать другие люди, чтобы присоединиться к группе \"%1\".\n\nВы можете деактивировать QR-код здесь и активировать вновь, отсканировав его снова."
+
+#: ../qml/pages/QrShowScan.qml:376
+msgid ""
+"This QR code could be scanned by others to contact you.\n"
+"\n"
+"The QR code is not active on this device."
+msgstr "Этот QR-код могут отсканировать другие люди, чтобы связаться с вами.\n\nНа этом устройстве QR-код не активен."
+
+#: ../qml/pages/QrShowScan.qml:377 ../qml/pages/QrShowScan.qml:390
+msgid "Activate QR Code"
+msgstr "Активировать QR-код"
+
+#: ../qml/pages/QrShowScan.qml:389
+msgid ""
+"This QR code could be scanned by others to join the group \"%1\".\n"
+"\n"
+"The QR code is not active on this device."
+msgstr "Этот QR-код может быть отсканирован другими, чтобы присоединиться к группе \"%1\".\n\nНа этом устройстве QR-код не активен."
+
+#: ../qml/pages/SettingsPage.qml:84 ../qml/pages/SettingsPage.qml:97
+#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:851
+#: ../qml/pages/SettingsPage.qml:893 ../qml/pages/SettingsPage.qml:907
+msgid "Up to %1"
+msgstr "До %1"
+
+#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:865
+msgid "Up to %1, most worse quality images"
+msgstr "До %1, изображения плохого качества"
+
+#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:879
+msgid "Up to %1, most balanced quality images"
+msgstr "До %1, изображения среднего качества"
+
+#: ../qml/pages/SettingsPage.qml:113 ../qml/pages/SettingsPage.qml:145
+#: ../qml/pages/SettingsPage.qml:936 ../qml/pages/SettingsPage.qml:1070
+msgid "Never"
+msgstr "Никогда"
+
+#: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
+#: ../qml/pages/SettingsPage.qml:1034 ../qml/pages/SettingsPage.qml:1040
+#: ../qml/pages/SettingsPage.qml:1231 ../qml/pages/SettingsPage.qml:1237
+msgid "After 1 year"
+msgstr "Через 1 год"
+
+#: ../qml/pages/SettingsPage.qml:137 ../qml/pages/SettingsPage.qml:181
+msgid "?"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1084
+#: ../qml/pages/SettingsPage.qml:1090
+msgid "At once"
+msgstr "Сразу"
+
+#: ../qml/pages/SettingsPage.qml:188
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../qml/pages/SettingsPage.qml:111
+#: ../qml/pages/SettingsPage.qml:226
 msgid "Sync All"
 msgstr "Синхронизировать все"
 
-#: ../qml/pages/SettingsPage.qml:157
+#: ../qml/pages/SettingsPage.qml:278
 msgid "Account specific settings"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:197
+#: ../qml/pages/SettingsPage.qml:385
+msgid "Chats"
+msgstr "Чаты"
+
+#: ../qml/pages/SettingsPage.qml:427
+msgid "Auto-Download Messages"
+msgstr "Автозагрузка сообщений"
+
+#: ../qml/pages/SettingsPage.qml:462
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: ../qml/pages/SettingsPage.qml:474
+msgid "Enable system notifications for new messages"
+msgstr "Включить системные уведомления для новых сообщений"
+
+#: ../qml/pages/SettingsPage.qml:491
+msgid ""
+"To receive system notifications, background suspension must be disabled for "
+"the app and the app must be running."
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:507
+msgid "Show message content in notification"
+msgstr "Показывать содержимое сообщения в уведомлении"
+
+#: ../qml/pages/SettingsPage.qml:508
+msgid "Shows sender and first words of the message in notifications"
+msgstr "Показывает отправителя и первые слова сообщения в уведомлениях"
+
+#: ../qml/pages/SettingsPage.qml:532
+msgid "Aggregate system notifications"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:533
+msgid "Only the most recent notification will persist"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:565
+msgid "Privacy"
+msgstr "Конфиденциальность"
+
+#: ../qml/pages/SettingsPage.qml:577
 msgid "Read Receipts"
 msgstr "Уведомления о прочтении"
 
-#: ../qml/pages/SettingsPage.qml:225 ../qml/pages/SettingsPage.qml:356
+#: ../qml/pages/SettingsPage.qml:615
+msgid "Delete Old Messages"
+msgstr "Удалить старые сообщения"
+
+#: ../qml/pages/SettingsPage.qml:705 ../qml/pages/SettingsPage.qml:1262
 msgid "Export Backup"
 msgstr "Экспорт резервной копии"
 
-#: ../qml/pages/UnblockContactPopup.qml:33
+#: ../qml/pages/UnblockContactPopup.qml:36
 msgid ""
 "Unblock this contact? You will then be able to receive messages from them."
 msgstr "Разблокировать контакт? Вы сможете получать от него сообщения снова."
 
-#: ../qml/pages/UnblockContactPopup.qml:44
+#: ../qml/pages/UnblockContactPopup.qml:47
 msgid "Unblock Contact"
 msgstr "Разблокировать контакт"
 

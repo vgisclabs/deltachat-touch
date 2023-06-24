@@ -15,7 +15,7 @@
 
 • Falls Delta Chat oder ein anderes E-Mail-Programm auf diesem oder einem anderen Gerät neu installiert wurde, kann von dort aus eine Autocrypt Setup-Nachricht gesendet werden.
 @linesystemmsg_read_receipt_subject Empfangsbestätigung
-@linesystemmsg_read_receipt_body Ihre Nachricht \"%1$s\" wurde auf dem Empfangsgerät angezeigt.
+@linesystemmsg_read_receipt_body Ihre Nachricht "%1$s" wurde auf dem Empfangsgerät angezeigt.
 
 Das ist keine Garantie dafür, dass sie auch gelesen wurde.
 @lineautocrypt_prefer_e2ee Ende-zu-Ende-Verschlüsselung bevorzugen
@@ -24,7 +24,7 @@ Das ist keine Garantie dafür, dass sie auch gelesen wurde.
 @lineautocrypt_asm_general_body Dies ist die Autocrypt-Setup-Nachricht, um das Ende-zu-Ende-Setup von einem Gerät auf das andere zu übertragen.
 
 Um das Setup zu entschlüsseln und zu verwenden, öffnen Sie diese Nachricht in einer Autocrypt-kompatiblen App und geben Sie den Setup-Code ein, der auf dem anderen Gerät angezeigt wurde.
-@linelogin_error_cannot_login Login als \"%1$s\" nicht möglich. Bitte E-Mail-Adresse und Passwort auf Richtigkeit überprüfen.
+@linelogin_error_cannot_login Login als "%1$s" nicht möglich. Bitte E-Mail-Adresse und Passwort auf Richtigkeit überprüfen.
 @linedevice_talk Systemnachrichten
 @linesaved_messages Gespeicherte Nachrichten
 @linecontact_verified %1$s verifiziert.
@@ -36,7 +36,7 @@ Um das Setup zu entschlüsseln und zu verwenden, öffnen Sie diese Nachricht in 
 Technisch gesehen ist Delta Chat ein E-Mail-Programm unter einer modernen Chat-Oberfläche - sozusagen E-Mail in neuem Gewand 👻
 
 Mit Delta Chat haben Sie Milliarden potentieller ChatpartnerInnen: Verwenden Sie einfach deren E-Mail-Adresse - die EmpfängerInnen selbst müssen Delta Chat dazu nicht installieren oder sich irgendwo anmelden. Sie können sie aber natürlich gerne auf 👉 https://get.delta.chat hinweisen
-@linesystemmsg_unknown_sender_for_chat Absender ist für diesen Chat unbekannt. Siehe \"Info\" für weitere Details,
+@linesystemmsg_unknown_sender_for_chat Absender ist für diesen Chat unbekannt. Siehe "Info" für weitere Details,
 @linesystemmsg_subject_for_new_contact Nachricht von %1$s
 @linesystemmsg_failed_sending_to Nachricht senden an %1$s fehlgeschlagen.
 @linevideochat_invitation Videochat-Einladung
@@ -44,7 +44,7 @@ Mit Delta Chat haben Sie Milliarden potentieller ChatpartnerInnen: Verwenden Sie
 @lineconfiguration_failed_with_error Konfiguration fehlgeschlagen. Fehler: %1$s
 @linereply_noun Antwort
 @lineforwarded Weitergeleitet
-@linelocation Ort
+@linelocation Standort
 @linesticker Sticker
 @linedevicemsg_bad_time ⚠️ Ihr Gerät scheint ein falsches Datum oder eine falsche Uhrzeit (%1$s) zu verwenden.
 
@@ -53,14 +53,14 @@ Stellen Sie Ihre Uhr ⏰🔧 richtig ein, um sicherzustellen, dass Ihre Nachrich
 
 Dies kann zu Problemen führen, wenn Ihre Chat-PartnerInnen neuere Versionen verwenden - und Ihnen die neuesten Funktionen fehlen. 😳
 Bitte überprüfen Sie https://get.delta.chat oder Ihren App-Store auf Updates.
-@linedevicemsg_self_deleted Sie haben den Chat \"Gespeicherte Nachrichten\" gelöscht.
+@linedevicemsg_self_deleted Sie haben den Chat "Gespeicherte Nachrichten" gelöscht.
 
-ℹ️ Um die Funktion \"Gespeicherte Nachrichten\" erneut zu verwenden, erstellen Sie einfach einen Chat mit sich selbst.
+ℹ️ Um die Funktion "Gespeicherte Nachrichten" erneut zu verwenden, erstellen Sie einfach einen Chat mit sich selbst.
 @linedevicemsg_storage_exceeding ⚠️ Der Speicherplatz Ihres Anbieters ist bald erschöpft; bereits %1$s%% sind verbraucht.
 
 Sie können möglicherweise keine Nachrichten mehr empfangen, wenn der Speicherplatz zu 100%% verbraucht ist.
 
-👉 Bitte prüfen Sie, ob Sie alte Daten im Webinterface des Anbieters löschen können, und erwägen Sie, \"Einstellungen / Alte Nachrichten löschen\" zu aktivieren. Den aktuellen Speicherverbrauch können Sie jederzeit unter \"Einstellungen / Verbindung\" überprüfen.
+👉 Bitte prüfen Sie, ob Sie alte Daten im Webinterface des Anbieters löschen können, und erwägen Sie, "Einstellungen / Alte Nachrichten löschen" zu aktivieren. Den aktuellen Speicherverbrauch können Sie jederzeit unter "Einstellungen / Verbindung" überprüfen.
 @linen_bytes_message %1$s Nachricht
 @linedownload_max_available_until Download max. verfügbar bis %1$s
 @lineincoming_messages Eingehende Nachrichten
@@ -90,8 +90,8 @@ Warte auf die Antwort des Gerätes von %2$s...
 Wenn Sie jetzt eine Nachricht an eine verifizierte Gruppe senden, wird dort automatisch die alte durch die neue Adresse ersetzt.
 
 Es wird dringend empfohlen, Ihren alten E-Mail-Anbieter so einzurichten, dass er alle E-Mails an Ihre neue E-Mail-Adresse weiterleitet. Andernfalls könnten Sie Nachrichten von Kontakten verpassen, die Ihre neue E-Mail-Adresse noch nicht erhalten haben.
-@linegroup_name_changed_by_you Sie haben den Gruppennamen von \"%1$s\" zu \"%2$s\" geändert.
-@linegroup_name_changed_by_other Gruppenname geändert von \"%1$s\" zu \"%2$s\" von %3$s.
+@linegroup_name_changed_by_you Sie haben den Gruppennamen von "%1$s" zu "%2$s" geändert.
+@linegroup_name_changed_by_other Gruppenname geändert von "%1$s" zu "%2$s" von %3$s.
 @linegroup_image_changed_by_you Sie haben das Gruppenbild geändert.
 @linegroup_image_changed_by_other Gruppenbild geändert von %1$s.
 @lineadd_member_by_you Sie haben %1$s hinzugefügt.

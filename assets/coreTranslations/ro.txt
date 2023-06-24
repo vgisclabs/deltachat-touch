@@ -1,0 +1,49 @@
+@linechat_no_messages Nu există mesaje.
+@lineself Eu
+@linedraft Schiță
+@linevoice_message Mesaj vocal
+@lineimage Imagine
+@linegif GIF
+@linevideo Video
+@lineaudio Audio
+@linefile Fișier
+@linechat_archived_chats_title Chat-uri Arhivate
+@linelogin_error_cannot_login Nu se poate autentifica ca "%1$s". Vă rugăm să verificați dacă adresa de e-mail și parola sunt corecte.
+@linedevice_talk Mesajele Dispozitivului
+@linesaved_messages Mesaje salvate
+@linedevice_talk_explain Mesajele din acest chat sunt generate pe dispozitivul dumneavoastră pentru a vă informa cu privire la actualizările app-ului și la problemele apărute în timpul utilizării.
+@linedevice_talk_welcome_message Bine ați venit la Delta Chat! - Delta Chat arată și se simte ca și alte app-uri populare de mesagerie, dar nu implică control centralizat, urmărire sau vânzarea dumneavoastră, a prietenilor, colegilor sau a familiei către organizații mari.
+
+Tehnic, Delta Chat este o aplicație de e-mail cu o interfață de chat modernă. E-mail într-o rochie nouă, dacă vreți 👻
+
+Utilizați Delta Chat cu oricine din miliardele de oameni: folosiți doar adresa lor de e-mail. Destinatarii nu trebuie să instaleze Delta Chat, să viziteze site-uri web sau să se înregistreze nicăieri - totuși, desigur, dacă doresc, le puteți indica 👉 https://get.delta.chat.
+@linevideochat_invitation Invitație la chat video
+@linevideochat_invitation_body Sunteți invitat la un chat video, faceți clic %1$s pentru a vă alătura.
+@lineconfiguration_failed_with_error Configurarea a eșuat. Eroare: %1$s
+@linereply_noun Răspundeți
+@lineforwarded Redirecționat
+@linelocation Locație
+@linesticker Abțibild
+@lineincoming_messages Mesaje primite
+@lineoutgoing_messages Mesaje de ieșire
+@linestorage_on_domain Depozitarea pe %1$s
+@lineone_moment Un moment...
+@lineconnectivity_connected Conectat
+@lineconnectivity_connecting Conectare...
+@lineconnectivity_updating Actualizare...
+@linesending Trimitere…
+@linelast_msg_sent_successfully Ultimul mesaj a fost trimis cu succes.
+@lineerror_x Eroare: %1$s
+@linenot_supported_by_provider Nu este suportat de furnizorul dumneavoastră.
+@linemessages Mesaje
+@linebroadcast_list Listă de difuzare
+@linepart_of_total_used %1$s de %2$s folosit
+@lineconnectivity_not_connected Nu este conectat
+@lineaeap_addr_changed %1$s și-au schimbat adresa de la %2$s la %3$s
+@lineaeap_explanation V-ați schimbat adresa de e-mail de la %1$s la %2$s.
+
+Dacă trimiteți acum un mesaj către un grup verificat, contactele de acolo vor înlocui automat vechea adresă cu noua dumneavoastră adresă.
+
+Se recomandă să vă configurați vechiul furnizor de e-mail pentru a redirecționa toate e-mailurile către noua dumneavoastră adresă de e-mail. În caz contrar, s-ar putea să pierdeți mesaje ale contactelor care nu au primit încă noua dumneavoastră adresă.
+@linemultidevice_qr_subtitle Scanare pentru a configura un al doilea dispozitiv pentru %1$s
+@end

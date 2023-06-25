@@ -1494,14 +1494,14 @@ void DeltaHandler::setTempContextConfig(QString key, QString val)
 
 
 void DeltaHandler::prepareTempContextConfig() {
-    // If tempContext is set, either an existing account has been
-    // selected for changing the configuration or the user encountered
-    // an error while configuring a new account and is still in the
-    // mask to enter addr and password and such, and is presumably
-    // correcting these entries, so we will change the configuration
-    // of this context.
+    // If tempContext is already set, either an existing account has
+    // been selected for changing the configuration or the user
+    // encountered an error while configuring a new account and is still
+    // in the mask to enter addr and password and such, and is
+    // presumably correcting these entries, so we will change the
+    // configuration of this context.
     //
-    // (Note that tempContext is set to nullptr
+    // Note that tempContext is set to nullptr
     // - after a successful configuration by the slot progressEvent
     //   of this class
     // - when leaving the addEmailAccount page as this page will
@@ -1555,8 +1555,7 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
         }
         if (m_configuringNewAccount) {
             emit newUnconfiguredAccount(); 
-        }
-        else {
+        } else {
             emit updatedAccountConfig(dc_get_id(tempContext));
         }
 

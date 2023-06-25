@@ -31,6 +31,12 @@ import DeltaHandler 1.0
 Page {
     id: addAccountViaQrPage
 
+    // for the popup to be able to remove pages so only
+    // the AccountConfig.qml page is visible in case
+    // the configuration of the account failed (e.g., 
+    // due to wrong credentials)
+    property Page addAccPage
+
     signal setTempContextNull()
 
     Component.onDestruction: {
@@ -40,6 +46,9 @@ Page {
         // unset now.
         //
         // C++ side will take care of unnecessary calls.
+        //
+        // TODO: in AddOrConfigureEmailAccount, DeltaHandler.unrefTempContext()
+        // is called directly?
         setTempContextNull()
     }
 
@@ -115,8 +124,6 @@ Page {
 
         onClicked: {
             let qrstate = DeltaHandler.evaluateQrCode(Clipboard.data.text)
-
-            console.log("============ pasteButton in addAccountViaQrPage, clipboard is: ", Clipboard.data.text)
 
             switch (qrstate) {
                 case DeltaHandler.DT_QR_ACCOUNT:
@@ -202,6 +209,8 @@ Page {
 
         ProgressConfigAccount { // see file ProgressConfigAccount.qml
             title: i18n.tr('Configuring...')
+            pageToRemove: addAccPage
+            calledFromQrInviteCode: true
         }
     }
 

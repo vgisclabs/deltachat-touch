@@ -25,6 +25,9 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
+    property bool calledFromQrInviteCode: false
+    property Page pageToRemove
+
     ProgressBar {
         id: progBar
         minimumValue: 0
@@ -69,6 +72,9 @@ Dialog {
         color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)
+            if (calledFromQrInviteCode) {
+                layout.removePages(pageToRemove)
+            }
         }
         visible: false
     }

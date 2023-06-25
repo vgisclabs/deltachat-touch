@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-24 21:51+0000\n"
+"POT-Creation-Date: 2023-06-25 14:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,7 +68,7 @@ msgid "New Chat"
 msgstr ""
 
 #: ../qml/Main.qml:891 ../qml/pages/AddAccountAsSecondDevice.qml:143
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:139
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr ""
@@ -97,7 +97,7 @@ msgstr ""
 #: ../qml/delegates/delegSelfTextMsg.qml:146
 #: ../qml/delegates/delegSelfUnknown.qml:146
 #: ../qml/pages/AddAccountAsSecondDevice.qml:156
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:165
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:172
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
 #: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
@@ -162,7 +162,7 @@ msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:162
 #: ../qml/pages/ProgressBackupImport.qml:69
-#: ../qml/pages/ProgressConfigAccount.qml:68
+#: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressQrBackupImport.qml:94
 msgid "Back"
 msgstr ""
@@ -175,9 +175,9 @@ msgstr ""
 #: ../qml/pages/AddAccountAsSecondDevice.qml:144
 #: ../qml/pages/AddAccountAsSecondDevice.qml:168
 #: ../qml/pages/AddAccountAsSecondDevice.qml:203
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:140
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:177
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:212
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:184
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:221
 #: ../qml/pages/PickerBackupFile.qml:100
 #: ../qml/pages/ProgressQrBackupImport.qml:53 ../qml/pages/QrShowScan.qml:237
 #: ../qml/pages/QrShowScan.qml:338 ../qml/pages/QrShowScan.qml:488
@@ -215,13 +215,13 @@ msgid "Scan Invitation Code"
 msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:72
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:67
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:76
 #: ../qml/pages/QrShowScan.qml:111
 msgid "Scan QR Code"
 msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:105
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:100
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:109
 #: ../qml/pages/QrShowScan.qml:160
 msgid ""
 "Scanning QR codes directly is not supported yet. Please use another app (e."
@@ -230,7 +230,7 @@ msgid ""
 msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:118
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:113
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:122
 #: ../qml/pages/QrShowScan.qml:173
 msgid "Paste from Clipboard"
 msgstr ""
@@ -242,26 +242,26 @@ msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:157
 #: ../qml/pages/AddAccountAsSecondDevice.qml:169
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:166
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:178
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:173
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:185
 #: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
 #: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
 msgid "QR Code"
 msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:195
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:204
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:656
 #: ../qml/pages/QrShowScan.qml:480
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:126
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:133
 #: ../qml/pages/QrShowScan.qml:262
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:151
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:158
 #: ../qml/pages/QrShowScan.qml:402
 msgid "Log into \"%1\"?"
 msgstr ""

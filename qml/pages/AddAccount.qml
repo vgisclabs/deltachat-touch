@@ -95,7 +95,13 @@ Page {
             }
 
             onClicked: {
-                layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl(linkToPage))
+                if (linkToPage == "AddAccountViaQrInvitationCode.qml") {
+                    // pass this page so it can be used as parameter for layout.removePages() later on in
+                    // the process if needed, see ProgressConfigAccount (called pageToRemove there)
+                    layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl(linkToPage), { "addAccPage": addAccountPage })
+                } else {
+                    layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl(linkToPage))
+                }
             }
         }
     }

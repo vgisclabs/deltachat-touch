@@ -157,10 +157,15 @@ void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
 void AccountsModel::newAccount()
 {
     int tempCount = dc_array_get_cnt(m_accountsArray);
-    beginInsertRows(QModelIndex(), tempCount, tempCount);
+    // reset the model instead of inserting a row in case
+    // the core inserts the new account in between existing
+    // accounts
+    //beginInsertRows(QModelIndex(), tempCount, tempCount);
+    beginResetModel();
     dc_array_unref(m_accountsArray);
     m_accountsArray = dc_accounts_get_all(m_accountsManager);
-    endInsertRows();
+    //endInsertRows();
+    endResetModel();
     
 }
 
@@ -258,7 +263,10 @@ int AccountsModel::deleteAccount(int myindex)
 
     dc_context_unref(tempContext);
     
-    beginRemoveRows(QModelIndex(), myindex, myindex);
+    // use beginResetModel instead of beginRemoveRows because the account
+    // removal might fail
+    //beginRemoveRows(QModelIndex(), myindex, myindex);
+    beginResetModel();
 
     qDebug() << "AccountsModel::deleteAccount: Deleting account with ID " << accID << "...";
     int success = dc_accounts_remove_account(m_accountsManager, accID);
@@ -272,7 +280,8 @@ int AccountsModel::deleteAccount(int myindex)
         qDebug() << "AccountsModel::deleteAccount: ...Error: Deleting account did not work.";
     }
 
-    endRemoveRows();
+    //endRemoveRows();
+    endResetModel();
 
     return success;
 }

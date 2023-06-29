@@ -14,6 +14,6 @@
         }
     },
     "version": "0.9.0",
-    "maintainer": "Lothar Ketterer <ketterer_src@mailbox.org>",
+    "maintainer": "Lothar Ketterer <deltatouch@mailbox.org>",
     "framework" : "@CLICK_FRAMEWORK@"
 }

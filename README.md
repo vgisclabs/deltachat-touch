@@ -6,6 +6,10 @@ Messaging app for Ubuntu Touch, powered by deltachat-core.
 
 While the build instructions below also work for focal and the app is fully functional in the current state of focal, some internals of the click package currently refer to xenial (16.04) only. If you install it now, it may lead to problems later on when a dedicated focal version has been released to the Open Store. I will investigate this and post a solution, if necessary, so please keep an eye out on this.
 
+Update: Seems it's no problem to update from the xenial to the focal version of the app on a focal device. Will confirm after further testing.
+
+Update 2: This version of the README is in the xenial branch. The main branch is dedicated to focal, so please checkout main if you want to build for focal.
+
 ## Building
 
 ### General

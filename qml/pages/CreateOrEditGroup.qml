@@ -16,9 +16,9 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 import QtQuick.Layouts 1.3
-import Ubuntu.Components.Popups 1.3
+import Lomiri.Components.Popups 1.3
 //import Qt.labs.settings 1.0
 //import QtMultimedia 5.12
 //import QtQml.Models 2.12
@@ -127,7 +127,7 @@ Page {
         }
     }
 
-    UbuntuShape {
+    LomiriShape {
         id: chatPic
         width: units.gu(12)
         height: width
@@ -149,7 +149,7 @@ Page {
             visible: false
             source: ""
         }
-        sourceFillMode: UbuntuShape.PreserveAspectCrop
+        sourceFillMode: LomiriShape.PreserveAspectCrop
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -172,7 +172,7 @@ Page {
         color: theme.palette.normal.background
     }
 
-    UbuntuShape {
+    LomiriShape {
         id: editImageShape
         height: units.gu(4)
         width: height
@@ -293,7 +293,7 @@ Page {
                 title.text: model.displayname == '' ? i18n.tr('Unknown') : model.displayname
                 subtitle.text: model.address
 
-                UbuntuShape {
+                LomiriShape {
                     id: profPicShape
                     height: units.gu(5)
                     width: height
@@ -322,9 +322,9 @@ Page {
                     }
 
                     color: model.avatarColor
-                    sourceFillMode: UbuntuShape.PreserveAspectCrop
-                    aspect: UbuntuShape.Flat
-                } // end of UbuntuShape id: profPicShape
+                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                    aspect: LomiriShape.Flat
+                } // end of LomiriShape id: profPicShape
 
                 Image {
                     id: verifiedSymbol
@@ -363,7 +363,7 @@ Page {
                     // should be automatically be themed with something like
                     // theme.palette.normal.overlay, but this
                     // doesn't seem to work for Ambiance (and importing
-                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                    // Lomiri.Components.Themes 1.3 doesn't solve it). 
                     color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                     ListItemLayout {
                         id: layout1

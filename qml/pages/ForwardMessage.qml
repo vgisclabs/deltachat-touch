@@ -17,7 +17,7 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 //import Qt.labs.settings 1.0
@@ -94,7 +94,7 @@ Page {
                 title.font.bold: true
                 subtitle.text: model.msgPreview
 
-                UbuntuShape {
+                LomiriShape {
                     id: chatPicShape
                     SlotsLayout.position: SlotsLayout.Leading
                     height: units.gu(6)
@@ -118,7 +118,7 @@ Page {
 
                     color: model.avatarColor
 
-                    sourceFillMode: UbuntuShape.PreserveAspectCrop
+                    sourceFillMode: LomiriShape.PreserveAspectCrop
                 }
 
                 Rectangle {

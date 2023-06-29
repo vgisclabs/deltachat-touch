@@ -17,7 +17,7 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 //import Qt.labs.settings 1.0
@@ -25,7 +25,7 @@ import QtQuick.Layouts 1.3
 import DeltaHandler 1.0
 
 
-UbuntuShape {
+LomiriShape {
     id: msgbox
     height: units.gu(0.5) + msgLabel.contentHeight + msgDate.contentHeight + units.gu(0.5)
     width: units.gu(3) + (msgDate.contentWidth > msgLabel.contentWidth ? msgDate.contentWidth : msgLabel.contentWidth) + units.gu(3)
@@ -36,7 +36,7 @@ UbuntuShape {
         top: parent.top
     }
     backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.darkmode ? "#c0c0c0" : "#505050"
-    aspect: UbuntuShape.Flat
+    aspect: LomiriShape.Flat
     radius: "large"
 
     // idea taken from fluffychat

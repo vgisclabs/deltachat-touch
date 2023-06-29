@@ -18,7 +18,7 @@
 
 import QtQuick 2.12
 //import QtQuick 2.7
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
@@ -35,7 +35,7 @@ Item {
         top: parent.top
     }
 
-    UbuntuShape {
+    LomiriShape {
         id: avatarShape
         height: model.isSameSenderAsNextMsg ? 0 : width
         width: units.gu(5.5)
@@ -68,7 +68,7 @@ Item {
 
         color: model.avatarColor
 
-        sourceFillMode: UbuntuShape.PreserveAspectCrop
+        sourceFillMode: LomiriShape.PreserveAspectCrop
     }
 
     Item {
@@ -85,7 +85,7 @@ Item {
         }
         // no background for the msgbox in case of images
 
-        UbuntuShape {
+        LomiriShape {
             id: messageShape
 
             width: {
@@ -107,9 +107,9 @@ Item {
                 bottom: parent.bottom
             }
 
-            backgroundMode: UbuntuShape.SolidColor
+            backgroundMode: LomiriShape.SolidColor
             backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.otherMessageBackgroundColor
-            aspect: UbuntuShape.Flat
+            aspect: LomiriShape.Flat
 
             Rectangle {
                 id: squareCornerBL
@@ -196,7 +196,7 @@ Item {
                 visible: quoteLabel.visible
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: playShape
                 height: units.gu(4)
                 width: height
@@ -297,6 +297,6 @@ Item {
                 color: msgDate.color
                 
             }
-        } // end UbuntuShape id: messageShape
+        } // end LomiriShape id: messageShape
     } // end Item id: msgbox
 } // end Item

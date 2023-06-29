@@ -17,14 +17,14 @@
  */
 
 import QtQuick 2.7
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 
 import DeltaHandler 1.0
 
-UbuntuShape {
+LomiriShape {
     id: msgbox
     height: units.gu(1) + msgLabel.contentHeight + units.gu(0.5) + msgDate.contentHeight + units.gu(0.5)
     width: {
@@ -81,8 +81,8 @@ UbuntuShape {
             }
         }
     }
-    backgroundMode: UbuntuShape.SolidColor
-    aspect: UbuntuShape.Flat
+    backgroundMode: LomiriShape.SolidColor
+    aspect: LomiriShape.Flat
     radius: "medium"
 
     // idea taken from fluffychat
@@ -162,4 +162,4 @@ UbuntuShape {
                     break;
             }
     }
-} // end UbuntuShape id: msgbox
+} // end LomiriShape id: msgbox

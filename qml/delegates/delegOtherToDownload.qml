@@ -18,7 +18,7 @@
 
 import QtQuick 2.12
 //import QtQuick 2.7
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
@@ -54,7 +54,7 @@ Item {
         }
     }
 
-    UbuntuShape {
+    LomiriShape {
         id: avatarShape
         height: model.isSameSenderAsNextMsg ? 0 : width
         width: units.gu(5.5)
@@ -87,10 +87,10 @@ Item {
         
         color: model.avatarColor
 
-        sourceFillMode: UbuntuShape.PreserveAspectCrop
+        sourceFillMode: LomiriShape.PreserveAspectCrop
     }
 
-    UbuntuShape {
+    LomiriShape {
         id: msgbox
         width: {
             let a = msgLabel.contentWidth
@@ -105,8 +105,8 @@ Item {
             top: parent.top
         }
         backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.otherMessageBackgroundColor
-        backgroundMode: UbuntuShape.SolidColor
-        aspect: UbuntuShape.Flat
+        backgroundMode: LomiriShape.SolidColor
+        aspect: LomiriShape.Flat
         radius: "medium"
 
         // TODO idea taken from fluffychat
@@ -167,5 +167,5 @@ Item {
             fontSize: "x-small"
             text: model.date
         }
-    } // end UbuntuShape id: msgbox
+    } // end LomiriShape id: msgbox
 }

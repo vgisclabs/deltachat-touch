@@ -18,7 +18,7 @@
 
 import QtQuick 2.12
 //import QtQuick 2.7
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
@@ -42,7 +42,7 @@ Item {
     
     property bool topLeftRectVisible: msgImage.paintedWidth > dateEtcShape.width
 
-    UbuntuShape {
+    LomiriShape {
         id: dateEtcShape
         height: units.gu(0.5) + (forwardLabel.visible ? forwardLabel.contentHeight + units.gu(0.5) : 0) + (quoteLabel.visible ? quoteLabel.contentHeight + quoteUser.contentHeight + units.gu(1) : 0) + (msgLabel.visible ? msgLabel.contentHeight + units.gu(1) : 0) + msgDate.height + units.gu(0.5)
         width: {
@@ -82,8 +82,8 @@ Item {
                 }
             }
         }
-        backgroundMode: UbuntuShape.SolidColor
-        aspect: UbuntuShape.Flat
+        backgroundMode: LomiriShape.SolidColor
+        aspect: LomiriShape.Flat
 
         // If it's only the image, the radius has to be smaller as the
         // shape is only framing the small line with date and padlock
@@ -270,7 +270,7 @@ Item {
             name: "lock" //model.hasPadlock ? "lock" : "lock-broken"
             color: msgLabel.color
         }
-    } // end UbuntuShape id: dateEtcShape
+    } // end LomiriShape id: dateEtcShape
 
     AnimatedImage {
         id: msgImage

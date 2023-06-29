@@ -3371,15 +3371,8 @@ void DeltaHandler::createNotification(QString summary, QString body, QString tag
     QString path;
     QDBusMessage message;
 
-    // TODO: don't rely on QSysInfo - create separate branch
-    // in git for focal (20.04)
-    if (QSysInfo::productVersion() == "16.04") {
-        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "Post");
-    } else {
-        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "Post");
-    }
+    path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
+    message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "Post");
 
     // replace_tag doesn't work, maybe it's positioned wrongly?
     QString mynotif("{\"message\": \"foobar\", \"notification\":{\"tag\": \"" + tag + "\", \"card\": {\"summary\": \"" + summary + "\", \"body\": \"" + body + "\", \"popup\": true, \"persist\": true, \"icon\": \"" + icon + "\"}, \"sound\": true, \"vibrate\": {\"pattern\": [200], \"duration\": 200, \"repeat\": 1 }}}");

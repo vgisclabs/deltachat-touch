@@ -17,13 +17,13 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.3
+import Lomiri.Components 1.3
+import Lomiri.Components.Popups 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import Qt.labs.platform 1.1
-import Ubuntu.Connectivity 1.0
+import Lomiri.Connectivity 1.0
 
 import DeltaHandler 1.0
 import "pages"
@@ -298,7 +298,7 @@ MainView {
                     enabled: !root.chatOpenAlreadyClicked
                 }
             
-                UbuntuShape {
+                LomiriShape {
                     id: profilePicShape
                     height: units.gu(5)
                     width: height
@@ -311,8 +311,8 @@ MainView {
                     source: Image {
                         source: headerRect.currentProfilePic
                     }
-                    sourceFillMode: UbuntuShape.PreserveAspectCrop
-                } // end of UbuntuShape id:profilePicShape
+                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                } // end of LomiriShape id:profilePicShape
             
                 Rectangle {
                     id: headerRectMain
@@ -648,7 +648,7 @@ MainView {
                         subtitle.text: model.msgPreview
                         //summary.text: "that's the summary"
 
-                        UbuntuShape {
+                        LomiriShape {
                             id: chatPicShape
                             SlotsLayout.position: SlotsLayout.Leading
                             height: units.gu(6)
@@ -672,7 +672,7 @@ MainView {
 
                             color: model.avatarColor
 
-                            sourceFillMode: UbuntuShape.PreserveAspectCrop
+                            sourceFillMode: LomiriShape.PreserveAspectCrop
                         }
 
                         Rectangle {
@@ -749,7 +749,7 @@ MainView {
                                 visible: model.isContactRequest
                             } // Rectangle id: contactRequestRect
 
-                            UbuntuShape {
+                            LomiriShape {
                                 id: newMsgCountShape
                                 height: units.gu(3)
                                 width: height
@@ -862,7 +862,7 @@ MainView {
     }
     
     Component.onCompleted: {
-        darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
+        darkmode = (theme.name == "Lomiri.Components.Themes.SuruDark")
         if (!DeltaHandler.hasConfiguredAccount) {
             layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
         }
@@ -892,7 +892,7 @@ MainView {
         }
     }
 
-    UbuntuShape {
+    LomiriShape {
         id: errorShape
         width: parent.width - units.gu(2)
         height: errorLabel.contentHeight + units.gu(2)

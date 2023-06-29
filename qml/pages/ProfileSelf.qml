@@ -17,9 +17,9 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 import QtQuick.Layouts 1.3
-import Ubuntu.Components.Popups 1.3
+import Lomiri.Components.Popups 1.3
 import Qt.labs.settings 1.0
 import QtMultimedia 5.12
 import QtQml.Models 2.12
@@ -97,7 +97,7 @@ Page {
     //            fontSize: "large"
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: profilePic
                 width: units.gu(15)
                 height: width
@@ -112,7 +112,7 @@ Page {
                     id: profilePicImage
                     source: StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
                 }
-                sourceFillMode: UbuntuShape.PreserveAspectCrop
+                sourceFillMode: LomiriShape.PreserveAspectCrop
             }
 
 
@@ -130,7 +130,7 @@ Page {
                 color: theme.palette.normal.background
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: editImageShape
                 height: units.gu(4)
                 width: height
@@ -170,7 +170,7 @@ Page {
                             // should be automatically be themed with something like
                             // theme.palette.normal.overlay, but this
                             // doesn't seem to work for Ambiance (and importing
-                            // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                            // Lomiri.Components.Themes 1.3 doesn't solve it). 
                             color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                             ListItemLayout {
                                 id: layout1

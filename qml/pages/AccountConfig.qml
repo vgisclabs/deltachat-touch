@@ -17,8 +17,8 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.3 // for the popover component
+import Lomiri.Components 1.3
+import Lomiri.Components.Popups 1.3 // for the popover component
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
@@ -133,7 +133,7 @@ Page {
                 title.text: model.username == '' ? '[' + i18n.tr('no username set') + ']' : model.username
                 subtitle.text: model.address
 
-                UbuntuShape {
+                LomiriShape {
                     id: profPicShape
                     height: units.gu(5)
                     width: height
@@ -143,9 +143,9 @@ Page {
                         anchors.fill: parent
                         source: model.profilePic == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, model.profilePic)
                     }
-                    sourceFillMode: UbuntuShape.PreserveAspectCrop
-                    aspect: UbuntuShape.Flat
-                } // end of UbuntuShape id:profilePicShape
+                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                    aspect: LomiriShape.Flat
+                } // end of LomiriShape id:profilePicShape
 
                 Rectangle {
                     id: configStatusRect

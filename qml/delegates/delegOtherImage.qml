@@ -17,7 +17,7 @@
 
 import QtQuick 2.12
 //import QtQuick 2.7
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
@@ -35,7 +35,7 @@ Item {
 
     property bool topRightRectVisible: msgImage.paintedWidth > dateEtcShape.width
 
-    UbuntuShape {
+    LomiriShape {
         id: avatarShape
         height: model.isSameSenderAsNextMsg ? 0 : width
         width: units.gu(5.5)
@@ -68,7 +68,7 @@ Item {
 
         color: model.avatarColor
 
-        sourceFillMode: UbuntuShape.PreserveAspectCrop
+        sourceFillMode: LomiriShape.PreserveAspectCrop
     }
 
     Item {
@@ -82,7 +82,7 @@ Item {
         }
         // no background for the msgbox in case of images
 
-        UbuntuShape {
+        LomiriShape {
             id: dateEtcShape
             width: {
                 let a = msgLabel.contentWidth
@@ -102,9 +102,9 @@ Item {
                 bottom: parent.bottom
             }
 
-            backgroundMode: UbuntuShape.SolidColor
+            backgroundMode: LomiriShape.SolidColor
             backgroundColor: model.isSearchResult ? root.searchResultMessageColor : root.otherMessageBackgroundColor
-            aspect: UbuntuShape.Flat
+            aspect: LomiriShape.Flat
 
             // If it's only the image, the radius has to be smaller as
             // the shape is only framing the small line with sender,
@@ -278,7 +278,7 @@ Item {
                 color: msgDate.color
                 
             }
-        } // end UbuntuShape id: dateEtcShape
+        } // end LomiriShape id: dateEtcShape
 
         Image {
             id: msgImage

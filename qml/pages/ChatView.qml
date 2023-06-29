@@ -17,8 +17,8 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.3
+import Lomiri.Components 1.3
+import Lomiri.Components.Popups 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
@@ -591,7 +591,7 @@ Page {
 
     }
 
-    UbuntuShape {
+    LomiriShape {
         id: toBottomButton
         anchors {
             right: view.right
@@ -627,7 +627,7 @@ Page {
                     view.positionViewAtBeginning()
                 }
             }
-    } // end UbuntuShape id: toBottomButton
+    } // end LomiriShape id: toBottomButton
 
     Rectangle {
         id: cannotSendBox
@@ -726,7 +726,7 @@ Page {
                 fontSize: "x-small"
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: cancelQuoteShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -800,7 +800,7 @@ Page {
                 visible: attachFilePreviewMode
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: attachAudioShape
                 height: cancelAttachmentShape.height
                 width: height
@@ -845,7 +845,7 @@ Page {
                 visible: attachFilePreviewMode || attachAudioPreviewMode
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: cancelAttachmentShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -884,7 +884,7 @@ Page {
 
 
 
-        UbuntuShape{
+        LomiriShape {
             id: attachIconShape
             width: FontUtils.sizeToPixels("x-large") * 1.2
             height: width
@@ -916,7 +916,7 @@ Page {
                     }
                 }
             }
-        } // end UbuntuShape id: attachIconShape
+        } // end LomiriShape id: attachIconShape
         
         TextArea {
             id: messageEnterField
@@ -933,7 +933,7 @@ Page {
             visible: !attachmentMode && !audioRecordMode
         }
 
-        UbuntuShape {
+        LomiriShape {
             id: sendIconShape
             width: FontUtils.sizeToPixels("x-large") * 1.2
             height: width
@@ -984,7 +984,7 @@ Page {
 
                         // TODO: is the comment below still correct?
                         // clear() does not work as we are using the TextArea
-                        // from Ubuntu.Components, not the one from
+                        // from Lomiri.Components, not the one from
                         // QtQuickControls
                         //messageEnterField.clear()
                         messageEnterField.text = ""
@@ -992,7 +992,7 @@ Page {
                     }
                 }
             }
-        } // end UbuntuShape id: sendIconShape
+        } // end LomiriShape id: sendIconShape
 
 
         Rectangle {
@@ -1010,7 +1010,7 @@ Page {
 
             visible: attachmentMode && !audioRecordMode
 
-            UbuntuShape{
+            LomiriShape{
                 id: sendImageIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -1039,9 +1039,9 @@ Page {
                         enabled: true
                     }
                 }
-            } // end UbuntuShape id: sendImageIconShape
+            } // end LomiriShape id: sendImageIconShape
 
-            UbuntuShape{
+            LomiriShape{
                 id: sendAudioIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -1071,9 +1071,9 @@ Page {
                         enabled: true
                     }
                 }
-            } // end UbuntuShape id: sendAudioIconShape
+            } // end LomiriShape id: sendAudioIconShape
 
-            UbuntuShape {
+            LomiriShape {
                 id: sendFileIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -1103,9 +1103,9 @@ Page {
                         enabled: true
                     }
                 }
-            } // end UbuntuShape id: sendFileIconShape
+            } // end LomiriShape id: sendFileIconShape
 
-//            UbuntuShape {
+//            LomiriShape {
 //                id: voiceMessageIconShape
 //                width: FontUtils.sizeToPixels("x-large") * 1.2
 //                height: width
@@ -1137,7 +1137,7 @@ Page {
 //                        enabled: true
 //                    }
 //                }
-//            } // end UbuntuShape id: voiceMessageIconShape
+//            } // end LomiriShape id: voiceMessageIconShape
         } // end Rectangle id: filetypeToSendCage
         
 
@@ -1145,7 +1145,7 @@ Page {
        ============== Voice Message Recording ===============
        ====================================================== */
 
-        UbuntuShape {
+        LomiriShape {
             // separate close icon at (almost) the same position as
             // the regular one, just to reduce the complexity of the
             // statements for "enabled" and "onClicked"
@@ -1188,9 +1188,9 @@ Page {
                     enabled: audioRecordMode && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
                 }
             }
-        } // end UbuntuShape id: sendRecIconShape
+        } // end LomiriShape id: sendRecIconShape
 
-        UbuntuShape {
+        LomiriShape {
             // separate send icon at (almost) the same position as
             // the regular one, just to reduce the complexity of the
             // statements for "enabled" and "onClicked"
@@ -1227,9 +1227,9 @@ Page {
                     enabled: audioRecordMode && audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
                 }
             }
-        } // end UbuntuShape id: sendRecIconShape
+        } // end LomiriShape id: sendRecIconShape
 
-        UbuntuShape {
+        LomiriShape {
             id: floatingInfoRecordingShape
             height: units.gu(10)
             width: height
@@ -1324,7 +1324,7 @@ Page {
                 }
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: deleteRecIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -1357,9 +1357,9 @@ Page {
                         enabled: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
                     }
                 }
-            } // end UbuntuShape id: deleteRecIconShape
+            } // end LomiriShape id: deleteRecIconShape
 
-            UbuntuShape {
+            LomiriShape {
                 id: startRecIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -1391,9 +1391,9 @@ Page {
                         enabled: !audioRecordBox.hasRecord && !audioRecordBox.isRecording
                     }
                 }
-            } // end UbuntuShape id: startRecIconShape
+            } // end LomiriShape id: startRecIconShape
 
-            UbuntuShape {
+            LomiriShape {
                 id: stopRecIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -1430,9 +1430,9 @@ Page {
                         enabled: (audioRecordBox.isRecording || audioRecordBox.recordIsPlaying)
                     }
                 }
-            } // end UbuntuShape id: startRecIconShape
+            } // end LomiriShape id: startRecIconShape
 
-            UbuntuShape {
+            LomiriShape {
                 id: playRecIconShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
@@ -1464,8 +1464,8 @@ Page {
                         enabled: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
                     }
                 }
-            } // end UbuntuShape id: playRecIconShape
-        } // end UbuntuShape id: audioRecordBox
+            } // end LomiriShape id: playRecIconShape
+        } // end LomiriShape id: audioRecordBox
 
     /* ============ End Voice Message Recording ============= */
 
@@ -1566,7 +1566,7 @@ Page {
         return time_str
     }
 
-    UbuntuShape {
+    LomiriShape {
         id: audioPlayerShape
         height: units.gu(5)
         width: units.gu(1) + audioPlayIcon.width + units.gu(1) + audioStopIcon.width + units.gu(1) + durationLabel.contentWidth + units.gu(1)
@@ -1631,7 +1631,7 @@ Page {
             text: millisecsToString(messageAudio.position) + " / " + millisecsToString(messageAudio.duration)
             color: root.darkmode ? "black" : "white"
         }
-    } // end UbuntuShape id: audioPlayerShape
+    } // end LomiriShape id: audioPlayerShape
 
     Component {
         id: popoverComponentConfirmLeavingRecording
@@ -1649,7 +1649,7 @@ Page {
                     // should be automatically be themed with something like
                     // theme.palette.normal.overlay, but this
                     // doesn't seem to work for Ambiance (and importing
-                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                    // Lomiri.Components.Themes 1.3 doesn't solve it). 
                     color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                     ListItemLayout {
                         id: layout31
@@ -1682,7 +1682,7 @@ Page {
                     // should be automatically be themed with something like
                     // theme.palette.normal.overlay, but this
                     // doesn't seem to work for Ambiance (and importing
-                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                    // Lomiri.Components.Themes 1.3 doesn't solve it). 
                     color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                     ListItemLayout {
                         id: layout1

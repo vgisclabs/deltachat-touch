@@ -15,5 +15,5 @@
     },
     "version": "0.9.0",
     "maintainer": "Lothar Ketterer <deltatouch@mailbox.org>",
-    "framework" : "@CLICK_FRAMEWORK@"
+    "framework" : "ubuntu-sdk-20.04"
 }

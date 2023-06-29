@@ -17,10 +17,10 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.3
+import Lomiri.Components 1.3
+import Lomiri.Components.Popups 1.3
 import QtQuick.Layouts 1.3
-//import Ubuntu.Components.Popups 1.3
+//import Lomiri.Components.Popups 1.3
 import Qt.labs.settings 1.0
 import Qt.labs.platform 1.1
 //import QtMultimedia 5.12
@@ -448,7 +448,7 @@ Page {
                 // should be automatically be themed with something like
                 // theme.palette.normal.overlay, but this
                 // doesn't seem to work for Ambiance (and importing
-                // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                // Lomiri.Components.Themes 1.3 doesn't solve it). 
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                 ListItemLayout {
                     id: layout1

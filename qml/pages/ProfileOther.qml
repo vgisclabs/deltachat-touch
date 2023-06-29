@@ -17,9 +17,9 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 import QtQuick.Layouts 1.3
-//import Ubuntu.Components.Popups 1.3
+//import Lomiri.Components.Popups 1.3
 //import Qt.labs.settings 1.0
 //import QtMultimedia 5.12
 //import QtQml.Models 2.12
@@ -58,7 +58,7 @@ Page {
             id: flickContent
             width: parent.width
 
-            UbuntuShape {
+            LomiriShape {
                 id: profilePic
                 width: units.gu(15)
                 height: width
@@ -98,8 +98,8 @@ Page {
 
                 color: DeltaHandler.getOtherColor(contactID)
 
-                sourceFillMode: UbuntuShape.PreserveAspectCrop
-            } // end UbuntuShape id: profilePic
+                sourceFillMode: LomiriShape.PreserveAspectCrop
+            } // end LomiriShape id: profilePic
 
             Label {
                 id: usernameLabel
@@ -114,7 +114,7 @@ Page {
                 visible: !editMode
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: editButtonShape
                 height: units.gu(4)
                 width: height
@@ -170,7 +170,7 @@ Page {
                 }
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: okButtonShape
                 height: units.gu(4)
                 width: height
@@ -201,7 +201,7 @@ Page {
                 visible: editMode
             }
 
-            UbuntuShape {
+            LomiriShape {
                 id: cancelButtonShape
                 height: units.gu(4)
                 width: height

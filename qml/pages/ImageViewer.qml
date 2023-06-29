@@ -17,9 +17,9 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
+import Lomiri.Components 1.3
 import QtQuick.Layouts 1.3
-//import Ubuntu.Components.Popups 1.3
+//import Lomiri.Components.Popups 1.3
 //import Qt.labs.settings 1.0
 //import QtMultimedia 5.12
 //import QtQml.Models 2.12
@@ -41,7 +41,7 @@ Page {
                     layout.addPageToCurrentColumn(imageViewer, Qt.resolvedUrl("PickerImageToExport.qml"), {"url": imageViewerImage.source})
                 }
                 // for some reason, ContentHub doesn't work if the image viewer is
-                // called from ProfileOther.qml. Error message is:
+                // called from ProfileOther.qml. Error message in xenial is:
                 // file:///usr/lib/arm-linux-gnueabihf/qt5/qml/Ubuntu/Components/Popups/1.3/Dialog.qml:239:13:
                 // QML Column: Cannot specify top, bottom, verticalCenter, fill
                 // or centerIn anchors for items inside Column. Column will not

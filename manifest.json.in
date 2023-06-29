@@ -13,7 +13,7 @@
             "push-helper": "push.json"
         }
     },
-    "version": "0.8.3",
+    "version": "0.9.0",
     "maintainer": "Lothar Ketterer <ketterer_src@mailbox.org>",
     "framework" : "@CLICK_FRAMEWORK@"
 }

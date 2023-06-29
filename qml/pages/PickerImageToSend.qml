@@ -79,8 +79,8 @@ Page {
             if (imageToSendPage.activeTransfer.state === ContentTransfer.Charged) {
                 if (imageToSendPage.activeTransfer.items.length > 0) {
                     imageToSendPage.source = imageToSendPage.activeTransfer.items[0].url;
-                    console.log('Trying to send image: ', imageToSendPage.source)
-                    DeltaHandler.sendAttachment(imageToSendPage.source, DeltaHandler.ImageType)
+                    console.log('Setting image attachment: ', imageToSendPage.source)
+                    DeltaHandler.chatmodel.setAttachment(imageToSendPage.source, DeltaHandler.ImageType)
                 }
                 layout.removePages(imageToSendPage)
             }

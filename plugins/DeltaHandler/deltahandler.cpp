@@ -602,68 +602,6 @@ ContactsModel* DeltaHandler::contactsmodel()
 }
 
 
-void DeltaHandler::sendAttachment(QString filepath, MsgViewType attachType)
-{
-    // the url handed over by the ContentHub starts with
-    // "file:///home....", so we have to remove the first 7
-    // characters
-    filepath.remove(0, 7);
- 
-    dc_msg_t* msg {nullptr};
-
-    switch (attachType) {
-        case MsgViewType::AudioType:
-            msg = dc_msg_new(currentContext, DC_MSG_AUDIO);
-            break;
-
-        case MsgViewType::FileType:
-            msg = dc_msg_new(currentContext, DC_MSG_FILE);
-            break;
-        
-        case MsgViewType::GifType:
-            msg = dc_msg_new(currentContext, DC_MSG_GIF);
-            break;
-        
-        case MsgViewType::ImageType:
-            msg = dc_msg_new(currentContext, DC_MSG_IMAGE);
-            break;
-        
-        case MsgViewType::StickerType:
-            msg = dc_msg_new(currentContext, DC_MSG_STICKER);
-            break;
-        
-        case MsgViewType::TextType:
-            msg = dc_msg_new(currentContext, DC_MSG_TEXT);
-            break;
-
-        case MsgViewType::VideoType:
-            msg = dc_msg_new(currentContext, DC_MSG_VIDEO);
-            break;
-        
-        case MsgViewType::VideochatInvitationType:
-            msg = dc_msg_new(currentContext, DC_MSG_VIDEOCHAT_INVITATION);
-            break;
-        
-        case MsgViewType::VoiceType:
-            msg = dc_msg_new(currentContext, DC_MSG_VOICE);
-            break;
-
-        case MsgViewType::WebXdcType:
-            msg = dc_msg_new(currentContext, DC_MSG_WEBXDC);
-            break;
-
-        default:
-            msg = dc_msg_new(currentContext, DC_MSG_FILE);
-            break;
-    }
-
-    dc_msg_set_file(msg, filepath.toUtf8().constData(), NULL);
-    dc_send_msg(currentContext, currentChatID, msg);
-     
-    dc_msg_unref(msg);
-}
-
-
 void DeltaHandler::setChatIDMomentaryIndex(int myindex)
 {
     m_chatIDMomentaryIndex = dc_chatlist_get_chat_id(currentChatlist, myindex);

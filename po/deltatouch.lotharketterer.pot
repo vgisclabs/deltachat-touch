@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-25 14:37+0000\n"
+"POT-Creation-Date: 2023-06-29 18:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Type e-mail address above"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1127
+#: ../plugins/DeltaHandler/deltahandler.cpp:1065
 msgid "New message"
 msgstr ""
 
@@ -46,8 +46,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:199
-#: ../qml/pages/ChatView.qml:244 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:232
+#: ../qml/pages/ChatView.qml:277 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:162
+#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:195
 #: ../qml/pages/ProgressBackupImport.qml:69
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressQrBackupImport.qml:94
@@ -557,7 +557,7 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:182
+#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:215
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr ""
@@ -598,39 +598,39 @@ msgstr ""
 msgid "Mute forever"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:146
+#: ../qml/pages/ChatView.qml:179
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:153 ../qml/pages/ChatView.qml:173
+#: ../qml/pages/ChatView.qml:186 ../qml/pages/ChatView.qml:206
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:623
+#: ../qml/pages/ChatView.qml:656
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:625
+#: ../qml/pages/ChatView.qml:658
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1342
+#: ../qml/pages/ChatView.qml:1496
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1358 ../qml/pages/ChatView.qml:1535
+#: ../qml/pages/ChatView.qml:1512 ../qml/pages/ChatView.qml:1689
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1373
+#: ../qml/pages/ChatView.qml:1527
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1503
+#: ../qml/pages/ChatView.qml:1657
 msgid "Click to leave without sending"
 msgstr ""
 

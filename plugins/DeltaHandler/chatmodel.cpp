@@ -705,9 +705,12 @@ void ChatModel::acceptChat() {
 
 }
 
-
-// TODO: remove msgID as parameter (was used in a previous implementation
-// of this method)
+// Handles both DC_EVENT_INCOMING_MSG and DC_EVENT_MSGS_CHANGED. A
+// separation might not make much sense because if a self message is
+// sent from another device, DC_EVENT_MSGS_CHANGED is emitted. So in the
+// case of both events, the vector containing the message IDs might have
+// to be updated. The dataChanged part could maybe be omitted for
+// incoming messages, but it shouldn't be too costly.
 void ChatModel::newMessage(int msgID)
 {
     // invalidate the cached data_tempMsg
@@ -1167,12 +1170,16 @@ QString ChatModel::getDraft()
 void ChatModel::setDraft(QString draftText)
 {
     if (currentMessageDraft) {
-        if ("" == draftText && !draftHasQuote()) {
+        if ("" == draftText && !draftHasQuote() && !draftHasAttachment()) {
             dc_set_draft(currentMsgContext, chatID, NULL);
+            dc_msg_unref(currentMessageDraft);
+            currentMessageDraft = nullptr;
+
         } else {
             dc_msg_set_text(currentMessageDraft, draftText.toUtf8().constData());
             dc_set_draft(currentMsgContext, chatID, currentMessageDraft);
         }
+
     // no draft exists, and the message enter field is empty,
     // so nothing to do
     } else if ("" == draftText) { 
@@ -1222,11 +1229,255 @@ void ChatModel::unsetQuote()
         // is clicked or when the page is left and the draft
         // saved. Also no need to overwrite the draft in the database.
         qDebug() << "ChatModel::unsetQuote: There is no quoted message, unsetting the current draft to delete the quoted text";
-        if (currentMessageDraft) {
+        if (currentMessageDraft && !draftHasAttachment()) {
             dc_msg_unref(currentMessageDraft);
             currentMessageDraft = nullptr;
         }
         emit draftHasQuoteChanged();
+    }
+}
+
+
+void ChatModel::setAttachment(QString filepath, int attachType)
+{
+    // the url handed over by the ContentHub starts with
+    // "file:///home....", so we have to remove the first 7
+    // characters
+    filepath.remove(0, 7);
+
+    dc_msg_t* tempQuote {nullptr};
+
+    if (currentMessageDraft) {
+        // delete the current message draft as it may have the 
+        // wrong message type (TODO: can the type of an existing
+        // message be changed? Then we could avoid this)
+        //
+        // Save the quote if it exists; will be re-added below
+        tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
+
+        // Then delete the old currentMessageDraft
+        dc_msg_unref(currentMessageDraft);
+        currentMessageDraft = nullptr;
+
+    } 
+
+    // Get a new draft message based on the passed attachment type. This
+    // should be one of DeltaHandler::msgViewType; it's int in the method
+    // signature because the compiler won't take it otherwise (seems to
+    // only work in the class where the enum is declared)
+    switch (attachType) {
+        case DeltaHandler::MsgViewType::AudioType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_AUDIO);
+            break;
+
+        case DeltaHandler::MsgViewType::FileType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_FILE);
+            break;
+        
+        case DeltaHandler::MsgViewType::GifType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_GIF);
+            break;
+        
+        case DeltaHandler::MsgViewType::ImageType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_IMAGE);
+            break;
+        
+        case DeltaHandler::MsgViewType::StickerType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_STICKER);
+            break;
+        
+        case DeltaHandler::MsgViewType::TextType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
+            break;
+
+        case DeltaHandler::MsgViewType::VideoType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VIDEO);
+            break;
+        
+        case DeltaHandler::MsgViewType::VideochatInvitationType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VIDEOCHAT_INVITATION);
+            break;
+        
+        case DeltaHandler::MsgViewType::VoiceType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VOICE);
+            break;
+
+        case DeltaHandler::MsgViewType::WebXdcType:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_WEBXDC);
+            break;
+
+        default:
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_FILE);
+            break;
+    } 
+
+    if (tempQuote) {
+        dc_msg_set_quote(currentMessageDraft, tempQuote);
+        dc_msg_unref(tempQuote);
+    } 
+
+    dc_msg_set_file(currentMessageDraft, filepath.toUtf8().constData(), NULL);
+
+    bool addCacheLocation;
+
+    QString originalPath = filepath;
+
+    if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))) {
+        filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+        addCacheLocation = true;
+    } else if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation))) {
+        filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length() + 1);
+        addCacheLocation = false;
+    }
+
+    // create a string with the base filename, in case ChatView wants to show
+    // it in the preview area
+    QString filename = filepath;
+
+    if (filename.lastIndexOf("/") != -1) {
+        filename = filename.remove(0, filename.lastIndexOf("/") + 1);
+    }
+
+    // tell ChatView that an attachment has been added
+    switch (attachType) {
+
+        case DeltaHandler::MsgViewType::AudioType:
+            if (!addCacheLocation) {
+                filepath = copyToCache(originalPath);
+            }
+            emit previewAudioAttachment(filepath, filename);
+            break;
+
+        case DeltaHandler::MsgViewType::FileType:
+            emit previewFileAttachment(filename);
+            break;
+        
+        case DeltaHandler::MsgViewType::GifType:
+        
+        case DeltaHandler::MsgViewType::ImageType:
+        
+        case DeltaHandler::MsgViewType::StickerType:
+            emit previewImageAttachment(filepath, addCacheLocation);
+            break;
+        
+     //   case DeltaHandler::MsgViewType::TextType:
+     //       break;
+
+     //   case DeltaHandler::MsgViewType::VideoType:
+     //       break;
+     //   
+     //   case DeltaHandler::MsgViewType::VideochatInvitationType:
+     //       break;
+     //   
+     //   case DeltaHandler::MsgViewType::VoiceType:
+     //       break;
+
+     //   case DeltaHandler::MsgViewType::WebXdcType:
+     //       break;
+
+        default:
+            qDebug() << "DeltaHandler::setAttachment() reached default case in switch";
+            break;
+    }
+}
+
+
+void ChatModel::emitDraftHasAttachmentSignals()
+{
+    if (draftHasAttachment()) {
+        // get the attachment path
+        char* tempText = dc_msg_get_file(currentMessageDraft);
+        QString filepath = tempText; 
+        dc_str_unref(tempText);
+
+        // create a string with the base filename, in case ChatView wants to show
+        // it in the preview area
+        QString filename = filepath;
+
+        if (filename.lastIndexOf("/") != -1) {
+            filename = filename.remove(0, filename.lastIndexOf("/") + 1);
+        }
+       
+        // Prepare filepath for the signal to ChatView by removing the CacheLocation.
+        // Filepath could either point to .cache or to .config, we
+        // have to check and a) remove the correct string and b) tell
+        // the receiver what to add back (CacheLocation if addCacheLocation == true, AppConfigLocation
+        // otherwise)
+        bool addCacheLocation;
+        QString originalPath = filepath;
+
+        if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))) {
+            filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+            addCacheLocation = true;
+        } else if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation))) {
+            filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length() + 1);
+            addCacheLocation = false;
+        }
+
+        int tempMessageType = dc_msg_get_viewtype(currentMessageDraft);
+        switch (tempMessageType) {
+
+            case DC_MSG_AUDIO:
+                if (!addCacheLocation) {
+                    filepath = copyToCache(originalPath);
+                }
+                emit previewAudioAttachment(filepath, filename);
+                break;
+
+            case DC_MSG_FILE:
+                emit previewFileAttachment(filename);
+                break;
+            
+            case DC_MSG_GIF:
+            case DC_MSG_IMAGE:
+            case DC_MSG_STICKER:
+                emit previewImageAttachment(filepath, addCacheLocation);
+                break;
+            
+         //   case DeltaHandler::MsgViewType::TextType:
+         //       break;
+
+         //   case DeltaHandler::MsgViewType::VideoType:
+         //       break;
+         //   
+         //   case DeltaHandler::MsgViewType::VideochatInvitationType:
+         //       break;
+         //   
+         //   case DeltaHandler::MsgViewType::VoiceType:
+         //       break;
+
+         //   case DeltaHandler::MsgViewType::WebXdcType:
+         //       break;
+
+            default:
+                qDebug() << "DeltaHandler::emitDraftHasAttachmentSignals() reached default case in switch";
+                break;
+        }
+    }
+}
+
+
+void ChatModel::unsetAttachment()
+{
+    if (currentMessageDraft) {
+        // If there's no quote, the draft can be deleted. Any text
+        // in the draft will be set again when the ChatView is left.
+        if (!draftHasQuote()) {
+            dc_msg_unref(currentMessageDraft);
+            currentMessageDraft = nullptr;
+        } else {
+            dc_msg_t* tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
+
+            // need to check because draftHasQuote == true doesn't mean
+            // that there's an actual quoted message (could be only 
+            // quoted text)
+            if (tempQuote) {
+                dc_msg_unref(currentMessageDraft);
+                currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
+                dc_msg_set_quote(currentMessageDraft, tempQuote);
+                dc_msg_unref(tempQuote);
+            }
+        }
     }
 }
 
@@ -1390,25 +1641,29 @@ ChatlistModel* ChatModel::chatlistmodel()
 
 void ChatModel::sendMessage(QString messageText)
 {
-    if (currentMessageDraft) {
-        dc_msg_set_text(currentMessageDraft, messageText.toUtf8().constData());
-        // TODO: check return value?
-        dc_send_msg(currentMsgContext, chatID, currentMessageDraft);
+    bool needToNotifyAboutQuote = false;
 
-        bool needToNotifyAboutQuote = false;
-        if (draftHasQuote()) {
-            needToNotifyAboutQuote = true;
-        }
+    if (!currentMessageDraft) {
+        currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
 
-        dc_msg_unref(currentMessageDraft);
-        currentMessageDraft = nullptr;
-
-        if (needToNotifyAboutQuote) {
-            emit draftHasQuoteChanged();
-        }
     } else {
-        // TODO: check return value?
-        dc_send_text_msg(currentMsgContext, chatID, messageText.toUtf8().constData());
+         if (draftHasQuote()) {
+             needToNotifyAboutQuote = true;
+         }
+    }
+
+    dc_msg_set_text(currentMessageDraft, messageText.toUtf8().constData());
+
+    dc_send_msg(currentMsgContext, chatID, currentMessageDraft);
+
+    dc_msg_unref(currentMessageDraft);
+    currentMessageDraft = nullptr;
+
+    // TODO: really needed to inform that the quote has changed? Maybe
+    // it could be handled like attachments, as for their preview
+    // is closed upon pressing the send button by ChatView itself
+    if (needToNotifyAboutQuote) {
+        emit draftHasQuoteChanged();
     }
 }
 
@@ -1431,6 +1686,28 @@ bool ChatModel::draftHasQuote()
         if (tempText) {
             retval = true;
             dc_str_unref(tempText);
+        } else {
+            retval = false;
+        }
+    } else {
+        retval = false;
+    }
+
+    return retval;
+}
+
+
+bool ChatModel::draftHasAttachment()
+{
+    bool retval;
+
+    if (currentMessageDraft) {
+        char* tempText = dc_msg_get_file(currentMessageDraft);
+        // "null is never returned"
+        QString tempQString = tempText;
+        dc_str_unref(tempText);
+        if (tempQString != "") {
+            retval = true;
         } else {
             retval = false;
         }

@@ -34,7 +34,15 @@ Page {
 
     property string chatname: DeltaHandler.chatName()
     property bool currentlyQuotingMessage: false
+
+    // determines whether the buttons to add attachments (== true) or
+    // the text entry bar are visible (== false)
     property bool attachmentMode: false
+
+    property bool attachImagePreviewMode: false
+    property bool attachFilePreviewMode: false
+    property bool attachAudioPreviewMode: false
+    property string attachAudioPath
     property bool audioRecordMode: false
     property bool chatCanSend: DeltaHandler.chatmodel.chatCanSend()
     property bool isContactRequest: DeltaHandler.chatIsContactRequest
@@ -58,6 +66,7 @@ Page {
     Component.onCompleted: {
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatViewIsClosed)
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatmodel.chatViewIsClosed)
+
         if (DeltaHandler.chatmodel.hasDraft) {
             messageEnterField.text = DeltaHandler.chatmodel.getDraft()
 
@@ -66,6 +75,8 @@ Page {
                 quotedMessageLabel.text = DeltaHandler.chatmodel.getDraftQuoteSummarytext()
                 quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
             }
+
+            DeltaHandler.chatmodel.emitDraftHasAttachmentSignals()
         }
 
         chatViewPage.messageQueryTextChanged.connect(DeltaHandler.chatmodel.updateQuery)
@@ -131,6 +142,28 @@ Page {
             } else {
                 currentlyQuotingMessage = false
             }
+        }
+
+        onPreviewImageAttachment: {
+            if (addCacheLocation) {
+                attachImagePreview.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+            } else {
+                attachImagePreview.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.AppConfigLocation, filepath))
+            }
+            attachImagePreviewMode = true
+        }
+
+        onPreviewFileAttachment: {
+            attachFilePreviewLabel.text = filename;
+            attachFilePreviewMode = true
+        }
+
+        onPreviewAudioAttachment: {
+            // Audio is guaranteed to always be located in the CacheLocation because
+            // it won't play if it's in AppConfigLocation due to AppArmor
+            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+            attachAudioPreviewMode = true
+            attachFilePreviewLabel.text = filename;
         }
     }
 
@@ -543,7 +576,7 @@ Page {
         anchors.top: searchRect.visible ? searchRect.bottom : header.bottom
         topMargin: units.gu(1)
         width: parent.width
-        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(1) - (messageCreatorBox.visible ? messageCreatorBox.height : 0) - (requestReactionRect.visible ? requestReactionRect.height : 0) - (cannotSendBox.visible ? cannotSendBox.height : 0)
+        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(0.5) - (messageCreatorBox.visible ? messageCreatorBox.height + units.gu(1) : 0) - (requestReactionRect.visible ? requestReactionRect.height : 0) - (cannotSendBox.visible ? cannotSendBox.height : 0)
         model: DeltaHandler.chatmodel
         delegate: delegateListItem
         verticalLayoutDirection: ListView.BottomToTop
@@ -552,7 +585,7 @@ Page {
 
         Component.onCompleted: {
             if (DeltaHandler.chatmodel.getUnreadMessageBarIndex() > 0) {
-                view.positionViewAtIndex(DeltaHandler.chatmodel.getUnreadMessageBarIndex(), ListView.Center)
+                unreadJumpTimer.start()
             }
         }
 
@@ -633,7 +666,7 @@ Page {
 
     Rectangle {
         id: messageCreatorBox
-        height: audioRecordMode ? audioRecordBox.height : messageEnterField.height + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(2) : 0) + units.gu(1)
+        height: (audioRecordMode ? audioRecordBox.height : messageEnterField.height) + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(1) : 0) + (attachmentPreviewRect.visible ? attachmentPreviewRect.height + units.gu(1) : 0) 
         width: parent.width
         color: theme.palette.normal.background
         anchors{
@@ -652,8 +685,8 @@ Page {
             color: theme.palette.normal.background
 
             anchors {
-                left: parent.left
                 top: parent.top
+                left: parent.left
             }
             visible: currentlyQuotingMessage
 
@@ -677,7 +710,6 @@ Page {
                     left: quoteRectangle.left
                     leftMargin: units.gu(1)
                 }
-                text: "hier nur ein erster Test, der einen ziemlich langen Text darstellt und deshalb nicht ganz reinpasst"
                 clip: true
             }
 
@@ -690,7 +722,6 @@ Page {
                     left: quoteRectangle.left
                     leftMargin: units.gu(1)
                 }
-                text: "testuser"
                 font.bold: true
                 fontSize: "x-small"
             }
@@ -727,121 +758,242 @@ Page {
             }
         }
 
-        Rectangle {
-            id: attachIconCage
-            height: messageEnterField.height
-            width: currentlyQuotingMessage ? 0 : attachIconShape.width + units.gu(1)
 
-            anchors {
-                left: parent.left
-                top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
-                topMargin: quotedMessageBox.visible ? units.gu(2) : 0
-            }
+        Rectangle {
+            id: attachmentPreviewRect
+            height: attachImagePreviewMode ? attachImagePreview.height : (attachAudioPreviewMode ? attachAudioShape.height : attachFileIcon.height)
+            width: parent.width
 
             color: theme.palette.normal.background
 
-            UbuntuShape{
-                id: attachIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
-                height: width
+            anchors {
+                top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
+                topMargin: quotedMessageBox.visible ? units.gu(1) : 0
+                left: parent.left
+            }
+
+            visible: attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode
+
+            AnimatedImage {
+                id: attachImagePreview
+                width: chatViewPage.width - units.gu(3) - FontUtils.sizeToPixels("x-large") * 1.2
+                height: chatViewPage.height / 3
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    leftMargin: units.gu(1)
+                }
+                visible: attachImagePreviewMode
+                fillMode: Image.PreserveAspectFit
+            }
+
+            Icon {
+                id: attachFileIcon
+                height: cancelAttachmentShape.height
+                width: height
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    leftMargin: units.gu(1)
+                }
+                name: "attachment"
+                visible: attachFilePreviewMode
+            }
+
+            UbuntuShape {
+                id: attachAudioShape
+                height: cancelAttachmentShape.height
+                width: height
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    leftMargin: units.gu(1)
+                }
+                visible: attachAudioPreviewMode
                 color: theme.palette.normal.overlay
 
-                anchors{
-                    horizontalCenter: parent.horizontalCenter
-                    verticalCenter: parent.verticalCenter
-                }
-                visible: audioRecordMode ? false : currentlyQuotingMessage ? false : true
-
-                Icon{
-                    id: attachIcon
+                Icon {
+                    id: attachAudioIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: attachmentMode ? "close" : "add"
-                    anchors{
-                        horizontalCenter: parent.horizontalCenter
+                    anchors {
                         verticalCenter: parent.verticalCenter
+                        horizontalCenter: parent.horizontalCenter
                     }
-                    visible: currentlyQuotingMessage ? false : true
+                    name: "media-playback-start"
 
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            attachmentMode = !attachmentMode
+                            messageAudio.stop()
+                            messageAudio.source = attachAudioPath
+                            messageAudio.play()
                         }
-                        enabled: currentlyQuotingMessage ? false : true
                     }
                 }
-            } // end UbuntuShape id: attachIconShape
-        } // end Rectangle id: attachIconCage
+            }
+
+            Label {
+                id: attachFilePreviewLabel
+                width: chatViewPage.width - (attachAudioPreviewMode ? attachAudioShape.width : attachFileIcon.width) - units.gu(4) - cancelAttachmentShape.width
+                anchors {
+                    verticalCenter: attachFileIcon.verticalCenter
+                    left: attachFileIcon.right
+                    leftMargin: units.gu(1)
+                }
+                elide: Text.ElideRight
+                visible: attachFilePreviewMode || attachAudioPreviewMode
+            }
+
+            UbuntuShape {
+                id: cancelAttachmentShape
+                width: FontUtils.sizeToPixels("x-large") * 1.2
+                height: width
+                color: theme.palette.normal.overlay
+
+                anchors {
+                    verticalCenter: attachImagePreview.visible ? attachImagePreview.verticalCenter : attachFilePreviewLabel.verticalCenter
+                    right: parent.right
+                    rightMargin: units.gu(0.5)
+                }
+
+                Icon {
+                    id: cancelAttachIcon
+                    width: parent.width - units.gu(1)
+                    height: width
+                    name: "close"
+                    anchors{
+                        horizontalCenter: parent.horizontalCenter
+                        verticalCenter: parent.verticalCenter
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            DeltaHandler.chatmodel.unsetAttachment()
+                            attachImagePreviewMode = false
+                            attachFilePreviewMode = false
+                            attachAudioPreviewMode = false
+                            if (messageAudio.source == attachAudioPath) {
+                                messageAudio.stop()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        UbuntuShape{
+            id: attachIconShape
+            width: FontUtils.sizeToPixels("x-large") * 1.2
+            height: width
+            color: theme.palette.normal.overlay
+
+            anchors{
+                left: parent.left
+                leftMargin: units.gu(0.5)
+                top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)
+                topMargin: attachmentPreviewRect.visible || quotedMessageBox.visible ? units.gu(1) : 0
+            }
+            visible: audioRecordMode ? false : true
+            enabled: !(attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode)
+
+            Icon{
+                id: attachIcon
+                width: parent.width - units.gu(1)
+                height: width
+                name: attachmentMode ? "close" : "add"
+                anchors{
+                    horizontalCenter: parent.horizontalCenter
+                    verticalCenter: parent.verticalCenter
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        attachmentMode = !attachmentMode
+                    }
+                }
+            }
+        } // end UbuntuShape id: attachIconShape
         
         TextArea {
             id: messageEnterField
-            width: parent.width - sendIcon.width
+            width: parent.width - attachIconShape.width - sendIconShape.width - units.gu(2)
             anchors{
-                left: attachIconCage.right
-                leftMargin: currentlyQuotingMessage ? units.gu(1) : 0
-                right: sendIconCage.left
-                top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
-                topMargin: quotedMessageBox.visible ? units.gu(2) : 0
+                left: attachIconShape.right
+//                leftMargin: currentlyQuotingMessage ? units.gu(1) : 0
+                leftMargin: units.gu(0.5)
+                top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)
+                topMargin: quotedMessageBox.visible || attachmentPreviewRect.visible ? units.gu(1) : 0
             }
             autoSize: true
             maximumLineCount: 5
             visible: !attachmentMode && !audioRecordMode
         }
 
-        // TODO: why is this Rectangle needed?
-        Rectangle {
-            id: sendIconCage
-            height: messageEnterField.height
-            width: sendIconShape.width + units.gu(1)
-            anchors {
+        UbuntuShape {
+            id: sendIconShape
+            width: FontUtils.sizeToPixels("x-large") * 1.2
+            height: width
+            color: theme.palette.normal.overlay
+            anchors{
                 right: parent.right
-                top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
-                topMargin: quotedMessageBox.visible ? units.gu(2) : 0
+                rightMargin: units.gu(0.5)
+                top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)
+                topMargin: quotedMessageBox.visible || attachmentPreviewRect.visible ? units.gu(1) : 0
+                //horizontalCenter: parent.horizontalCenter
+                //verticalCenter: parent.verticalCenter
             }
             visible: !attachmentMode && !audioRecordMode
-            color: theme.palette.normal.background
 
-            UbuntuShape {
-                id: sendIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
+            Icon {
+                id: sendIcon
+                width: parent.width - units.gu(1)
                 height: width
-                color: theme.palette.normal.overlay
+                name: (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) ? "audio-input-microphone-symbolic" : "send"
                 anchors{
-                    horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
+                    horizontalCenter: parent.horizontalCenter
                 }
-
-                Icon {
-                    id: sendIcon
-                    width: parent.width - units.gu(1)
-                    height: width
-                    name: "send"
-                    anchors{
-                        verticalCenter: parent.verticalCenter
-                        horizontalCenter: parent.horizontalCenter
-                    }
-                } // end Icon id: sendIcon
-            } // end UbuntuShape id: sendIconShape
+            } // end Icon id: sendIcon
 
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    // without removing the focus from the TextArea,
-                    // the text passed to DeltaHandler.sendMessage
-                    // may be incomplete
-                    messageEnterField.focus = false
-                    DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
-                    // clear() does not work as we are using the TextArea
-                    // from Ubuntu.Components, not the one from
-                    // QtQuickControls
-                    //messageEnterField.clear()
-                    messageEnterField.text = ''
-                }
+                    if (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) {
+                        messageAudio.stop()
+                        DeltaHandler.prepareAudioRecording(root.voiceMessageQuality)
+                        attachmentMode = false
+                        audioRecordMode = true
+                        // sending recorded audio will be done by a different
+                        // button, see sendRecIconShape
 
-                enabled: messageEnterField.text != ""
+                    } else {
+                        // without removing the focus from the TextArea,
+                        // the text passed to DeltaHandler.sendMessage
+                        // may be incomplete
+                        messageEnterField.focus = false
+
+                        attachImagePreviewMode = false
+                        attachFilePreviewMode = false
+                        attachAudioPreviewMode = false
+
+                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text, DeltaHandler.TextType)
+
+                        // TODO: is the comment below still correct?
+                        // clear() does not work as we are using the TextArea
+                        // from Ubuntu.Components, not the one from
+                        // QtQuickControls
+                        //messageEnterField.clear()
+                        messageEnterField.text = ""
+                        messageEnterField.focus = true
+                    }
+                }
             }
-        } // end Rectangle id: sendIconCage
+        } // end UbuntuShape id: sendIconShape
+
 
         Rectangle {
             id: filetypeToSendCage
@@ -850,7 +1002,8 @@ Page {
             anchors {
                 right: messageCreatorBox.right
                 rightMargin: units.gu(1)
-                top: messageCreatorBox.top
+                top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
+                topMargin: quotedMessageBox.visible ? units.gu(1) : 0
             }
 
             color: theme.palette.normal.background
@@ -952,39 +1105,39 @@ Page {
                 }
             } // end UbuntuShape id: sendFileIconShape
 
-            UbuntuShape {
-                id: voiceMessageIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
-                height: width
-                color: theme.palette.normal.overlay
-
-                anchors{
-                    right: sendFileIconShape.left
-                    rightMargin: units.gu(2)
-                    verticalCenter: parent.verticalCenter
-                }
-
-                Icon{
-                    id: voiceMessageIcon
-                    width: parent.width - units.gu(1)
-                    height: width
-                    name: "audio-input-microphone-symbolic"
-                    anchors{
-                        horizontalCenter: voiceMessageIconShape.horizontalCenter
-                        verticalCenter: voiceMessageIconShape.verticalCenter
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            messageAudio.stop()
-                            DeltaHandler.prepareAudioRecording(root.voiceMessageQuality)
-                            attachmentMode = false
-                            audioRecordMode = true
-                        }
-                        enabled: true
-                    }
-                }
-            } // end UbuntuShape id: voiceMessageIconShape
+//            UbuntuShape {
+//                id: voiceMessageIconShape
+//                width: FontUtils.sizeToPixels("x-large") * 1.2
+//                height: width
+//                color: theme.palette.normal.overlay
+//
+//                anchors{
+//                    right: sendFileIconShape.left
+//                    rightMargin: units.gu(2)
+//                    verticalCenter: parent.verticalCenter
+//                }
+//
+//                Icon{
+//                    id: voiceMessageIcon
+//                    width: parent.width - units.gu(1)
+//                    height: width
+//                    name: "audio-input-microphone-symbolic"
+//                    anchors{
+//                        horizontalCenter: voiceMessageIconShape.horizontalCenter
+//                        verticalCenter: voiceMessageIconShape.verticalCenter
+//                    }
+//                    MouseArea {
+//                        anchors.fill: parent
+//                        onClicked: {
+//                            messageAudio.stop()
+//                            DeltaHandler.prepareAudioRecording(root.voiceMessageQuality)
+//                            attachmentMode = false
+//                            audioRecordMode = true
+//                        }
+//                        enabled: true
+//                    }
+//                }
+//            } // end UbuntuShape id: voiceMessageIconShape
         } // end Rectangle id: filetypeToSendCage
         
 
@@ -1125,7 +1278,8 @@ Page {
 
             anchors {
                 horizontalCenter: parent.horizontalCenter
-                verticalCenter: parent.verticalCenter
+                top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
+                topMargin: quotedMessageBox.visible ? units.gu(1) : 0
             }
 
             visible: audioRecordMode
@@ -1543,4 +1697,14 @@ Page {
             }
         }
     } // end Component id: popoverComponentConfirmDeletion
+
+    Timer {
+        id: unreadJumpTimer
+        interval: 500
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            view.positionViewAtIndex(DeltaHandler.chatmodel.getUnreadMessageBarIndex(), ListView.End)
+        }
+    }
 } // end Page id: chatViewPage

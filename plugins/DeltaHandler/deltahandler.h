@@ -96,8 +96,6 @@ public:
 
     Q_INVOKABLE void selectAccount(int myindex);
 
-    Q_INVOKABLE void sendAttachment(QString filepath, MsgViewType attachType = MsgViewType::FileType);
-
     // Returns the name of the currently selected chat
     Q_INVOKABLE QString chatName();
 

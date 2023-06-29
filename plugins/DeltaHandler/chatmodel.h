@@ -75,6 +75,15 @@ public:
 
     Q_INVOKABLE void unsetQuote();
 
+    // int attachType should be DeltaHandler::MsgViewType attachType, but this
+    // only works if the method is used in the DeltaHandler class itself
+    Q_INVOKABLE void setAttachment(QString filepath, int attachType);
+
+    // called upon entering ChatView to create the attachment preview
+    Q_INVOKABLE void emitDraftHasAttachmentSignals();
+
+    Q_INVOKABLE void unsetAttachment();
+
     Q_INVOKABLE QString getDraftQuoteSummarytext();
 
     Q_INVOKABLE QString getDraftQuoteUsername();
@@ -95,10 +104,10 @@ public:
     // if a text has been entered into the TextArea
     Q_INVOKABLE void sendMessage(QString messageText);
 
-
     Q_PROPERTY(bool hasDraft READ hasDraft);
 
     Q_PROPERTY(bool draftHasQuote READ draftHasQuote NOTIFY draftHasQuoteChanged);
+    Q_PROPERTY(bool draftHasAttachment READ draftHasAttachment NOTIFY draftHasAttachmentChanged);
 
     // presents a list of chats to forward messages to
     Q_PROPERTY(ChatlistModel* chatlistmodel READ chatlistmodel);
@@ -108,6 +117,7 @@ public:
     bool chatIsContactRequest();
     bool hasDraft();
     bool draftHasQuote();
+    bool draftHasAttachment();
     void acceptChat();
 
     ChatlistModel* chatlistmodel();
@@ -130,8 +140,19 @@ signals:
     void markedAllMessagesSeen();
     void jumpToMsg(int myindex);
     void draftHasQuoteChanged();
+    void draftHasAttachmentChanged();
     void chatDataChanged();
     void searchCountUpdate(int current, int total);
+
+    // if addCacheLocation is set, filepath has to be prepended
+    // by CacheLocation by the receiver of the signal, otherwise
+    // AppConfigLocation has to be set. Only relevant for the signal
+    // for images because only images and audio need to be accessed
+    // from QML, and in the cause of audio, it will be copied
+    // to cache first (won't play from AppConfigLocation due to AppArmor)
+    void previewAudioAttachment(QString filepath, QString filename);
+    void previewImageAttachment(QString filepath, bool addCacheLocation);
+    void previewFileAttachment(QString filename);
 
 protected:
     QHash<int, QByteArray> roleNames() const;

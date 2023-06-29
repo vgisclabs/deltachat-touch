@@ -80,7 +80,7 @@ Page {
                 if (audioToSendPage.activeTransfer.items.length > 0) {
                     audioToSendPage.source = audioToSendPage.activeTransfer.items[0].url;
                     console.log('Trying to send audio: ', audioToSendPage.source)
-                    DeltaHandler.sendAttachment(audioToSendPage.source, DeltaHandler.AudioType)
+                    DeltaHandler.chatmodel.setAttachment(audioToSendPage.source, DeltaHandler.AudioType)
                 }
                 layout.removePages(audioToSendPage)
             }

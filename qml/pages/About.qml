@@ -37,7 +37,7 @@ Page {
             top: aboutHeader.bottom
             margins: units.gu(2)
         }
-        text: '%1 v%2'.arg(root.appName).arg(root.version)
+        text: '%1 v%2'.arg(root.appName).arg(root.version) + " (xenial)"
     }
 
     Label {

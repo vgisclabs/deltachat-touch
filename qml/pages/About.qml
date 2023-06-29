@@ -23,8 +23,7 @@ import DeltaHandler 1.0
 
 Page {
     id: aboutPage
-    header: PageHeader {
-        id: aboutHeader
+    header: PageHeader { id: aboutHeader
         title: i18n.tr('About DeltaTouch')
     }
 
@@ -37,7 +36,7 @@ Page {
             top: aboutHeader.bottom
             margins: units.gu(2)
         }
-        text: '%1 v%2'.arg(root.appName).arg(root.version)
+        text: '%1 v%2'.arg(root.appName).arg(root.version) + " (focal)"
     }
 
     Label {

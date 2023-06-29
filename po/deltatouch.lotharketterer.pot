@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-29 18:51+0000\n"
+"POT-Creation-Date: 2023-06-29 20:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,23 +136,23 @@ msgstr ""
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/About.qml:28
+#: ../qml/pages/About.qml:27
 msgid "About DeltaTouch"
 msgstr ""
 
-#: ../qml/pages/About.qml:60
+#: ../qml/pages/About.qml:59
 msgid "License:"
 msgstr ""
 
-#: ../qml/pages/About.qml:71
+#: ../qml/pages/About.qml:70
 msgid "Source code:"
 msgstr ""
 
-#: ../qml/pages/About.qml:91
+#: ../qml/pages/About.qml:90
 msgid "Report bugs here:"
 msgstr ""
 
-#: ../qml/pages/About.qml:114
+#: ../qml/pages/About.qml:113
 msgid "This app is powered by deltachat-core"
 msgstr ""
 

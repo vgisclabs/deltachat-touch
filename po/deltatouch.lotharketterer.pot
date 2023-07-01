@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-29 20:30+0000\n"
+"POT-Creation-Date: 2023-07-01 19:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,41 +33,41 @@ msgstr ""
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:281 ../qml/Main.qml:288
+#: ../qml/Main.qml:284 ../qml/Main.qml:291
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:281 ../qml/Main.qml:288 ../qml/Main.qml:335
-#: ../qml/pages/AccountConfig.qml:133
+#: ../qml/Main.qml:284 ../qml/Main.qml:291 ../qml/Main.qml:338
+#: ../qml/pages/AccountConfig.qml:139
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:282 ../qml/Main.qml:289
+#: ../qml/Main.qml:285 ../qml/Main.qml:292
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:232
+#: ../qml/Main.qml:491 ../qml/pages/ChatView.qml:232
 #: ../qml/pages/ChatView.qml:277 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr ""
 
-#: ../qml/Main.qml:539
+#: ../qml/Main.qml:542
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:744
+#: ../qml/Main.qml:747
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:808
+#: ../qml/Main.qml:811
 msgid "Loading…"
 msgstr ""
 
-#: ../qml/Main.qml:834 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:837 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
-#: ../qml/Main.qml:891 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/Main.qml:894 ../qml/pages/AddAccountAsSecondDevice.qml:143
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
@@ -136,23 +136,33 @@ msgstr ""
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/About.qml:27
+#: ../qml/pages/About.qml:28
 msgid "About DeltaTouch"
 msgstr ""
 
-#: ../qml/pages/About.qml:59
+#: ../qml/pages/About.qml:72
 msgid "License:"
 msgstr ""
 
-#: ../qml/pages/About.qml:70
+#: ../qml/pages/About.qml:84
 msgid "Source code:"
 msgstr ""
 
-#: ../qml/pages/About.qml:90
+#: ../qml/pages/About.qml:105
 msgid "Report bugs here:"
 msgstr ""
 
-#: ../qml/pages/About.qml:113
+#: ../qml/pages/About.qml:128
+msgid ""
+"Support via classic email or DeltaChat compatible app (without reply "
+"guarantee and without any warranty):"
+msgstr ""
+
+#: ../qml/pages/About.qml:138
+msgid "deltatouch@mailbox.org"
+msgstr ""
+
+#: ../qml/pages/About.qml:150
 msgid "This app is powered by deltachat-core"
 msgstr ""
 
@@ -167,11 +177,15 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:62 ../qml/pages/AddAccount.qml:33
+#: ../qml/pages/AccountConfig.qml:62 ../qml/pages/AccountConfig.qml:104
+msgid "Info"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:68 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:98 ../qml/pages/AccountConfig.qml:201
+#: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
 #: ../qml/pages/AddAccountAsSecondDevice.qml:144
 #: ../qml/pages/AddAccountAsSecondDevice.qml:168
 #: ../qml/pages/AddAccountAsSecondDevice.qml:203
@@ -184,15 +198,11 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:98
-msgid "Info"
-msgstr ""
-
-#: ../qml/pages/AccountConfig.qml:98
+#: ../qml/pages/AccountConfig.qml:104
 msgid "None"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:204
+#: ../qml/pages/AccountConfig.qml:210
 msgid "Account is not configured."
 msgstr ""
 

@@ -47,7 +47,7 @@ MainView {
     }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '0.9.0'
+    property string version: '1.0.0'
 
     // Color scheme
     //
@@ -70,6 +70,7 @@ MainView {
     property string unreadMessageCounterColor: "#053f45" //root.darkmode ? "#000080" : "#968cd9"
     property string unreadMessageBarColor: root.darkmode ? "#000080" : "#968cd9"
     property string searchResultMessageColor: "#d55e00"
+    property string dtLinkColor: root.darkmode ? "#8888ff" : "#0000ff"
 
     // If there are any archived chats, a pseudo-chat "Archived Chats" will
     // be shown in the list of chats. When clicked, only the archived chats
@@ -259,6 +260,8 @@ MainView {
                     right: chatlistPage.right
                     top: chatlistPage.top
                 }
+
+                color: theme.palette.normal.background
 
                 Rectangle {
 

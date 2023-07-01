@@ -12,6 +12,8 @@ While the build instructions below also work for focal and the app is fully func
 
 Update: Seems it's no problem to update from the xenial to the focal version of the app on a focal device. Will confirm after further testing.
 
+Update 2: Confirmed, no problems, users can safely update.
+
 ## Building
 
 ### General

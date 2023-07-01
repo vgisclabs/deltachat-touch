@@ -30,104 +30,165 @@ Page {
 
     property string deltaversion: DeltaHandler.getCurrentConfig("sys.version")
 
-    Label {
-        id: versionLabel
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: aboutHeader.bottom
-            margins: units.gu(2)
-        }
-        text: '%1 v%2'.arg(root.appName).arg(root.version) + " (xenial)"
-    }
+    Flickable {
+        id: flick
+        height: aboutPage.height - aboutHeader.height 
+        width: aboutPage.width
+        anchors.top: aboutHeader.bottom
+        anchors.left: aboutPage.left
+        contentHeight: flickContent.childrenRect.height
 
-    Label {
-        id: copyleftLabel
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: versionLabel.bottom
-            margins: units.gu(2)
-        }
-        text: '© 2023 Lothar Ketterer'
-    }
-    
-    Label {
-        id: licenseLabel
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: copyleftLabel.bottom
-            margins: units.gu(2)
-        }
-        text: i18n.tr('License:') + ' <a href="https://codeberg.org/lk108/DeltaTouch/LICENSE">GPLv3</a>'
-        onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/DeltaTouch/LICENSE')
-    }
+        Item {
+            id: flickContent
+            width: parent.width
 
-    Label {
-        id: sourceLabel
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: licenseLabel.bottom
-            topMargin: units.gu(2)
-        }
-        text: i18n.tr('Source code:')
-    }
+            Label {
+                id: versionLabel
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.top
+                    margins: units.gu(1)
+                }
+                text: '%1 v%2'.arg(root.appName).arg(root.version) + " (xenial)"
+            }
 
-    Label {
-        id: sourceLink
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: sourceLabel.bottom
-        }
-        text: '<a href="https://codeberg.org/lk108/DeltaTouch">https://codeberg.org/lk108/DeltaTouch</a>'
-        onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/DeltaTouch')
-    }
-    
-    Label {
-        id: bugsLabel
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: sourceLink.bottom
-            topMargin: units.gu(2)
-        }
-        text: i18n.tr('Report bugs here:')
-    }
+            Label {
+                id: copyleftLabel
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: versionLabel.bottom
+                    margins: units.gu(1)
+                }
+                text: '© 2023 Lothar Ketterer'
+            }
+            
+            Label {
+                id: licenseLabel
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: copyleftLabel.bottom
+                    margins: units.gu(1)
+                }
+                text: i18n.tr('License:') + ' <a href="https://codeberg.org/lk108/deltatouch/LICENSE">GPLv3</a>'
+                linkColor: root.dtLinkColor
+                onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/deltatouch/LICENSE')
+            }
 
-    Label {
-        id: bugsLink
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: bugsLabel.bottom
-        }
-        text: '<a href="https://codeberg.org/lk108/DeltaTouch/issues">https://codeberg.org/lk108/DeltaTouch/issues</a>'
-        onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/DeltaTouch/issues')
-    }
+            Label {
+                id: sourceLabel
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: licenseLabel.bottom
+                    topMargin: units.gu(1)
+                }
+                text: i18n.tr('Source code:')
+            }
 
-    Label {
-        id: creditLabel1
-        anchors {
-            left: parent.left
-            leftMargin: units.gu(3)
-            right: parent.right
-            rightMargin: units.gu(3)
-            top: bugsLink.bottom
-            topMargin: units.gu(3)
-        }
-        text: i18n.tr('This app is powered by deltachat-core') + (deltaversion == "" ? "" : " v" + deltaversion) + (' (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
-        onLinkActivated: Qt.openUrlExternally('https://github.com/deltachat/deltachat-core-rust')
-        wrapMode: Text.Wrap
-    }
+            Label {
+                id: sourceLink
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: sourceLabel.bottom
+                }
+                text: '<a href="https://codeberg.org/lk108/deltatouch">https://codeberg.org/lk108/deltatouch</a>'
+                linkColor: root.dtLinkColor
+                onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/deltatouch')
+            }
+            
+            Label {
+                id: bugsLabel
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: sourceLink.bottom
+                    topMargin: units.gu(1)
+                }
+                text: i18n.tr('Report bugs here:')
+            }
 
-    Label {
-        id: creditLabel2
-        anchors {
-            left: parent.left
-            leftMargin: units.gu(3)
-            right: parent.right
-            rightMargin: units.gu(3)
-            top: creditLabel1.bottom
-            topMargin: units.gu(1)
+            Label {
+                id: bugsLink
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: bugsLabel.bottom
+                }
+                text: '<a href="https://codeberg.org/lk108/deltatouch/issues">https://codeberg.org/lk108/deltatouch/issues</a>'
+                linkColor: root.dtLinkColor
+                onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/deltatouch/issues')
+            }
+
+            
+            Label {
+                id: supportLabel1
+                width: aboutPage.width - units.gu(4)
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: bugsLink.bottom
+                    topMargin: units.gu(1)
+                }
+                text: i18n.tr("Support via classic email or DeltaChat compatible app (without reply guarantee and without any warranty):")
+                wrapMode: Text.WordWrap
+            }
+
+            Label {
+                id: supportLabel2
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: supportLabel1.bottom
+                }
+                text: i18n.tr("deltatouch" + "@" + "mailbox" + "." + "org")
+                wrapMode: Text.WordWrap
+            }
+
+            Label {
+                id: creditLabel1
+                width: aboutPage.width - units.gu(4)
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: supportLabel2.bottom
+                    topMargin: units.gu(1)
+                }
+                text: i18n.tr('This app is powered by deltachat-core') + (deltaversion == "" ? "" : " v" + deltaversion) + (' (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
+                linkColor: root.dtLinkColor
+                onLinkActivated: Qt.openUrlExternally('https://github.com/deltachat/deltachat-core-rust')
+                wrapMode: Text.Wrap
+            }
+
+            Label {
+                id: creditLabel2
+                width: aboutPage.width - units.gu(4)
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: creditLabel1.bottom
+                    topMargin: units.gu(1)
+                }
+                text: 'Kudos to the creators of this library! Check out their page at <a href="https://delta.chat">delta.chat</a>.'
+                linkColor: root.dtLinkColor
+                onLinkActivated: Qt.openUrlExternally('https://delta.chat')
+                wrapMode: Text.Wrap
+            }
+
+            Label {
+                id: thanksLabel1
+                width: aboutPage.width - units.gu(4)
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: creditLabel2.bottom
+                    topMargin: units.gu(1)
+                }
+                text: 'Thanks to all supporters and contributors:'
+                wrapMode: Text.Wrap
+            }
+
+            Label {
+                id: thanksLabel2
+                width: aboutPage.width - units.gu(6)
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: thanksLabel1.bottom
+                }
+                text: 'Simon (treefit)\nlink2xt\nadbenitez\nMarko\nUbuntu Touch AppDev community'
+                wrapMode: Text.Wrap
+            }
         }
-        text: 'Kudos to the creators of this library! Check out their page at <a href="https://delta.chat">delta.chat</a>.'
-        onLinkActivated: Qt.openUrlExternally('https://delta.chat')
-        wrapMode: Text.Wrap
     }
 } // end Page id: aboutPage

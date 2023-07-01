@@ -58,6 +58,12 @@ Page {
 //            },
 
             Action {
+                iconName: 'info'
+                text: i18n.tr('Info')
+                onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
+            },
+
+            Action {
                 iconName: 'add'
                 text: i18n.tr('Add Account')
                 onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))

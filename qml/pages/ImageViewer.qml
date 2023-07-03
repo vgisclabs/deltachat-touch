@@ -160,6 +160,10 @@ Page {
         //fillMode: Image.PreserveAspectFit
 
         Component.onCompleted: {
+            // TODO: more sophisticated pre-scaling - maybe check the other
+            // dimension before scaling up one dimension, and if the other dimension
+            // will overflow the page, then limit upscaling accordingly?
+            // Also: scale down if image is larger than page?
             let scaleUpFactor
             if (imageViewerImage.width < units.gu(30)) {
                 scaleUpFactor = units.gu(30) / imageViewerImage.width
@@ -168,7 +172,9 @@ Page {
             }
 
             if (imageViewerImage.height < units.gu(30)) {
+                scaleUpFactor = units.gu(30) / imageViewerImage.height
                 height = units.gu(30)
+                width = width * scaleUpFactor
             }
 
             y = pageheader.height

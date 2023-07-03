@@ -158,7 +158,9 @@ Page {
             }
 
             if (imageViewerImage.height < units.gu(30)) {
+                scaleUpFactor = units.gu(30) / imageViewerImage.height
                 height = units.gu(30)
+                width = width * scaleUpFactor
             }
 
             y = pageheader.height

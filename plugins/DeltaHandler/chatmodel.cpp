@@ -825,6 +825,12 @@ void ChatModel::newMessage(int msgID)
         for (size_t i = 0; i < currentMsgCount ; ++i) {
             if (msgVector[i] == msgID) {
                 emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
+
+                // the message above might have to change its appearance (edge
+                // of speech bubble, avatar)
+                if (i + 1 < currentMsgCount) {
+                    emit QAbstractItemModel::dataChanged(index(i + 1, 0), index(i + 1, 0));
+                }
                 break;
             }
         }

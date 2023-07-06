@@ -78,7 +78,7 @@ MainView {
     // an extra item will be shown at the top of the chat list.
     property bool showArchiveCloseLine: false
 
-    // Comment and property isDesktopMode taken from Lomiri Weather
+    // Comment and property isDesktopMode taken from Ubuntu Weather
     // App, Copyright (C) 2015 Canonical Ltd, licensed via GPLv3:
     // "When the app is started with clickable desktop, the check for network
     // connection via Connectivity does not work.

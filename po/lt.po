@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-24 13:47+0000\n"
+"POT-Creation-Date: 2023-07-06 20:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr "Naujas adresatas"
 msgid "Type e-mail address above"
 msgstr "Aukščiau įrašykite el. pašto adresą"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1127
+#: ../plugins/DeltaHandler/deltahandler.cpp:1071
 msgid "New message"
 msgstr "Nauja žinutė"
 
@@ -35,42 +35,42 @@ msgstr "Nauja žinutė"
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:281 ../qml/Main.qml:288
+#: ../qml/Main.qml:284 ../qml/Main.qml:291
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:281 ../qml/Main.qml:288 ../qml/Main.qml:335
-#: ../qml/pages/AccountConfig.qml:133
+#: ../qml/Main.qml:284 ../qml/Main.qml:291 ../qml/Main.qml:338
+#: ../qml/pages/AccountConfig.qml:139
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:282 ../qml/Main.qml:289
+#: ../qml/Main.qml:285 ../qml/Main.qml:292
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:488 ../qml/pages/ChatView.qml:199
-#: ../qml/pages/ChatView.qml:244 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:491 ../qml/pages/ChatView.qml:237
+#: ../qml/pages/ChatView.qml:282 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "Ieškoti"
 
-#: ../qml/Main.qml:539
+#: ../qml/Main.qml:542
 msgid "Archived Chats"
 msgstr "Archyvuoti pokalbiai"
 
-#: ../qml/Main.qml:744
+#: ../qml/Main.qml:747
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:808
+#: ../qml/Main.qml:811
 msgid "Loading…"
 msgstr "Įkeliama…"
 
-#: ../qml/Main.qml:834 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:837 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "Naujas pokalbis"
 
-#: ../qml/Main.qml:891 ../qml/pages/AddAccountAsSecondDevice.qml:143
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:139
+#: ../qml/Main.qml:894 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
 msgstr "Klaida: %1"
@@ -99,7 +99,7 @@ msgstr "Persiųsta žinutė"
 #: ../qml/delegates/delegSelfTextMsg.qml:146
 #: ../qml/delegates/delegSelfUnknown.qml:146
 #: ../qml/pages/AddAccountAsSecondDevice.qml:156
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:165
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:172
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
 #: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
@@ -142,19 +142,29 @@ msgstr ""
 msgid "About DeltaTouch"
 msgstr ""
 
-#: ../qml/pages/About.qml:60
+#: ../qml/pages/About.qml:72
 msgid "License:"
 msgstr ""
 
-#: ../qml/pages/About.qml:71
+#: ../qml/pages/About.qml:84
 msgid "Source code:"
 msgstr ""
 
-#: ../qml/pages/About.qml:91
+#: ../qml/pages/About.qml:105
 msgid "Report bugs here:"
 msgstr ""
 
-#: ../qml/pages/About.qml:114
+#: ../qml/pages/About.qml:128
+msgid ""
+"Support via classic email or DeltaChat compatible app (without reply "
+"guarantee and without any warranty):"
+msgstr ""
+
+#: ../qml/pages/About.qml:138
+msgid "deltatouch@mailbox.org"
+msgstr ""
+
+#: ../qml/pages/About.qml:150
 msgid "This app is powered by deltachat-core"
 msgstr ""
 
@@ -162,39 +172,39 @@ msgstr ""
 msgid "Known Accounts"
 msgstr "Žinomos paskyros"
 
-#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:162
+#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:211
 #: ../qml/pages/ProgressBackupImport.qml:69
-#: ../qml/pages/ProgressConfigAccount.qml:68
+#: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressQrBackupImport.qml:94
 msgid "Back"
 msgstr "Atgal"
 
-#: ../qml/pages/AccountConfig.qml:62 ../qml/pages/AddAccount.qml:33
+#: ../qml/pages/AccountConfig.qml:62 ../qml/pages/AccountConfig.qml:104
+msgid "Info"
+msgstr "Informacija"
+
+#: ../qml/pages/AccountConfig.qml:68 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
 msgstr "Pridėti paskyrą"
 
-#: ../qml/pages/AccountConfig.qml:98 ../qml/pages/AccountConfig.qml:201
+#: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
 #: ../qml/pages/AddAccountAsSecondDevice.qml:144
 #: ../qml/pages/AddAccountAsSecondDevice.qml:168
 #: ../qml/pages/AddAccountAsSecondDevice.qml:203
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:140
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:177
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:212
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:184
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:221
 #: ../qml/pages/PickerBackupFile.qml:100
 #: ../qml/pages/ProgressQrBackupImport.qml:53 ../qml/pages/QrShowScan.qml:237
 #: ../qml/pages/QrShowScan.qml:338 ../qml/pages/QrShowScan.qml:488
 msgid "Error"
 msgstr "Klaida"
 
-#: ../qml/pages/AccountConfig.qml:98
-msgid "Info"
-msgstr "Informacija"
-
-#: ../qml/pages/AccountConfig.qml:98
+#: ../qml/pages/AccountConfig.qml:104
 msgid "None"
 msgstr "Nėra"
 
-#: ../qml/pages/AccountConfig.qml:204
+#: ../qml/pages/AccountConfig.qml:210
 msgid "Account is not configured."
 msgstr "Paskyra nėra sukonfigūruota."
 
@@ -217,13 +227,13 @@ msgid "Scan Invitation Code"
 msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:72
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:67
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:76
 #: ../qml/pages/QrShowScan.qml:111
 msgid "Scan QR Code"
 msgstr "Nuskenuoti QR kodą"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:105
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:100
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:109
 #: ../qml/pages/QrShowScan.qml:160
 msgid ""
 "Scanning QR codes directly is not supported yet. Please use another app (e."
@@ -232,7 +242,7 @@ msgid ""
 msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:118
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:113
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:122
 #: ../qml/pages/QrShowScan.qml:173
 msgid "Paste from Clipboard"
 msgstr "Įdėti iš iškarpinės"
@@ -244,26 +254,26 @@ msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:157
 #: ../qml/pages/AddAccountAsSecondDevice.qml:169
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:166
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:178
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:173
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:185
 #: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
 #: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
 msgid "QR Code"
 msgstr "QR kodas"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:195
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:204
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:656
 #: ../qml/pages/QrShowScan.qml:480
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:126
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:133
 #: ../qml/pages/QrShowScan.qml:262
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr "Sukurti naują el. pašto adresą ties „%1“ ir prisijungti ten?"
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:151
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:158
 #: ../qml/pages/QrShowScan.qml:402
 msgid "Log into \"%1\"?"
 msgstr "Prisijungti prie „%1“?"
@@ -271,10 +281,10 @@ msgstr "Prisijungti prie „%1“?"
 #: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
 #: ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
-#: ../qml/pages/ConfirmChatDeletion.qml:54
+#: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:80
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
-#: ../qml/pages/ConfirmLeaveGroup.qml:44
+#: ../qml/pages/ConfirmLeaveGroup.qml:47
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
 #: ../qml/pages/ConfirmMsgDeletion.qml:55 ../qml/pages/CreateOrEditGroup.qml:84
 #: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/ProfileSelf.qml:58
@@ -397,10 +407,11 @@ msgstr "IMAP saugumas"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:400
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:479
-#: ../qml/pages/ChatInfosActions.qml:130
-#: ../qml/pages/EphemeralTimerSettings.qml:35
-#: ../qml/pages/EphemeralTimerSettings.qml:128
-#: ../qml/pages/EphemeralTimerSettings.qml:132
+#: ../qml/pages/ChatInfosActionsChatlist.qml:136
+#: ../qml/pages/ChatInfosActionsChatview.qml:163
+#: ../qml/pages/EphemeralTimerSettings.qml:37
+#: ../qml/pages/EphemeralTimerSettings.qml:134
+#: ../qml/pages/EphemeralTimerSettings.qml:138
 msgid "Off"
 msgstr "Išjungta"
 
@@ -547,7 +558,9 @@ msgstr "Importuoti slaptus raktus"
 msgid "Block this contact? You will no longer receive messages from them."
 msgstr "Užblokuoti šį adresatą? Jūs daugiau nebegausite žinučių nuo šio adresato."
 
-#: ../qml/pages/BlockContactPopup.qml:37 ../qml/pages/ChatInfosActions.qml:49
+#: ../qml/pages/BlockContactPopup.qml:37
+#: ../qml/pages/ChatInfosActionsChatlist.qml:63
+#: ../qml/pages/ChatInfosActionsChatview.qml:77
 msgid "Block Contact"
 msgstr "Užblokuoti adresatą"
 
@@ -559,80 +572,102 @@ msgstr "Užblokuoti adresatai"
 msgid "Blocked contacts will appear here."
 msgstr "Jei užblokuosite adresatus, jie bus rodomi čia."
 
-#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:182
+#: ../qml/pages/ChatInfosActionsChatlist.qml:49
+#: ../qml/pages/ChatInfosActionsChatview.qml:63
+msgid "Mute Notifications"
+msgstr "Išjungti pranešimus"
+
+#: ../qml/pages/ChatInfosActionsChatlist.qml:49
+#: ../qml/pages/ChatInfosActionsChatview.qml:63
+msgid "Unmute"
+msgstr "Įjungti pranešimus"
+
+#: ../qml/pages/ChatInfosActionsChatlist.qml:72
+#: ../qml/pages/ChatInfosActionsChatview.qml:86
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr "Taisyti grupę"
 
-#: ../qml/pages/ChatInfosActions.qml:70 ../qml/pages/ConfirmLeaveGroup.qml:34
+#: ../qml/pages/ChatInfosActionsChatlist.qml:84
+#: ../qml/pages/ChatInfosActionsChatview.qml:98
+#: ../qml/pages/ConfirmLeaveGroup.qml:36
 msgid "Leave Group"
 msgstr "Išeiti iš grupės"
 
-#: ../qml/pages/ChatInfosActions.qml:80
-msgid "Mute Notifications"
-msgstr "Išjungti pranešimus"
-
-#: ../qml/pages/ChatInfosActions.qml:80
-msgid "Unmute"
-msgstr "Įjungti pranešimus"
-
-#: ../qml/pages/ChatInfosActions.qml:94
+#: ../qml/pages/ChatInfosActionsChatlist.qml:97
+#: ../qml/pages/ChatInfosActionsChatview.qml:111
 msgid "Show Encryption Info"
 msgstr "Rodyti šifravimo informaciją"
 
-#: ../qml/pages/ChatInfosActions.qml:144
+#: ../qml/pages/ChatInfosActionsChatlist.qml:150
+#: ../qml/pages/ChatInfosActionsChatview.qml:177
 msgid "Mute for 1 hour"
 msgstr "Išjungti 1 valandai"
 
-#: ../qml/pages/ChatInfosActions.qml:158
+#: ../qml/pages/ChatInfosActionsChatlist.qml:164
+#: ../qml/pages/ChatInfosActionsChatview.qml:191
 msgid "Mute for 2 hours"
 msgstr "Išjungti 2 valandoms"
 
-#: ../qml/pages/ChatInfosActions.qml:172
+#: ../qml/pages/ChatInfosActionsChatlist.qml:178
+#: ../qml/pages/ChatInfosActionsChatview.qml:205
 msgid "Mute for 1 day"
 msgstr "Išjungti 1 dienai"
 
-#: ../qml/pages/ChatInfosActions.qml:186
+#: ../qml/pages/ChatInfosActionsChatlist.qml:192
+#: ../qml/pages/ChatInfosActionsChatview.qml:219
 msgid "Mute for 7 days"
 msgstr "Išjungti 7 dienoms"
 
-#: ../qml/pages/ChatInfosActions.qml:200
+#: ../qml/pages/ChatInfosActionsChatlist.qml:206
+#: ../qml/pages/ChatInfosActionsChatview.qml:233
 msgid "Mute forever"
 msgstr "Išjungti visam laikui"
 
-#: ../qml/pages/ChatView.qml:146
-msgid "Verified Contact"
-msgstr "Patvirtintas adresatas"
-
-#: ../qml/pages/ChatView.qml:153 ../qml/pages/ChatView.qml:173
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:202
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "Išnykstančios žinutės"
 
-#: ../qml/pages/ChatView.qml:623
+#: ../qml/pages/ChatInfosActionsChatview.qml:128
+#: ../qml/pages/ConfirmClearChat.qml:42 ../qml/pages/ConfirmClearChat.qml:51
+msgid "Clear Chat"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:109 ../qml/pages/ChatView.qml:131
+#: ../qml/pages/ChatView.qml:661
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr "Šiame pokalbyje yra vietiniu lygmeniu sukurtos žinutės. Štai kodėl negalite rašyti jokių žinučių."
 
-#: ../qml/pages/ChatView.qml:625
+#: ../qml/pages/ChatView.qml:111 ../qml/pages/ChatView.qml:133
+#: ../qml/pages/ChatView.qml:663
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr "Jūs negalite rašyti, nes nesate šioje grupėje. Norėdami prisijungti, paprašykite kito nario."
 
-#: ../qml/pages/ChatView.qml:1342
+#: ../qml/pages/ChatView.qml:195
+msgid "Verified Contact"
+msgstr "Patvirtintas adresatas"
+
+#: ../qml/pages/ChatView.qml:223
+msgid "More Actions"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1501
 msgid "Accept"
 msgstr "Priimti"
 
-#: ../qml/pages/ChatView.qml:1358 ../qml/pages/ChatView.qml:1535
+#: ../qml/pages/ChatView.qml:1517 ../qml/pages/ChatView.qml:1694
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "Ištrinti"
 
-#: ../qml/pages/ChatView.qml:1373
+#: ../qml/pages/ChatView.qml:1532
 msgid "Block"
 msgstr "Užblokuoti"
 
-#: ../qml/pages/ChatView.qml:1503
+#: ../qml/pages/ChatView.qml:1662
 msgid "Click to leave without sending"
 msgstr ""
 
@@ -661,6 +696,14 @@ msgstr "Ištrinti pokalbį"
 #: ../qml/pages/ConfirmMsgDeletion.qml:39
 msgid "Are you sure you want to delete \"%1\"?"
 msgstr "Ar tikrai norite ištrinti „%1“?"
+
+#: ../qml/pages/ConfirmClearChat.qml:36
+msgid "Delete %1 message here and on the server?"
+msgstr "Ištrinti %1 žinutę čia ir serveryje?"
+
+#: ../qml/pages/ConfirmClearChat.qml:38
+msgid "Delete %1 messages here and on the server?"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
 #: ../qml/pages/SettingsPage.qml:629
@@ -702,7 +745,7 @@ msgid ""
 "Delta Chat"
 msgstr ""
 
-#: ../qml/pages/ConfirmLeaveGroup.qml:30
+#: ../qml/pages/ConfirmLeaveGroup.qml:32
 msgid "Are you sure you want to leave this group?"
 msgstr "Ar tikrai norite išeiti iš šios grupės?"
 
@@ -748,63 +791,63 @@ msgstr "Keisti grupės paveikslą"
 msgid "Remove Group Image"
 msgstr "Šalinti grupės paveikslą"
 
-#: ../qml/pages/EphemeralTimerSettings.qml:39
-#: ../qml/pages/EphemeralTimerSettings.qml:142
-#: ../qml/pages/EphemeralTimerSettings.qml:146
-#: ../qml/pages/EphemeralTimerSettings.qml:216
+#: ../qml/pages/EphemeralTimerSettings.qml:41
+#: ../qml/pages/EphemeralTimerSettings.qml:148
+#: ../qml/pages/EphemeralTimerSettings.qml:152
+#: ../qml/pages/EphemeralTimerSettings.qml:222
 #: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
 #: ../qml/pages/SettingsPage.qml:1111
 msgid "After 30 seconds"
 msgstr "Po 30 sekundžių"
 
-#: ../qml/pages/EphemeralTimerSettings.qml:43
-#: ../qml/pages/EphemeralTimerSettings.qml:156
-#: ../qml/pages/EphemeralTimerSettings.qml:160
+#: ../qml/pages/EphemeralTimerSettings.qml:45
+#: ../qml/pages/EphemeralTimerSettings.qml:162
+#: ../qml/pages/EphemeralTimerSettings.qml:166
 #: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
 #: ../qml/pages/SettingsPage.qml:1132
 msgid "After 1 minute"
 msgstr "Po 1 minutės"
 
-#: ../qml/pages/EphemeralTimerSettings.qml:47
-#: ../qml/pages/EphemeralTimerSettings.qml:170
-#: ../qml/pages/EphemeralTimerSettings.qml:174
+#: ../qml/pages/EphemeralTimerSettings.qml:49
+#: ../qml/pages/EphemeralTimerSettings.qml:176
+#: ../qml/pages/EphemeralTimerSettings.qml:180
 #: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
 #: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
 #: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
 msgid "After 1 hour"
 msgstr "Po 1 valandos"
 
-#: ../qml/pages/EphemeralTimerSettings.qml:51
-#: ../qml/pages/EphemeralTimerSettings.qml:184
-#: ../qml/pages/EphemeralTimerSettings.qml:188
+#: ../qml/pages/EphemeralTimerSettings.qml:53
+#: ../qml/pages/EphemeralTimerSettings.qml:190
+#: ../qml/pages/EphemeralTimerSettings.qml:194
 #: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
 #: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
 #: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
 msgid "After 1 day"
 msgstr "Po 1 dienos"
 
-#: ../qml/pages/EphemeralTimerSettings.qml:55
-#: ../qml/pages/EphemeralTimerSettings.qml:198
-#: ../qml/pages/EphemeralTimerSettings.qml:202
+#: ../qml/pages/EphemeralTimerSettings.qml:57
+#: ../qml/pages/EphemeralTimerSettings.qml:204
+#: ../qml/pages/EphemeralTimerSettings.qml:208
 #: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
 #: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
 #: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
 msgid "After 1 week"
 msgstr "Po 1 savaitės"
 
-#: ../qml/pages/EphemeralTimerSettings.qml:59
-#: ../qml/pages/EphemeralTimerSettings.qml:212
+#: ../qml/pages/EphemeralTimerSettings.qml:61
+#: ../qml/pages/EphemeralTimerSettings.qml:218
 #: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
 #: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
 #: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
 msgid "After 4 weeks"
 msgstr "Po 4 savaičių"
 
-#: ../qml/pages/EphemeralTimerSettings.qml:63
+#: ../qml/pages/EphemeralTimerSettings.qml:65
 msgid "After %1 seconds"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:80
+#: ../qml/pages/EphemeralTimerSettings.qml:84
 msgid ""
 "Applies to all members of this chat if they use Delta Chat; they can still "
 "copy, save, and forward messages or use other e-mail clients."

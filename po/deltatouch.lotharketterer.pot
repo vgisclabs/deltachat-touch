@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-01 19:24+0000\n"
+"POT-Creation-Date: 2023-07-06 20:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Type e-mail address above"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1065
+#: ../plugins/DeltaHandler/deltahandler.cpp:1071
 msgid "New message"
 msgstr ""
 
@@ -46,8 +46,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:491 ../qml/pages/ChatView.qml:232
-#: ../qml/pages/ChatView.qml:277 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:491 ../qml/pages/ChatView.qml:237
+#: ../qml/pages/ChatView.qml:282 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:195
+#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:211
 #: ../qml/pages/ProgressBackupImport.qml:69
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressQrBackupImport.qml:94
@@ -279,10 +279,10 @@ msgstr ""
 #: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
 #: ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
-#: ../qml/pages/ConfirmChatDeletion.qml:54
+#: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:80
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
-#: ../qml/pages/ConfirmLeaveGroup.qml:44
+#: ../qml/pages/ConfirmLeaveGroup.qml:47
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
 #: ../qml/pages/ConfirmMsgDeletion.qml:55 ../qml/pages/CreateOrEditGroup.qml:84
 #: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/ProfileSelf.qml:58
@@ -405,10 +405,11 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:400
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:479
-#: ../qml/pages/ChatInfosActions.qml:130
-#: ../qml/pages/EphemeralTimerSettings.qml:35
-#: ../qml/pages/EphemeralTimerSettings.qml:128
-#: ../qml/pages/EphemeralTimerSettings.qml:132
+#: ../qml/pages/ChatInfosActionsChatlist.qml:136
+#: ../qml/pages/ChatInfosActionsChatview.qml:163
+#: ../qml/pages/EphemeralTimerSettings.qml:37
+#: ../qml/pages/EphemeralTimerSettings.qml:134
+#: ../qml/pages/EphemeralTimerSettings.qml:138
 msgid "Off"
 msgstr ""
 
@@ -555,7 +556,9 @@ msgstr ""
 msgid "Block this contact? You will no longer receive messages from them."
 msgstr ""
 
-#: ../qml/pages/BlockContactPopup.qml:37 ../qml/pages/ChatInfosActions.qml:49
+#: ../qml/pages/BlockContactPopup.qml:37
+#: ../qml/pages/ChatInfosActionsChatlist.qml:63
+#: ../qml/pages/ChatInfosActionsChatview.qml:77
 msgid "Block Contact"
 msgstr ""
 
@@ -567,80 +570,102 @@ msgstr ""
 msgid "Blocked contacts will appear here."
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:58 ../qml/pages/ChatView.qml:215
+#: ../qml/pages/ChatInfosActionsChatlist.qml:49
+#: ../qml/pages/ChatInfosActionsChatview.qml:63
+msgid "Mute Notifications"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActionsChatlist.qml:49
+#: ../qml/pages/ChatInfosActionsChatview.qml:63
+msgid "Unmute"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActionsChatlist.qml:72
+#: ../qml/pages/ChatInfosActionsChatview.qml:86
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:70 ../qml/pages/ConfirmLeaveGroup.qml:34
+#: ../qml/pages/ChatInfosActionsChatlist.qml:84
+#: ../qml/pages/ChatInfosActionsChatview.qml:98
+#: ../qml/pages/ConfirmLeaveGroup.qml:36
 msgid "Leave Group"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:80
-msgid "Mute Notifications"
-msgstr ""
-
-#: ../qml/pages/ChatInfosActions.qml:80
-msgid "Unmute"
-msgstr ""
-
-#: ../qml/pages/ChatInfosActions.qml:94
+#: ../qml/pages/ChatInfosActionsChatlist.qml:97
+#: ../qml/pages/ChatInfosActionsChatview.qml:111
 msgid "Show Encryption Info"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:144
+#: ../qml/pages/ChatInfosActionsChatlist.qml:150
+#: ../qml/pages/ChatInfosActionsChatview.qml:177
 msgid "Mute for 1 hour"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:158
+#: ../qml/pages/ChatInfosActionsChatlist.qml:164
+#: ../qml/pages/ChatInfosActionsChatview.qml:191
 msgid "Mute for 2 hours"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:172
+#: ../qml/pages/ChatInfosActionsChatlist.qml:178
+#: ../qml/pages/ChatInfosActionsChatview.qml:205
 msgid "Mute for 1 day"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:186
+#: ../qml/pages/ChatInfosActionsChatlist.qml:192
+#: ../qml/pages/ChatInfosActionsChatview.qml:219
 msgid "Mute for 7 days"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActions.qml:200
+#: ../qml/pages/ChatInfosActionsChatlist.qml:206
+#: ../qml/pages/ChatInfosActionsChatview.qml:233
 msgid "Mute forever"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:179
-msgid "Verified Contact"
-msgstr ""
-
-#: ../qml/pages/ChatView.qml:186 ../qml/pages/ChatView.qml:206
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:202
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:656
+#: ../qml/pages/ChatInfosActionsChatview.qml:128
+#: ../qml/pages/ConfirmClearChat.qml:42 ../qml/pages/ConfirmClearChat.qml:51
+msgid "Clear Chat"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:109 ../qml/pages/ChatView.qml:131
+#: ../qml/pages/ChatView.qml:661
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:658
+#: ../qml/pages/ChatView.qml:111 ../qml/pages/ChatView.qml:133
+#: ../qml/pages/ChatView.qml:663
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1496
+#: ../qml/pages/ChatView.qml:195
+msgid "Verified Contact"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:223
+msgid "More Actions"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1501
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1512 ../qml/pages/ChatView.qml:1689
+#: ../qml/pages/ChatView.qml:1517 ../qml/pages/ChatView.qml:1694
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1527
+#: ../qml/pages/ChatView.qml:1532
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1657
+#: ../qml/pages/ChatView.qml:1662
 msgid "Click to leave without sending"
 msgstr ""
 
@@ -668,6 +693,14 @@ msgstr ""
 #: ../qml/pages/ConfirmChatDeletion.qml:38
 #: ../qml/pages/ConfirmMsgDeletion.qml:39
 msgid "Are you sure you want to delete \"%1\"?"
+msgstr ""
+
+#: ../qml/pages/ConfirmClearChat.qml:36
+msgid "Delete %1 message here and on the server?"
+msgstr ""
+
+#: ../qml/pages/ConfirmClearChat.qml:38
+msgid "Delete %1 messages here and on the server?"
 msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
@@ -710,7 +743,7 @@ msgid ""
 "Delta Chat"
 msgstr ""
 
-#: ../qml/pages/ConfirmLeaveGroup.qml:30
+#: ../qml/pages/ConfirmLeaveGroup.qml:32
 msgid "Are you sure you want to leave this group?"
 msgstr ""
 
@@ -756,63 +789,63 @@ msgstr ""
 msgid "Remove Group Image"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:39
-#: ../qml/pages/EphemeralTimerSettings.qml:142
-#: ../qml/pages/EphemeralTimerSettings.qml:146
-#: ../qml/pages/EphemeralTimerSettings.qml:216
+#: ../qml/pages/EphemeralTimerSettings.qml:41
+#: ../qml/pages/EphemeralTimerSettings.qml:148
+#: ../qml/pages/EphemeralTimerSettings.qml:152
+#: ../qml/pages/EphemeralTimerSettings.qml:222
 #: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
 #: ../qml/pages/SettingsPage.qml:1111
 msgid "After 30 seconds"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:43
-#: ../qml/pages/EphemeralTimerSettings.qml:156
-#: ../qml/pages/EphemeralTimerSettings.qml:160
+#: ../qml/pages/EphemeralTimerSettings.qml:45
+#: ../qml/pages/EphemeralTimerSettings.qml:162
+#: ../qml/pages/EphemeralTimerSettings.qml:166
 #: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
 #: ../qml/pages/SettingsPage.qml:1132
 msgid "After 1 minute"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:47
-#: ../qml/pages/EphemeralTimerSettings.qml:170
-#: ../qml/pages/EphemeralTimerSettings.qml:174
+#: ../qml/pages/EphemeralTimerSettings.qml:49
+#: ../qml/pages/EphemeralTimerSettings.qml:176
+#: ../qml/pages/EphemeralTimerSettings.qml:180
 #: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
 #: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
 #: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
 msgid "After 1 hour"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:51
-#: ../qml/pages/EphemeralTimerSettings.qml:184
-#: ../qml/pages/EphemeralTimerSettings.qml:188
+#: ../qml/pages/EphemeralTimerSettings.qml:53
+#: ../qml/pages/EphemeralTimerSettings.qml:190
+#: ../qml/pages/EphemeralTimerSettings.qml:194
 #: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
 #: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
 #: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
 msgid "After 1 day"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:55
-#: ../qml/pages/EphemeralTimerSettings.qml:198
-#: ../qml/pages/EphemeralTimerSettings.qml:202
+#: ../qml/pages/EphemeralTimerSettings.qml:57
+#: ../qml/pages/EphemeralTimerSettings.qml:204
+#: ../qml/pages/EphemeralTimerSettings.qml:208
 #: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
 #: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
 #: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
 msgid "After 1 week"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:59
-#: ../qml/pages/EphemeralTimerSettings.qml:212
+#: ../qml/pages/EphemeralTimerSettings.qml:61
+#: ../qml/pages/EphemeralTimerSettings.qml:218
 #: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
 #: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
 #: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
 msgid "After 4 weeks"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:63
+#: ../qml/pages/EphemeralTimerSettings.qml:65
 msgid "After %1 seconds"
 msgstr ""
 
-#: ../qml/pages/EphemeralTimerSettings.qml:80
+#: ../qml/pages/EphemeralTimerSettings.qml:84
 msgid ""
 "Applies to all members of this chat if they use Delta Chat; they can still "
 "copy, save, and forward messages or use other e-mail clients."

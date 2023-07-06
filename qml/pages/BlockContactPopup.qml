@@ -23,22 +23,22 @@ import Lomiri.Components.Popups 1.3
 import DeltaHandler 1.0
 
 Dialog {
-    id: dialog
+    id: dialogConfirmBlock
     title: DeltaHandler.getMomentaryChatName()
         text: i18n.tr("Block this contact? You will no longer receive messages from them.")
 
     Button {
         text: i18n.tr("Cancel")
         onClicked: {
-            PopupUtils.close(dialog)
+            PopupUtils.close(dialogConfirmBlock)
         }
     }
     Button {
         text: i18n.tr('Block Contact')
         color: theme.palette.normal.negative
         onClicked: {
+            PopupUtils.close(dialogConfirmBlock)
             DeltaHandler.momentaryChatBlockContact()
-            PopupUtils.close(dialog)
         }
     }
 }

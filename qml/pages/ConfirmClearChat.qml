@@ -23,22 +23,37 @@ import Lomiri.Components.Popups 1.3
 import DeltaHandler 1.0
 
 Dialog {
-    id: confirmLeaveGroup
+    id: confirmMsgDel
 
-    signal done()
+    signal finished()
 
-    title: DeltaHandler.getMomentaryChatName()
+    property string chatName
 
-    text: i18n.tr("Are you sure you want to leave this group?")
+    Component.onCompleted: {
+        chatName = DeltaHandler.getMomentaryChatName()
+        let numberOfMsgs = DeltaHandler.chatmodel.getMessageCount()
+        if (1 == numberOfMsgs) {
+            confirmLabel1.text = i18n.tr("Delete %1 message here and on the server?").arg(numberOfMsgs)
+        } else {
+            confirmLabel1.text = i18n.tr("Delete %1 messages here and on the server?").arg(numberOfMsgs)
+        }
+    }
+
+    title: i18n.tr("Clear Chat")
+
+    Label {
+        id: confirmLabel1
+        wrapMode: Text.Wrap
+    }
 
     Button {
         id: okButton
-        text: i18n.tr("Leave Group")
+        text: i18n.tr("Clear Chat")
         color: theme.palette.normal.negative
         onClicked: {
-            DeltaHandler.momentaryChatLeaveGroup()
-            PopupUtils.close(confirmLeaveGroup)
-            done()
+            DeltaHandler.chatmodel.deleteAllMessagesInCurrentChat()
+            PopupUtils.close(confirmMsgDel)
+            finished()
         }
     }
 
@@ -46,8 +61,8 @@ Dialog {
         id: cancelButton
         text: i18n.tr("Cancel")
         onClicked: {
-            PopupUtils.close(confirmLeaveGroup)
-            done()
+            PopupUtils.close(confirmMsgDel)
+            finished()
         }
     }
 }

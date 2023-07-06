@@ -12,9 +12,11 @@
         <file>pages/BlockContactPopup.qml</file>
         <file>pages/BlockedContacts.qml</file>
         <file>pages/ChatView.qml</file>
-        <file>pages/ChatInfosActions.qml</file>
+        <file>pages/ChatInfosActionsChatlist.qml</file>
+        <file>pages/ChatInfosActionsChatview.qml</file>
         <file>pages/ConfirmAccountDeletion.qml</file>
         <file>pages/ConfirmChatDeletion.qml</file>
+        <file>pages/ConfirmClearChat.qml</file>
         <file>pages/ConfirmDeleteFromDevice.qml</file>
         <file>pages/ConfirmDeleteFromServer.qml</file>
         <file>pages/ConfirmLeaveGroup.qml</file>

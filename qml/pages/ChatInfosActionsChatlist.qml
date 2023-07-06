@@ -45,6 +45,20 @@ Dialog {
     }
 
     Button {
+        id: muteButton
+        text: isMuted ? i18n.tr("Unmute") : i18n.tr("Mute Notifications")
+        onClicked: {
+            if (isMuted) {
+                DeltaHandler.momentaryChatSetMuteDuration(0)
+                PopupUtils.close(dialog)
+            } else {
+                PopupUtils.open(popoverComponentMuteDuration, muteButton)
+            }
+        }
+        visible: !isDeviceTalk && !isSelfTalk
+    }
+
+    Button {
         id: blockContactButton
         text: i18n.tr("Block Contact")
         onClicked: {
@@ -69,24 +83,13 @@ Dialog {
         id: leaveGroupButton
         text: i18n.tr("Leave Group")
         onClicked: {
-            PopupUtils.open(Qt.resolvedUrl("ConfirmLeaveGroup.qml"))
+            let popup1 = PopupUtils.open(Qt.resolvedUrl("ConfirmLeaveGroup.qml"))
+            popup1.done.connect(function() {
+                PopupUtils.close(dialog)
+            })
         }
         visible: isGroup
         enabled: selfInGroup
-    }
-
-    Button {
-        id: muteButton
-        text: isMuted ? i18n.tr("Unmute") : i18n.tr("Mute Notifications")
-        onClicked: {
-            if (isMuted) {
-                DeltaHandler.momentaryChatSetMuteDuration(0)
-                PopupUtils.close(dialog)
-            } else {
-                PopupUtils.open(popoverComponentMuteDuration, muteButton)
-            }
-        }
-        visible: !isDeviceTalk && !isSelfTalk
     }
 
     Button {
@@ -94,11 +97,14 @@ Dialog {
         text: i18n.tr("Show Encryption Info")
         onClicked: {
             let tempString = DeltaHandler.getMomentaryChatEncInfo()
-            PopupUtils.open(
+            let popup2 = PopupUtils.open(
                 Qt.resolvedUrl("InfoPopup.qml"),
                 null,
                 { text: tempString }
             )
+            popup2.done.connect(function() {
+                PopupUtils.close(dialog)
+            })
         }
         visible: !isDeviceTalk && !isSelfTalk
     }

@@ -23,11 +23,14 @@ import Lomiri.Components.Popups 1.3
 Dialog {
     id: dialog
 
+    signal done()
+
     Button {
         text: 'OK'
         color: theme.palette.normal.focus
         onClicked: {
             PopupUtils.close(dialog)
+            done()
         }
     }
 }

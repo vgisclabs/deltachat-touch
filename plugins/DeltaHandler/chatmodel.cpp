@@ -22,7 +22,7 @@
 #include <limits> // for invalidating data_row
 
 ChatModel::ChatModel(QObject* parent)
-    : QAbstractListModel(parent), currentMsgContext {nullptr}, chatID {0}, m_chatIsBeingViewed {false}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
+    : QAbstractListModel(parent), currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
 { 
 };
 
@@ -552,6 +552,29 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
 }
 
 
+// Returns the number of messages in the current chat,
+// the unread message bar (if present) is NOT inlcuded
+// in this number
+int ChatModel::getMessageCount()
+{
+    if (m_chatIsBeingViewed) {
+        if (m_unreadMessageBarIndex != -1) {
+            // the unread message bar is in the 
+            // message vector, return the number of
+            // messages without it
+            return currentMsgCount - 1;
+        } else {
+            // the unread message bar is not in the 
+            // message vector, can use currentMsgCount
+            // directly
+            return currentMsgCount;
+        }
+    } else {
+        return 0;
+    }
+}
+
+
 void ChatModel::setMomentaryMessage(int myindex)
 {
     m_MomentaryMsgId = msgVector[myindex];
@@ -592,10 +615,10 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
 
     m_isContactRequest = cIsContactRequest;
 
-    chatID = cID;
+    m_chatID = cID;
     currentMsgContext = context;
 
-    dc_array_t* msgArray = dc_get_chat_msgs(currentMsgContext, chatID, 0, 0);
+    dc_array_t* msgArray = dc_get_chat_msgs(currentMsgContext, m_chatID, 0, 0);
     currentMsgCount = dc_array_get_cnt(msgArray);
 
     // When a chat is selected from the chat list, its existing
@@ -684,7 +707,7 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
         dc_msg_unref(currentMessageDraft);
     }
 
-    currentMessageDraft = dc_get_draft(currentMsgContext, chatID);
+    currentMessageDraft = dc_get_draft(currentMsgContext, m_chatID);
 }
 
 
@@ -720,7 +743,7 @@ void ChatModel::newMessage(int msgID)
         data_tempMsg = nullptr;
     }
 
-    dc_array_t* newMsgArray = dc_get_chat_msgs(currentMsgContext, chatID, 0, 0);
+    dc_array_t* newMsgArray = dc_get_chat_msgs(currentMsgContext, m_chatID, 0, 0);
     size_t newMsgCount = dc_array_get_cnt(newMsgArray);
 
     // idea for algorithm taken from kdeltachat, see
@@ -845,6 +868,23 @@ void ChatModel::deleteMomentaryMessage()
 }
 
 
+void ChatModel::deleteAllMessagesInCurrentChat()
+{
+    std::vector<uint32_t> tempVector = msgVector;
+
+    if (-1 != m_unreadMessageBarIndex) {
+        // unread message bar needs to be removed
+        // from the vector
+        std::vector<uint32_t>::iterator it;
+        it = tempVector.begin();
+        
+        tempVector.erase(it + m_unreadMessageBarIndex);
+    }
+
+    dc_delete_msgs(currentMsgContext, tempVector.data(), tempVector.size());
+}
+
+
 QString ChatModel::getMomentarySummarytext()
 {
     dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, m_MomentaryMsgId);
@@ -887,7 +927,7 @@ QString ChatModel::getMomentaryText()
 
 int ChatModel::getUnreadMessageCount()
 {
-    return dc_get_fresh_msg_cnt(currentMsgContext, chatID);
+    return dc_get_fresh_msg_cnt(currentMsgContext, m_chatID);
 }
 
 
@@ -899,7 +939,7 @@ int ChatModel::getUnreadMessageBarIndex()
 
 bool ChatModel::chatCanSend()
 {
-    dc_chat_t* tempChat = dc_get_chat(currentMsgContext, chatID);
+    dc_chat_t* tempChat = dc_get_chat(currentMsgContext, m_chatID);
 
     if (!tempChat) {
         qDebug() << "ChatModel::chatIsDeviceTalk(): ERROR getting chat, returning false.";
@@ -915,7 +955,7 @@ bool ChatModel::chatCanSend()
 
 bool ChatModel::chatIsDeviceTalk()
 {
-    dc_chat_t* tempChat = dc_get_chat(currentMsgContext, chatID);
+    dc_chat_t* tempChat = dc_get_chat(currentMsgContext, m_chatID);
 
     if (!tempChat) {
         qDebug() << "ChatModel::chatIsDeviceTalk(): ERROR getting chat, returning false.";
@@ -933,7 +973,7 @@ bool ChatModel::selfIsInGroup()
 {
     // assumes that the current chat really is a group
 
-    dc_array_t* tempContactsArray = dc_get_chat_contacts(currentMsgContext, chatID);
+    dc_array_t* tempContactsArray = dc_get_chat_contacts(currentMsgContext, m_chatID);
     
     bool isInGroup = false;
 
@@ -1059,6 +1099,12 @@ QString ChatModel::getMomentaryInfo()
 }
 
 
+uint32_t ChatModel::getCurrentChatId()
+{
+    return m_chatID;
+}
+
+
 QVariant ChatModel::callData(int myindex, QString role)
 {
     // TODO: maybe this is not used anymore due to the
@@ -1160,7 +1206,7 @@ QString ChatModel::getDraft()
     char* tempText {nullptr};
     QString tempQString("");
     
-    tempMsg = dc_get_draft(currentMsgContext, chatID);
+    tempMsg = dc_get_draft(currentMsgContext, m_chatID);
 
     if (tempMsg) {
         tempText = dc_msg_get_text(tempMsg);
@@ -1177,13 +1223,13 @@ void ChatModel::setDraft(QString draftText)
 {
     if (currentMessageDraft) {
         if ("" == draftText && !draftHasQuote() && !draftHasAttachment()) {
-            dc_set_draft(currentMsgContext, chatID, NULL);
+            dc_set_draft(currentMsgContext, m_chatID, NULL);
             dc_msg_unref(currentMessageDraft);
             currentMessageDraft = nullptr;
 
         } else {
             dc_msg_set_text(currentMessageDraft, draftText.toUtf8().constData());
-            dc_set_draft(currentMsgContext, chatID, currentMessageDraft);
+            dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
         }
 
     // no draft exists, and the message enter field is empty,
@@ -1195,7 +1241,7 @@ void ChatModel::setDraft(QString draftText)
     } else {
         currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
         dc_msg_set_text(currentMessageDraft, draftText.toUtf8().constData());
-        dc_set_draft(currentMsgContext, chatID, currentMessageDraft);
+        dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
     }
 }
 
@@ -1559,7 +1605,7 @@ void ChatModel::initiateQuotedMsgJump(int myindex)
 
     if (quotedMsg) {
         uint32_t tempChatID = dc_msg_get_chat_id(quotedMsg);
-        if (chatID != tempChatID) {
+        if (m_chatID != tempChatID) {
             qDebug() << "ChatModel::initiateQuotedMsgJump: Message to jump to is in different chat";
         } else {
             uint32_t quotedMsgID = dc_msg_get_id(quotedMsg);
@@ -1660,7 +1706,7 @@ void ChatModel::sendMessage(QString messageText)
 
     dc_msg_set_text(currentMessageDraft, messageText.toUtf8().constData());
 
-    dc_send_msg(currentMsgContext, chatID, currentMessageDraft);
+    dc_send_msg(currentMsgContext, m_chatID, currentMessageDraft);
 
     dc_msg_unref(currentMessageDraft);
     currentMessageDraft = nullptr;
@@ -1801,7 +1847,7 @@ void ChatModel::updateQuery(QString query)
 
     // must not unref currentSearchMsgArray here as it has been
     // copied to oldSearchMsgArray
-    currentSearchMsgArray = dc_search_msgs(currentMsgContext, chatID, m_query.toUtf8().constData());
+    currentSearchMsgArray = dc_search_msgs(currentMsgContext, m_chatID, m_query.toUtf8().constData());
     m_searchCountTotal = dc_array_get_cnt(currentSearchMsgArray);
     if (m_searchCountTotal > 0) {
         m_searchCountCurrent = m_searchCountTotal - 1;

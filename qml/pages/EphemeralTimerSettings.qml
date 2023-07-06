@@ -26,51 +26,55 @@ Dialog {
     id: dialog
     title: i18n.tr("Disappearing Messages")
 
+    signal done()
+
     property var currentTimer: DeltaHandler.getChatEphemeralTimer(-1)
     property var newTimer: DeltaHandler.getChatEphemeralTimer(-1)
 
     Component.onCompleted: {
         switch (currentTimer) {
             case 0:
-                ephemeralCombo.text = i18n.tr("Off")
+                ephemeralDropdown.text = i18n.tr("Off")
                 break;
 
             case 30:
-                ephemeralCombo.text = i18n.tr("After 30 seconds")
+                ephemeralDropdown.text = i18n.tr("After 30 seconds")
                 break;
 
             case 60:
-                ephemeralCombo.text = i18n.tr("After 1 minute")
+                ephemeralDropdown.text = i18n.tr("After 1 minute")
                 break;
 
             case 3600:
-                ephemeralCombo.text = i18n.tr("After 1 hour")
+                ephemeralDropdown.text = i18n.tr("After 1 hour")
                 break;
 
             case 86400:
-                ephemeralCombo.text = i18n.tr("After 1 day")
+                ephemeralDropdown.text = i18n.tr("After 1 day")
                 break;
 
             case 608400:
-                ephemeralCombo.text = i18n.tr("After 1 week")
+                ephemeralDropdown.text = i18n.tr("After 1 week")
                 break;
 
             case 2419200:
-                ephemeralCombo.text = i18n.tr("After 4 weeks")
+                ephemeralDropdown.text = i18n.tr("After 4 weeks")
                 break;
 
             default:
-                ephemeralCombo.text = i18n.tr("After %1 seconds").arg(currentTimer)
+                ephemeralDropdown.text = i18n.tr("After %1 seconds").arg(currentTimer)
                 break;
 
         }
     }
 
-    ComboButton {
-        id: ephemeralCombo
+    Button {
+        id: ephemeralDropdown
         text: "Test"
+        iconPosition: "right"
+        iconName: "go-down"
         onClicked: {
-            PopupUtils.open(popoverComponentEphemeral, ephemeralCombo)
+            PopupUtils.open(popoverComponentEphemeral, ephemeralDropdown)
 
         }
 
@@ -85,6 +89,7 @@ Dialog {
         text: 'Cancel'
         onClicked: {
             PopupUtils.close(dialog)
+            done()
         }
     }
 
@@ -97,6 +102,7 @@ Dialog {
                 DeltaHandler.setChatEphemeralTimer(-1, newTimer)
             }
             PopupUtils.close(dialog)
+            done()
         }
     }
 
@@ -106,11 +112,11 @@ Dialog {
             id: popoverEphemeral
 
             Component.onCompleted: {
-                ephemeralCombo.expanded = true
+                ephemeralDropdown.iconName = "go-up"
             }
 
             Component.onDestruction: {
-                ephemeralCombo.expanded = false
+                ephemeralDropdown.iconName = "go-down"
             }
 
             Column {
@@ -129,7 +135,7 @@ Dialog {
                     }
                     onClicked: {
                         newTimer = 0
-                        ephemeralCombo.text = i18n.tr("Off")
+                        ephemeralDropdown.text = i18n.tr("Off")
                         PopupUtils.close(popoverEphemeral)
                     }
                 }
@@ -143,7 +149,7 @@ Dialog {
                     }
                     onClicked: {
                         newTimer = 30
-                        ephemeralCombo.text = i18n.tr("After 30 seconds")
+                        ephemeralDropdown.text = i18n.tr("After 30 seconds")
                         PopupUtils.close(popoverEphemeral)
                     }
                 }
@@ -157,7 +163,7 @@ Dialog {
                     }
                     onClicked: {
                         newTimer = 60
-                        ephemeralCombo.text = i18n.tr("After 1 minute")
+                        ephemeralDropdown.text = i18n.tr("After 1 minute")
                         PopupUtils.close(popoverEphemeral)
                     }
                 }
@@ -171,7 +177,7 @@ Dialog {
                     }
                     onClicked: {
                         newTimer = 3600
-                        ephemeralCombo.text = i18n.tr("After 1 hour")
+                        ephemeralDropdown.text = i18n.tr("After 1 hour")
                         PopupUtils.close(popoverEphemeral)
                     }
                 }
@@ -185,7 +191,7 @@ Dialog {
                     }
                     onClicked: {
                         newTimer = 86400
-                        ephemeralCombo.text = i18n.tr("After 1 day")
+                        ephemeralDropdown.text = i18n.tr("After 1 day")
                         PopupUtils.close(popoverEphemeral)
                     }
                 }
@@ -199,7 +205,7 @@ Dialog {
                     }
                     onClicked: {
                         newTimer = 608400
-                        ephemeralCombo.text = i18n.tr("After 1 week")
+                        ephemeralDropdown.text = i18n.tr("After 1 week")
                         PopupUtils.close(popoverEphemeral)
                     }
                 }
@@ -213,7 +219,7 @@ Dialog {
                     }
                     onClicked: {
                         newTimer = 2419200
-                        ephemeralCombo.text = i18n.tr("After 30 seconds")
+                        ephemeralDropdown.text = i18n.tr("After 30 seconds")
                         PopupUtils.close(popoverEphemeral)
                     }
                 }

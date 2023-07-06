@@ -47,7 +47,7 @@ MainView {
     }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.0.1'
+    property string version: '1.1.0'
 
     // Color scheme
     //
@@ -568,7 +568,7 @@ MainView {
                     onTriggered: {
                         // the index is passed as parameter and can
                         // be accessed via 'value'
-                        DeltaHandler.setChatIDMomentaryIndex(value)
+                        DeltaHandler.setMomentaryChatIdByIndex(value)
                         PopupUtils.open(Qt.resolvedUrl('pages/ConfirmChatDeletion.qml'))
                     }
                 }
@@ -582,22 +582,22 @@ MainView {
                         onTriggered: {
                             // the index is passed as parameter and can
                             // be accessed via 'value'
-                            DeltaHandler.setChatIDMomentaryIndex(value)
+                            DeltaHandler.setMomentaryChatIdByIndex(value)
                             DeltaHandler.archiveMomentaryChat()
                         }
                     },
                     Action {
                         iconName: "pinned"
                         onTriggered: {
-                            DeltaHandler.setChatIDMomentaryIndex(value)
+                            DeltaHandler.setMomentaryChatIdByIndex(value)
                             DeltaHandler.pinUnpinMomentaryChat()
                         }
                     },
                     Action {
                         iconName: "navigation-menu"
                         onTriggered: {
-                            DeltaHandler.setChatIDMomentaryIndex(value)
-                            PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActions.qml'))
+                            DeltaHandler.setMomentaryChatIdByIndex(value)
+                            PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActionsChatlist.qml'))
                         }
                     }
                 ]
@@ -611,15 +611,15 @@ MainView {
                     Action {
                         iconName: "folder-symbolic"
                         onTriggered: {
-                            DeltaHandler.setChatIDMomentaryIndex(value)
+                            DeltaHandler.setMomentaryChatIdByIndex(value)
                             DeltaHandler.unarchiveMomentaryChat()
                         }
                     },
                     Action {
                         iconName: "navigation-menu"
                         onTriggered: {
-                            DeltaHandler.setChatIDMomentaryIndex(value)
-                            PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActions.qml'))
+                            DeltaHandler.setMomentaryChatIdByIndex(value)
+                            PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActionsChatlist.qml'))
                         }
                     }
                 ]

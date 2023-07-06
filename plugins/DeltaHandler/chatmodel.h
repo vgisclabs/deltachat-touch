@@ -43,6 +43,8 @@ public:
 
     Q_INVOKABLE void deleteMomentaryMessage();
 
+    Q_INVOKABLE void deleteAllMessagesInCurrentChat();
+
     Q_INVOKABLE QString getMomentarySummarytext();
 
     Q_INVOKABLE QString getMomentaryText();
@@ -50,6 +52,8 @@ public:
     Q_INVOKABLE int getMomentaryViewType();
 
     Q_INVOKABLE QString getMomentaryInfo();
+
+    Q_INVOKABLE uint32_t getCurrentChatId();
 
     Q_INVOKABLE int getUnreadMessageCount();
 
@@ -126,6 +130,9 @@ public:
     virtual int rowCount(const QModelIndex &parent) const;
     virtual QVariant data(const QModelIndex &index, int role) const;
 
+    // Returns the number of messages in the current chat
+    Q_INVOKABLE int getMessageCount();
+
 public slots:
     void messageStatusChangedSlot(int msgID);
     void appIsActiveAgainActions();
@@ -163,7 +170,7 @@ private slots:
 private:
     DeltaHandler* m_dhandler;
     dc_context_t* currentMsgContext;
-    uint32_t chatID;
+    uint32_t m_chatID;
     bool m_chatIsBeingViewed;
     size_t currentMsgCount;
     std::vector<uint32_t> msgVector;

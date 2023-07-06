@@ -104,10 +104,18 @@ Page {
             // CAVE: is emitted by both DeltaHandler and ChatModel
             chatname = DeltaHandler.chatName()
             chatCanSend = DeltaHandler.chatmodel.chatCanSend()
+            if (!chatCanSend) {
+                if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
+                    cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
+                } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
+                    cannotSendLabel.text = i18n.tr("You must be in this group to post a message. To join, ask another member.")
+                } else {
+                    cannotSendLabel.text = ""
+                }
+            }
             isContactRequest = DeltaHandler.chatIsContactRequest
             leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
             leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
-            trailingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) == 0
         }
     }
 
@@ -118,10 +126,18 @@ Page {
             // CAVE: is emitted by both DeltaHandler and ChatModel
             chatname = DeltaHandler.chatName()
             chatCanSend = DeltaHandler.chatmodel.chatCanSend()
+            if (!chatCanSend) {
+                if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
+                    cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
+                } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
+                    cannotSendLabel.text = i18n.tr("You must be in this group to post a message. To join, ask another member.")
+                } else {
+                    cannotSendLabel.text = ""
+                }
+            }
             isContactRequest = DeltaHandler.chatIsContactRequest
             leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
             leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
-            trailingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) == 0
         }
 
         onJumpToMsg: {
@@ -201,29 +217,18 @@ Page {
 
         trailingActionBar.actions: [
             Action {
-                id: trailingEphemeralAction
-                iconName: "timer"
-                text: i18n.tr("Disappearing Messages")
-                visible: DeltaHandler.getChatEphemeralTimer(-1) == 0
+                iconName: 'navigation-menu'
+                // TODO: string not translated (is not shown
+                // on phone, but maybe in desktop mode?)
+                text: i18n.tr("More Actions")
                 onTriggered: {
-                    PopupUtils.open(Qt.resolvedUrl("EphemeralTimerSettings.qml"))
-                }
-            },
-
-            Action {
-                iconName: 'edit'
-                text: i18n.tr("Edit Group")
-                onTriggered: {
-                    DeltaHandler.startEditGroup(-1)
-                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false })
-                }
-                visible: {
-                    if (DeltaHandler.chatIsGroup(-1)) {
-                        if (DeltaHandler.selfIsInGroup(-1)) {
-                            return true
-                        }
-                    }
-                    return false
+                    DeltaHandler.setMomentaryChatIdById(DeltaHandler.chatmodel.getCurrentChatId())
+                    let popup = PopupUtils.open(Qt.resolvedUrl("ChatInfosActionsChatview.qml"))
+                    popup.closeDialogAndLeaveChatView.connect(function() {
+                        PopupUtils.close(popup)
+                        // see Timer in QrShowScan.qml
+                        leaveTimer.start()
+                    })
                 }
             },
 
@@ -1705,6 +1710,16 @@ Page {
         triggeredOnStart: false
         onTriggered: {
             view.positionViewAtIndex(DeltaHandler.chatmodel.getUnreadMessageBarIndex(), ListView.End)
+        }
+    }
+
+    Timer {
+        id: leaveTimer
+        interval: 100
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            layout.removePages(chatViewPage)
         }
     }
 } // end Page id: chatViewPage

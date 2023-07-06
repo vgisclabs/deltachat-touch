@@ -17,13 +17,15 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.3
+import Lomiri.Components 1.3
+import Lomiri.Components.Popups 1.3
 
 import DeltaHandler 1.0
 
 Dialog {
     id: dialog
+
+    signal closeDialogAndLeaveChatView()
 
     property bool isGroup: DeltaHandler.momentaryChatIsGroup()
     property bool isDeviceTalk: DeltaHandler.momentaryChatIsDeviceTalk()
@@ -40,8 +42,34 @@ Dialog {
     Connections {
         target: DeltaHandler
         onChatBlockContactDone: {
-            PopupUtils.close(dialog)
+            closeDialogAndLeaveChatView()
         }
+    }
+
+    Button {
+        id: ephemeralTimerButton
+        text: i18n.tr("Disappearing Messages")
+        onClicked: {
+            let popup2 = PopupUtils.open(Qt.resolvedUrl("EphemeralTimerSettings.qml"))
+            popup2.done.connect(function() {
+                PopupUtils.close(dialog)
+                })
+        }
+        visible: !isDeviceTalk
+    }
+
+    Button {
+        id: muteButton
+        text: isMuted ? i18n.tr("Unmute") : i18n.tr("Mute Notifications")
+        onClicked: {
+            if (isMuted) {
+                DeltaHandler.momentaryChatSetMuteDuration(0)
+                PopupUtils.close(dialog)
+            } else {
+                PopupUtils.open(popoverComponentMuteDuration, muteButton)
+            }
+        }
+        visible: !isSelfTalk
     }
 
     Button {
@@ -69,24 +97,13 @@ Dialog {
         id: leaveGroupButton
         text: i18n.tr("Leave Group")
         onClicked: {
-            PopupUtils.open(Qt.resolvedUrl("ConfirmLeaveGroup.qml"))
+            let popup3 = PopupUtils.open(Qt.resolvedUrl("ConfirmLeaveGroup.qml"))
+            popup3.done.connect(function() {
+                PopupUtils.close(dialog)
+                })
         }
         visible: isGroup
         enabled: selfInGroup
-    }
-
-    Button {
-        id: muteButton
-        text: isMuted ? i18n.tr("Unmute") : i18n.tr("Mute Notifications")
-        onClicked: {
-            if (isMuted) {
-                DeltaHandler.momentaryChatSetMuteDuration(0)
-                PopupUtils.close(dialog)
-            } else {
-                PopupUtils.open(popoverComponentMuteDuration, muteButton)
-            }
-        }
-        visible: !isDeviceTalk && !isSelfTalk
     }
 
     Button {
@@ -94,13 +111,29 @@ Dialog {
         text: i18n.tr("Show Encryption Info")
         onClicked: {
             let tempString = DeltaHandler.getMomentaryChatEncInfo()
-            PopupUtils.open(
+            let popup4 = PopupUtils.open(
                 Qt.resolvedUrl("InfoPopup.qml"),
                 null,
                 { text: tempString }
             )
+            popup4.done.connect(function() {
+                PopupUtils.close(dialog)
+            })
         }
         visible: !isDeviceTalk && !isSelfTalk
+    }
+
+    Button {
+        id: clearChatButton
+        text: i18n.tr("Clear Chat")
+        onClicked: {
+            let popup5 = PopupUtils.open(Qt.resolvedUrl("ConfirmClearChat.qml"))
+            popup5.finished.connect(function() {
+                PopupUtils.close(dialog)
+            })
+
+        }
+        visible: 0 != DeltaHandler.chatmodel.getMessageCount()
     }
 
     Button {

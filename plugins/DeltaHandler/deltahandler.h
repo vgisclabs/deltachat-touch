@@ -73,8 +73,9 @@ public:
     enum SearchJumpToPosition { PositionFirst, PositionPrev, PositionNext, PositionLast };
     Q_ENUM(SearchJumpToPosition)
 
-    // see m_chatIDMomentaryIndex below
-    Q_INVOKABLE void setChatIDMomentaryIndex(int myindex);
+    // see m_momentaryChatId below
+    Q_INVOKABLE void setMomentaryChatIdByIndex(int myindex);
+    Q_INVOKABLE void setMomentaryChatIdById(uint32_t myId);
 
     // invoked by a tap/click on a list item representing a chat
     // on the chat overview page
@@ -457,7 +458,7 @@ private:
     // is unsafe because the index of the selected chat might
     // change in the background while the user is still
     // in some action page
-    uint32_t m_chatIDMomentaryIndex;
+    uint32_t m_momentaryChatId;
 
     // for searching the chatlist
     QString m_query;

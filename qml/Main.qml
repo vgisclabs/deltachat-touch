@@ -61,16 +61,20 @@ MainView {
     // in darkmode not doing the live switch instead of UITK doing it as
     // well??
     property bool darkmode
-    property string otherMessageBackgroundColor: root.darkmode ? "#3b3b3b" : "#e9e9e9" //"#d3d3d3"
+    property string otherMessageBackgroundColor: root.darkmode ? "#3b3b3b" : "#e9e9e9"
     property string selfMessagePendingBackgroundColor: root.darkmode ? "#86d3db" : "#f0fafb"
-    property string selfMessageSentBackgroundColor: root.darkmode ? "#0ca7b6" : "#cbecf0" //"#0ca7b6" : "#e1f4f6"
+    property string selfMessageSentBackgroundColor: root.darkmode ? "#0dbece" : "#cbecf0" //"#0ca7b6" : "#cbecf0"
     property string selfMessageSeenBackgroundColor: root.darkmode ? "#06545b" : "#2bb2c0"
     property string selfMessageSentTextColor: root.darkmode ? "black" : "black"
     property string selfMessageSeenTextColor: root.darkmode ? "white" : "black"
-    property string unreadMessageCounterColor: "#053f45" //root.darkmode ? "#000080" : "#968cd9"
+    property string unreadMessageCounterColor: "#053f45"
     property string unreadMessageBarColor: root.darkmode ? "#000080" : "#968cd9"
     property string searchResultMessageColor: "#d55e00"
     property string dtLinkColor: root.darkmode ? "#8888ff" : "#0000ff"
+    property string otherMessageLinkColor: root.darkmode ? "#ccccff" : "#0000ff"
+    property string selfMessageSentLinkColor: root.darkmode ? "#0000aa" : "#0000c2"
+    property string selfMessageSeenLinkColor: root.darkmode ? "#b8b8ff" : "#0000BB"
+
 
     // If there are any archived chats, a pseudo-chat "Archived Chats" will
     // be shown in the list of chats. When clicked, only the archived chats

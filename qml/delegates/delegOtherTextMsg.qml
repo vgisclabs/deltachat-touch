@@ -192,6 +192,7 @@ Item {
             }
             text: model.text
             color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
+            linkColor: model.isSearchResult ? "#0000ff" : root.otherMessageLinkColor
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)
         }

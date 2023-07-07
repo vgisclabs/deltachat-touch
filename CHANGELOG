@@ -1,0 +1,11 @@
+1.1.0 2023-07-07
+Feature: Clear chat
+UI: Adapt link colors for better contrast
+Bugfix: Correctly format links after newline
+
+1.0.1 2023-07-04
+Bugfix: Keep aspect ratio in image viewer for small images, too
+Bugfix: Adapt decorations of message bubbles if new message is received
+
+1.0.0 2023-07-01
+Initial release

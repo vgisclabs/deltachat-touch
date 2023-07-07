@@ -205,6 +205,7 @@ Item {
             }
             text: model.text
             color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
+            linkColor: model.isSearchResult ? "#0000ff" : root.otherMessageLinkColor
             visible: text != ""
             width: parentWidth - avatarShape.width - units.gu(5)
             wrapMode: Text.Wrap

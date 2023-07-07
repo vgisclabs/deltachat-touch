@@ -233,6 +233,7 @@ Item {
                 visible: model.text != ""
                 text: model.text
                 color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
+                linkColor: model.isSearchResult ? "#0000ff" : root.otherMessageLinkColor
                 // TODO: 'QML Label: Binding loop detected for property "width"'
                 //width: contentWidth > parentWidth - units.gu(2) ? parentWidth - units.gu(2) : contentWidth
                 wrapMode: Text.Wrap

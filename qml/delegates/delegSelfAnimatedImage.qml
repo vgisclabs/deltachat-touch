@@ -209,6 +209,7 @@ Item {
             }
             text: model.text
             color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
+            linkColor: model.isSearchResult ? "#0000ff" : model.messageSeen ? root.selfMessageSeenLinkColor : root.selfMessageSentLinkColor
             visible: model.text != ""
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)

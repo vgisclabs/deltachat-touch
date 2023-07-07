@@ -182,6 +182,7 @@ UbuntuShape {
         text: model.text
         wrapMode: Text.Wrap
         color: summaryLabel.color
+        linkColor: model.isSearchResult ? "#0000ff" : model.messageSeen ? root.selfMessageSeenLinkColor : root.selfMessageSentLinkColor
         visible: text != ""
         onLinkActivated: Qt.openUrlExternally(link)
     }

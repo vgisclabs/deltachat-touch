@@ -134,6 +134,7 @@ Item {
             }
             text: model.summarytext + delegItem.stateText
             color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
+            linkColor: model.isSearchResult ? "#0000ff" : root.otherMessageLinkColor
             onLinkActivated: {
                 DeltaHandler.chatmodel.downloadFullMessage(index)
                 delegItem.stateText = " - " + i18n.tr("Downloading…")

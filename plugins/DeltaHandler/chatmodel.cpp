@@ -484,7 +484,13 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
             // see a simple solution. It's a temporary solution anyway
             // that is to be replaced by message-parser in the future.
             if (!tempQString.contains(alreadyFormattedAsLink)) {
-                tempQString.replace(weblinkRegExp, "<a href=\"\\1\">\\1</a>");
+                QString tempOriginal = tempQString;
+                tempQString.replace(weblinkRegExp, QString("<a href=\"\\1\">\\1</a>"));
+               
+                // only replace \n by <br> if there's actually a link the text
+                if (tempOriginal != tempQString) {
+                    tempQString.replace(QString("\n"), QString("<br>"));
+                }
             }
             retval = tempQString;
 

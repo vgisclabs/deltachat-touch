@@ -1,6 +1,7 @@
 1.1.0 2023-07-07
 Feature: Clear chat
 UI: Adapt link colors for better contrast
+UI: Show information if provider needs special settings
 Bugfix: Correctly format links after newline
 Bugfix: (focal only) Correct About page to state focal instead of xenial
 

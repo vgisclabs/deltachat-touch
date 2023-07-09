@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-06 20:26+0000\n"
+"POT-Creation-Date: 2023-07-09 19:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,41 +35,41 @@ msgstr "Нова порука"
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:284 ../qml/Main.qml:291
+#: ../qml/Main.qml:288 ../qml/Main.qml:295
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:284 ../qml/Main.qml:291 ../qml/Main.qml:338
+#: ../qml/Main.qml:288 ../qml/Main.qml:295 ../qml/Main.qml:342
 #: ../qml/pages/AccountConfig.qml:139
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:285 ../qml/Main.qml:292
+#: ../qml/Main.qml:289 ../qml/Main.qml:296
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:491 ../qml/pages/ChatView.qml:237
+#: ../qml/Main.qml:495 ../qml/pages/ChatView.qml:237
 #: ../qml/pages/ChatView.qml:282 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "Претрага"
 
-#: ../qml/Main.qml:542
+#: ../qml/Main.qml:546
 msgid "Archived Chats"
 msgstr "Архивирана ћаскања"
 
-#: ../qml/Main.qml:747
+#: ../qml/Main.qml:751
 msgid "Request"
 msgstr "Захтев"
 
-#: ../qml/Main.qml:811
+#: ../qml/Main.qml:815
 msgid "Loading…"
 msgstr "Учитавање..."
 
-#: ../qml/Main.qml:837 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:841 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "Ново ћаскање"
 
-#: ../qml/Main.qml:894 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:143
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
@@ -128,7 +128,7 @@ msgid "Download failed"
 msgstr "Преузимање није успело"
 
 #: ../qml/delegates/delegOtherToDownload.qml:49
-#: ../qml/delegates/delegOtherToDownload.qml:139
+#: ../qml/delegates/delegOtherToDownload.qml:140
 #: ../qml/delegates/delegSelfToDownload.qml:55
 #: ../qml/delegates/delegSelfToDownload.qml:114
 msgid "Downloading…"
@@ -165,7 +165,7 @@ msgid "deltatouch@mailbox.org"
 msgstr ""
 
 #: ../qml/pages/About.qml:150
-msgid "This app is powered by deltachat-core"
+msgid "This app is powered by deltachat-core-rust"
 msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:250
@@ -263,7 +263,7 @@ msgstr "Бар-кôд"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:195
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:656
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:768
 #: ../qml/pages/QrShowScan.qml:480
 msgid "Configuring..."
 msgstr ""
@@ -278,7 +278,7 @@ msgstr "Направите нову е-адресу на „%1“ и прист�
 msgid "Log into \"%1\"?"
 msgstr "Пријави се у „%1“?"
 
-#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:110
 #: ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
 #: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
@@ -306,30 +306,30 @@ msgstr "Нова потврђена група"
 msgid "Enter name or e-mail address"
 msgstr "Унесите име или е-адресу"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:45
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:680
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:50
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:792
 #: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:781
 msgid "No, chats only"
 msgstr "Не, само ћаскања"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:48
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:694
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:53
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:806
 #: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:795
 msgid "For accepted contacts"
 msgstr "За прихваћене контакте"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:51
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:708
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:56
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:820
 #: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
 #: ../qml/pages/SettingsPage.qml:809 ../qml/pages/SettingsPage.qml:837
 msgid "All"
 msgstr "Сви"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:76
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:100
 msgid "Log In"
 msgstr "Пријави се"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:91
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:115
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
@@ -338,75 +338,83 @@ msgstr "Пријави се"
 msgid "OK"
 msgstr "У реду"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:178
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:200
 msgid "Log in with an existing e-mail account"
 msgstr "Пријавите се преко постојећег налога е-поште"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:191
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:213
 msgid "E-Mail Address"
 msgstr "Е-адреса"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:215
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:266
 msgid "Password"
 msgstr "Лозинка"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:275
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:352
+msgid "More Info"
+msgstr "Више података"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:374
+msgid "There are no Delta Chat servers, your data stays on your device."
+msgstr "Не постоји сервер Делта ћаскања. Апликација користи само сервер ваше е-поште."
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:387
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
 msgstr "За познате пружаоце услуге е-поште, додатне поставке се одређују аутоматски. Каткад, морате омогућити ИМАП у поставкама на веб сучељу ваше е-поште.\n\nПосаветујте се са пружаоцем услуге е-поште или пријатељима ако наиђете на проблеме."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:299
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:411
 #: ../qml/pages/SettingsPage.qml:399
 msgid "Show Classic E-Mails"
 msgstr "Прикажи обичне поруке е-поште"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:331
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:443
 #: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:746
 msgid "Advanced"
 msgstr "Напредно"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:352
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:464
 msgid "Inbox"
 msgstr "Пријем"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:470
 msgid "IMAP Login Name"
 msgstr "Корисничко име за ИМАП"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:365
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:444
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:477
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:544
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:556
 msgid "Default (same as above)"
 msgstr "Задато (исто као изнад)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:370
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:482
 msgid "IMAP Server"
 msgstr "ИМАП сервер"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:377
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:397
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:456
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:476
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:489
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:509
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:568
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:588
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:605
 msgid "Automatic"
 msgstr "Аутоматски"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:382
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:494
 msgid "IMAP Port"
 msgstr "ИМАП сервер"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:389
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:501
 msgid "Default (%1)"
 msgstr "Задато (%1)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:507
 msgid "IMAP Security"
 msgstr "ИМАП безбедност"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:512
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:591
 #: ../qml/pages/ChatInfosActionsChatlist.qml:136
 #: ../qml/pages/ChatInfosActionsChatview.qml:163
 #: ../qml/pages/EphemeralTimerSettings.qml:37
@@ -415,72 +423,72 @@ msgstr "ИМАП безбедност"
 msgid "Off"
 msgstr "Искључено"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:419
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:531
 msgid "Outbox"
 msgstr "Отпрем"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:425
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:537
 msgid "SMTP Login Name"
 msgstr "Корисничко име за СМТП"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:437
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:549
 msgid "SMTP Password"
 msgstr "Лозинка за СМТП"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:449
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
 msgid "SMTP Server"
 msgstr "СМТП сервер"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:461
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:573
 msgid "SMTP Port"
 msgstr "СМТП порт"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:468
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:574
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:580
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:673
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:686
 msgid "Standard (%1)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:474
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:586
 msgid "SMTP Security"
 msgstr "СМТП безбедност"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:603
 msgid "Certificate Checks"
 msgstr "Провери сертификате"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:494
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:606
 msgid "Strict"
 msgstr "Строг"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:495
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:607
 msgid "Accept invalid certificates"
 msgstr "Прихватите и неважеће сертификате"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:530
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:642
 msgid "Use SOCKS5"
 msgstr "Користи SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:549
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:661
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr "SOCKS5 подршка је тренутно у експерименталној фази. Користе је на личну одговорност. Ако унесете е-адресу у поље за е-адресу, следи захтев за ДНС претрагу која неће ићи кроз SOCKS5 тунел."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:554
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:666
 msgid "SOCKS5 Host"
 msgstr "SOCKS5 сервер"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:567
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:679
 msgid "SOCKS5 Port"
 msgstr "SOCKS5 порт"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:581
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:693
 msgid "SOCKS5 User"
 msgstr "SOCKS5 корисник"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:593
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:705
 msgid "SOCKS5 Password"
 msgstr "SOCKS5 лозинка"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-06 20:26+0000\n"
+"POT-Creation-Date: 2023-07-09 19:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,41 +35,41 @@ msgstr "پیام جدید"
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:284 ../qml/Main.qml:291
+#: ../qml/Main.qml:288 ../qml/Main.qml:295
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:284 ../qml/Main.qml:291 ../qml/Main.qml:338
+#: ../qml/Main.qml:288 ../qml/Main.qml:295 ../qml/Main.qml:342
 #: ../qml/pages/AccountConfig.qml:139
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:285 ../qml/Main.qml:292
+#: ../qml/Main.qml:289 ../qml/Main.qml:296
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:491 ../qml/pages/ChatView.qml:237
+#: ../qml/Main.qml:495 ../qml/pages/ChatView.qml:237
 #: ../qml/pages/ChatView.qml:282 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "جستجو"
 
-#: ../qml/Main.qml:542
+#: ../qml/Main.qml:546
 msgid "Archived Chats"
 msgstr "گفتگو‌های بایگانی شده"
 
-#: ../qml/Main.qml:747
+#: ../qml/Main.qml:751
 msgid "Request"
 msgstr "درخواست"
 
-#: ../qml/Main.qml:811
+#: ../qml/Main.qml:815
 msgid "Loading…"
 msgstr "در حال بارگیری..."
 
-#: ../qml/Main.qml:837 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:841 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "گفتگوی جدید"
 
-#: ../qml/Main.qml:894 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:143
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
@@ -128,7 +128,7 @@ msgid "Download failed"
 msgstr "بارگیری ناموفق"
 
 #: ../qml/delegates/delegOtherToDownload.qml:49
-#: ../qml/delegates/delegOtherToDownload.qml:139
+#: ../qml/delegates/delegOtherToDownload.qml:140
 #: ../qml/delegates/delegSelfToDownload.qml:55
 #: ../qml/delegates/delegSelfToDownload.qml:114
 msgid "Downloading…"
@@ -165,7 +165,7 @@ msgid "deltatouch@mailbox.org"
 msgstr ""
 
 #: ../qml/pages/About.qml:150
-msgid "This app is powered by deltachat-core"
+msgid "This app is powered by deltachat-core-rust"
 msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:250
@@ -263,7 +263,7 @@ msgstr "کد QR"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:195
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:656
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:768
 #: ../qml/pages/QrShowScan.qml:480
 msgid "Configuring..."
 msgstr ""
@@ -278,7 +278,7 @@ msgstr "ایجاد ایمیل جدید روی \"%1\" و ورود در آن‌ج�
 msgid "Log into \"%1\"?"
 msgstr "آیا به \"%1\" وارد شوید؟"
 
-#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:110
 #: ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
 #: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
@@ -306,30 +306,30 @@ msgstr "گروه تایید شده جدید"
 msgid "Enter name or e-mail address"
 msgstr "نام یا نشانی رایانامه را وارد کنید"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:45
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:680
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:50
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:792
 #: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:781
 msgid "No, chats only"
 msgstr "نه، فقط گفتگوها"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:48
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:694
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:53
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:806
 #: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:795
 msgid "For accepted contacts"
 msgstr "برای مخاطبین پذیرفته شده"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:51
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:708
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:56
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:820
 #: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
 #: ../qml/pages/SettingsPage.qml:809 ../qml/pages/SettingsPage.qml:837
 msgid "All"
 msgstr "همه"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:76
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:100
 msgid "Log In"
 msgstr "ورود"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:91
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:115
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
@@ -338,75 +338,83 @@ msgstr "ورود"
 msgid "OK"
 msgstr "تایید"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:178
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:200
 msgid "Log in with an existing e-mail account"
 msgstr "ورود با یک رایانامه موجود"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:191
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:213
 msgid "E-Mail Address"
 msgstr "نشانی رایانامه"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:215
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:266
 msgid "Password"
 msgstr "رمزعبور"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:275
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:352
+msgid "More Info"
+msgstr "جزئیات بیشتر "
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:374
+msgid "There are no Delta Chat servers, your data stays on your device."
+msgstr "دلتاچت هیچ سروری ندارد، داده‌های شما در دستگاه شما باقی می‌ماند."
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:387
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
 msgstr "برای ارائه دهندگان شناخته شده تنظبمات اضافه به صورت خودکار انجام می‌شود. گاهی اوقات آی‌مپ باید در تنظیمات رایانامه شما فعال شود. از ارائه دهنده ایمیل یا دوستانتان در این مورد کمک بگیرید. \nآی‌مپ=IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:299
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:411
 #: ../qml/pages/SettingsPage.qml:399
 msgid "Show Classic E-Mails"
 msgstr "نمایش ایمیل‌های معمولی"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:331
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:443
 #: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:746
 msgid "Advanced"
 msgstr "پیشرفته"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:352
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:464
 msgid "Inbox"
 msgstr "ورودی"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:470
 msgid "IMAP Login Name"
 msgstr "IMAP Login Name"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:365
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:444
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:477
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:544
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:556
 msgid "Default (same as above)"
 msgstr "پیش‌فرض(مانند بالا)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:370
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:482
 msgid "IMAP Server"
 msgstr "IMAP Server"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:377
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:397
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:456
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:476
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:489
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:509
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:568
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:588
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:605
 msgid "Automatic"
 msgstr "خودکار"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:382
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:494
 msgid "IMAP Port"
 msgstr "IMAP port "
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:389
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:501
 msgid "Default (%1)"
 msgstr "پیش‌فرض(%1)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:507
 msgid "IMAP Security"
 msgstr "IMAP Security"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:512
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:591
 #: ../qml/pages/ChatInfosActionsChatlist.qml:136
 #: ../qml/pages/ChatInfosActionsChatview.qml:163
 #: ../qml/pages/EphemeralTimerSettings.qml:37
@@ -415,72 +423,72 @@ msgstr "IMAP Security"
 msgid "Off"
 msgstr "خاموش"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:419
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:531
 msgid "Outbox"
 msgstr "خروجی"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:425
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:537
 msgid "SMTP Login Name"
 msgstr "SMTP Login Name"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:437
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:549
 msgid "SMTP Password"
 msgstr "SMTP Password"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:449
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
 msgid "SMTP Server"
 msgstr "SMTP Server"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:461
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:573
 msgid "SMTP Port"
 msgstr "SMTP Port"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:468
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:574
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:580
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:673
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:686
 msgid "Standard (%1)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:474
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:586
 msgid "SMTP Security"
 msgstr "SMTP Security"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:603
 msgid "Certificate Checks"
 msgstr "بررسی تاییدیه"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:494
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:606
 msgid "Strict"
 msgstr "سخت‌گیرانه"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:495
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:607
 msgid "Accept invalid certificates"
 msgstr "پذیرش تاییدیه‌های نادرست"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:530
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:642
 msgid "Use SOCKS5"
 msgstr "استفاده از SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:549
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:661
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr "پشتیبانی از قابلیت SOCKS5 هنوز آزمایشی است. لطفا در صورت استفاده،‌خطرات را بپذیرید. اگر یک آدرس را در بخش رایانامه وارد کنید همچنان  DNS lookup  رخ می‌دهد که ممکن است از طریق SOCKS5 صورت نگیرد. "
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:554
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:666
 msgid "SOCKS5 Host"
 msgstr "SOCKS5 Host"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:567
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:679
 msgid "SOCKS5 Port"
 msgstr "SOCKS5 Port"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:581
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:693
 msgid "SOCKS5 User"
 msgstr "SOCKS5 User"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:593
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:705
 msgid "SOCKS5 Password"
 msgstr "SOCKS5 Password"
 

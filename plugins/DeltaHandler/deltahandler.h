@@ -346,6 +346,20 @@ signals:
     // - a username was modified by the user
     void chatDataChanged();
 
+    // Informs about provider specific prerequisites
+    // when setting up a new account via login with
+    // email address + password
+    void providerHint(QString provHint);
+    void providerInfoUrl(QString provUrl);
+
+    // working == true: The provider can be used with DC (but may require
+    // preparations as indicated via providerHint).
+    // working == false: DC does not work with the provider (reason given
+    // via providerHint)
+    // The status "OK" as listed on providers.delta.chat is signalled
+    // indirectly via providerStatus(true) and providerHint("").
+    void providerStatus(bool working);
+
     void hasConfiguredAccountChanged();
     void networkingIsAllowedChanged();
     void networkingIsStartedChanged();
@@ -398,6 +412,8 @@ public slots:
     void periodicTimerActions();
 
     void updateChatlistQueryText(QString query);
+
+    void triggerProviderHintSignal(QString emailAddress);
 
 protected:
     QHash<int, QByteArray> roleNames() const;

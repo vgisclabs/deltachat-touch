@@ -31,12 +31,19 @@ Page {
     anchors.fill: parent
 
     signal leavingAddEmailPage()
+    signal addressFieldHasChanged(string emailAddress)
 
     property bool advancedOptionsVisible: false;
     property bool advancedOptionsOpened: false;
 
     property int showClassicMailsCurrentSetting: DeltaHandler.getTempContextConfig("show_emails") == "" ? 2 : parseInt(DeltaHandler.getTempContextConfig("show_emails"))
     property string showClassicMailsCurrentSettingString: ""
+
+
+    // Related to provider hint
+    property string providerUrl
+    property bool providerWorking
+
 
     function updateShowClassicMailsCurrentSetting()
     {
@@ -60,8 +67,27 @@ Page {
         onLeavingAddEmailPage: DeltaHandler.unrefTempContext()
     }
 
+    Connections {
+        target: DeltaHandler
+
+        onProviderHint: {
+            providerHintLabel.text = provHint
+        }
+
+        onProviderInfoUrl: {
+            providerUrl = provUrl
+        }
+
+        onProviderStatus: {
+            providerWorking = working
+        }
+    }
+
     Component.onCompleted: {
+        DeltaHandler.prepareTempContextConfig()
+
         updateShowClassicMailsCurrentSetting()
+        addEmailPage.addressFieldHasChanged.connect(DeltaHandler.triggerProviderHintSignal)
     }
 
     Component.onDestruction: {
@@ -90,8 +116,6 @@ Page {
                 iconName: 'ok'
                 text: i18n.tr('OK')
                 onTriggered: {
-                    DeltaHandler.prepareTempContextConfig()
-
                     // unsetting the focus of each field as per past experience,
                     // incomplete text may be retrieved otherwise. Not sure
                     // whether this is the correct procedure though.
@@ -202,6 +226,35 @@ Page {
                 }
                 text: DeltaHandler.getTempContextConfig("addr")
                 // TODO: add RegExpValidator?
+
+                onDisplayTextChanged: {
+                    // When an email address has been entered, it should be
+                    // checked whether DC has a hint for the user regarding
+                    // this specific provider. DC Desktop initiates the check
+                    // when the address field loses focus. For DeltaTouch, this
+                    // means that users don't see the hint when they first
+                    // enter the password, then the email address, and then
+                    // click on ok as this will open a popup which covers the
+                    // page showing the hint. So we could check each time the
+                    // display text changes. However, this could mean that a
+                    // hint for a different provider will be shown in case the
+                    // domain of this provider corresponds to an incomplete
+                    // domain of the actual provider (example: hey.co is a
+                    // Google-owned domain, hey.com owned by some other
+                    // company). Solution: Check onDisplayTextChanged only if
+                    // the password field contains text, otherwise check upon
+                    // focus loss.
+                    if (passwordField.text != "") {
+                        addEmailPage.addressFieldHasChanged(displayText)
+                    }
+                }
+
+                onFocusChanged: {
+                    // see above
+                    if (!focus && passwordField.text == "") {
+                        addEmailPage.addressFieldHasChanged(displayText)
+                    }
+                }
             }
 
             Label {
@@ -262,16 +315,77 @@ Page {
                 }
             }
 
+            LomiriShape {
+                id: providerHintRect
+                width: parent.width < units.gu(45) ? parent.width - units.gu(7) : units.gu(38)
+                height: providerHintLabel.contentHeight + (providerUrlLabel.visible ? providerUrlLabel.contentHeight + units.gu(1) : 0) + units.gu(1)
+
+                anchors {
+                    left: parent.left
+                    leftMargin: units.gu(1.5)
+                    top: passwordField.bottom
+                    topMargin: units.gu(1)
+                }
+                visible: providerHintLabel.text != ""
+                backgroundColor: providerWorking ? "#fdf7b2" : "#f9d7d7"
+
+                Label {
+                    id: providerHintLabel
+                    width: providerHintRect.width - units.gu(1)
+                    wrapMode: Text.WordWrap
+                    anchors {
+                        top: providerHintRect.top
+                        topMargin: units.gu(0.5)
+                        left: providerHintRect.left
+                        leftMargin: units.gu(0.5)
+                    }
+                    color: providerWorking ? "black" : "#c70404"
+                }
+
+                Label {
+                    id: providerUrlLabel
+                    width: providerHintRect.width - units.gu(1)
+                    anchors {
+                        top: providerHintLabel.bottom
+                        topMargin: units.gu(1)
+                        left: providerHintRect.left
+                        leftMargin: units.gu(0.5)
+                    }
+                    text: i18n.tr("More Info")
+                    color: providerWorking ? "#0000FF" : "#c70404"
+                    font.underline: true
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            Qt.openUrlExternally(providerUrl)
+                        }
+                    }
+                }
+            }
+
+            Label {
+                id: noServersLabel
+                width: parent.width < units.gu(45) ? parent.width - units.gu(8) : units.gu(37)
+                anchors {
+                    left: parent.left
+                    leftMargin: units.gu(2)
+                    top: providerHintRect.visible ? providerHintRect.bottom : passwordField.bottom
+                    topMargin: units.gu(1)
+                }
+                wrapMode: Text.WordWrap
+                text: i18n.tr("There are no Delta Chat servers, your data stays on your device.")
+            }
+
             Label {
                 id: advancedInfoLabel
                 width: parent.width < units.gu(45) ? parent.width - units.gu(8) : units.gu(37)
                 anchors {
                     left: parent.left
                     leftMargin: units.gu(2)
-                    top: passwordField.bottom
+                    top: noServersLabel.bottom
                     topMargin: units.gu(1)
                 }
-                wrapMode: Text.Wrap
+                wrapMode: Text.WordWrap
                 text: i18n.tr("For known e-mail providers additional settings are set up automatically. Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail provider or friends for help.")
             }
 

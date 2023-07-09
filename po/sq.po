@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-06 20:26+0000\n"
+"POT-Creation-Date: 2023-07-09 18:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,41 +35,41 @@ msgstr "Mesazh i ri"
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:284 ../qml/Main.qml:291
+#: ../qml/Main.qml:288 ../qml/Main.qml:295
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:284 ../qml/Main.qml:291 ../qml/Main.qml:338
+#: ../qml/Main.qml:288 ../qml/Main.qml:295 ../qml/Main.qml:342
 #: ../qml/pages/AccountConfig.qml:139
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:285 ../qml/Main.qml:292
+#: ../qml/Main.qml:289 ../qml/Main.qml:296
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:491 ../qml/pages/ChatView.qml:237
+#: ../qml/Main.qml:495 ../qml/pages/ChatView.qml:237
 #: ../qml/pages/ChatView.qml:282 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "Kërko"
 
-#: ../qml/Main.qml:542
+#: ../qml/Main.qml:546
 msgid "Archived Chats"
 msgstr "Fjalosje të arkivuara"
 
-#: ../qml/Main.qml:747
+#: ../qml/Main.qml:751
 msgid "Request"
 msgstr "Kërkoje"
 
-#: ../qml/Main.qml:811
+#: ../qml/Main.qml:815
 msgid "Loading…"
 msgstr "Po ngarkohet…"
 
-#: ../qml/Main.qml:837 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:841 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "Fjalosje e re"
 
-#: ../qml/Main.qml:894 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:143
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
 #: ../qml/pages/QrShowScan.qml:337
 msgid "Error: %1"
@@ -128,7 +128,7 @@ msgid "Download failed"
 msgstr "Shkarkimi dështoi"
 
 #: ../qml/delegates/delegOtherToDownload.qml:49
-#: ../qml/delegates/delegOtherToDownload.qml:139
+#: ../qml/delegates/delegOtherToDownload.qml:140
 #: ../qml/delegates/delegSelfToDownload.qml:55
 #: ../qml/delegates/delegSelfToDownload.qml:114
 msgid "Downloading…"
@@ -165,7 +165,7 @@ msgid "deltatouch@mailbox.org"
 msgstr ""
 
 #: ../qml/pages/About.qml:150
-msgid "This app is powered by deltachat-core"
+msgid "This app is powered by deltachat-core-rust"
 msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:250
@@ -263,7 +263,7 @@ msgstr "Kod QR"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:195
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:656
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:770
 #: ../qml/pages/QrShowScan.qml:480
 msgid "Configuring..."
 msgstr ""
@@ -278,7 +278,7 @@ msgstr "Të krijohet adresë email e re te \"%1\" dhe të bëhet hyrja atje?"
 msgid "Log into \"%1\"?"
 msgstr "Të hyhet si “%1”?"
 
-#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:86
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:112
 #: ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
 #: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
@@ -306,30 +306,30 @@ msgstr "Grup i ri i verifikuar"
 msgid "Enter name or e-mail address"
 msgstr "Jepni emër ose adresë email"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:45
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:680
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:52
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:794
 #: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:781
 msgid "No, chats only"
 msgstr "Jo, vetëm fjalosje"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:48
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:694
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:55
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:808
 #: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:795
 msgid "For accepted contacts"
 msgstr "Për kontakte të pranuar"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:51
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:708
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:58
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:822
 #: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
 #: ../qml/pages/SettingsPage.qml:809 ../qml/pages/SettingsPage.qml:837
 msgid "All"
 msgstr "Krejt"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:76
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:102
 msgid "Log In"
 msgstr "Hyrje"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:91
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
@@ -338,75 +338,83 @@ msgstr "Hyrje"
 msgid "OK"
 msgstr "OK"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:178
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:202
 msgid "Log in with an existing e-mail account"
 msgstr "Hyrje me një llogari email ekzistuese."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:191
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:215
 msgid "E-Mail Address"
 msgstr "Adresë email"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:215
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:268
 msgid "Password"
 msgstr "Fjalëkalim"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:275
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:354
+msgid "More Info"
+msgstr "Më tepër të dhëna"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+msgid "There are no Delta Chat servers, your data stays on your device."
+msgstr "S’ka shërbyes Delta Chat, të dhënat tuaja rrinë në pajisjen tuaj!"
+
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:389
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
 msgstr "Për shërbime të njohura email-i, rregullimet shtesë caktohen automatikisht. Ndonjëherë shërbyesi IMAP lyp të aktivizohet te pjesa e dukshme web. Për ndihmë këshillohuni me shërbimin tuaj email ose shokë tuajt."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:299
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
 #: ../qml/pages/SettingsPage.qml:399
 msgid "Show Classic E-Mails"
 msgstr "Shfaq email-e klasikë"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:331
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:445
 #: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:746
 msgid "Advanced"
 msgstr "Të mëtejshme"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:352
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:466
 msgid "Inbox"
 msgstr "Të marrë"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:358
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:472
 msgid "IMAP Login Name"
 msgstr "Emër hyrjeje në IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:365
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:432
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:444
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:546
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:558
 msgid "Default (same as above)"
 msgstr "Parazgjedhje (njësoj me sa më sipër)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:370
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:484
 msgid "IMAP Server"
 msgstr "Shërbyes IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:377
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:397
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:456
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:476
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:493
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:511
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:570
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:590
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:607
 msgid "Automatic"
 msgstr "Automatike"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:382
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:496
 msgid "IMAP Port"
 msgstr "Portë IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:389
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:503
 msgid "Default (%1)"
 msgstr "Parazgjedhje (%1)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:395
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:509
 msgid "IMAP Security"
 msgstr "Siguri IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:400
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:514
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:593
 #: ../qml/pages/ChatInfosActionsChatlist.qml:136
 #: ../qml/pages/ChatInfosActionsChatview.qml:163
 #: ../qml/pages/EphemeralTimerSettings.qml:37
@@ -415,72 +423,72 @@ msgstr "Siguri IMAP"
 msgid "Off"
 msgstr "Off"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:419
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:533
 msgid "Outbox"
 msgstr "Të dërguar"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:425
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:539
 msgid "SMTP Login Name"
 msgstr "Emër hyrjeje SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:437
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:551
 msgid "SMTP Password"
 msgstr "Fjalëkalim SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:449
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:563
 msgid "SMTP Server"
 msgstr "Shërbyes SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:461
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:575
 msgid "SMTP Port"
 msgstr "Portë SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:468
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:561
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:574
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:582
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:675
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:688
 msgid "Standard (%1)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:474
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:588
 msgid "SMTP Security"
 msgstr "Siguri SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:605
 msgid "Certificate Checks"
 msgstr "Kontrolle dëshmish"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:494
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:608
 msgid "Strict"
 msgstr "Strikt"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:495
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:609
 msgid "Accept invalid certificates"
 msgstr "Prano dëshmi të pavlefshme"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:530
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:644
 msgid "Use SOCKS5"
 msgstr "Përdor SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:549
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:663
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr "Mbulimi për SOCKS5 aktualisht është eksperimental. Ju lutemi, përdoreni duke pasur parasysh rrezikun. Nëse shtypni një adresë te fusha e email-it, do të ketë kërkim DNS që nuk do të kalohet përmes SOCKS5."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:554
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:668
 msgid "SOCKS5 Host"
 msgstr "Strehë SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:567
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:681
 msgid "SOCKS5 Port"
 msgstr "Portë SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:581
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:695
 msgid "SOCKS5 User"
 msgstr "Përdorues SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:593
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:707
 msgid "SOCKS5 Password"
 msgstr "Fjalëkalim SOCKS5"
 

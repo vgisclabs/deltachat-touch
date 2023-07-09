@@ -147,7 +147,7 @@ Page {
                     top: supportLabel2.bottom
                     topMargin: units.gu(1)
                 }
-                text: i18n.tr('This app is powered by deltachat-core') + (deltaversion == "" ? "" : " v" + deltaversion) + (' (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
+                text: i18n.tr('This app is powered by deltachat-core-rust') + (deltaversion == "" ? "" : " v" + deltaversion) + (' (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
                 linkColor: root.dtLinkColor
                 onLinkActivated: Qt.openUrlExternally('https://github.com/deltachat/deltachat-core-rust')
                 wrapMode: Text.Wrap

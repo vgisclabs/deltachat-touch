@@ -3514,3 +3514,66 @@ void DeltaHandler::updateChatlistQueryText(QString query)
         endResetModel();
     }
 }
+
+
+void DeltaHandler::triggerProviderHintSignal(QString emailAddress)
+{
+    if (0 == dc_may_be_valid_addr(emailAddress.toUtf8().constData())) {
+
+        // Need to emit the signal with an empty string if it is not a
+        // valid email address because the provider hint may already be
+        // shown and needs to be unset now.
+        emit providerHint(QString(""));
+        emit providerInfoUrl(QString(""));
+        return;
+    }
+
+    if (!tempContext) {
+        // A context is needed to proceed. This method is called
+        // from AddOrConfigureEmailAccount.qml, so tempContext should be
+        // set, but check it to be safe
+        qDebug() << "DeltaHandler::triggerProviderHintSignal: tempContext is not set, returning.";
+        return;
+    }
+
+    dc_provider_t* tempProvider = dc_provider_new_from_email(tempContext, emailAddress.toUtf8().constData());
+
+    if (!tempProvider) {
+        tempProvider = dc_provider_new_from_email_with_dns(tempContext, emailAddress.toUtf8().constData());
+
+    }
+
+    if (!tempProvider) {
+        // no provider info available
+        emit providerHint(QString(""));
+        emit providerInfoUrl(QString(""));
+        return;
+    } else {
+        // provider info is available
+        if (DC_PROVIDER_STATUS_OK == dc_provider_get_status(tempProvider)) {
+            emit providerHint(QString(""));
+            emit providerInfoUrl(QString(""));
+            emit providerStatus(true);
+        } else {
+            // Status is either DC_PROVIDER_STATUS_PREPARATION or
+            // DC_PROVIDER_STATUS_BROKEN, the hint needs to be sent
+            // in both cases. The info URL is sent, too. UI will take
+            // care of an empty URL string.
+            char* tempText = dc_provider_get_before_login_hint(tempProvider);
+            emit providerHint(QString(tempText));
+            dc_str_unref(tempText);
+
+            tempText = dc_provider_get_overview_page(tempProvider);
+            emit providerInfoUrl(QString(tempText));
+            dc_str_unref(tempText);
+
+            if (DC_PROVIDER_STATUS_PREPARATION == dc_provider_get_status(tempProvider)) {
+                emit providerStatus(true);
+            } else {
+                emit providerStatus(false);
+            }
+        }
+        
+        dc_provider_unref(tempProvider);
+    }
+}

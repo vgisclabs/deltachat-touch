@@ -17,10 +17,10 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.3
+import Lomiri.Components 1.3
+import Lomiri.Components.Popups 1.3
 import QtQuick.Layouts 1.3
-//import Ubuntu.Components.Popups 1.3
+//import Lomiri.Components.Popups 1.3
 import Qt.labs.platform 1.1
 //import QtMultimedia 5.12
 //import QtQml.Models 2.12
@@ -180,7 +180,7 @@ Page {
             text: i18n.tr("Transferring…")
         }
 
-        UbuntuShape {
+        LomiriShape {
             id: progressShape
             width: parent.width
             height: width / 5
@@ -233,7 +233,7 @@ Page {
 
                 color: theme.palette.normal.background
 
-                UbuntuShape {
+                LomiriShape {
                     id: labelOneShape
                     width: labelOne.height + units.gu(1)
                     height: width
@@ -274,7 +274,7 @@ Page {
 
                 color: theme.palette.normal.background
 
-                UbuntuShape {
+                LomiriShape {
                     id: labelTwoShape
                     width: labelTwo.height + units.gu(1)
                     height: width
@@ -315,7 +315,7 @@ Page {
 
                 color: theme.palette.normal.background
 
-                UbuntuShape {
+                LomiriShape {
                     id: labelThreeShape
                     width: labelThree.height + units.gu(1)
                     height: width

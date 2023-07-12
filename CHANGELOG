@@ -1,5 +1,6 @@
 1.1.0 2023-07-07
 Feature: Clear chat
+Feature: Act as primary device to add second device via QR code
 UI: Adapt link colors for better contrast
 UI: Show information if provider needs special settings
 Bugfix: Correctly format links after newline

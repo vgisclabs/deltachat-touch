@@ -23,13 +23,23 @@ import Ubuntu.Components.Popups 1.3
 Dialog {
     id: dialog
 
-    signal done()
+    signal confirmed()
+
+    title: i18n.tr("Add Second Device")
+    text: i18n.tr("This creates a QR code that the second device can scan to copy the account.")
 
     Button {
-        text: 'OK'
+        text: i18n.tr("Continue")
+        color: theme.palette.normal.positive
+        onClicked: {
+            confirmed()
+        }
+    }
+
+    Button {
+        text: i18n.tr("Cancel")
         color: theme.palette.normal.negative
         onClicked: {
-            done()
             PopupUtils.close(dialog)
         }
     }

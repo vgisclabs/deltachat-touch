@@ -23,13 +23,22 @@ import Ubuntu.Components.Popups 1.3
 Dialog {
     id: dialog
 
-    signal done()
+    signal confirmed()
+
+    title: i18n.tr("Abort setting up second device?")
 
     Button {
-        text: 'OK'
+        text: i18n.tr("Yes")
         color: theme.palette.normal.negative
         onClicked: {
-            done()
+            PopupUtils.close(dialog)
+            confirmed()
+        }
+    }
+
+    Button {
+        text: i18n.tr("No")
+        onClicked: {
             PopupUtils.close(dialog)
         }
     }

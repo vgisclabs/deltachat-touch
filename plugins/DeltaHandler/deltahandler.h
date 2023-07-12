@@ -266,6 +266,14 @@ public:
 
     Q_INVOKABLE QString getTempGroupQrSvg();
 
+    // Starts the process to add a second device; this device
+    // will act as primary device. Will emit backupProviderCreationSuccess
+    // upon success and backupProviderCreationFailed upon failure
+    Q_INVOKABLE void prepareBackupProvider();
+    Q_INVOKABLE QString getBackupProviderSvg();
+    Q_INVOKABLE QString getBackupProviderTxt();
+    Q_INVOKABLE void cancelBackupProvider();
+
     /* ============ End New Group / Editing Group ============= */
 
     /* ========================================================
@@ -379,6 +387,10 @@ signals:
     void newTempProfilePic(QString);
     void chatBlockContactDone();
 
+    // For adding second device; see prepareBackupProvider().
+    void backupProviderCreationSuccess();
+    void backupProviderCreationFailed(QString errorMessage);
+
     /* ========================================================
      * ============== New Group / Editing Group ===============
      * ======================================================== */
@@ -428,6 +440,7 @@ private slots:
     void progressEvent(int perMill, QString errorMsg);
     void imexBackupImportProgressReceiver(int perMill);
     void imexBackupExportProgressReceiver(int perMill);
+    void imexBackupProviderProgressReceiver(int perMill);
     void imexFileReceiver(QString filepath);
     void chatCreationReceiver(uint32_t chatID);
     void updateCurrentChatMessageCount();
@@ -495,6 +508,9 @@ private:
 
     // for recording of audio messages
     QAudioRecorder* m_audioRecorder;
+
+    // for acting as primary device when adding second device
+    dc_backup_provider_t* m_backupProvider;
 
     bool isExistingChat(uint32_t chatID);
     void setCoreTranslations();

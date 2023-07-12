@@ -9,12 +9,15 @@
         <file>pages/AddChat.qml</file>
         <file>pages/AdvancedSettings.qml</file>
         <file>pages/AddOrConfigureEmailAccount.qml</file>
+        <file>pages/AddSecondDevice.qml</file>
         <file>pages/BlockContactPopup.qml</file>
         <file>pages/BlockedContacts.qml</file>
         <file>pages/ChatView.qml</file>
         <file>pages/ChatInfosActionsChatlist.qml</file>
         <file>pages/ChatInfosActionsChatview.qml</file>
         <file>pages/ConfirmAccountDeletion.qml</file>
+        <file>pages/ConfirmAddSecondDevice.qml</file>
+        <file>pages/ConfirmCancelSecondDevice.qml</file>
         <file>pages/ConfirmChatDeletion.qml</file>
         <file>pages/ConfirmClearChat.qml</file>
         <file>pages/ConfirmDeleteFromDevice.qml</file>

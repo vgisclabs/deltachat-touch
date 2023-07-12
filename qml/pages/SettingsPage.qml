@@ -548,6 +548,31 @@ Page {
                 }
             }
 
+            ListItem {
+                height: secDeviceLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: secDeviceLayout
+                    title.text: i18n.tr("Add Second Device")
+                    title.font.bold: true
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    let popup2 = PopupUtils.open(Qt.resolvedUrl('ConfirmAddSecondDevice.qml'))
+                    popup2.confirmed.connect(function() {
+                        PopupUtils.close(popup2)
+                        layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AddSecondDevice.qml"))
+                    })
+                }
+            }
+
             Rectangle {
                 id: prefPrivacySectionHeader
                 height: prefPrivacySectionHeaderLabel.contentHeight + units.gu(3)

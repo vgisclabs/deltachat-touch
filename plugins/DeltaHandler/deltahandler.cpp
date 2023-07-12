@@ -29,7 +29,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_audioRecorder {nullptr}
+    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}
 {
     {
         // to be able to access the files under assets
@@ -1886,12 +1886,13 @@ bool DeltaHandler::isBackupFile(QString filePath)
 
 void DeltaHandler::importBackupFromFile(QString filePath)
 {
-    // imexProgress may be connected to imexBackupExportProgressReceiver,
+    // imexProgress may be connected to imexBackupExportProgressReceiver or imexBackupProviderProgressReceiver,
     // disconnect it...
     // TODO: imexBackupImportProgressReceiver is disconnected, too, because
     // it might cause problems if it's connected twice, is this true?
     // TODO check return values?
     bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+    disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
     disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
     
     // ... and connect it to imexBackupImportProgressReceiver instead
@@ -1938,12 +1939,13 @@ void DeltaHandler::exportBackup()
 {
     if (!currentContext) return;
 
-    // imexProgress may be connected to imexBackupImportProgressReceiver,
+    // imexProgress may be connected to imexBackupImportProgressReceiver or imexBackupProviderProgressReceiver,
     // disconnect it...
     // TODO: imexBackupExportProgressReceiver is disconnected, too, because
     // it might cause problems if it's connected twice, is this true?
     // TODO check return values?
     bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+    disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
     disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
     
     // ... and connect it to imexBackupExportProgressReceiver instead
@@ -2421,6 +2423,99 @@ QString DeltaHandler::getTempGroupQrSvg()
 }
 
 
+void DeltaHandler::prepareBackupProvider()
+{
+    if (m_backupProvider) {
+        qDebug() << "DeltaHandler::prepareBackupProvider(): m_backupProvider is unexpectedly set, deleting it";
+        dc_backup_provider_unref(m_backupProvider);
+    }
+
+    m_backupProvider = dc_backup_provider_new(currentContext);
+
+    if (m_backupProvider) {
+        emit backupProviderCreationSuccess();
+
+        // imexProgress should already be at 400 (it starts with dc_backup_provider_new()), but 
+        // we connect only now because due to the blocking nature of dc_backup_provider_new(),
+        // we won't receive any signals in time anyway. TODO: call it in a separate thread
+        //
+        // imexProgress may be connected to imexBackupExportProgressReceiver or imexBackupImportProgressReceiver
+        // disconnect it. Also disconnect it from imexBackupProviderProgressReceiver, too, to avoid being
+        // connected twice.
+        //
+        // TODO check return values?
+        // TODO disconnect the slots directly after completion of the corresponding actions
+        bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+        disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+        disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
+
+        bool connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
+
+        return;
+    } else {
+        // creating the backup provider failed
+        char* tempText = dc_get_last_error(currentContext);
+        QString tempQString = tempText;
+        dc_str_unref(tempText);
+        emit backupProviderCreationFailed(tempQString);
+        return;
+    }
+}
+
+
+QString DeltaHandler::getBackupProviderSvg()
+{
+    QString retval(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/qrBackup.svg");
+    std::ofstream outfile(retval.toStdString());
+    char* tempImage = dc_backup_provider_get_qr_svg(m_backupProvider);
+    outfile << tempImage;
+    outfile.close();
+    dc_str_unref(tempImage);
+
+    retval.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length());
+    return retval;
+}
+
+
+QString DeltaHandler::getBackupProviderTxt()
+{
+    if (!m_backupProvider) {
+        return QString();
+    }
+
+    char* tempText = dc_backup_provider_get_qr(m_backupProvider);
+    QString retval(tempText);
+    dc_str_unref(tempText);
+    return retval;
+}
+
+
+void DeltaHandler::imexBackupProviderProgressReceiver(int perMill)
+{
+    emit imexEventReceived(perMill);
+    if (perMill == 0 || perMill == 1000) {
+        dc_backup_provider_unref(m_backupProvider);
+        m_backupProvider = nullptr;
+        bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
+    }
+}
+
+
+void DeltaHandler::cancelBackupProvider()
+{
+    // Do not remove this disconnect, and keep it at the
+    // first line here. Otherwise, dc_stop_ongoing_process() will
+    // start a signal cascade (via perMill == 0) that will
+    // trigger an unwanted popup in the UI
+    bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
+    dc_stop_ongoing_process(currentContext);
+    if (m_backupProvider) {
+        dc_backup_provider_unref(m_backupProvider);
+        m_backupProvider = nullptr;
+    }
+}
+
+
 void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
 {
 
@@ -2795,14 +2890,18 @@ void DeltaHandler::prepareQrBackupImport()
 
 void DeltaHandler::startQrBackupImport()
 {
-    // imexProgress may be connected to imexBackupExportProgressReceiver or imexBackupImportProgressReceiver
+
+    // imexProgress may be connected to imexBackupExportProgressReceiver,
+    // imexBackupImportProgressReceiver or imexBackupProviderProgressReceiver,
     // disconnect it.
+    //
     // As dc_receive_backup() is blocking, imexProgress signals from eventThread will
     // not be processed anyway, so the return value from dc_receive_backup() will
     // be evaluated.
     // TODO check return values?
     // TODO disconnect the slots directly after completion of the corresponding actions
     bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+    disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
     disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
  
     m_networkingIsAllowed = false;

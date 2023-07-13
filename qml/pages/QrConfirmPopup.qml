@@ -41,6 +41,15 @@ Dialog {
     }
 
     Button {
+        color: theme.palette.normal.positive
+        text: i18n.tr("OK")
+        onClicked: {
+            confirmed()
+        }
+        visible: !(showClipboardButton || showClickUrlButton)
+    }
+
+    Button {
         id: cancelButton
         text: i18n.tr("Cancel")
         onClicked: {
@@ -69,14 +78,5 @@ Dialog {
         text: i18n.tr("Open Url in Browser")
         color: theme.palette.normal.positive
         visible: showClickUrlButton
-    }
-
-    Button {
-        color: theme.palette.normal.positive
-        text: i18n.tr("OK")
-        onClicked: {
-            confirmed()
-        }
-        visible: !(showClipboardButton || showClickUrlButton)
     }
 }

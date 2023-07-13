@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-09 18:50+0000\n"
+"POT-Creation-Date: 2023-07-13 20:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,9 +69,9 @@ msgstr "Ładowanie…"
 msgid "New Chat"
 msgstr "Nowy czat"
 
-#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:152
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
-#: ../qml/pages/QrShowScan.qml:337
+#: ../qml/pages/QrShowScan.qml:343
 msgid "Error: %1"
 msgstr "Błąd: %1"
 
@@ -98,12 +98,12 @@ msgstr "Przekazano wiadomość"
 #: ../qml/delegates/delegSelfImage.qml:189
 #: ../qml/delegates/delegSelfTextMsg.qml:146
 #: ../qml/delegates/delegSelfUnknown.qml:146
-#: ../qml/pages/AddAccountAsSecondDevice.qml:156
+#: ../qml/pages/AddAccountAsSecondDevice.qml:165
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:172
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
-#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
-#: ../qml/pages/QrShowScan.qml:429
+#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:422
+#: ../qml/pages/QrShowScan.qml:435
 msgid "Unknown"
 msgstr "Nieznany"
 
@@ -175,7 +175,7 @@ msgstr "Znane konta"
 #: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:211
 #: ../qml/pages/ProgressBackupImport.qml:69
 #: ../qml/pages/ProgressConfigAccount.qml:71
-#: ../qml/pages/ProgressQrBackupImport.qml:94
+#: ../qml/pages/ProgressQrBackupImport.qml:99
 msgid "Back"
 msgstr "Wróć"
 
@@ -188,15 +188,16 @@ msgid "Add Account"
 msgstr "Dodaj konto"
 
 #: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
-#: ../qml/pages/AddAccountAsSecondDevice.qml:144
-#: ../qml/pages/AddAccountAsSecondDevice.qml:168
-#: ../qml/pages/AddAccountAsSecondDevice.qml:203
+#: ../qml/pages/AddAccountAsSecondDevice.qml:153
+#: ../qml/pages/AddAccountAsSecondDevice.qml:177
+#: ../qml/pages/AddAccountAsSecondDevice.qml:212
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:184
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:221
+#: ../qml/pages/AddSecondDevice.qml:82 ../qml/pages/AddSecondDevice.qml:95
 #: ../qml/pages/PickerBackupFile.qml:100
-#: ../qml/pages/ProgressQrBackupImport.qml:53 ../qml/pages/QrShowScan.qml:237
-#: ../qml/pages/QrShowScan.qml:338 ../qml/pages/QrShowScan.qml:488
+#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:243
+#: ../qml/pages/QrShowScan.qml:344 ../qml/pages/QrShowScan.qml:494
 msgid "Error"
 msgstr "Błąd"
 
@@ -212,8 +213,8 @@ msgstr "Konto nie jest skonfigurowane."
 msgid "Log into your E-Mail Account"
 msgstr "Zaloguj się na swoje konto e-mail"
 
-#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:130
-#: ../qml/pages/QrShowScan.qml:277
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:139
+#: ../qml/pages/QrShowScan.qml:283
 msgid "Add as Second Device"
 msgstr "Dodaj jako kolejne urządzenie"
 
@@ -226,61 +227,62 @@ msgstr "Przywróć z kopii zapasowej"
 msgid "Scan Invitation Code"
 msgstr "Zeskanuj kod zaproszenia"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:72
+#: ../qml/pages/AddAccountAsSecondDevice.qml:81
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:76
-#: ../qml/pages/QrShowScan.qml:111
+#: ../qml/pages/QrShowScan.qml:117
 msgid "Scan QR Code"
 msgstr "Skanuj kod QR"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:105
+#: ../qml/pages/AddAccountAsSecondDevice.qml:114
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:109
-#: ../qml/pages/QrShowScan.qml:160
+#: ../qml/pages/QrShowScan.qml:166
 msgid ""
 "Scanning QR codes directly is not supported yet. Please use another app (e."
 "g., Tagger) to scan and copy the code to the clipboard, then paste it here "
 "using the button below."
 msgstr ""
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:118
+#: ../qml/pages/AddAccountAsSecondDevice.qml:127
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:122
-#: ../qml/pages/QrShowScan.qml:173
+#: ../qml/pages/QrShowScan.qml:179
 msgid "Paste from Clipboard"
 msgstr "Wklej ze schowka"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:129
-#: ../qml/pages/QrShowScan.qml:276
+#: ../qml/pages/AddAccountAsSecondDevice.qml:138
+#: ../qml/pages/QrShowScan.qml:282
 msgid "Copy the account from the other device to this device?"
 msgstr "Skopiować konto z innego urządzenia na to urządzenie?"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:157
-#: ../qml/pages/AddAccountAsSecondDevice.qml:169
+#: ../qml/pages/AddAccountAsSecondDevice.qml:166
+#: ../qml/pages/AddAccountAsSecondDevice.qml:178
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:173
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:185
-#: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
-#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
+#: ../qml/pages/QrShowScan.qml:313 ../qml/pages/QrShowScan.qml:328
+#: ../qml/pages/QrShowScan.qml:423 ../qml/pages/QrShowScan.qml:436
 msgid "QR Code"
 msgstr "Kod QR"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:195
+#: ../qml/pages/AddAccountAsSecondDevice.qml:204
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:770
-#: ../qml/pages/QrShowScan.qml:480
+#: ../qml/pages/QrShowScan.qml:486
 msgid "Configuring..."
 msgstr ""
 
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:133
-#: ../qml/pages/QrShowScan.qml:262
+#: ../qml/pages/QrShowScan.qml:268
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr "Utworzyć nowy adres e-mail „%1” i się zalogować?"
 
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:158
-#: ../qml/pages/QrShowScan.qml:402
+#: ../qml/pages/QrShowScan.qml:408
 msgid "Log into \"%1\"?"
 msgstr "Zalogować się do „%1”?"
 
 #: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:112
-#: ../qml/pages/BlockContactPopup.qml:31
+#: ../qml/pages/AddSecondDevice.qml:128 ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmAddSecondDevice.qml:40
 #: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:80
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
@@ -308,20 +310,20 @@ msgstr "Podaj nazwę lub adres e-mail"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:52
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:794
-#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:781
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:806
 msgid "No, chats only"
 msgstr "Nie, tylko czaty"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:55
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:808
-#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:795
+#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:820
 msgid "For accepted contacts"
 msgstr "Dla zaakceptowanych kontaktów"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:58
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:822
 #: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
-#: ../qml/pages/SettingsPage.qml:809 ../qml/pages/SettingsPage.qml:837
+#: ../qml/pages/SettingsPage.qml:834 ../qml/pages/SettingsPage.qml:862
 msgid "All"
 msgstr "Wszystkie"
 
@@ -371,7 +373,7 @@ msgid "Show Classic E-Mails"
 msgstr "Pokaż klasyczne e-maile"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:445
-#: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:746
+#: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:771
 msgid "Advanced"
 msgstr "Zaawansowane"
 
@@ -491,6 +493,54 @@ msgstr "Użytkownik SOCKS5"
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:707
 msgid "SOCKS5 Password"
 msgstr "Hasło SOCKS5"
+
+#: ../qml/pages/AddSecondDevice.qml:105
+msgid "ℹ️ Account transferred to your second device."
+msgstr "ℹ️ Konto przeniesione na twoje kolejne urządzenie."
+
+#: ../qml/pages/AddSecondDevice.qml:120
+#: ../qml/pages/ConfirmAddSecondDevice.qml:28 ../qml/pages/SettingsPage.qml:557
+msgid "Add Second Device"
+msgstr "Dodaj kolejne urządzenie"
+
+#: ../qml/pages/AddSecondDevice.qml:133
+msgid "This will invalidate the QR code copied to clipboard."
+msgstr "Spowoduje to unieważnienie kodu QR skopiowanego do schowka."
+
+#: ../qml/pages/AddSecondDevice.qml:155
+msgid "One moment…"
+msgstr "Jedną chwilę…"
+
+#: ../qml/pages/AddSecondDevice.qml:180
+#: ../qml/pages/ProgressQrBackupImport.qml:38
+msgid "Transferring…"
+msgstr "Przenoszenie…"
+
+#: ../qml/pages/AddSecondDevice.qml:266
+msgid "(experimental, version 1.36 required)"
+msgstr "(eksperymentalna, wymagana wersja 1.36)"
+
+#: ../qml/pages/AddSecondDevice.qml:266
+msgid "Install Delta Chat on your other device (https://get.delta.chat) "
+msgstr ""
+
+#: ../qml/pages/AddSecondDevice.qml:307
+msgid "Make sure both devices are on the same Wi-Fi or network"
+msgstr "Upewnij się, że oba urządzenia są połączone z tym samym Wi-Fi lub siecią"
+
+#: ../qml/pages/AddSecondDevice.qml:348
+msgid ""
+"Start Delta Chat, tap “Add as Second Device” and scan the code shown here"
+msgstr "Uruchom Delta Chat, dotknij „Dodaj jako kolejne urządzenie” i zeskanuj pokazany tutaj kod"
+
+#: ../qml/pages/AddSecondDevice.qml:358
+msgid "Troubleshooting"
+msgstr "Rozwiązywanie problemów"
+
+#: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:57
+#: ../qml/pages/QrShowScan.qml:461
+msgid "Copy to Clipboard"
+msgstr "Kopiuj do schowka"
 
 #: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:463
 msgid "Worse quality, small size"
@@ -695,6 +745,28 @@ msgid ""
 "action cannot be undone."
 msgstr "Wszystkie dane konta „%1” na tym urządzeniu zostaną usunięte, w tym konfiguracja szyfrowania end-to-end, kontakty, czaty, wiadomości i multimedia. Tej operacji nie można cofnąć."
 
+#: ../qml/pages/ConfirmAddSecondDevice.qml:29
+msgid ""
+"This creates a QR code that the second device can scan to copy the account."
+msgstr "Spowoduje to utworzenie kodu QR, który kolejne urządzenie może zeskanować w celu skopiowania konta."
+
+#: ../qml/pages/ConfirmAddSecondDevice.qml:32
+msgid "Continue"
+msgstr "Kontynuuj"
+
+#: ../qml/pages/ConfirmCancelSecondDevice.qml:28
+msgid "Abort setting up second device?"
+msgstr "Przerwać konfigurowanie kolejnego urządzenia?"
+
+#: ../qml/pages/ConfirmCancelSecondDevice.qml:31
+#: ../qml/pages/ProgressKeysExport.qml:57
+msgid "Yes"
+msgstr "Tak"
+
+#: ../qml/pages/ConfirmCancelSecondDevice.qml:40
+msgid "No"
+msgstr "Nie"
+
 #: ../qml/pages/ConfirmChatDeletion.qml:34
 #: ../qml/pages/ConfirmChatDeletion.qml:44
 msgid "Delete Chat"
@@ -714,7 +786,7 @@ msgid "Delete %1 messages here and on the server?"
 msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
-#: ../qml/pages/SettingsPage.qml:629
+#: ../qml/pages/SettingsPage.qml:654
 msgid "Delete Messages from Device"
 msgstr "Usuń wiadomości z urządzenia"
 
@@ -736,7 +808,7 @@ msgid "I understand, delete all these messages"
 msgstr "Rozumiem, usuń te wszystkie wiadomości"
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
-#: ../qml/pages/SettingsPage.qml:657
+#: ../qml/pages/SettingsPage.qml:682
 msgid "Delete Messages from Server"
 msgstr "Usuń wiadomości z serwera"
 
@@ -767,7 +839,7 @@ msgid "Delete Message"
 msgstr "Usuń wiadomość"
 
 #: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrShowScan.qml:72 ../qml/pages/QrShowScan.qml:104
+#: ../qml/pages/QrShowScan.qml:78 ../qml/pages/QrShowScan.qml:110
 msgid "QR Invite Code"
 msgstr "Kod QR zaproszenia"
 
@@ -803,16 +875,16 @@ msgstr "Usuń obraz grupy"
 #: ../qml/pages/EphemeralTimerSettings.qml:148
 #: ../qml/pages/EphemeralTimerSettings.qml:152
 #: ../qml/pages/EphemeralTimerSettings.qml:222
-#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
-#: ../qml/pages/SettingsPage.qml:1111
+#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1130
+#: ../qml/pages/SettingsPage.qml:1136
 msgid "After 30 seconds"
 msgstr "Po 30 sekundach"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:162
 #: ../qml/pages/EphemeralTimerSettings.qml:166
-#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
-#: ../qml/pages/SettingsPage.qml:1132
+#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1151
+#: ../qml/pages/SettingsPage.qml:1157
 msgid "After 1 minute"
 msgstr "Po 1 minucie"
 
@@ -820,8 +892,8 @@ msgstr "Po 1 minucie"
 #: ../qml/pages/EphemeralTimerSettings.qml:176
 #: ../qml/pages/EphemeralTimerSettings.qml:180
 #: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
-#: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
-#: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
+#: ../qml/pages/SettingsPage.qml:975 ../qml/pages/SettingsPage.qml:981
+#: ../qml/pages/SettingsPage.qml:1172 ../qml/pages/SettingsPage.qml:1178
 msgid "After 1 hour"
 msgstr "Po 1 godzinie"
 
@@ -829,8 +901,8 @@ msgstr "Po 1 godzinie"
 #: ../qml/pages/EphemeralTimerSettings.qml:190
 #: ../qml/pages/EphemeralTimerSettings.qml:194
 #: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
-#: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
-#: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
+#: ../qml/pages/SettingsPage.qml:996 ../qml/pages/SettingsPage.qml:1002
+#: ../qml/pages/SettingsPage.qml:1193 ../qml/pages/SettingsPage.qml:1199
 msgid "After 1 day"
 msgstr "Po 1 dniu"
 
@@ -838,16 +910,16 @@ msgstr "Po 1 dniu"
 #: ../qml/pages/EphemeralTimerSettings.qml:204
 #: ../qml/pages/EphemeralTimerSettings.qml:208
 #: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
-#: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
-#: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
+#: ../qml/pages/SettingsPage.qml:1017 ../qml/pages/SettingsPage.qml:1023
+#: ../qml/pages/SettingsPage.qml:1214 ../qml/pages/SettingsPage.qml:1220
 msgid "After 1 week"
 msgstr "Po 1 tygodniu"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:218
 #: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
-#: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
-#: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
+#: ../qml/pages/SettingsPage.qml:1038 ../qml/pages/SettingsPage.qml:1044
+#: ../qml/pages/SettingsPage.qml:1235 ../qml/pages/SettingsPage.qml:1241
 msgid "After 4 weeks"
 msgstr "Po 4 tygodniach"
 
@@ -889,7 +961,7 @@ msgstr "Szczegóły wiadomości"
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:290
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:296
 msgid "Sorry, not implemented yet :-("
 msgstr ""
 
@@ -984,10 +1056,6 @@ msgstr "Wyeksportować prywatne klucze do „%1”?"
 msgid "Secret keys written successfully to \"%1\"."
 msgstr "Prywatne klucze zapisano pomyślnie do „%1”."
 
-#: ../qml/pages/ProgressKeysExport.qml:57
-msgid "Yes"
-msgstr "Tak"
-
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
 "Import secret keys from \"%1\"?\n"
@@ -1008,39 +1076,35 @@ msgstr ""
 msgid "Secret keys imported from \"%1\"."
 msgstr "Prywatne klucze zaimportowano z „%1”."
 
-#: ../qml/pages/ProgressQrBackupImport.qml:35
-msgid "Transferring…"
-msgstr "Przenoszenie…"
-
-#: ../qml/pages/QrConfirmPopup.qml:57 ../qml/pages/QrShowScan.qml:455
-msgid "Copy to Clipboard"
-msgstr "Kopiuj do schowka"
+#: ../qml/pages/ProgressQrBackupImport.qml:63
+msgid "Done"
+msgstr "Gotowe"
 
 #: ../qml/pages/QrConfirmPopup.qml:69
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:185
+#: ../qml/pages/QrShowScan.qml:191
 msgid "Chat with %1?"
 msgstr "Rozpocząć czat z %1?"
 
-#: ../qml/pages/QrShowScan.qml:211
+#: ../qml/pages/QrShowScan.qml:217
 msgid "Do you want to join the group \"%1\"?"
 msgstr "Czy chcesz dołączyć do grupy „%1?"
 
-#: ../qml/pages/QrShowScan.qml:223
+#: ../qml/pages/QrShowScan.qml:229
 msgid "The fingerprint of %1 is valid!"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:224 ../qml/pages/QrShowScan.qml:250
+#: ../qml/pages/QrShowScan.qml:230 ../qml/pages/QrShowScan.qml:256
 msgid "Fingerprint"
 msgstr "Odciski palca"
 
-#: ../qml/pages/QrShowScan.qml:236
+#: ../qml/pages/QrShowScan.qml:242
 msgid "The scanned fingerprint does not match the last seen for %1."
 msgstr "Zeskanowany odcisk palca nie pasuje do odcisku palca ostatnio widzianego u %1"
 
-#: ../qml/pages/QrShowScan.qml:249
+#: ../qml/pages/QrShowScan.qml:255
 msgid ""
 "This QR code contains a fingerprint but no e-mail address.\n"
 "\n"
@@ -1048,50 +1112,50 @@ msgid ""
 "the recipient first."
 msgstr "Ten kod QR zawiera odcisk palca, ale nie zawiera adresu e-mail.\n\nW celu weryfikacji poza zasadniczym pasmem należy najpierw nawiązać szyfrowane połączenie z odbiorcą."
 
-#: ../qml/pages/QrShowScan.qml:306
+#: ../qml/pages/QrShowScan.qml:312
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
 msgstr "Zeskanowany kod QR zawiera następujący tekst:\n\n%1"
 
-#: ../qml/pages/QrShowScan.qml:321
+#: ../qml/pages/QrShowScan.qml:327
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
 msgstr "Zeskanowany kod QR zawiera następujący adres:\n\n%1"
 
-#: ../qml/pages/QrShowScan.qml:350
+#: ../qml/pages/QrShowScan.qml:356
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "Ten kod QR może zostać zeskanowany przez inne osoby w celu skontaktowania się z Tobą.\n\nTutaj możesz dezaktywować kod QR i ponownie go aktywować poprzez zeskanowanie."
 
-#: ../qml/pages/QrShowScan.qml:351 ../qml/pages/QrShowScan.qml:364
+#: ../qml/pages/QrShowScan.qml:357 ../qml/pages/QrShowScan.qml:370
 msgid "Deactivate QR Code"
 msgstr "Dezaktywuj kod QR"
 
-#: ../qml/pages/QrShowScan.qml:363
+#: ../qml/pages/QrShowScan.qml:369
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "Ten kod QR może zostać zeskanowany przez inne osoby, aby dołączyć do grupy „%1”.\n\nTutaj możesz dezaktywować kod QR i ponownie go aktywować poprzez zeskanowanie."
 
-#: ../qml/pages/QrShowScan.qml:376
+#: ../qml/pages/QrShowScan.qml:382
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
 msgstr "Ten kod QR mógł być skanowany przez inne osoby w celu skontaktowania się z Tobą.\n\nKod QR nie jest już aktywny na tym urządzeniu."
 
-#: ../qml/pages/QrShowScan.qml:377 ../qml/pages/QrShowScan.qml:390
+#: ../qml/pages/QrShowScan.qml:383 ../qml/pages/QrShowScan.qml:396
 msgid "Activate QR Code"
 msgstr "Aktywuj kod QR"
 
-#: ../qml/pages/QrShowScan.qml:389
+#: ../qml/pages/QrShowScan.qml:395
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
@@ -1099,27 +1163,27 @@ msgid ""
 msgstr "Ten kod QR mógł być skanowany przez inne osoby, aby dołączyć do grupy „%1”.\n\nKod QR nie jest już aktywny na tym urządzeniu."
 
 #: ../qml/pages/SettingsPage.qml:84 ../qml/pages/SettingsPage.qml:97
-#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:851
-#: ../qml/pages/SettingsPage.qml:893 ../qml/pages/SettingsPage.qml:907
+#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:876
+#: ../qml/pages/SettingsPage.qml:918 ../qml/pages/SettingsPage.qml:932
 msgid "Up to %1"
 msgstr "Do %1"
 
-#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:865
+#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:890
 msgid "Up to %1, most worse quality images"
 msgstr "Do %1, większ. obrazów gorszej jakości"
 
-#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:879
+#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:904
 msgid "Up to %1, most balanced quality images"
 msgstr "Do %1, obrazy zrównoważonej jakości"
 
 #: ../qml/pages/SettingsPage.qml:113 ../qml/pages/SettingsPage.qml:145
-#: ../qml/pages/SettingsPage.qml:936 ../qml/pages/SettingsPage.qml:1070
+#: ../qml/pages/SettingsPage.qml:961 ../qml/pages/SettingsPage.qml:1095
 msgid "Never"
 msgstr "Nigdy"
 
 #: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
-#: ../qml/pages/SettingsPage.qml:1034 ../qml/pages/SettingsPage.qml:1040
-#: ../qml/pages/SettingsPage.qml:1231 ../qml/pages/SettingsPage.qml:1237
+#: ../qml/pages/SettingsPage.qml:1059 ../qml/pages/SettingsPage.qml:1065
+#: ../qml/pages/SettingsPage.qml:1256 ../qml/pages/SettingsPage.qml:1262
 msgid "After 1 year"
 msgstr "Po 1 roku"
 
@@ -1127,8 +1191,8 @@ msgstr "Po 1 roku"
 msgid "?"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1084
-#: ../qml/pages/SettingsPage.qml:1090
+#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1109
+#: ../qml/pages/SettingsPage.qml:1115
 msgid "At once"
 msgstr "Od razu"
 
@@ -1182,19 +1246,19 @@ msgstr ""
 msgid "Only the most recent notification will persist"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:565
+#: ../qml/pages/SettingsPage.qml:590
 msgid "Privacy"
 msgstr "Prywatność"
 
-#: ../qml/pages/SettingsPage.qml:577
+#: ../qml/pages/SettingsPage.qml:602
 msgid "Read Receipts"
 msgstr "Potwierdzenie odczytu"
 
-#: ../qml/pages/SettingsPage.qml:615
+#: ../qml/pages/SettingsPage.qml:640
 msgid "Delete Old Messages"
 msgstr "Usuwanie starych wiadomości"
 
-#: ../qml/pages/SettingsPage.qml:705 ../qml/pages/SettingsPage.qml:1262
+#: ../qml/pages/SettingsPage.qml:730 ../qml/pages/SettingsPage.qml:1287
 msgid "Export Backup"
 msgstr "Eksport kopii zapasowej"
 

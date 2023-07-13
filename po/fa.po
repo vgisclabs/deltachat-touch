@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-09 18:50+0000\n"
+"POT-Creation-Date: 2023-07-13 20:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,9 +69,9 @@ msgstr "در حال بارگیری..."
 msgid "New Chat"
 msgstr "گفتگوی جدید"
 
-#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:143
+#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:152
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
-#: ../qml/pages/QrShowScan.qml:337
+#: ../qml/pages/QrShowScan.qml:343
 msgid "Error: %1"
 msgstr "خطا: %1"
 
@@ -98,12 +98,12 @@ msgstr "پیام هدایت شده"
 #: ../qml/delegates/delegSelfImage.qml:189
 #: ../qml/delegates/delegSelfTextMsg.qml:146
 #: ../qml/delegates/delegSelfUnknown.qml:146
-#: ../qml/pages/AddAccountAsSecondDevice.qml:156
+#: ../qml/pages/AddAccountAsSecondDevice.qml:165
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:172
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
-#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:416
-#: ../qml/pages/QrShowScan.qml:429
+#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:422
+#: ../qml/pages/QrShowScan.qml:435
 msgid "Unknown"
 msgstr "ناشناس"
 
@@ -175,7 +175,7 @@ msgstr "اکانت‌های شناخته شده"
 #: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:211
 #: ../qml/pages/ProgressBackupImport.qml:69
 #: ../qml/pages/ProgressConfigAccount.qml:71
-#: ../qml/pages/ProgressQrBackupImport.qml:94
+#: ../qml/pages/ProgressQrBackupImport.qml:99
 msgid "Back"
 msgstr "بازگشت"
 
@@ -188,15 +188,16 @@ msgid "Add Account"
 msgstr "افزودن حساب کاربری"
 
 #: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
-#: ../qml/pages/AddAccountAsSecondDevice.qml:144
-#: ../qml/pages/AddAccountAsSecondDevice.qml:168
-#: ../qml/pages/AddAccountAsSecondDevice.qml:203
+#: ../qml/pages/AddAccountAsSecondDevice.qml:153
+#: ../qml/pages/AddAccountAsSecondDevice.qml:177
+#: ../qml/pages/AddAccountAsSecondDevice.qml:212
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:184
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:221
+#: ../qml/pages/AddSecondDevice.qml:82 ../qml/pages/AddSecondDevice.qml:95
 #: ../qml/pages/PickerBackupFile.qml:100
-#: ../qml/pages/ProgressQrBackupImport.qml:53 ../qml/pages/QrShowScan.qml:237
-#: ../qml/pages/QrShowScan.qml:338 ../qml/pages/QrShowScan.qml:488
+#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:243
+#: ../qml/pages/QrShowScan.qml:344 ../qml/pages/QrShowScan.qml:494
 msgid "Error"
 msgstr "خطا"
 
@@ -212,8 +213,8 @@ msgstr "حساب تنظیم نشده است"
 msgid "Log into your E-Mail Account"
 msgstr "به سرور خود وارد شوید"
 
-#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:130
-#: ../qml/pages/QrShowScan.qml:277
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:139
+#: ../qml/pages/QrShowScan.qml:283
 msgid "Add as Second Device"
 msgstr "افزودن به عنوان دستگاه دوم"
 
@@ -226,61 +227,62 @@ msgstr "وارد کردن نسخه پشتیبانی"
 msgid "Scan Invitation Code"
 msgstr "اسکن کردن کد دعوت"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:72
+#: ../qml/pages/AddAccountAsSecondDevice.qml:81
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:76
-#: ../qml/pages/QrShowScan.qml:111
+#: ../qml/pages/QrShowScan.qml:117
 msgid "Scan QR Code"
 msgstr "اسکن کردن کد کیو آر"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:105
+#: ../qml/pages/AddAccountAsSecondDevice.qml:114
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:109
-#: ../qml/pages/QrShowScan.qml:160
+#: ../qml/pages/QrShowScan.qml:166
 msgid ""
 "Scanning QR codes directly is not supported yet. Please use another app (e."
 "g., Tagger) to scan and copy the code to the clipboard, then paste it here "
 "using the button below."
 msgstr ""
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:118
+#: ../qml/pages/AddAccountAsSecondDevice.qml:127
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:122
-#: ../qml/pages/QrShowScan.qml:173
+#: ../qml/pages/QrShowScan.qml:179
 msgid "Paste from Clipboard"
 msgstr "چسباندن از حافظه"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:129
-#: ../qml/pages/QrShowScan.qml:276
+#: ../qml/pages/AddAccountAsSecondDevice.qml:138
+#: ../qml/pages/QrShowScan.qml:282
 msgid "Copy the account from the other device to this device?"
 msgstr "حساب از دستگاه دیگر به این دستگاه کپی شود؟"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:157
-#: ../qml/pages/AddAccountAsSecondDevice.qml:169
+#: ../qml/pages/AddAccountAsSecondDevice.qml:166
+#: ../qml/pages/AddAccountAsSecondDevice.qml:178
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:173
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:185
-#: ../qml/pages/QrShowScan.qml:307 ../qml/pages/QrShowScan.qml:322
-#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:430
+#: ../qml/pages/QrShowScan.qml:313 ../qml/pages/QrShowScan.qml:328
+#: ../qml/pages/QrShowScan.qml:423 ../qml/pages/QrShowScan.qml:436
 msgid "QR Code"
 msgstr "کد QR"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:195
+#: ../qml/pages/AddAccountAsSecondDevice.qml:204
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:770
-#: ../qml/pages/QrShowScan.qml:480
+#: ../qml/pages/QrShowScan.qml:486
 msgid "Configuring..."
 msgstr ""
 
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:133
-#: ../qml/pages/QrShowScan.qml:262
+#: ../qml/pages/QrShowScan.qml:268
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr "ایجاد ایمیل جدید روی \"%1\" و ورود در آن‌جا؟"
 
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:158
-#: ../qml/pages/QrShowScan.qml:402
+#: ../qml/pages/QrShowScan.qml:408
 msgid "Log into \"%1\"?"
 msgstr "آیا به \"%1\" وارد شوید؟"
 
 #: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:112
-#: ../qml/pages/BlockContactPopup.qml:31
+#: ../qml/pages/AddSecondDevice.qml:128 ../qml/pages/BlockContactPopup.qml:31
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmAddSecondDevice.qml:40
 #: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:80
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
@@ -308,20 +310,20 @@ msgstr "نام یا نشانی رایانامه را وارد کنید"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:52
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:794
-#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:781
+#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:806
 msgid "No, chats only"
 msgstr "نه، فقط گفتگوها"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:55
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:808
-#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:795
+#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:820
 msgid "For accepted contacts"
 msgstr "برای مخاطبین پذیرفته شده"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:58
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:822
 #: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
-#: ../qml/pages/SettingsPage.qml:809 ../qml/pages/SettingsPage.qml:837
+#: ../qml/pages/SettingsPage.qml:834 ../qml/pages/SettingsPage.qml:862
 msgid "All"
 msgstr "همه"
 
@@ -371,7 +373,7 @@ msgid "Show Classic E-Mails"
 msgstr "نمایش ایمیل‌های معمولی"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:445
-#: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:746
+#: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:771
 msgid "Advanced"
 msgstr "پیشرفته"
 
@@ -491,6 +493,54 @@ msgstr "SOCKS5 User"
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:707
 msgid "SOCKS5 Password"
 msgstr "SOCKS5 Password"
+
+#: ../qml/pages/AddSecondDevice.qml:105
+msgid "ℹ️ Account transferred to your second device."
+msgstr "ℹ️ حساب به دستگاه دوم شما منتقل شد."
+
+#: ../qml/pages/AddSecondDevice.qml:120
+#: ../qml/pages/ConfirmAddSecondDevice.qml:28 ../qml/pages/SettingsPage.qml:557
+msgid "Add Second Device"
+msgstr "افزودن دستگاه دوم"
+
+#: ../qml/pages/AddSecondDevice.qml:133
+msgid "This will invalidate the QR code copied to clipboard."
+msgstr "این کار کد QR کپی شده در کلیپ بورد را باطل می کند."
+
+#: ../qml/pages/AddSecondDevice.qml:155
+msgid "One moment…"
+msgstr "یک لحظه..."
+
+#: ../qml/pages/AddSecondDevice.qml:180
+#: ../qml/pages/ProgressQrBackupImport.qml:38
+msgid "Transferring…"
+msgstr "در حال انتقال…"
+
+#: ../qml/pages/AddSecondDevice.qml:266
+msgid "(experimental, version 1.36 required)"
+msgstr "(تجربی، نسخه 1.36 مورد نیاز است)"
+
+#: ../qml/pages/AddSecondDevice.qml:266
+msgid "Install Delta Chat on your other device (https://get.delta.chat) "
+msgstr ""
+
+#: ../qml/pages/AddSecondDevice.qml:307
+msgid "Make sure both devices are on the same Wi-Fi or network"
+msgstr "مطمئن شوید هر دو دستگاه در یک وای‌فای یا شبکه هستند"
+
+#: ../qml/pages/AddSecondDevice.qml:348
+msgid ""
+"Start Delta Chat, tap “Add as Second Device” and scan the code shown here"
+msgstr "دلتا چت را اجرا کنید، روی \"افزودن به عنوان دستگاه دوم\" بزنید و کد نشان داده شده در اینجا را اسکن کنید"
+
+#: ../qml/pages/AddSecondDevice.qml:358
+msgid "Troubleshooting"
+msgstr "عیب یابی"
+
+#: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:57
+#: ../qml/pages/QrShowScan.qml:461
+msgid "Copy to Clipboard"
+msgstr "رونوشت‌برداری در حافظه"
 
 #: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:463
 msgid "Worse quality, small size"
@@ -695,6 +745,28 @@ msgid ""
 "action cannot be undone."
 msgstr "همه اطلاعات حساب مربوط به \"%1\" روی این دستگاه پاک می‌شود که شامل تنظیمات رمزگذاری گیرنده به گیرنده ، مخاطبین، پیام‌ها و رسانه می‌شود. این عمل قابل بازگشت نیست."
 
+#: ../qml/pages/ConfirmAddSecondDevice.qml:29
+msgid ""
+"This creates a QR code that the second device can scan to copy the account."
+msgstr "این یک کد QR ایجاد می‌کند که دستگاه دوم می‌تواند برای کپی حساب اسکن کند."
+
+#: ../qml/pages/ConfirmAddSecondDevice.qml:32
+msgid "Continue"
+msgstr "ادامه"
+
+#: ../qml/pages/ConfirmCancelSecondDevice.qml:28
+msgid "Abort setting up second device?"
+msgstr "راه اندازی دستگاه دوم لغو شود؟"
+
+#: ../qml/pages/ConfirmCancelSecondDevice.qml:31
+#: ../qml/pages/ProgressKeysExport.qml:57
+msgid "Yes"
+msgstr "بله"
+
+#: ../qml/pages/ConfirmCancelSecondDevice.qml:40
+msgid "No"
+msgstr "خیر"
+
 #: ../qml/pages/ConfirmChatDeletion.qml:34
 #: ../qml/pages/ConfirmChatDeletion.qml:44
 msgid "Delete Chat"
@@ -714,7 +786,7 @@ msgid "Delete %1 messages here and on the server?"
 msgstr "پاک کردن %1 گفتگو از اینجا و سرور؟"
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
-#: ../qml/pages/SettingsPage.qml:629
+#: ../qml/pages/SettingsPage.qml:654
 msgid "Delete Messages from Device"
 msgstr "پاک کردن پیام‌ها از دستگاه"
 
@@ -736,7 +808,7 @@ msgid "I understand, delete all these messages"
 msgstr "متوجه هستم، همه پیام‌ها حذف شوند"
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
-#: ../qml/pages/SettingsPage.qml:657
+#: ../qml/pages/SettingsPage.qml:682
 msgid "Delete Messages from Server"
 msgstr "پاک کردن پیام‌ها از سرور"
 
@@ -767,7 +839,7 @@ msgid "Delete Message"
 msgstr "حذف پیام"
 
 #: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrShowScan.qml:72 ../qml/pages/QrShowScan.qml:104
+#: ../qml/pages/QrShowScan.qml:78 ../qml/pages/QrShowScan.qml:110
 msgid "QR Invite Code"
 msgstr "کد دعوت کیوآر"
 
@@ -803,16 +875,16 @@ msgstr "حذف تصویر گروه"
 #: ../qml/pages/EphemeralTimerSettings.qml:148
 #: ../qml/pages/EphemeralTimerSettings.qml:152
 #: ../qml/pages/EphemeralTimerSettings.qml:222
-#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1105
-#: ../qml/pages/SettingsPage.qml:1111
+#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1130
+#: ../qml/pages/SettingsPage.qml:1136
 msgid "After 30 seconds"
 msgstr "بعد از ۳۰ ثانیه"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:162
 #: ../qml/pages/EphemeralTimerSettings.qml:166
-#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1126
-#: ../qml/pages/SettingsPage.qml:1132
+#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1151
+#: ../qml/pages/SettingsPage.qml:1157
 msgid "After 1 minute"
 msgstr "بعد از ۱ دقیقه"
 
@@ -820,8 +892,8 @@ msgstr "بعد از ۱ دقیقه"
 #: ../qml/pages/EphemeralTimerSettings.qml:176
 #: ../qml/pages/EphemeralTimerSettings.qml:180
 #: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
-#: ../qml/pages/SettingsPage.qml:950 ../qml/pages/SettingsPage.qml:956
-#: ../qml/pages/SettingsPage.qml:1147 ../qml/pages/SettingsPage.qml:1153
+#: ../qml/pages/SettingsPage.qml:975 ../qml/pages/SettingsPage.qml:981
+#: ../qml/pages/SettingsPage.qml:1172 ../qml/pages/SettingsPage.qml:1178
 msgid "After 1 hour"
 msgstr "بعد از ۱ ساعت"
 
@@ -829,8 +901,8 @@ msgstr "بعد از ۱ ساعت"
 #: ../qml/pages/EphemeralTimerSettings.qml:190
 #: ../qml/pages/EphemeralTimerSettings.qml:194
 #: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
-#: ../qml/pages/SettingsPage.qml:971 ../qml/pages/SettingsPage.qml:977
-#: ../qml/pages/SettingsPage.qml:1168 ../qml/pages/SettingsPage.qml:1174
+#: ../qml/pages/SettingsPage.qml:996 ../qml/pages/SettingsPage.qml:1002
+#: ../qml/pages/SettingsPage.qml:1193 ../qml/pages/SettingsPage.qml:1199
 msgid "After 1 day"
 msgstr "بعد از ۱  روز"
 
@@ -838,16 +910,16 @@ msgstr "بعد از ۱  روز"
 #: ../qml/pages/EphemeralTimerSettings.qml:204
 #: ../qml/pages/EphemeralTimerSettings.qml:208
 #: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
-#: ../qml/pages/SettingsPage.qml:992 ../qml/pages/SettingsPage.qml:998
-#: ../qml/pages/SettingsPage.qml:1189 ../qml/pages/SettingsPage.qml:1195
+#: ../qml/pages/SettingsPage.qml:1017 ../qml/pages/SettingsPage.qml:1023
+#: ../qml/pages/SettingsPage.qml:1214 ../qml/pages/SettingsPage.qml:1220
 msgid "After 1 week"
 msgstr "بعد از ۱ هفته"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:218
 #: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
-#: ../qml/pages/SettingsPage.qml:1013 ../qml/pages/SettingsPage.qml:1019
-#: ../qml/pages/SettingsPage.qml:1210 ../qml/pages/SettingsPage.qml:1216
+#: ../qml/pages/SettingsPage.qml:1038 ../qml/pages/SettingsPage.qml:1044
+#: ../qml/pages/SettingsPage.qml:1235 ../qml/pages/SettingsPage.qml:1241
 msgid "After 4 weeks"
 msgstr "بعد از۴ هفته"
 
@@ -889,7 +961,7 @@ msgstr "جزئیات پیام"
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:290
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:296
 msgid "Sorry, not implemented yet :-("
 msgstr ""
 
@@ -984,10 +1056,6 @@ msgstr "صادر کردن کلیدهای خصوصی به\"%1\"؟"
 msgid "Secret keys written successfully to \"%1\"."
 msgstr "کلیدهای خصوصی با موفقیت در\"%1\" ذخیره شدند. "
 
-#: ../qml/pages/ProgressKeysExport.qml:57
-msgid "Yes"
-msgstr "بله"
-
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
 "Import secret keys from \"%1\"?\n"
@@ -1008,39 +1076,35 @@ msgstr ""
 msgid "Secret keys imported from \"%1\"."
 msgstr "کلیدهای خصوصی از \"%1\" وارد شدند. "
 
-#: ../qml/pages/ProgressQrBackupImport.qml:35
-msgid "Transferring…"
-msgstr "در حال انتقال…"
-
-#: ../qml/pages/QrConfirmPopup.qml:57 ../qml/pages/QrShowScan.qml:455
-msgid "Copy to Clipboard"
-msgstr "رونوشت‌برداری در حافظه"
+#: ../qml/pages/ProgressQrBackupImport.qml:63
+msgid "Done"
+msgstr "انجام شد"
 
 #: ../qml/pages/QrConfirmPopup.qml:69
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:185
+#: ../qml/pages/QrShowScan.qml:191
 msgid "Chat with %1?"
 msgstr "گفتگو با %1؟"
 
-#: ../qml/pages/QrShowScan.qml:211
+#: ../qml/pages/QrShowScan.qml:217
 msgid "Do you want to join the group \"%1\"?"
 msgstr "آیا می خواهید به گروه\"%1\" ملحق شوید؟"
 
-#: ../qml/pages/QrShowScan.qml:223
+#: ../qml/pages/QrShowScan.qml:229
 msgid "The fingerprint of %1 is valid!"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:224 ../qml/pages/QrShowScan.qml:250
+#: ../qml/pages/QrShowScan.qml:230 ../qml/pages/QrShowScan.qml:256
 msgid "Fingerprint"
 msgstr "اثر انگشت"
 
-#: ../qml/pages/QrShowScan.qml:236
+#: ../qml/pages/QrShowScan.qml:242
 msgid "The scanned fingerprint does not match the last seen for %1."
 msgstr "اثرانگشت اسکن شده با انچه که برای %1مشاهده شده بود انطباق ندارد. "
 
-#: ../qml/pages/QrShowScan.qml:249
+#: ../qml/pages/QrShowScan.qml:255
 msgid ""
 "This QR code contains a fingerprint but no e-mail address.\n"
 "\n"
@@ -1048,50 +1112,50 @@ msgid ""
 "the recipient first."
 msgstr "این کیوآر حاوی یک شناساگر است ولی ادرس ایمیلی در آن نیست. \n\n برای یک تاییدیه به روش‌های دیگر لطفا ابتدا یک ارتباط رمزگذاری شده با دریافت کننده برقرار کنید. "
 
-#: ../qml/pages/QrShowScan.qml:306
+#: ../qml/pages/QrShowScan.qml:312
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
 msgstr "کیوآر کد اسکن شده:\n\n %1"
 
-#: ../qml/pages/QrShowScan.qml:321
+#: ../qml/pages/QrShowScan.qml:327
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
 msgstr "آدرس اینترنتی کیوآر اسکن شده:\n\n %1"
 
-#: ../qml/pages/QrShowScan.qml:350
+#: ../qml/pages/QrShowScan.qml:356
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "دیگران برای ارتباط با شما می‌توانند این کد کیوآر را اسکن کنند. \n\n می‌توان کد کیوآر را در اینجا غیر فعال کنید و با اسکن کردن مجدد، آن را فعال کنید. "
 
-#: ../qml/pages/QrShowScan.qml:351 ../qml/pages/QrShowScan.qml:364
+#: ../qml/pages/QrShowScan.qml:357 ../qml/pages/QrShowScan.qml:370
 msgid "Deactivate QR Code"
 msgstr "غیرفعال کردن کد کیوآر"
 
-#: ../qml/pages/QrShowScan.qml:363
+#: ../qml/pages/QrShowScan.qml:369
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "این کد کیوآر می‌تواند توسط دیگران و برای پیوستن به گروه \"%1\" اسکن شود.\n\n شما می‌تواند این کد کیوآر را در اینجا غیرفعال کنید و با اسکن کردن مجدد، آن را فعال نمایید. "
 
-#: ../qml/pages/QrShowScan.qml:376
+#: ../qml/pages/QrShowScan.qml:382
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
 msgstr "دیگران برای تماس با شما می‌توانند این کد کیوآر را اسکن کنند. \n\n این کد کیوآر در این دستگاه فعال نیست. "
 
-#: ../qml/pages/QrShowScan.qml:377 ../qml/pages/QrShowScan.qml:390
+#: ../qml/pages/QrShowScan.qml:383 ../qml/pages/QrShowScan.qml:396
 msgid "Activate QR Code"
 msgstr "فعال کردن کد کیوآر"
 
-#: ../qml/pages/QrShowScan.qml:389
+#: ../qml/pages/QrShowScan.qml:395
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
@@ -1099,27 +1163,27 @@ msgid ""
 msgstr "دیگران می‌توانند برای پیوستن به گروه \"%1\" این کد کیوآر را اسکن کنند. این کد کیوآر روی این دستگاه فعال نیست. "
 
 #: ../qml/pages/SettingsPage.qml:84 ../qml/pages/SettingsPage.qml:97
-#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:851
-#: ../qml/pages/SettingsPage.qml:893 ../qml/pages/SettingsPage.qml:907
+#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:876
+#: ../qml/pages/SettingsPage.qml:918 ../qml/pages/SettingsPage.qml:932
 msgid "Up to %1"
 msgstr "تا سقف %1"
 
-#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:865
+#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:890
 msgid "Up to %1, most worse quality images"
 msgstr "تا سقف %1، بدترین کیفیت تصویر"
 
-#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:879
+#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:904
 msgid "Up to %1, most balanced quality images"
 msgstr "تا سقف %1، متعادل‌ترین کیفیت تصویر"
 
 #: ../qml/pages/SettingsPage.qml:113 ../qml/pages/SettingsPage.qml:145
-#: ../qml/pages/SettingsPage.qml:936 ../qml/pages/SettingsPage.qml:1070
+#: ../qml/pages/SettingsPage.qml:961 ../qml/pages/SettingsPage.qml:1095
 msgid "Never"
 msgstr "هرگز"
 
 #: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
-#: ../qml/pages/SettingsPage.qml:1034 ../qml/pages/SettingsPage.qml:1040
-#: ../qml/pages/SettingsPage.qml:1231 ../qml/pages/SettingsPage.qml:1237
+#: ../qml/pages/SettingsPage.qml:1059 ../qml/pages/SettingsPage.qml:1065
+#: ../qml/pages/SettingsPage.qml:1256 ../qml/pages/SettingsPage.qml:1262
 msgid "After 1 year"
 msgstr "بعد از ۱ سال"
 
@@ -1127,8 +1191,8 @@ msgstr "بعد از ۱ سال"
 msgid "?"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1084
-#: ../qml/pages/SettingsPage.qml:1090
+#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1109
+#: ../qml/pages/SettingsPage.qml:1115
 msgid "At once"
 msgstr "یک بار"
 
@@ -1182,19 +1246,19 @@ msgstr ""
 msgid "Only the most recent notification will persist"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:565
+#: ../qml/pages/SettingsPage.qml:590
 msgid "Privacy"
 msgstr "حریم خصوصی"
 
-#: ../qml/pages/SettingsPage.qml:577
+#: ../qml/pages/SettingsPage.qml:602
 msgid "Read Receipts"
 msgstr "رسید خوانده شدن"
 
-#: ../qml/pages/SettingsPage.qml:615
+#: ../qml/pages/SettingsPage.qml:640
 msgid "Delete Old Messages"
 msgstr "پاک کردن پیام‌های قدیمی"
 
-#: ../qml/pages/SettingsPage.qml:705 ../qml/pages/SettingsPage.qml:1262
+#: ../qml/pages/SettingsPage.qml:730 ../qml/pages/SettingsPage.qml:1287
 msgid "Export Backup"
 msgstr "صادر کردن نسخه پشتیبان"
 

@@ -38,7 +38,6 @@ Dialog {
 
     Button {
         text: i18n.tr("Cancel")
-        color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)
         }

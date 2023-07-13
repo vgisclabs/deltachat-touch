@@ -64,7 +64,13 @@ Page {
     }
 
     function continueQrBackupImport() {
-        PopupUtils.open(progressQrBackupImport)
+        let popup2 = PopupUtils.open(progressQrBackupImport)
+        popup2.failed.connect(goBackToMain)
+        popup2.cancelled.connect(goBackToMain)
+    }
+
+    function goBackToMain() {
+        layout.removePages(primaryPage)
     }
 
     header: PageHeader {

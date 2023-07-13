@@ -25,6 +25,9 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
+    signal failed()
+    signal cancelled()
+
     // TODO: set title according to the step, possible values are:
     // Preparing account…
     // Waiting for receiver…
@@ -57,7 +60,7 @@ Dialog {
         }
         else if (progValue == 1000) {
             // TODO string not translated yet
-            dialog.title = "Success!"
+            dialog.title = i18n.tr("Done")
             progBar.visible = false
             okButton.visible = true
             cancelButton.visible = false
@@ -73,7 +76,7 @@ Dialog {
         onClicked: {
             DeltaHandler.cancelQrImport()
             PopupUtils.close(dialog)
-            layout.removePages(layout.primaryPage)
+            cancelled()
         }
         visible: false
     }
@@ -90,12 +93,14 @@ Dialog {
     }
 
     Button {
+        // Must only be visible in case the import failed because
+        // we are emitting the failed signal when the button is clicked
         id: backButton
         text: i18n.tr("Back")
         color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)
-            layout.removePages(layout.primaryPage)
+            failed()
         }
         visible: false
     }

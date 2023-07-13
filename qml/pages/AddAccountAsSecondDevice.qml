@@ -52,19 +52,28 @@ Page {
         onSetTempContextNull: DeltaHandler.unrefTempContext()
     }
 
+    function goBack() {
+        // TODO: This will go back to the AddAccount page, go back to the
+        // AccountConfig page instead?  Or check whether a configured account
+        // exists, and then go back to the Main page?
+        layout.removePages(addAccountViaQrPage)
+    }
+
     function continueQrAccountCreation(wasSuccessful) {
         if (wasSuccessful) {
-            // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
-            // the account should not persist if the configuration fails (or should it?)
             PopupUtils.open(configProgress)
         } else {
             PopupUtils.open(creationErrorMessage)
+            // TODO is this needed? It's called onDestruction, so it should be
+            // called in each case anyway?
             setTempContextNull()
         }
     }
 
     function continueQrBackupImport() {
-        PopupUtils.open(progressQrBackupImport)
+        let popup2 = PopupUtils.open(progressQrBackupImport)
+        popup2.failed.connect(goBack)
+        popup2.cancelled.connect(goBack)
     }
 
     header: PageHeader {

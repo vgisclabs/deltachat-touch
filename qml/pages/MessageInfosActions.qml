@@ -71,11 +71,14 @@ Dialog {
         text: i18n.tr("Message Details")
         onClicked: {
             let tempString = DeltaHandler.chatmodel.getMomentaryInfo()
-            PopupUtils.open(
+            let popup = PopupUtils.open(
                 Qt.resolvedUrl("InfoPopup.qml"),
                 null,
                 { text: tempString }
             )
+            popup.done.connect(function() {
+                PopupUtils.close(dialog)
+            })
         }
     }
 

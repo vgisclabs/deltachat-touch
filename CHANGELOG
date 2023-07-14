@@ -4,6 +4,7 @@ Feature: Act as primary device to add second device via QR code
 UI: Adapt link colors for better contrast
 UI: Show information if provider needs special settings
 Bugfix: Correctly format links after newline
+Bugfix: Correct color of quoted text for some delegates
 
 1.0.1 2023-07-04
 Bugfix: Keep aspect ratio in image viewer for small images, too

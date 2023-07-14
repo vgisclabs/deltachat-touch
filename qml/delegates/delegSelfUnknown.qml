@@ -121,6 +121,7 @@ UbuntuShape {
             top: quoteRectangle.top
         }
         text: model.quotedText
+        color: msgLabel.color
         wrapMode: Text.Wrap
         visible: text != ""
 

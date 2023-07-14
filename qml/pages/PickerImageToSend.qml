@@ -80,7 +80,11 @@ Page {
                 if (imageToSendPage.activeTransfer.items.length > 0) {
                     imageToSendPage.source = imageToSendPage.activeTransfer.items[0].url;
                     console.log('Setting image attachment: ', imageToSendPage.source)
-                    DeltaHandler.chatmodel.setAttachment(imageToSendPage.source, DeltaHandler.ImageType)
+                    if (DeltaHandler.chatmodel.isGif(imageToSendPage.source)) {
+                        DeltaHandler.chatmodel.setAttachment(imageToSendPage.source, DeltaHandler.GifType)
+                    } else {
+                        DeltaHandler.chatmodel.setAttachment(imageToSendPage.source, DeltaHandler.ImageType)
+                    }
                 }
                 layout.removePages(imageToSendPage)
             }

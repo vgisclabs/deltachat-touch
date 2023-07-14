@@ -133,6 +133,9 @@ public:
     // Returns the number of messages in the current chat
     Q_INVOKABLE int getMessageCount();
 
+    // checks whether a file is a gif
+    Q_INVOKABLE bool isGif(QString fileToCheck);
+
 public slots:
     void messageStatusChangedSlot(int msgID);
     void appIsActiveAgainActions();

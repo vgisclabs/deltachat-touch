@@ -581,6 +581,23 @@ int ChatModel::getMessageCount()
 }
 
 
+bool ChatModel::isGif(QString fileToCheck)
+{
+    // the url handed over by the ContentHub starts with
+    // "file:///home....", so we have to remove the first 7
+    // characters
+    fileToCheck.remove(0, 7);
+
+    QMimeDatabase mimedb;
+    QMimeType mime = mimedb.mimeTypeForFile(fileToCheck);
+    if (mime.inherits("image/gif")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 void ChatModel::setMomentaryMessage(int myindex)
 {
     m_MomentaryMsgId = msgVector[myindex];

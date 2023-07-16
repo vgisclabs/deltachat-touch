@@ -3,13 +3,12 @@ Feature: Clear chat
 Feature: Act as primary device to add second device via QR code
 UI: Adapt link colors for better contrast
 UI: Show information if provider needs special settings
+UI: Truncate long quoted texts; click toggles expand/collapse if jump to quoted msg is not possible
 Bugfix: Correctly format links after newline
-Bugfix: Correct color of quoted text for some delegates
-Other: Check whether image attachment is gif and send as gif if yes
-
-1.0.1 2023-07-04
+Bugfix: Use correct color for quoted text in all cases
 Bugfix: Keep aspect ratio in image viewer for small images, too
 Bugfix: Adapt decorations of message bubbles if new message is received
+Other: Check whether image attachment is gif and send as gif if yes
 
 1.0.0 2023-07-01
 Initial release

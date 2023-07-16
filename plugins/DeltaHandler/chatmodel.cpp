@@ -231,7 +231,23 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
             } else {
                 tempQString = "";
             }
-            retval = tempQString;
+
+            // If the message ID is in msgIdsWithExpandedQuote, then
+            // the full quoted text should be returned, otherwise
+            // a truncated version of it. See initiateQuotedMsgJump()
+            // for details
+            // Threshold for truncation is randomly 180 chars.
+            if (tempQString.length() > 180) {
+                if (toggleQuoteVectorContainsId(tempMsgID)) {
+                    retval = tempQString;
+                } else {
+                    tempQString.resize(176);
+                    retval = tempQString + " […]";
+                }
+            } else {
+                retval = tempQString;
+            }
+
             break;
 
         case ChatModel::QuoteUserRole:
@@ -628,6 +644,8 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
     m_dhandler = deltaHandler;
 
     beginResetModel();
+
+    msgIdsWithExpandedQuote.clear();
 
     // invalidate the cached data_tempMsg (see ChatModel::data())
     data_row = std::numeric_limits<int>::max();
@@ -1625,11 +1643,14 @@ void ChatModel::initiateQuotedMsgJump(int myindex)
 
     dc_msg_t* quotedMsg {nullptr};
     quotedMsg = dc_msg_get_quoted_msg(tempMsg);
+    
+    bool toggleQuoteExpandedState {false};
 
     if (quotedMsg) {
         uint32_t tempChatID = dc_msg_get_chat_id(quotedMsg);
         if (m_chatID != tempChatID) {
             qDebug() << "ChatModel::initiateQuotedMsgJump: Message to jump to is in different chat";
+            toggleQuoteExpandedState = true;
         } else {
             uint32_t quotedMsgID = dc_msg_get_id(quotedMsg);
             size_t i {0};
@@ -1641,10 +1662,12 @@ void ChatModel::initiateQuotedMsgJump(int myindex)
             } // end for
             if (i == currentMsgCount) {
                 qDebug() << "ChatModel::initiateQuotedMsgJump: Could not find quoted message in the message list";
+                toggleQuoteExpandedState = true;
             }
         } // end else
     } else { // (quotedMsg)
         qDebug() << "ChatModel::initiateQuotedMsgJump: No quoted message attached";
+        toggleQuoteExpandedState = true;
     }
 
     if (tempMsg) {
@@ -1653,6 +1676,44 @@ void ChatModel::initiateQuotedMsgJump(int myindex)
 
     if (quotedMsg) {
         dc_msg_unref(quotedMsg);
+    }
+
+    // The jump to the quoted message could not be
+    // initiated for one of the reasons above, so
+    // the quote will be expanded (or collapsed,
+    // if it's already expanded).
+    if (toggleQuoteExpandedState) {
+        if (toggleQuoteVectorContainsId(tempMsgID)) {
+            toggleQuoteVectorRemoveId(tempMsgID);
+        } else {
+            msgIdsWithExpandedQuote.push_back(tempMsgID);
+        }
+        emit QAbstractItemModel::dataChanged(index(myindex, 0), index(myindex, 0));
+    }
+}
+
+
+bool ChatModel::toggleQuoteVectorContainsId(const uint32_t tempID) const
+{
+    bool found = false;
+
+    for (size_t i = 0; i < msgIdsWithExpandedQuote.size(); ++i) {
+        if (msgIdsWithExpandedQuote[i] == tempID) {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
+
+void ChatModel::toggleQuoteVectorRemoveId(uint32_t tempID)
+{
+    for (size_t i = 0; i < msgIdsWithExpandedQuote.size(); ++i) {
+        if (msgIdsWithExpandedQuote[i] == tempID) {
+            msgIdsWithExpandedQuote.erase(msgIdsWithExpandedQuote.begin() + i);
+            break;
+        }
     }
 }
 

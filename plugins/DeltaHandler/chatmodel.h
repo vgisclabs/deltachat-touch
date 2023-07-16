@@ -225,6 +225,14 @@ private:
     // change in the background while the user is still
     // in some action page
     uint32_t m_MomentaryMsgId;
+
+    // For message IDs that are found in this vector,
+    // QuotedTextRole in data() will return the full quoted
+    // text (otherwise, truncated text + " […]" is returned)
+    std::vector<uint32_t> msgIdsWithExpandedQuote;
+
+    bool toggleQuoteVectorContainsId(const uint32_t tempID) const;
+    void toggleQuoteVectorRemoveId(uint32_t tempID);
 };
 
 

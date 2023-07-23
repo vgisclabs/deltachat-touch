@@ -1,3 +1,6 @@
 [submodule "libs/deltachat-core-rust"]
 	path = libs/deltachat-core-rust
 	url = https://github.com/deltachat/deltachat-core-rust
+[submodule "libs/quirc"]
+	path = libs/quirc
+	url = https://github.com/dlbeer/quirc

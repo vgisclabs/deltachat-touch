@@ -19,6 +19,7 @@
 #include <vector>
 #include <fstream>
 #include "deltahandler.h"
+#include "quirc.h"
 //#include <unistd.h> // for sleep
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>
@@ -29,7 +30,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}
+    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}
 {
     {
         // to be able to access the files under assets
@@ -318,6 +319,10 @@ DeltaHandler::~DeltaHandler()
 
     if (m_audioRecorder) {
         delete m_audioRecorder;
+    }
+
+    if (m_qr) {
+        quirc_destroy(m_qr);
     }
 }
 
@@ -2672,6 +2677,7 @@ void DeltaHandler::continueQrCodeAction()
             // TODO not implemented yet
             break;
         case DT_QR_ADDR:
+            // TODO
             break;
         case DT_QR_TEXT:
             // nothing to do here
@@ -2983,6 +2989,105 @@ void DeltaHandler::cancelQrImport()
     // progress = 0, then imexBackupImportProgressReceiver will
     // take care of unreffing tempContext and deleting the account.
     // Otherwise, this would have to be done here.
+}
+
+
+bool DeltaHandler::prepareQrDecoder()
+{
+    if (m_qr) {
+        quirc_destroy(m_qr);
+    }
+
+    m_qr = quirc_new();
+    if (!m_qr) {
+        qDebug() << "DeltaHandler:: ERROR: Failed to allocate memory for quirc_new()";
+        return false;
+    }
+
+    return true;
+}
+
+
+void DeltaHandler::evaluateQrImage(QImage image)
+{
+    QImage m_image = image.convertToFormat(QImage::Format_Grayscale8);
+
+    int iwidth = m_image.width();
+    int iheight = m_image.height();
+
+    // Usage of libquirc mostly according to the README in the
+    // quirc repo
+    if (quirc_resize(m_qr, iwidth, iheight) < 0) {
+        qDebug() << "DeltaHandler::evaluateQrImage: ERROR: Failed to allocate video memory for quirc_resize()";
+        return;
+    }
+
+    uint8_t *imbuffer;
+    int w, h;
+
+    imbuffer = quirc_begin(m_qr, &w, &h);
+
+    uint8_t* idatapointer;
+
+    for (int i = 0; i < h; ++i) {
+        // better to use scanLine() than bits()
+        idatapointer = m_image.scanLine(i);
+
+        for (int j = 0; j < w; ++j) {
+            *imbuffer = *(idatapointer + j);
+            ++imbuffer;
+        }
+    }
+
+    quirc_end(m_qr);
+
+    int num_codes;
+    int i;
+
+    num_codes = quirc_count(m_qr);
+
+    if (num_codes > 0) {
+        if (num_codes > 1) {
+            qDebug() << "DeltaHandler::evaluateQrImage: Multiple QR codes found, using the first one";
+        }
+
+        struct quirc_code code;
+        struct quirc_data data;
+        quirc_decode_error_t err;
+
+        quirc_extract(m_qr, 0, &code);
+
+        /* Decoding stage */
+        err = quirc_decode(&code, &data);
+        if (err) {
+            printf("DeltaHandler::evaluateQrImage: DECODE FAILED: %s\n", quirc_strerror(err));
+        }
+        else {
+            printf("DeltaHandler::evaluateQrImage: Data: %s\n", data.payload);
+            QString tempQString{""};
+            // adding it char by char as I couldn't figure out how to
+            // pass data.payload as argument to a QString constructor
+            // as it is not const. Embarassing, I know. If you know how
+            // this should be done, please let me know.
+            for (int k = 0; k < data.payload_len; ++k) {
+                tempQString += data.payload[k];
+            }
+            emit qrDecoded(tempQString);
+        }
+    }
+    
+    if (num_codes == 0) {
+        qDebug() << "DeltaHandler::evaluateQrImage: no QR code found";
+    }
+}
+
+
+void DeltaHandler::deleteQrDecoder()
+{
+    if (m_qr) {
+        quirc_destroy(m_qr);
+        m_qr = nullptr;
+    }
 }
 
 

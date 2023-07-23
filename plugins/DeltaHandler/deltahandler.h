@@ -288,6 +288,9 @@ public:
     Q_INVOKABLE void prepareQrBackupImport();
     Q_INVOKABLE void startQrBackupImport();
     Q_INVOKABLE void cancelQrImport();
+
+    Q_INVOKABLE bool prepareQrDecoder();
+    Q_INVOKABLE void evaluateQrImage(QImage image);
     /* ============ End QR code related stuff ================= */
 
     /* ========================================================
@@ -411,11 +414,15 @@ signals:
      * ======================================================== */
     void finishedSetConfigFromQr(bool successful);
     void readyForQrBackupImport();
+
+    void qrDecoded(QString qrContent);
     /* ============ End QR code related stuff ================= */
 
 public slots:
     void unrefTempContext();
     void chatViewIsClosed();
+
+    void deleteQrDecoder();
 
     void prepareContactsmodelForGroupMemberAddition();
 
@@ -497,6 +504,8 @@ private:
     uint32_t m_qrTempContactID;
     QString m_qrTempText;
     QString m_qrTempLotTextOne;
+
+    struct quirc* m_qr;
 
     // Tag of the most recent notification
     QString m_lastTag;

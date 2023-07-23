@@ -32,6 +32,7 @@ Dialog {
     property string clipboardContent
 
     signal confirmed()
+    signal cancel()
 
     title: titleString
 
@@ -53,7 +54,7 @@ Dialog {
         id: cancelButton
         text: i18n.tr("Cancel")
         onClicked: {
-            PopupUtils.close(dialog)
+            cancel()
         }
     }
 

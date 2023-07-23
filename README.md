@@ -41,15 +41,26 @@ If the submodule has been cloned for the first time or its CMakeLists.txt has be
 patch libs/deltachat-core-rust/CMakeLists.txt < libs/patches/dc_core_rust-CMakeLists.patch
 ```
 
-Build the libdeltachat.so for your architecture (arm64 in this example, could also be armhf or amd64 if you want to use `clickable desktop`). This will take some time:
+Build libdeltachat.so for your architecture (arm64 in this example, could also be armhf or amd64 if you want to use `clickable desktop`). This will take some time:
 
 ```
 clickable build --libs deltachat-core-rust --arch arm64
 ```
 
+### Buidling libquirc.so.1.2
+
+Activating/updating the quirc submodule should have already been done by running `git submodule update --init --recursive` for libdeltachat.so above.
+
+Build libquirc.so.1.2 for your architecture (arm64 in this example, could also be armhf or amd64 if you want to use `clickable desktop`):
+
+```
+clickable build --libs quirc --arch arm64
+```
+
+
 ### Build the app
 
-Preqrequisite: libdeltachat.so has been built for your architecture as described above. Then build the app for your architecture (arm64 in this example, could also be armhf):
+Preqrequisite: libdeltachat.so and libquirc.so.1.2 have been built for your architecture as described above. Then build the app for your architecture (arm64 in this example, could also be armhf):
 
 ```
 clickable build --arch arm64
@@ -73,6 +84,7 @@ Note that there are some limitations to `clickable desktop`:
     - Backups cannot be im- or exported, so accounts have to be set up via logging in to your account.
     - Images and sound files / voice recordings cannot be sent.
     - Attachments cannot be saved.
+    - It's not possible to use a potentially present camera for QR code scanning.
 
 ## License
 

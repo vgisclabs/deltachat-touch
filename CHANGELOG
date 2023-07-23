@@ -1,6 +1,7 @@
 1.1.0 
 Feature: Clear chat
 Feature: Act as primary device to add second device via QR code
+Feature: In-app QR code scanning
 UI: Adapt link colors for better contrast
 UI: Show information if provider needs special settings
 UI: Truncate long quoted texts; click toggles expand/collapse if jump to quoted msg is not possible

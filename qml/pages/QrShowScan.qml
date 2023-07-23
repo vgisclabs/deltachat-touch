@@ -620,16 +620,17 @@ Page {
                 }
             }
 
-            Button {
-                id: testbutton
-                width: scanButtonRect.width
-                anchors {
-                    top: pasteButton.bottom
-                    topMargin: units.gu(2)
-                    left: scanButtonRect.left
-                }
-                text: "blablabla"
-            }
+//            // TODO: implement
+//            Button {
+//                id: loadQrImageButton
+//                width: scanButtonRect.width
+//                anchors {
+//                    top: pasteButton.bottom
+//                    topMargin: units.gu(2)
+//                    left: scanButtonRect.left
+//                }
+//                text: i18n.tr("Load QR Code as Image")
+//            }
         } // end Rectangle id: scanButtonRect
     } // end Rectangle id: qrScanRect
 

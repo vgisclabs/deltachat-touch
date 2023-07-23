@@ -1,0 +1,11 @@
+--- Makefile	2023-07-23 21:22:22.006050026 +0200
++++ quirc-modified-Makefile	2023-07-23 21:22:30.485924332 +0200
+@@ -15,7 +15,7 @@
+ 
+ CC ?= gcc
+ PREFIX ?= /usr/local
+-SDL_CFLAGS := $(shell pkg-config --cflags sdl 2>&1)
++SDL_CFLAGS := $(echo "")
+ SDL_LIBS = $(shell pkg-config --libs sdl)
+ 
+ LIB_VERSION = 1.2

@@ -17,6 +17,9 @@ set(
 add_library(deltachat SHARED IMPORTED)
 set_property(TARGET deltachat PROPERTY IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/libdeltachat.so")
 
+add_library(quirc SHARED IMPORTED)
+set_property(TARGET quirc PROPERTY IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/libquirc.so.1.2")
+
 set(CMAKE_AUTOMOC ON)
 
 add_library(${PLUGIN} MODULE ${SRC})
@@ -32,7 +35,7 @@ find_package(Qt5 COMPONENTS Qml REQUIRED)
 find_package(Qt5 COMPONENTS Quick REQUIRED)
 find_package(Qt5 COMPONENTS DBus REQUIRED)
 find_package(Qt5 COMPONENTS Multimedia REQUIRED)
-target_link_libraries(${PLUGIN} Qt5::Qml Qt5::Quick Qt5::DBus Qt5::Multimedia deltachat)
+target_link_libraries(${PLUGIN} Qt5::Qml Qt5::Quick Qt5::DBus Qt5::Multimedia deltachat quirc)
 
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH

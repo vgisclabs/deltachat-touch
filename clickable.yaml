@@ -1,12 +1,17 @@
 clickable_minimum_required: 7.1.2
 builder: cmake
 kill: deltatouch
-prebuild: mkdir -p plugins/DeltaHandler && cp ../deltachat-core-rust/install/lib/libdeltachat.so plugins/DeltaHandler
+prebuild: mkdir -p plugins/DeltaHandler && cp ../deltachat-core-rust/install/lib/libdeltachat.so plugins/DeltaHandler && cp ../quirc/libquirc.so.1.2 plugins/DeltaHandler
 libraries:
   deltachat-core-rust:
     builder: cmake
     make_jobs: 1
     rust_channel: 1.65.0
     build_args: -DCLICK_ARCH_RUST=${ARCH_RUST}
-install_lib: build/${ARCH_TRIPLET}/deltachat-core-rust/install/lib/libdeltachat.so
+  quirc:
+    builder: custom
+    build: rm -rf * && cp -a ../../../libs/quirc/* ./ && patch Makefile < ../../../libs/patches/quirc_Makefile.patch && make libquirc.so
+install_lib:
+  - build/${ARCH_TRIPLET}/deltachat-core-rust/install/lib/libdeltachat.so
+  - build/${ARCH_TRIPLET}/quirc/libquirc.so.1.2
 

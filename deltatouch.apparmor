@@ -1,6 +1,7 @@
 {
     "policy_groups": [
         "audio",
+        "camera",
         "networking",
         "connectivity",
         "content_exchange_source",

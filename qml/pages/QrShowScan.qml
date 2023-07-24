@@ -63,6 +63,7 @@ Page {
         DeltaHandler.finishedSetConfigFromQr.connect(continueQrAccountCreation)
         DeltaHandler.readyForQrBackupImport.connect(continueQrBackupImport)
         DeltaHandler.qrDecoded.connect(startQrProcessing)
+        DeltaHandler.qrDecodingFailed.connect(imageDecodingFailed)
 
         scanSectionActive = false
         qrImage.visible = true
@@ -77,6 +78,14 @@ Page {
     function startQrProcessing(content) {
         camera.stopAll()
         qrActionSwitch(DeltaHandler.evaluateQrCode(content))
+    }
+
+    function imageDecodingFailed(errorMsg) {
+        PopupUtils.open(errorPopup, qrShowScanPage, { text: errorMsg })
+        // Function is called as a result of loading an image;
+        // for that, the camera was stopped. Need to
+        // start it again now.
+        camera.startAndConfigure()
     }
 
     function qrActionSwitch(qrstate) {
@@ -420,7 +429,7 @@ Page {
             // the account should not persist if the configuration fails (or should it?)
             PopupUtils.open(configProgress)
         } else {
-            PopupUtils.open(creationErrorMessage)
+            PopupUtils.open(errorPopup)
             setTempContextNull()
         }
     }
@@ -594,11 +603,25 @@ Page {
             color: theme.palette.normal.background
 
             Label {
-                id: moreOptionsLabel
+                id: holdCameraLabel
                 width: scanButtonRect.width
 
                 anchors {
                     top: scanButtonRect.top
+                    left: scanButtonRect.left
+                }
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignHCenter
+                text: i18n.tr("Hold your camera over the QR code.")
+            }
+
+            Label {
+                id: moreOptionsLabel
+                width: scanButtonRect.width
+
+                anchors {
+                    top: holdCameraLabel.bottom
+                    topMargin: units.gu(2)
                     left: scanButtonRect.left
                 }
                 font.bold: true
@@ -617,21 +640,25 @@ Page {
                 text: i18n.tr("Paste from Clipboard")
 
                 onClicked: {
+                    camera.stopAll()
                     qrActionSwitch(DeltaHandler.evaluateQrCode(Clipboard.data.text))
                 }
             }
 
-//            // TODO: implement
-//            Button {
-//                id: loadQrImageButton
-//                width: scanButtonRect.width
-//                anchors {
-//                    top: pasteButton.bottom
-//                    topMargin: units.gu(2)
-//                    left: scanButtonRect.left
-//                }
-//                text: i18n.tr("Load QR Code as Image")
-//            }
+            Button {
+                id: loadQrImageButton
+                width: scanButtonRect.width
+                anchors {
+                    top: pasteButton.bottom
+                    topMargin: units.gu(2)
+                    left: scanButtonRect.left
+                }
+                text: i18n.tr("Load QR Code as Image")
+                onClicked: {
+                    camera.stopAll()
+                    layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl("PickerQrImageLoad.qml"))
+                }
+            }
         } // end Rectangle id: scanButtonRect
     } // end Rectangle id: qrScanRect
 
@@ -689,12 +716,12 @@ Page {
     }
 
     Component {
-        id: creationErrorMessage
+        id: errorPopup
 
         ErrorMessage {
             title: i18n.tr("Error")
             // where to get the error from if dc_set_config_from_qr() failed?
-            //text: i18n.tr("??")
+            text: ""
         }
     }
 

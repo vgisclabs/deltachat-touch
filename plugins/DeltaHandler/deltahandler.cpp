@@ -3008,17 +3008,29 @@ bool DeltaHandler::prepareQrDecoder()
 }
 
 
-void DeltaHandler::evaluateQrImage(QImage image)
+void DeltaHandler::evaluateQrImage(QImage image, bool emitFailureSignal)
 {
-    QImage m_image = image.convertToFormat(QImage::Format_Grayscale8);
 
-    int iwidth = m_image.width();
-    int iheight = m_image.height();
+    if (!m_qr) {
+        qDebug() << "DeltaHandler::evaluateQrImage: m_qr is unexpectedly null";
+        if (emitFailureSignal) {
+            emit qrDecodingFailed(QString(C::gettext("Error")));
+        }
+        return;
+    }
+
+    QImage tempImage = image.convertToFormat(QImage::Format_Grayscale8);
+
+    int iwidth = tempImage.width();
+    int iheight = tempImage.height();
 
     // Usage of libquirc mostly according to the README in the
     // quirc repo
     if (quirc_resize(m_qr, iwidth, iheight) < 0) {
         qDebug() << "DeltaHandler::evaluateQrImage: ERROR: Failed to allocate video memory for quirc_resize()";
+        if (emitFailureSignal) {
+            emit qrDecodingFailed(QString("Failed to allocate video memory"));
+        }
         return;
     }
 
@@ -3031,7 +3043,7 @@ void DeltaHandler::evaluateQrImage(QImage image)
 
     for (int i = 0; i < h; ++i) {
         // better to use scanLine() than bits()
-        idatapointer = m_image.scanLine(i);
+        idatapointer = tempImage.scanLine(i);
 
         for (int j = 0; j < w; ++j) {
             *imbuffer = *(idatapointer + j);
@@ -3061,6 +3073,9 @@ void DeltaHandler::evaluateQrImage(QImage image)
         err = quirc_decode(&code, &data);
         if (err) {
             printf("DeltaHandler::evaluateQrImage: DECODE FAILED: %s\n", quirc_strerror(err));
+            if (emitFailureSignal) {
+                emit qrDecodingFailed(QString("Decode failed: ") + quirc_strerror(err));
+            }
         }
         else {
             printf("DeltaHandler::evaluateQrImage: Data: %s\n", data.payload);
@@ -3078,7 +3093,26 @@ void DeltaHandler::evaluateQrImage(QImage image)
     
     if (num_codes == 0) {
         qDebug() << "DeltaHandler::evaluateQrImage: no QR code found";
+        if (emitFailureSignal) {
+            emit qrDecodingFailed(QString(C::gettext("QR code could not be decoded")));
+        }
     }
+}
+
+
+void DeltaHandler::loadQrImage(QString filepath)
+{
+    // the url handed over by the ContentHub starts with
+    // "file:///home....", so we have to remove the first 7
+    // characters
+    filepath.remove(0, 7);
+    QImage image(filepath);
+
+    if (image.isNull()) {
+        emit qrDecodingFailed(QString(C::gettext("QR code could not be decoded")));
+        return;
+    }
+    evaluateQrImage(image, true);
 }
 
 

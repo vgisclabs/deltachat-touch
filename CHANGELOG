@@ -11,6 +11,7 @@ Bugfix: Use correct color for quoted text in all cases
 Bugfix: Keep aspect ratio in image viewer for small images, too
 Bugfix: Adapt decorations of message bubbles if new message is received
 Other: Check whether image attachment is gif and send as gif if yes
+Other: Use deltachat-core-rust v1.118.0
 
 1.0.0 2023-07-01
 Initial release

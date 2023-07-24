@@ -263,7 +263,7 @@ Page {
                         top: parent.top
                     }
 
-                    text: i18n.tr("Install Delta Chat on your other device (https://get.delta.chat)" + " " + i18n.tr("(experimental, version 1.36 required)"))
+                    text: i18n.tr("Install Delta Chat on your other device (https://get.delta.chat)") + " " + i18n.tr("(experimental, version 1.36 required)")
                     wrapMode: Text.WordWrap
                 }
             }

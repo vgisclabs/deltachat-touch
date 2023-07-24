@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-13 20:09+0000\n"
+"POT-Creation-Date: 2023-07-24 08:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,9 +27,29 @@ msgstr "Kontakt i ri"
 msgid "Type e-mail address above"
 msgstr "Shtypni më sipër adresën email"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1071
+#: ../plugins/DeltaHandler/deltahandler.cpp:1076
 msgid "New message"
 msgstr "Mesazh i ri"
+
+#: ../plugins/DeltaHandler/deltahandler.cpp:3017
+#: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
+#: ../qml/pages/AddAccountAsSecondDevice.qml:109
+#: ../qml/pages/AddAccountAsSecondDevice.qml:140
+#: ../qml/pages/AddAccountAsSecondDevice.qml:361
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:115
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:163
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:373
+#: ../qml/pages/AddSecondDevice.qml:82 ../qml/pages/AddSecondDevice.qml:95
+#: ../qml/pages/PickerBackupFile.qml:100
+#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:161
+#: ../qml/pages/QrShowScan.qml:291 ../qml/pages/QrShowScan.qml:721
+msgid "Error"
+msgstr "Gabim"
+
+#: ../plugins/DeltaHandler/deltahandler.cpp:3097
+#: ../plugins/DeltaHandler/deltahandler.cpp:3112
+msgid "QR code could not be decoded"
+msgstr "Kodi QR s’u shkodua dot"
 
 #: ../qml/Main.qml:49 deltatouch.desktop.in.h:1
 msgid "DeltaTouch"
@@ -69,9 +89,9 @@ msgstr "Po ngarkohet…"
 msgid "New Chat"
 msgstr "Fjalosje e re"
 
-#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:152
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
-#: ../qml/pages/QrShowScan.qml:343
+#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:108
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:114
+#: ../qml/pages/QrShowScan.qml:290
 msgid "Error: %1"
 msgstr "Gabim: %1"
 
@@ -93,17 +113,17 @@ msgstr "Mesazhi u përcoll"
 #: ../qml/delegates/delegOtherImage.qml:212
 #: ../qml/delegates/delegOtherTextMsg.qml:172
 #: ../qml/delegates/delegOtherUnknown.qml:171
-#: ../qml/delegates/delegSelfAnimatedImage.qml:189
+#: ../qml/delegates/delegSelfAnimatedImage.qml:190
 #: ../qml/delegates/delegSelfAudio.qml:150
-#: ../qml/delegates/delegSelfImage.qml:189
+#: ../qml/delegates/delegSelfImage.qml:190
 #: ../qml/delegates/delegSelfTextMsg.qml:146
-#: ../qml/delegates/delegSelfUnknown.qml:146
-#: ../qml/pages/AddAccountAsSecondDevice.qml:165
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:172
+#: ../qml/delegates/delegSelfUnknown.qml:147
+#: ../qml/pages/AddAccountAsSecondDevice.qml:124
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
-#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:422
-#: ../qml/pages/QrShowScan.qml:435
+#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:393
+#: ../qml/pages/QrShowScan.qml:410
 msgid "Unknown"
 msgstr "E panjohur"
 
@@ -187,20 +207,6 @@ msgstr "Të dhëna"
 msgid "Add Account"
 msgstr "Shtoni llogari"
 
-#: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
-#: ../qml/pages/AddAccountAsSecondDevice.qml:153
-#: ../qml/pages/AddAccountAsSecondDevice.qml:177
-#: ../qml/pages/AddAccountAsSecondDevice.qml:212
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:184
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:221
-#: ../qml/pages/AddSecondDevice.qml:82 ../qml/pages/AddSecondDevice.qml:95
-#: ../qml/pages/PickerBackupFile.qml:100
-#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:243
-#: ../qml/pages/QrShowScan.qml:344 ../qml/pages/QrShowScan.qml:494
-msgid "Error"
-msgstr "Gabim"
-
 #: ../qml/pages/AccountConfig.qml:104
 msgid "None"
 msgstr "Asnjë"
@@ -213,8 +219,8 @@ msgstr "Llogaria s’është e formësuar."
 msgid "Log into your E-Mail Account"
 msgstr "Hyrje te shërbyesi juaj"
 
-#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:139
-#: ../qml/pages/QrShowScan.qml:283
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:91
+#: ../qml/pages/QrShowScan.qml:213
 msgid "Add as Second Device"
 msgstr "Shtoni Pajisje të Dytë"
 
@@ -227,55 +233,63 @@ msgstr "Importo kopjeruajtje"
 msgid "Scan Invitation Code"
 msgstr "Skanoni Kod Ftese"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:81
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:76
-#: ../qml/pages/QrShowScan.qml:117
-msgid "Scan QR Code"
-msgstr "Skanoni kod QR"
-
-#: ../qml/pages/AddAccountAsSecondDevice.qml:114
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:109
-#: ../qml/pages/QrShowScan.qml:166
-msgid ""
-"Scanning QR codes directly is not supported yet. Please use another app (e."
-"g., Tagger) to scan and copy the code to the clipboard, then paste it here "
-"using the button below."
-msgstr ""
-
-#: ../qml/pages/AddAccountAsSecondDevice.qml:127
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:122
-#: ../qml/pages/QrShowScan.qml:179
-msgid "Paste from Clipboard"
-msgstr "Ngjite prej të papastre"
-
-#: ../qml/pages/AddAccountAsSecondDevice.qml:138
-#: ../qml/pages/QrShowScan.qml:282
+#: ../qml/pages/AddAccountAsSecondDevice.qml:90 ../qml/pages/QrShowScan.qml:212
 msgid "Copy the account from the other device to this device?"
 msgstr "Të kopjohet llogaria nga pajisja tjetër te kjo pajisje?"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:166
-#: ../qml/pages/AddAccountAsSecondDevice.qml:178
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:173
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:185
-#: ../qml/pages/QrShowScan.qml:313 ../qml/pages/QrShowScan.qml:328
-#: ../qml/pages/QrShowScan.qml:423 ../qml/pages/QrShowScan.qml:436
+#: ../qml/pages/AddAccountAsSecondDevice.qml:125
+#: ../qml/pages/AddAccountAsSecondDevice.qml:141
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:148
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:164
+#: ../qml/pages/QrShowScan.qml:252 ../qml/pages/QrShowScan.qml:271
+#: ../qml/pages/QrShowScan.qml:394 ../qml/pages/QrShowScan.qml:411
 msgid "QR Code"
 msgstr "Kod QR"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:204
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
+#: ../qml/pages/AddAccountAsSecondDevice.qml:181
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:191
+#: ../qml/pages/QrShowScan.qml:474
+msgid "Scan QR Code"
+msgstr "Skanoni kod QR"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:288
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:298
+#: ../qml/pages/QrShowScan.qml:614
+msgid "Hold your camera over the QR code."
+msgstr "Vendoseni kamerën tuaj përmbi kodin QR"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:301
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:311
+#: ../qml/pages/QrShowScan.qml:627
+msgid "More Options"
+msgstr "Më tepër mundësi"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:313
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:323
+#: ../qml/pages/QrShowScan.qml:639
+msgid "Paste from Clipboard"
+msgstr "Ngjite prej të papastre"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:329
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:339
+#: ../qml/pages/QrShowScan.qml:655
+msgid "Load QR Code as Image"
+msgstr "Ngarkoje kodin QR si figurë"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:353
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:363
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:770
-#: ../qml/pages/QrShowScan.qml:486
+#: ../qml/pages/QrShowScan.qml:713
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:133
-#: ../qml/pages/QrShowScan.qml:268
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:95
+#: ../qml/pages/QrShowScan.qml:194
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr "Të krijohet adresë email e re te \"%1\" dhe të bëhet hyrja atje?"
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:158
-#: ../qml/pages/QrShowScan.qml:408
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:130
+#: ../qml/pages/QrShowScan.qml:375
 msgid "Log into \"%1\"?"
 msgstr "Të hyhet si “%1”?"
 
@@ -291,7 +305,7 @@ msgstr "Të hyhet si “%1”?"
 #: ../qml/pages/ConfirmMsgDeletion.qml:55 ../qml/pages/CreateOrEditGroup.qml:84
 #: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/ProfileSelf.qml:58
 #: ../qml/pages/ProgressBackupExport.qml:64
-#: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:45
+#: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
 #: ../qml/pages/UnblockContactPopup.qml:41
 msgid "Cancel"
 msgstr "Anuloje"
@@ -336,7 +350,7 @@ msgstr "Hyrje"
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
 #: ../qml/pages/ProfileSelf.qml:65 ../qml/pages/ProgressKeysExport.qml:78
-#: ../qml/pages/QrConfirmPopup.qml:76
+#: ../qml/pages/QrConfirmPopup.qml:46
 msgid "OK"
 msgstr "OK"
 
@@ -521,8 +535,8 @@ msgid "(experimental, version 1.36 required)"
 msgstr "(eksperimentale, lyp versionin 1.36)"
 
 #: ../qml/pages/AddSecondDevice.qml:266
-msgid "Install Delta Chat on your other device (https://get.delta.chat) "
-msgstr ""
+msgid "Install Delta Chat on your other device (https://get.delta.chat)"
+msgstr "Instaloni Delta Chat-in në pajisjen tuaj tjetër (https://get.delta.chat)"
 
 #: ../qml/pages/AddSecondDevice.qml:307
 msgid "Make sure both devices are on the same Wi-Fi or network"
@@ -537,8 +551,8 @@ msgstr "Nisni Delta Chat-in, prekni mbi “Shtoje si Pajisje të Dytë” dhe sk
 msgid "Troubleshooting"
 msgstr "Diagnostikim"
 
-#: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:57
-#: ../qml/pages/QrShowScan.qml:461
+#: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:67
+#: ../qml/pages/QrShowScan.qml:677
 msgid "Copy to Clipboard"
 msgstr "Kopjoje në të papastër"
 
@@ -839,7 +853,7 @@ msgid "Delete Message"
 msgstr "Fshije mesazhin"
 
 #: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrShowScan.qml:78 ../qml/pages/QrShowScan.qml:110
+#: ../qml/pages/QrShowScan.qml:448 ../qml/pages/QrShowScan.qml:462
 msgid "QR Invite Code"
 msgstr "Kod QR ftese"
 
@@ -961,7 +975,7 @@ msgstr "Hollësi mesazhi"
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:296
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:230
 msgid "Sorry, not implemented yet :-("
 msgstr ""
 
@@ -982,7 +996,7 @@ msgstr ""
 msgid "Select Group Image"
 msgstr "Përzgjidhni figurë grupi"
 
-#: ../qml/pages/PickerProfilePic.qml:34
+#: ../qml/pages/PickerProfilePic.qml:34 ../qml/pages/PickerQrImageLoad.qml:34
 msgid "Select your new profile image"
 msgstr "Përzgjidhni figurën tuaj të re të profilit"
 
@@ -1080,31 +1094,31 @@ msgstr "U importuan kyçe të fshehtë nga \"%1\"."
 msgid "Done"
 msgstr "U bë"
 
-#: ../qml/pages/QrConfirmPopup.qml:69
+#: ../qml/pages/QrConfirmPopup.qml:79
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:191
+#: ../qml/pages/QrShowScan.qml:97
 msgid "Chat with %1?"
 msgstr "Të bisedohet me %1?"
 
-#: ../qml/pages/QrShowScan.qml:217
+#: ../qml/pages/QrShowScan.qml:127
 msgid "Do you want to join the group \"%1\"?"
 msgstr "Doni të bëheni pjesë e grupit \"%1\"?"
 
-#: ../qml/pages/QrShowScan.qml:229
+#: ../qml/pages/QrShowScan.qml:143
 msgid "The fingerprint of %1 is valid!"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:230 ../qml/pages/QrShowScan.qml:256
+#: ../qml/pages/QrShowScan.qml:144 ../qml/pages/QrShowScan.qml:178
 msgid "Fingerprint"
 msgstr "Shenja gishtash"
 
-#: ../qml/pages/QrShowScan.qml:242
+#: ../qml/pages/QrShowScan.qml:160
 msgid "The scanned fingerprint does not match the last seen for %1."
 msgstr "Shenjat e gishtave të skanuar nuk përputhen me shenjat e gishtave parë së fundi për %1."
 
-#: ../qml/pages/QrShowScan.qml:255
+#: ../qml/pages/QrShowScan.qml:177
 msgid ""
 "This QR code contains a fingerprint but no e-mail address.\n"
 "\n"
@@ -1112,50 +1126,50 @@ msgid ""
 "the recipient first."
 msgstr "Ky kod QR përmban shenja gishtash, por jo adresë email.\n\nPër një verifikim out-of-band, ju lutemi, së pari vendosni me marrësin një lidhje të fshehtëzuar."
 
-#: ../qml/pages/QrShowScan.qml:312
+#: ../qml/pages/QrShowScan.qml:251
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
 msgstr "Tekst kodi QR të skanuar:\n\n%1"
 
-#: ../qml/pages/QrShowScan.qml:327
+#: ../qml/pages/QrShowScan.qml:270
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
 msgstr "URL kodi QR të skanuar:\n\n%1"
 
-#: ../qml/pages/QrShowScan.qml:356
+#: ../qml/pages/QrShowScan.qml:307
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "Ky kod QR mund të skanohet nga të tjerë për t’u lidhur me ju.\n\nKodin QR mund ta çaktivizoni këtu dhe ta riaktivizoni duke e riskanuar."
 
-#: ../qml/pages/QrShowScan.qml:357 ../qml/pages/QrShowScan.qml:370
+#: ../qml/pages/QrShowScan.qml:308 ../qml/pages/QrShowScan.qml:325
 msgid "Deactivate QR Code"
 msgstr "Çaktivizoni kodin QR"
 
-#: ../qml/pages/QrShowScan.qml:369
+#: ../qml/pages/QrShowScan.qml:324
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "Ky kod QR mund të skanohet nga të tjerë për t’u bërë pjesë e grupit \"%1\".\n\nKodin QR mund ta çaktivizoni këtu dhe ta riaktivizoni duke e riskanuar."
 
-#: ../qml/pages/QrShowScan.qml:382
+#: ../qml/pages/QrShowScan.qml:341
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
 msgstr "Ky kod QR mund të skanohet nga të tjerë për të ujdisur kontakt me ju.\n\nKodi QR s’është aktiv në këtë pajisje."
 
-#: ../qml/pages/QrShowScan.qml:383 ../qml/pages/QrShowScan.qml:396
+#: ../qml/pages/QrShowScan.qml:342 ../qml/pages/QrShowScan.qml:359
 msgid "Activate QR Code"
 msgstr "Aktivizoni kod QR"
 
-#: ../qml/pages/QrShowScan.qml:395
+#: ../qml/pages/QrShowScan.qml:358
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"

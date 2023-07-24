@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-13 17:22+0000\n"
+"POT-Creation-Date: 2023-07-24 08:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,9 +27,29 @@ msgstr "مخاطب جدید"
 msgid "Type e-mail address above"
 msgstr "نشانی رایانامه را در بخش بالا وارد کنید"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1071
+#: ../plugins/DeltaHandler/deltahandler.cpp:1076
 msgid "New message"
 msgstr "پیام جدید"
+
+#: ../plugins/DeltaHandler/deltahandler.cpp:3017
+#: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
+#: ../qml/pages/AddAccountAsSecondDevice.qml:110
+#: ../qml/pages/AddAccountAsSecondDevice.qml:141
+#: ../qml/pages/AddAccountAsSecondDevice.qml:362
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:116
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:164
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:374
+#: ../qml/pages/AddSecondDevice.qml:82 ../qml/pages/AddSecondDevice.qml:95
+#: ../qml/pages/PickerBackupFile.qml:100
+#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:162
+#: ../qml/pages/QrShowScan.qml:292 ../qml/pages/QrShowScan.qml:722
+msgid "Error"
+msgstr "خطا"
+
+#: ../plugins/DeltaHandler/deltahandler.cpp:3097
+#: ../plugins/DeltaHandler/deltahandler.cpp:3112
+msgid "QR code could not be decoded"
+msgstr "امکان رمزگشایی کد کیوآر وجود ندارد"
 
 #: ../qml/Main.qml:49 deltatouch.desktop.in.h:1
 msgid "DeltaTouch"
@@ -69,9 +89,9 @@ msgstr "در حال بارگیری..."
 msgid "New Chat"
 msgstr "گفتگوی جدید"
 
-#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:152
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:146
-#: ../qml/pages/QrShowScan.qml:343
+#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:109
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:115
+#: ../qml/pages/QrShowScan.qml:291
 msgid "Error: %1"
 msgstr "خطا: %1"
 
@@ -93,17 +113,17 @@ msgstr "پیام هدایت شده"
 #: ../qml/delegates/delegOtherImage.qml:212
 #: ../qml/delegates/delegOtherTextMsg.qml:172
 #: ../qml/delegates/delegOtherUnknown.qml:171
-#: ../qml/delegates/delegSelfAnimatedImage.qml:189
+#: ../qml/delegates/delegSelfAnimatedImage.qml:190
 #: ../qml/delegates/delegSelfAudio.qml:150
-#: ../qml/delegates/delegSelfImage.qml:189
+#: ../qml/delegates/delegSelfImage.qml:190
 #: ../qml/delegates/delegSelfTextMsg.qml:146
-#: ../qml/delegates/delegSelfUnknown.qml:146
-#: ../qml/pages/AddAccountAsSecondDevice.qml:165
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:172
+#: ../qml/delegates/delegSelfUnknown.qml:147
+#: ../qml/pages/AddAccountAsSecondDevice.qml:125
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:148
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
 #: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
-#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:422
-#: ../qml/pages/QrShowScan.qml:435
+#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:394
+#: ../qml/pages/QrShowScan.qml:411
 msgid "Unknown"
 msgstr "ناشناس"
 
@@ -187,20 +207,6 @@ msgstr "درباره"
 msgid "Add Account"
 msgstr "افزودن حساب کاربری"
 
-#: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
-#: ../qml/pages/AddAccountAsSecondDevice.qml:153
-#: ../qml/pages/AddAccountAsSecondDevice.qml:177
-#: ../qml/pages/AddAccountAsSecondDevice.qml:212
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:184
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:221
-#: ../qml/pages/AddSecondDevice.qml:82 ../qml/pages/AddSecondDevice.qml:95
-#: ../qml/pages/PickerBackupFile.qml:100
-#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:243
-#: ../qml/pages/QrShowScan.qml:344 ../qml/pages/QrShowScan.qml:494
-msgid "Error"
-msgstr "خطا"
-
 #: ../qml/pages/AccountConfig.qml:104
 msgid "None"
 msgstr "هیچ‌کدام"
@@ -213,8 +219,8 @@ msgstr "حساب تنظیم نشده است"
 msgid "Log into your E-Mail Account"
 msgstr "به سرور خود وارد شوید"
 
-#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:139
-#: ../qml/pages/QrShowScan.qml:283
+#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:92
+#: ../qml/pages/QrShowScan.qml:214
 msgid "Add as Second Device"
 msgstr "افزودن به عنوان دستگاه دوم"
 
@@ -227,55 +233,63 @@ msgstr "وارد کردن نسخه پشتیبانی"
 msgid "Scan Invitation Code"
 msgstr "اسکن کردن کد دعوت"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:81
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:76
-#: ../qml/pages/QrShowScan.qml:117
-msgid "Scan QR Code"
-msgstr "اسکن کردن کد کیو آر"
-
-#: ../qml/pages/AddAccountAsSecondDevice.qml:114
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:109
-#: ../qml/pages/QrShowScan.qml:166
-msgid ""
-"Scanning QR codes directly is not supported yet. Please use another app (e."
-"g., Tagger) to scan and copy the code to the clipboard, then paste it here "
-"using the button below."
-msgstr ""
-
-#: ../qml/pages/AddAccountAsSecondDevice.qml:127
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:122
-#: ../qml/pages/QrShowScan.qml:179
-msgid "Paste from Clipboard"
-msgstr "چسباندن از حافظه"
-
-#: ../qml/pages/AddAccountAsSecondDevice.qml:138
-#: ../qml/pages/QrShowScan.qml:282
+#: ../qml/pages/AddAccountAsSecondDevice.qml:91 ../qml/pages/QrShowScan.qml:213
 msgid "Copy the account from the other device to this device?"
 msgstr "حساب از دستگاه دیگر به این دستگاه کپی شود؟"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:166
-#: ../qml/pages/AddAccountAsSecondDevice.qml:178
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:173
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:185
-#: ../qml/pages/QrShowScan.qml:313 ../qml/pages/QrShowScan.qml:328
-#: ../qml/pages/QrShowScan.qml:423 ../qml/pages/QrShowScan.qml:436
+#: ../qml/pages/AddAccountAsSecondDevice.qml:126
+#: ../qml/pages/AddAccountAsSecondDevice.qml:142
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:149
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:165
+#: ../qml/pages/QrShowScan.qml:253 ../qml/pages/QrShowScan.qml:272
+#: ../qml/pages/QrShowScan.qml:395 ../qml/pages/QrShowScan.qml:412
 msgid "QR Code"
 msgstr "کد QR"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:204
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
+#: ../qml/pages/AddAccountAsSecondDevice.qml:182
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:192
+#: ../qml/pages/QrShowScan.qml:475
+msgid "Scan QR Code"
+msgstr "اسکن کردن کد کیو آر"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:289
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:299
+#: ../qml/pages/QrShowScan.qml:615
+msgid "Hold your camera over the QR code."
+msgstr "دوربین خود را روی کد کیوآر نگه دارید. "
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:302
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:312
+#: ../qml/pages/QrShowScan.qml:628
+msgid "More Options"
+msgstr "گزینه‌های بیشتر"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:314
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:324
+#: ../qml/pages/QrShowScan.qml:640
+msgid "Paste from Clipboard"
+msgstr "چسباندن از حافظه"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:330
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:340
+#: ../qml/pages/QrShowScan.qml:656
+msgid "Load QR Code as Image"
+msgstr "بارگیری کیو آر کد به صورت تصویر"
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:354
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:364
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:768
-#: ../qml/pages/QrShowScan.qml:486
+#: ../qml/pages/QrShowScan.qml:714
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:133
-#: ../qml/pages/QrShowScan.qml:268
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:96
+#: ../qml/pages/QrShowScan.qml:195
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr "ایجاد ایمیل جدید روی \"%1\" و ورود در آن‌جا؟"
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:158
-#: ../qml/pages/QrShowScan.qml:408
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:131
+#: ../qml/pages/QrShowScan.qml:376
 msgid "Log into \"%1\"?"
 msgstr "آیا به \"%1\" وارد شوید؟"
 
@@ -291,7 +305,7 @@ msgstr "آیا به \"%1\" وارد شوید؟"
 #: ../qml/pages/ConfirmMsgDeletion.qml:55 ../qml/pages/CreateOrEditGroup.qml:84
 #: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/ProfileSelf.qml:58
 #: ../qml/pages/ProgressBackupExport.qml:64
-#: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:45
+#: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
 #: ../qml/pages/UnblockContactPopup.qml:41
 msgid "Cancel"
 msgstr "لغو"
@@ -336,7 +350,7 @@ msgstr "ورود"
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
 #: ../qml/pages/ProfileSelf.qml:65 ../qml/pages/ProgressKeysExport.qml:78
-#: ../qml/pages/QrConfirmPopup.qml:76
+#: ../qml/pages/QrConfirmPopup.qml:46
 msgid "OK"
 msgstr "تایید"
 
@@ -521,8 +535,8 @@ msgid "(experimental, version 1.36 required)"
 msgstr "(تجربی، نسخه 1.36 مورد نیاز است)"
 
 #: ../qml/pages/AddSecondDevice.qml:266
-msgid "Install Delta Chat on your other device (https://get.delta.chat) "
-msgstr ""
+msgid "Install Delta Chat on your other device (https://get.delta.chat)"
+msgstr "دلتا چت را روی دستگاه دیگر خود نصب کنید (https://get.delta.chat)"
 
 #: ../qml/pages/AddSecondDevice.qml:307
 msgid "Make sure both devices are on the same Wi-Fi or network"
@@ -537,8 +551,8 @@ msgstr "دلتا چت را اجرا کنید، روی \"افزودن به عنو
 msgid "Troubleshooting"
 msgstr "عیب یابی"
 
-#: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:57
-#: ../qml/pages/QrShowScan.qml:461
+#: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:67
+#: ../qml/pages/QrShowScan.qml:678
 msgid "Copy to Clipboard"
 msgstr "رونوشت‌برداری در حافظه"
 
@@ -839,7 +853,7 @@ msgid "Delete Message"
 msgstr "حذف پیام"
 
 #: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrShowScan.qml:78 ../qml/pages/QrShowScan.qml:110
+#: ../qml/pages/QrShowScan.qml:449 ../qml/pages/QrShowScan.qml:463
 msgid "QR Invite Code"
 msgstr "کد دعوت کیوآر"
 
@@ -961,7 +975,7 @@ msgstr "جزئیات پیام"
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:296
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:231
 msgid "Sorry, not implemented yet :-("
 msgstr ""
 
@@ -982,7 +996,7 @@ msgstr ""
 msgid "Select Group Image"
 msgstr "انتخاب تصویر گروه"
 
-#: ../qml/pages/PickerProfilePic.qml:34
+#: ../qml/pages/PickerProfilePic.qml:34 ../qml/pages/PickerQrImageLoad.qml:34
 msgid "Select your new profile image"
 msgstr "انتخاب تصویر پروفایل جدید"
 
@@ -1080,31 +1094,31 @@ msgstr "کلیدهای خصوصی از \"%1\" وارد شدند. "
 msgid "Done"
 msgstr "انجام شد"
 
-#: ../qml/pages/QrConfirmPopup.qml:69
+#: ../qml/pages/QrConfirmPopup.qml:79
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:191
+#: ../qml/pages/QrShowScan.qml:98
 msgid "Chat with %1?"
 msgstr "گفتگو با %1؟"
 
-#: ../qml/pages/QrShowScan.qml:217
+#: ../qml/pages/QrShowScan.qml:128
 msgid "Do you want to join the group \"%1\"?"
 msgstr "آیا می خواهید به گروه\"%1\" ملحق شوید؟"
 
-#: ../qml/pages/QrShowScan.qml:229
+#: ../qml/pages/QrShowScan.qml:144
 msgid "The fingerprint of %1 is valid!"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:230 ../qml/pages/QrShowScan.qml:256
+#: ../qml/pages/QrShowScan.qml:145 ../qml/pages/QrShowScan.qml:179
 msgid "Fingerprint"
 msgstr "اثر انگشت"
 
-#: ../qml/pages/QrShowScan.qml:242
+#: ../qml/pages/QrShowScan.qml:161
 msgid "The scanned fingerprint does not match the last seen for %1."
 msgstr "اثرانگشت اسکن شده با انچه که برای %1مشاهده شده بود انطباق ندارد. "
 
-#: ../qml/pages/QrShowScan.qml:255
+#: ../qml/pages/QrShowScan.qml:178
 msgid ""
 "This QR code contains a fingerprint but no e-mail address.\n"
 "\n"
@@ -1112,50 +1126,50 @@ msgid ""
 "the recipient first."
 msgstr "این کیوآر حاوی یک شناساگر است ولی ادرس ایمیلی در آن نیست. \n\n برای یک تاییدیه به روش‌های دیگر لطفا ابتدا یک ارتباط رمزگذاری شده با دریافت کننده برقرار کنید. "
 
-#: ../qml/pages/QrShowScan.qml:312
+#: ../qml/pages/QrShowScan.qml:252
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
 msgstr "کیوآر کد اسکن شده:\n\n %1"
 
-#: ../qml/pages/QrShowScan.qml:327
+#: ../qml/pages/QrShowScan.qml:271
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
 msgstr "آدرس اینترنتی کیوآر اسکن شده:\n\n %1"
 
-#: ../qml/pages/QrShowScan.qml:356
+#: ../qml/pages/QrShowScan.qml:308
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "دیگران برای ارتباط با شما می‌توانند این کد کیوآر را اسکن کنند. \n\n می‌توان کد کیوآر را در اینجا غیر فعال کنید و با اسکن کردن مجدد، آن را فعال کنید. "
 
-#: ../qml/pages/QrShowScan.qml:357 ../qml/pages/QrShowScan.qml:370
+#: ../qml/pages/QrShowScan.qml:309 ../qml/pages/QrShowScan.qml:326
 msgid "Deactivate QR Code"
 msgstr "غیرفعال کردن کد کیوآر"
 
-#: ../qml/pages/QrShowScan.qml:369
+#: ../qml/pages/QrShowScan.qml:325
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "این کد کیوآر می‌تواند توسط دیگران و برای پیوستن به گروه \"%1\" اسکن شود.\n\n شما می‌تواند این کد کیوآر را در اینجا غیرفعال کنید و با اسکن کردن مجدد، آن را فعال نمایید. "
 
-#: ../qml/pages/QrShowScan.qml:382
+#: ../qml/pages/QrShowScan.qml:342
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
 msgstr "دیگران برای تماس با شما می‌توانند این کد کیوآر را اسکن کنند. \n\n این کد کیوآر در این دستگاه فعال نیست. "
 
-#: ../qml/pages/QrShowScan.qml:383 ../qml/pages/QrShowScan.qml:396
+#: ../qml/pages/QrShowScan.qml:343 ../qml/pages/QrShowScan.qml:360
 msgid "Activate QR Code"
 msgstr "فعال کردن کد کیوآر"
 
-#: ../qml/pages/QrShowScan.qml:395
+#: ../qml/pages/QrShowScan.qml:359
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"

@@ -25,6 +25,7 @@ typedef struct _dc_event     dc_event_t;
 typedef struct _dc_event_emitter dc_event_emitter_t;
 typedef struct _dc_jsonrpc_instance dc_jsonrpc_instance_t;
 typedef struct _dc_backup_provider dc_backup_provider_t;
+typedef struct _dc_http_response dc_http_response_t;
 
 // Alias for backwards compatibility, use dc_event_emitter_t instead.
 typedef struct _dc_event_emitter dc_accounts_event_emitter_t;
@@ -181,12 +182,17 @@ typedef struct _dc_event_emitter dc_accounts_event_emitter_t;
  * and check it in the event loop thread
  * every time before calling dc_get_next_event().
  * To terminate the event loop, main thread should:
- * 1. Notify event loop that it should terminate by atomically setting the
- *    boolean flag in the memory shared between the main thread and event loop.
+ * 1. Notify background threads,
+ *    such as event loop (blocking in dc_get_next_event())
+ *    and message processing loop (blocking in dc_wait_next_msgs()),
+ *    that they should terminate by atomically setting the
+ *    boolean flag in the memory
+ *    shared between the main thread and background loop threads.
  * 2. Call dc_stop_io() or dc_accounts_stop_io(), depending
  *    on whether a single account or account manager is used.
  *    Stopping I/O is guaranteed to emit at least one event
  *    and interrupt the event loop even if it was blocked on dc_get_next_event().
+ *    Stopping I/O is guaranteed to interrupt a single dc_wait_next_msgs().
  * 3. Wait until the event loop thread notices the flag,
  *    exits the event loop and terminates.
  * 4. Call dc_context_unref() or dc_accounts_unref().
@@ -455,8 +461,19 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  *                    If no type is prefixed, the videochat is handled completely in a browser.
  * - `bot`          = Set to "1" if this is a bot.
  *                    Prevents adding the "Device messages" and "Saved messages" chats,
- *                    adds Auto-Submitted header to outgoing messages
- *                    and accepts contact requests automatically (calling dc_accept_chat() is not needed for bots).
+ *                    adds Auto-Submitted header to outgoing messages,
+ *                    accepts contact requests automatically (calling dc_accept_chat() is not needed for bots)
+ *                    and does not cut large incoming text messages.
+ * - `last_msg_id` = database ID of the last message processed by the bot.
+ *                   This ID and IDs below it are guaranteed not to be returned
+ *                   by dc_get_next_msgs() and dc_wait_next_msgs().
+ *                   The value is updated automatically
+ *                   when dc_markseen_msgs() is called,
+ *                   but the bot can also set it manually if it processed
+ *                   the message but does not want to mark it as seen.
+ *                   For most bots calling `dc_markseen_msgs()` is the
+ *                   recommended way to update this value
+ *                   even for self-sent messages.
  * - `fetch_existing_msgs` = 1=fetch most recent existing messages on configure (default),
  *                    0=do not fetch existing messages on configure.
  *                    In both cases, existing recipients are added to the contact database.
@@ -1344,6 +1361,56 @@ dc_array_t*     dc_get_fresh_msgs            (dc_context_t* context);
 
 
 /**
+ * Returns the message IDs of all messages of any chat
+ * with a database ID higher than `last_msg_id` config value.
+ *
+ * This function is intended for use by bots.
+ * Self-sent messages, device messages,
+ * messages from contact requests
+ * and muted chats are included,
+ * but messages from explicitly blocked contacts
+ * and chats are ignored.
+ *
+ * This function may be called as a part of event loop
+ * triggered by DC_EVENT_INCOMING_MSG if you are only interested
+ * in the incoming messages.
+ * Otherwise use a separate message processing loop
+ * calling dc_wait_next_msgs() in a separate thread.
+ *
+ * @memberof dc_context_t
+ * @param context The context object as returned from dc_context_new().
+ * @return An array of message IDs, must be dc_array_unref()'d when no longer used.
+ *     On errors, the list is empty. NULL is never returned.
+ */
+dc_array_t*     dc_get_next_msgs             (dc_context_t* context);
+
+
+/**
+ * Waits for notification of new messages
+ * and returns an array of new message IDs.
+ * See the documentation for dc_get_next_msgs()
+ * for the details of return value.
+ *
+ * This function waits for internal notification of
+ * a new message in the database and returns afterwards.
+ * Notification is also sent when I/O is started
+ * to allow processing new messages
+ * and when I/O is stopped using dc_stop_io() or dc_accounts_stop_io()
+ * to allow for manual interruption of the message processing loop.
+ * The function may return an empty array if there are
+ * no messages after notification,
+ * which may happen on start or if the message is quickly deleted
+ * after adding it to the database.
+ *
+ * @memberof dc_context_t
+ * @param context The context object as returned from dc_context_new().
+ * @return An array of message IDs, must be dc_array_unref()'d when no longer used.
+ *     On errors, the list is empty. NULL is never returned.
+ */
+dc_array_t*     dc_wait_next_msgs            (dc_context_t* context);
+
+
+/**
  * Mark all messages in a chat as _noticed_.
  * _Noticed_ messages are no longer _fresh_ and do not count as being unseen
  * but are still waiting for being marked as "seen" using dc_markseen_msgs()
@@ -1941,6 +2008,11 @@ int             dc_resend_msgs               (dc_context_t* context, const uint3
  *
  * Moreover, timer is started for incoming ephemeral messages.
  * This also happens for contact requests chats.
+ *
+ * This function updates last_msg_id configuration value
+ * to the maximum of the current value and IDs passed to this function.
+ * Bots which mark messages as seen can rely on this side effect
+ * to avoid updating last_msg_id value manually.
  *
  * One #DC_EVENT_MSGS_NOTICED event is emitted per modified chat.
  *
@@ -5058,6 +5130,72 @@ void            dc_provider_unref                     (dc_provider_t* provider);
 
 
 /**
+ * Return an HTTP(S) GET response.
+ * This function can be used to download remote content for HTML emails.
+ *
+ * @memberof dc_context_t
+ * @param context The context object to take proxy settings from.
+ * @param url HTTP or HTTPS URL.
+ * @return The response must be released using dc_http_response_unref() after usage.
+ *     NULL is returned on errors.
+ */
+dc_http_response_t*     dc_get_http_response      (const dc_context_t* context, const char* url);
+
+
+/**
+ * @class dc_http_response_t
+ *
+ * An object containing an HTTP(S) GET response.
+ * Created by dc_get_http_response().
+ */
+
+
+/**
+ * Returns HTTP response MIME type as a string, e.g. "text/plain" or "text/html".
+ *
+ * @memberof dc_http_response_t
+ * @param response HTTP response as returned by dc_get_http_response().
+ * @return The string which must be released using dc_str_unref() after usage. May be NULL.
+ */
+char*                   dc_http_response_get_mimetype (const dc_http_response_t* response);
+
+/**
+ * Returns HTTP response encoding, e.g. "utf-8".
+ *
+ * @memberof dc_http_response_t
+ * @param response HTTP response as returned by dc_get_http_response().
+ * @return The string which must be released using dc_str_unref() after usage. May be NULL.
+ */
+char*                   dc_http_response_get_encoding (const dc_http_response_t* response);
+
+/**
+ * Returns HTTP response contents.
+ *
+ * @memberof dc_http_response_t
+ * @param response HTTP response as returned by dc_get_http_response().
+ * @return The blob which must be released using dc_str_unref() after usage. NULL is never returned.
+ */
+uint8_t*                dc_http_response_get_blob     (const dc_http_response_t* response);
+
+/**
+ * Returns HTTP response content size.
+ *
+ * @memberof dc_http_response_t
+ * @param response HTTP response as returned by dc_get_http_response().
+ * @return The blob size.
+ */
+size_t                  dc_http_response_get_size     (const dc_http_response_t* response);
+
+/**
+ * Free an HTTP response object.
+ *
+ * @memberof dc_http_response_t
+ * @param response HTTP response as returned by dc_get_http_response().
+ */
+void                    dc_http_response_unref        (const dc_http_response_t* response);
+
+
+/**
  * @class dc_lot_t
  *
  * An object containing a set of values.
@@ -5534,7 +5672,6 @@ void            dc_reactions_unref       (dc_reactions_t* reactions);
  */
 
 
-
 /**
  * @class dc_jsonrpc_instance_t
  *
@@ -5582,6 +5719,18 @@ void dc_jsonrpc_request(dc_jsonrpc_instance_t* jsonrpc_instance, const char* req
  *     in this case, free the jsonrpc instance using dc_jsonrpc_unref().
  */
 char* dc_jsonrpc_next_response(dc_jsonrpc_instance_t* jsonrpc_instance);
+
+/**
+ * Make a JSON-RPC call and return a response.
+ *
+ * @memberof dc_jsonrpc_instance_t
+ * @param jsonrpc_instance jsonrpc instance as returned from dc_jsonrpc_init().
+ * @param method JSON-RPC method name, e.g. `check_email_validity`.
+ * @param params JSON-RPC method parameters, e.g. `["alice@example.org"]`.
+ * @return JSON-RPC response as string, must be freed using dc_str_unref() after usage.
+ *     On error, NULL is returned.
+ */
+char* dc_jsonrpc_blocking_call(dc_jsonrpc_instance_t* jsonrpc_instance, const char *method, const char *params);
 
 /**
  * @class dc_event_emitter_t
@@ -5928,6 +6077,15 @@ void dc_event_unref(dc_event_t* event);
  * @param data2 (int) msg_id
  */
 #define DC_EVENT_MSG_READ                 2015
+
+
+/**
+ * A single message is deleted.
+ *
+ * @param data1 (int) chat_id
+ * @param data2 (int) msg_id
+ */
+#define DC_EVENT_MSG_DELETED              2016
 
 
 /**

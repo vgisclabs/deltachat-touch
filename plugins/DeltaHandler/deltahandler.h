@@ -197,6 +197,9 @@ public:
     Q_INVOKABLE void createNotification(QString summary, QString body, QString tag, QString icon);
     Q_INVOKABLE void removeNotification(QString tag = "");
 
+    Q_INVOKABLE int getConnectivitySimple();
+    Q_INVOKABLE QString getConnectivityHtml();
+
     /* ========================================================
      * ===============Self Profile editing ====================
      * ======================================================== */

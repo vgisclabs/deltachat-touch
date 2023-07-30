@@ -47,7 +47,7 @@ MainView {
     }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.1.0'
+    property string version: '1.1.1'
 
     // Color scheme
     //

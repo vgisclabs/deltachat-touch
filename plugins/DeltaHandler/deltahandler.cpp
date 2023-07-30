@@ -3665,6 +3665,30 @@ void DeltaHandler::removeNotification(QString tag)
 }
 
 
+int DeltaHandler::getConnectivitySimple()
+{
+    int temp = dc_get_connectivity(currentContext);
+    return temp;
+}
+
+
+QString DeltaHandler::getConnectivityHtml()
+{
+    QString retval(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/connectivity.html");
+    std::ofstream outfile(retval.toStdString());
+    char* tempText = dc_get_connectivity_html(currentContext);
+    outfile << tempText;
+    outfile.close();
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+
+    retval.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+    return retval;
+}
+
+
 void DeltaHandler::contextSetupTasks()
 {
     m_contactsmodel->updateContext(currentContext);

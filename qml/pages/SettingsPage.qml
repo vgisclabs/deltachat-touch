@@ -39,6 +39,7 @@ Page {
         updateAutoDownloadCurrentSetting()
         updateDeleteFromDeviceCurrentSetting()
         updateDeleteFromServerCurrentSetting()
+        updateConnectivityTimer.start()
     }
 
     property string showClassicMailsCurrentSetting: ""
@@ -570,6 +571,27 @@ Page {
                         PopupUtils.close(popup2)
                         layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AddSecondDevice.qml"))
                     })
+                }
+            }
+
+            ListItem {
+                height: connectivityLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: connectivityLayout
+                    title.text: i18n.tr("Connectivity")
+                    title.font.bold: true
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("Connectivity.qml"))
                 }
             }
 
@@ -1285,6 +1307,27 @@ Page {
         id: progressBackupExport
         ProgressBackupExport {
             title: i18n.tr('Export Backup')
+        }
+    }
+
+    Timer {
+        id: updateConnectivityTimer
+        interval: 2000
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: {
+            let conn = DeltaHandler.getConnectivitySimple()
+            if (conn >= 1000 && conn < 2000) {
+                connectivityLayout.summary.text = i18n.tr("Not connected")
+            } else if (conn >= 2000 && conn < 3000) {
+                connectivityLayout.summary.text = i18n.tr("Connecting…")
+            } else if (conn >= 3000 && conn < 4000) {
+                connectivityLayout.summary.text = i18n.tr("Updating…")
+            } else if (conn >= 4000) {
+                connectivityLayout.summary.text = i18n.tr("Connected")
+            } else {
+                connectivityLayout.summary.text = "??"
+            }
         }
     }
 }

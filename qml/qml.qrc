@@ -25,6 +25,7 @@
         <file>pages/ConfirmLeaveGroup.qml</file>
         <file>pages/ConfirmMemberDeletion.qml</file>
         <file>pages/ConfirmMsgDeletion.qml</file>
+        <file>pages/Connectivity.qml</file>
         <file>pages/CreateOrEditGroup.qml</file>
         <file>pages/EphemeralTimerSettings.qml</file>
         <file>pages/ErrorMessage.qml</file>

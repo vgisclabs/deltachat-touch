@@ -27,7 +27,7 @@ import QtQuick.Layouts 1.3
 import DeltaHandler 1.0
 
 Page {
-    id: imageViewer
+    id: viewerPage
 
     header: PageHeader {
         id: pageheader
@@ -38,7 +38,7 @@ Page {
                 iconName: 'save-as'
                 text: i18n.tr("Save")
                 onTriggered: {
-                    layout.addPageToCurrentColumn(imageViewer, Qt.resolvedUrl("PickerFileToExport.qml"), {"url": imageViewerImage.source})
+                    layout.addPageToCurrentColumn(viewerPage, Qt.resolvedUrl("PickerFileToExport.qml"), {"url": image.source})
                 }
             }
         ]
@@ -47,24 +47,24 @@ Page {
     property string imageSource
 
     AnimatedImage {
-        id: imageViewerImage
+        id: image
 
         source: imageSource
 
         function checkXAndY() {
-            let pageWidth = imageViewer.width
-            let pageHeight = imageViewer.height - pageheader.height
+            let pageWidth = viewerPage.width
+            let pageHeight = viewerPage.height - pageheader.height
             // Width + height do not change along with pinching. To get the
             // real width/height, it has to be multiplied with the scale
-            let realImageWidth = imageViewerImage.paintedWidth * pinch.scale
-            let realImageHeight = imageViewerImage.paintedHeight * pinch.scale
+            let realImageWidth = image.paintedWidth * scale
+            let realImageHeight = image.paintedHeight * scale
 
-            // Similar for x and y: Refer to the theoretical x/y of the image
+            // Similar for x and y: The values refer to the theoretical x/y of the image
             // in its original scale, so the x/y value of the visible image
             // has to be calculated:
-            let realX = imageViewerImage.x - ((realImageWidth - imageViewerImage.paintedWidth) / 2)
+            let realX = image.x - ((realImageWidth - image.paintedWidth) / 2)
             // For y, the page pageheader has to be taken into account
-            let realY = (imageViewerImage.y - ((realImageHeight - imageViewerImage.paintedHeight) / 2)) - pageheader.height
+            let realY = (image.y - ((realImageHeight - image.paintedHeight) / 2)) - pageheader.height
 
             // HORIZONTAL ALIGNMENT
             if (realImageWidth >= pageWidth) {
@@ -76,11 +76,11 @@ Page {
                     // the image to the right:
                     realX = pageWidth - realImageWidth
                     // convert realX back to x
-                    imageViewerImage.x = realX + ((realImageWidth - imageViewerImage.paintedWidth) / 2)
+                    image.x = realX + ((realImageWidth - image.paintedWidth) / 2)
                 } else if (realX > 0) {
                     // canvas visible on the left, snap to the left
                     realX = 0;
-                    imageViewerImage.x = realX + ((realImageWidth - imageViewerImage.paintedWidth) / 2)
+                    image.x = realX + ((realImageWidth - image.paintedWidth) / 2)
                 }
             } else {
                 // Width of image is smaller than page width. We have
@@ -89,10 +89,10 @@ Page {
                 if (realX < 0) {
                     // Image is partly beyound the left border, snap it back
                     realX = 0;
-                    imageViewerImage.x = realX + ((realImageWidth - imageViewerImage.paintedWidth) / 2)
+                    image.x = realX + ((realImageWidth - image.paintedWidth) / 2)
                 } else if (realX > (pageWidth - realImageWidth)) {
                     realX = pageWidth - realImageWidth
-                    imageViewerImage.x = realX + ((realImageWidth - imageViewerImage.paintedWidth) / 2)
+                    image.x = realX + ((realImageWidth - image.paintedWidth) / 2)
                 }
             }
 
@@ -105,11 +105,11 @@ Page {
                     // the image to the the bottom:
                     realY = pageHeight - realImageHeight
                     // convert realY back to y
-                    imageViewerImage.y = (realY + pageheader.height) + ((realImageHeight - imageViewerImage.paintedHeight) / 2)
+                    image.y = (realY + pageheader.height) + ((realImageHeight - image.paintedHeight) / 2)
                 } else if (realY > 0) {
                     // canvas visible on the top, snap to top
                     realY = 0;
-                    imageViewerImage.y = (realY + pageheader.height) + ((realImageHeight - imageViewerImage.paintedHeight) / 2)
+                    image.y = (realY + pageheader.height) + ((realImageHeight - image.paintedHeight) / 2)
                 }
             } else {
                 // Height of image is smaller than page height. We have
@@ -118,23 +118,10 @@ Page {
                 if (realY < 0) {
                     // Image is partly beyound the top, snap it back
                     realY = 0;
-                    imageViewerImage.y = (realY + pageheader.height) + ((realImageHeight - imageViewerImage.paintedHeight) / 2)
+                    image.y = (realY + pageheader.height) + ((realImageHeight - image.paintedHeight) / 2)
                 } else if (realY > (pageHeight - realImageHeight)) {
                     realY = pageHeight - realImageHeight
-                    imageViewerImage.y = (realY + pageheader.height) + ((realImageHeight - imageViewerImage.paintedHeight) / 2)
-                }
-            }
-        }
-
-        PinchHandler {
-            id: pinch
-            maximumRotation: 0
-            minimumRotation: 0
-            minimumScale: 0
-
-            onActiveChanged: {
-                if (!active) {
-                    imageViewerImage.checkXAndY()
+                    image.y = (realY + pageheader.height) + ((realImageHeight - image.paintedHeight) / 2)
                 }
             }
         }
@@ -142,7 +129,7 @@ Page {
         DragHandler {
             onActiveChanged: {
                 if (!active) {
-                    imageViewerImage.checkXAndY()
+                    image.checkXAndY()
                 }
             }
         }
@@ -150,20 +137,42 @@ Page {
         //fillMode: Image.PreserveAspectFit
 
         Component.onCompleted: {
-            let scaleUpFactor
-            if (imageViewerImage.width < units.gu(30)) {
-                scaleUpFactor = units.gu(30) / imageViewerImage.width
-                width = units.gu(30)
-                height = height * scaleUpFactor
-            }
-
-            if (imageViewerImage.height < units.gu(30)) {
-                scaleUpFactor = units.gu(30) / imageViewerImage.height
-                height = units.gu(30)
-                width = width * scaleUpFactor
-            }
-
             y = pageheader.height
+            x = 0
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        onDoubleClicked: {
+            if (image.scale != 1) {
+                image.scale = 1
+            } else {
+                // check whether we need to align the width or the height to fill
+                // the image into the page
+                if ((viewerPage.width / (viewerPage.height - pageheader.height)) > (image.paintedWidth / image.paintedHeight)) {
+                    image.scale = (viewerPage.height - pageheader.height) / image.paintedHeight
+                } else {
+                    image.scale = viewerPage.width / image.paintedWidth
+                }
+            }
+            image.checkXAndY()
+        }
+    }
+
+    PinchHandler {
+        id: pinch
+        maximumRotation: 0
+        minimumRotation: 0
+        minimumScale: 0
+
+        target: image
+
+        onActiveChanged: {
+            if (!active) {
+                image.checkXAndY()
+            }
         }
     }
 }

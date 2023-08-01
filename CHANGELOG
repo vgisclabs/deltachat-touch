@@ -1,5 +1,6 @@
 x.x.x
 Feature: Connectivity information
+UI: Image viewer: Double tap will alternate between scaling image to fit screen and original size; removed pre-scaling of small images
 
 1.1.0 2023-07-24
 Feature: Clear chat

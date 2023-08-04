@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
 
     qDebug() << "Starting app from main.cpp";
 
+    qSetMessagePattern("%{time yyyy-MM-dd hh:mm:ss} %{message}");
+
     QQuickView *view = new QQuickView();
     view->setSource(QUrl("qrc:/Main.qml"));
     view->setResizeMode(QQuickView::SizeRootObjectToView);

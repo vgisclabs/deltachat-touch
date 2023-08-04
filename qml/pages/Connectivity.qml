@@ -17,7 +17,7 @@
  */
 
 import QtQuick 2.12
-import Lomiri.Components 1.3
+import Ubuntu.Components 1.3
 import Morph.Web 0.1
 import Qt.labs.platform 1.1
 

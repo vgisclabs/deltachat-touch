@@ -750,8 +750,9 @@ MainView {
                                     }
                                     text: i18n.tr('Request')
                                     fontSize: "small"
+                                    color: "white"
                                 }
-                                color: chatListItem.color 
+                                color: root.unreadMessageCounterColor
                                 border.color: contactRequestLabel.color
                                 visible: model.isContactRequest
                             } // Rectangle id: contactRequestRect

@@ -48,6 +48,7 @@ MainView {
 
     property string appName: i18n.tr('DeltaTouch')
     property string version: '1.1.1'
+    property string oldVersion: "unknown"
 
     // Color scheme
     //
@@ -114,6 +115,7 @@ MainView {
         property alias sendPushNotif: root.sendPushNotifications
         property alias detailedPushNotif: root.detailedPushNotifications
         property alias aggregatePushNotif: root.aggregatePushNotifications
+        property alias versionAtLastSession: root.oldVersion
     }
 
     width: units.gu(45)
@@ -870,6 +872,19 @@ MainView {
     }
     
     Component.onCompleted: {
+        console.log("Main.qml: App version " + version)
+
+        if (oldVersion === version) {
+            // Last session was by the same version as this one
+        } else {
+            // Any code that is to be executed upon first start
+            // of a new version is to be entered here
+            console.log("Main.qml: Version update detected, version of last session: " + oldVersion)
+
+            // save the new version to the settings
+            oldVersion = version
+        }
+
         darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
         if (!DeltaHandler.hasConfiguredAccount) {
             layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))

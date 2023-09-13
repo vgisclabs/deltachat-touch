@@ -333,7 +333,7 @@ Page {
                         SlotsLayout.position: SlotsLayout.Trailing
                         checked: (DeltaHandler.getCurrentConfig("only_fetch_mvbox") === "1")
                         onCheckedChanged: {
-                            if (onlyDCfolderwitch.checked) {
+                            if (onlyDCfolderSwitch.checked) {
                                 // need to check whether it is really needed to change the setting
                                 // because checkedChanged may be emitted when setting the switch via
                                 // DeltaHandler.getCurrentConfig()

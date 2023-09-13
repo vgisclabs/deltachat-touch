@@ -1,7 +1,8 @@
 x.x.x
+Bugfix: Settings item "Only fetch from DeltaChat folder" did not act correctly
 Feature: Connectivity information
 UI: Image viewer: Double tap will alternate between scaling image to fit screen and original size; removed pre-scaling of small images
-UI: Highlight contact requests
+UI: Better highlighting of contact requests
 Other: Improve readability of logging output; add missing events to log; add timestamps to log
 
 1.1.0 2023-07-24

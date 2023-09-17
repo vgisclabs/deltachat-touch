@@ -137,8 +137,15 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
     // TODO: use message-parser instead
     QRegExp weblinkRegExp("((?:http|https|ftp|ftps)://\\S+)");
     QRegExp alreadyFormattedAsLink("href=\"");
+
+    // for correction of wrong image file name extensions,
+    // see usage below
+    QImageReader imagereader;
+    // needed to copy files
+    QString tempQString2;
     
     QVariant retval;
+
 
     switch(role) {
         case ChatModel::IsSelfRole:
@@ -469,6 +476,50 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
         case ChatModel::FilePathRole:
             tempText = dc_msg_get_file(tempMsg);
             tempQString = tempText;
+
+            // special case: Images
+            if (DC_MSG_IMAGE == dc_msg_get_viewtype(tempMsg)) {
+                // In case of images, if the file extension does not
+                // match the actual format of the image, QML Image
+                // will not display anything (e.g., the file is named
+                // example_image.jpg, but it's actually a PNG). Such
+                // a mismatch can be checked with QImageReader::format(),
+                // which will be different depending on the setting of
+                // setDecideFormatFromContent() in case of a mismatch.
+                imagereader.setDecideFormatFromContent(false);
+                imagereader.setFileName(tempQString);
+                // save the output of format() which is NOT based 
+                // on an analysis of the content
+                tempQString2 = imagereader.format();
+
+                // Now set the imagereader to determine the format based
+                // on the content instead of the file name extension
+                imagereader.setDecideFormatFromContent(true);
+                // Then load the file again, seems to be needed
+                imagereader.setFileName(tempQString);
+
+                // If the content does not match the extension,
+                // the previous output of format() should be
+                // different than the output now.
+                if (tempQString2 != imagereader.format()) {
+                    // tempQString2 is now used for something else: the
+                    // name of the destination file for copying to a new 
+                    // file with the matching extension
+                    tempQString2 = tempQString;
+                    // Remove the extension
+                    tempQString2.remove(tempQString2.lastIndexOf("."), tempQString2.length() - tempQString2.lastIndexOf("."));
+                    // now add the correct extension
+                    tempQString2.append(".");
+                    tempQString2.append(imagereader.format());
+
+                    // copy (renaming will probably not save anything because then the core
+                    // will write out the file each time)
+                    QFile::copy(tempQString, tempQString2);
+                    // set tempQString to the newly copied file
+                    tempQString = tempQString2;
+                }
+            }
+
             // see ProfilePicRole above
             tempQString.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length() + 1);
             retval = tempQString;

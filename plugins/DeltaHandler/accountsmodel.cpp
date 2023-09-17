@@ -205,6 +205,12 @@ QString AccountsModel::getAddressOfIndex(int myindex)
 }
 
 
+int AccountsModel::getIdOfAccount(int myindex)
+{
+    return dc_array_get_id(m_accountsArray, myindex);
+}
+
+
 QString AccountsModel::getInfoOfAccount(int myindex)
 {
     QString tempQString;

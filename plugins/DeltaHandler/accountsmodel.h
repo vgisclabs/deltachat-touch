@@ -45,6 +45,8 @@ public:
 
     Q_INVOKABLE int deleteAccount(int myindex);
 
+    Q_INVOKABLE int getIdOfAccount(int myindex);
+
     Q_INVOKABLE QString getInfoOfAccount(int myindex);
 
     Q_INVOKABLE QString getLastErrorOfAccount(int myindex);

@@ -1,3 +1,6 @@
+x.x.x
+UI: Add account ID to account info popup in Known Accounts page
+
 1.1.1 2023-09-13
 Bugfix: Settings item "Only fetch from DeltaChat folder" did not act correctly
 Feature: Connectivity information

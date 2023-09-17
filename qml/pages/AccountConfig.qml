@@ -98,10 +98,9 @@ Page {
                 }
             },
             Action {
-                // TODO: Is this info really helpful? Maybe remove it.
                 iconName: "info"
                 onTriggered: {
-                    let tempString = i18n.tr("Info") + ":\n" + DeltaHandler.accountsmodel.getInfoOfAccount(value) + "\n\n" + i18n.tr("Error") + ":\n" + (DeltaHandler.accountsmodel.getLastErrorOfAccount(value) == "" ? i18n.tr("None") : DeltaHandler.accountsmodel.getLastErrorOfAccount(value))
+                    let tempString = i18n.tr("Account ID: %1").arg(DeltaHandler.accountsmodel.getIdOfAccount(value)) + "\n\n" + i18n.tr("Info") + ":\n" + DeltaHandler.accountsmodel.getInfoOfAccount(value) + "\n\n" + i18n.tr("Error") + ":\n" + (DeltaHandler.accountsmodel.getLastErrorOfAccount(value) == "" ? i18n.tr("None") : DeltaHandler.accountsmodel.getLastErrorOfAccount(value))
                     PopupUtils.open(
                         Qt.resolvedUrl('InfoPopup.qml'),
                         null,

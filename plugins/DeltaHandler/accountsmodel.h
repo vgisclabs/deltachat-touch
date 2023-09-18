@@ -34,7 +34,9 @@ public:
     explicit AccountsModel(QObject *parent = 0);
     ~AccountsModel();
 
-    enum { AddrRole, IsConfiguredRole, ProfilePicRole, UsernameRole};
+    // IsClosedRole is for checking whether the account is an encrypted one. It
+    // doesn't say whether the account has already been opened or not.
+    enum { AddrRole, IsConfiguredRole, ProfilePicRole, UsernameRole, IsClosedRole};
 
     // TODO: reference to DeltaHandler really needed?
     void configure(dc_accounts_t* accMngr, DeltaHandler* dHandler);
@@ -54,6 +56,12 @@ public:
     // QAbstractListModel interface
     virtual int rowCount(const QModelIndex &parent) const;
     virtual QVariant data(const QModelIndex &index, int role) const;
+
+signals:
+    void deletedAccount(uint32_t accID);
+
+public slots:
+    void reset();
 
 protected:
     QHash<int, QByteArray> roleNames() const;

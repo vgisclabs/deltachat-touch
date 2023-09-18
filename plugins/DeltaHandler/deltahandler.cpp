@@ -30,7 +30,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, currentChatID {0}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}
+    : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}
 {
     {
         // to be able to access the files under assets
@@ -42,6 +42,8 @@ DeltaHandler::DeltaHandler(QObject* parent)
         logoFile.copy(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logo.svg");
 
         // prepare directory for the user to put keys to import into
+        // This is connected to the menu items under Advanced => Manage Keys
+        // and has nothing to do with database encryption
         QString keysToImportDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
         keysToImportDir.append("/keys_to_import");
 
@@ -63,13 +65,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
     QString configdir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     qDebug() << "DeltaHandler::DeltaHandler(): Config directory set to: " << configdir;
 
-    settings = new QSettings("deltatouch.lotharketterer", "deltatouch.lotharketterer");
-
-    // stored via QSettings, otherwise removing the previous push notification
-    // when receiving a new one would not work as m_lastTag would
-    // not be preserved across a restart
-    m_lastTag = settings->value("settingsLastTag").toByteArray();
-
     if (!QFile::exists(configdir)) {
         qDebug() << "DeltaHandler::DeltaHandler(): Config directory not existing, creating it now";
         QDir tempdir;
@@ -83,7 +78,8 @@ DeltaHandler::DeltaHandler(QObject* parent)
         }
     }
 
-    // create the cache dir if it doesn't exist yet
+    // create the cache dir if it doesn't exist yet (it shouldn't exist,
+    // as it is deleted on shutdown)
     QString cachedir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
 
     if (!QFile::exists(cachedir)) {
@@ -98,6 +94,26 @@ DeltaHandler::DeltaHandler(QObject* parent)
             exit(1);
         }
     }
+
+    settings = new QSettings("deltatouch.lotharketterer", "deltatouch.lotharketterer");
+
+    // check whether (according to the settings) the database
+    // is encrypted
+    if (settings->contains("encryptDb")) {
+        m_encryptedDatabase = settings->value("encryptDb").toBool();
+    } else {
+        m_encryptedDatabase = false;
+    }
+
+    if (m_encryptedDatabase) {
+        qDebug() << "Setting \"encrypted database\" is on";
+    } else {
+        qDebug() << "Setting \"encrypted database\" is off";
+    }
+
+    // Get the previous push notification (needed if "aggregate
+    // system notifications" is set)
+    m_lastTag = settings->value("settingsLastTag").toByteArray();
 
     m_chatmodel = new ChatModel();
     // TODO: should be something like chatIsCurrentlyViewed or
@@ -124,8 +140,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
     // Also possible: <QString>.toUtf8().constData() ==>> preferred!
     //
     // Also possible: <QString>.toStdString().c_str()
-    //
-    // TODO unref the accounts somewhen later? => done in the destructor
     allAccounts = dc_accounts_new(NULL, qPrintable(configdir));
 
     if (!allAccounts) {
@@ -133,15 +147,9 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
-    m_accountsmodel->configure(allAccounts, this);
-
-    size_t noOfAccounts = m_accountsmodel->rowCount(QModelIndex());
-
-    qDebug() << "DeltaHandler::DeltaHandler: Found " << noOfAccounts << " account(s)";
-
-
     eventThread = new EmitterThread();
     eventThread->setAccounts(allAccounts);
+
 
     bool connectSuccess = connect(eventThread, SIGNAL(newMsg(uint32_t, int, int)), this, SLOT(incomingMessage(uint32_t, int, int)));
     if (!connectSuccess) {
@@ -173,6 +181,24 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
+    connectSuccess = connect(eventThread, SIGNAL(msgDelivered(uint32_t, int, int)), this, SLOT(messageDeliveredToServer(uint32_t, int, int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgDelivered to slot messageDeliveredToServer";
+        exit(1);
+    }
+
+    connectSuccess = connect(eventThread, SIGNAL(msgRead(uint32_t, int, int)), this, SLOT(messageReadByRecipient(uint32_t, int, int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageReadByRecipient";
+        exit(1);
+    }
+
+    connectSuccess = connect(eventThread, SIGNAL(msgFailed(uint32_t, int, int)), this, SLOT(messageFailedSlot(uint32_t, int, int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageReadByRecipient";
+        exit(1);
+    }
+
     connectSuccess = connect(m_contactsmodel, SIGNAL(chatCreationSuccess(uint32_t)), this, SLOT(chatCreationReceiver(uint32_t)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal chatCreationSuccess to slot chatCreationReceiver";
@@ -191,21 +217,9 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
-    connectSuccess = connect(eventThread, SIGNAL(msgDelivered(uint32_t, int, int)), this, SLOT(messageDeliveredToServer(uint32_t, int, int)));
-    if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgDelivered to slot messageDeliveredToServer";
-        exit(1);
-    }
-
     connectSuccess = connect(this, SIGNAL(messageDelivered(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal messageDelivered to slot messageStatusChangedSlot";
-        exit(1);
-    }
-
-    connectSuccess = connect(eventThread, SIGNAL(msgRead(uint32_t, int, int)), this, SLOT(messageReadByRecipient(uint32_t, int, int)));
-    if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageReadByRecipient";
         exit(1);
     }
 
@@ -215,78 +229,126 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
-    connectSuccess = connect(eventThread, SIGNAL(msgFailed(uint32_t, int, int)), this, SLOT(messageFailedSlot(uint32_t, int, int)));
-    if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageReadByRecipient";
-        exit(1);
-    }
-
     connectSuccess = connect(this, SIGNAL(messageFailed(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal messageRead to slot messageReadSlot";
         exit(1);
     }
 
-    eventThread->start();
-
-    if (noOfAccounts == 0){
-        qDebug() << "DeltaHandler::DeltaHandler: No account found";
-        m_hasConfiguredAccount = false;
-        currentContext = nullptr;
+    connectSuccess = connect(m_accountsmodel, SIGNAL(deletedAccount(uint32_t)), this, SLOT(removeClosedAccountFromList(uint32_t)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal deletedAccount of m_accountsmodel to slot removeClosedAccountFromList";
+        exit(1);
     }
-    else {
-        currentContext = dc_accounts_get_selected_account(allAccounts);
-        contextSetupTasks();
 
-        setCoreTranslations();
+    currentContext = nullptr;
 
-        if (dc_is_configured(currentContext)) {
-            m_hasConfiguredAccount = true;
-        }
-        else {
-            qDebug() << "DeltaHandler::DeltaHandler: Selected account is not configured, searching for another account..";
-            m_hasConfiguredAccount = false;
+    dc_array_t* tempArray = dc_accounts_get_all(allAccounts);
+    size_t noOfAccounts = dc_array_get_cnt(tempArray);
+    qDebug() << "DeltaHandler::DeltaHandler: Found " << noOfAccounts << " account(s)";
 
-            // TODO: Is it possible that the selected account is
-            // unconfigured, but a aconfigured account exists?
-            dc_array_t* tempArray = dc_accounts_get_all(allAccounts);
+    if (noOfAccounts != 0) {
+        // Perform check whether a workflow to convert the database
+        // from unencrypted to encrypted or vice versa did not finish,
+        // and if so, check if an incomplete and thus unconfigured
+        // account has to be removed.
+        if (workflowToEncryptedPending() || workflowToUnencryptedPending()) {
+            qDebug() << "DeltaHandler::DeltaHandler(): Workflow is pending, checking whether incomplete account has to be removed";
+            // The workflows to convert accounts to encrypted or
+            // unencrypted work like this:
+            // - create a backup of an account
+            // - add a new account (encrypted or not, depending on the
+            //   workflow)
+            // - import the backup into the new account
+            // - delete the old account
+            // - repeat if further accounts are present
+            // If such a workflow is interrupted during the importing
+            // phase, a new account is present that is incomplete and
+            // not usable. As the old/original account is still present,
+            // the new account can be deleted and the process as
+            // described above can be repeated. Deletion of the new
+            // (incomplete) account is done here, resuming the process
+            // is done later on (controlled by Main.qml).  To determine
+            // whether there's an account to be deleted, the setting
+            // "workflowDbImportingInto" is checked. This setting is
+            // created by the workflows prior to adding a new account in
+            // the form "<new accID> importedFrom <old accID>". After
+            // successful import and deletion of the old account, the
+            // setting is deleted. So if such a setting is present, the
+            // new accID has to be deleted.
+            if (settings->contains("workflowDbImportingInto")) {
+                QString tempQString = settings->value("workflowDbImportingInto").toString();
+                // save the IDs of the incomplete (new) and the original (old) account
+                QStringList tempStringList = tempQString.split(' ');
+                if (tempStringList.size() == 3) {
+                    // Will trigger a warning by the compiler due to
+                    // different number formats :(
+                    uint32_t newAccID = tempStringList.at(0).toInt();
+                    uint32_t oldAccID = tempStringList.at(2).toInt();
+                    qDebug() << "DeltaHandler::DeltaHandler(): Found incomplete account ID " << newAccID << ", based on original ID " << oldAccID;
+                    // Just to make sure: Check if the old account is still present, and
+                    // only remove the new one if yes.
+                    bool oldOneStillExists = false;
+                    for (size_t i = 0; i < dc_array_get_cnt(tempArray); ++i) {
+                        if (oldAccID == dc_array_get_id(tempArray, i)) {
+                            oldOneStillExists = true;
+                            break;
+                        }
+                    }
 
-            for (size_t i = 0; i < noOfAccounts; ++i) {
-                uint32_t tempAccID = dc_array_get_id(tempArray, i);
-                tempContext = dc_accounts_get_account(allAccounts, tempAccID);
-                if (dc_is_configured(tempContext)) {
-                    m_hasConfiguredAccount = true;
-                    // TODO: does the signal have to be emitted?
-                    emit hasConfiguredAccountChanged();
-                    dc_accounts_select_account(allAccounts, tempAccID);
+                    if (oldOneStillExists) {
+                        qDebug() << "DeltaHandler::DeltaHandler(): Removing incomplete account with ID " << newAccID;
+                        dc_accounts_remove_account(allAccounts, newAccID);
 
-                    dc_context_unref(currentContext);
-                    currentContext = tempContext;
-                    tempContext = nullptr;
-                    contextSetupTasks();
+                        // now tempArray needs to be reloaded, and noOfAccounts recalculated
+                        dc_array_unref(tempArray);
+                        tempArray = dc_accounts_get_all(allAccounts);
+                        noOfAccounts = dc_array_get_cnt(tempArray);
+                        qDebug() << "DeltaHandler::DeltaHandler: Now it's " << noOfAccounts << " account(s)";
 
-                    qDebug() << "DeltaHandler::DeltaHandler: ...found one!";
-                    break;
+                    } else {
+                        qDebug() << "DeltaHandler::DeltaHandler(): Precondition to remove incomplete account not given: Original account does not exist anymore.";
+                        // TODO: how to deal with this situation? communicate to the user?
+                    }
+
+                    // Whether the incomplete account could be removed or not,
+                    // we're not doing anything else anyway, so remove the setting
+                    // TODO: depending on the reaction to the situation when the old account
+                    // does not exist anymore, something else should be done?
+                    settings->remove("workflowDbImportingInto");
+
+                } else {
+                    qDebug() << "DeltaHandler::DeltaHandler(): ERROR: Wrong format of setting workflowDbImportingInto, state of accounts unclear";
+                    // TODO: how to deal with this situation? communicate to the user?
                 }
-                dc_context_unref(tempContext);
-                tempContext = nullptr;
-            } // for
-            dc_array_unref(tempArray);
-
-            if (!m_hasConfiguredAccount) {
-                qDebug() << "DeltaHandler::DeltaHandler: ...did not find one.";
+            } else {
+                qDebug() << "DeltaHandler::DeltaHandler(): No incomplete account has to be removed";
             }
-        } // else of if(dc_is_configured(currentContext)
-
-        if (m_hasConfiguredAccount) {
-            currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
         }
-    } // else of if(noOfAccounts == 0)
+
+        // check for open and closed accounts and put them into
+        // m_closedAccounts
+        for (size_t i = 0; i < noOfAccounts; ++i) {
+            uint32_t tempAccID = dc_array_get_id(tempArray, i);
+            tempContext = dc_accounts_get_account(allAccounts, tempAccID);
+            if (0 == dc_context_is_open(tempContext)) {
+                qDebug() << "DeltaHandler::DeltaHandler(): Account ID " << tempAccID << " is closed";
+                m_closedAccounts.push_back(tempAccID);
+            } else {
+                qDebug() << "DeltaHandler::DeltaHandler(): Account ID " << tempAccID << " is open";
+            }
+            dc_context_unref(tempContext);
+            tempContext = nullptr;
+        }
+    }
+
+    dc_array_unref(tempArray);
 }
+
 
 DeltaHandler::~DeltaHandler()
 {
-    dc_accounts_stop_io(allAccounts);
+    qDebug() << "entering DeltaHandler::~DeltaHandler()";
 
     if (currentChatlist) {
         dc_chatlist_unref(currentChatlist);
@@ -326,17 +388,463 @@ DeltaHandler::~DeltaHandler()
     }
 }
 
+
+void DeltaHandler::loadSelectedAccount()
+{
+    qDebug() << "entering DeltaHandler::loadSelectedAccount()";
+
+    m_accountsmodel->configure(allAccounts, this);
+
+    // safe to call repeatedly as the documentation says:
+    // "If the thread is already running, this function does nothing."
+    eventThread->start();
+
+    beginResetModel();
+
+    m_hasConfiguredAccount = false;
+
+    if (numberOfAccounts() > 0) {
+        currentContext = dc_accounts_get_selected_account(allAccounts);
+
+        if (dc_is_configured(currentContext)) {
+            m_hasConfiguredAccount = true;
+            currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+            contextSetupTasks();
+        }
+        else {
+            qDebug() << "DeltaHandler::DeltaHandler: Selected account is not configured, searching for another account..";
+            dc_array_t* tempArray = dc_accounts_get_all(allAccounts);
+
+            for (size_t i = 0; i < dc_array_get_cnt(tempArray); ++i) {
+                uint32_t tempAccID = dc_array_get_id(tempArray, i);
+                tempContext = dc_accounts_get_account(allAccounts, tempAccID);
+                if (dc_is_configured(tempContext)) {
+                    m_hasConfiguredAccount = true;
+                    // TODO: does the signal have to be emitted?
+                    emit hasConfiguredAccountChanged();
+                    dc_accounts_select_account(allAccounts, tempAccID);
+
+                    dc_context_unref(currentContext);
+                    currentContext = tempContext;
+                    tempContext = nullptr;
+
+                    qDebug() << "DeltaHandler::DeltaHandler: ...found one!";
+                    break;
+                }
+                dc_context_unref(tempContext);
+                tempContext = nullptr;
+            } // for
+            dc_array_unref(tempArray);
+
+            if (!m_hasConfiguredAccount) {
+                qDebug() << "DeltaHandler::DeltaHandler: ...did not find one.";
+            }
+        } // else of if(dc_is_configured(currentContext)
+    }
+
+    endResetModel();
+    emit accountChanged();
+
+    setCoreTranslations();
+
+    qDebug() << "exiting DeltaHandler::loadSelectedAccount()";
+}
+
+
+bool DeltaHandler::databaseIsEncryptedSetting()
+{
+    return m_encryptedDatabase;
+}
+
+
+// Method will not only set the database passphrase, but try to 
+// open any closed account
+void DeltaHandler::setDatabasePassphrase(QString passphrase, bool twiceChecked)
+{
+    if (m_closedAccounts.size() > 0) {
+        // try to open all closed accounts
+        bool failedToOpen = false;
+        for (size_t i = 0; i < m_closedAccounts.size(); ++i) {
+            uint32_t tempAccID = m_closedAccounts[i];
+            tempContext = dc_accounts_get_account(allAccounts, tempAccID);
+            qDebug() << "DeltaHandler::setDatabasePassphrase(): Trying to open account with ID " << tempAccID;
+            if (0 == dc_context_open(tempContext, passphrase.toUtf8().constData())) {
+                // incorrect passphrase, break the loop after emitting the failure signal
+                qDebug() << "DeltaHandler::setDatabasePassphrase(): Could not open context: wrong passphrase or error on opening";
+                if (i > 0) {
+                    qDebug() << "DeltaHandler::setDatabasePassphrase():  WARNING: Previously, " << i << " context(s) could be opened with this passphrase!";
+                }
+                emit databaseDecryptionFailure();
+                failedToOpen = true;
+                // need to unref tempContext before break
+                dc_context_unref(tempContext);
+                tempContext = nullptr;
+                break;
+            } else {
+                qDebug() << "DeltaHandler::setDatabasePassphrase(): Successfully opened account with ID " << tempAccID;
+            }
+            dc_context_unref(tempContext);
+            tempContext = nullptr;
+        }
+
+        if (!failedToOpen) {
+            emit databaseDecryptionSuccess();
+            m_databasePassphrase = passphrase;
+
+            // In a normal startup, eventThread is started in
+            // loadSelectedAccount(), which is called AFTER possible
+            // workflows to convert the database, but that's too late
+            // for these workflows as they need the imex events.  It's
+            // safe to call start() on the thread repeatedly as the
+            // documentation says: "If the thread is already running,
+            // this function does nothing."
+            eventThread->start();
+        }
+    } else {
+        // no closed accounts found at startup
+        // OR
+        // passphrase is set for the first time (in which case
+        // this function should only be called after the passphrase
+        // has been entered twice by the user and both entries match,
+        // which should then signalled by the parameter twiceChecked being
+        // true)
+        if (twiceChecked) {
+            m_databasePassphrase = passphrase;
+
+            // eventThread is started in loadSelectedAccount(), which is
+            // called AFTER possible workflows to convert the database, but
+            // that's too late for the workflows as they need the imex events.
+            // It's safe to call repeatedly as the documentation says:
+            // "If the thread is already running, this function does nothing."
+            eventThread->start();
+        } else {
+            // If we're here, the user has entered the passphrase only once
+            // up to now, but no closed account exists. This is the case
+            // - if the setting to encrypt the database is true, but
+            //   no accounts exist at all or
+            // - if the workflow to encrypt the databases (which is started if
+            //   at least one account exists and the user checks the setting
+            //   to encrypt the database) was interrupted before any database
+            //   could be encrypted. In this case, the workflow will be resumed
+            //   after next startup of the app, but the passphrase cannot be checked
+            //   for correctness against a closed account. 
+            emit noEncryptedDatabase();
+        }
+    }
+    return;
+}
+
+
+bool DeltaHandler::hasEncryptedAccounts()
+{
+    return (m_closedAccounts.size() > 0);
+}
+
+
+bool DeltaHandler::hasDatabasePassphrase()
+{
+    return (m_databasePassphrase != "");
+}
+
+
+void DeltaHandler::invalidateDatabasePassphrase()
+{
+    resetPassphrase();
+}
+
+
+int DeltaHandler::numberOfUnconfiguredAccounts()
+{
+    dc_array_t* tempArray = dc_accounts_get_all(allAccounts);
+
+    int numberUnconfigured {0};
+
+    for (size_t i = 0; i < dc_array_get_cnt(tempArray); ++i) {
+        uint32_t tempAccID = dc_array_get_id(tempArray, i);
+        dc_context_t* tempcon = dc_accounts_get_account(allAccounts, tempAccID);
+        if (dc_is_configured(tempcon) == 0) {
+            ++numberUnconfigured;
+        }
+        dc_context_unref(tempcon);
+    } 
+    dc_array_unref(tempArray);
+
+    return numberUnconfigured;
+}
+
+
+int DeltaHandler::numberOfEncryptedAccounts()
+{
+    return m_closedAccounts.size();
+}
+
+
+bool DeltaHandler::isCurrentDatabasePassphrase(QString pw)
+{
+    return m_databasePassphrase == pw;
+}
+
+
+void DeltaHandler::changeDatabasePassphrase(QString newPw)
+{
+    uint32_t currentAccID {0};
+
+    if (currentContext) {
+        currentAccID = dc_get_id(currentContext);
+    }
+
+    dc_context_t* tempcon {nullptr};
+
+    for (size_t i = 0; i < m_closedAccounts.size(); ++i) {
+        if (currentContext && m_closedAccounts[i] == currentAccID) {
+            int success = dc_context_change_passphrase(currentContext, newPw.toUtf8().constData());
+            if (success) {
+                qDebug() << "DeltaHandler::changeDatabasePassphrase(): Success changing passphrase of account ID " << m_closedAccounts[i];
+            } else {
+                qDebug() << "DeltaHandler::changeDatabasePassphrase(): ERROR: Changing passphrase of account ID " << m_closedAccounts[i] << " failed";
+            }
+
+        } else {
+            tempcon = dc_accounts_get_account(allAccounts, m_closedAccounts[i]);
+            if (tempcon) {
+                int success = dc_context_change_passphrase(tempcon, newPw.toUtf8().constData());
+                if (success) {
+                    qDebug() << "DeltaHandler::changeDatabasePassphrase(): Success changing passphrase of account ID " << m_closedAccounts[i];
+                } else {
+                    qDebug() << "DeltaHandler::changeDatabasePassphrase(): ERROR: Changing passphrase of account ID " << m_closedAccounts[i] << " failed";
+                }
+                dc_context_unref(tempcon);
+            } else {
+                qDebug() << "DeltaHandler::changeDatabasePassphrase(): ERROR: could not get context of account ID " << m_closedAccounts[i];
+            }
+        }
+    }
+
+    m_databasePassphrase = newPw;
+}
+
+
+void DeltaHandler::resetPassphrase()
+{
+    // only reset if there's no closed account left
+    if (m_closedAccounts.size() == 0) {
+        m_databasePassphrase = "";
+    }
+}
+
+
+void DeltaHandler::changeEncryptedDatabaseSetting(bool shouldBeEncrypted)
+{
+    if (shouldBeEncrypted) {
+        qDebug() << "DeltaHandler::changeEncryptedDatabaseSetting(): setting it to true";
+    } else {
+        qDebug() << "DeltaHandler::changeEncryptedDatabaseSetting(): setting it to false";
+    }
+
+    m_encryptedDatabase = shouldBeEncrypted;
+    settings->setValue("encryptDb", shouldBeEncrypted);
+}
+
+
+void DeltaHandler::prepareDbConversionToEncrypted()
+{
+    beginResetModel();
+
+    if (currentChatlist) {
+        dc_chatlist_unref(currentChatlist);
+        currentChatlist = nullptr;
+    }
+
+    if (currentContext) {
+        dc_context_unref(currentContext);
+        currentContext = nullptr;
+    }
+
+    if (tempContext) {
+        dc_context_unref(tempContext);
+        tempContext = nullptr;
+    }
+
+    endResetModel();
+
+    // To be on the safe side, disconnnect the imexProgress signal from all
+    // possible slots
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+
+    m_workflowDbEncryption = new WorkflowDbToEncrypted(allAccounts, eventThread, settings, m_closedAccounts, m_databasePassphrase);
+
+    // Connect the successful end of the workflow with the accountsmodel.
+    // Do NOT connect our own method databaseEncryptionCleanup() with the signal of the workflow
+    // because this would prematurely destroy the workflow object
+    bool connect_success = connect(m_workflowDbEncryption, SIGNAL(removedAccount(uint32_t)), m_accountsmodel, SLOT(reset()));
+    if (!connect_success) {
+        qDebug() << "DeltaHandler::prepareDbConversionToEncrypted(): ERROR: Could not connect signal removedAccount of m_workflowDbEncryption with slot reset of m_accountsmodel";
+    }
+
+    connect_success = connect(m_workflowDbEncryption, SIGNAL(addedNewClosedAccount(uint32_t)), m_accountsmodel, SLOT(reset()));
+    if (!connect_success) {
+        qDebug() << "DeltaHandler::prepareDbConversionToEncrypted(): ERROR: Could not connect signal addedNewClosedAccount of m_workflowDbEncryption with slot reset of m_accountsmodel";
+    }
+
+    connect_success = connect(m_workflowDbEncryption, SIGNAL(removedAccount(uint32_t)), this, SLOT(removeClosedAccountFromList(uint32_t)));
+    if (!connect_success) {
+        qDebug() << "DeltaHandler::prepareDbConversionToEncrypted(): ERROR: Could not connect signal removedAccount of m_workflowDbEncryption with slot removeClosedAccountFromList";
+    }
+
+    connect_success = connect(m_workflowDbEncryption, SIGNAL(addedNewClosedAccount(uint32_t)), this, SLOT(addClosedAccountToList(uint32_t)));
+    if (!connect_success) {
+        qDebug() << "DeltaHandler::prepareDbConversionToEncrypted(): ERROR: Could not connect signal addedNewClosedAccount of m_workflowDbEncryption with slot addClosedAccountToList";
+    }
+}
+
+
+bool DeltaHandler::workflowToEncryptedPending()
+{
+    if (settings->contains("workflowDbToEncryptedRunning")) {
+        return settings->value("workflowDbToEncryptedRunning").toBool();
+    } else {
+        return false;
+    }
+}
+
+
+void DeltaHandler::databaseEncryptionCleanup()
+{
+    if (!m_workflowDbEncryption) {
+        // Nothing to do if no workflow has been created
+        return;
+    }
+
+    disconnect(m_workflowDbEncryption, SIGNAL(removedAccount(uint32_t)), m_accountsmodel, SLOT(reset()));
+    disconnect(m_workflowDbEncryption, SIGNAL(addedNewClosedAccount(uint32_t)), m_accountsmodel, SLOT(reset()));
+    disconnect(m_workflowDbEncryption, SIGNAL(removedAccount(uint32_t)), this, SLOT(removeClosedAccountFromList(uint32_t)));
+    disconnect(m_workflowDbEncryption, SIGNAL(addedNewClosedAccount(uint32_t)), this, SLOT(addClosedAccountToList(uint32_t)));
+    delete m_workflowDbEncryption;
+    m_workflowDbEncryption = nullptr;
+
+    dc_array_t* tempArray = dc_accounts_get_all(allAccounts);
+    // have to open each account as they are closed now
+    for (size_t i = 0; i < dc_array_get_cnt(tempArray); ++i) {
+        uint32_t tempAccID = dc_array_get_id(tempArray, i);
+        tempContext = dc_accounts_get_account(allAccounts, tempAccID);
+        if (0 == dc_context_is_open(tempContext)) {
+            dc_context_open(tempContext, m_databasePassphrase.toUtf8().constData());
+        }
+        dc_context_unref(tempContext);
+        tempContext = nullptr;
+    }
+    dc_array_unref(tempArray);
+
+    loadSelectedAccount();
+}
+
+
+void DeltaHandler::prepareDbConversionToUnencrypted()
+{
+    beginResetModel();
+
+    if (currentChatlist) {
+        dc_chatlist_unref(currentChatlist);
+        currentChatlist = nullptr;
+    }
+
+    if (currentContext) {
+        dc_context_unref(currentContext);
+        currentContext = nullptr;
+    }
+
+    if (tempContext) {
+        dc_context_unref(tempContext);
+        tempContext = nullptr;
+    }
+
+    endResetModel();
+
+    // To be on the safe side, disconnnect the imexProgress signal from all
+    // possible slots
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+
+    m_workflowDbDecryption = new WorkflowDbToUnencrypted(allAccounts, eventThread, settings, m_closedAccounts, m_databasePassphrase);
+
+    // Connect the successful end of the workflow with the accountsmodel.
+    // Do NOT connect our own method databaseEncryptionCleanup() with the signal of the workflow
+    // because this would prematurely destroy the workflow object
+    bool connect_success = connect(m_workflowDbDecryption, SIGNAL(removedAccount(uint32_t)), m_accountsmodel, SLOT(reset()));
+    if (!connect_success) {
+        qDebug() << "DeltaHandler::prepareDbConversionToUnencrypted(): ERROR: Could not connect signal removedAccount of m_workflowDbDecryption with slot reset of m_accountsmodel";
+    }
+
+    connect_success = connect(m_workflowDbDecryption, SIGNAL(addedNewOpenAccount()), m_accountsmodel, SLOT(reset()));
+    if (!connect_success) {
+        qDebug() << "DeltaHandler::prepareDbConversionToUnencrypted(): ERROR: Could not connect signal addedNewOpenAccount of m_workflowDbDecryption with slot reset of m_accountsmodel";
+    }
+
+    connect_success = connect(m_workflowDbDecryption, SIGNAL(removedAccount(uint32_t)), this, SLOT(removeClosedAccountFromList(uint32_t)));
+    if (!connect_success) {
+        qDebug() << "DeltaHandler::prepareDbConversionToUnencrypted(): ERROR: Could not connect signal removedAccount of m_workflowDbDecryption with slot removeClosedAccountFromList";
+    }
+
+    connect_success = connect(m_workflowDbDecryption, SIGNAL(workflowCompleted()), this, SLOT(resetPassphrase()));
+    if (!connect_success) {
+        qDebug() << "DeltaHandler::prepareDbConversionToUnencrypted(): ERROR: Could not connect signal removedAccount of m_workflowDbDecryption with slot removeClosedAccountFromList";
+    }
+}
+
+
+bool DeltaHandler::workflowToUnencryptedPending()
+{
+    if (settings->contains("workflowDbToUnencryptedRunning")) {
+        return settings->value("workflowDbToUnencryptedRunning").toBool();
+    } else {
+        return false;
+    }
+}
+
+
+void DeltaHandler::databaseDecryptionCleanup()
+{
+    if (!m_workflowDbDecryption) {
+        // Nothing to do if no workflow has been created
+        return;
+    }
+
+    disconnect(m_workflowDbDecryption, SIGNAL(removedAccount(uint32_t)), m_accountsmodel, SLOT(reset()));
+    disconnect(m_workflowDbDecryption, SIGNAL(addedNewOpenAccount()), m_accountsmodel, SLOT(reset()));
+    disconnect(m_workflowDbDecryption, SIGNAL(removedAccount(uint32_t)), this, SLOT(removeClosedAccountFromList(uint32_t)));
+    disconnect(m_workflowDbDecryption, SIGNAL(workflowCompleted()), this, SLOT(resetPassphrase()));
+    delete m_workflowDbDecryption;
+    m_workflowDbDecryption = nullptr;
+
+    loadSelectedAccount();
+}
+
+
 int DeltaHandler::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     // return our data count
-    if (m_hasConfiguredAccount) {
+    if (currentChatlist) {
         return dc_chatlist_get_cnt(currentChatlist);
-    }
-    else {
+    } else {
         return 0;
     }
 }
+
+
+int DeltaHandler::numberOfAccounts()
+{
+    dc_array_t* tempArray = dc_accounts_get_all(allAccounts);
+    int retval = dc_array_get_cnt(tempArray);
+    dc_array_unref(tempArray);
+    qDebug() << "DeltaHandler::numberOfAccounts(): Number of accounts is" << retval;
+
+    return retval;
+}
+
 
 QHash<int, QByteArray> DeltaHandler::roleNames() const
 {
@@ -360,9 +868,10 @@ QHash<int, QByteArray> DeltaHandler::roleNames() const
 
 QVariant DeltaHandler::data(const QModelIndex &index, int role) const
 {
-    if (!m_hasConfiguredAccount) {
+    if (!currentChatlist) {
         return QVariant();
     }
+
     int row = index.row();
 
     // If row is out of bounds, an empty QVariant is returned
@@ -515,7 +1024,6 @@ QVariant DeltaHandler::data(const QModelIndex &index, int role) const
     }
 
     return retval;
-
 }
 
 ChatModel* DeltaHandler::chatmodel()
@@ -1457,11 +1965,35 @@ void DeltaHandler::prepareTempContextConfig() {
     //   emit the signal "leavingAddEmailPage", which is connected
     //   to the slot unrefTempContext()
     if (!tempContext) {
-        uint32_t accID = dc_accounts_add_account(allAccounts);
-        tempContext = dc_accounts_get_account(allAccounts, accID);
+        uint32_t accID;
+
+        if (m_encryptedDatabase) {
+            if (m_databasePassphrase == "") {
+                qDebug() << "DeltaHandler::prepareQrBackupImport(): ERROR: No passphrase for database encryption present, cannot create account.";
+                return;
+            }
+
+            accID = dc_accounts_add_closed_account(allAccounts);
+            if (0 == accID) {
+                qDebug() << "DeltaHandler::prepareTempContextConfig: Could not create new account.";
+                // TODO: emit signal for failure?
+                return;
+            }
+            tempContext = dc_accounts_get_account(allAccounts, accID);
+            dc_context_open(tempContext, m_databasePassphrase.toUtf8().constData());
+
+        } else {
+            accID = dc_accounts_add_account(allAccounts);
+            if (0 == accID) {
+                qDebug() << "DeltaHandler::prepareTempContextConfig: Could not create new account.";
+                // TODO: emit signal for failure?
+                return;
+            }
+            tempContext = dc_accounts_get_account(allAccounts, accID);
+        }
+
         m_configuringNewAccount = true;
-    }
-    else {
+    } else {
         m_configuringNewAccount = false;
     }
 }
@@ -1504,6 +2036,9 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
         }
         if (m_configuringNewAccount) {
             emit newUnconfiguredAccount(); 
+            if (m_encryptedDatabase) {
+                m_closedAccounts.push_back(dc_get_id(currentContext));
+            }
         } else {
             emit updatedAccountConfig(dc_get_id(tempContext));
         }
@@ -1562,6 +2097,9 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
         // TODO: correct order of actions in lines above + below?
         if (m_configuringNewAccount) {
             emit newConfiguredAccount();
+            if (m_encryptedDatabase) {
+                m_closedAccounts.push_back(dc_get_id(currentContext));
+            }
             emit accountChanged();
         }
         else {
@@ -1637,6 +2175,9 @@ void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
         endResetModel();
 
         emit newConfiguredAccount();
+        if (m_encryptedDatabase) {
+            m_closedAccounts.push_back(dc_get_id(currentContext));
+        }
         emit accountChanged();
         m_networkingIsAllowed = true;
         emit networkingIsAllowedChanged();
@@ -1706,6 +2247,8 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
     if (1 == noOfAccounts) {
         dc_context_unref(currentContext);
         currentContext = nullptr;
+        dc_chatlist_unref(currentChatlist);
+        currentChatlist = nullptr;
         if (m_hasConfiguredAccount) {
             m_hasConfiguredAccount = false;
             emit hasConfiguredAccountChanged();
@@ -1838,14 +2381,15 @@ void DeltaHandler::stop_io()
 
 bool DeltaHandler::isBackupFile(QString filePath)
 {
-    // the url handed over by the ContentHub starts with
-    // "file:///home....", so we have to remove the first 7
-    // characters
-    filePath.remove(0, 7);
+    // filePath might be prepended by "file://" or "qrc:", remove it
+    QString tempQString = filePath;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        filePath.remove(0, 7);
+    }
 
-    if (!filePath.contains('/')) {
-        qDebug() << "DeltaHandler::isBackupFile: Looks like the passed path is no path from ContentHub: No / found in string.";
-        return false;
+    tempQString = filePath;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        filePath.remove(0, 4);
     }
 
     QString fileName = filePath.section('/', -1);
@@ -1858,14 +2402,30 @@ bool DeltaHandler::isBackupFile(QString filePath)
         tempContext = nullptr;
     }
 
-    uint32_t accID = dc_accounts_add_account(allAccounts);
-    
-    if (0 == accID) {
-        qDebug() << "DeltaHandler::isBackupFile: Could not create new account.";
-        return false;
-    }
+    uint32_t accID;
 
-    tempContext = dc_accounts_get_account(allAccounts, accID);
+    if (m_encryptedDatabase) {
+        if (m_databasePassphrase == "") {
+            qDebug() << "DeltaHandler::prepareQrBackupImport(): ERROR: Plaintext key for database encryption is not present, cannot create account.";
+            return false;
+        }
+
+        accID = dc_accounts_add_closed_account(allAccounts);
+        if (0 == accID) {
+            qDebug() << "DeltaHandler::isBackupFile: Could not create new account.";
+            return false;
+        }
+        tempContext = dc_accounts_get_account(allAccounts, accID);
+        dc_context_open(tempContext, m_databasePassphrase.toUtf8().constData());
+
+    } else {
+        accID = dc_accounts_add_account(allAccounts);
+        if (0 == accID) {
+            qDebug() << "DeltaHandler::isBackupFile: Could not create new account.";
+            return false;
+        }
+        tempContext = dc_accounts_get_account(allAccounts, accID);
+    }
 
     char* tempText = dc_imex_has_backup(tempContext, purePath.toUtf8().constData());
     QString tempFile = tempText;
@@ -1874,6 +2434,15 @@ bool DeltaHandler::isBackupFile(QString filePath)
 
     if (tempFile == filePath) {
         isBackup = true;
+
+        // Copy file from HubIncoming to a new directory. Reason:
+        // The HubIncoming dir cannot be removed by shutdownTasks().
+        // To clear this dir, finalize has to be called on the 
+        // ContentTransfer. To be sure that it is really called,
+        // it's done in the Picker page right after this method
+        // here is called. But at that time, the actual import
+        // has not been done yet.
+
         qDebug() << "DeltaHandler::isBackupFile: yes, it is a backup file";
     } else {
         isBackup = false;
@@ -1907,10 +2476,18 @@ void DeltaHandler::importBackupFromFile(QString filePath)
         exit(1);
     }
 
-    // the url handed over by the ContentHub starts with
-    // "file:///home....", so we have to remove the first 7
-    // characters
-    filePath.remove(0, 7);
+    // filePath might be prepended by "file://" or "qrc:",
+    // remove it
+    QString tempQString = filePath;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        filePath.remove(0, 7);
+    }
+
+    tempQString = filePath;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        filePath.remove(0, 4);
+    }
+
     qDebug() << "DeltaHandler::importBackupFromFile: path to backup file is: " << filePath;
     m_networkingIsAllowed = false;
     // not emitting signal, but stopping io directly
@@ -2020,10 +2597,18 @@ void DeltaHandler::setProfileValue(QString key, QString newValue)
 {
     m_changedProfileValues[key] = newValue;
     if ("selfavatar" == key && newValue != "") {
-        // the url handed over by the ContentHub starts with
-        // "file:///home....", so we have to remove the first 7
-        // characters
-        newValue.remove(0, 7);
+        // newValue might be prepended by "file://" or "qrc:",
+        // remove it
+        QString tempQString = newValue;
+        if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+            newValue.remove(0, 7);
+        }
+
+        tempQString = newValue;
+        if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+            newValue.remove(0, 4);
+        }
+
         newValue.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length());
         emit newTempProfilePic(newValue);
     }
@@ -2408,7 +2993,18 @@ bool DeltaHandler::tempGroupIsVerified()
 
 void DeltaHandler::setGroupPic(QString filepath)
 {
-    filepath.remove(0, 7);
+    // filePath might be prepended by "file://" or "qrc:",
+    // remove it
+    QString tempQString = filepath;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        filepath.remove(0, 7);
+    }
+
+    tempQString = filepath;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        filepath.remove(0, 4);
+    }
+
     filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
     emit newChatPic(filepath);
 }
@@ -2879,16 +3475,34 @@ void DeltaHandler::prepareQrBackupImport()
         tempContext = nullptr;
     }
 
-    uint32_t accID = dc_accounts_add_account(allAccounts);
-    
-    if (0 == accID) {
-        qDebug() << "DeltaHandler::prepareQrBackupImport: Could not create new account.";
-        // TODO: add boolean parameter to readyForQrBackupImport(), emit the signal
-        // here with false and handle it accordingly in the GUI?
-        return;
-    }
+    uint32_t accID;
 
-    tempContext = dc_accounts_get_account(allAccounts, accID);
+    if (m_encryptedDatabase) {
+        if (m_databasePassphrase == "") {
+            qDebug() << "DeltaHandler::prepareQrBackupImport(): ERROR: Plaintext key for database encryption is not present, cannot create account.";
+            return;
+        }
+
+        accID = dc_accounts_add_closed_account(allAccounts);
+        if (0 == accID) {
+            qDebug() << "DeltaHandler::prepareQrBackupImport: Could not create new account.";
+            // TODO: add boolean parameter to readyForQrBackupImport(), emit the signal
+            // here with false and handle it accordingly in the GUI?
+            return;
+        }
+        tempContext = dc_accounts_get_account(allAccounts, accID);
+        dc_context_open(tempContext, m_databasePassphrase.toUtf8().constData());
+
+    } else {
+        accID = dc_accounts_add_account(allAccounts);
+        if (0 == accID) {
+            qDebug() << "DeltaHandler::prepareQrBackupImport: Could not create new account.";
+            // TODO: add boolean parameter to readyForQrBackupImport(), emit the signal
+            // here with false and handle it accordingly in the GUI?
+            return;
+        }
+        tempContext = dc_accounts_get_account(allAccounts, accID);
+    }
     
     emit readyForQrBackupImport();
 }
@@ -2974,6 +3588,9 @@ void DeltaHandler::startQrBackupImport()
         endResetModel();
 
         emit newConfiguredAccount();
+        if (m_encryptedDatabase) {
+            m_closedAccounts.push_back(dc_get_id(currentContext));
+        }
         emit accountChanged();
         m_networkingIsAllowed = true;
         emit networkingIsAllowedChanged();
@@ -3102,10 +3719,18 @@ void DeltaHandler::evaluateQrImage(QImage image, bool emitFailureSignal)
 
 void DeltaHandler::loadQrImage(QString filepath)
 {
-    // the url handed over by the ContentHub starts with
-    // "file:///home....", so we have to remove the first 7
-    // characters
-    filepath.remove(0, 7);
+    // filepath might be prepended by "file://" or "qrc:",
+    // remove it
+    QString tempQString = filepath;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        filepath.remove(0, 7);
+    }
+
+    tempQString = filepath;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        filepath.remove(0, 4);
+    }
+
     QImage image(filepath);
 
     if (image.isNull()) {
@@ -3216,6 +3841,29 @@ EmitterThread* DeltaHandler::emitterthread()
 {
     return eventThread;
 }
+
+
+WorkflowDbToEncrypted* DeltaHandler::workflowdbencryption()
+{
+    if (m_workflowDbEncryption) {
+        return m_workflowDbEncryption;
+    } else {
+        qDebug() << "DeltaHandler::workflowdbencryption(): ERROR: m_workflowDbEncryption is null";
+        return nullptr;
+    }
+}
+
+
+WorkflowDbToUnencrypted* DeltaHandler::workflowdbdecryption()
+{
+    if (m_workflowDbDecryption) {
+        return m_workflowDbDecryption;
+    } else {
+        qDebug() << "DeltaHandler::workflowdbdecryption(): ERROR: m_workflowDbDecryption is null";
+        return nullptr;
+    }
+}
+
 
 void DeltaHandler::updateCurrentChatMessageCount()
 {
@@ -3488,6 +4136,10 @@ void DeltaHandler::momentaryChatBlockContact()
 
 void DeltaHandler::setCoreTranslations()
 {
+    if (m_coreTranslationsAlreadySet) {
+        return;
+    }
+
     // e.g., "de_DE"
     QString langAndCountry = QLocale::system().name();
     qDebug() << "DeltaHandler::setCoreTranslations(): checking locale, found: " << langAndCountry;
@@ -3517,6 +4169,16 @@ void DeltaHandler::setCoreTranslations()
         // no core translation file found, do nothing
         qDebug() << "DeltaHandler::setCoreTranslations(): No file " << langAndCountry << " or " << langOnly << " found, no core translations available";
         return;
+    }
+
+    bool mustUnrefCurrentContext {false};
+
+    uint32_t tempAccId;
+
+    if (!currentContext) {
+        mustUnrefCurrentContext = true;
+        tempAccId = dc_accounts_add_account(allAccounts);
+        currentContext = dc_accounts_get_account(allAccounts, tempAccId);
     }
 
     if (coreLangFile.open(QIODevice::ReadOnly)) {
@@ -3602,6 +4264,13 @@ void DeltaHandler::setCoreTranslations()
     } else {
         qDebug() << "DeltaHandler::setCoreTranslations(): ERROR: could not open translation file";
     }
+
+    if (mustUnrefCurrentContext) {
+        dc_context_unref(currentContext);
+        currentContext = nullptr;
+        dc_accounts_remove_account(allAccounts, tempAccId);
+    }
+    m_coreTranslationsAlreadySet = true;
 }
 
 
@@ -3713,7 +4382,7 @@ void DeltaHandler::contextSetupTasks()
             freshMsgs[i] = tempStdArr;
             dc_msg_unref(tempMsg);
         } else {
-            qDebug() << "DeltaHandler::contextSetupTasks(): ERROR obtaining the chat ID for the unread msg ID " << tempMsg;
+            qDebug() << "DeltaHandler::contextSetupTasks(): ERROR obtaining the chat ID for the unread msg ID " << tempMsgID;
             std::array<uint32_t, 2> tempStdArr {tempMsgID, 0};
             freshMsgs[i] = tempStdArr;
         }
@@ -3838,4 +4507,110 @@ void DeltaHandler::triggerProviderHintSignal(QString emailAddress)
         
         dc_provider_unref(tempProvider);
     }
+}
+
+
+QString DeltaHandler::copyToCache(QString fromFilePath)
+{
+
+    // Method copies the file in fromFilePath in to a new dir in
+    // <StandardPaths::CacheLocation>. The subdir is created from the
+    // current date and time to avoid overwriting of existing
+    // files/dirs. The pathname of the newly created file will be
+    // returned.
+    //
+    // Reason is, for example, to be able to call finalize() 
+    // when importing a file via ContentHub. This is needed
+    // because the cleaning of the cache dir upon shutdown
+    // (see DeltaHandler::shutdownTasks()) cannot remove the
+    // HubIncoming directory, but the finalize() call does.
+    // However, we have to perform this call while we still
+    // need the file to be present.
+    
+    // fromFilePath might be prepended by "file://" or "qrc:",
+    // remove it
+    QString tempQString = fromFilePath;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        fromFilePath.remove(0, 7);
+    }
+
+    tempQString = fromFilePath;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        fromFilePath.remove(0, 4);
+    }
+
+    QString fromFileBasename = fromFilePath.section('/', -1);
+    
+    QString toFilePath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    toFilePath.append("/");
+
+    // to avoid overwriting existing files, prepend filename by the current date
+    QString dateAndTime = QDateTime::currentDateTime().toString(QStringView(QString(("yymmddhhmmss"))));
+    toFilePath.append(dateAndTime);
+
+    QDir tempdir;
+    bool success = tempdir.mkpath(toFilePath);
+    if (!success) {
+        qDebug() << "DeltaHandler::copyToCache(): ERROR: Could not create subdir " << toFilePath << " in cache, aborting.";
+        return QString("");
+    }
+
+    toFilePath.append("/");
+
+    // complete toFilePath
+    toFilePath.append(fromFileBasename);
+
+    qDebug() << "DeltaHandler::copyToCache: Copying " << fromFilePath << " to " << toFilePath;
+    QFile::copy(fromFilePath, toFilePath);
+
+    return toFilePath;
+}
+
+void DeltaHandler::shutdownTasks()
+{
+    dc_accounts_stop_io(allAccounts);
+    QDir cachepath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    qDebug() << "cachepath: " << cachepath.absolutePath();
+    cachepath.removeRecursively();
+}
+
+
+void DeltaHandler::removeClosedAccountFromList(uint32_t accID)
+{
+    size_t endpos = m_closedAccounts.size();
+    for (size_t i = 0; i < endpos; ++i) {
+        if (m_closedAccounts[i] == accID) {
+            qDebug() << "DeltaHandler::removeClosedAccountFromList(): removing account ID " << m_closedAccounts[i] << " from list of closed accounts";
+            m_closedAccounts.erase(m_closedAccounts.begin() + i);
+            --endpos;
+            // could break now, but don't in case an account ID is listed twice
+        }
+    }
+
+    // If the last closed account has been removed, delete the
+    // database passphrase. The user will then have to choose
+    // a new one if a new closed account will be added
+    if (m_closedAccounts.size() == 0) {
+        m_databasePassphrase = "";
+    }
+}
+
+
+void DeltaHandler::addClosedAccountToList(uint32_t accID)
+{
+    m_closedAccounts.push_back(accID);
+    qDebug() << "DeltaHandler::addClosedAccountToList(): added ID " << accID << " to list of closed accounts";
+}
+
+
+bool DeltaHandler::isClosedAccount(uint32_t accID)
+{
+    bool retval {false};
+    for (size_t i = 0; i < m_closedAccounts.size(); ++i) {
+        if (m_closedAccounts[i] == accID) {
+            retval = true;
+            break;
+        }
+    }
+    return retval;
 }

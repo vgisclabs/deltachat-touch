@@ -34,7 +34,11 @@ AccountsModel::~AccountsModel()
 int AccountsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return dc_array_get_cnt(m_accountsArray);
+    if (m_accountsArray) {
+        return dc_array_get_cnt(m_accountsArray);
+    } else {
+        return 0;
+    }
 }
 
 QHash<int, QByteArray> AccountsModel::roleNames() const
@@ -44,12 +48,20 @@ QHash<int, QByteArray> AccountsModel::roleNames() const
     roles[IsConfiguredRole] = "isConfigured";
     roles[ProfilePicRole] = "profilePic";
     roles[UsernameRole] = "username";
+    // IsClosedRole is for checking whether the account is an encrypted
+    // one. It doesn't say whether the account has already been opened
+    // or not.
+    roles[IsClosedRole] = "isClosed";
 
     return roles;
 }
 
 QVariant AccountsModel::data(const QModelIndex &index, int role) const
 {
+    if (!m_accountsArray) {
+        return QVariant();
+    }
+
     int row = index.row();
 
     if(row < 0 || row >= dc_array_get_cnt(m_accountsArray)) {
@@ -58,12 +70,14 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 
     uint32_t accID = dc_array_get_id(m_accountsArray, row);
     dc_context_t* tempContext = dc_accounts_get_account(m_accountsManager, accID);
+
+    if (0 == dc_context_is_open(tempContext)) {
+        qDebug() << "AccountsModel::data(): ERROR: Context of account with ID " << accID << " is closed, cannot obtain data";
+    }
     
     QVariant retval;
-    // TODO: If a char* is assigned to a QVariant, does this automatically
-    // make a QString? If yes, the QString below is not needed.
     QString tempQString;
-    bool isConfigured;
+    bool tempBool;
     char* tempText {nullptr};
 
     switch(role) {
@@ -84,8 +98,8 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
             break;
 
         case AccountsModel::IsConfiguredRole:
-            isConfigured = dc_is_configured(tempContext);
-            retval = isConfigured;
+            tempBool = dc_is_configured(tempContext);
+            retval = tempBool;
             break;
 
         case AccountsModel::ProfilePicRole:
@@ -104,6 +118,11 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
             tempText = dc_get_config(tempContext, "displayname");
             tempQString = tempText;
             retval = tempQString;
+            break;
+
+        case AccountsModel::IsClosedRole:
+            tempBool = m_deltaHandler->isClosedAccount(accID);
+            retval = tempBool;
             break;
 
         default:
@@ -126,9 +145,17 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 
 void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
 {
+    beginResetModel();
 
     m_accountsManager = accMngr;
+
+    if (m_accountsArray) {
+        dc_array_unref(m_accountsArray);
+    }
     m_accountsArray = dc_accounts_get_all(m_accountsManager);
+
+    endResetModel();
+
     m_deltaHandler = dHandler;
 
     // disconnect in case configure() is not called for the first time. Otherwise, multiple
@@ -156,17 +183,25 @@ void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
 
 void AccountsModel::newAccount()
 {
-    int tempCount = dc_array_get_cnt(m_accountsArray);
     // reset the model instead of inserting a row in case
     // the core inserts the new account in between existing
     // accounts
-    //beginInsertRows(QModelIndex(), tempCount, tempCount);
+    reset();
+}
+
+
+void AccountsModel::reset()
+{
     beginResetModel();
-    dc_array_unref(m_accountsArray);
-    m_accountsArray = dc_accounts_get_all(m_accountsManager);
-    //endInsertRows();
+    if (m_accountsArray) {
+        dc_array_unref(m_accountsArray);
+        m_accountsArray = nullptr;
+    }
+
+    if (m_accountsManager) {
+        m_accountsArray = dc_accounts_get_all(m_accountsManager);
+    }
     endResetModel();
-    
 }
 
 
@@ -278,6 +313,7 @@ int AccountsModel::deleteAccount(int myindex)
     int success = dc_accounts_remove_account(m_accountsManager, accID);
 
     if(success) {
+        emit deletedAccount(accID);
         qDebug() << "AccountsModel::deleteAccount: ...done.";
         dc_array_unref(m_accountsArray);
         m_accountsArray = dc_accounts_get_all(m_accountsManager);

@@ -78,10 +78,11 @@ Page {
         onStateChanged: {
             if (audioToSendPage.activeTransfer.state === ContentTransfer.Charged) {
                 if (audioToSendPage.activeTransfer.items.length > 0) {
-                    audioToSendPage.source = audioToSendPage.activeTransfer.items[0].url;
+                    audioToSendPage.source = DeltaHandler.copyToCache(audioToSendPage.activeTransfer.items[0].url);
                     console.log('Trying to send audio: ', audioToSendPage.source)
                     DeltaHandler.chatmodel.setAttachment(audioToSendPage.source, DeltaHandler.AudioType)
                 }
+                audioToSendPage.activeTransfer.finalize()
                 layout.removePages(audioToSendPage)
             }
         }

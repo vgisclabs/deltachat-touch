@@ -38,7 +38,7 @@ UITK.Dialog {
     Component.onCompleted: {
         importdir = StandardPaths.locate(StandardPaths.CacheLocation, "keys_to_import", StandardPaths.LocateDirectory)
         importdir = importdir.slice(7, importdir.length)
-        dialog.text = i18n.tr("To import secret keys, please place them into the directory \"%1\". Make sure that no other files are present in this directory.").arg(dialog.importdir) + "\n\n" + i18n.tr("Import secret keys from \"%1\"?\n\n• Existing secret keys will not be deleted\n\n• The last imported key will be used as the new default key unless it has the word \"legacy\" in its filename.").arg(dialog.importdir)
+        dialog.text = i18n.tr("To import secret keys, please place them into the directory \"%1\". Make sure that no other files are present in this directory. The directory is only available if the app is running, and will be deleted upon closure of the app.").arg(dialog.importdir) + "\n\n" + i18n.tr("Import secret keys from \"%1\"?\n\n• Existing secret keys will not be deleted\n\n• The last imported key will be used as the new default key unless it has the word \"legacy\" in its filename.").arg(dialog.importdir)
     }
 
     function updateProgress(progValue) {

@@ -25,54 +25,37 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
-    ProgressBar {
-        id: progBar
-        minimumValue: 0
-        maximumValue: 1000
-        value: 0
-    }
+    signal cancelled()
+    signal confirmed()
 
     Component.onCompleted: {
-        DeltaHandler.imexEventReceived.connect(updateProgress)
-        DeltaHandler.importBackupFromFile(backupPickerPage.source)
     }
 
-    function updateProgress(progValue) {
-        progBar.value = progValue
-        if (progValue == 0) {
-            // TODO string not translated yet
-            dialog.text = i18n.tr('Failed')
-            progBar.visible = false
-            backButton.visible = true
-        }
-        else if (progValue == 1000) {
-            // TODO string not translated yet
-            dialog.text = "Success!\nAfter clicking Ok, it may take a while, please be patient."
-            progBar.visible = false
-            okButton.visible = true
-        }
+//    title: i18n.tr("")
+
+    Label {
+        id: confirmLabel1
+        // TODO string not translated yet
+        text: i18n.tr("The existing account(s) will now be encrypted. This will take some time. Make sure that the app stays in foreground, and prevent the screen from locking.")
+        wrapMode: Text.WordWrap
     }
 
     Button {
         id: okButton
-        text: 'OK'
+        text: i18n.tr("Continue")
         color: theme.palette.normal.positive
         onClicked: {
-            dialog.text = "Updating…"
             PopupUtils.close(dialog)
-            layout.removePages(layout.primaryPage)
+            confirmed()
         }
-        visible: false
     }
 
     Button {
-        id: backButton
-        text: i18n.tr("Back")
-        color: theme.palette.normal.negative
+        id: cancelButton
+        text: i18n.tr("Cancel")
         onClicked: {
             PopupUtils.close(dialog)
-            layout.removePages(backupPickerPage)
+            cancelled()
         }
-        visible: false
     }
 }

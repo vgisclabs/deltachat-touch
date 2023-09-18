@@ -79,9 +79,10 @@ Page {
             if (picPickerPage.activeTransfer.state === ContentTransfer.Charged) {
                 layout.removePages(picPickerPage)
                 if (picPickerPage.activeTransfer.items.length > 0) {
-                    picPickerPage.source = picPickerPage.activeTransfer.items[0].url;
+                    picPickerPage.source = DeltaHandler.copyToCache(picPickerPage.activeTransfer.items[0].url);
                     DeltaHandler.loadQrImage(picPickerPage.source)
                 }
+                picPickerPage.activeTransfer.finalize()
             }
         }
     }

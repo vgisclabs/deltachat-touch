@@ -78,7 +78,7 @@ Page {
         onStateChanged: {
             if (imageToSendPage.activeTransfer.state === ContentTransfer.Charged) {
                 if (imageToSendPage.activeTransfer.items.length > 0) {
-                    imageToSendPage.source = imageToSendPage.activeTransfer.items[0].url;
+                    imageToSendPage.source = DeltaHandler.copyToCache(imageToSendPage.activeTransfer.items[0].url);
                     console.log('Setting image attachment: ', imageToSendPage.source)
                     if (DeltaHandler.chatmodel.isGif(imageToSendPage.source)) {
                         DeltaHandler.chatmodel.setAttachment(imageToSendPage.source, DeltaHandler.GifType)
@@ -86,6 +86,7 @@ Page {
                         DeltaHandler.chatmodel.setAttachment(imageToSendPage.source, DeltaHandler.ImageType)
                     }
                 }
+                imageToSendPage.activeTransfer.finalize()
                 layout.removePages(imageToSendPage)
             }
         }

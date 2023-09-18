@@ -42,17 +42,133 @@ MainView {
 
     signal chatlistQueryTextHasChanged(string query)
 
+
+    function startupStep1() {
+        // Check
+        // - if at least one account is present
+        // - if a workflow has to be resumed (in which case
+        //   only an info popup will be shown to the user at
+        //   this stage, actual resuming will come later)
+        if (DeltaHandler.numberOfAccounts() > 0) {
+            // check if workflows have to be resumed
+            if (DeltaHandler.workflowToEncryptedPending()) {
+                let popup1 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/InfoPopup.qml"),
+                    layout.primaryPage,
+                    // TODO string not translated yet
+                    { "text": i18n.tr("From last session, database encryption has not finished yet and will be resumed after entering the passphrase.")}
+                )
+                popup1.done.connect(startupStep2)
+            } else if (DeltaHandler.workflowToUnencryptedPending()) {
+                let popup2 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/InfoPopup.qml"),
+                    layout.primaryPage,
+                    // TODO string not translated yet
+                    { "text": i18n.tr("From last session, database decryption has not finished yet and will be resumed after entering the passphrase.")}
+                )
+                popup2.done.connect(startupStep2)
+            } else {
+                startupStep2()
+            }
+        } else {
+            // Number of accounts is 0
+            startupStep4()
+        }
+    }
+
+    function startupStep2() {
+        // Request the user to enter the database passphrase, if necessary
+        // 
+        // In RequestDatabasePassword, the passphrase is sent
+        // to DeltaHandler. DeltaHandler will then open all closed accounts
+        // or emit failure(), which will be taken as signal that the
+        // passphrase was incorrect. In this case the popup won't close until
+        // the correct passphrase has been entered.
+        if (DeltaHandler.hasEncryptedAccounts() || DeltaHandler.workflowToEncryptedPending() || DeltaHandler.workflowToUnencryptedPending()) {
+            let popup3 = PopupUtils.open(Qt.resolvedUrl("pages/RequestDatabasePassword.qml"), layout.primaryPage)
+            popup3.success.connect(startupStep3)
+        } else {
+            startupStep4()
+        }
+        // TODO: maybe check here whether the setting for encrypted db
+        // is consistent with the status of the accounts? Or at a later step?
+    }
+
+    function startupStep3() {
+        // Resumes database encryption or decryption workflows, if necessary
+        if (DeltaHandler.workflowToUnencryptedPending()) {
+            let popup4 = PopupUtils.open(
+                Qt.resolvedUrl("pages/ProgressDatabaseDecryption.qml"),
+                layout.primaryPage,
+                { "resumeWorkflow": true })
+            popup4.success.connect(startupStep3a)
+            // TODO: what to do if the WF failed?
+            popup4.failed.connect(startupStep3a)
+        } else if (DeltaHandler.workflowToEncryptedPending()) {
+            let popup5 = PopupUtils.open(Qt.resolvedUrl("pages/ProgressDatabaseEncryption.qml"), layout.primaryPage)
+            popup5.success.connect(startupStep3b)
+            // TODO: what to do if the WF failed?
+            popup5.failed.connect(startupStep3b)
+        } else {
+            startupStep4()
+        }
+    }
+
+    function startupStep3a() {
+        // Decryption workflow has finished or failed, clean up
+        DeltaHandler.databaseDecryptionCleanup()
+        // go directly to step 5 as the ...cleanup() method above will
+        // call loadSelectedAccount()
+        startupStep5()
+    }
+
+    function startupStep3b() {
+        // Encryption workflow has finished or failed, clean up
+        DeltaHandler.databaseEncryptionCleanup()
+        // go directly to step 5 as the ...cleanup() method above will
+        // call loadSelectedAccount()
+        startupStep5()
+    }
+
+    function startupStep4() {
+        // Some actions are required on C++ side now
+        DeltaHandler.loadSelectedAccount()
+        startupStep5()
+    }
+
+    function startupStep5() {
+        if (!DeltaHandler.hasConfiguredAccount) {
+            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+        }
+
+        startStopIO()
+        hintTimer.start()
+
+        root.appStateNowActive.connect(DeltaHandler.chatmodel.appIsActiveAgainActions)
+
+        DeltaHandler.setEnablePushNotifications(sendPushNotifications)
+        DeltaHandler.setDetailedPushNotifications(detailedPushNotifications)
+        DeltaHandler.setAggregatePushNotifications(aggregatePushNotifications)
+
+        root.periodicTimerSignal.connect(DeltaHandler.periodicTimerActions)
+
+        root.chatlistQueryTextHasChanged.connect(DeltaHandler.updateChatlistQueryText)
+        DeltaHandler.clearChatlistQueryRequest.connect(root.clearChatlistQuery)
+
+        periodicTimer.start()
+    }
+
     function clearChatlistQuery() {
         chatlistSearchField.text = "";
     }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.1.2-pre'
+    property string version: '1.2.0-pre'
     property string oldVersion: "unknown"
 
     // Color scheme
     //
-    // The bool darkmode will be set in onCompleted. If it is set here
+    // The bool darkmode will be set on startup. If it is set here
     // (i.e., with binding) it will change if the theme is changed by,
     // e.g., ThemeSwitcher, and all colors depending on it will change,
     // too. For some strange reason, the UITK components don't do the
@@ -108,6 +224,9 @@ MainView {
     // to protect against clicks on multiple chat lines
     property bool chatOpenAlreadyClicked: false
 
+    // see AccountConfig.qml
+    property bool showAccountsExperimentalSettings: false
+
     Settings {
         id: settings
         property alias synca: root.syncAll
@@ -116,6 +235,7 @@ MainView {
         property alias detailedPushNotif: root.detailedPushNotifications
         property alias aggregatePushNotif: root.aggregatePushNotifications
         property alias versionAtLastSession: root.oldVersion
+        property alias accountsExpSettings: root.showAccountsExperimentalSettings
     }
 
     width: units.gu(45)
@@ -157,21 +277,24 @@ MainView {
         onChatViewClosed: {
             root.chatOpenAlreadyClicked = false;
         }
-    }
 
-    Connections {
-        target: DeltaHandler
         onHasConfiguredAccountChanged: {
             startStopIO()
             console.log('DeltaHandler signal hasConfiguredAccountChanged')
         }
-    }
 
-    Connections {
-        target: DeltaHandler
         onNetworkingIsAllowedChanged: {
             startStopIO()
             console.log('DeltaHandler signal networkingIsAllowedChanged')
+        }
+
+        onOpenChatViewRequest: {
+            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'))
+        }
+
+        onChatlistShowsArchivedOnly: {
+            showArchiveCloseLine = showsArchived;
+            root.chatOpenAlreadyClicked = false
         }
     }
 
@@ -201,13 +324,8 @@ MainView {
             }
             console.log('Qt.application signal stateChanged, state is now: ' + currState)
         }
-    }
-
-    Connections {
-        target: DeltaHandler
-        onChatlistShowsArchivedOnly: {
-            showArchiveCloseLine = showsArchived;
-            root.chatOpenAlreadyClicked = false
+        onAboutToQuit: {
+            DeltaHandler.shutdownTasks()
         }
     }
 
@@ -215,13 +333,6 @@ MainView {
         target: DeltaHandler.contactsmodel
         onChatCreationSuccess: {
             bottomEdge.collapse()
-        }
-    }
-
-    Connections {
-        target: DeltaHandler
-        onOpenChatViewRequest: {
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'))
         }
     }
 
@@ -876,35 +987,18 @@ MainView {
 
         if (oldVersion === version) {
             // Last session was by the same version as this one
+            console.log("Main.qml: No version update since last session")
         } else {
             // Any code that is to be executed upon first start
             // of a new version is to be entered here
             console.log("Main.qml: Version update detected, version of last session: " + oldVersion)
-
+            
             // save the new version to the settings
             oldVersion = version
         }
 
         darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
-        if (!DeltaHandler.hasConfiguredAccount) {
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
-        }
-
-        startStopIO()
-        hintTimer.start()
-
-        root.appStateNowActive.connect(DeltaHandler.chatmodel.appIsActiveAgainActions)
-
-        DeltaHandler.setEnablePushNotifications(sendPushNotifications)
-        DeltaHandler.setDetailedPushNotifications(detailedPushNotifications)
-        DeltaHandler.setAggregatePushNotifications(aggregatePushNotifications)
-
-        root.periodicTimerSignal.connect(DeltaHandler.periodicTimerActions)
-
-        root.chatlistQueryTextHasChanged.connect(DeltaHandler.updateChatlistQueryText)
-        DeltaHandler.clearChatlistQueryRequest.connect(root.clearChatlistQuery)
-
-        periodicTimer.start()
+        startupStep1()
     }
 
     Connections {

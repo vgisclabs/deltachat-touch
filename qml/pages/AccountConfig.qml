@@ -30,6 +30,122 @@ Page {
     id: accountConfigPage
     anchors.fill: parent
 
+    function loadAddAccountPage() {
+        layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))
+    }
+
+    /* ==========================================================
+     * ===== Functions related to encryption of database ========
+     * ========================================================== */
+     
+    function uncheckEncryptDatabaseSwitch() {
+        // Called if any popup during the stages for encryption is
+        // cancelled. In this case, the switch has to be unset again.
+        encryptDatabaseSwitch.checked = false
+    }
+
+    function encryptDatabaseStage1() {
+        if (!DeltaHandler.hasDatabasePassphrase()) {
+            // No phassphrase known to DeltaHandler, so a new one is set up
+            let popup2 = PopupUtils.open(Qt.resolvedUrl("CreateDatabasePassword.qml"), accountConfigPage)
+            popup2.success.connect(encryptDatabaseStage2)
+            popup2.cancelled.connect(uncheckEncryptDatabaseSwitch)
+        } else {
+            // Passphrase already set in DeltaHandler, use it
+            // TODO: is this case possible?
+            encryptDatabaseStage2() 
+        }
+    }
+
+    function encryptDatabaseStage2() {
+        let numberUnencryptedAccounts = DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfEncryptedAccounts()
+        if (numberUnencryptedAccounts > 0) {
+            let popup6 = PopupUtils.open(Qt.resolvedUrl("ConfirmDatabaseConversionToEncrypted.qml"), accountConfigPage)
+            popup6.confirmed.connect(encryptDatabaseStage3)
+            popup6.cancelled.connect(function() {
+                    uncheckEncryptDatabaseSwitch()
+                    if (!DeltaHandler.hasEncryptedAccounts()) {
+                        // Previously in stage 1, a database key has
+                        // been generated. If there's no encrypted account,
+                        // cancelling at this stage has to reset the passphrase,
+                        // as the user might want to choose a different one when
+                        // setting the switch to encrypted at a later time.
+                        DeltaHandler.invalidateDatabasePassphrase()
+                    }
+                })
+        } else {
+            // There's no account to encrypt. Adapt the setting now as the 
+            // user has confirmed all stages. Nothing else to do.
+            DeltaHandler.changeEncryptedDatabaseSetting(encryptDatabaseSwitch.checked)
+        }
+    }
+
+    function encryptDatabaseStage3() {
+        // The user has confirmed all stages, adapt the setting now. Even if the conversion
+        // fails, the setting should now persist. If the conversion failed or
+        // was interrupted, it will be tried to finish it at next startup of the app.
+        DeltaHandler.changeEncryptedDatabaseSetting(encryptDatabaseSwitch.checked)
+        let popup7 = PopupUtils.open(Qt.resolvedUrl("ProgressDatabaseEncryption.qml"), accountConfigPage)
+        popup7.success.connect(encryptDatabaseStage4)
+        // Cleanup needed even in case of failure. Currently no differentiation of
+        // success or failure at this stage.
+        popup7.failed.connect(encryptDatabaseStage4)
+    }
+
+    function encryptDatabaseStage4() {
+        // workflow has finished (or failed), clean up
+        DeltaHandler.databaseEncryptionCleanup()
+    }
+
+    /* =============== END encryption of database =============== */
+
+
+    /* ==========================================================
+     * ===== Functions related to decryption of database ========
+     * ========================================================== */
+
+    function recheckEncryptDatabaseSwitch() {
+        // Called if the popup to disable database encryption is
+        // cancelled. In this case, the switch has to be set again.
+        encryptDatabaseSwitch.checked = true
+    }
+
+    function decryptDatabaseStage1() {
+        // tell the user that all encrypted accounts will now
+        // be decrypted (can be cancelled)
+        if (DeltaHandler.hasEncryptedAccounts()) {
+            let popup9 = PopupUtils.open(Qt.resolvedUrl("ConfirmDatabaseConversionToUnencrypted.qml"), accountConfigPage)
+            popup9.confirmed.connect(decryptDatabaseStage2)
+            popup9.cancelled.connect(function() {
+                    recheckEncryptDatabaseSwitch()
+                })
+        } else {
+            DeltaHandler.invalidateDatabasePassphrase()
+            DeltaHandler.changeEncryptedDatabaseSetting(encryptDatabaseSwitch.checked)
+            // nothing else to do
+        }
+    }
+
+    function decryptDatabaseStage2() {
+        // starts the workflow to decrypt the accounts
+        DeltaHandler.changeEncryptedDatabaseSetting(encryptDatabaseSwitch.checked)
+        let popup11 = PopupUtils.open(Qt.resolvedUrl("ProgressDatabaseDecryption.qml"), accountConfigPage)
+        popup11.success.connect(decryptDatabaseStage3)
+        popup11.failed.connect(decryptDatabaseStage3)
+    }
+
+    function decryptDatabaseStage3() {
+        // Workflow has finished (or failed), clean up
+        // Passphrase needs to be reset now, but only if there
+        // are no encrypted accounts left.
+        if (!DeltaHandler.hasEncryptedAccounts()) {
+            DeltaHandler.invalidateDatabasePassphrase()
+        }
+        DeltaHandler.databaseDecryptionCleanup()
+    }
+
+    /* =============== END decryption of database =============== */
+
 
     header: PageHeader {
         id: header
@@ -58,6 +174,19 @@ Page {
 //            },
 
             Action {
+                iconName: 'settings'
+                text: i18n.tr('Settings')
+                onTriggered: {
+                    // TODO
+                    PopupUtils.open(Qt.resolvedUrl(
+                        "AccountsExperimentalSettingsSwitch.qml"),
+                        null,
+                        { "experimentalEnabled": root.showAccountsExperimentalSettings }
+                    )
+                }
+            },
+
+            Action {
                 iconName: 'info'
                 text: i18n.tr('Info')
                 onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
@@ -66,10 +195,89 @@ Page {
             Action {
                 iconName: 'add'
                 text: i18n.tr('Add Account')
-                onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))
+                onTriggered: {
+                    if (DeltaHandler.databaseIsEncryptedSetting() && !DeltaHandler.hasDatabasePassphrase()) {
+                        let popup = PopupUtils.open(Qt.resolvedUrl("RequestDatabasePassword.qml"), accountConfigPage)
+                        popup.success.connect(loadAddAccountPage)
+                    } else {
+                        layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))
+                    }
+                }
             }
         ]
     } //PageHeader id:header
+
+    Column {
+        id: experimentalSettingsColumn
+        width: parent.width
+
+        anchors {
+            top: header.bottom
+            left: parent.left
+        }
+
+        visible: root.showAccountsExperimentalSettings
+
+        ListItem {
+            id: encDbItem
+            height: layout1.height + (divider.visible ? divider.height : 0)
+            width: experimentalSettingsColumn.width
+
+            ListItemLayout {
+                id: layout1
+                title.text: i18n.tr("Ecrypted database (experimental)")
+                title.font.bold: true
+
+                Switch {
+                    id: encryptDatabaseSwitch
+                    checked: DeltaHandler.databaseIsEncryptedSetting()
+                    SlotsLayout.position: SlotsLayout.Trailing
+                    onCheckedChanged: {
+                        if (checked != DeltaHandler.databaseIsEncryptedSetting()) {
+                            // Conversion of accounts from encrypted to unencrypted
+                            // or vice versa depends on them being exportable.
+                            // Unconfigured accounts cannot be exported, so 
+                            // a corresponding info message is shown to the user,
+                            // and no conversion is done if unconfigured accounts exist.
+                            let numberUnconfiguredAccounts = DeltaHandler.numberOfUnconfiguredAccounts()
+                            if (numberUnconfiguredAccounts === 1) {
+                                PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
+                                    accountConfigPage,
+                                    {"text": i18n.tr("One unconfigured account exists. Unconfigured accounts cannot be converted. Please configure all unconfigured accounts or remove them prior to changes to this setting.")
+                                })
+
+                                // reset the switch
+                                checked = DeltaHandler.databaseIsEncryptedSetting()
+
+                            } else if (numberUnconfiguredAccounts > 1) {
+                                PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
+                                    accountConfigPage,
+                                    {"text": numberUnconfiguredAccounts + i18n.tr(" unconfigured accounts exist. Unconfigured accounts cannot be converted. Please configure all unconfigured accounts or remove them prior to changes to this setting.")
+                                })
+
+                                // reset the switch
+                                checked = DeltaHandler.databaseIsEncryptedSetting()
+
+                            } else {
+                                // no unconfigured accounts, start with conversion
+                                if (checked) {
+                                    // this popup will inform that db encryption is experimental, blobs are
+                                    // not encrypted, nobody can help if pw is lost etc.
+                                    let popup4 = PopupUtils.open(Qt.resolvedUrl("ConfirmEncryptDatabase.qml"), accountConfigPage)
+                                    popup4.confirmed.connect(encryptDatabaseStage1)
+                                    popup4.cancelled.connect(uncheckEncryptDatabaseSwitch)
+                                } else {
+                                    let popup5 = PopupUtils.open(Qt.resolvedUrl("ConfirmStopEncryptingDatabase.qml"), accountConfigPage)
+                                    popup5.confirmed.connect(decryptDatabaseStage1)
+                                    popup5.cancelled.connect(recheckEncryptDatabaseSwitch)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     ListItemActions {
         id: leadingAccountAction
@@ -156,7 +364,7 @@ Page {
                     id: configStatusRect
                     SlotsLayout.position: SlotsLayout.Trailing
                     height: units.gu(3)
-                    width: height
+                    width: units.gu(5)
                     color: accountsItem.color
                     Label {
                         id: configStatusLabel
@@ -164,21 +372,25 @@ Page {
                         font.bold: true
                         color: theme.palette.normal.negative 
                         anchors {
-                            centerIn: parent
+                            right: parent.right
+                            verticalCenter: parent.verticalCenter
                         }
                         textSize: Label.XLarge
                         visible: !model.isConfigured
                     }
-                    //Icon {
-                    //    id: configStatusIcon
-                    //    color: theme.palette.normal.positive
-                    //    anchors {
-                    //        fill: parent
-                    //    }
-                    //    name: "ok"
-                    //    visible: model.isConfigured
 
-                    //}
+                    Icon {
+                        id: configStatusIcon
+                        height: units.gu(3)
+                        width: height
+                        color: theme.palette.normal.positive
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                        }
+                        name: "lock"
+                        visible: model.isClosed
+                    }
                 }
             } // ListItemLayout id: accountsListItemLayout
         } // ListItem accountsItem
@@ -190,7 +402,7 @@ Page {
         //height: accountConfigPage.height - header.height
         width: parent.width
         anchors {
-            top: header.bottom
+            top: root.showAccountsExperimentalSettings ? experimentalSettingsColumn.bottom : header.bottom
             topMargin: units.gu(1)
             bottom: accountConfigPage.bottom
         }

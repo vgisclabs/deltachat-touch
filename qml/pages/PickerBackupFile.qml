@@ -79,13 +79,21 @@ Page {
         onStateChanged: {
             if (backupPickerPage.activeTransfer.state === ContentTransfer.Charged) {
                 if (backupPickerPage.activeTransfer.items.length > 0) {
-                    backupPickerPage.source = backupPickerPage.activeTransfer.items[0].url;
+                    // CAVE: The file in the HubIncoming dir has to be copied
+                    // to another location in the cache as the file
+                    // in HubIncoming will be deleted right after the call
+                    // to isBackupFile() via finalize() below. Any subsequent work
+                    // has to be done with the copy in the cache, not with the file
+                    // in HubIncoming.
+                    backupPickerPage.source = DeltaHandler.copyToCache(backupPickerPage.activeTransfer.items[0].url)
                     if (DeltaHandler.isBackupFile(backupPickerPage.source)) {
-                        // actual import will be started in the popup
+                        // Actual import will be started in the popup.
                         PopupUtils.open(progressBackupImport)
                     } else {
                         PopupUtils.open(errorMessage)
                     }
+                    // to delete the temporary file in HubIncoming
+                    backupPickerPage.activeTransfer.finalize()
 
                 } else {
                     layout.removePages(backupPickerPage)

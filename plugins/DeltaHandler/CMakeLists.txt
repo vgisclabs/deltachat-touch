@@ -12,6 +12,8 @@ set(
     contactsmodel.cpp
     chatlistmodel.cpp
     groupmembermodel.cpp
+    workflowConvertDbToEncrypted.cpp
+    workflowConvertDbToUnencrypted.cpp
 )
 
 add_library(deltachat SHARED IMPORTED)

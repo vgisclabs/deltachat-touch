@@ -31,6 +31,8 @@
 #include "groupmembermodel.h"
 #include "emitterthread.h"
 #include "deltachat.h"
+#include "workflowConvertDbToEncrypted.h"
+#include "workflowConvertDbToUnencrypted.h"
 
 class ChatModel;
 class AccountsModel;
@@ -38,6 +40,8 @@ class EmitterThread;
 class ContactsModel;
 class BlockedContactsModel;
 class GroupMemberModel;
+class WorkflowDbToEncrypted;
+class WorkflowDbToUnencrypted;
 
 class DeltaHandler : public QAbstractListModel {
     Q_OBJECT
@@ -72,6 +76,63 @@ public:
     // a module in Qt (yet?).
     enum SearchJumpToPosition { PositionFirst, PositionPrev, PositionNext, PositionLast };
     Q_ENUM(SearchJumpToPosition)
+
+    Q_INVOKABLE void loadSelectedAccount();
+
+    // The passphrase for database encryption is passed from QML via this
+    // method. If twiceChecked is true, QML has asked for it twice and both
+    // entries by the user match.
+    // The method will try to open any closed accounts. Signals emitted are:
+    // - databaseDecryptionSuccess: database(s) could be opened
+    // - databaseDecryptionFailure: database(s) could not be opended
+    // - noEncryptedDatabases: passphrase could not be checked because
+    //   there are no encrypted accounts (see method body for details on this)
+    Q_INVOKABLE void setDatabasePassphrase(QString passphrase, bool twiceChecked);
+
+    // returns the QSetting "encryptDb" (NOT whether actual
+    // encrypted accounts exist, for this see hasEncryptedAccounts())
+    Q_INVOKABLE bool databaseIsEncryptedSetting();
+
+    // returns whether closed accounts exist at the moment
+    Q_INVOKABLE bool hasEncryptedAccounts();
+
+    // returns whether the database passphrase is available
+    Q_INVOKABLE bool hasDatabasePassphrase();
+
+    Q_INVOKABLE void invalidateDatabasePassphrase();
+
+    Q_INVOKABLE int numberOfAccounts();
+
+    // needed to determine whether the conversion from unencrypted
+    // to encrypted database (or vice versa) is possible.
+    // Conversion depends on exporting the accounts, which is
+    // only possible if they are configured.
+    Q_INVOKABLE int numberOfUnconfiguredAccounts();
+
+    Q_INVOKABLE int numberOfEncryptedAccounts();
+
+    Q_INVOKABLE bool isCurrentDatabasePassphrase(QString pw);
+
+    Q_INVOKABLE void changeDatabasePassphrase(QString newPw);
+
+    // will set the QSetting "encryptDb"
+    Q_INVOKABLE void changeEncryptedDatabaseSetting(bool shouldBeEncrypted = true);
+
+    Q_INVOKABLE void prepareDbConversionToEncrypted();
+
+    Q_INVOKABLE bool workflowToEncryptedPending();
+
+    // performs cleanup tasks after successfully completing a
+    // WorkflowDbToEncrypted
+    Q_INVOKABLE void databaseEncryptionCleanup();
+
+    Q_INVOKABLE void prepareDbConversionToUnencrypted();
+
+    Q_INVOKABLE bool workflowToUnencryptedPending();
+
+    Q_INVOKABLE void databaseDecryptionCleanup();
+
+    bool isClosedAccount(uint32_t accID);
 
     // see m_momentaryChatId below
     Q_INVOKABLE void setMomentaryChatIdByIndex(int myindex);
@@ -311,6 +372,15 @@ public:
     Q_INVOKABLE void setDetailedPushNotifications(bool detailed);
     Q_INVOKABLE void setAggregatePushNotifications(bool aggregated);
 
+    // Copies the given file to another location in the cache.
+    // Used for, e.g., enabling ContentHub to immediately remove
+    // the file in HubIncoming (can't be removed by the app itself,
+    // finalize() has to be called on ContentTransfer).
+    Q_INVOKABLE QString copyToCache(QString fromFilePath);
+
+    // Will be executed when the app is closed
+    Q_INVOKABLE void shutdownTasks();
+
     void unselectAccount(uint32_t accID);
 
     // QAbstractListModel interface
@@ -326,6 +396,8 @@ public:
     // dc_receive_backup() blocks, so the DeltaHandler singleton will not pass the progress events
     // until dc_receive_backup() returns, and at this point, everything has already happened
     Q_PROPERTY(EmitterThread* emitterthread READ emitterthread NOTIFY emitterthreadChanged);
+    Q_PROPERTY(WorkflowDbToEncrypted* workflowdbencryption READ workflowdbencryption NOTIFY workflowdbencryptionChanged());
+    Q_PROPERTY(WorkflowDbToUnencrypted* workflowdbdecryption READ workflowdbdecryption NOTIFY workflowdbdecryptionChanged());
 
     ChatModel* chatmodel();
     AccountsModel* accountsmodel();
@@ -333,6 +405,8 @@ public:
     BlockedContactsModel* blockedcontactsmodel();
     GroupMemberModel* groupmembermodel();
     EmitterThread* emitterthread();
+    WorkflowDbToEncrypted* workflowdbencryption();
+    WorkflowDbToUnencrypted* workflowdbdecryption();
 
     Q_PROPERTY(bool hasConfiguredAccount READ hasConfiguredAccount NOTIFY hasConfiguredAccountChanged);
     Q_PROPERTY(bool networkingIsAllowed READ networkingIsAllowed NOTIFY networkingIsAllowedChanged);
@@ -354,7 +428,15 @@ signals:
     void blockedcontactsmodelChanged();
     void groupmembermodelChanged();
     void emitterthreadChanged();
+    void workflowdbencryptionChanged();
+    void workflowdbdecryptionChanged();
+
     void chatlistShowsArchivedOnly(bool showsArchived);
+
+    // In case of encrypted databases
+    void databaseDecryptionSuccess();
+    void databaseDecryptionFailure();
+    void noEncryptedDatabase();
 
     // emitted if
     // - the event DC_EVENT_CHAT_MODIFIED is received
@@ -458,6 +540,9 @@ private slots:
     void updateCurrentChatMessageCount();
     void resetCurrentChatMessageCount();
     void changedContacts();
+    void removeClosedAccountFromList(uint32_t accID);
+    void resetPassphrase();
+    void addClosedAccountToList(uint32_t accID);
 
 private:
     dc_accounts_t* allAccounts;
@@ -472,9 +557,20 @@ private:
     BlockedContactsModel* m_blockedcontactsmodel;
     ContactsModel* m_contactsmodel;
     GroupMemberModel* m_groupmembermodel;
+    WorkflowDbToEncrypted* m_workflowDbEncryption;
+    WorkflowDbToUnencrypted* m_workflowDbDecryption;
+
     uint32_t currentChatID;
     bool chatmodelIsConfigured;
     bool m_hasConfiguredAccount;
+
+    // This member is needed, it can't just be
+    // replaced by settings->value("encryptDb").toBool()
+    // because the setting might not exist
+    bool m_encryptedDatabase;
+
+    QString m_databasePassphrase;
+    std::vector<uint32_t> m_closedAccounts;
     bool m_networkingIsAllowed;
     bool m_networkingIsStarted;
     bool m_configuringNewAccount;
@@ -530,6 +626,8 @@ private:
     void setCoreTranslations();
     void contextSetupTasks();
     void sendNotification(uint32_t accID, int chatID, int msgID);
+
+    bool m_coreTranslationsAlreadySet;
 };
 
 #endif // DELTAHANDLER_H

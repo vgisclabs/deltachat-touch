@@ -78,9 +78,10 @@ Page {
         onStateChanged: {
             if (picPickerPage.activeTransfer.state === ContentTransfer.Charged) {
                 if (picPickerPage.activeTransfer.items.length > 0) {
-                    picPickerPage.source = picPickerPage.activeTransfer.items[0].url;
+                    picPickerPage.source = DeltaHandler.copyToCache(picPickerPage.activeTransfer.items[0].url);
                     DeltaHandler.setGroupPic(picPickerPage.source)
                 }
+                picPickerPage.activeTransfer.finalize()
                 layout.removePages(picPickerPage)
             }
         }

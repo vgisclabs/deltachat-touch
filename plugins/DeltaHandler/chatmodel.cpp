@@ -1384,10 +1384,17 @@ void ChatModel::unsetQuote()
 
 void ChatModel::setAttachment(QString filepath, int attachType)
 {
-    // the url handed over by the ContentHub starts with
-    // "file:///home....", so we have to remove the first 7
-    // characters
-    filepath.remove(0, 7);
+    // filePath might be prepended by "file://" or "qrc:",
+    // remove it
+    QString tempQString = filepath;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        filepath.remove(0, 7);
+    }
+
+    tempQString = filepath;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        filepath.remove(0, 4);
+    }
 
     dc_msg_t* tempQuote {nullptr};
 

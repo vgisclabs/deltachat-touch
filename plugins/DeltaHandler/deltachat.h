@@ -302,6 +302,19 @@ int             dc_context_open              (dc_context_t *context, const char*
 
 
 /**
+ * Changes the passphrase on the open database.
+ * Existing database must already be encrypted and the passphrase cannot be NULL or empty.
+ * It is impossible to encrypt unencrypted database with this method and vice versa.
+ *
+ * @memberof dc_context_t
+ * @param context The context object.
+ * @param passphrase The new passphrase.
+ * @return 1 on success, 0 on error.
+ */
+int             dc_context_change_passphrase (dc_context_t* context, const char* passphrase);
+
+
+/**
  * Returns 1 if database is open.
  *
  * @memberof dc_context_t
@@ -420,17 +433,19 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  *                    0=watch all folders normally (default)
  *                    changes require restarting IO by calling dc_stop_io() and then dc_start_io().
  * - `show_emails`  = DC_SHOW_EMAILS_OFF (0)=
- *                    show direct replies to chats only (default),
+ *                    show direct replies to chats only,
  *                    DC_SHOW_EMAILS_ACCEPTED_CONTACTS (1)=
  *                    also show all mails of confirmed contacts,
  *                    DC_SHOW_EMAILS_ALL (2)=
- *                    also show mails of unconfirmed contacts.
+ *                    also show mails of unconfirmed contacts (default).
  * - `key_gen_type` = DC_KEY_GEN_DEFAULT (0)=
  *                    generate recommended key type (default),
  *                    DC_KEY_GEN_RSA2048 (1)=
  *                    generate RSA 2048 keypair
  *                    DC_KEY_GEN_ED25519 (2)=
- *                    generate Ed25519 keypair
+ *                    generate Curve25519 keypair
+ *                    DC_KEY_GEN_RSA4096 (3)=
+ *                    generate RSA 4096 keypair
  * - `save_mime_headers` = 1=save mime headers
  *                    and make dc_get_mime_headers() work for subsequent calls,
  *                    0=do not save mime headers (default)
@@ -1320,6 +1335,20 @@ int             dc_get_msg_cnt               (dc_context_t* context, uint32_t ch
  */
 int             dc_get_fresh_msg_cnt         (dc_context_t* context, uint32_t chat_id);
 
+
+/**
+ * Returns a list of similar chats.
+ *
+ * @warning This is an experimental API which may change or be removed in the future.
+ *
+ * @memberof dc_context_t
+ * @param context The context object as returned from dc_context_new().
+ * @param chat_id The ID of the chat for which to find similar chats.
+ * @return The list of similar chats.
+ *     On errors, NULL is returned.
+ *     Must be freed using dc_chatlist_unref() when no longer used.
+ */
+dc_chatlist_t*     dc_get_similar_chatlist   (dc_context_t* context, uint32_t chat_id);
 
 
 /**
@@ -3978,16 +4007,17 @@ char*           dc_msg_get_text               (const dc_msg_t* msg);
  */
 char*           dc_msg_get_subject            (const dc_msg_t* msg);
 
+
 /**
- * Find out full path, file name and extension of the file associated with a
- * message.
+ * Find out full path of the file associated with a message.
  *
  * Typically files are associated with images, videos, audios, documents.
  * Plain text messages do not have a file.
+ * File name may be mangled. To obtain the original attachment filename use dc_msg_get_filename().
  *
  * @memberof dc_msg_t
  * @param msg The message object.
- * @return The full path, the file name, and the extension of the file associated with the message.
+ * @return The full path (with file name and extension) of the file associated with the message.
  *     If there is no file associated with the message, an empty string is returned.
  *     NULL is never returned and the returned value must be released using dc_str_unref().
  */
@@ -3995,14 +4025,13 @@ char*           dc_msg_get_file               (const dc_msg_t* msg);
 
 
 /**
- * Get a base file name without the path. The base file name includes the extension; the path
- * is not returned. To get the full path, use dc_msg_get_file().
+ * Get an original attachment filename, with extension but without the path. To get the full path,
+ * use dc_msg_get_file().
  *
  * @memberof dc_msg_t
  * @param msg The message object.
- * @return The base file name plus the extension without part. If there is no file
- *     associated with the message, an empty string is returned. The returned
- *     value must be released using dc_str_unref().
+ * @return The attachment filename. If there is no file associated with the message, an empty string
+ *     is returned. The returned value must be released using dc_str_unref().
  */
 char*           dc_msg_get_filename           (const dc_msg_t* msg);
 
@@ -6266,6 +6295,7 @@ void dc_event_unref(dc_event_t* event);
 #define DC_KEY_GEN_DEFAULT 0
 #define DC_KEY_GEN_RSA2048 1
 #define DC_KEY_GEN_ED25519 2
+#define DC_KEY_GEN_RSA4096 3
 
 
 /**

@@ -78,10 +78,11 @@ Page {
         onStateChanged: {
             if (fileToSendPage.activeTransfer.state === ContentTransfer.Charged) {
                 if (fileToSendPage.activeTransfer.items.length > 0) {
-                    fileToSendPage.source = fileToSendPage.activeTransfer.items[0].url;
+                    fileToSendPage.source = DeltaHandler.copyToCache(fileToSendPage.activeTransfer.items[0].url);
                     console.log('Trying to send file: ', fileToSendPage.source)
                     DeltaHandler.chatmodel.setAttachment(fileToSendPage.source, DeltaHandler.FileType)
                 }
+                fileToSendPage.activeTransfer.finalize()
                 layout.removePages(fileToSendPage)
             }
         }

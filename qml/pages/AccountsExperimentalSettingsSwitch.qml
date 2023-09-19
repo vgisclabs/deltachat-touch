@@ -39,7 +39,7 @@ Dialog {
         Switch {
             id: experimentalSettingsSwitch
             checked: experimentalEnabled
-            enabled: !DeltaHandler.databaseIsEncryptedSetting()
+            enabled: !experimentalEnabled || !DeltaHandler.databaseIsEncryptedSetting()
         }
     }
 

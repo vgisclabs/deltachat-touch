@@ -586,7 +586,7 @@ Page {
         delegate: delegateListItem
         verticalLayoutDirection: ListView.BottomToTop
         spacing: units.gu(1)
-        cacheBuffer: 0
+        //cacheBuffer: 0
 
         Component.onCompleted: {
             if (DeltaHandler.chatmodel.getUnreadMessageBarIndex() > 0) {

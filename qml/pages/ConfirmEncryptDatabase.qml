@@ -37,7 +37,7 @@ Dialog {
     Label {
         id: confirmLabel1
         // TODO string not translated yet
-        text: i18n.tr("• Database encryption is experimental, use at your own risk.\n\n• It will only cover text messages and the username/password of your mail account. Pictures, voice messages, files etc. will remain unencrypted.\n\n• If the phassphrase is lost, your data will be lost as well.\n\n• You will have to enter the phassphrase upon each startup of the app.")
+        text: i18n.tr("• Database encryption is experimental, use at your own risk. Backup your accounts or add a second device first.\n\n• It will only cover text messages and username/password of mail accounts. Pictures, voice messages, files etc. will remain unencrypted.\n\n• If the phassphrase is lost, your data will be lost as well.\n\n• You will have to enter the phassphrase upon each startup of the app.")
         wrapMode: Text.WordWrap
     }
 

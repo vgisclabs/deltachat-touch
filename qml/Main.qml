@@ -56,7 +56,7 @@ MainView {
                     Qt.resolvedUrl("pages/InfoPopup.qml"),
                     layout.primaryPage,
                     // TODO string not translated yet
-                    { "text": i18n.tr("From last session, database encryption has not finished yet and will be resumed after entering the passphrase.")}
+                    { "text": i18n.tr("From last session, database encryption has not finished yet and will resume after entering the passphrase.")}
                 )
                 popup1.done.connect(startupStep2)
             } else if (DeltaHandler.workflowToUnencryptedPending()) {
@@ -64,7 +64,7 @@ MainView {
                     Qt.resolvedUrl("pages/InfoPopup.qml"),
                     layout.primaryPage,
                     // TODO string not translated yet
-                    { "text": i18n.tr("From last session, database decryption has not finished yet and will be resumed after entering the passphrase.")}
+                    { "text": i18n.tr("From last session, database decryption has not finished yet and will resume after entering the passphrase.")}
                 )
                 popup2.done.connect(startupStep2)
             } else {

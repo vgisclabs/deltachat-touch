@@ -431,7 +431,7 @@ Page {
                 ListItemLayout {
                     id: encryptDatabaseLayout
                     // TODO: String not translated yet
-                    title.text: i18n.tr("Encrypt Database")
+                    title.text: i18n.tr("Encrypted Database (experimental)")
 
                     Switch {
                         id: encryptDatabaseSwitch

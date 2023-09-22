@@ -225,7 +225,7 @@ Page {
 
             ListItemLayout {
                 id: layout1
-                title.text: i18n.tr("Ecrypted database (experimental)")
+                title.text: i18n.tr("Encrypted database (experimental)")
                 title.font.bold: true
 
                 Switch {

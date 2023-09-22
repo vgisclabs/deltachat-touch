@@ -32,7 +32,7 @@ Dialog {
 
         Label {
             // String not translated yet!
-            text: i18n.tr("Enable experimental settings")
+            text: i18n.tr("Show experimental settings")
             wrapMode: Text.Wrap
         }
 

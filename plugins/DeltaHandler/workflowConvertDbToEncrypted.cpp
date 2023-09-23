@@ -18,12 +18,13 @@
 
 #include "workflowConvertDbToEncrypted.h"
 
-WorkflowDbToEncrypted::WorkflowDbToEncrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, QString passphrase)
+WorkflowDbToEncrypted::WorkflowDbToEncrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, uint32_t currentAccID, QString passphrase)
 {
     m_dcAccs = dcaccs;
     m_emitterthread = emthread;
     m_settings = settings;
     m_closedAccounts = closedAccs;
+    m_currentlySelectedAccID = currentAccID;
     m_passphrase = passphrase;
 
     m_tempContext = nullptr;
@@ -42,12 +43,17 @@ WorkflowDbToEncrypted::~WorkflowDbToEncrypted()
 void WorkflowDbToEncrypted::startWorkflow()
 {
     // Fill m_accountsToConvert with the currently
-    // present account IDs...
+    // present account IDs, but only if they are
+    // not already encrypted.
+    //
+    // Fill m_accountsToConvert in reverse so we
+    // can use pop_back() later on and still have the
+    // new accounts in the same order
     dc_array_t* tempArray = dc_accounts_get_all(m_dcAccs);
-    for (size_t i = 0; i < dc_array_get_cnt(tempArray); ++i) {
+    for (size_t i = dc_array_get_cnt(tempArray); i > 0; --i) {
         // ...but only if they are not already encrypted
-        if (!accountIsClosed(dc_array_get_id(tempArray, i))) {
-            m_accountsToConvert.push_back(dc_array_get_id(tempArray, i));
+        if (!accountIsClosed(dc_array_get_id(tempArray, i - 1))) {
+            m_accountsToConvert.push_back(dc_array_get_id(tempArray, i - 1));
         }
     }
     dc_array_unref(tempArray);
@@ -143,6 +149,16 @@ void WorkflowDbToEncrypted::imexProgressReceiver(int imProg)
             m_tempContext = nullptr;
 
             uint32_t tempAccID = m_accountsToConvert.back();
+
+            if (m_currentlySelectedAccID == tempAccID) {
+                // if the account that is to be removed is the currently
+                // selected one, its replacement has to be selected
+                int success = dc_accounts_select_account(m_dcAccs, m_newAccID);
+                if (!success) {
+                    qDebug() << "WorkflowDbToEncrypted::imexProgressReceiver(): ERROR: Could not select the new encrypted account";
+                }
+            }
+
             dc_accounts_remove_account(m_dcAccs, tempAccID);
             emit removedAccount(tempAccID);
             m_accountsToConvert.pop_back();

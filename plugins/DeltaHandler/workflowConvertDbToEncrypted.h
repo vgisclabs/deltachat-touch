@@ -42,11 +42,11 @@ signals:
     void workflowCompleted();
     void workflowError();
     void removedAccount(uint32_t accountID);
-    void addedNewClosedAccount(uint32_t m_newAccID);
+    void addedNewClosedAccount(uint32_t newAccID);
 
 public:
 //    explicit WorkflowDbToEncrypted(QObject *parent = 0);
-    explicit WorkflowDbToEncrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, QString passphrase);
+    explicit WorkflowDbToEncrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, uint32_t currentAccID, QString passphrase);
     ~WorkflowDbToEncrypted();
 
     Q_INVOKABLE void startWorkflow();
@@ -61,6 +61,7 @@ private:
     EmitterThread* m_emitterthread;
     QSettings* m_settings;
     std::vector<uint32_t> m_closedAccounts;
+    uint32_t m_currentlySelectedAccID;
     QString m_passphrase;
     // end set in constructor
 

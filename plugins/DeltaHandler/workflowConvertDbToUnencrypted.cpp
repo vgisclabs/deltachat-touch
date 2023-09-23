@@ -18,12 +18,13 @@
 
 #include "workflowConvertDbToUnencrypted.h"
 
-WorkflowDbToUnencrypted::WorkflowDbToUnencrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, QString passphrase)
+WorkflowDbToUnencrypted::WorkflowDbToUnencrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, uint32_t currentAccID, QString passphrase)
 {
     m_dcAccs = dcaccs;
     m_emitterthread = emthread;
     m_settings = settings;
     m_closedAccounts = closedAccs;
+    m_currentlySelectedAccID = currentAccID;
     m_passphrase = passphrase;
 
     m_tempContext = nullptr;
@@ -42,12 +43,16 @@ WorkflowDbToUnencrypted::~WorkflowDbToUnencrypted()
 void WorkflowDbToUnencrypted::startWorkflow()
 {
     // Fill m_accountsToConvert with the currently
-    // present account IDs...
+    // present account IDs, but only if they are
+    // encrypted accounts.
+    //
+    // Fill m_accountsToConvert in reverse so we
+    // can use pop_back() later on and still have the
+    // new accounts in the same order
     dc_array_t* tempArray = dc_accounts_get_all(m_dcAccs);
-    for (size_t i = 0; i < dc_array_get_cnt(tempArray); ++i) {
-        //... but only if it's an encrypted account
-        if (accountIsClosed(dc_array_get_id(tempArray, i))) {
-            m_accountsToConvert.push_back(dc_array_get_id(tempArray, i));
+    for (size_t i = dc_array_get_cnt(tempArray); i > 0; --i) {
+        if (accountIsClosed(dc_array_get_id(tempArray, i - 1))) {
+            m_accountsToConvert.push_back(dc_array_get_id(tempArray, i - 1));
         }
     }
     dc_array_unref(tempArray);
@@ -112,10 +117,10 @@ void WorkflowDbToUnencrypted::imexProgressReceiver(int imProg)
             m_currentlyExportingEncryptedAccount = false;
             dc_context_unref(m_tempContext);
 
-            // TODO: check for errors, e.g. newAccID == 0, m_tempContext ==
+            // TODO: check for errors, e.g. m_newAccID == 0, m_tempContext ==
             // nullptr?
-            uint32_t newAccID = dc_accounts_add_account(m_dcAccs);
-            m_tempContext = dc_accounts_get_account(m_dcAccs, newAccID);
+            m_newAccID = dc_accounts_add_account(m_dcAccs);
+            m_tempContext = dc_accounts_get_account(m_dcAccs, m_newAccID);
 
             // Document the still incomplete account in the settings along with
             // the original account it is a copy of. Reason: If the workflow fails
@@ -123,7 +128,7 @@ void WorkflowDbToUnencrypted::imexProgressReceiver(int imProg)
             // will be unconfigured, and it's origin will still be there. To resume
             // the workflow, the unconfigured account should be removed.
             QString tempSettingString("");
-            tempSettingString.append(QString::number(newAccID));
+            tempSettingString.append(QString::number(m_newAccID));
             tempSettingString.append(" importedFrom ");
             tempSettingString.append(QString::number(m_accountsToConvert.back()));
             m_settings->setValue("workflowDbImportingInto", tempSettingString);
@@ -140,6 +145,13 @@ void WorkflowDbToUnencrypted::imexProgressReceiver(int imProg)
             m_tempContext = nullptr;
 
             uint32_t tempAccID = m_accountsToConvert.back();
+
+            if (m_currentlySelectedAccID == tempAccID) {
+                // if the account that is to be removed is the currently
+                // selected one, its replacement has to be selected
+                dc_accounts_select_account(m_dcAccs, m_newAccID);
+            }
+
             dc_accounts_remove_account(m_dcAccs, tempAccID);
             emit removedAccount(tempAccID);
             m_accountsToConvert.pop_back();
@@ -166,19 +178,6 @@ void WorkflowDbToUnencrypted::imexProgressReceiver(int imProg)
 
                 m_currentlyExportingEncryptedAccount = true;
                 emit statusChanged(true, (m_totalAccounts - m_accountsToConvert.size()) + 1, m_totalAccounts);
-
-                qDebug() << "++++++++++++++++++++++++ workflowToUnencrypted: now trying to export acc ID " << dc_get_id(m_tempContext);
-                if (m_passphrase == "") {
-                    qDebug() << "++++++++++++++ passphrase is empty";
-                } else {
-                    qDebug() << "++++++++++++++ passphrase is NOT empty";
-                }
-
-                if (0 == dc_context_is_open(m_tempContext)) {
-                    qDebug() << "+++++++++++++++++++ account is CLOSED!!!!";
-                } else {
-                    qDebug() << "+++++++++++++++++++ account is open!!!!";
-                }
 
                 dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), m_passphrase.toUtf8().constData());
             }

@@ -648,6 +648,11 @@ void DeltaHandler::changeEncryptedDatabaseSetting(bool shouldBeEncrypted)
 
 void DeltaHandler::prepareDbConversionToEncrypted()
 {
+    m_networkingIsAllowed = false;
+    emit networkingIsAllowedChanged();
+
+    uint32_t currentAccountID {0};
+
     beginResetModel();
 
     if (currentChatlist) {
@@ -656,6 +661,7 @@ void DeltaHandler::prepareDbConversionToEncrypted()
     }
 
     if (currentContext) {
+        currentAccountID = dc_get_id(currentContext);
         dc_context_unref(currentContext);
         currentContext = nullptr;
     }
@@ -673,7 +679,7 @@ void DeltaHandler::prepareDbConversionToEncrypted()
     disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
     disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
 
-    m_workflowDbEncryption = new WorkflowDbToEncrypted(allAccounts, eventThread, settings, m_closedAccounts, m_databasePassphrase);
+    m_workflowDbEncryption = new WorkflowDbToEncrypted(allAccounts, eventThread, settings, m_closedAccounts, currentAccountID, m_databasePassphrase);
 
     // Connect the successful end of the workflow with the accountsmodel.
     // Do NOT connect our own method databaseEncryptionCleanup() with the signal of the workflow
@@ -738,11 +744,19 @@ void DeltaHandler::databaseEncryptionCleanup()
     dc_array_unref(tempArray);
 
     loadSelectedAccount();
+
+    m_networkingIsAllowed = true;
+    emit networkingIsAllowedChanged();
 }
 
 
 void DeltaHandler::prepareDbConversionToUnencrypted()
 {
+    m_networkingIsAllowed = false;
+    emit networkingIsAllowedChanged();
+
+    uint32_t currentAccountID {0};
+
     beginResetModel();
 
     if (currentChatlist) {
@@ -751,6 +765,7 @@ void DeltaHandler::prepareDbConversionToUnencrypted()
     }
 
     if (currentContext) {
+        currentAccountID = dc_get_id(currentContext);
         dc_context_unref(currentContext);
         currentContext = nullptr;
     }
@@ -768,7 +783,7 @@ void DeltaHandler::prepareDbConversionToUnencrypted()
     disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
     disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
 
-    m_workflowDbDecryption = new WorkflowDbToUnencrypted(allAccounts, eventThread, settings, m_closedAccounts, m_databasePassphrase);
+    m_workflowDbDecryption = new WorkflowDbToUnencrypted(allAccounts, eventThread, settings, m_closedAccounts, currentAccountID, m_databasePassphrase);
 
     // Connect the successful end of the workflow with the accountsmodel.
     // Do NOT connect our own method databaseEncryptionCleanup() with the signal of the workflow
@@ -820,6 +835,9 @@ void DeltaHandler::databaseDecryptionCleanup()
     m_workflowDbDecryption = nullptr;
 
     loadSelectedAccount();
+
+    m_networkingIsAllowed = true;
+    emit networkingIsAllowedChanged();
 }
 
 

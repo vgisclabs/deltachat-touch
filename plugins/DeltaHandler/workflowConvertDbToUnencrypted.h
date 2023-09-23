@@ -47,7 +47,7 @@ signals:
 
 public:
     explicit WorkflowDbToUnencrypted(QObject *parent = 0);
-    explicit WorkflowDbToUnencrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, QString passphrase);
+    explicit WorkflowDbToUnencrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, uint32_t currentAccID, QString passphrase);
     ~WorkflowDbToUnencrypted();
 
     Q_INVOKABLE void startWorkflow();
@@ -62,6 +62,7 @@ private:
     EmitterThread* m_emitterthread;
     QSettings* m_settings;
     std::vector<uint32_t> m_closedAccounts;
+    uint32_t m_currentlySelectedAccID;
     QString m_passphrase;
     // end set in constructor
 
@@ -80,6 +81,9 @@ private:
     // checks if accID is contained in the vector m_closedAccounts
     bool accountIsClosed(uint32_t accID);
 
+    // the ID of the new unencrypted account where the
+    // previously generated backup is imported to
+    uint32_t m_newAccID;
 };
 
 #endif // WORKFLOWCONVERTDBTOENCRYPTED_H

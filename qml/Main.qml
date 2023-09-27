@@ -163,7 +163,7 @@ MainView {
     }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.2.0-pre2'
+    property string version: '1.2.0-pre3'
     property string oldVersion: "unknown"
 
     // Color scheme
@@ -408,6 +408,8 @@ MainView {
                         headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
                         headerRect.currentEmail = DeltaHandler.hasConfiguredAccount ? DeltaHandler.getCurrentEmail() : i18n.tr("Click Settings to manage accounts")
                         headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        bottomEdge.enabled = DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
+                        bottomEdgeHint.visible = DeltaHandler.hasConfiguredAccount
                     }
                 }
 

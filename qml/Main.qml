@@ -18,12 +18,12 @@
 
 import QtQuick 2.12
 import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import Qt.labs.platform 1.1
 import Ubuntu.Connectivity 1.0
+import Ubuntu.Components.Popups 1.3
 
 import DeltaHandler 1.0
 import "pages"
@@ -397,7 +397,6 @@ MainView {
 
                 //opacity: 0.5
             
-                // TODO should these be properties?
                 property string currentUsername: DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
                 property string currentEmail: DeltaHandler.hasConfiguredAccount ? DeltaHandler.getCurrentEmail() : i18n.tr("Click Settings to manage accounts")
                 property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
@@ -413,72 +412,84 @@ MainView {
                     }
                 }
 
-                MouseArea {
-                    id: headerMouse
-                    anchors.fill: headerRect
-                    onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
-                    enabled: !root.chatOpenAlreadyClicked
-                }
-            
-                UbuntuShape {
-                    id: profilePicShape
-                    height: units.gu(5)
-                    width: height
-                    anchors {
-                        left: headerRect.left
-                        leftMargin: units.gu(2.5)
-                        top: headerRect.top
-                        topMargin: units.gu(0.5)
-                    }
-                    source: Image {
-                        source: headerRect.currentProfilePic
-                    }
-                    sourceFillMode: UbuntuShape.PreserveAspectCrop
-                } // end of UbuntuShape id:profilePicShape
-            
                 Rectangle {
-                    id: headerRectMain
-                    width: parent.width - profilePicShape.width - units.gu(2) - qrIconCage.width - settingsIconCage.width - infoIconCage.width - units.gu(1)
+                    id: profilePicAndNameRect
+
+                    width: headerRect.width - qrIconCage.width - settingsIconCage.width - infoIconCage.width - units.gu(1)
                     height: units.gu(6)
                     anchors {
-                        left: profilePicShape.right
-                        leftMargin: units.gu(1)
+                        left: headerRect.left
                         top: headerRect.top
                     }
                     color: headerTopBackgroundColor.color
-                  
-                    Label {
-                        id: usernameLabel
-                        anchors {
-                            left: headerRectMain.left
-                            leftMargin: units.gu(1)
-                            bottom: emailLabel.top
-                        }
-                        text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
-                        color: "#e7fcfd"
+
+                    MouseArea {
+                        id: headerMouse
+                        anchors.fill: parent
+                        onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+                        enabled: !root.chatOpenAlreadyClicked
                     }
-            
-                    Label {
-                        id: emailLabel
+                
+                    UbuntuShape {
+                        id: profilePicShape
+                        height: units.gu(5)
+                        width: height
                         anchors {
-                            left: headerRectMain.left
-                            leftMargin: units.gu(1)
-                            bottom: parent.bottom
-                            bottomMargin: units.gu(1)
+                            left: profilePicAndNameRect.left
+                            leftMargin: units.gu(0.5)
+                            top: profilePicAndNameRect.top
+                            topMargin: units.gu(0.5)
                         }
-                        text: headerRect.currentEmail
-                        color: usernameLabel.color
-                    }
-            
-                } // Rectangle id: headerRectMain
+                        source: Image {
+                            source: headerRect.currentProfilePic
+                        }
+                        sourceFillMode: UbuntuShape.PreserveAspectCrop
+                    } // end of UbuntuShape id:profilePicShape
+                
+                    Rectangle {
+                        id: profileNameRect
+                        width: parent.width - profilePicShape.width - units.gu(1.5)
+                        height: units.gu(6)
+                        anchors {
+                            left: profilePicShape.right
+                            leftMargin: units.gu(1)
+                            top: profilePicAndNameRect.top
+                        }
+                        color: headerTopBackgroundColor.color
+                      
+                        Label {
+                            id: usernameLabel
+                            anchors {
+                                left: profileNameRect.left
+                                leftMargin: units.gu(1)
+                                bottom: emailLabel.top
+                            }
+                            text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
+                            color: "#e7fcfd"
+                        }
+                
+                        Label {
+                            id: emailLabel
+                            anchors {
+                                left: profileNameRect.left
+                                leftMargin: units.gu(1)
+                                bottom: parent.bottom
+                                bottomMargin: units.gu(1)
+                            }
+                            text: headerRect.currentEmail
+                            color: usernameLabel.color
+                        }
+                
+                    } // Rectangle id: profileNameRect
+                } // Rectangle id: profilePicAndNameRect
             
                 Rectangle {
                     id: searchIconCage
                     width: units.gu(4)
                     anchors {
                         right: qrIconCage.left
-                        top: headerRectMain.top
-                        bottom: headerRectMain.bottom
+                        top: profilePicAndNameRect.top
+                        bottom: profilePicAndNameRect.bottom
                     }
                     color: headerTopBackgroundColor.color
             
@@ -510,8 +521,8 @@ MainView {
                     width: units.gu(4)
                     anchors {
                         right: infoIconCage.left
-                        top: headerRectMain.top
-                        bottom: headerRectMain.bottom
+                        top: profilePicAndNameRect.top
+                        bottom: profilePicAndNameRect.bottom
                     }
                     color: headerTopBackgroundColor.color
             
@@ -538,8 +549,8 @@ MainView {
                     width: units.gu(4)
                     anchors {
                         right: settingsIconCage.left
-                        top: headerRectMain.top
-                        bottom: headerRectMain.bottom
+                        top: profilePicAndNameRect.top
+                        bottom: profilePicAndNameRect.bottom
                     }
                     color: headerTopBackgroundColor.color
             
@@ -567,8 +578,8 @@ MainView {
                     anchors {
                         right: headerRect.right
                         rightMargin: units.gu(1)
-                        top: headerRect.top
-                        bottom: headerRectMain.bottom
+                        top: profilePicAndNameRect.top
+                        bottom: profilePicAndNameRect.bottom
                     }
                     color: headerTopBackgroundColor.color //"#032c30" //"#0ca7b6"
             
@@ -595,7 +606,7 @@ MainView {
                     anchors {
                         left: parent.left
                         leftMargin: units.gu(2)
-                        top: headerRectMain.bottom
+                        top: profilePicAndNameRect.bottom
                         topMargin: units.gu(1)
                     }
 
@@ -609,10 +620,11 @@ MainView {
                     inputMethodHints: Qt.ImhNoPredictiveText
                     placeholderText: i18n.tr("Search")
                     onDisplayTextChanged: {
-                        root.chatlistQueryTextHasChanged(displayText)
+                        if (DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked) {
+                            root.chatlistQueryTextHasChanged(displayText)
+                        }
                     }
                     visible: false
-                    enabled: DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
                 }
 
                 ListItem {

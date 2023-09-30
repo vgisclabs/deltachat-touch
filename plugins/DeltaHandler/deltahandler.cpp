@@ -163,6 +163,12 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
+    connectSuccess = connect(eventThread, SIGNAL(connectivityChanged(uint32_t)), this, SLOT(connectivityUpdate(uint32_t)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal connectivityChanged to slot connectivityUpdate";
+        exit(1);
+    }
+
     connectSuccess = connect(eventThread, SIGNAL(chatDataModified(uint32_t, int)), this, SLOT(chatDataModifiedReceived(uint32_t, int)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal chatModified to slot chatDataModifiedReceived";
@@ -4618,6 +4624,20 @@ void DeltaHandler::addClosedAccountToList(uint32_t accID)
 {
     m_closedAccounts.push_back(accID);
     qDebug() << "DeltaHandler::addClosedAccountToList(): added ID " << accID << " to list of closed accounts";
+}
+
+
+void DeltaHandler::connectivityUpdate(uint32_t accID)
+{
+    uint32_t currentAccID {0};
+
+    if (currentContext) {
+        currentAccID = dc_get_id(currentContext);
+
+        if (currentAccID == accID) {
+            emit connectivityChangedForActiveAccount();
+        }
+    }
 }
 
 

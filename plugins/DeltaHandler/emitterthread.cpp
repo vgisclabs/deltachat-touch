@@ -59,6 +59,7 @@ void EmitterThread::run()
 
                 case DC_EVENT_CONNECTIVITY_CHANGED:
                     qInfo().nospace() << "Emitter: DC_EVENT_CONNECTIVITY_CHANGED" << ", account " << dc_event_get_account_id(event);
+                    emit connectivityChanged(dc_event_get_account_id(event));
                     break;
                     
                 case DC_EVENT_CONTACTS_CHANGED:

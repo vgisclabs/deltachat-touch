@@ -224,6 +224,14 @@ MainView {
     // to protect against clicks on multiple chat lines
     property bool chatOpenAlreadyClicked: false
 
+    // Controls whether the search bar is visible. Used instead of
+    // setting chatlistSearchField.visible directly to be able
+    // to hide the search bar after clicking on a chat (via
+    // binding chatOpenAlreadyClicked to chatlistSearchField.visible);
+    // to be able to control the visibility via the search icon, too,
+    // this property is needed.
+    property bool searchVisible: false
+
     // see AccountConfig.qml
     property bool showAccountsExperimentalSettings: false
 
@@ -509,8 +517,10 @@ MainView {
                         onClicked: {
                             if (chatlistSearchField.visible) {
                                 chatlistSearchField.text = ""
+                            } else {
+                                chatlistSearchField.focus = true
                             }
-                            chatlistSearchField.visible = !chatlistSearchField.visible
+                            searchVisible = !searchVisible
                         }
                         enabled: !root.chatOpenAlreadyClicked
                     }
@@ -624,7 +634,7 @@ MainView {
                             root.chatlistQueryTextHasChanged(displayText)
                         }
                     }
-                    visible: false
+                    visible: searchVisible && !chatOpenAlreadyClicked
                 }
 
                 ListItem {
@@ -930,12 +940,7 @@ MainView {
             }
 
             Rectangle {
-                height: parent.height - headerRect.height
-                width: parent.width
-                anchors {
-                    top: headerRect.bottom
-                    left: parent.left
-                }
+                anchors.fill: parent
                 color: theme.palette.normal.background
                 visible: root.chatOpenAlreadyClicked
                 Label {

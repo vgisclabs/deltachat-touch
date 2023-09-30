@@ -36,12 +36,32 @@ MainView {
     anchorToKeyboard: true
 
     signal appStateNowActive()
+    signal ioChanged()
 
     // see periodicTimer
     signal periodicTimerSignal()
 
     signal chatlistQueryTextHasChanged(string query)
 
+    function updateConnectivity() {
+        let conn = DeltaHandler.getConnectivitySimple()
+        if (conn >= 1000 && conn < 2000) {
+            // "Not connected"
+            connectivityShape.color = "red"
+        } else if (conn >= 2000 && conn < 3000) {
+            // "Connecting…"
+            connectivityShape.color = "yellow"
+        } else if (conn >= 3000 && conn < 4000) {
+            // "Updating…"
+            connectivityShape.color = "orange"
+        } else if (conn >= 4000) {
+            // "Connected"
+            connectivityShape.color = "green"
+        } else {
+            // unknown state
+            connectivityShape.color = "white"
+        }
+    }
 
     function startupStep1() {
         // Check
@@ -139,6 +159,8 @@ MainView {
     function startupStep5() {
         if (!DeltaHandler.hasConfiguredAccount) {
             layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+        } else {
+            updateConnectivity()
         }
 
         startStopIO()
@@ -155,7 +177,10 @@ MainView {
         root.chatlistQueryTextHasChanged.connect(DeltaHandler.updateChatlistQueryText)
         DeltaHandler.clearChatlistQueryRequest.connect(root.clearChatlistQuery)
 
+        DeltaHandler.connectivityChangedForActiveAccount.connect(updateConnectivity)
+
         periodicTimer.start()
+
     }
 
     function clearChatlistQuery() {
@@ -255,6 +280,7 @@ MainView {
             if (!DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode) || !root.syncAll) {
                 DeltaHandler.stop_io();
                 console.log('startStopIO(): network is currently up, calling stop_io()')
+                ioChanged();
             }
             else {
                 console.log('startStopIO(): network is up, doing nothing')
@@ -265,11 +291,13 @@ MainView {
             if (DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode) && root.syncAll) {
                 DeltaHandler.start_io()
                 console.log('startStopIO(): network is currently down, calling start_io()')
+                ioChanged();
             }
             else {
                 console.log('startStopIO(): network is down, doing nothing')
             }
         }
+        updateConnectivity()
     }
 
     Connections {
@@ -417,6 +445,7 @@ MainView {
                         headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
                         bottomEdge.enabled = DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
                         bottomEdgeHint.visible = DeltaHandler.hasConfiguredAccount
+                        updateConnectivity()
                     }
                 }
 
@@ -437,7 +466,7 @@ MainView {
                         onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
                         enabled: !root.chatOpenAlreadyClicked
                     }
-                
+
                     LomiriShape {
                         id: profilePicShape
                         height: units.gu(5)
@@ -456,11 +485,11 @@ MainView {
                 
                     Rectangle {
                         id: profileNameRect
-                        width: parent.width - profilePicShape.width - units.gu(1.5)
+                        width: parent.width - profilePicShape.width - units.gu(1)
                         height: units.gu(6)
                         anchors {
                             left: profilePicShape.right
-                            leftMargin: units.gu(1)
+                            leftMargin: units.gu(0.5)
                             top: profilePicAndNameRect.top
                         }
                         color: headerTopBackgroundColor.color
@@ -490,6 +519,19 @@ MainView {
                 
                     } // Rectangle id: profileNameRect
                 } // Rectangle id: profilePicAndNameRect
+                
+                LomiriShape {
+                    id: connectivityShape
+
+                    height: units.gu(2)
+                    width: height
+                    anchors {
+                        left: parent.left
+                        leftMargin: units.gu(4.5)
+                        top: parent.top
+                        topMargin: units.gu(0.25)
+                    }
+                } // end Rectangle id: connectivityShape
             
                 Rectangle {
                     id: searchIconCage

@@ -45,6 +45,7 @@ class EmitterThread : public QThread {
             void contactsChanged();
             void errorEvent(QString errorMessage);
             void chatDataModified(uint32_t accID, int chatID);
+            void connectivityChanged(uint32_t accID);
 
     private:
         dc_accounts_t* accounts;

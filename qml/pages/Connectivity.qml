@@ -31,8 +31,27 @@ Page {
         title: i18n.tr("Connectivity")
     }
 
+    function updateConn() {
+        webview.url = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getConnectivityHtml())
+    }
+
     Component.onCompleted: {
-        timer.start()
+        updateConn()
+    }
+
+    Connections {
+        target: DeltaHandler
+
+        onConnectivityChangedForActiveAccount: {
+            updateConn()
+        }
+    }
+
+    Connections {
+        target: root
+        onIoChanged: {
+            updateConn()
+        }
     }
 
     WebView {
@@ -45,15 +64,5 @@ Page {
         }
         zoomFactor: 3.0
         url: StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getConnectivityHtml())
-    }
-
-    Timer {
-        id: timer
-        interval: 2000
-        repeat: true
-        triggeredOnStart: false
-        onTriggered: {
-            webview.url = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getConnectivityHtml())
-        }
     }
 } // end Page id: connectivityPage

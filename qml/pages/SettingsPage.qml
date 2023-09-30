@@ -39,13 +39,28 @@ Page {
         updateAutoDownloadCurrentSetting()
         updateDeleteFromDeviceCurrentSetting()
         updateDeleteFromServerCurrentSetting()
-        updateConnectivityTimer.start()
+        updateConnectivity()
     }
 
     property string showClassicMailsCurrentSetting: ""
     property string autoDownloadCurrentSetting: ""
     property string deleteFromDeviceCurrentSetting: ""
     property string deleteFromServerCurrentSetting: ""
+
+    function updateConnectivity() {
+        let conn = DeltaHandler.getConnectivitySimple()
+        if (conn >= 1000 && conn < 2000) {
+            connectivityLayout.summary.text = i18n.tr("Not connected")
+        } else if (conn >= 2000 && conn < 3000) {
+            connectivityLayout.summary.text = i18n.tr("Connecting…")
+        } else if (conn >= 3000 && conn < 4000) {
+            connectivityLayout.summary.text = i18n.tr("Updating…")
+        } else if (conn >= 4000) {
+            connectivityLayout.summary.text = i18n.tr("Connected")
+        } else {
+            connectivityLayout.summary.text = "??"
+        }
+    }
 
     // Opens the file export dialog once the backup
     // file has been written to the cache.
@@ -1547,33 +1562,23 @@ Page {
         onBlockedcontactsmodelChanged: {
             layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("BlockedContacts.qml"))
         }
+
+        onConnectivityChangedForActiveAccount: {
+            updateConnectivity()
+        }
+    }
+
+    Connections {
+        target: root
+        onIoChanged: {
+            updateConnectivity()
+        }
     }
 
     Component {
         id: progressBackupExport
         ProgressBackupExport {
             title: i18n.tr('Export Backup')
-        }
-    }
-
-    Timer {
-        id: updateConnectivityTimer
-        interval: 2000
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: {
-            let conn = DeltaHandler.getConnectivitySimple()
-            if (conn >= 1000 && conn < 2000) {
-                connectivityLayout.summary.text = i18n.tr("Not connected")
-            } else if (conn >= 2000 && conn < 3000) {
-                connectivityLayout.summary.text = i18n.tr("Connecting…")
-            } else if (conn >= 3000 && conn < 4000) {
-                connectivityLayout.summary.text = i18n.tr("Updating…")
-            } else if (conn >= 4000) {
-                connectivityLayout.summary.text = i18n.tr("Connected")
-            } else {
-                connectivityLayout.summary.text = "??"
-            }
         }
     }
 }

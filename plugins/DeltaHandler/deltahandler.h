@@ -475,6 +475,7 @@ signals:
     void chatViewClosed();
     void newTempProfilePic(QString);
     void chatBlockContactDone();
+    void connectivityChangedForActiveAccount();
 
     // For adding second device; see prepareBackupProvider().
     void backupProviderCreationSuccess();
@@ -543,6 +544,7 @@ private slots:
     void removeClosedAccountFromList(uint32_t accID);
     void resetPassphrase();
     void addClosedAccountToList(uint32_t accID);
+    void connectivityUpdate(uint32_t accID);
 
 private:
     dc_accounts_t* allAccounts;

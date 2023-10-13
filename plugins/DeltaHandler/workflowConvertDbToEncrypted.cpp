@@ -17,6 +17,7 @@
  */
 
 #include "workflowConvertDbToEncrypted.h"
+#include <QRandomGenerator>
 
 WorkflowDbToEncrypted::WorkflowDbToEncrypted(dc_accounts_t* dcaccs, EmitterThread* emthread, QSettings* settings, const std::vector<uint32_t>& closedAccs, uint32_t currentAccID, QString passphrase)
 {
@@ -30,6 +31,18 @@ WorkflowDbToEncrypted::WorkflowDbToEncrypted(dc_accounts_t* dcaccs, EmitterThrea
     m_tempContext = nullptr;
     
     m_cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+
+    // generate some random extra secret for temporary exports
+    m_exportSecret = "";
+
+    for (int i = 0; i < 4; ++i) {
+        char hex[16] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        quint32 randomInt = QRandomGenerator::global()->generate();
+        for (int j = 0; j < 8; j++) {
+            m_exportSecret.append(hex[randomInt & 15]);
+            randomInt = randomInt >> 4;
+        }
+    }
 }
 
 
@@ -106,8 +119,10 @@ void WorkflowDbToEncrypted::startWorkflow()
     // All set, now start the first imex progress (the first backup
     // export), the subsequent ones will be started by the slot that
     // receives the imex events.
-    // Export will be encrypted with the database key.
-    dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), m_passphrase.toUtf8().constData());
+    // Export will be encrypted with the export key combined with the database key.
+    QString importExportPassphrase = m_passphrase;
+    importExportPassphrase += m_exportSecret;
+    dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), importExportPassphrase.toUtf8().constData());
 }
 
 
@@ -139,7 +154,9 @@ void WorkflowDbToEncrypted::imexProgressReceiver(int imProg)
 
             emit statusChanged(false, (m_totalAccounts - m_accountsToConvert.size()) + 1, m_totalAccounts);
             // the actual import step
-            dc_imex(m_tempContext, DC_IMEX_IMPORT_BACKUP, m_writtenFile.toUtf8().constData(), m_passphrase.toUtf8().constData());
+            QString importExportPassphrase = m_passphrase;
+            importExportPassphrase += m_exportSecret;
+            dc_imex(m_tempContext, DC_IMEX_IMPORT_BACKUP, m_writtenFile.toUtf8().constData(), importExportPassphrase.toUtf8().constData());
         } else {
             // Just finished creating an encrypted account based
             // on an exported backup, delete the unencrypted original account
@@ -186,7 +203,9 @@ void WorkflowDbToEncrypted::imexProgressReceiver(int imProg)
                 m_currentlyExportingUnencryptedAccount = true;
                 emit statusChanged(true, (m_totalAccounts - m_accountsToConvert.size()) + 1, m_totalAccounts);
 
-                dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), m_passphrase.toUtf8().constData());
+                QString importExportPassphrase = m_passphrase;
+                importExportPassphrase += m_exportSecret;
+                dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), importExportPassphrase.toUtf8().constData());
             }
         }
     }

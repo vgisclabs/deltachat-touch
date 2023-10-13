@@ -1315,6 +1315,14 @@ void DeltaHandler::selectAccount(int myindex)
         return;
     }
 
+    if (m_showArchivedChats) {
+        // Leave archive mode if a new account is selected.
+        // The in-archive status of the previously selected
+        // account is not preserved as it is probably too complex
+        // for only a small or no benefit at all.
+        closeArchive();
+    }
+
     beginResetModel();
 
     if (tempContext) {

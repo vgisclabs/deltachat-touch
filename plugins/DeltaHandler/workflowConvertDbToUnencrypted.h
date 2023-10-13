@@ -63,8 +63,12 @@ private:
     QSettings* m_settings;
     std::vector<uint32_t> m_closedAccounts;
     uint32_t m_currentlySelectedAccID;
+    // the user passphrase
     QString m_passphrase;
     // end set in constructor
+    
+    // a randomly generated extra passphrase for temporary exports
+    QString m_exportSecret;
 
     // Stores the IDs of all currently present accounts
     std::vector<uint32_t> m_accountsToConvert;

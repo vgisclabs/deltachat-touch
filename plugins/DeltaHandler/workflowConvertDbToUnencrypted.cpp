@@ -30,6 +30,18 @@ WorkflowDbToUnencrypted::WorkflowDbToUnencrypted(dc_accounts_t* dcaccs, EmitterT
     m_tempContext = nullptr;
     
     m_cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+
+    // generate some random extra secret for temporary exports
+    m_exportSecret = "";
+
+    for (int i = 0; i < 4; ++i) {
+        char hex[16] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        quint32 randomInt = QRandomGenerator::global()->generate();
+        for (int j = 0; j < 8; j++) {
+            m_exportSecret.append(hex[randomInt & 15]);
+            randomInt = randomInt >> 4;
+        }
+    }
 }
 
 
@@ -103,7 +115,9 @@ void WorkflowDbToUnencrypted::startWorkflow()
     // export), the subsequent ones will be started by the slot that
     // receives the imex events.
     // Export will be imported again into an open context by the slot.
-    dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), m_passphrase.toUtf8().constData());
+    QString importExportPassphrase = m_passphrase;
+    importExportPassphrase += m_exportSecret;
+    dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), importExportPassphrase.toUtf8().constData());
 }
 
 
@@ -135,7 +149,9 @@ void WorkflowDbToUnencrypted::imexProgressReceiver(int imProg)
 
             emit statusChanged(false, (m_totalAccounts - m_accountsToConvert.size()) + 1, m_totalAccounts);
             // the actual import step
-            dc_imex(m_tempContext, DC_IMEX_IMPORT_BACKUP, m_writtenFile.toUtf8().constData(), m_passphrase.toUtf8().constData());
+            QString importExportPassphrase = m_passphrase;
+            importExportPassphrase += m_exportSecret;
+            dc_imex(m_tempContext, DC_IMEX_IMPORT_BACKUP, m_writtenFile.toUtf8().constData(), importExportPassphrase.toUtf8().constData());
         } else {
             // Just finished creating an unencrypted account based
             // on an exported backup, delete the encrypted original account
@@ -179,7 +195,9 @@ void WorkflowDbToUnencrypted::imexProgressReceiver(int imProg)
                 m_currentlyExportingEncryptedAccount = true;
                 emit statusChanged(true, (m_totalAccounts - m_accountsToConvert.size()) + 1, m_totalAccounts);
 
-                dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), m_passphrase.toUtf8().constData());
+                QString importExportPassphrase = m_passphrase;
+                importExportPassphrase += m_exportSecret;
+                dc_imex(m_tempContext, DC_IMEX_EXPORT_BACKUP, m_cacheDir.toUtf8().constData(), importExportPassphrase.toUtf8().constData());
             }
         }
     }

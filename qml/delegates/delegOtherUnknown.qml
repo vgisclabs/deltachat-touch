@@ -28,7 +28,7 @@ import DeltaHandler 1.0
 
 Item {
     height: msgbox.height
-    width: parent.width
+    width: parentWidth
     anchors {
         left: parent.left
         top: parent.top
@@ -80,11 +80,11 @@ Item {
             let e = forwardLabel.visible ? forwardLabel.contentWidth : 0
 
             let x = a > b ? a : b
-            let y = (c > d ? c : d) > e ? (c > d ? c : d): e
+            let y = (c > d ? c : d) > e ? (c > d ? c : d) : e
 
             return units.gu(1) + (x > y ? x : y) + units.gu(1)
         }
-        height: units.gu(1) + (forwardLabel.visible ? forwardLabel.contentHeight + units.gu(0.5) : 0) + (quoteLabel.visible ? quoteUser.contentHeight + quoteLabel.contentHeight + units.gu(1) : 0) + summaryLabel.contentHeight + (msgLabel.visible ? units.gu(1) + msgLabel.contentHeight : 0) + units.gu(0.5) + msgDate.contentHeight + units.gu(0.5)
+        height: units.gu(1) + (forwardLabel.visible ? forwardLabel.contentHeight + units.gu(0.5) : 0) + (quoteLabel.visible ? quoteUser.contentHeight + quoteLabel.contentHeight + units.gu(1) : 0) + summaryLabel.contentHeight + (model.text != "" ? units.gu(1) + msgLabel.contentHeight : 0) + units.gu(0.5) + msgDate.contentHeight + units.gu(0.5)
         anchors {
             left: avatarShape.right
             leftMargin: units.gu(1)
@@ -189,7 +189,7 @@ Item {
                 topMargin: quoteLabel.visible ? units.gu(1) : (forwardLabel.visible ? units.gu(0.5) : units.gu(1))
             }
             text: model.summarytext
-            color: msgLabel.color
+            color: model.isSearchResult ? "black" : theme.palette.normal.foregroundText
             font.italic: true
             width: parentWidth - avatarShape.width - units.gu(5)
             wrapMode: Text.Wrap

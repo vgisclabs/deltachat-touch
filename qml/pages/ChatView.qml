@@ -565,6 +565,7 @@ Page {
                                     break;
                                 default:
                                     return "../delegates/delegOtherUnknown.qml"
+                                    break;
                             }
                         } else {
                                 return "../delegates/delegOtherToDownload.qml"

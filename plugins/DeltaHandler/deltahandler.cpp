@@ -1982,6 +1982,24 @@ void DeltaHandler::setTempContextConfig(QString key, QString val)
 }
 
 
+void DeltaHandler::deleteTemporaryAccount()
+{
+    // Detection of whether tempContext
+    // really contains a temporary account
+    // is done via m_configuringNewAccount
+    if (m_configuringNewAccount && tempContext) {
+        int tempAccID = dc_get_id(tempContext);
+        qDebug() << "DeltaHandler::deleteTemporaryAccount(): deleting account ID " << tempAccID;
+        dc_context_unref(tempContext);
+        tempContext = nullptr;
+        dc_accounts_remove_account(allAccounts, tempAccID);
+        m_configuringNewAccount = false;
+    } else {
+        qDebug() << "DeltaHandler::deleteTemporaryAccount() called, but not deleting anything";
+    }
+}
+
+
 void DeltaHandler::prepareTempContextConfig() {
     // If tempContext is already set, either an existing account has
     // been selected for changing the configuration or the user
@@ -2068,6 +2086,18 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
         }
         if (m_configuringNewAccount) {
             emit newUnconfiguredAccount(); 
+
+            // If configuration was not successful,
+            // AddOrConfigureEmailAccount.qml will still be the current
+            // page. To prevent the account from being deleted if the
+            // user exits this page via x (i.e., close),
+            // m_configuringNewAccount has to be set to false (as it is
+            // used to decide whether a potential temporary account has
+            // to be deleted when the page is exited via x) Also, upon a
+            // second round of configuring, it's not a new account
+            // anymore? => TODO check if this is true
+            m_configuringNewAccount = false;
+
             if (m_encryptedDatabase) {
                 m_closedAccounts.push_back(dc_get_id(currentContext));
             }
@@ -2133,8 +2163,12 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
                 m_closedAccounts.push_back(dc_get_id(currentContext));
             }
             emit accountChanged();
-        }
-        else {
+            // This should not be needed here as unlike in the case
+            // of progress == 0, AddOrConfigureEmailAccount.qml should
+            // not be presented to the user anymore, but just to be sure
+            // (for more details see same line above)
+            m_configuringNewAccount = false;
+        } else {
             emit updatedAccountConfig(dc_get_id(currentContext));
             emit accountChanged();
         }

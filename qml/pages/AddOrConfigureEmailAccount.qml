@@ -110,7 +110,14 @@ Page {
             Action {
                 iconName: 'close'
                 text: i18n.tr('Cancel')
-                onTriggered: layout.removePages(addEmailPage)
+                onTriggered: {
+                    // deleteTemporaryAccount() will check whether a
+                    // new temporary account was created, and if yes, delete
+                    // it as the user is leaving the page without
+                    // trying to configure it
+                    DeltaHandler.deleteTemporaryAccount()
+                    layout.removePages(addEmailPage)
+                }
             },
             Action {
                 iconName: 'ok'

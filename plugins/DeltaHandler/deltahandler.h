@@ -200,6 +200,8 @@ public:
 
     Q_INVOKABLE void setTempContextConfig(QString key, QString val);
 
+    Q_INVOKABLE void deleteTemporaryAccount();
+
     Q_INVOKABLE void start_io();
 
     Q_INVOKABLE void stop_io();

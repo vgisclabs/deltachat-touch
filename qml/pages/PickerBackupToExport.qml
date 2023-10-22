@@ -35,8 +35,8 @@ Page {
     property var handler
     property var contentType
 
-    signal cancel()
-    signal imported(string fileUrl)
+    //signal cancel()
+    //signal imported(string fileUrl)
 
     header: PageHeader {
         title: i18n.tr("Select")
@@ -61,6 +61,7 @@ Page {
                 //    console.log("Export: In progress, url is:", url);
                     picker.activeTransfer.items = [ resultComponent.createObject(parent, {"url": url}) ];
                     picker.activeTransfer.state = ContentTransfer.Charged;
+                    DeltaHandler.removeTempExportFile()
                     layout.removePages(picker)
                 }
             })

@@ -2621,6 +2621,36 @@ QString DeltaHandler::getUrlToExport()
 }
 
 
+void DeltaHandler::removeTempExportFile()
+{
+    QString fileToRemove(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + m_tempExportPath);
+    bool success = QFile::remove(fileToRemove);
+
+    if (success) {
+        // In case of account backups, the core appends a sequential
+        // number to the files to make sure that each backup has a
+        // unique file name. For each new backup, the already present
+        // files are used to determine the number. As the backup files
+        // are deleted right after exporting via ContentHub, the core
+        // would choose the same number and thus file name for each
+        // backup file. To avoid this, a dummy file is created with the
+        // same file name as the backup file that has just been removed.
+        QFile dummyFile(fileToRemove);
+        if (!dummyFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            qDebug() << "DeltaHandler::removeTempExportFile(): Could not open dummy file to represent the removed backup file";
+        } else {
+            QTextStream out(&dummyFile);
+            out << "dummy file" << '\n';
+            dummyFile.flush();
+            dummyFile.close();
+        }
+    } else {
+        qDebug() << "DeltaHandler::removeTempExportFile(): Error: Could not remove backup file " << fileToRemove;
+        emit errorEvent(C::gettext("Failed to remove the temporary copy of the backup export in the cache directory"));
+    }
+}
+
+
 bool DeltaHandler::isExistingChat(uint32_t chatID) {
     if (!currentChatlist) {
         qDebug() << "DeltaHandler::isExistingChat(): ERROR: currentChatlist is not set";
@@ -3737,7 +3767,6 @@ void DeltaHandler::evaluateQrImage(QImage image, bool emitFailureSignal)
     quirc_end(m_qr);
 
     int num_codes;
-    int i;
 
     num_codes = quirc_count(m_qr);
 

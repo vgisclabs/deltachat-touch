@@ -220,6 +220,10 @@ public:
 
     Q_INVOKABLE QString getUrlToExport();
 
+    // Mainly used to remove backup files right
+    // after they have been exported via ContentHub
+    Q_INVOKABLE void removeTempExportFile();
+
     // expects the index of the chat in the chatlist
     Q_INVOKABLE QString getMomentaryChatEncInfo();
 
@@ -507,6 +511,8 @@ signals:
     void qrDecoded(QString qrContent);
     void qrDecodingFailed(QString errorMessage);
     /* ============ End QR code related stuff ================= */
+
+    void errorEvent(QString errorMessage);
 
 public slots:
     void unrefTempContext();

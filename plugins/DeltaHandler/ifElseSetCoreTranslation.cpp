@@ -192,14 +192,6 @@ if (stringName == "chat_no_messages") {
     dc_set_stock_translation(currentContext, DC_STR_EPHEMERAL_TIMER_WEEKS_BY_YOU, stringText.toUtf8().constData());
 } else if (stringName == "ephemeral_timer_weeks_by_other") {
     dc_set_stock_translation(currentContext, DC_STR_EPHEMERAL_TIMER_WEEKS_BY_OTHER, stringText.toUtf8().constData());
-} else if (stringName == "protection_enabled_by_you") {
-    dc_set_stock_translation(currentContext, DC_STR_PROTECTION_ENABLED_BY_YOU, stringText.toUtf8().constData());
-} else if (stringName == "protection_enabled_by_other") {
-    dc_set_stock_translation(currentContext, DC_STR_PROTECTION_ENABLED_BY_OTHER, stringText.toUtf8().constData());
-} else if (stringName == "protection_disabled_by_you") {
-    dc_set_stock_translation(currentContext, DC_STR_PROTECTION_DISABLED_BY_YOU, stringText.toUtf8().constData());
-} else if (stringName == "protection_disabled_by_other") {
-    dc_set_stock_translation(currentContext, DC_STR_PROTECTION_DISABLED_BY_OTHER, stringText.toUtf8().constData());
 } else if (stringName == "multidevice_qr_subtitle") {
     dc_set_stock_translation(currentContext, DC_STR_BACKUP_TRANSFER_QR, stringText.toUtf8().constData());
 }

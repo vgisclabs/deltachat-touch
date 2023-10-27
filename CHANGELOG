@@ -1,4 +1,4 @@
-x.x.x
+1.2.0 2023-10-27
 Feature: Database encryption (config + text only, blobs remain unencrypted)
 Feature: Small colored shape signalling connectivity state in chatlist view
 UI: Add account ID to account info popup in Known Accounts page

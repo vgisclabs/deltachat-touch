@@ -2218,6 +2218,18 @@ void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
         }
         currentContext = tempContext;
         tempContext = nullptr;
+
+        // For a few weeks, preview version of DC Android
+        // had verified_one_on_one_chats set to 1. For the time
+        // being, it's set to 0 when exporting backup in DC.
+        // However, to take care of the former, this setting
+        // is set to 0 here after import until verified 1:1 chats
+        // are actually implemented.
+        // TODO: remove next line when verified 1:1 chats are
+        // implemented! (Or should this config be set to 1 if
+        // the UI supports it? And then for each account?)
+        setCurrentConfig("verified_one_on_one_chats", "0");
+        
         contextSetupTasks();
 
         if (restartNetwork) {
@@ -3661,6 +3673,18 @@ void DeltaHandler::startQrBackupImport()
         }
         currentContext = tempContext;
         tempContext = nullptr;
+
+        // For a few weeks, preview version of DC Android
+        // had verified_one_on_one_chats set to 1. For the time
+        // being, it's set to 0 when exporting backup in DC.
+        // However, to take care of the former, this setting
+        // is set to 0 here after import until verified 1:1 chats
+        // are actually implemented.
+        // TODO: remove next line when verified 1:1 chats are
+        // implemented! (Or should this config be set to 1 if
+        // the UI supports it? And then for each account?)
+        setCurrentConfig("verified_one_on_one_chats", "0");
+
         contextSetupTasks();
 
         if (restartNetwork) {

@@ -1,9 +1,12 @@
 x.x.x
 Feature: Database encryption (config + text only, blobs remain unencrypted)
-Feature: Small colored shape signalling connectivity state in chat overview
+Feature: Small colored shape signalling connectivity state in chatlist view
 UI: Add account ID to account info popup in Known Accounts page
-Other: Use deltachat-core-rust v1.122.0
+Other: Use deltachat-core-rust v1.127.0
 Other: In case of mismatch, filename extensions of image attachments are corrected so QML displays them
+Bugfix: Delete temporary account if user cancels creation of new account via login
+Bugfix: In some cases, large messages were not shown
+Bugfix: Correctly handle account switch when in archive
 
 1.1.1 2023-09-13
 Bugfix: Settings item "Only fetch from DeltaChat folder" did not act correctly

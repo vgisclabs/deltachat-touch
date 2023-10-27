@@ -140,7 +140,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     // Also possible: <QString>.toUtf8().constData() ==>> preferred!
     //
     // Also possible: <QString>.toStdString().c_str()
-    allAccounts = dc_accounts_new(NULL, qPrintable(configdir));
+    allAccounts = dc_accounts_new(qPrintable(configdir), 1);
 
     if (!allAccounts) {
         qDebug() << "DeltaHandler::DeltaHandler: Fatal error trying to create account manager.";

@@ -3869,7 +3869,7 @@ void DeltaHandler::deleteQrDecoder()
 }
 
 
-void DeltaHandler::prepareAudioRecording(int recordingQuality)
+bool DeltaHandler::startAudioRecording(int recordingQuality)
 {
     m_audioRecorder = new QAudioRecorder;
     QAudioEncoderSettings audioSettings;
@@ -3904,26 +3904,24 @@ void DeltaHandler::prepareAudioRecording(int recordingQuality)
     
     m_audioRecorder->setEncodingSettings(audioSettings);
     m_audioRecorder->setContainerFormat("audio/ogg");
-}
-
-
-QString DeltaHandler::startAudioRecording()
-{
 
     QString outfile("/voice_message.opus");
-    QString retval = outfile;
     outfile.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     m_audioRecorder->setOutputLocation(QUrl(outfile));
 
     m_audioRecorder->record();
-
-    return retval;
+    return true;
 }
 
 
 void DeltaHandler::stopAudioRecording()
 {
     m_audioRecorder->stop();
+
+    QString voicefile("/voice_message.opus");
+    voicefile.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+
+    m_chatmodel->setAttachment(voicefile, MsgViewType::VoiceType);
 }
 
 
@@ -3933,18 +3931,12 @@ void DeltaHandler::dismissAudioRecording()
         delete m_audioRecorder;
         m_audioRecorder = nullptr;
     }
-}
-
-
-void DeltaHandler::sendAudioRecording(QString filepath)
-{
-    dc_msg_t* msg = dc_msg_new(currentContext, DC_MSG_VOICE);
-
-    filepath.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
-    dc_msg_set_file(msg, filepath.toUtf8().constData(), NULL);
-    dc_send_msg(currentContext, currentChatID, msg);
-     
-    dc_msg_unref(msg);
+    // delete the recording
+    QString voicefile("/voice_message.opus");
+    voicefile.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    if (QFile::exists(voicefile)) {
+        QFile::remove(voicefile);
+    }
 }
 
 

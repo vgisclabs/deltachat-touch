@@ -42,8 +42,10 @@ Page {
     property bool attachImagePreviewMode: false
     property bool attachFilePreviewMode: false
     property bool attachAudioPreviewMode: false
+    property bool attachVoicePreviewMode: false
     property string attachAudioPath
-    property bool audioRecordMode: false
+    property bool isRecording: false
+
     property bool chatCanSend: DeltaHandler.chatmodel.chatCanSend()
     property bool isContactRequest: DeltaHandler.chatIsContactRequest
 
@@ -61,6 +63,33 @@ Page {
     function updateSearchStatusLabel(current, total) {
         searchStatusLabel.text = current + "/" + total
        
+    }
+
+    function playAudio(srcUrl) {
+         audioPlayLoader.active = true
+         audioPlayLoader.startPlaying(srcUrl)
+    }
+
+    function millisecsToString(time) {
+        // Algorithm in this function copied from Recorder app:
+        // https://github.com/luksus42/recorder/blob/master/Recorder/ui/HomePage.qml
+        // Originally: Copyright (C) 2016  DawnDIY <dawndiy.dev@gmail.com>
+        // Forked by Luksus42
+
+        var time_str
+        var record_time = Math.ceil(time/1000)
+        var sec = record_time % 60
+        var min = Math.floor(record_time / 60) % 60
+        var hr = Math.floor(record_time / 3600)
+        if (hr > 0) {
+            time_str = hr + ":"
+            time_str += new Array(2-String(min).length+1).join("0") + min + ":"
+            time_str += new Array(2-String(sec).length+1).join("0") + sec
+        } else {
+            time_str = new Array(2-String(min).length+1).join("0") + min + ":"
+            time_str += new Array(2-String(sec).length+1).join("0") + sec
+        }
+        return time_str
     }
 
     Component.onCompleted: {
@@ -88,8 +117,8 @@ Page {
         messageAudio.stop()
         messageQueryField.text = "" 
 
-        if (audioRecordMode) {
-            audioRecordBox.stopAndCleanupVoiceRecording()
+        if (isRecording) {
+            DeltaHandler.dismissAudioRecording()
         }
 
         DeltaHandler.chatmodel.setDraft(messageEnterField.text)
@@ -162,9 +191,9 @@ Page {
 
         onPreviewImageAttachment: {
             if (addCacheLocation) {
-                attachImagePreview.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+                attachPreviewImage.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
             } else {
-                attachImagePreview.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.AppConfigLocation, filepath))
+                attachPreviewImage.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.AppConfigLocation, filepath))
             }
             attachImagePreviewMode = true
         }
@@ -180,6 +209,15 @@ Page {
             attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
             attachAudioPreviewMode = true
             attachFilePreviewLabel.text = filename;
+        }
+
+        // onPreviewVoiceAttachment is NOT emitted by deltahandler
+        onPreviewVoiceAttachment: {
+            // Audio is guaranteed to always be located in the CacheLocation because
+            // it won't play if it's in AppConfigLocation due to AppArmor
+            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+            attachVoicePreviewMode = true
+            attachFilePreviewLabel.text = i18n.tr("Voice Message")
         }
     }
 
@@ -480,101 +518,6 @@ Page {
             }
         ]
     }
-    Component {
-        id: delegateListItem
-
-
-        ListItem {
-            id: messageListItem
-            height: delegLoader.height
-            divider.visible: false
-            width: parent.width
-
-            Loader {
-                id: delegLoader
-                // TODO rename
-                property int parentWidth: parent.width
-                property Audio msgAudio: messageAudio
-                property Page chatPage: chatViewPage
-                property bool anchorToRight: {
-                    if (!model.isUnreadMsgsBar) {
-                        if (model.isInfo) {
-                            return false
-                        } else {
-                            return model.isSelf
-                        }
-                    } else {
-                        return false
-                    }
-                }
-                height: childrenRect.height // TODO: QML complains about a binding loop for property "height"
-                anchors.right: anchorToRight ? parent.right : undefined
-                anchors.left: anchorToRight ? undefined : parent.left
-                source: 
-                    if (model.isUnreadMsgsBar){
-                        return "../delegates/delegUnreadMsgsBar.qml"
-                    } else if (model.isInfo) {
-                        return "../delegates/delegInfoMsg.qml"
-                    } else if (model.isSelf) {
-                        messageListItem.leadingActions = leadingMsgAction
-                        messageListItem.trailingActions = trailingMsgActions
-
-                        if (model.isDownloaded) {
-                            switch (model.msgViewType) {
-                                case DeltaHandler.TextType:
-                                    return "../delegates/delegSelfTextMsg.qml"
-                                    break;
-                                case DeltaHandler.ImageType:
-                                    return "../delegates/delegSelfImage.qml"
-                                    break;
-                                case DeltaHandler.AudioType:
-                                case DeltaHandler.VoiceType:
-                                    return "../delegates/delegSelfAudio.qml"
-                                    break;
-                                case DeltaHandler.StickerType:
-                                case DeltaHandler.GifType:
-                                    return "../delegates/delegSelfAnimatedImage.qml"
-                                    break;
-                                default:
-                                    return "../delegates/delegSelfUnknown.qml"
-                                    break;
-                            }
-                        } else {
-                                return "../delegates/delegSelfToDownload.qml"
-                        }
-                    } // end if (model.isSelf)
-                    else { // message is not from self and not the "Unread Messages" bar
-                        messageListItem.leadingActions = leadingMsgAction
-                        messageListItem.trailingActions = trailingMsgActions
-
-                        if (model.isDownloaded) {
-                            switch (model.msgViewType) {
-                                case DeltaHandler.TextType:
-                                    return "../delegates/delegOtherTextMsg.qml"
-                                    break;
-                                case DeltaHandler.ImageType:
-                                    return "../delegates/delegOtherImage.qml"
-                                    break;
-                                case DeltaHandler.AudioType:
-                                case DeltaHandler.VoiceType:
-                                    return "../delegates/delegOtherAudio.qml"
-                                    break;
-                                case DeltaHandler.StickerType:
-                                case DeltaHandler.GifType:
-                                    return "../delegates/delegOtherAnimatedImage.qml"
-                                    break;
-                                default:
-                                    return "../delegates/delegOtherUnknown.qml"
-                                    break;
-                            }
-                        } else {
-                                return "../delegates/delegOtherToDownload.qml"
-                        }
-                    } // end message is not from self
-                asynchronous: false
-            }
-        } // end ListItem id: messageListItem
-    } // end Component id: delegateListItem
 
     ListView {
         id: view
@@ -584,7 +527,658 @@ Page {
         width: parent.width
         height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(0.5) - (messageCreatorBox.visible ? messageCreatorBox.height + units.gu(1) : 0) - (requestReactionRect.visible ? requestReactionRect.height : 0) - (cannotSendBox.visible ? cannotSendBox.height : 0)
         model: DeltaHandler.chatmodel
-        delegate: delegateListItem
+        //  Delegate inspired by FluffyChat (C) Christian Pauly,
+        //  licensed under GPLv3
+        //  https://gitlab.com/KrilleFear/fluffychat
+        //  modified by (C) 2023 Lothar Ketterer
+        delegate: ListItem {
+                id: message
+                
+                property bool isUnreadMsgsBar: model.isUnreadMsgsBar
+                property bool isInfoMsg: model.isInfo
+                property bool isSelf: model.isSelf && !(isUnreadMsgsBar || isInfoMsg)
+                property bool isOther: !(isSelf || isUnreadMsgsBar || isInfoMsg)
+                property bool isSameSenderAsNext: model.isSameSenderAsNextMsg
+                property bool isSearchResult: model.isSearchResult
+                property bool messageSeen: model.messageSeen
+                property bool isPadlocked: model.hasPadlock
+                property bool isDownloaded: model.isDownloaded
+                property string msgtext: model.text
+                property string quoteText: model.quotedText
+                property bool hasQuote: quoteText != ""
+                property string profPic: model.profilePic
+                property int messageState: model.messageState
+                property var msgViewType: model.msgViewType
+                property bool unhandledType: {
+                    switch (msgViewType) {
+                        // fallthrough until false, enter any type
+                        // that should not appear in uknownLoader
+                        // to the cases that return false
+                        case DeltaHandler.TextType:
+                        case DeltaHandler.ImageType:
+                        case DeltaHandler.GifType:
+                        case DeltaHandler.StickerType:
+                        case DeltaHandler.AudioType:
+                        case DeltaHandler.VoiceType:
+                            return false;
+                            break;
+
+                        default:
+                            return true;
+                            break;
+                    }
+                }
+                property bool hasImageOrGif: msgViewType === DeltaHandler.ImageType || msgViewType === DeltaHandler.GifType || msgViewType === DeltaHandler.StickerType
+                property var imageWidth: imageLoader.active ? imageLoader.width : (animatedImageLoader.active ? animatedImageLoader.width : 0)
+                property var textColor: {
+                    if (isSearchResult) {
+                        return "black";
+                    } else if (isInfo) {
+                        if (root.darkmode) {
+                            return "black";
+                        } else {
+                            return "white";
+                        }
+                    } else if (isSelf) {
+                        if (messageSeen) {
+                            return root.selfMessageSeenTextColor;
+                        } else {
+                            return root.selfMessageSentTextColor;
+                        }
+                    } else {
+                        // valid for both messages from others and the unread message bar
+                        return theme.palette.normal.foregroundText;
+                    }
+                }
+
+                width: parent.width
+                height: msgbox.height + (imageLoader.active ? imageLoader.height : (animatedImageLoader.active ? animatedImageLoader.height : 0))
+                divider.visible: false
+
+                // TODO: implement?
+                //onPressAndHold: toast.show ( i18n.tr("Swipe to the left or the right for actions"))
+
+                leadingActions: (isUnreadMsgsBar || isInfoMsg) ? null : leadingMsgAction
+                trailingActions: (isUnreadMsgsBar || isInfoMsg) ? null : trailingMsgActions
+
+                Loader {
+                    id: avatarLoader
+                    active: isOther && !isSameSenderAsNext
+                    height: width
+                    width: units.gu(5.5)
+
+                    anchors {
+                        left: parent.left
+                        leftMargin: units.gu(1)
+                        bottom: parent.bottom
+                    }
+
+                    sourceComponent: UbuntuShape {
+                        id: avatarShape
+
+                        color: model.avatarColor
+                        sourceFillMode: UbuntuShape.PreserveAspectCrop
+
+                        property bool hasProfPic: profPic != ""
+
+                        source: hasProfPic ? avatarPic : undefined
+
+                        Image {
+                            id: avatarPic
+                            visible: false
+                            source: StandardPaths.locate(StandardPaths.AppConfigLocation, profPic)
+                        }
+
+                        Label {
+                            id: avatarInitialLabel
+                            text: model.avatarInitial
+                            fontSize: "x-large"
+                            color: "white"
+                            visible: !avatarShape.hasProfPic
+                            anchors.centerIn: parent
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": model.contactID })
+                        }
+                    } // end UbuntuShape id: avatarShape
+                } // end Loader id: avatarLoader
+
+                Loader {
+                    id: imageLoader
+                    active: msgViewType === DeltaHandler.ImageType
+
+                    anchors {
+                        right: isSelf ? msgbox.right : undefined
+                        left: isOther ? msgbox.left : undefined
+                        bottom: msgbox.top
+                    }
+
+                    sourceComponent: Image {
+                        id: msgImage
+                        source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.filepath)
+                        width: model.imagewidth > (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) ? (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) : model.imagewidth
+                        fillMode: Image.PreserveAspectFit
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": msgImage.source })
+                        }
+                    }
+                }
+                
+                Loader {
+                    id: animatedImageLoader
+                    active: (msgViewType === DeltaHandler.GifType) || (msgViewType === DeltaHandler.StickerType)
+
+                    anchors {
+                        right: isSelf ? msgbox.right : undefined
+                        left: isOther ? msgbox.left : undefined
+                        bottom: msgbox.top
+                    }
+
+                    sourceComponent: AnimatedImage {
+                        id: msgAnimatedImage
+                        source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.filepath)
+                        width: model.imagewidth > (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) ? (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) : model.imagewidth
+                        fillMode: Image.PreserveAspectFit
+                        cache: false
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("ImageViewerAnimated.qml"), { "imageSource": msgAnimatedImage.source })
+                        }
+                    }
+                }
+                
+                UbuntuShape {
+                    id: msgbox
+
+                    width: contentColumn.width + units.gu(2)
+                    height: contentColumn.height  + units.gu(1.5)
+
+                    anchors {
+                        bottom: parent.bottom
+                        right: !isOther ? parent.right : undefined
+                        rightMargin: (isUnreadMsgsBar || isInfoMsg) ? ((chatViewPage.width - msgbox.width)/2) : units.gu(1)
+                        left: isOther ? avatarLoader.right : undefined
+                        leftMargin: isOther ? units.gu(1) : undefined
+                    }
+
+                    backgroundColor: {
+                        if (isSearchResult) {
+                            return root.searchResultMessageColor;
+                        } else if (isOther) {
+                            return root.otherMessageBackgroundColor;
+                        } else if (isSelf) {
+                            switch (messageState) {
+                                case DeltaHandler.StatePending:
+                                    return root.selfMessagePendingBackgroundColor;
+                                    break;
+                                case DeltaHandler.StateDelivered:
+                                    return root.selfMessageSentBackgroundColor;
+                                    break;
+                                case DeltaHandler.StateReceived:
+                                    return root.selfMessageSeenBackgroundColor;
+                                    break;
+                                // TODO: different layout for failed messages?
+                                case DeltaHandler.StateFailed:
+                                    return root.selfMessagePendingBackgroundColor;
+                                    break;
+                            }
+                        } else if (isUnreadMsgsBar) {
+                            return root.unreadMessageBarColor;
+                        } else if (isInfoMsg) {
+                            if (root.darkmode) {
+                                return "#c0c0c0"; 
+                            } else {
+                                return "#505050";
+                            }
+                        }
+                    }
+
+                    backgroundMode: UbuntuShape.SolidColor
+                    aspect: UbuntuShape.Flat
+                    radius: "medium"
+
+                    Loader {
+                        id: squareCornerLoader
+                        active: !isInfo && !isUnreadMsgsBar && !isSameSenderAsNext
+
+                        anchors {
+                            right: isSelf ? parent.right : undefined
+                            left: isOther ? parent.left : undefined
+                            bottom: parent.bottom
+                        }
+
+                        sourceComponent: Rectangle {
+                            id: squareCornerBottom
+                            height: units.gu(2)
+                            width: units.gu(2)
+                            color: msgbox.backgroundColor
+                        }
+                    }
+
+                    Loader {
+                        // removes the rounding of the top left corner
+                        // in case an image is above the message bubble
+                        id: squareCornerTopLeftLoader
+                        // Always needed for left-sided messages. For right
+                        // sided messages, it depends on whether the image
+                        // is wider than the message bubble
+                        active: hasImageOrGif && (isOther || imageWidth > msgbox.width)
+
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                        }
+
+                        sourceComponent: Rectangle {
+                            id: squareCornerTL
+                            height: units.gu(2)
+                            width: units.gu(2)
+                            color: msgbox.backgroundColor
+                        }
+                    }
+
+                    Loader {
+                        // see squareCornerTopLeftLoader
+                        id: squareCornerTopRightLoader
+                        active: hasImageOrGif && (isSelf || imageWidth > msgbox.width)
+
+                        anchors {
+                            right: parent.right
+                            top: parent.top
+                        }
+
+                        sourceComponent: Rectangle {
+                            id: squareCornerTR
+                            height: units.gu(2)
+                            width: units.gu(2)
+                            color: msgbox.backgroundColor
+                        }
+                    }
+
+                    Column {
+                        id: contentColumn
+                        width: {
+                            let a = msgLabel.contentWidth
+                            let b = dateRowLoader.width
+                            let c = forwardLabelLoader.width
+                            let d = quoteLoader.width
+                            let e = audioLoader.width
+                            let f = fileLineLoader.width
+                            let g = unknownTypeLoader.width
+                            let h = toDownloadLoader.width
+
+                            let m = a > b ? a : b
+                            let n = c > d ? c : d
+                            let o = e > f ? e : f
+                            let p = g > h ? g : h
+
+                            let x = m > n ? m : n
+                            let y = o > p ? o : p
+
+                            return x > y ? x : y
+                        }
+
+                        anchors {
+                            bottom: parent.bottom
+                            bottomMargin: units.gu(0.5)
+                            horizontalCenter: parent.horizontalCenter
+                        }
+
+                        spacing: units.gu(0.5)
+
+                        Loader {
+                            id: forwardLabelLoader
+                            active: model.isForwarded
+
+                            sourceComponent: Label {
+                                id: forwardLabel
+                                text: i18n.tr("Forwarded Message")
+                                font.bold: true
+                                color: textColor
+                            }
+                        }
+
+                        Loader {
+                            id: quoteLoader
+                            active: hasQuote
+
+                            MouseArea {
+                                id: msgJumpArea
+                                anchors.fill: parent
+                                onClicked: {
+                                    DeltaHandler.chatmodel.initiateQuotedMsgJump(index)
+                                }
+                            }
+
+                            sourceComponent: Row {
+                                spacing: units.gu(1)
+
+                                Rectangle {
+                                    id: quoteRectangle
+                                    width: units.gu(0.5)
+                                    height: quoteUser.contentHeight + quoteLabel.contentHeight
+                                    color: model.quoteAvatarColor != "" ? model.quoteAvatarColor : root.darkmode ? "white" : "black"
+                                }
+
+                                Column {
+                                    id: quoteTextUserColumn
+                                    width: quoteLabel.contentWidth > quoteUser.contentWidth ? quoteLabel.contentWidth : quoteUser.contentWidth
+
+                                    Label {
+                                        id: quoteLabel
+                                        // TODO
+                                        width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(6.5) : chatViewPage.width - units.gu(6.5)
+                                        anchors {
+                                            left: parent.left
+                                        }
+                                        text: quoteText
+                                        wrapMode: Text.Wrap
+                                        color: textColor
+            
+                                    }
+            
+                                    Label {
+                                        id: quoteUser
+                                        anchors {
+                                            left: parent.left
+                                        }
+            
+                                        text: {
+                                            if (model.quoteUser == "") {
+                                                return i18n.tr("Unknown")
+                                            } else {
+                                                return model.quoteUser
+                                            }
+                                        }
+            
+                                        fontSize: "x-small"
+                                        font.bold: true
+                                        color: quoteRectangle.color
+                                    }
+                                }
+                            }
+                        }
+
+                        Loader {
+                            id: audioLoader
+                            active: msgViewType === DeltaHandler.AudioType || msgViewType === DeltaHandler.VoiceType
+
+                            sourceComponent: Row {
+                                id: audioRow
+                                spacing: units.gu(1)
+                                width: playShape.width + units.gu(1) + playLabel.contentWidth
+
+                                UbuntuShape {
+                                    id: playShape
+                                    height: units.gu(4)
+                                    width: height
+                                    backgroundColor: "#F7F7F7"
+                                    opacity: 0.5
+
+                                    Icon {
+                                        width: parent.width - units.gu(1)
+                                        anchors.centerIn: parent
+                                        name: "media-playback-start"
+                                        color: textColor
+                                    }
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            // see properties of the Loader delegLoader
+                                            playAudio(Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, model.audiofilepath)))
+                                        }
+                                    }
+
+                                }
+
+                                Label {
+                                    id: playLabel
+                                    anchors.verticalCenter: playShape.verticalCenter
+                                    // duration as queried via dc_msg_get_duration() is 0 in most cases, omit for now
+                                    width: (isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)) - units.gu(5)
+                                    text: (msgViewType === DeltaHandler.AudioType ? model.filename : i18n.tr("Voice Message"))// + " " + model.duration
+                                    wrapMode: Text.Wrap
+                                    color: textColor
+                                }
+                            }
+                        }
+
+                        Loader {
+                            id: unknownTypeLoader
+                            active: msgViewType === unhandledType
+
+                            sourceComponent: Label {
+                                id: summaryLabel
+                                width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
+                                text: model.summarytext
+                                wrapMode: Text.Wrap
+                                color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
+                                font.italic: true
+                            }
+
+                        }
+
+                        Loader {
+                            id: fileLineLoader
+                            active: msgViewType === DeltaHandler.FileType
+
+                            sourceComponent: Row {
+                                id: fileRow
+                                spacing: units.gu(1)
+                                width: fileshape.width + units.gu(1) + fileLabel.contentWidth
+
+                                UbuntuShape {
+                                    id: fileshape
+                                    height: units.gu(4)
+                                    width: height
+                                    backgroundColor: "#F7F7F7"
+                                    opacity: 0.5
+
+                                    Icon {
+                                        width: parent.width - units.gu(1)
+                                        anchors.centerIn: parent
+                                        name: "attachment"
+                                        color: textColor
+                                    }
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            DeltaHandler.chatmodel.setMomentaryMessage(index)
+                                            if (DeltaHandler.chatmodel.setUrlToExport()) {
+                                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToExport.qml'))
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Label {
+                                    id: fileLabel
+                                    anchors.verticalCenter: fileshape.verticalCenter
+                                    width: (isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)) - units.gu(5)
+                                    text: model.filename
+                                    wrapMode: Text.Wrap
+                                    color: textColor
+                                    font.italic: true
+                                }
+                            }
+                        }
+
+                        Loader {
+                            id: toDownloadLoader
+                            active: !isDownloaded
+
+                            // Only component of the Row is a Label. When
+                            // using the Label directly, toDownloadLoader.width
+                            // returns the width of the Label, not its contentWidth.
+                            // I couldn't find a better solution than to use
+                            // a layer for which the width is set to the contentWidth
+                            // of the Label (couldn't access it in the Loader)
+                            sourceComponent: Row {
+                                id: toDownloadHelperRow
+                                width: toDownloadLabel.contentWidth
+
+                                Label {
+                                    id: toDownloadLabel
+                                    width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : (chatViewPage.width - units.gu(5))
+
+                                    property var downloadState: model.downloadState
+
+                                    text: {
+                                        if (downloadState === DeltaHandler.DownloadAvailable) {
+                                            return model.summarytext + " - <a href=\"%1\">%1</a>".arg(i18n.tr("Download"))
+                                        } else if (downloadState === DeltaHandler.DownloadFailure) {
+                                            return model.summarytext + " - <a href=\"%1\">%1</a>".arg(i18n.tr("Download failed"))
+                                        } else if (downloadState === DeltaHandler.DownloadInProgress) {
+                                            return model.summarytext + " - " + i18n.tr("Downloading…")
+                                        } else if (downloadState === DeltaHandler.DownloadDone) {
+                                            parent.visible = false
+                                            return ""
+                                        } else {
+                                            console.log("ChatView.qml: Error: Unknown download state")
+                                            return model.summarytext
+                                        }
+                                    }
+                                    onLinkActivated: {
+                                        DeltaHandler.chatmodel.downloadFullMessage(index)
+                                        linkColor = root.darkmode ? (model.messageSeen || isOther ? "#8080f7" : "#000055") : "#0000ff"
+                                    }
+                                    color: textColor
+                                    linkColor: {
+                                        if (downloadState === DeltaHandler.DownloadAvailable) {
+                                            return root.darkmode ? (isOther ? "#aaaaf7" : (model.messageSeen ? "#bbbbf7" : "#0000aa")) : "#0000ff"
+                                        } else if (downloadState === DeltaHandler.DownloadFailure) {
+                                            return root.darkmode ? (isOther ? "#f7aaaa" : (model.messageSeen ? "#f78080" : "#aa0000")) : "#ff0000"
+                                        } else if (downloadState === DeltaHandler.DownloadInProgress) {
+                                            return root.darkmode ? (isOther ? "#aaaaff" : (model.messageSeen ? "#bbbbf7" : "#0000aa")) : "#0000ff"
+                                        } else {
+                                            return root.darkmode ? (isOther ? "#aaaaff" : (model.messageSeen ? "#bbbbf7" : "#0000aa")) : "#0000ff"
+                                        }
+                                    }
+                                    wrapMode: Text.Wrap
+                                }// end Label id: toDownloadLabel
+                            } // Row id: toDownloadHelperRow
+                        } // end Loader id: toDownloadLoader
+
+                        Label {
+                                id: msgLabel
+                                width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
+                                 // TODO: this string has no translations ("Unread Messages")
+                                text: isUnreadMsgsBar ? i18n.tr("Unread Messages") : msgtext
+                                color: textColor
+                                linkColor: isSearchResult ? "#0000ff" : messageSeen ? root.selfMessageSeenLinkColor : root.selfMessageSentLinkColor
+                                wrapMode: Text.WordWrap
+                                onLinkActivated: Qt.openUrlExternally(link)
+                                visible: isUnreadMsgsBar || (msgtext != "" && isDownloaded)
+                        }
+
+                        Loader {
+                            id: dateRowLoader
+                            active: !isUnreadMsgsBar
+
+                            anchors {
+                                left: isOther ? parent.left : undefined
+                                right: isSelf && !isInfoMsg && !isUnreadMsgsBar ? parent.right : undefined
+                                horizontalCenter: isInfoMsg ? parent.horizontalCenter : undefined
+                            }
+
+                            sourceComponent: Row {
+                                id: dateRow
+                                spacing: units.gu(0.5)
+
+                                Loader {
+                                    id: padLockSelfLoader
+                                    active: isSelf && isPadlocked && !isInfoMsg && !isUnreadMsgsBar
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    sourceComponent: Icon {
+                                        id: padlockSelf
+                                        name: "lock"
+                                        height: units.gu(1)
+                                        color: textColor
+                                    }
+                                }
+
+                                Loader {
+                                    id: usernameLoader
+                                    active: isOther
+
+                                    sourceComponent: Label {
+                                        id: username
+                                        text: model.username + "  "
+                                        fontSize: "x-small"
+                                        font.bold: true
+                                        color: model.avatarColor
+                                    }
+                                }
+
+                                Label {
+                                    id: msgDate
+                                    color: textColor
+                                    fontSize: "x-small"
+                                    text: model.date
+                                }
+
+                                Loader {
+                                    id: padlockOther
+                                    active: isOther && isPadlocked
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    sourceComponent: Icon {
+                                        id: padlockSelf
+                                        name: "lock"
+                                        height: units.gu(1)
+                                        color: textColor
+                                    }
+                                }
+
+                                Loader {
+                                    id: statusIconLoader
+                                    active: isSelf && !isInfoMsg && !isUnreadMsgsBar
+
+                                    anchors {
+                                        bottom: parent.bottom
+                                        bottomMargin: units.gu(0.15)
+                                    }
+
+                                    sourceComponent: Icon {
+                                        height: units.gu(1)
+                                        width: height * 2
+                                        source: { 
+                                            switch (messageState) {
+                                                case DeltaHandler.StatePending:
+                                                    return Qt.resolvedUrl('../../assets/dotted_circle_black.svg');
+                                                    break;
+                                                case DeltaHandler.StateDelivered:
+                                                    return Qt.resolvedUrl('../../assets/sent_black.svg');
+                                                    break;
+                                                case DeltaHandler.StateReceived:
+                                                    if (root.darkmode && !model.isSearchResult) {
+                                                        return Qt.resolvedUrl('../../assets/read_white.svg');
+                                                        break;
+                                                    } else {
+                                                        return Qt.resolvedUrl('../../assets/read_black.svg');
+                                                        break;
+                                                    }
+                                                case DeltaHandler.StateFailed:
+                                                    return Qt.resolvedUrl('../../assets/circled_x_red.svg');
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                } // end Loader id: statusIconLoader
+                            } // end Row id: dateRow
+                        } // end Loader id: dateRowLoader
+                    } // end Column id: contentColumn
+                } // end UbuntuShape id: msgbox
+             } // end ListItem id: delegateListItem
+
         verticalLayoutDirection: ListView.BottomToTop
         spacing: units.gu(1)
         //cacheBuffer: 0
@@ -594,7 +1188,6 @@ Page {
                 unreadJumpTimer.start()
             }
         }
-
     }
 
     UbuntuShape {
@@ -672,7 +1265,7 @@ Page {
 
     Rectangle {
         id: messageCreatorBox
-        height: (audioRecordMode ? audioRecordBox.height : messageEnterField.height) + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(1) : 0) + (attachmentPreviewRect.visible ? attachmentPreviewRect.height + units.gu(1) : 0) 
+        height: messageEnterField.height + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(1) : 0) + (attachmentPreviewRect.visible ? attachmentPreviewRect.height + units.gu(1) : 0) 
         width: parent.width
         color: theme.palette.normal.background
         anchors{
@@ -685,7 +1278,7 @@ Page {
 
         Rectangle {
             id: quotedMessageBox
-            height: quotedMessageLabel.contentHeight + units.gu(0.5) + quotedUser.contentHeight
+            height: cancelQuoteShape.height + units.gu(1) + quotedMessageLabel.contentHeight + units.gu(0.5) + quotedUser.contentHeight
             width: parent.width
 
             color: theme.palette.normal.background
@@ -701,7 +1294,8 @@ Page {
                 height: quotedUser.contentHeight + units.gu(0.5) + quotedMessageLabel.contentHeight
                 width: units.gu(0.5)
                 anchors {
-                    top: parent.top
+                    bottom: parent.bottom
+                    bottomMargin: units.gu(0.5)
                     left: parent.left
                     leftMargin: units.gu(2)
                 }
@@ -710,12 +1304,14 @@ Page {
 
             Label {
                 id: quotedMessageLabel
-                width: parent.width - units.gu(2) - quoteRectangle.width - units.gu(1) - cancelQuoteShape.width - units.gu(1)
+                width: parent.width - units.gu(2) - quoteRectangle.width - units.gu(1) - units.gu(2)
                 anchors { 
-                    top: parent.top
+                    bottom: quotedUser.top
+                    bottomMargin: units.gu(0.5)
                     left: quoteRectangle.left
                     leftMargin: units.gu(1)
                 }
+                maximumLineCount: 6
                 clip: true
             }
 
@@ -723,8 +1319,8 @@ Page {
                 id: quotedUser
                 width: parent.width - units.gu(2) - quoteRectangle.width - units.gu(1) - cancelQuoteShape.width - units.gu(1)
                 anchors {
-                    top: quotedMessageLabel.bottom
-                    topMargin: units.gu(0.5)
+                    bottom: parent.bottom
+                    bottomMargin: units.gu(0.5)
                     left: quoteRectangle.left
                     leftMargin: units.gu(1)
                 }
@@ -736,12 +1332,11 @@ Page {
                 id: cancelQuoteShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
-                color: theme.palette.normal.overlay
+                color: theme.palette.normal.negative
 
                 anchors {
                     top: parent.top
-                    right: parent.right
-                    rightMargin: units.gu(0.5)
+                    horizontalCenter: parent.horizontalCenter
                 }
 
                 Icon {
@@ -767,10 +1362,11 @@ Page {
 
         Rectangle {
             id: attachmentPreviewRect
-            height: attachImagePreviewMode ? attachImagePreview.height : (attachAudioPreviewMode ? attachAudioShape.height : attachFileIcon.height)
+            height: (attachImagePreviewMode ? attachPreviewImage.height : ((attachAudioPreviewMode || attachVoicePreviewMode) ? attachAudioShape.height : attachFileIcon.height)) + cancelAttachmentShape.height
             width: parent.width
 
-            color: theme.palette.normal.background
+            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+            //color: theme.palette.normal.background
 
             anchors {
                 top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
@@ -778,96 +1374,113 @@ Page {
                 left: parent.left
             }
 
-            visible: attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode
+            visible: attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode
 
-            AnimatedImage {
-                id: attachImagePreview
-                width: chatViewPage.width - units.gu(3) - FontUtils.sizeToPixels("x-large") * 1.2
-                height: chatViewPage.height / 3
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    leftMargin: units.gu(1)
-                }
-                visible: attachImagePreviewMode
-                fillMode: Image.PreserveAspectFit
-            }
+            Rectangle {
+                id: attachVerticalCenterHelperRect
+                height: parent.height - cancelAttachmentShape.height
+                width: parent.width
 
-            Icon {
-                id: attachFileIcon
-                height: cancelAttachmentShape.height
-                width: height
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    leftMargin: units.gu(1)
-                }
-                name: "attachment"
-                visible: attachFilePreviewMode
-            }
+                color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
-            UbuntuShape {
-                id: attachAudioShape
-                height: cancelAttachmentShape.height
-                width: height
                 anchors {
-                    top: parent.top
+                    bottom: parent.bottom
                     left: parent.left
-                    leftMargin: units.gu(1)
                 }
-                visible: attachAudioPreviewMode
-                color: theme.palette.normal.overlay
 
                 Icon {
-                    id: attachAudioIcon
-                    width: parent.width - units.gu(1)
-                    height: width
+                    id: attachFileIcon
+                    height: cancelAttachmentShape.height
+                    width: height
+                    anchors {
+                        verticalCenter: attachFilePreviewLabel.verticalCenter
+                        left: parent.left
+                        leftMargin: units.gu(1)
+                    }
+                    name: "attachment"
+                    visible: attachFilePreviewMode
+                }
+
+                UbuntuShape {
+                    id: attachAudioShape
+                    height: cancelAttachmentShape.height
+                    width: height
                     anchors {
                         verticalCenter: parent.verticalCenter
-                        horizontalCenter: parent.horizontalCenter
+                        left: parent.left
+                        leftMargin: units.gu(1)
                     }
-                    name: "media-playback-start"
+                    visible: attachAudioPreviewMode || attachVoicePreviewMode
+                    color: theme.palette.normal.background
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            messageAudio.stop()
-                            messageAudio.source = attachAudioPath
-                            messageAudio.play()
+                    Icon {
+                        id: attachAudioIcon
+                        width: parent.width - units.gu(1)
+                        height: width
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                        name: "media-playback-start"
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                playAudio(attachAudioPath)
+                            }
                         }
                     }
                 }
+
+                Label {
+                    id: attachFilePreviewLabel
+                    width: chatViewPage.width - (attachAudioPreviewMode ? attachAudioShape.width : attachFileIcon.width) - units.gu(4)
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: attachFileIcon.right
+                        leftMargin: units.gu(1)
+                    }
+                    //elide: Text.ElideRight
+                    maximumLineCount: 2
+                    wrapMode: Text.Wrap
+                    visible: attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode
+                }
             }
 
-            Label {
-                id: attachFilePreviewLabel
-                width: chatViewPage.width - (attachAudioPreviewMode ? attachAudioShape.width : attachFileIcon.width) - units.gu(4) - cancelAttachmentShape.width
+            AnimatedImage {
+                id: attachPreviewImage
+                width: chatViewPage.width - units.gu(3)
+                height: chatViewPage.height / 3
                 anchors {
-                    verticalCenter: attachFileIcon.verticalCenter
-                    left: attachFileIcon.right
-                    leftMargin: units.gu(1)
+                    bottom: parent.bottom
+                    horizontalCenter: parent.horizontalCenter
                 }
-                elide: Text.ElideRight
-                visible: attachFilePreviewMode || attachAudioPreviewMode
+                visible: attachImagePreviewMode
+                fillMode: Image.PreserveAspectFit
             }
 
             UbuntuShape {
                 id: cancelAttachmentShape
                 width: FontUtils.sizeToPixels("x-large") * 1.2
                 height: width
-                color: theme.palette.normal.overlay
+                color: theme.palette.normal.negative
 
                 anchors {
-                    verticalCenter: attachImagePreview.visible ? attachImagePreview.verticalCenter : attachFilePreviewLabel.verticalCenter
-                    right: parent.right
-                    rightMargin: units.gu(0.5)
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.top
                 }
 
                 Icon {
                     id: cancelAttachIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "close"
+
+                    // Voice messages are not recoverable, so they are
+                    // deleted, whereas other stuff can still be
+                    // obtained from its source (except for pics just
+                    // taken by camera, but it's hard to check for this
+                    // case)
+                    name: attachVoicePreviewMode ? "delete" : "close"
                     anchors{
                         horizontalCenter: parent.horizontalCenter
                         verticalCenter: parent.verticalCenter
@@ -875,20 +1488,23 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            DeltaHandler.chatmodel.unsetAttachment()
-                            attachImagePreviewMode = false
-                            attachFilePreviewMode = false
-                            attachAudioPreviewMode = false
-                            if (messageAudio.source == attachAudioPath) {
-                                messageAudio.stop()
+                            if (attachVoicePreviewMode) {
+                                // actual deletion is done by the popup
+                                PopupUtils.open(popoverComponentConfirmDeletion, cancelAttachmentShape)
+                            } else {
+                                // only ask for confirmation for voice messages as other
+                                // attachments should be easily recoverable (except
+                                // for pictures that were just taken, but well..)
+                                DeltaHandler.chatmodel.unsetAttachment()
+                                attachImagePreviewMode = false
+                                attachFilePreviewMode = false
+                                attachAudioPreviewMode = false
                             }
                         }
                     }
                 }
             }
-        }
-
-
+        } // end Rectangle id: attachmentPreviewRect
 
         UbuntuShape{
             id: attachIconShape
@@ -902,10 +1518,9 @@ Page {
                 top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)
                 topMargin: attachmentPreviewRect.visible || quotedMessageBox.visible ? units.gu(1) : 0
             }
-            visible: audioRecordMode ? false : true
-            enabled: !(attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode)
+            enabled: !(attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode)
 
-            Icon{
+            Icon {
                 id: attachIcon
                 width: parent.width - units.gu(1)
                 height: width
@@ -936,7 +1551,7 @@ Page {
             }
             autoSize: true
             maximumLineCount: 5
-            visible: !attachmentMode && !audioRecordMode
+            visible: !attachmentMode
         }
 
         UbuntuShape {
@@ -952,7 +1567,7 @@ Page {
                 //horizontalCenter: parent.horizontalCenter
                 //verticalCenter: parent.verticalCenter
             }
-            visible: !attachmentMode && !audioRecordMode
+            visible: !attachmentMode
 
             Icon {
                 id: sendIcon
@@ -969,15 +1584,17 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     if (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) {
+                        // currently showing the microphone icon => start voice message
+                        // recording
                         messageAudio.stop()
-                        DeltaHandler.prepareAudioRecording(root.voiceMessageQuality)
                         attachmentMode = false
-                        audioRecordMode = true
-                        // sending recorded audio will be done by a different
-                        // button, see sendRecIconShape
-
+                        isRecording = true
+                        let a = DeltaHandler.startAudioRecording(root.voiceMessageQuality)
+                        recordingShapeLoader.active = true
                     } else {
-                        // without removing the focus from the TextArea,
+                        // currently showing the send icon => send message
+                        // 
+                        // Without removing the focus from the TextArea,
                         // the text passed to DeltaHandler.sendMessage
                         // may be incomplete
                         messageEnterField.focus = false
@@ -985,8 +1602,9 @@ Page {
                         attachImagePreviewMode = false
                         attachFilePreviewMode = false
                         attachAudioPreviewMode = false
+                        attachVoicePreviewMode = false
 
-                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text, DeltaHandler.TextType)
+                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
 
                         // TODO: is the comment below still correct?
                         // clear() does not work as we are using the TextArea
@@ -1014,7 +1632,7 @@ Page {
 
             color: theme.palette.normal.background
 
-            visible: attachmentMode && !audioRecordMode
+            visible: attachmentMode
 
             UbuntuShape{
                 id: sendImageIconShape
@@ -1027,7 +1645,7 @@ Page {
                     verticalCenter: parent.verticalCenter
                 }
 
-                Icon{
+                Icon {
                     id: imageIcon
                     width: parent.width - units.gu(1)
                     height: width
@@ -1059,7 +1677,7 @@ Page {
                     verticalCenter: parent.verticalCenter
                 }
 
-                Icon{
+                Icon {
                     id: audioIcon
                     width: parent.width - units.gu(1)
                     height: width
@@ -1091,7 +1709,7 @@ Page {
                     verticalCenter: parent.verticalCenter
                 }
 
-                Icon{
+                Icon {
                     id: attachmentIcon
                     width: parent.width - units.gu(1)
                     height: width
@@ -1111,370 +1729,129 @@ Page {
                 }
             } // end UbuntuShape id: sendFileIconShape
 
-//            UbuntuShape {
-//                id: voiceMessageIconShape
-//                width: FontUtils.sizeToPixels("x-large") * 1.2
-//                height: width
-//                color: theme.palette.normal.overlay
-//
-//                anchors{
-//                    right: sendFileIconShape.left
-//                    rightMargin: units.gu(2)
-//                    verticalCenter: parent.verticalCenter
-//                }
-//
-//                Icon{
-//                    id: voiceMessageIcon
-//                    width: parent.width - units.gu(1)
-//                    height: width
-//                    name: "audio-input-microphone-symbolic"
-//                    anchors{
-//                        horizontalCenter: voiceMessageIconShape.horizontalCenter
-//                        verticalCenter: voiceMessageIconShape.verticalCenter
-//                    }
-//                    MouseArea {
-//                        anchors.fill: parent
-//                        onClicked: {
-//                            messageAudio.stop()
-//                            DeltaHandler.prepareAudioRecording(root.voiceMessageQuality)
-//                            attachmentMode = false
-//                            audioRecordMode = true
-//                        }
-//                        enabled: true
-//                    }
-//                }
-//            } // end UbuntuShape id: voiceMessageIconShape
+            UbuntuShape {
+                id: voiceMessageIconShape
+                width: FontUtils.sizeToPixels("x-large") * 1.2
+                height: width
+                color: theme.palette.normal.overlay
+
+                anchors{
+                    right: sendFileIconShape.left
+                    rightMargin: units.gu(2)
+                    verticalCenter: parent.verticalCenter
+                }
+
+                Icon{
+                    id: voiceMessageIcon
+                    width: parent.width - units.gu(1)
+                    height: width
+                    name: "audio-input-microphone-symbolic"
+                    anchors{
+                        horizontalCenter: voiceMessageIconShape.horizontalCenter
+                        verticalCenter: voiceMessageIconShape.verticalCenter
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            messageAudio.stop()
+                            attachmentMode = false
+                            let a = DeltaHandler.startAudioRecording(root.voiceMessageQuality)
+                            recordingShapeLoader.active = true
+                            isRecording = true
+                        }
+                        enabled: true
+                    }
+                }
+            } // end UbuntuShape id: voiceMessageIconShape
         } // end Rectangle id: filetypeToSendCage
         
 
-    /* ======================================================
-       ============== Voice Message Recording ===============
-       ====================================================== */
-
-        UbuntuShape {
-            // separate close icon at (almost) the same position as
-            // the regular one, just to reduce the complexity of the
-            // statements for "enabled" and "onClicked"
-            id: leaveRecIconShape
-            width: FontUtils.sizeToPixels("x-large") * 1.2
-            height: width
-            color: theme.palette.normal.overlay
-
-            visible: audioRecordMode
-            opacity: !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying ? 1 : 0.5
-
-            anchors{
-                left: messageCreatorBox.left
-                leftMargin: units.gu(1)
-                bottom: parent.bottom
-                bottomMargin: units.gu(1)
-            }
-
-            Icon {
-                width: parent.width - units.gu(1)
-                height: width
-                name: "close"
-                anchors{
-                    horizontalCenter: leaveRecIconShape.horizontalCenter
-                    verticalCenter: leaveRecIconShape.verticalCenter
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        if (audioRecordBox.hasRecord) {
-                            PopupUtils.open(popoverComponentConfirmLeavingRecording, leaveRecIconShape)
-                        } else {
-                            // need to call dismiss even if hasRecord is false because a recording
-                            // might have been finished, but deleted afterwards, in which case the
-                            // QAudioRecorder object in C++ has been created
-                            DeltaHandler.dismissAudioRecording()
-                            audioRecordMode = false
-                        }
-                    }
-                    enabled: audioRecordMode && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
-                }
-            }
-        } // end UbuntuShape id: sendRecIconShape
-
-        UbuntuShape {
-            // separate send icon at (almost) the same position as
-            // the regular one, just to reduce the complexity of the
-            // statements for "enabled" and "onClicked"
-            id: sendRecIconShape
-            width: FontUtils.sizeToPixels("x-large") * 1.2
-            height: width
-            color: theme.palette.normal.overlay
-
-            visible: audioRecordMode
-            opacity: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying ? 1 : 0.5
-
-            anchors{
-                right: messageCreatorBox.right
-                rightMargin: units.gu(1)
-                bottom: parent.bottom
-                bottomMargin: units.gu(1)
-            }
-
-            Icon {
-                width: parent.width - units.gu(1)
-                height: width
-                name: "send"
-                anchors{
-                    horizontalCenter: sendRecIconShape.horizontalCenter
-                    verticalCenter: sendRecIconShape.verticalCenter
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        DeltaHandler.sendAudioRecording(audioRecordBox.voiceMessageFile)
-                        audioRecordBox.stopAndCleanupVoiceRecording()
-                        audioRecordMode = false
-                    }
-                    enabled: audioRecordMode && audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
-                }
-            }
-        } // end UbuntuShape id: sendRecIconShape
-
-        UbuntuShape {
-            id: floatingInfoRecordingShape
-            height: units.gu(10)
-            width: height
+        Loader {
+            id: recordingShapeLoader
+            active: false
+            visible: isRecording
 
             anchors {
-                bottom: audioRecordBox.top
+                bottom: messageCreatorBox.top
                 bottomMargin: units.gu(10)
                 horizontalCenter: parent.horizontalCenter
             }
 
-            color: root.darkmode? "white" : "black"
-            visible: audioRecordBox.isRecording
+            sourceComponent: UbuntuShape {
+                id: recordingShape
 
-            Icon{
-                width: parent.width - units.gu(1)
-                height: width
-                name: "media-record"
-                anchors{
-                    horizontalCenter: floatingInfoRecordingShape.horizontalCenter
-                    verticalCenter: floatingInfoRecordingShape.verticalCenter
-                }
-            }
+                height: units.gu(20)
+                width: units.gu(10)
 
-            SequentialAnimation {
-                loops: Animation.Infinite
-                running: true
-                PropertyAnimation {
-                    target: floatingInfoRecordingShape
-                    property: "opacity"
-                    to: 1
-                    duration: 1000
-                }
-                PropertyAnimation {
-                    target: floatingInfoRecordingShape
-                    property: "opacity"
-                    to: 0.3
-                    duration: 1000
-                }
-            }
-        }
+                color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
-        Rectangle {
-            id: audioRecordBox
-            height: startRecIconShape.height + units.gu(2)
-            width: units.gu(1) + deleteRecIconShape.width + units.gu(1) + startRecIconShape.width + units.gu(1) + stopRecIconShape.width + units.gu(1) + playRecIconShape.width + units.gu(1)
+                UbuntuShape {
+                    id: recordingBackground
+                    height: units.gu(10)
+                    width: units.gu(10)
 
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
-                topMargin: quotedMessageBox.visible ? units.gu(1) : 0
-            }
-
-            visible: audioRecordMode
-            border.color: "grey" //root.darkmode ? "white" : "black"
-            border.width: units.gu(0.1)
-            color: theme.palette.normal.background
-
-            property bool isRecording: false
-            property bool hasRecord: false
-            property bool recordIsPlaying: false
-            property string voiceMessageFile: ""
-
-            function stopVoiceRecordingOrPlaying() {
-                if (audioRecordBox.isRecording) {
-                    DeltaHandler.stopAudioRecording()
-                    audioRecordBox.isRecording = false
-                } else if (audioRecordBox.recordIsPlaying) {
-                    recordedAudio.stop()
-                }
-            }
-
-            function stopAndCleanupVoiceRecording() {
-                if (audioRecordBox.isRecording) {
-                    DeltaHandler.stopAudioRecording()
-                    audioRecordBox.isRecording = false
-                } else if (audioRecordBox.recordIsPlaying) {
-                    recordedAudio.stop()
-                }
-                DeltaHandler.dismissAudioRecording()
-                audioRecordBox.hasRecord = false
-            }
-
-            Connections {
-                target: recordedAudio
-
-                onPlaybackStateChanged: {
-                    if (recordedAudio.playbackState === Audio.PlayingState) {
-                        audioRecordBox.recordIsPlaying = true
-                    } else {
-                        audioRecordBox.recordIsPlaying = false
+                    anchors {
+                        top: parent.top
+                        left: parent.left
                     }
-                }
-            }
 
-            UbuntuShape {
-                id: deleteRecIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
-                height: width
-                color: theme.palette.normal.overlay
-
-                opacity: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying ? 1 : 0.5
-
-                anchors{
-                    left: parent.left
-                    leftMargin: units.gu(1)
-                    bottom: parent.bottom
-                    bottomMargin: units.gu(1)
+                    color: root.darkmode ? "white" : "black"
                 }
 
                 Icon {
-                    width: parent.width - units.gu(1)
-                    height: width
-                    name: "delete"
-                    anchors{
-                        horizontalCenter: deleteRecIconShape.horizontalCenter
-                        verticalCenter: deleteRecIconShape.verticalCenter
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            // TODO: delete the file in the cache?
-                            //DeltaHandler.deleteAudioRecording()
-                            PopupUtils.open(popoverComponentConfirmDeletion, deleteRecIconShape)
-                        }
-                        enabled: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
-                    }
-                }
-            } // end UbuntuShape id: deleteRecIconShape
+                    id: floatingRecIcon
 
-            UbuntuShape {
-                id: startRecIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
-                height: width
-                color: theme.palette.normal.overlay
-
-                opacity: !audioRecordBox.hasRecord && !audioRecordBox.isRecording ? 1 : 0.5
-
-                anchors{
-                    left: deleteRecIconShape.right
-                    leftMargin: units.gu(1)
-                    bottom: parent.bottom
-                    bottomMargin: units.gu(1)
-                }
-
-                Icon{
-                    width: parent.width - units.gu(1)
+                    width: parent.width - units.gu(2)
                     height: width
                     name: "media-record"
-                    anchors{
-                        horizontalCenter: startRecIconShape.horizontalCenter
-                        verticalCenter: startRecIconShape.verticalCenter
+
+                    anchors {
+                        top: parent.top
+                        topMargin: units.gu(1)
+                        left: parent.left
+                        leftMargin: units.gu(1)
                     }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            audioRecordBox.voiceMessageFile = DeltaHandler.startAudioRecording()
-                            audioRecordBox.isRecording = true
+
+                    SequentialAnimation {
+                        loops: Animation.Infinite
+                        running: true
+                        PropertyAnimation {
+                            target: recordingBackground
+                            property: "opacity"
+                            to: 1
+                            duration: 1000
                         }
-                        enabled: !audioRecordBox.hasRecord && !audioRecordBox.isRecording
+                        PropertyAnimation {
+                            target: recordingBackground
+                            property: "opacity"
+                            to: 0.3
+                            duration: 1000
+                        }
                     }
                 }
-            } // end UbuntuShape id: startRecIconShape
 
-            UbuntuShape {
-                id: stopRecIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
-                height: width
-                color: theme.palette.normal.overlay
-
-                opacity: (audioRecordBox.isRecording || audioRecordBox.recordIsPlaying) ? 1 : 0.5
-
-                anchors{
-                    left: startRecIconShape.right
-                    leftMargin: units.gu(1)
-                    bottom: parent.bottom
-                    bottomMargin: units.gu(1)
-                }
-
-                Icon{
-                    width: parent.width - units.gu(1)
+                Icon {
+                    width: parent.width - units.gu(2)
                     height: width
                     name: "media-playback-stop"
-                    anchors{
-                        horizontalCenter: stopRecIconShape.horizontalCenter
-                        verticalCenter: stopRecIconShape.verticalCenter
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            if (audioRecordBox.isRecording) {
-                                DeltaHandler.stopAudioRecording()
-                                audioRecordBox.isRecording = false
-                                audioRecordBox.hasRecord = true
-                            } else if (audioRecordBox.recordIsPlaying) {
-                                recordedAudio.stop()
-                            }
-                        }
-                        enabled: (audioRecordBox.isRecording || audioRecordBox.recordIsPlaying)
+
+                    anchors {
+                        bottom: parent.bottom
+                        bottomMargin: units.gu(1)
+                        left: parent.left
+                        leftMargin: units.gu(1)
                     }
                 }
-            } // end UbuntuShape id: startRecIconShape
-
-            UbuntuShape {
-                id: playRecIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
-                height: width
-                color: theme.palette.normal.overlay
-
-                opacity: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying ? 1 : 0.5
-
-                anchors{
-                    left: stopRecIconShape.right
-                    leftMargin: units.gu(1)
-                    bottom: parent.bottom
-                    bottomMargin: units.gu(1)
-                }
-
-                Icon{
-                    width: parent.width - units.gu(1)
-                    height: width
-                    name: "media-playback-start"
-                    anchors{
-                        horizontalCenter: playRecIconShape.horizontalCenter
-                        verticalCenter: playRecIconShape.verticalCenter
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            recordedAudio.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, audioRecordBox.voiceMessageFile))
-                            recordedAudio.play()
-                        }
-                        enabled: audioRecordBox.hasRecord && !audioRecordBox.isRecording && !audioRecordBox.recordIsPlaying
+                
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        DeltaHandler.stopAudioRecording()
+                        isRecording = false
                     }
                 }
-            } // end UbuntuShape id: playRecIconShape
-        } // end UbuntuShape id: audioRecordBox
-
-    /* ============ End Voice Message Recording ============= */
-
+            } // end UbuntuShape id: recordingShape
+        }
     } // end Rectangle id: messageCreatorBox
 
 
@@ -1539,170 +1916,92 @@ Page {
 
     } // end Rectangle id: requestReactionRect
 
-    Audio {
-        id: messageAudio
-        onPlaying: {
-            audioRecordBox.stopVoiceRecordingOrPlaying()
-        }
-    }
-
-    Audio {
-        id: recordedAudio
-    }
-
-    function millisecsToString(time) {
-        // Algorithm in this function copied from Recorder app:
-        // https://github.com/luksus42/recorder/blob/master/Recorder/ui/HomePage.qml
-        // Originally: Copyright (C) 2016  DawnDIY <dawndiy.dev@gmail.com>
-        // Forked by Luksus42
-
-        var time_str
-        var record_time = Math.ceil(time/1000)
-        var sec = record_time % 60
-        var min = Math.floor(record_time / 60) % 60
-        var hr = Math.floor(record_time / 3600)
-        if (hr > 0) {
-            time_str = hr + ":"
-            time_str += new Array(2-String(min).length+1).join("0") + min + ":"
-            time_str += new Array(2-String(sec).length+1).join("0") + sec
-        } else {
-            time_str = new Array(2-String(min).length+1).join("0") + min + ":"
-            time_str += new Array(2-String(sec).length+1).join("0") + sec
-        }
-        return time_str
-    }
-
-    UbuntuShape {
-        id: audioPlayerShape
-        height: units.gu(5)
-        width: units.gu(1) + audioPlayIcon.width + units.gu(1) + audioStopIcon.width + units.gu(1) + durationLabel.contentWidth + units.gu(1)
+    Loader {
+        id: audioPlayLoader
+        active: false
+        visible: messageAudio.playbackState === Audio.PlayingState || messageAudio.playbackState === Audio.PausedState
 
         anchors {
             top: header.bottom
             topMargin: units.gu(2)
             horizontalCenter: chatViewPage.horizontalCenter
         }
-        backgroundColor: root.darkmode ? "white" : "black"
-        visible: messageAudio.playbackState === Audio.PlayingState || messageAudio.playbackState === Audio.PausedState
 
-        Icon {
-            id: audioPlayIcon
-            height: units.gu(4)
-            anchors {
-                left: audioPlayerShape.left
-                leftMargin: units.gu(1)
-                verticalCenter: audioPlayerShape.verticalCenter
-            }
-            name: messageAudio.playbackState === Audio.PlayingState ? "media-playback-pause" : "media-playback-start"
+        function startPlaying(sourceUrl) {
+            messageAudio.stop()
+            messageAudio.source = sourceUrl
+            messageAudio.play()
+        }
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (messageAudio.playbackState === Audio.PlayingState) {
-                        messageAudio.pause()
-                    } else {
-                        messageAudio.play()
-                    }
-                }
-            }
-        } // end Icon id: audioPlayIcon
-
-        Icon {
-            id: audioStopIcon
-            height: units.gu(4)
-            anchors {
-                left: audioPlayIcon.right
-                leftMargin: units.gu(1)
-                verticalCenter: audioPlayerShape.verticalCenter
-            }
-            name: "media-playback-stop"
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (messageAudio.playbackState === Audio.PlayingState || messageAudio.playbackState === Audio.PausedState) {
-                        messageAudio.stop()
-                    }
-                }
+        Audio {
+            id: messageAudio
+            onPlaying: {
+                audioRecordBox.stopVoiceRecordingOrPlaying()
             }
         }
 
-        Label {
-            id: durationLabel
-            anchors {
-                left: audioStopIcon.right
-                leftMargin: units.gu(1)
-                verticalCenter: audioPlayerShape.verticalCenter
-            }
-            text: millisecsToString(messageAudio.position) + " / " + millisecsToString(messageAudio.duration)
-            color: root.darkmode ? "black" : "white"
-        }
-    } // end UbuntuShape id: audioPlayerShape
+        sourceComponent: UbuntuShape {
+            id: audioPlayerShape
+            height: units.gu(5)
+            width: units.gu(1) + audioPlayIcon.width + units.gu(1) + audioStopIcon.width + units.gu(1) + durationLabel.contentWidth + units.gu(1)
 
-    Component {
-        id: popoverComponentConfirmLeavingRecording
-        Popover {
-            id: popoverConfirmLeavingRecording
-            Column {
-                id: containerLayoutLeavingRecording
+            backgroundColor: root.darkmode ? "white" : "black"
+
+            Icon {
+                id: audioPlayIcon
+                height: units.gu(4)
                 anchors {
-                    left: parent.left
-                    top: parent.top
-                    right: parent.right
+                    left: audioPlayerShape.left
+                    leftMargin: units.gu(1)
+                    verticalCenter: audioPlayerShape.verticalCenter
                 }
-                ListItem {
-                    height: layout31.height
-                    // should be automatically be themed with something like
-                    // theme.palette.normal.overlay, but this
-                    // doesn't seem to work for Ambiance (and importing
-                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
-                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-                    ListItemLayout {
-                        id: layout31
-                        // TODO string not translated yet
-                        title.text: i18n.tr("Click to leave without sending")
-                    }
-                    onClicked: {
-                        audioRecordBox.stopAndCleanupVoiceRecording()
-                        audioRecordMode = false
-                        PopupUtils.close(popoverConfirmLeavingRecording)
-                    }
-                }
-            }
-        }
-    } // end Component id: popoverComponentConfirmLeavingRecording
+                name: messageAudio.playbackState === Audio.PlayingState ? "media-playback-pause" : "media-playback-start"
 
-    Component {
-        id: popoverComponentConfirmDeletion
-        Popover {
-            id: popoverConfirmDeletion
-            Column {
-                id: containerLayoutDeletion
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    right: parent.right
-                }
-                ListItem {
-                    height: layout1.height
-                    // should be automatically be themed with something like
-                    // theme.palette.normal.overlay, but this
-                    // doesn't seem to work for Ambiance (and importing
-                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
-                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-                    ListItemLayout {
-                        id: layout1
-                        title.text: i18n.tr("Delete")
-                    }
+                MouseArea {
+                    anchors.fill: parent
                     onClicked: {
-                        audioRecordBox.hasRecord = false
-                        audioRecordBox.voiceMessageFile = ""
-                        PopupUtils.close(popoverConfirmDeletion)
+                        if (messageAudio.playbackState === Audio.PlayingState) {
+                            messageAudio.pause()
+                        } else {
+                            messageAudio.play()
+                        }
+                    }
+                }
+            } // end Icon id: audioPlayIcon
+
+            Icon {
+                id: audioStopIcon
+                height: units.gu(4)
+                anchors {
+                    left: audioPlayIcon.right
+                    leftMargin: units.gu(1)
+                    verticalCenter: audioPlayerShape.verticalCenter
+                }
+                name: "media-playback-stop"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (messageAudio.playbackState === Audio.PlayingState || messageAudio.playbackState === Audio.PausedState) {
+                            messageAudio.stop()
+                        }
                     }
                 }
             }
-        }
-    } // end Component id: popoverComponentConfirmDeletion
+
+            Label {
+                id: durationLabel
+                anchors {
+                    left: audioStopIcon.right
+                    leftMargin: units.gu(1)
+                    verticalCenter: audioPlayerShape.verticalCenter
+                }
+                text: millisecsToString(messageAudio.position) + " / " + millisecsToString(messageAudio.duration)
+                color: root.darkmode ? "black" : "white"
+            }
+        } // end UbuntuShape id: audioPlayerShape
+    } // end Loader id: audioPlayLoader
+
 
     Timer {
         id: unreadJumpTimer
@@ -1723,4 +2022,50 @@ Page {
             layout.removePages(chatViewPage)
         }
     }
+
+    Component {
+        id: popoverComponentConfirmDeletion
+        Popover {
+            id: popoverConfirmDeletion
+            Column {
+                id: containerLayoutDeletion
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+                ListItem {
+                    height: layout1.height
+                    // should be automatically be themed with something like
+                    // theme.palette.normal.overlay, but this
+                    // doesn't seem to work for Ambiance (and importing
+                    // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                    color: theme.palette.normal.focus
+                    ListItemLayout {
+                        id: layout1
+                        title.text: i18n.tr("Delete")
+                        title.color: root.darkmode ? "black" : "white"
+                    }
+                    onClicked: {
+                        if (messageAudio.source == attachAudioPath) {
+                            messageAudio.stop()
+                        }
+
+                        if (attachVoicePreviewMode) {
+                            DeltaHandler.dismissAudioRecording()
+                            DeltaHandler.chatmodel.unsetAttachment()
+                            attachVoicePreviewMode = false
+                        } else {
+                            DeltaHandler.chatmodel.unsetAttachment()
+                            attachImagePreviewMode = false
+                            attachFilePreviewMode = false
+                            attachAudioPreviewMode = false
+                        }
+
+                        PopupUtils.close(popoverConfirmDeletion)
+                    }
+                }
+            }
+        }
+    } // end Component id: popoverComponentConfirmDeletion
 } // end Page id: chatViewPage

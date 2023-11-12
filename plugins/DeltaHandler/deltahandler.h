@@ -367,11 +367,9 @@ public:
     /* ========================================================
      * =============== Audio message recording ================
      * ======================================================== */
-    Q_INVOKABLE void prepareAudioRecording(int recordingQuality);
+    Q_INVOKABLE bool startAudioRecording(int recordingQuality);
     Q_INVOKABLE void dismissAudioRecording();
-    Q_INVOKABLE QString startAudioRecording();
     Q_INVOKABLE void stopAudioRecording();
-    Q_INVOKABLE void sendAudioRecording(QString filepath);
     /* ============ End audio message recording =============== */
 
     Q_INVOKABLE void setEnablePushNotifications(bool enabled);

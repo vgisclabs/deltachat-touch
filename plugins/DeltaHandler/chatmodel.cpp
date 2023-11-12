@@ -64,6 +64,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[MessageStateRole] = "messageState";
     roles[QuotedTextRole] = "quotedText";
     roles[QuoteUserRole] = "quoteUser";
+    roles[QuoteAvatarColorRole] = "quoteAvatarColor";
     roles[QuoteIsSelfRole] = "quoteIsSelf";
     roles[MessageInfoRole] = "messageInfo";
     roles[DurationRole] = "duration";
@@ -77,6 +78,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[UsernameRole] = "username";
     roles[SummaryTextRole] = "summarytext";
     roles[FilePathRole] = "filepath";
+    roles[FilenameRole] = "filename";
     roles[AudioFilePathRole] = "audiofilepath";
     roles[ImageWidthRole] = "imagewidth";
     roles[AvatarColorRole] = "avatarColor";
@@ -228,6 +230,12 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                 case DC_STATE_OUT_MDN_RCVD:
                     retval = DeltaHandler::MsgState::StateReceived;
                     break;
+                    
+                default:
+                    // TODO: there are more states, and also states of
+                    // incoming messages
+                    retval = 0;
+                    break;
             } 
             break;
 
@@ -276,6 +284,20 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
             }
 
             retval = tempQString;
+            break;
+
+        case ChatModel::QuoteAvatarColorRole:
+            nextMsg = dc_msg_get_quoted_msg(tempMsg);
+
+            if (nextMsg) {
+                contactID = dc_msg_get_from_id(nextMsg);
+                tempContact = dc_get_contact(currentMsgContext, contactID);
+                tempColor = dc_contact_get_color(tempContact);
+                tempQColor = QColor((tempColor >> 16) % 256, (tempColor >> 8) % 256, tempColor % 256, 0);
+                retval = QString(tempQColor.name());
+            } else {
+                retval = "";
+            }
             break;
 
         case ChatModel::QuoteIsSelfRole:
@@ -442,12 +464,12 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
         case ChatModel::DateRole:
             msgDate = QDateTime::fromSecsSinceEpoch(dc_msg_get_timestamp(tempMsg));
             if (msgDate.date() == QDate::currentDate()) {
-                tempQString = msgDate.toString("hh:mm ");
-                // TODO: if <user prefers am/pm> ...("hh:mm ap ")
+                tempQString = msgDate.toString("hh:mm");
+                // TODO: if <user prefers am/pm> ...("hh:mm ap")
             }
             else {
-                tempQString = msgDate.toString("dd MMM yy hh:mm " );
-                // TODO: "...hh:mm ap " as above
+                tempQString = msgDate.toString("dd MMM yy hh:mm" );
+                // TODO: "...hh:mm ap" as above
             }
             retval = tempQString;
             break;
@@ -522,6 +544,16 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
 
             // see ProfilePicRole above
             tempQString.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length() + 1);
+            retval = tempQString;
+            break;
+
+        case ChatModel::FilenameRole:
+            tempText = dc_msg_get_file(tempMsg);
+            tempQString = tempText;
+
+            if (tempQString.lastIndexOf("/") != -1) {
+                tempQString = tempQString.remove(0, tempQString.lastIndexOf("/") + 1);
+            }
             retval = tempQString;
             break;
 
@@ -1272,13 +1304,14 @@ QString ChatModel::copyToCache(QString fromFilePath) const
 
     // if it exists, remove it first
     if (QFile::exists(toFilePath)) {
-        qDebug() << "ChatModel::copyToCache: trying to remove file " << toFilePath << " from Cache...";
-        int success = remove(toFilePath.toUtf8().constData());
-        if (0 == success) {
-            qDebug() << "ChatModel::copyToCache: ...success.";
-        } else {
-            qDebug() << "ChatModel::copyToCache: ...ERROR: failed!";
-        }
+//        qDebug() << "ChatModel::copyToCache: trying to remove file " << toFilePath << " from Cache...";
+//        int success = remove(toFilePath.toUtf8().constData());
+        remove(toFilePath.toUtf8().constData());
+//        if (0 == success) {
+//            qDebug() << "ChatModel::copyToCache: ...success.";
+//        } else {
+//            qDebug() << "ChatModel::copyToCache: ...ERROR: failed!";
+//        }
     }
 
     QFile::copy(fromFilePath, toFilePath);
@@ -1498,6 +1531,15 @@ void ChatModel::setAttachment(QString filepath, int attachType)
             }
             emit previewAudioAttachment(filepath, filename);
             break;
+        
+        case DeltaHandler::MsgViewType::VoiceType:
+            // should be in the cache for voice messages,
+            // but just to be sure
+            if (!addCacheLocation) {
+                filepath = copyToCache(originalPath);
+            }
+            emit previewVoiceAttachment(filepath, filename);
+            break;
 
         case DeltaHandler::MsgViewType::FileType:
             emit previewFileAttachment(filename);
@@ -1510,7 +1552,7 @@ void ChatModel::setAttachment(QString filepath, int attachType)
         case DeltaHandler::MsgViewType::StickerType:
             emit previewImageAttachment(filepath, addCacheLocation);
             break;
-        
+
      //   case DeltaHandler::MsgViewType::TextType:
      //       break;
 
@@ -1520,14 +1562,11 @@ void ChatModel::setAttachment(QString filepath, int attachType)
      //   case DeltaHandler::MsgViewType::VideochatInvitationType:
      //       break;
      //   
-     //   case DeltaHandler::MsgViewType::VoiceType:
-     //       break;
-
      //   case DeltaHandler::MsgViewType::WebXdcType:
      //       break;
 
         default:
-            qDebug() << "DeltaHandler::setAttachment() reached default case in switch";
+            qDebug() << "ChatModel::setAttachment() reached default case in switch";
             break;
     }
 }
@@ -1574,6 +1613,15 @@ void ChatModel::emitDraftHasAttachmentSignals()
                 }
                 emit previewAudioAttachment(filepath, filename);
                 break;
+            
+            case DC_MSG_VOICE:
+                // should be in the cache for voice messages,
+                // but just to be sure
+                if (!addCacheLocation) {
+                    filepath = copyToCache(originalPath);
+                }
+                emit previewVoiceAttachment(filepath, filename);
+                break;
 
             case DC_MSG_FILE:
                 emit previewFileAttachment(filename);
@@ -1584,7 +1632,7 @@ void ChatModel::emitDraftHasAttachmentSignals()
             case DC_MSG_STICKER:
                 emit previewImageAttachment(filepath, addCacheLocation);
                 break;
-            
+
          //   case DeltaHandler::MsgViewType::TextType:
          //       break;
 
@@ -1594,8 +1642,6 @@ void ChatModel::emitDraftHasAttachmentSignals()
          //   case DeltaHandler::MsgViewType::VideochatInvitationType:
          //       break;
          //   
-         //   case DeltaHandler::MsgViewType::VoiceType:
-         //       break;
 
          //   case DeltaHandler::MsgViewType::WebXdcType:
          //       break;
@@ -1613,9 +1659,15 @@ void ChatModel::unsetAttachment()
     if (currentMessageDraft) {
         // If there's no quote, the draft can be deleted. Any text
         // in the draft will be set again when the ChatView is left.
+        // Need to pass NULL to dc_set_draft, otherwise
+        // the attachment would not be deleted if the chat is left
+        // with an empty messageEnterField (as then no new draft
+        // would be set and the core would still have the old one
+        // with the attachment)
         if (!draftHasQuote()) {
             dc_msg_unref(currentMessageDraft);
             currentMessageDraft = nullptr;
+            dc_set_draft(currentMsgContext, m_chatID, NULL);
         } else {
             dc_msg_t* tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
 

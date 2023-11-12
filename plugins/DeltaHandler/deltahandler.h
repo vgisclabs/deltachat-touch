@@ -77,6 +77,8 @@ public:
     enum SearchJumpToPosition { PositionFirst, PositionPrev, PositionNext, PositionLast };
     Q_ENUM(SearchJumpToPosition)
 
+    Q_INVOKABLE bool isDesktopMode();
+
     Q_INVOKABLE void loadSelectedAccount();
 
     // The passphrase for database encryption is passed from QML via this

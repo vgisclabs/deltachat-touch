@@ -395,6 +395,22 @@ DeltaHandler::~DeltaHandler()
 }
 
 
+bool DeltaHandler::isDesktopMode()
+{
+    // checks if the app is running in desktop mode, i.e.
+    // via 'clickable desktop'. Clickable sets the
+    // env var CLICKABLE_DESKTOP_MODE in that case.
+    QProcessEnvironment procenv = QProcessEnvironment::systemEnvironment();
+    QStringList sysvarlist = procenv.keys();
+    for (int i = 0; i < sysvarlist.size(); ++i) {
+        if (sysvarlist.at(i) == "CLICKABLE_DESKTOP_MODE") {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 void DeltaHandler::loadSelectedAccount()
 {
     qDebug() << "entering DeltaHandler::loadSelectedAccount()";

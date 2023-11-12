@@ -1063,6 +1063,13 @@ MainView {
             oldVersion = version
         }
 
+        isDesktopMode = DeltaHandler.isDesktopMode()
+        if (isDesktopMode) {
+            console.log("Main.qml: Running in desktop mode")
+        } else {
+            console.log("Main.qml: NOT running in desktop mode")
+        }
+
         darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
         startupStep1()
     }

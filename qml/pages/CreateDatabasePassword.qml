@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2022  Lothar Ketterer
+ * Copyright (C) 2023  Lothar Ketterer
  *
- * This file is part of the app "rounds".
+ * This file is part of the app "DeltaTouch".
  *
- * rounds is free software: you can redistribute it and/or modify
+ * DeltaTouch is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3.
  *
- * rounds is distributed in the hope that it will be useful,
+ * DeltaTouch is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.

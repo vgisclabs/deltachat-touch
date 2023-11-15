@@ -1,8 +1,9 @@
 x.x.x xxxx-xx-xx
 UI: Changed workflow for voice message recording
 UI: Changed attachment preview in compose area
+UI: Scalable text in chatlist and chats, pinch to zoom text
 Other: Internal refactoring to reduce delay when opening a chat
-Bugfix: Deleting attachments from the compose area did not work reliably
+Bugfix: Deleting attachments from the compose area did not work in all cases
 
 1.2.0 2023-10-27
 Feature: Database encryption (config + text only, blobs remain unencrypted)

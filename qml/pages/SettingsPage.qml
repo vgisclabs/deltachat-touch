@@ -1615,7 +1615,7 @@ Page {
                             // should be automatically themed with something like
                             // theme.palette.normal.overlay, but this
                             // doesn't seem to work for Ambiance (and importing
-                            // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                            // Lomiri.Components.Themes 1.3 doesn't solve it). 
                             color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                             ListItemLayout {
                                 id: layout11

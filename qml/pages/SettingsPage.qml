@@ -392,6 +392,51 @@ Page {
             }
 
             ListItem {
+                id: textZoomItem
+                height: textZoomLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: textZoomLayout
+                    title.text: i18n.tr("Message Font Size")
+                    title.font.bold: true
+
+                    Label {
+                        id: textZoomLabel
+                        width: settingsPage.width/4
+                        text: {
+                            switch (root.scaleLevel) {
+                                case 1:
+                                    return i18n.tr("Small");
+                                    break;
+                                case 2:
+                                    return i18n.tr("Normal");
+                                    break;
+                                case 3:
+                                    return i18n.tr("Large");
+                                    break;
+                                case 4:
+                                    return i18n.tr("Extra large");
+                                    break;
+                            }
+                        }
+
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                    }
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+                onClicked: {
+                    PopupUtils.open(popoverComponentTextZoom, textZoomItem)
+                }
+            }
+
+            ListItem {
                 height: expSettings.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
 
@@ -1554,6 +1599,79 @@ Page {
                     } // end Column id: containerLayoutDelServer
                 } // end Popover id: popoverDeleteFromServer
             } // end Component id: popoverComponentDeleteFromServer
+
+            Component {
+                id: popoverComponentTextZoom
+                Popover {
+                    id: popoverTextZoom
+                    Column {
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            right: parent.right
+                        }
+                        ListItem {
+                            height: layout11.height
+                            // should be automatically themed with something like
+                            // theme.palette.normal.overlay, but this
+                            // doesn't seem to work for Ambiance (and importing
+                            // Ubuntu.Components.Themes 1.3 doesn't solve it). 
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout11
+                                title.text: i18n.tr("Small")
+                                title.font.pixelSize: FontUtils.sizeToPixels("small")
+                            }
+                            onClicked: {
+                                root.scaleLevel = 1
+                                PopupUtils.close(popoverTextZoom)
+                            }
+                        }
+
+                        ListItem {
+                            height: layout12.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout12
+                                title.text: i18n.tr("Normal")
+                                title.font.pixelSize: FontUtils.sizeToPixels("medium")
+                            }
+                            onClicked: {
+                                root.scaleLevel = 2
+                                PopupUtils.close(popoverTextZoom)
+                            }
+                        }
+
+                        ListItem {
+                            height: layout13.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout13
+                                title.text: i18n.tr("Large")
+                                title.font.pixelSize: FontUtils.sizeToPixels("large")
+                            }
+                            onClicked: {
+                                root.scaleLevel = 3
+                                PopupUtils.close(popoverTextZoom)
+                            }
+                        }
+
+                        ListItem {
+                            height: layout14.height
+                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                            ListItemLayout {
+                                id: layout14
+                                title.text: i18n.tr("Extra large")
+                                title.font.pixelSize: FontUtils.sizeToPixels("x-large")
+                            }
+                            onClicked: {
+                                root.scaleLevel = 4
+                                PopupUtils.close(popoverTextZoom)
+                            }
+                        }
+                    }
+                }
+            }
         } // end Column id: flickContent
     } // end Flickable id: flickable
 

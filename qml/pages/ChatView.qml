@@ -49,6 +49,7 @@ Page {
     property bool chatCanSend: DeltaHandler.chatmodel.chatCanSend()
     property bool isContactRequest: DeltaHandler.chatIsContactRequest
 
+    property real datelineIconSize: FontUtils.sizeToPixels(root.scaledFontSize) * 0.75
 
     signal leavingChatViewPage()
 
@@ -95,6 +96,13 @@ Page {
     Component.onCompleted: {
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatViewIsClosed)
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatmodel.chatViewIsClosed)
+
+        // Hack to correctly size the height of the TextArea. Without
+        // it, when resizing, the font will have the size according to
+        // scaledFontSize, but the item height will still correlate to
+        // "medium".
+        messageEnterField.text = "b\nb"
+        messageEnterField.text = ""
 
         if (DeltaHandler.chatmodel.hasDraft) {
             messageEnterField.text = DeltaHandler.chatmodel.getDraft()
@@ -318,6 +326,7 @@ Page {
             onDisplayTextChanged: {
                 messageQueryTextChanged(displayText)            }
             placeholderText: i18n.tr("Search")
+            font.pixelSize: root.scaledFontSizeInPixels
         }
 
         Rectangle {
@@ -393,6 +402,7 @@ Page {
             }
             text: "0/0"
             visible: messageQueryField.text != ""
+            fontSize: root.scaledFontSize
         }
 
         Rectangle {
@@ -533,7 +543,7 @@ Page {
         //  modified by (C) 2023 Lothar Ketterer
         delegate: ListItem {
                 id: message
-                
+
                 property bool isUnreadMsgsBar: model.isUnreadMsgsBar
                 property bool isInfoMsg: model.isInfo
                 property bool isSelf: model.isSelf && !(isUnreadMsgsBar || isInfoMsg)
@@ -632,7 +642,7 @@ Page {
                         Label {
                             id: avatarInitialLabel
                             text: model.avatarInitial
-                            fontSize: "x-large"
+                            fontSize: "x-large" // leave this hardcoded
                             color: "white"
                             visible: !avatarShape.hasProfPic
                             anchors.centerIn: parent
@@ -840,6 +850,7 @@ Page {
                                 text: i18n.tr("Forwarded Message")
                                 font.bold: true
                                 color: textColor
+                                fontSize: root.scaledFontSize
                             }
                         }
 
@@ -879,6 +890,7 @@ Page {
                                         text: quoteText
                                         wrapMode: Text.Wrap
                                         color: textColor
+                                        fontSize: root.scaledFontSize
             
                                     }
             
@@ -896,7 +908,8 @@ Page {
                                             }
                                         }
             
-                                        fontSize: "x-small"
+                                        //fontSize: "x-small"
+                                        fontSize: root.scaledFontSizeSmaller
                                         font.bold: true
                                         color: quoteRectangle.color
                                     }
@@ -917,6 +930,7 @@ Page {
                                     id: playShape
                                     height: units.gu(4)
                                     width: height
+                                    anchors.verticalCenter: parent.verticalCenter
                                     backgroundColor: "#F7F7F7"
                                     opacity: 0.5
 
@@ -945,6 +959,7 @@ Page {
                                     text: (msgViewType === DeltaHandler.AudioType ? model.filename : i18n.tr("Voice Message"))// + " " + model.duration
                                     wrapMode: Text.Wrap
                                     color: textColor
+                                    fontSize: root.scaledFontSize
                                 }
                             }
                         }
@@ -960,6 +975,7 @@ Page {
                                 wrapMode: Text.Wrap
                                 color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
                                 font.italic: true
+                                fontSize: root.scaledFontSize
                             }
 
                         }
@@ -976,6 +992,7 @@ Page {
                                 LomiriShape {
                                     id: fileshape
                                     height: units.gu(4)
+                                    anchors.verticalCenter: parent.verticalCenter
                                     width: height
                                     backgroundColor: "#F7F7F7"
                                     opacity: 0.5
@@ -1006,6 +1023,7 @@ Page {
                                     wrapMode: Text.Wrap
                                     color: textColor
                                     font.italic: true
+                                    fontSize: root.scaledFontSize
                                 }
                             }
                         }
@@ -1062,6 +1080,7 @@ Page {
                                         }
                                     }
                                     wrapMode: Text.Wrap
+                                    fontSize: root.scaledFontSize
                                 }// end Label id: toDownloadLabel
                             } // Row id: toDownloadHelperRow
                         } // end Loader id: toDownloadLoader
@@ -1076,6 +1095,7 @@ Page {
                                 wrapMode: Text.WordWrap
                                 onLinkActivated: Qt.openUrlExternally(link)
                                 visible: isUnreadMsgsBar || (msgtext != "" && isDownloaded)
+                                fontSize: root.scaledFontSize
                         }
 
                         Loader {
@@ -1099,8 +1119,9 @@ Page {
 
                                     sourceComponent: Icon {
                                         id: padlockSelf
+                                        height: datelineIconSize
+                                        width: height
                                         name: "lock"
-                                        height: units.gu(1)
                                         color: textColor
                                     }
                                 }
@@ -1112,7 +1133,8 @@ Page {
                                     sourceComponent: Label {
                                         id: username
                                         text: model.username + "  "
-                                        fontSize: "x-small"
+                                        //fontSize: "x-small"
+                                        fontSize: root.scaledFontSizeSmaller
                                         font.bold: true
                                         color: model.avatarColor
                                     }
@@ -1121,19 +1143,21 @@ Page {
                                 Label {
                                     id: msgDate
                                     color: textColor
-                                    fontSize: "x-small"
+                                    //fontSize: "x-small"
+                                    fontSize: root.scaledFontSizeSmaller
                                     text: model.date
                                 }
 
                                 Loader {
-                                    id: padlockOther
+                                    id: padlockOtherLoader
                                     active: isOther && isPadlocked
                                     anchors.verticalCenter: parent.verticalCenter
 
                                     sourceComponent: Icon {
-                                        id: padlockSelf
+                                        id: padlockOther
+                                        height: datelineIconSize
+                                        width: height
                                         name: "lock"
-                                        height: units.gu(1)
                                         color: textColor
                                     }
                                 }
@@ -1148,7 +1172,7 @@ Page {
                                     }
 
                                     sourceComponent: Icon {
-                                        height: units.gu(1)
+                                        height: datelineIconSize
                                         width: height * 2
                                         source: { 
                                             switch (messageState) {
@@ -1260,6 +1284,7 @@ Page {
                 }
             }
             wrapMode: Text.WordWrap
+            fontSize: root.scaledFontSize
         }
     } // end Rectangle id: cannotSendBox
 
@@ -1312,7 +1337,8 @@ Page {
                     leftMargin: units.gu(1)
                 }
                 maximumLineCount: 6
-                clip: true
+                //clip: true
+                fontSize: root.scaledFontSize
             }
 
             Label {
@@ -1325,12 +1351,13 @@ Page {
                     leftMargin: units.gu(1)
                 }
                 font.bold: true
-                fontSize: "x-small"
+                //fontSize: "x-small"
+                fontSize: root.scaledFontSizeSmaller
             }
 
             LomiriShape {
                 id: cancelQuoteShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
+                width: units.gu(4)
                 height: width
                 color: theme.palette.normal.negative
 
@@ -1362,7 +1389,7 @@ Page {
 
         Rectangle {
             id: attachmentPreviewRect
-            height: (attachImagePreviewMode ? attachPreviewImage.height : ((attachAudioPreviewMode || attachVoicePreviewMode) ? attachAudioShape.height : attachFileIcon.height)) + cancelAttachmentShape.height
+            height: (attachImagePreviewMode ? attachPreviewImage.height : attachFilePreviewLabel.contentHeight + units.gu(0.5)) + cancelAttachmentShape.height
             width: parent.width
 
             color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
@@ -1444,6 +1471,7 @@ Page {
                     maximumLineCount: 2
                     wrapMode: Text.Wrap
                     visible: attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode
+                    fontSize: root.scaledFontSize
                 }
             }
 
@@ -1461,7 +1489,7 @@ Page {
 
             LomiriShape {
                 id: cancelAttachmentShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
+                width: units.gu(4)
                 height: width
                 color: theme.palette.normal.negative
 
@@ -1508,15 +1536,14 @@ Page {
 
         LomiriShape{
             id: attachIconShape
-            width: FontUtils.sizeToPixels("x-large") * 1.2
+            width: units.gu(4)
             height: width
             color: theme.palette.normal.overlay
 
             anchors{
                 left: parent.left
                 leftMargin: units.gu(0.5)
-                top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)
-                topMargin: attachmentPreviewRect.visible || quotedMessageBox.visible ? units.gu(1) : 0
+                verticalCenter: messageEnterField.verticalCenter
             }
             enabled: !(attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode)
 
@@ -1544,28 +1571,25 @@ Page {
             width: parent.width - attachIconShape.width - sendIconShape.width - units.gu(2)
             anchors{
                 left: attachIconShape.right
-//                leftMargin: currentlyQuotingMessage ? units.gu(1) : 0
                 leftMargin: units.gu(0.5)
                 top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)
                 topMargin: quotedMessageBox.visible || attachmentPreviewRect.visible ? units.gu(1) : 0
             }
             autoSize: true
             maximumLineCount: 5
+            font.pixelSize: root.scaledFontSizeInPixels
             visible: !attachmentMode
         }
 
         LomiriShape {
             id: sendIconShape
-            width: FontUtils.sizeToPixels("x-large") * 1.2
+            width: units.gu(4)
             height: width
             color: theme.palette.normal.overlay
             anchors{
                 right: parent.right
                 rightMargin: units.gu(0.5)
-                top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)
-                topMargin: quotedMessageBox.visible || attachmentPreviewRect.visible ? units.gu(1) : 0
-                //horizontalCenter: parent.horizontalCenter
-                //verticalCenter: parent.verticalCenter
+                verticalCenter: messageEnterField.verticalCenter
             }
             visible: !attachmentMode
 
@@ -1636,7 +1660,7 @@ Page {
 
             LomiriShape{
                 id: sendImageIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
+                width: units.gu(4)
                 height: width
                 color: theme.palette.normal.overlay
 
@@ -1667,7 +1691,7 @@ Page {
 
             LomiriShape{
                 id: sendAudioIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
+                width: units.gu(4)
                 height: width
                 color: theme.palette.normal.overlay
 
@@ -1699,7 +1723,7 @@ Page {
 
             LomiriShape {
                 id: sendFileIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
+                width: units.gu(4)
                 height: width
                 color: theme.palette.normal.overlay
 
@@ -1731,7 +1755,7 @@ Page {
 
             LomiriShape {
                 id: voiceMessageIconShape
-                width: FontUtils.sizeToPixels("x-large") * 1.2
+                width: units.gu(4)
                 height: width
                 color: theme.palette.normal.overlay
 
@@ -1998,6 +2022,7 @@ Page {
                 }
                 text: millisecsToString(messageAudio.position) + " / " + millisecsToString(messageAudio.duration)
                 color: root.darkmode ? "black" : "white"
+                fontSize: root.scaledFontSize
             }
         } // end LomiriShape id: audioPlayerShape
     } // end Loader id: audioPlayLoader
@@ -2044,6 +2069,7 @@ Page {
                     ListItemLayout {
                         id: layout1
                         title.text: i18n.tr("Delete")
+                        title.font.pixelSize: scaledFontSizeInPixels
                         title.color: root.darkmode ? "black" : "white"
                     }
                     onClicked: {
@@ -2068,4 +2094,60 @@ Page {
             }
         }
     } // end Component id: popoverComponentConfirmDeletion
+
+
+    // Taken from from Messaging-App Copyright 2012-2016 Canonical Ltd.,
+    // licensed under GPLv3
+    // https://gitlab.com/ubports/development/core/messaging-app/-/blob/62f448f8a5bec59d8e5c3f7bf386d6d61f9a1615/src/qml/Messages.qml
+    // modified by (C) 2023 Lothar Ketterer
+    PinchHandler {
+        id: pinchHandlerChatView
+        target: null
+
+        minimumPointCount: 2
+
+        property real previousScale: 1.0
+        property real zoomThreshold: 0.5
+
+        onScaleChanged: {
+            var nextLevel = root.scaleLevel
+
+            if (activeScale > previousScale + zoomThreshold && nextLevel < root.maximumScale) { // zoom in
+                nextLevel++
+            // nextLevel > 1 (instead of > 0) so the main scaleLevel cannot go below "small"
+            } else if (activeScale < previousScale - zoomThreshold && nextLevel > 1) { // zoom out
+                nextLevel--
+            }
+
+            if (nextLevel !== root.scaleLevel) {
+
+                root.scaleLevel = nextLevel
+
+                // Ugly hack for the TextArea to correctly resize. If this is
+                // not applied, the font will resize directly, but the item
+                // height will only resize after a line will be added or
+                // removed.  If going from small to large text, the text will
+                // be partly hidden until resizing the item height.
+                let tempMsgTxt = messageEnterField.text
+                messageEnterField.text = "b\nb"
+                messageEnterField.text = tempMsgTxt
+
+
+//                 // get the index of the current drag item if any and make ListView follow it
+//                var positionInRoot = mapToItem(view.contentItem, centroid.position.x, centroid.position.y)
+//                const currentIndex = view.indexAt(positionInRoot.x,positionInRoot.y)
+//
+//                view.positionViewAtIndex(currentIndex, ListView.Visible)
+
+                previousScale = activeScale
+            }
+        }
+
+        onActiveChanged: {
+            if (active) {
+                previousScale = 1.0
+                view.currentIndex = -1
+            }
+        }
+    }
 } // end Page id: chatViewPage

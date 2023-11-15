@@ -260,6 +260,29 @@ MainView {
     // see AccountConfig.qml
     property bool showAccountsExperimentalSettings: false
 
+    /* ********** Text Zoom ***********/
+    // valid values are from 1 to 4. Must NOT be 0, otherwise
+    // scaledFontSizeLarger will try to access fontSizeNames[-1].
+    // Likewise, values > 4 will result in out-of-bounds.
+    property int scaleLevel: 2
+
+    // Upper limit for scaleLevel
+    property int maximumScale: 4
+
+    // x-large is duplicated so the main scale (message texts etc.) can reach x-large, but 
+    // scaledFontSizeLarger still works (which is scaleLevel + 1)
+    //
+    // On the other end, scaling the main scale lower than "small" probably
+    // makes no sense. This is limited in the PinchHandler in ChatView.qml
+    // and in the setting.
+    readonly property variant fontSizeNames: ["x-small", "small", "medium", "large", "x-large", "x-large"]
+    readonly property string scaledFontSize: fontSizeNames[scaleLevel]
+    readonly property string scaledFontSizeSmaller: fontSizeNames[scaleLevel - 1]
+    readonly property string scaledFontSizeLarger: fontSizeNames[scaleLevel + 1]
+    property int scaledFontSizeInPixels: FontUtils.sizeToPixels(root.scaledFontSize)
+    property int scaledFontSizeInPixelsSmaller: FontUtils.sizeToPixels(root.scaledFontSizeSmaller)
+    /* ********* END Text Zoom *********/
+
     Settings {
         id: settings
         property alias synca: root.syncAll
@@ -269,6 +292,7 @@ MainView {
         property alias aggregatePushNotif: root.aggregatePushNotifications
         property alias versionAtLastSession: root.oldVersion
         property alias accountsExpSettings: root.showAccountsExperimentalSettings
+        property alias scaleLevelTextZoom: root.scaleLevel
     }
 
     width: units.gu(45)
@@ -411,7 +435,7 @@ MainView {
              * ============================================================= */
             header: Rectangle {
                 id: headerRect
-                height: units.gu(6) + (chatlistSearchField.visible ? units.gu(1) + chatlistSearchField.height + units.gu(1) + dividerItem.height : 0)
+                height: headerTopBackgroundColor.height + (chatlistSearchField.visible ? units.gu(1) + chatlistSearchField.height + units.gu(1) + dividerItem.height : 0)
                 width: chatlistPage.width
                 anchors {
                     left: chatlistPage.left
@@ -427,7 +451,7 @@ MainView {
                     // part of the header, but not the background of the
                     // search bar
                     id: headerTopBackgroundColor
-                    height: units.gu(6)
+                    height: profilePicShape.height + units.gu(1)
                     width: headerRect.width
                     anchors {
                         top: headerRect.top
@@ -458,7 +482,7 @@ MainView {
                     id: profilePicAndNameRect
 
                     width: headerRect.width - qrIconCage.width - settingsIconCage.width - infoIconCage.width - units.gu(1)
-                    height: units.gu(6)
+                    height: headerTopBackgroundColor.height
                     anchors {
                         left: headerRect.left
                         top: headerRect.top
@@ -474,7 +498,7 @@ MainView {
                 
                     UbuntuShape {
                         id: profilePicShape
-                        height: units.gu(5)
+                        height: usernameLabel.contentHeight + emailLabel.contentHeight + units.gu(1)
                         width: height
                         anchors {
                             left: profilePicAndNameRect.left
@@ -488,51 +512,44 @@ MainView {
                         sourceFillMode: UbuntuShape.PreserveAspectCrop
                     } // end of UbuntuShape id:profilePicShape
                 
-                    Rectangle {
-                        id: profileNameRect
-                        width: parent.width - profilePicShape.width - units.gu(1)
-                        height: units.gu(6)
+                    Label {
+                        id: usernameLabel
                         anchors {
                             left: profilePicShape.right
-                            leftMargin: units.gu(0.5)
-                            top: profilePicAndNameRect.top
+                            leftMargin: units.gu(1.5)
+                            bottom: emailLabel.top
                         }
-                        color: headerTopBackgroundColor.color
-                      
-                        Label {
-                            id: usernameLabel
-                            anchors {
-                                left: profileNameRect.left
-                                leftMargin: units.gu(1)
-                                bottom: emailLabel.top
-                            }
-                            text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
-                            color: "#e7fcfd"
+                        width: parent.width - units.gu(3)
+                        elide: right
+                        text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
+                        color: "#e7fcfd"
+                        fontSize: root.scaledFontSize
+                    }
+            
+                    Label {
+                        id: emailLabel
+                        anchors {
+                            left: profilePicShape.right
+                            leftMargin: units.gu(1.5)
+                            bottom: profilePicShape.bottom
+                            bottomMargin: units.gu(0.5)
                         }
-                
-                        Label {
-                            id: emailLabel
-                            anchors {
-                                left: profileNameRect.left
-                                leftMargin: units.gu(1)
-                                bottom: parent.bottom
-                                bottomMargin: units.gu(1)
-                            }
-                            text: headerRect.currentEmail
-                            color: usernameLabel.color
-                        }
-                
-                    } // Rectangle id: profileNameRect
+                        text: headerRect.currentEmail
+                        width: parent.width - units.gu(3)
+                        elide: right
+                        color: usernameLabel.color
+                        fontSize: root.scaledFontSize
+                    }
                 } // Rectangle id: profilePicAndNameRect
                 
                 UbuntuShape {
                     id: connectivityShape
 
-                    height: units.gu(2)
+                    height: profilePicShape.height * (2/5)
                     width: height
                     anchors {
                         left: parent.left
-                        leftMargin: units.gu(4.5)
+                        leftMargin: units.gu(0.5) + profilePicShape.width - (width/2)
                         top: parent.top
                         topMargin: units.gu(0.25)
                     }
@@ -540,7 +557,8 @@ MainView {
             
                 Rectangle {
                     id: searchIconCage
-                    width: units.gu(4)
+                    height: profilePicShape.height + units.gu(1)
+                    width: searchIcon.width + units.gu(2)
                     anchors {
                         right: qrIconCage.left
                         top: profilePicAndNameRect.top
@@ -551,7 +569,8 @@ MainView {
                     Icon {
                         id: searchIcon
                         name: "find"
-                        width: units.gu(2)
+                        width: profilePicShape.width * (2/5)
+                        height: width
                         anchors{
                             horizontalCenter: parent.horizontalCenter
                             verticalCenter: parent.verticalCenter
@@ -575,7 +594,8 @@ MainView {
             
                 Rectangle {
                     id: qrIconCage
-                    width: units.gu(4)
+                    height: profilePicShape.height + units.gu(1)
+                    width: searchIcon.width + units.gu(2)
                     anchors {
                         right: infoIconCage.left
                         top: profilePicAndNameRect.top
@@ -586,7 +606,8 @@ MainView {
                     Icon {
                         id: qrIcon
                         name: "view-grid-symbolic"
-                        width: units.gu(2)
+                        width: profilePicShape.width * (2/5)
+                        height: width
                         anchors{
                             horizontalCenter: parent.horizontalCenter
                             verticalCenter: parent.verticalCenter
@@ -603,7 +624,8 @@ MainView {
             
                 Rectangle {
                     id: infoIconCage
-                    width: units.gu(4)
+                    height: profilePicShape.height + units.gu(1)
+                    width: searchIcon.width + units.gu(2)
                     anchors {
                         right: settingsIconCage.left
                         top: profilePicAndNameRect.top
@@ -614,7 +636,8 @@ MainView {
                     Icon {
                         id: infoIcon
                         name: "info"
-                        width: units.gu(2)
+                        width: profilePicShape.width * (2/5)
+                        height: width
                         anchors{
                             horizontalCenter: parent.horizontalCenter
                             verticalCenter: parent.verticalCenter
@@ -631,7 +654,8 @@ MainView {
             
                 Rectangle {
                     id: settingsIconCage
-                    width: units.gu(4)
+                    height: profilePicShape.height + units.gu(1)
+                    width: searchIcon.width + units.gu(2)
                     anchors {
                         right: headerRect.right
                         rightMargin: units.gu(1)
@@ -643,7 +667,8 @@ MainView {
                     Icon {
                         id: settingsIcon
                         name: "settings"
-                        width: units.gu(2)
+                        width: profilePicShape.width * (2/5)
+                        height: width
                         anchors{
                             horizontalCenter: parent.horizontalCenter
                             verticalCenter: parent.verticalCenter
@@ -676,6 +701,7 @@ MainView {
                     // will appear.
                     inputMethodHints: Qt.ImhNoPredictiveText
                     placeholderText: i18n.tr("Search")
+                    font.pixelSize: scaledFontSizeInPixels
                     onDisplayTextChanged: {
                         if (DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked) {
                             root.chatlistQueryTextHasChanged(displayText)
@@ -829,20 +855,26 @@ MainView {
                         } 
                     }
 
-                    leadingActions: model.chatIsArchiveLink ? undefined : leadingChatAction
-                    trailingActions: model.chatIsArchiveLink ? {} : (model.chatIsArchived ? trailingChatActionsArchived : trailingChatActions)
+                    leadingActions: model.chatIsArchiveLink ? null : leadingChatAction
+                    trailingActions: model.chatIsArchiveLink ? null : (model.chatIsArchived ? trailingChatActionsArchived : trailingChatActions)
 
                     ListItemLayout {
                         id: chatlistLayout
                         title.text: model.chatname
                         title.font.bold: true
+                        title.font.pixelSize: scaledFontSizeInPixels
                         subtitle.text: model.msgPreview
-                        //summary.text: "that's the summary"
+                        subtitle.font.pixelSize: scaledFontSizeInPixelsSmaller
+
+                        // need to explicitly set the height because otherwise,
+                        // the height will increase when switching
+                        // scaledFontSize from "medium" to "small" (why??)
+                        height: chatPicShape.height + units.gu(1) + units.gu(scaleLevel * 0.25)
 
                         UbuntuShape {
                             id: chatPicShape
                             SlotsLayout.position: SlotsLayout.Leading
-                            height: units.gu(6)
+                            height: units.gu(4) + units.gu(scaleLevel)
                             width: height
                             
                             source: model.chatPic == "" ? undefined : chatPicImage
@@ -870,12 +902,13 @@ MainView {
                             id: dateAndMsgCount
                             SlotsLayout.position: SlotsLayout.Trailing
                             width: (((pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) > contactRequestLabel.contentWidth ? ((pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) : contactRequestLabel.contentWidth) + units.gu(1)
-                            height: units.gu(6)
+                            height: units.gu(3) + units.gu(scaleLevel)
                             color: chatListItem.color 
 
                             Icon {
                                 id: mutedIcon
                                 height: timestamp.contentHeight
+                                width: height
                                 anchors {
                                     right: pinnedIcon.visible ? pinnedIcon.left : timestamp.left
                                     rightMargin: units.gu(0.5)
@@ -890,6 +923,7 @@ MainView {
                             Icon {
                                 id: pinnedIcon
                                 height: timestamp.contentHeight
+                                width: height
                                 anchors {
                                     right: timestamp.left
                                     rightMargin: units.gu(0.5)
@@ -909,7 +943,7 @@ MainView {
                                     top: dateAndMsgCount.top
                                     topMargin: units.gu(0.2)
                                 }
-                                fontSize: "small"
+                                fontSize: root.scaledFontSizeSmaller
                             }
 
                             Rectangle {
@@ -918,7 +952,7 @@ MainView {
                                 height: contactRequestLabel.contentHeight + units.gu(0.5)
                                 anchors {
                                     top: timestamp.bottom
-                                    topMargin: units.gu(0.7)
+                                    topMargin: units.gu(0.3) + units.gu(scaleLevel/10)
                                     right: dateAndMsgCount.right
                                     //rightMargin: units.gu(1)
                                 }
@@ -933,7 +967,7 @@ MainView {
 //                                        leftMargin: units.gu(0.25)
                                     }
                                     text: i18n.tr('Request')
-                                    fontSize: "small"
+                                    fontSize: root.scaledFontSizeSmaller
                                     color: "white"
                                 }
                                 color: root.unreadMessageCounterColor
@@ -943,12 +977,12 @@ MainView {
 
                             UbuntuShape {
                                 id: newMsgCountShape
-                                height: units.gu(3)
+                                height: newMsgCountLabel.height + units.gu(0.6)
                                 width: height
 
                                 anchors {
                                     top: timestamp.bottom
-                                    topMargin: units.gu(0.8)
+                                    topMargin: units.gu(0.3) + units.gu(scaleLevel/10)
                                     right: dateAndMsgCount.right
                                     //rightMargin: units.gu(1)
                                 }
@@ -961,11 +995,11 @@ MainView {
                                     id: newMsgCountLabel
                                     anchors {
                                         top: newMsgCountShape.top
-                                        topMargin: units.gu(0.6)
+                                        topMargin: units.gu(0.3)
                                         horizontalCenter: newMsgCountShape.horizontalCenter
                                     }
                                     text: model.newMsgCount > 99 ? "99+" : model.newMsgCount
-                                    fontSize: "small"
+                                    fontSize: root.scaledFontSizeSmaller
                                     font.bold: true
                                     color: model.chatIsMuted && !root.darkmode ? "black" : "white"
                                 }
@@ -1111,6 +1145,51 @@ MainView {
         MouseArea {
             anchors.fill: parent
             onClicked: errorShape.visible = false
+        }
+    }
+
+    // Taken from from Messaging-App Copyright 2012-2016 Canonical Ltd.,
+    // licensed under GPLv3
+    // https://gitlab.com/ubports/development/core/messaging-app/-/blob/62f448f8a5bec59d8e5c3f7bf386d6d61f9a1615/src/qml/Messages.qml
+    // modified by (C) 2023 Lothar Ketterer
+    PinchHandler {
+        id: pinchHandlerMain
+        target: null
+        enabled: !root.chatOpenAlreadyClicked
+
+        minimumPointCount: 2
+
+        property real previousScale: 1.0
+        property real zoomThreshold: 0.5
+
+        onScaleChanged: {
+            var nextLevel = root.scaleLevel
+            if (activeScale > previousScale + zoomThreshold && nextLevel < root.maximumScale) { // zoom in
+                nextLevel++
+            // nextLevel > 1 (instead of > 0) so the main scaleLevel cannot go below "small"
+            } else if (activeScale < previousScale - zoomThreshold && nextLevel > 1) { // zoom out
+                nextLevel--
+            }
+
+            if (nextLevel !== root.scaleLevel) {
+
+                root.scaleLevel = nextLevel
+
+//                 // get the index of the current drag item if any and make ListView follow it
+//                var positionInRoot = mapToItem(messageList.contentItem, centroid.position.x, centroid.position.y)
+//                const currentIndex = messageList.indexAt(positionInRoot.x,positionInRoot.y)
+//
+//                messageList.positionViewAtIndex(currentIndex, ListView.Visible)
+//
+                previousScale = activeScale
+            }
+        }
+
+        onActiveChanged: {
+            if (active) {
+                previousScale = 1.0
+            }
+            view.currentIndex = -1
         }
     }
 } // end of MainView id: root

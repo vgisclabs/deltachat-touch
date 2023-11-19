@@ -188,7 +188,7 @@ MainView {
     }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.2.1-pre01'
+    property string version: '1.2.1-pre02'
     property string oldVersion: "unknown"
 
     // Color scheme
@@ -283,6 +283,8 @@ MainView {
     property int scaledFontSizeInPixelsSmaller: FontUtils.sizeToPixels(root.scaledFontSizeSmaller)
     /* ********* END Text Zoom *********/
 
+    property bool alwaysLoadRemoteContent: false
+
     Settings {
         id: settings
         property alias synca: root.syncAll
@@ -293,6 +295,7 @@ MainView {
         property alias versionAtLastSession: root.oldVersion
         property alias accountsExpSettings: root.showAccountsExperimentalSettings
         property alias scaleLevelTextZoom: root.scaleLevel
+        property alias alwaysLoadRemote: root.alwaysLoadRemoteContent
     }
 
     width: units.gu(45)
@@ -520,7 +523,7 @@ MainView {
                             bottom: emailLabel.top
                         }
                         width: parent.width - units.gu(3)
-                        elide: right
+                        elide: Text.ElideRight
                         text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
                         color: "#e7fcfd"
                         fontSize: root.scaledFontSize
@@ -536,7 +539,7 @@ MainView {
                         }
                         text: headerRect.currentEmail
                         width: parent.width - units.gu(3)
-                        elide: right
+                        elide: Text.ElideRight
                         color: usernameLabel.color
                         fontSize: root.scaledFontSize
                     }

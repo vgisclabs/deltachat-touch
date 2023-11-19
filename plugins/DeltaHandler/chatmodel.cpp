@@ -20,6 +20,7 @@
 #include <stdio.h> // for remove()
 //#include <unistd.h> // for sleep
 #include <limits> // for invalidating data_row
+#include <fstream>
 
 ChatModel::ChatModel(QObject* parent)
     : QAbstractListModel(parent), currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
@@ -85,6 +86,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[AvatarInitialRole] = "avatarInitial";
     roles[IsSearchResultRole] = "isSearchResult";
     roles[ContactIdRole] = "contactID";
+    roles[HasHtmlRole] = "hasHtml";
 
     return roles;
 }
@@ -632,6 +634,10 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
             retval = dc_msg_get_from_id(tempMsg);
             break;
 
+        case ChatModel::HasHtmlRole:
+            retval = (1 == dc_msg_has_html(tempMsg));
+            break;
+
         default:
             retval = QVariant();
             qDebug() << "ChatModel::data switch reached default";
@@ -719,6 +725,56 @@ void ChatModel::messageStatusChangedSlot(int msgID)
             break;
         }
     }
+}
+
+
+QString ChatModel::getHtmlMessage(int myindex)
+{
+    QString tempQString = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/htmlmsg.html";
+    if (QFile::exists(tempQString)) {
+        QFile::remove(tempQString);
+    }
+    std::ofstream outfile(tempQString.toStdString());
+
+    uint32_t tempMsgID {0};
+    tempMsgID = msgVector[myindex];
+
+    char* tempText = dc_get_msg_html(currentMsgContext, tempMsgID);
+    if (tempText) {
+        outfile << tempText;
+    } else {
+        qDebug() << "ChatModel::getHtmlMessage: Error: dc_get_msg_html returned NULL";
+    }
+    outfile.close();
+
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+
+    tempQString.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+    return tempQString;
+}
+
+
+QString ChatModel::getHtmlMsgSubject(int myindex)
+{
+    uint32_t tempMsgID = msgVector[myindex];
+
+    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
+
+    char* tempText = dc_msg_get_subject(tempMsg);
+    QString tempQString = tempText;
+
+    if (tempMsg) {
+        dc_msg_unref(tempMsg);
+    }
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+
+    return tempQString;
 }
 
 

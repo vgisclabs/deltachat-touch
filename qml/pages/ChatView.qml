@@ -821,14 +821,17 @@ Page {
                             let f = fileLineLoader.width
                             let g = unknownTypeLoader.width
                             let h = toDownloadLoader.width
+                            let i = htmlLoader.width
 
                             let m = a > b ? a : b
                             let n = c > d ? c : d
                             let o = e > f ? e : f
                             let p = g > h ? g : h
 
+                            let q = o > i ? o : i
+
                             let x = m > n ? m : n
-                            let y = o > p ? o : p
+                            let y = q > p ? q : p
 
                             return x > y ? x : y
                         }
@@ -1091,11 +1094,33 @@ Page {
                                  // TODO: this string has no translations ("Unread Messages")
                                 text: isUnreadMsgsBar ? i18n.tr("Unread Messages") : msgtext
                                 color: textColor
-                                linkColor: isSearchResult ? "#0000ff" : messageSeen ? root.selfMessageSeenLinkColor : root.selfMessageSentLinkColor
+                                linkColor: isSearchResult ? "#0000ff" : (isOther ? root.otherMessageLinkColor : (messageSeen ? root.selfMessageSeenLinkColor : root.selfMessageSentLinkColor))
                                 wrapMode: Text.WordWrap
                                 onLinkActivated: Qt.openUrlExternally(link)
                                 visible: isUnreadMsgsBar || (msgtext != "" && isDownloaded)
                                 fontSize: root.scaledFontSize
+                        }
+
+                        Loader {
+                            id: htmlLoader
+                            active: model.hasHtml
+
+                            sourceComponent: Label {
+                                id: getHtmlLabel
+                                width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
+                                text: i18n.tr("Show Full Message…")
+                                color: msgLabel.linkColor
+                            }
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    let urlpath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.chatmodel.getHtmlMessage(index))
+                                    let msgsubject = DeltaHandler.chatmodel.getHtmlMsgSubject(index)
+                                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject})
+                                }
+                            }
+
                         }
 
                         Loader {

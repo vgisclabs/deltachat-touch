@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DELTAHANDLER_PLUGIN_H
-#define DELTAHANDLER_PLUGIN_H
+#ifndef DTWEBENGINEPROFILE_PLUGIN_H
+#define DTWEBENGINEPROFILE_PLUGIN_H
 #include <QQmlExtensionPlugin>
 
-class DeltaHandlerPlugin : public QQmlExtensionPlugin
+class DTWebEngineProfilePlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")

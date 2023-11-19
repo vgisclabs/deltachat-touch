@@ -1,4 +1,5 @@
 x.x.x xxxx-xx-xx
+Feature: Add HTML message view
 UI: Changed workflow for voice message recording
 UI: Changed attachment preview in compose area
 UI: Scalable text in chatlist and chats, pinch to zoom text

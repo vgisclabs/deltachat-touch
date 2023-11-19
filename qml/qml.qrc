@@ -19,6 +19,7 @@
         <file>pages/ChatInfosActionsChatview.qml</file>
         <file>pages/ConfirmAccountDeletion.qml</file>
         <file>pages/ConfirmAddSecondDevice.qml</file>
+        <file>pages/ConfirmAlwaysLoadRemoteContent.qml</file>
         <file>pages/ConfirmCancelSecondDevice.qml</file>
         <file>pages/ConfirmChatDeletion.qml</file>
         <file>pages/ConfirmClearChat.qml</file>
@@ -41,6 +42,7 @@
         <file>pages/ImageViewer.qml</file>
         <file>pages/ImageViewerAnimated.qml</file>
         <file>pages/InfoPopup.qml</file>
+        <file>pages/MessageHtmlView.qml</file>
         <file>pages/MessageInfosActions.qml</file>
         <file>pages/NotImplemented.qml</file>
         <file>pages/PickerProfilePic.qml</file>

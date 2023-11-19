@@ -37,7 +37,7 @@ public:
     ~ChatModel();
 
     // TODO remove MessageSeenRole
-    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, QuoteAvatarColorRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, FilenameRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole };
+    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, QuoteAvatarColorRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, FilenameRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole, HasHtmlRole };
 
     Q_INVOKABLE void setMomentaryMessage(int myindex);
 
@@ -70,6 +70,10 @@ public:
     Q_INVOKABLE bool setUrlToExport();
 
     Q_INVOKABLE QString getUrlToExport();
+
+    Q_INVOKABLE QString getHtmlMessage(int myindex);
+
+    Q_INVOKABLE QString getHtmlMsgSubject(int myindex);
 
     Q_INVOKABLE QString getDraft();
 

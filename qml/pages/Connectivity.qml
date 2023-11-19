@@ -18,7 +18,7 @@
 
 import QtQuick 2.12
 import Ubuntu.Components 1.3
-import Morph.Web 0.1
+import QtWebEngine 1.8
 import Qt.labs.platform 1.1
 
 import DeltaHandler 1.0
@@ -54,7 +54,7 @@ Page {
         }
     }
 
-    WebView {
+    WebEngineView {
         id: webview
         anchors {
             top: header.bottom

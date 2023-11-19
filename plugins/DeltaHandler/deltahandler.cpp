@@ -1887,10 +1887,17 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
             return;
         }
         else {
-            // the url handed over by the ContentHub starts with
-            // "file:///home....", so we have to remove the first 7
-            // characters
-            newValue.remove(0, 7);
+            // newValue might be prepended by "file://" or "qrc:",
+            // remove it
+            QString tempQString = newValue;
+            if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+                newValue.remove(0, 7);
+            }
+
+            tempQString = newValue;
+            if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+                newValue.remove(0, 4);
+            }
         }
     }
 

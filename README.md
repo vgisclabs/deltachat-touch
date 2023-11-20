@@ -8,11 +8,7 @@ This is the main branch which now contains the focal version. Please checkout th
 
 ## Important notice to focal (20.04) users
 
-While the build instructions below also work for focal and the app is fully functional in the current state of focal, some internals of the click package currently refer to xenial (16.04) only. If you install it now, it may lead to problems later on when a dedicated focal version has been released to the Open Store. I will investigate this and post a solution, if necessary, so please keep an eye out on this.
-
-Update: Seems it's no problem to update from the xenial to the focal version of the app on a focal device. Will confirm after further testing.
-
-Update 2: Confirmed, no problems, users can safely update.
+To build for focal, make sure you are on the main branch.
 
 ## Building
 
@@ -47,6 +43,16 @@ Build libdeltachat.so for your architecture (arm64 in this example, could also b
 clickable build --libs deltachat-core-rust --arch arm64
 ```
 
+After building libdeltachat.so, you might want to undo the patch in order for git not to complain if you want to do anything else besides building the app:
+
+```
+cd libs/deltachat-core-rust
+git restore CMakeLists.txt
+cd ../..
+```
+
+Of course, the patch needs to be applied again before you start a new build of libdeltachat.so.
+
 ### Buidling libquirc.so.1.2
 
 Activating/updating the quirc submodule should have already been done by running `git submodule update --init --recursive` for libdeltachat.so above.
@@ -70,7 +76,7 @@ This will give you a .click file in build/aarch64-linux-gnu/app or build/arm-lin
 
 ### Test it on your PC
 
-It's possible to run the app on a standard desktop computer. Prerequisite is that libdeltachat.so has been built for the architecture amd64. Then enter:
+With some restrictions, it's possible to run the app on a standard desktop computer. Prerequisite is that libdeltachat.so and libquirc.so.1.2 have been built for the architecture amd64. Then enter:
 
 ```
 clickable desktop
@@ -78,13 +84,13 @@ clickable desktop
 
 For some options like dark mode or using a different language, see <https://clickable-ut.dev/en/latest/commands.html#desktop>.
 
-Note that there are some limitations to `clickable desktop`:
+Limitations to `clickable desktop` are:
 - The resolution is quite low, so don't be surprised if it looks blurred. This will not the case on the phone.
 - Anything requiring a service that's running in Ubuntu Touch will not work. As a consequence, file exchange will not be possible as it needs the so-called content hub which is not running on the desktop. This means:
     - Backups cannot be im- or exported, so accounts have to be set up via logging in to your account.
     - Images and sound files / voice recordings cannot be sent.
     - Attachments cannot be saved.
-    - It's not possible to use a potentially present camera for QR code scanning.
+    - It may not be possible to use a potentially present camera for QR code scanning.
 
 ## License
 

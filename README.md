@@ -39,6 +39,17 @@ Build libdeltachat.so for your architecture (arm64 in this example, could also b
 clickable build --libs deltachat-core-rust --arch arm64
 ```
 
+After building libdeltachat.so, you might want to undo the patch in order for git to not complain if you want to do anything else besides building the app:
+
+```
+cd libs/deltachat-core-rust
+git restore CMakeLists.txt
+cd ../..
+```
+
+Of course, the patch needs to be applied again before you start a new build of libdeltachat.so.
+
+
 ### Buidling libquirc.so.1.2
 
 Activating/updating the quirc submodule should have already been done by running `git submodule update --init --recursive` for libdeltachat.so above.
@@ -62,7 +73,7 @@ This will give you a .click file in build/aarch64-linux-gnu/app or build/arm-lin
 
 ### Test it on your PC
 
-It's possible to run the app on a standard desktop computer. Prerequisite is that libdeltachat.so has been built for the architecture amd64. Then enter:
+With some restrictions, it's possible to run the app on a standard desktop computer. Prerequisite is that libdeltachat.so and libquirc.so.1.2 have been built for the architecture amd64. Then enter:
 
 ```
 clickable desktop
@@ -70,13 +81,13 @@ clickable desktop
 
 For some options like dark mode or using a different language, see <https://clickable-ut.dev/en/latest/commands.html#desktop>.
 
-Note that there are some limitations to `clickable desktop`:
+Limitations to `clickable desktop` are:
 - The resolution is quite low, so don't be surprised if it looks blurred. This will not the case on the phone.
 - Anything requiring a service that's running in Ubuntu Touch will not work. As a consequence, file exchange will not be possible as it needs the so-called content hub which is not running on the desktop. This means:
     - Backups cannot be im- or exported, so accounts have to be set up via logging in to your account.
     - Images and sound files / voice recordings cannot be sent.
     - Attachments cannot be saved.
-    - It's not possible to use a potentially present camera for QR code scanning.
+    - It may not be possible to use a potentially present camera for QR code scanning.
 
 ## License
 

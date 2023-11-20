@@ -1,6 +1,7 @@
 clickable_minimum_required: 7.1.2
 builder: cmake
 kill: deltatouch
+framework: ubuntu-sdk-16.04.5
 prebuild: mkdir -p plugins/DeltaHandler && cp ../deltachat-core-rust/install/lib/libdeltachat.so plugins/DeltaHandler && cp ../quirc/libquirc.so.1.2 plugins/DeltaHandler
 libraries:
   deltachat-core-rust:

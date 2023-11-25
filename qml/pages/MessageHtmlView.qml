@@ -249,5 +249,18 @@ Page {
                 remoteContentIsBlocked = true
             }
         }
+
+        onNewViewRequested: {
+            navigationRequested
+        }
+
+        onNavigationRequested: {
+            if (("" + request.url).startsWith("file:///home/phablet")) {
+                request.action = WebEngineNavigationRequest.AcceptRequest // 0
+            } else {
+                PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), htmlViewPage, {externalLink: request.url})
+                request.action = WebEngineNavigationRequest.IgnoreRequest // 255
+            }
+        }
     }
 } // end Page id: htmlViewPage

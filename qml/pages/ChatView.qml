@@ -1436,7 +1436,7 @@ Page {
                 horizontalCenter: parent.horizontalCenter
             }
             text: i18n.tr('More Info')
-            iconName: "external-link"
+            iconSource: root.darkmode ? "../assets/external-link-black.svg" : "../assets/external-link-white.svg"
             font.pixelSize: root.scaledFontSizeInPixels
             onClicked: {
                 Qt.openUrlExternally("https://delta.chat/en/help#nocryptanymore")

@@ -50,7 +50,7 @@ Dialog {
 
     Button {
         text: i18n.tr('Learn More')
-        iconName: "external-link"
+        iconSource: root.darkmode ? "../assets/external-link-black.svg" : "../assets/external-link-white.svg"
         onClicked: {
             PopupUtils.close(dialog)
             learnMore()

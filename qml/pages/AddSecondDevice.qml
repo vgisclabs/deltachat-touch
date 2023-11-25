@@ -353,7 +353,7 @@ Page {
             Button {
                 id: troubleButton
                 width: parent.width - units.gu(8)
-                iconName: "external-link"
+                iconSource: root.darkmode ? "../assets/external-link-black.svg" : "../assets/external-link-white.svg"
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: i18n.tr("Troubleshooting")
                 color: theme.palette.normal.focus

@@ -10,8 +10,11 @@
 @lineautocrypt_prefer_e2ee Preferi sa tzifradura a nodu terminale (end-to-end)
 @linechat_archived_chats_title Tzarradas archiviadas
 @lineautocrypt_asm_subject Messàgiu de configuratzione de Autocrypt
-@linelogin_error_cannot_login Impossìbile atzèdere comente "%1$s". pro paghere verìfica si s\'indiritzu de posta eletrònica e sa crae de intrada sunt curretos.
+@linelogin_error_cannot_login Impossìbile atzèdere comente \"%1$s\". pro paghere verìfica si s\'indiritzu de posta eletrònica e sa crae de intrada sunt curretos.
 @linedevice_talk Messàgios de su dispositivu
+@linechat_new_group_hint Imbia su primu messàgiu, permitende a sos àteros de ti rispòndere in intro de custu grupu.
+
+•Lu podes fàghere fintzas si non totu sos membros impreant Delta Chat.Sa cunsinna de su primu messàgiu diat pòdere pigare un\'agigu de tempus.
 @linesaved_messages Messàgios sarvados
 @linedevice_talk_explain Sos messàgios in custa tzarrada benint ingendrados localmente dae s\'aplicatzone Delta Chat tua. Sos isvilupadores los impreant pro informare a pitzu de sos agiornamentos de s\'aplicatzione e de problemas durante s\'impreu.
 @linedevice_talk_welcome_message Bene bènnidu in Delta Chat! – Delta Chat paret simigiante a àteras aplicatziones populares pro imbiare messàgios, ma non tenet controllos tzentralizados, arrastamentu o bèndida de sos datos tuos, de sos collegas tuos o de sos familiares tuos a organizatziones mannas.

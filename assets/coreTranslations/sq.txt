@@ -9,13 +9,13 @@
 @linefile Kartelë
 @lineencrypted_message Mesazh i fshehtëzuar
 @lineqrscan_fingerprint_label Shenja gishtash
-@linesystemmsg_cannot_decrypt Ky mesazh s\’mund të shfshehtëzohet.
+@linesystemmsg_cannot_decrypt Ky mesazh s’mund të shfshehtëzohet.
 
-• Mundet që të ndihmojë dërgimi thjesht i një përgjigjeje këtij mesazhi dhe t\’i kërkohet dërguesit ta ridërgojë mesazhin.
+• Mundet t’ju ndihë thjesht t’i përgjigjeni këtij mesazhi dhe t’i kërkoni dërguesit ta ridërgojë mesazhin.
 
-• Në rast se ri-instaluat Delta Chat-in apo një tjetër program email-esh në këtë apo në një tjetër pajisje, mund të donit të dërgonit një Mesazh Rregullimi Autocrypt-i që prej andej.
+• Nëse sapo riinstaluat Delta Chat-in, atëherë më e mira është të riujdisni Delta Chat-in tani dhe të zgjidhni “Shtoje si pajisje të dytë”, ose të importoni një kopjeruajtje.
 @linesystemmsg_read_receipt_subject Dëftesë leximi
-@linesystemmsg_read_receipt_body Kjo është dëftesë leximi për mesazhin "%1$s".
+@linesystemmsg_read_receipt_body Kjo është dëftesë leximi për mesazhin \"%1$s\".
 
 Do të thotë që mesazhi u shfaq te pajisja e marrësit, jo domosdo që lënda u lexua.
 @lineautocrypt_prefer_e2ee Parapëlqe fshehtëzim skaj-më-skaj
@@ -26,6 +26,11 @@ Do të thotë që mesazhi u shfaq te pajisja e marrësit, jo domosdo që lënda 
 Që ta shfshehtëzoni rregullimin tuaj, hapeni mesazhin te një klient që mund të përdorë Autocrypt-in dhe jepni kodin e rregullimit të treguar te pajisja që e prodhoi.
 @linelogin_error_cannot_login S\’bëhet dot hyrja si %1$s. Ju lutemi, shihni nëse adresa email dhe fjalëkalimi janë të saktë.
 @linedevice_talk Mesazhe Pajisjeje
+@linechat_new_group_hint Hartoni mesazhin e parë, duke u lejuar të tjerëve të përgjigjen brenda këtij grupi.
+
+• S\’ka problem nëse Delta Chat-in s\’e përdorin  të tërë anëtarë.
+
+• Dërgimi i mesazhit të parë mund të zgjasë ca.
 @linesaved_messages Mesazhe të ruajtur
 @linecontact_verified %1$s u verifikua.
 @linecontact_not_verified S\’verifikohet dot %1$s
@@ -60,7 +65,7 @@ Për përditësime, ju lutemi, shihni te https://get.delta.chat ose te shitorja 
 
 Kur depozita është 100%% e përdorur, mund të mos jeni në gjendje të merrni mesazhe.
 
-👉 Ju lutemi, shihni se mos mund të fshini të dhëna të vjetra që nga ndërfaqja web e furnizuesit të shërbimit dhe shihni mundësinë të aktivizoni “Rregullime / Fshi Mesazhe të Vjetër”. Se sa depozitë është aktualisht e përdorur mund ta kontrolloni kurdo, që nga "Rregullime / Lidhje".
+👉 Ju lutemi, shihni se mos mund të fshini të dhëna të vjetra që nga ndërfaqja web e furnizuesit të shërbimit dhe shihni mundësinë të aktivizoni “Rregullime / Fshi Mesazhe të Vjetër”. Se sa depozitë është aktualisht e përdorur mund ta kontrolloni kurdo, që nga \"Rregullime / Lidhje\".
 @linen_bytes_message Mesazh %1$s
 @linedownload_max_available_until Shkarko maksimumin e mundshëm deri më %1$s
 @lineincoming_messages Mesazhe të Marrë
@@ -82,7 +87,7 @@ Kur depozita është 100%% e përdorur, mund të mos jeni në gjendje të merrni
 Po pritet për pajisjen e %2$s që të përgjigjet…
 @linesecure_join_replies %1$s u përgjigj, po pritet që të shtohet te grupi…
 @lineqrshow_join_contact_hint Skanojeni këtë që të rregullohet një kontakt %1$s
-@lineqrshow_join_group_hint Që të bëheni pjesë e grupit "%1$s", skanoni këtë.
+@lineqrshow_join_group_hint Që të bëheni pjesë e grupit \"%1$s\", skanoni këtë.
 @lineconnectivity_not_connected I palidhur
 @lineaeap_addr_changed %1$s ndryshoi adresën e vet nga %2$s në %3$s
 @lineaeap_explanation Ndryshuat adresën tuaj nga %1$s në %2$s.
@@ -124,9 +129,7 @@ Nëse dërgoni tani një mesazh te një grup i verifikuar, kontaktet atje do të
 @lineephemeral_timer_days_by_other Kohëmatësi i zhdukjes së mesazheve u vu në %1$s ditë nga %2$s.
 @lineephemeral_timer_weeks_by_you E vutë kohëmatësin e zhdukjes së mesazheve në %1$s javë.
 @lineephemeral_timer_weeks_by_other Kohëmatësi i zhdukjes së mesazheve u vu në %1$s javë nga %2$s.
-@lineprotection_enabled_by_you Aktivizuat mbrojtje fjalosjeje.
-@lineprotection_enabled_by_other Mbrojtje fjalosjeje aktivizuar nga %1$s.
-@lineprotection_disabled_by_you Çaktivizuat mbrojtje fjalosjeje.
-@lineprotection_disabled_by_other Mbrojtje fjalosjeje çaktivizuar nga %1$s.
+@linechat_protection_enabled_tap_to_learn_more Nga sot e tutje për mesazhet garantohet fshehtëzimi skaj-më-skaj. Prekeni që të mësoni më tepër.
+@linechat_protection_broken_tap_to_learn_more %1$s dërgoi një mesazh nga një pajisje tjetër. Prekeni që të mësoni më tepër.
 @linemultidevice_qr_subtitle Skanojeni, që të ujdisni pajise të dytë për %1$s
 @end

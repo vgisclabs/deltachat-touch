@@ -58,6 +58,8 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[IsSelfRole] = "isSelf";
     roles[IsInfoRole] = "isInfo";
+    roles[IsProtectionInfoRole] = "isProtectionInfo";
+    roles[ProtectionInfoTypeRole] = "protectionInfoType";
     roles[IsDownloadedRole] = "isDownloaded";
     roles[DownloadStateRole] = "downloadState";
     roles[IsForwardedRole] = "isForwarded";
@@ -166,6 +168,26 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                 retval = true;
             } else {
                 retval = false;
+            }
+            break;
+
+        case ChatModel::IsProtectionInfoRole:
+            if (!dc_msg_is_info(tempMsg)) {
+                retval = false;
+            } else if (DC_INFO_PROTECTION_ENABLED == dc_msg_get_info_type(tempMsg) || DC_INFO_PROTECTION_DISABLED == dc_msg_get_info_type(tempMsg)) {
+                retval = true;
+            } else {
+                retval = false;
+            }
+            break;
+
+        case ChatModel::ProtectionInfoTypeRole:
+            if (DC_INFO_PROTECTION_ENABLED == dc_msg_get_info_type(tempMsg)) {
+                retval = DeltaHandler::DcInfoType::InfoProtectionEnabled;
+            } else if (DC_INFO_PROTECTION_DISABLED == dc_msg_get_info_type(tempMsg)) {
+                retval = DeltaHandler::DcInfoType::InfoProtectionDisabled;
+            } else {
+                retval = 0;
             }
             break;
 
@@ -1122,11 +1144,27 @@ bool ChatModel::chatCanSend()
     dc_chat_t* tempChat = dc_get_chat(currentMsgContext, m_chatID);
 
     if (!tempChat) {
-        qDebug() << "ChatModel::chatIsDeviceTalk(): ERROR getting chat, returning false.";
+        qDebug() << "ChatModel::chatCanSend(): ERROR getting chat, returning false.";
         return false;
     }
 
     bool retval = (1 == dc_chat_can_send(tempChat));
+    dc_chat_unref(tempChat);
+
+    return retval;
+}
+
+
+bool ChatModel::chatIsProtectionBroken()
+{
+    dc_chat_t* tempChat = dc_get_chat(currentMsgContext, m_chatID);
+
+    if (!tempChat) {
+        qDebug() << "ChatModel::chatIsProtectionBroken(): ERROR getting chat, returning false.";
+        return false;
+    }
+
+    bool retval = (1 == dc_chat_is_protection_broken(tempChat));
     dc_chat_unref(tempChat);
 
     return retval;
@@ -2042,7 +2080,11 @@ void ChatModel::chatViewIsOpened()
 }
 
 
-void ChatModel::chatViewIsClosed()
+// unusedParam is only there so the signal from ChatView.qml
+// can be connected to both a slot in DeltaHandler (which
+// needs this parameter) and here (where the parameter
+// is not needed)
+void ChatModel::chatViewIsClosed(bool unusedParam)
 {
     m_chatIsBeingViewed = false;
     disconnect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));

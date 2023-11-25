@@ -14,14 +14,14 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: la\n"
+"Language: bqi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../plugins/DeltaHandler/contactsmodel.cpp:79
 msgid "New Contact"
-msgstr ""
+msgstr "homdangê nu"
 
 #: ../plugins/DeltaHandler/contactsmodel.cpp:94
 msgid "Type e-mail address above"
@@ -29,7 +29,7 @@ msgstr ""
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:1663
 msgid "New message"
-msgstr ""
+msgstr "payomė nu"
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:2701
 msgid ""
@@ -52,7 +52,7 @@ msgstr ""
 #: ../qml/pages/QrShowScan.qml:297 ../qml/pages/QrShowScan.qml:727
 #: ../qml/pages/RequestDatabasePassword.qml:52
 msgid "Error"
-msgstr ""
+msgstr "xatā"
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:3866
 #: ../plugins/DeltaHandler/deltahandler.cpp:3889
@@ -80,7 +80,7 @@ msgstr ""
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:115
 #: ../qml/pages/QrShowScan.qml:296
 msgid "Error: %1"
-msgstr ""
+msgstr "xatā: %1"
 
 #: ../qml/Main.qml:471 ../qml/Main.qml:478
 msgid "No account configured"
@@ -98,7 +98,7 @@ msgstr ""
 #: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:302
 #: ../qml/pages/ChatView.qml:347 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
-msgstr ""
+msgstr "pitiniďên"
 
 #: ../qml/Main.qml:762
 msgid "Archived Chats"
@@ -106,15 +106,15 @@ msgstr ""
 
 #: ../qml/Main.qml:989
 msgid "Request"
-msgstr ""
+msgstr "darxāst"
 
 #: ../qml/Main.qml:1049
 msgid "Loading…"
-msgstr ""
+msgstr "honêy bār êvane..."
 
 #: ../qml/Main.qml:1075 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
-msgstr ""
+msgstr "goftoloftê nu"
 
 #: ../qml/pages/About.qml:28
 msgid "About DeltaTouch"
@@ -157,15 +157,15 @@ msgstr ""
 #: ../qml/pages/ProgressDatabaseEncryption.qml:94
 #: ../qml/pages/ProgressQrBackupImport.qml:99
 msgid "Back"
-msgstr "Rursus"
+msgstr "vorgaštên"
 
 #: ../qml/pages/AccountConfig.qml:178 ../qml/pages/SettingsPage.qml:317
 msgid "Settings"
-msgstr ""
+msgstr "sāmovā"
 
 #: ../qml/pages/AccountConfig.qml:191 ../qml/pages/AccountConfig.qml:311
 msgid "Info"
-msgstr "Notitia"
+msgstr "zêbār"
 
 #: ../qml/pages/AccountConfig.qml:197 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
@@ -195,7 +195,7 @@ msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:311
 msgid "None"
-msgstr "Nemo"
+msgstr "hičkoyêki"
 
 #: ../qml/pages/AccountConfig.qml:421
 msgid "Account is not configured."
@@ -220,7 +220,7 @@ msgstr ""
 #: ../qml/pages/RequestDatabasePassword.qml:193
 #: ../qml/pages/VerifiedPopup.qml:35
 msgid "OK"
-msgstr "Amen"
+msgstr "xā"
 
 #: ../qml/pages/AddAccount.qml:57
 msgid "Log into your E-Mail Account"
@@ -251,7 +251,7 @@ msgstr ""
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:399 ../qml/pages/QrShowScan.qml:416
 msgid "Unknown"
-msgstr ""
+msgstr "nāšênās"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:126
 #: ../qml/pages/AddAccountAsSecondDevice.qml:142
@@ -278,13 +278,13 @@ msgstr ""
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:312
 #: ../qml/pages/QrShowScan.qml:633
 msgid "More Options"
-msgstr ""
+msgstr "guzinêyalê bištar"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:314
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:324
 #: ../qml/pages/QrShowScan.qml:645
 msgid "Paste from Clipboard"
-msgstr ""
+msgstr "jā vandên zê virga"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:330
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:340
@@ -331,11 +331,11 @@ msgstr ""
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
 #: ../qml/pages/UnblockContactPopup.qml:41
 msgid "Cancel"
-msgstr "Aborta"
+msgstr "raď"
 
 #: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Group"
-msgstr ""
+msgstr "jarga nu"
 
 #: ../qml/pages/AddChat.qml:86 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Verified Group"
@@ -362,7 +362,7 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:85 ../qml/pages/SettingsPage.qml:96
 #: ../qml/pages/SettingsPage.qml:1162 ../qml/pages/SettingsPage.qml:1190
 msgid "All"
-msgstr ""
+msgstr "poy"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:100
 msgid "Log In"
@@ -374,11 +374,11 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:220
 msgid "E-Mail Address"
-msgstr ""
+msgstr "nêšuvi imêyl"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:273
 msgid "Password"
-msgstr ""
+msgstr "razm"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:359
 #: ../qml/pages/ChatView.qml:1435
@@ -404,7 +404,7 @@ msgstr ""
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:450
 #: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:1099
 msgid "Advanced"
-msgstr ""
+msgstr "pîš ra'ďa"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:471
 msgid "Inbox"
@@ -418,7 +418,7 @@ msgstr ""
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:551
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:563
 msgid "Default (same as above)"
-msgstr ""
+msgstr "pîš farz (jurê ro')"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:489
 msgid "IMAP Server"
@@ -430,7 +430,7 @@ msgstr ""
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:595
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:612
 msgid "Automatic"
-msgstr "Autonomus"
+msgstr "xotkār"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:501
 msgid "IMAP Port"
@@ -438,7 +438,7 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:508
 msgid "Default (%1)"
-msgstr ""
+msgstr "pîš farz (%1)"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:514
 msgid "IMAP Security"
@@ -452,7 +452,7 @@ msgstr ""
 #: ../qml/pages/EphemeralTimerSettings.qml:134
 #: ../qml/pages/EphemeralTimerSettings.qml:138
 msgid "Off"
-msgstr "Occludere"
+msgstr "kur"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:538
 msgid "Outbox"
@@ -490,7 +490,7 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:613
 msgid "Strict"
-msgstr "Stricte"
+msgstr "saxtger"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:614
 msgid "Accept invalid certificates"
@@ -538,7 +538,7 @@ msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:155
 msgid "One moment…"
-msgstr ""
+msgstr "yadamow..."
 
 #: ../qml/pages/AddSecondDevice.qml:180
 #: ../qml/pages/ProgressQrBackupImport.qml:38
@@ -569,7 +569,7 @@ msgstr ""
 #: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:67
 #: ../qml/pages/QrShowScan.qml:683
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "lefgiri mênê virga"
 
 #: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:462
 msgid "Worse quality, small size"
@@ -690,24 +690,24 @@ msgstr ""
 #: ../qml/pages/ChatInfosActionsChatlist.qml:49
 #: ../qml/pages/ChatInfosActionsChatview.qml:63
 msgid "Mute Notifications"
-msgstr ""
+msgstr "bî dong kerdên vārasuviyā"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:49
 #: ../qml/pages/ChatInfosActionsChatview.qml:63
 msgid "Unmute"
-msgstr ""
+msgstr "vā dong kerdên"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:72
 #: ../qml/pages/ChatInfosActionsChatview.qml:86
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
-msgstr ""
+msgstr "ālêštê jarga"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:84
 #: ../qml/pages/ChatInfosActionsChatview.qml:98
 #: ../qml/pages/ConfirmLeaveGroup.qml:36
 msgid "Leave Group"
-msgstr ""
+msgstr "ra'ďên zê jarga"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:97
 #: ../qml/pages/ChatInfosActionsChatview.qml:111
@@ -717,27 +717,27 @@ msgstr ""
 #: ../qml/pages/ChatInfosActionsChatlist.qml:150
 #: ../qml/pages/ChatInfosActionsChatview.qml:177
 msgid "Mute for 1 hour"
-msgstr ""
+msgstr "bî dong kerdên si 1 sāat"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:164
 #: ../qml/pages/ChatInfosActionsChatview.qml:191
 msgid "Mute for 2 hours"
-msgstr ""
+msgstr "bî dong kerdên si 2 sāat"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:178
 #: ../qml/pages/ChatInfosActionsChatview.qml:205
 msgid "Mute for 1 day"
-msgstr ""
+msgstr "bî dong kerdên si 1 ru"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:192
 #: ../qml/pages/ChatInfosActionsChatview.qml:219
 msgid "Mute for 7 days"
-msgstr ""
+msgstr "bî dong kerdên si 7 ru"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:206
 #: ../qml/pages/ChatInfosActionsChatview.qml:233
 msgid "Mute forever"
-msgstr ""
+msgstr "bî dong kerdên si hamiša"
 
 #: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:267
 #: ../qml/pages/EphemeralTimerSettings.qml:27
@@ -747,7 +747,7 @@ msgstr ""
 #: ../qml/pages/ChatInfosActionsChatview.qml:128
 #: ../qml/pages/ConfirmClearChat.qml:42 ../qml/pages/ConfirmClearChat.qml:51
 msgid "Clear Chat"
-msgstr ""
+msgstr "roftênê virgārê goftoloft"
 
 #: ../qml/pages/ChatView.qml:162 ../qml/pages/ChatView.qml:186
 #: ../qml/pages/ChatView.qml:1385
@@ -762,7 +762,7 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:247 ../qml/pages/ChatView.qml:1043
 msgid "Voice Message"
-msgstr ""
+msgstr "payomê dong"
 
 #: ../qml/pages/ChatView.qml:260
 msgid "Verified Contact"
@@ -778,7 +778,7 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:1137
 msgid "Download"
-msgstr ""
+msgstr "dānlod"
 
 #: ../qml/pages/ChatView.qml:1139
 msgid "Download failed"
@@ -786,7 +786,7 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:1141
 msgid "Downloading…"
-msgstr ""
+msgstr "honêy dānlod êbu..."
 
 #: ../qml/pages/ChatView.qml:1176
 msgid "Unread Messages"
@@ -794,17 +794,17 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:1192
 msgid "Show Full Message…"
-msgstr ""
+msgstr "nêšow dāďên payomê kāmêl"
 
 #: ../qml/pages/ChatView.qml:2057
 msgid "Accept"
-msgstr ""
+msgstr "qêvul"
 
 #: ../qml/pages/ChatView.qml:2074 ../qml/pages/ChatView.qml:2228
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
-msgstr "Exstinguere"
+msgstr "pāk kerdên"
 
 #: ../qml/pages/ChatView.qml:2090
 msgid "Block"
@@ -856,7 +856,7 @@ msgstr ""
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
 #: ../qml/pages/MessageHtmlView.qml:89
 msgid "Load Remote Images"
-msgstr ""
+msgstr "bār vani šîvātā zê dar"
 
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:28
 msgid "Abort setting up second device?"
@@ -865,16 +865,16 @@ msgstr ""
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:31
 #: ../qml/pages/ProgressKeysExport.qml:57
 msgid "Yes"
-msgstr "Ita est"
+msgstr "harêy"
 
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:40
 msgid "No"
-msgstr "Non ita est"
+msgstr "na"
 
 #: ../qml/pages/ConfirmChatDeletion.qml:34
 #: ../qml/pages/ConfirmChatDeletion.qml:44
 msgid "Delete Chat"
-msgstr ""
+msgstr "pāk kerdên poy goftoloft"
 
 #: ../qml/pages/ConfirmChatDeletion.qml:38
 #: ../qml/pages/ConfirmMsgDeletion.qml:39
@@ -906,7 +906,7 @@ msgstr ""
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
 #: ../qml/pages/SettingsPage.qml:982
 msgid "Delete Messages from Device"
-msgstr ""
+msgstr "pāk kerdên payomā zê dasgā"
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:40
 msgid ""
@@ -928,7 +928,7 @@ msgstr ""
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
 #: ../qml/pages/SettingsPage.qml:1010
 msgid "Delete Messages from Server"
-msgstr ""
+msgstr "pāk kerdên payomā zê sêrvêr"
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:40
 msgid ""
@@ -966,12 +966,12 @@ msgstr ""
 
 #: ../qml/pages/ConfirmMemberDeletion.qml:39
 msgid "Remove %1 from group?"
-msgstr ""
+msgstr "pāk kerdên %1 zê jarga?"
 
 #: ../qml/pages/ConfirmMsgDeletion.qml:35
 #: ../qml/pages/ConfirmMsgDeletion.qml:45
 msgid "Delete Message"
-msgstr ""
+msgstr "pāk kerdên payom"
 
 #: ../qml/pages/ConfirmStopEncryptingDatabase.qml:35
 msgid "Really disable database encryption?"
@@ -1003,19 +1003,19 @@ msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:206
 msgid "Group Name"
-msgstr ""
+msgstr "nomê jarga"
 
 #: ../qml/pages/CreateOrEditGroup.qml:229
 msgid "%1 member"
-msgstr ""
+msgstr "%1 mėntor"
 
 #: ../qml/pages/CreateOrEditGroup.qml:230
 msgid "%1 members"
-msgstr ""
+msgstr "%1 mėntor"
 
 #: ../qml/pages/CreateOrEditGroup.qml:247 ../qml/pages/GroupAddMember.qml:34
 msgid "Add Members"
-msgstr ""
+msgstr "avordênê mêntor"
 
 #: ../qml/pages/CreateOrEditGroup.qml:346
 msgid "Please enter a name for the group."
@@ -1023,11 +1023,11 @@ msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:370
 msgid "Change Group Image"
-msgstr ""
+msgstr "ālêštê šîvātê jarga"
 
 #: ../qml/pages/CreateOrEditGroup.qml:383
 msgid "Remove Group Image"
-msgstr ""
+msgstr "pāk kerdên šîvātê jarga"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:41
 #: ../qml/pages/EphemeralTimerSettings.qml:148
@@ -1036,7 +1036,7 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:169 ../qml/pages/SettingsPage.qml:1458
 #: ../qml/pages/SettingsPage.qml:1464
 msgid "After 30 seconds"
-msgstr ""
+msgstr "ba'ďê 30 sâniya"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:162
@@ -1044,7 +1044,7 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:173 ../qml/pages/SettingsPage.qml:1479
 #: ../qml/pages/SettingsPage.qml:1485
 msgid "After 1 minute"
-msgstr ""
+msgstr "ba'ďê 1 dîqa"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:49
 #: ../qml/pages/EphemeralTimerSettings.qml:176
@@ -1053,7 +1053,7 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:1303 ../qml/pages/SettingsPage.qml:1309
 #: ../qml/pages/SettingsPage.qml:1500 ../qml/pages/SettingsPage.qml:1506
 msgid "After 1 hour"
-msgstr ""
+msgstr "ba'ďê 1 sāat"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:53
 #: ../qml/pages/EphemeralTimerSettings.qml:190
@@ -1062,7 +1062,7 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:1324 ../qml/pages/SettingsPage.qml:1330
 #: ../qml/pages/SettingsPage.qml:1521 ../qml/pages/SettingsPage.qml:1527
 msgid "After 1 day"
-msgstr ""
+msgstr "ba'ďê 1 ru"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:57
 #: ../qml/pages/EphemeralTimerSettings.qml:204
@@ -1071,7 +1071,7 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:1345 ../qml/pages/SettingsPage.qml:1351
 #: ../qml/pages/SettingsPage.qml:1542 ../qml/pages/SettingsPage.qml:1548
 msgid "After 1 week"
-msgstr ""
+msgstr "ba'ďê 1 hafta"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:218
@@ -1079,7 +1079,7 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:1366 ../qml/pages/SettingsPage.qml:1372
 #: ../qml/pages/SettingsPage.qml:1563 ../qml/pages/SettingsPage.qml:1569
 msgid "After 4 weeks"
-msgstr ""
+msgstr "ba'ďê 4 hafta"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:65
 msgid "After %1 seconds"
@@ -1097,15 +1097,15 @@ msgstr ""
 
 #: ../qml/pages/ForwardMessage.qml:49
 msgid "Close"
-msgstr "Claudere"
+msgstr "bastên"
 
 #: ../qml/pages/ImageViewer.qml:39 ../qml/pages/ImageViewerAnimated.qml:39
 msgid "Save"
-msgstr "Salvare"
+msgstr "zaft"
 
 #: ../qml/pages/MessageInfosActions.qml:33
 msgid "Copy Text"
-msgstr ""
+msgstr "lefgiri hîl"
 
 #: ../qml/pages/MessageInfosActions.qml:45
 msgid "Export Attachment"
@@ -1130,7 +1130,7 @@ msgstr ""
 #: ../qml/pages/PickerImageToExport.qml:42
 #: ../qml/pages/PickerImageToSend.qml:34
 msgid "Select"
-msgstr ""
+msgstr "pêsand"
 
 #: ../qml/pages/PickerBackupFile.qml:109
 msgid "The selected file is not a valid backup file."
@@ -1138,7 +1138,7 @@ msgstr ""
 
 #: ../qml/pages/PickerChatPic.qml:34
 msgid "Select Group Image"
-msgstr ""
+msgstr "pêsandê šîvātê jarga"
 
 #: ../qml/pages/PickerProfilePic.qml:34 ../qml/pages/PickerQrImageLoad.qml:34
 msgid "Select your new profile image"
@@ -1146,19 +1146,19 @@ msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen at %1"
-msgstr ""
+msgstr "ritorê dindâyi mênê %1"
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen: Unknown"
-msgstr ""
+msgstr "ritorê dindâyi: diyār nî"
 
 #: ../qml/pages/ProfileOther.qml:47
 msgid "View Profile"
-msgstr ""
+msgstr "niyaštên porofāyl"
 
 #: ../qml/pages/ProfileOther.qml:236
 msgid "Locally generated messages"
-msgstr ""
+msgstr "payomā mêni"
 
 #: ../qml/pages/ProfileOther.qml:266
 msgid "Verified by %1"
@@ -1170,23 +1170,23 @@ msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:48 ../qml/pages/SettingsPage.qml:663
 msgid "Edit Profile"
-msgstr ""
+msgstr "ālêštê porofāyl"
 
 #: ../qml/pages/ProfileSelf.qml:96
 msgid "Profile"
-msgstr ""
+msgstr "porofāyl"
 
 #: ../qml/pages/ProfileSelf.qml:177
 msgid "Select Profile Image"
-msgstr ""
+msgstr "pêsandê šîvātê porofāyl"
 
 #: ../qml/pages/ProfileSelf.qml:190
 msgid "Delete Profile Image"
-msgstr ""
+msgstr "pāk kerdên šîvātê porofāyl"
 
 #: ../qml/pages/ProfileSelf.qml:210
 msgid "Your Name"
-msgstr ""
+msgstr "nomê to"
 
 #: ../qml/pages/ProgressBackupExport.qml:36
 msgid ""
@@ -1263,7 +1263,7 @@ msgstr ""
 
 #: ../qml/pages/ProgressQrBackupImport.qml:63
 msgid "Done"
-msgstr ""
+msgstr "anjom vâbi"
 
 #: ../qml/pages/QrConfirmPopup.qml:79
 msgid "Open Url in Browser"
@@ -1271,7 +1271,7 @@ msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:103
 msgid "Chat with %1?"
-msgstr ""
+msgstr "goftoloft vā %1?"
 
 #: ../qml/pages/QrShowScan.qml:133
 msgid "Do you want to join the group \"%1\"?"
@@ -1357,21 +1357,21 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:55
 msgid "Connecting…"
-msgstr ""
+msgstr "honêy menpiz êbu..."
 
 #: ../qml/pages/SettingsPage.qml:57
 msgid "Updating…"
-msgstr ""
+msgstr "honêy vê ru êbu..."
 
 #: ../qml/pages/SettingsPage.qml:59
 msgid "Connected"
-msgstr ""
+msgstr "menpiz vâbi"
 
 #: ../qml/pages/SettingsPage.qml:100 ../qml/pages/SettingsPage.qml:113
 #: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:1204
 #: ../qml/pages/SettingsPage.qml:1246 ../qml/pages/SettingsPage.qml:1260
 msgid "Up to %1"
-msgstr ""
+msgstr "tā saqfe %1"
 
 #: ../qml/pages/SettingsPage.qml:104 ../qml/pages/SettingsPage.qml:1218
 msgid "Up to %1, most worse quality images"
@@ -1384,13 +1384,13 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:161
 #: ../qml/pages/SettingsPage.qml:1289 ../qml/pages/SettingsPage.qml:1423
 msgid "Never"
-msgstr "Numquam"
+msgstr "hič"
 
 #: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:193
 #: ../qml/pages/SettingsPage.qml:1387 ../qml/pages/SettingsPage.qml:1393
 #: ../qml/pages/SettingsPage.qml:1584 ../qml/pages/SettingsPage.qml:1590
 msgid "After 1 year"
-msgstr ""
+msgstr "ba'ďê 1 sāl"
 
 #: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:197
 msgid "?"
@@ -1399,31 +1399,31 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:165 ../qml/pages/SettingsPage.qml:1437
 #: ../qml/pages/SettingsPage.qml:1443
 msgid "At once"
-msgstr ""
+msgstr "ya kêrat"
 
 #: ../qml/pages/SettingsPage.qml:355
 msgid "Sync All"
-msgstr ""
+msgstr "vê ru kerdên poy"
 
 #: ../qml/pages/SettingsPage.qml:401
 msgid "Message Font Size"
-msgstr ""
+msgstr "hêndā hîlê payom"
 
 #: ../qml/pages/SettingsPage.qml:410 ../qml/pages/SettingsPage.qml:1622
 msgid "Small"
-msgstr ""
+msgstr "kučir"
 
 #: ../qml/pages/SettingsPage.qml:413 ../qml/pages/SettingsPage.qml:1636
 msgid "Normal"
-msgstr ""
+msgstr "âdi"
 
 #: ../qml/pages/SettingsPage.qml:416 ../qml/pages/SettingsPage.qml:1650
 msgid "Large"
-msgstr ""
+msgstr "gap"
 
 #: ../qml/pages/SettingsPage.qml:419 ../qml/pages/SettingsPage.qml:1664
 msgid "Extra large"
-msgstr ""
+msgstr "qalêvê gap"
 
 #: ../qml/pages/SettingsPage.qml:445
 msgid "Show Experimental Settings"
@@ -1447,7 +1447,7 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:692
 msgid "Chats"
-msgstr ""
+msgstr "goftoloftā"
 
 #: ../qml/pages/SettingsPage.qml:734
 msgid "Auto-Download Messages"
@@ -1493,7 +1493,7 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:968
 msgid "Delete Old Messages"
-msgstr ""
+msgstr "pāk kerdên payomā qaďimi"
 
 #: ../qml/pages/SettingsPage.qml:1058 ../qml/pages/SettingsPage.qml:1699
 msgid "Export Backup"

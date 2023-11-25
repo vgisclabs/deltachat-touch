@@ -159,12 +159,17 @@ void WorkflowDbToEncrypted::imexProgressReceiver(int imProg)
             dc_imex(m_tempContext, DC_IMEX_IMPORT_BACKUP, m_writtenFile.toUtf8().constData(), importExportPassphrase.toUtf8().constData());
         } else {
             // Just finished creating an encrypted account based
-            // on an exported backup, delete the unencrypted original account
+            // on an exported backup.
+
+            // Enable verified 1:1 chats on the new account
+            dc_set_config(m_tempContext, "verified_one_on_one_chats", "1");
+
             emit addedNewClosedAccount(m_newAccID);
 
             dc_context_unref(m_tempContext);
             m_tempContext = nullptr;
 
+            // Now delete the unencrypted original account
             uint32_t tempAccID = m_accountsToConvert.back();
 
             if (m_currentlySelectedAccID == tempAccID) {

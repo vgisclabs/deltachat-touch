@@ -13,22 +13,27 @@
 
 • Możesz teraz pomóc odpowiadając po prostu na tą wiadomość i poprosić nadawcę o ponowne wysłanie wiadomości.
 
-• W przypadku ponownego zainstalowania Delta Chat lub innego programu mailowego na tym lub innym urządzeniu, może być konieczne wysłanie stąd klucza automatycznego szyfrowania.
+• Jeśli właśnie ponownie zainstalowałeś Delta Chat, najlepiej będzie, jeśli ponownie skonfigurujesz Delta Chat teraz i wybierzesz „Dodaj jako drugie urządzenie” lub zaimportujesz kopię zapasową.
 @linesystemmsg_read_receipt_subject Potwierdzenie odczytu
 @linesystemmsg_read_receipt_body To jest potwierdzenie odczytu dla wiadomości ”%1$s„.
 
 To potwierdzenie odczytu tylko informuje, że wiadomość została wyświetlona na urządzeniu odbiorcy. Nie ma gwarancji, że odbiorca przeczytał treść wiadomości.
-@lineautocrypt_prefer_e2ee Preferuj pełne szyfrowanie
+@lineautocrypt_prefer_e2ee Preferuj szyfrowanie typu end-to-end
 @linechat_archived_chats_title Zarchiwizowane czaty
 @lineautocrypt_asm_subject Wiadomość konfiguracyjna automatycznego szyfrowania
-@lineautocrypt_asm_general_body Jest to wiadomość konfiguracyjna automatycznego szyfrowania służąca do przesyłania klucza między klientami.
+@lineautocrypt_asm_general_body Jest to wiadomość konfiguracyjna automatycznego szyfrowania typu end-to-end służąca do przesyłania klucza między klientami.
 
 Aby odszyfrować i użyć klucza, otwórz wiadomość w kliencie zgodnym z automatycznym szyfrowaniem i wprowadź kod konfiguracyjny przedstawiony na urządzeniu generującym.
 @linelogin_error_cannot_login Nie można się zalogować jako „%1$s. Sprawdź, czy adres e-mail i hasło są poprawne.
 @linedevice_talk Komunikaty urządzenia
+@linechat_new_group_hint Napisz pierwszą wiadomość, by inni mogli odpowiedzieć w tej grupie.
+
+• Nie ma problemu, jeśli nie wszyscy członkowie korzystają z Delta Chat.
+
+• Dostarczenie pierwszej wiadomości może chwilę potrwać.
 @linesaved_messages Zapisane wiadomości
 @linecontact_verified Kontakt %1$s zweryfikowany.
-@linecontact_not_verified Nie można zweryfikować %1$s
+@linecontact_not_verified Nie można zweryfikować szyfrowania typu end-to-end %1$s
 @linecontact_setup_changed Zmieniono konfigurację dla %1$s
 @linedevice_talk_explain Wiadomości w tym czacie są generowane lokalnie przez twoją aplikację Delta Chat. Twórcy używają go do informowania o aktualizacjach aplikacji i problemach podczas użytkowania.
 @linedevice_talk_welcome_message Witamy w Delta Chat! - Delta Chat wygląda i działa podobnie jak inne popularne komunikatory, ale nie miesza się w scentralizowaną kontrolę, śledzenie ani sprzedaż ciebie, przyjaciół, kolegów lub rodziny dużym organizacjom.
@@ -60,7 +65,7 @@ Sprawdź aktualizacje na stronie https://get.delta.chat lub w sklepie z aplikacj
 
 Możesz nie być w stanie otrzymywać wiadomości, gdy pamięć jest pełna.
 
-👉 Sprawdzić, czy możesz usunąć stare dane w interfejsie internetowym dostawcy i rozważyć włączenie opcji "Ustawienia » Czaty i media » Usuwanie starych wiadomości". W dowolnym momencie możesz sprawdzić swoje bieżące wykorzystanie pamięci w "Ustawienia » Łączność".
+👉 Sprawdzić, czy możesz usunąć stare dane w interfejsie internetowym dostawcy i rozważyć włączenie opcji \"Ustawienia » Czaty i media » Usuwanie starych wiadomości\". W dowolnym momencie możesz sprawdzić swoje bieżące wykorzystanie pamięci w \"Ustawienia » Łączność\".
 @linen_bytes_message Wiadomość %1$s
 @linedownload_max_available_until Maksymalna ilość do pobrania dostępna do %1$s
 @lineincoming_messages Wiadomości przychodzące
@@ -124,9 +129,7 @@ Bardzo zalecane jest, aby ustawić swojego starego dostawcę emaila tak, aby prz
 @lineephemeral_timer_days_by_other  Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s dni.
 @lineephemeral_timer_weeks_by_you Ustawiono zegar znikających wiadomości na %1$s tyg.
 @lineephemeral_timer_weeks_by_other  Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s tyg.
-@lineprotection_enabled_by_you Włączono ochronę czatu.
-@lineprotection_enabled_by_other Ochrona czatu włączona przez %1$s.
-@lineprotection_disabled_by_you Wyłączono ochronę czatu.
-@lineprotection_disabled_by_other Ochrona czatu wyłączona przez %1$s.
+@linechat_protection_enabled_tap_to_learn_more Od teraz gwarantujemy, że wiadomości będą szyfrowane metodą end-to-end. Dotknij, aby przeczytać więcej.
+@linechat_protection_broken_tap_to_learn_more Użytkownik %1$s wysłał wiadomość z innego urządzenia. Dotknij, aby przeczytać więcej.
 @linemultidevice_qr_subtitle Zeskanuj, aby skonfigurować kolejne urządzenie dla %1$s
 @end

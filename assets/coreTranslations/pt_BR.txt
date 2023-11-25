@@ -9,23 +9,23 @@
 @linefile Arquivo
 @lineencrypted_message Mensagem criptografada
 @lineqrscan_fingerprint_label Impressão
-@linesystemmsg_cannot_decrypt Impossível descriptografar esta mensagem.
-
-• Pode resolver pedir que ela seja reenviada.
-
-• Caso você tenha reinstalado o Delta Chat ou outro programa de e-mail, neste ou noutro dispositivo, será necessário enviar uma "mensagem de configuração do Autocrypt".
 @linesystemmsg_read_receipt_subject Confirmação de leitura
-@linesystemmsg_read_receipt_body Confirmação de recebimento da mensagem "%1$s".
+@linesystemmsg_read_receipt_body Confirmação de recebimento da mensagem \"%1$s\".
 
 Esta confirmação somente assegura que a mensagem foi exibida no aparelho do destinatário, mas não há garantia de que ele tenha lido o seu conteúdo.
 @lineautocrypt_prefer_e2ee Preferir criptografia ponta a ponta
 @linechat_archived_chats_title Conversas arquivadas
 @lineautocrypt_asm_subject Mensagem de configuração do Autocrypt
-@lineautocrypt_asm_general_body Esta é uma "mensagem de configuração do Autocrypt" que serve para transferir suas chaves entre dispositivos diferentes.
+@lineautocrypt_asm_general_body Esta é uma \"mensagem de configuração do Autocrypt\" que serve para transferir suas chaves entre dispositivos diferentes.
 
 Para descriptografar sua chave abra esta mensagem num cliente compatível e digite o código exibido no dispositivo de origem.
-@linelogin_error_cannot_login Impossível acessar "%1$s". Por favor, verifique o e-mail e senha.
+@linelogin_error_cannot_login Impossível acessar \"%1$s\". Por favor, verifique o e-mail e senha.
 @linedevice_talk Mensagens desse aparelho
+@linechat_new_group_hint Compor a primeira mensagem habilitará os participantes a ingressar no grupo.
+
+• Não tem problema se nem todos usarem o Delta Chat.
+
+• O envio da primeira mensagem pode demorar.
 @linesaved_messages Mensagens salvas
 @linecontact_verified %1$s verificado.
 @linecontact_not_verified Impossível verificar %1$s
@@ -53,14 +53,14 @@ Ajuste o relógio ⏰🔧 para garantir que suas mensagens sejam recebidas corre
 
 Isso pode causar problemas porque seus parceiros de bate-papo usam versões mais recentes - e você está perdendo os recursos mais recentes 😳
 Entre em https://get.delta.chat ou seu verifique com seu provedor de aplicativos por atualizações.
-@linedevicemsg_self_deleted Você excluiu o bate-papo "Mensagens salvas".
+@linedevicemsg_self_deleted Você excluiu o bate-papo \"Mensagens salvas\".
 
-ℹ️ Para usar o recurso "Mensagens salvas" novamente, crie um novo bate-papo com você mesmo. 
+ℹ️ Para usar o recurso \"Mensagens salvas\" novamente, crie um novo bate-papo com você mesmo. 
 @linedevicemsg_storage_exceeding ⚠️ O armazenamento em seu provedor está prestes a terminar, %1$s%% já foram utilizados
 
 Você pode não conseguir receber mensagens quando o armazenamento estiver 100 %% utilizado.
 
-👉 Verifique se você pode excluir dados antigos através da interface da web do provedor e considere habilitar "Configurações / Excluir Mensagens Antigas". Você pode verificar o uso de armazenamento atual a qualquer momento em "Configurações / Conectividade". 
+👉 Verifique se você pode excluir dados antigos através da interface da web do provedor e considere habilitar \"Configurações / Excluir Mensagens Antigas\". Você pode verificar o uso de armazenamento atual a qualquer momento em \"Configurações / Conectividade\". 
 @linen_bytes_message Mensagem de %1$s
 @linedownload_max_available_until Descarregamento máximo disponível até %1$s
 @lineincoming_messages Mensagens Recebidas
@@ -82,7 +82,7 @@ Você pode não conseguir receber mensagens quando o armazenamento estiver 100 %
 Esperando o dispositivo de %2$s responder...
 @linesecure_join_replies %1$srespondeu, esperando para ser adicionado ao grupo...
 @lineqrshow_join_contact_hint Escanear para estabelecer contato com %1$s
-@lineqrshow_join_group_hint Escanear para ingressar no grupo "%1$s".
+@lineqrshow_join_group_hint Escanear para ingressar no grupo \"%1$s\".
 @lineconnectivity_not_connected Não conectado
 @lineaeap_addr_changed %1$s mudou seu endereço de %2$s para %3$s
 @lineaeap_explanation Você mudou seu endereço de e-mail de %1$s para %2$s.
@@ -90,8 +90,8 @@ Esperando o dispositivo de %2$s responder...
 Se você agora enviar uma mensagem para um grupo verificado, os contatos lá substituirão automaticamente o antigo por seu novo endereço.
 
 É altamente recomendável configurar seu antigo provedor de e-mail para encaminhar todos os e-mails para seu novo endereço de e-mail. Caso contrário, você pode perder mensagens de contatos que ainda não receberam seu novo endereço.
-@linegroup_name_changed_by_you Você mudou o nome do grupo de "%1$s" para "%2$s".
-@linegroup_name_changed_by_other Nome do grupo mudado de "%1$s" para "%2$s" por %3$s.
+@linegroup_name_changed_by_you Você mudou o nome do grupo de \"%1$s\" para \"%2$s\".
+@linegroup_name_changed_by_other Nome do grupo mudado de \"%1$s\" para \"%2$s\" por %3$s.
 @linegroup_image_changed_by_you Você trocou a imagem do grupo.
 @linegroup_image_changed_by_other Imagem do grupo mudada por %1$s.
 @lineadd_member_by_you Você adicionou o membro %1$s.
@@ -124,9 +124,5 @@ Se você agora enviar uma mensagem para um grupo verificado, os contatos lá sub
 @lineephemeral_timer_days_by_other Temporizador de desaparecimento de mensagens definido para %1$s dias por %2$s.
 @lineephemeral_timer_weeks_by_you Você definiu o temporizador de desaparecimento de mensagens para  %1$s semanas.
 @lineephemeral_timer_weeks_by_other Temporizador de desaparecimento de mensagens definido para %1$s semanas por %2$s.
-@lineprotection_enabled_by_you Você habilitou a proteção de chat.
-@lineprotection_enabled_by_other Proteção de chat habilitada por %1$s.
-@lineprotection_disabled_by_you Você desabilitou a proteção de chat.
-@lineprotection_disabled_by_other Proteção de chat desabilitada por %1$s.
 @linemultidevice_qr_subtitle Escaneie para configurar outro dispositivo para %1$s
 @end

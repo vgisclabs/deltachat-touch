@@ -10,6 +10,11 @@
 @lineencrypted_message Titkosított üzenet
 @lineqrscan_fingerprint_label Ujjlenyomat.
 @linechat_archived_chats_title Archivált beszélgetések
+@linechat_new_group_hint Írj egy kezdőüzenetet, hogy a többiek válaszolhassanak a csoportban.
+
+• Nincs gond, ha nem használja minden tag a Delta Chatet.
+
+• Az első üzenet kézbesítése kicsit lassabb lehet.
 @linecontact_verified %1$s ellenőrizve.
 @linecontact_not_verified %1$s nem ellenőrizhető
 @linelocation Hely

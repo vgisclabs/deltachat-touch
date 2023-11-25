@@ -38,6 +38,8 @@ if (stringName == "chat_no_messages") {
     dc_set_stock_translation(currentContext, DC_STR_CANNOT_LOGIN, stringText.toUtf8().constData());
 } else if (stringName == "device_talk") {
     dc_set_stock_translation(currentContext, DC_STR_DEVICE_MESSAGES, stringText.toUtf8().constData());
+//} else if (stringName == "chat_new_group_hint") {
+//    dc_set_stock_translation(currentContext, DC_STR_NEW_GROUP_SEND_FIRST_MESSAGE, stringText.toUtf8().constData());
 } else if (stringName == "saved_messages") {
     dc_set_stock_translation(currentContext, DC_STR_SAVED_MESSAGES, stringText.toUtf8().constData());
 } else if (stringName == "contact_verified") {
@@ -88,8 +90,9 @@ if (stringName == "chat_no_messages") {
     dc_set_stock_translation(currentContext, DC_STR_OUTGOING_MESSAGES, stringText.toUtf8().constData());
 } else if (stringName == "storage_on_domain") {
     dc_set_stock_translation(currentContext, DC_STR_STORAGE_ON_DOMAIN, stringText.toUtf8().constData());
-} else if (stringName == "one_moment") {
-    dc_set_stock_translation(currentContext, DC_STR_ONE_MOMENT, stringText.toUtf8().constData());
+// this one gives an error message: deltachat-ffi/src/lib.rs:325: invalid stock message id 106
+//} else if (stringName == "one_moment") {
+//    dc_set_stock_translation(currentContext, DC_STR_ONE_MOMENT, stringText.toUtf8().constData());
 } else if (stringName == "connectivity_connected") {
     dc_set_stock_translation(currentContext, DC_STR_CONNECTED, stringText.toUtf8().constData());
 } else if (stringName == "connectivity_connecting") {
@@ -192,6 +195,10 @@ if (stringName == "chat_no_messages") {
     dc_set_stock_translation(currentContext, DC_STR_EPHEMERAL_TIMER_WEEKS_BY_YOU, stringText.toUtf8().constData());
 } else if (stringName == "ephemeral_timer_weeks_by_other") {
     dc_set_stock_translation(currentContext, DC_STR_EPHEMERAL_TIMER_WEEKS_BY_OTHER, stringText.toUtf8().constData());
+} else if (stringName == "chat_protection_enabled_tap_to_learn_more") {
+    dc_set_stock_translation(currentContext, DC_STR_CHAT_PROTECTION_ENABLED, stringText.toUtf8().constData());
+} else if (stringName == "chat_protection_broken_tap_to_learn_more") {
+    dc_set_stock_translation(currentContext, DC_STR_CHAT_PROTECTION_DISABLED, stringText.toUtf8().constData());
 } else if (stringName == "multidevice_qr_subtitle") {
     dc_set_stock_translation(currentContext, DC_STR_BACKUP_TRANSFER_QR, stringText.toUtf8().constData());
 }

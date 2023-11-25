@@ -11,10 +11,12 @@
         <file>read_white.svg</file>
         <file>sent_black.svg</file>
         <file>sent_white.svg</file>
-        <file>verified.png</file>
+        <file>verified.svg</file>
+        <file>verified_broken.svg</file>
         <file>coreTranslations/ar.txt</file>
         <file>coreTranslations/az.txt</file>
         <file>coreTranslations/bg.txt</file>
+        <file>coreTranslations/bqi.txt</file>
         <file>coreTranslations/ca.txt</file>
         <file>coreTranslations/ckb.txt</file>
         <file>coreTranslations/cs.txt</file>
@@ -41,6 +43,7 @@
         <file>coreTranslations/pl.txt</file>
         <file>coreTranslations/pt_BR.txt</file>
         <file>coreTranslations/pt.txt</file>
+        <file>coreTranslations/ro.txt</file>
         <file>coreTranslations/ru.txt</file>
         <file>coreTranslations/sc.txt</file>
         <file>coreTranslations/sk.txt</file>
@@ -51,6 +54,7 @@
         <file>coreTranslations/te.txt</file>
         <file>coreTranslations/tr.txt</file>
         <file>coreTranslations/uk.txt</file>
+        <file>coreTranslations/vi.txt</file>
         <file>coreTranslations/zh_CN.txt</file>
         <file>coreTranslations/zh_TW.txt</file>
     </qresource>

@@ -9,24 +9,20 @@
 @linefile Fichier
 @lineencrypted_message Message chiffré
 @lineqrscan_fingerprint_label Empreinte digitale
-@linesystemmsg_cannot_decrypt Ce message ne peut pas être déchiffré.
-
-• Il peut déjà être utile de simplement répondre à ce message et demander à l\'expéditeur de l\'envoyer à nouveau.
-
-• Au cas où vous auriez réinstallé Delta Chat ou un autre programme de messagerie sur cet appareil ou un autre, vous voudrez peut-être envoyer un message de configuration d\'Autocrypt depuis ce dernier.
 @linesystemmsg_read_receipt_subject Accusé de lecture
-@linesystemmsg_read_receipt_body Ceci est un accusé de lecture pour le message "%1$s".
+@linesystemmsg_read_receipt_body Ceci est un accusé de lecture pour le message \"%1$s\".
 
 Cela signifie que le message a été affiché sur l\'appareil du destinataire, pas forcément que le contenu ait été lu.
 @lineautocrypt_prefer_e2ee Préférez le chiffrement de bout en bout
 @linechat_archived_chats_title Discussions archivées
 @lineautocrypt_asm_subject Message de configuration Autocrypt
 @lineautocrypt_asm_general_body Ceci est le message de configuration Autocrypt utilisé pour transférer votre configuration de bout en bout entre clients. Pour déchiffrer et utiliser votre configuration, ouvrez le message dans un client compatible Autocrypt et entrez le code de configuration présenté sur le périphérique de génération.
-@linelogin_error_cannot_login Connexion en tant que "%1$s" échouée. Vérifiez s.v.p. que votre adresse courriel et votre mot de passe sont corrects.
+@linelogin_error_cannot_login Connexion en tant que \"%1$s\" échouée. Vérifiez que votre adresse courriel et votre mot de passe sont corrects.
 @linedevice_talk Messages de l\'appareil
+@linechat_new_group_hint Les autres participants ne verront ce groupe qu\'après que vous avez envoyé un premier message.
 @linesaved_messages Messages sauvegardés
-@linecontact_verified %1$s vérifié.
-@linecontact_not_verified Ne peut pas vérifier %1$s
+@linecontact_verified %1$s connu.
+@linecontact_not_verified Impossible de garantir le chiffrement de bout en bout avec %1$s.
 @linecontact_setup_changed Configuration modifiée pour %1$s
 @linedevice_talk_explain Les messages dans cette discussion sont générés localement par votre application Delta Chat. Cela vous permet de recevoir des informations concernant les mises à jour et problèmes rencontrés à l\'utilisation.
 @linedevice_talk_welcome_message Bienvenue sur Delta Chat ! – Delta Chat ressemble à d\'autres applications de messagerie populaires, mais n\'implique pas un contrôle centralisé, le traçage ou la revente de vos données, de celles de vos amis, vos collègues ou votre famille à de grandes organisations.
@@ -47,18 +43,18 @@ Utilisez Delta Chat avec n\'importe qui parmi des milliards de personnes : vous 
 @linedevicemsg_bad_time ⚠️ L\'heure ou la date de votre appareil semble erronée (%1$s).
 
 Réglez votre horloge ⏰🔧 pour que vos messages soient bien reçus.
-@linedevicemsg_update_reminder ⚠️ Votre version de Delta Chat semble être obsolète.
+@linedevicemsg_update_reminder ⚠️ Votre version de Delta Chat semble obsolète.
 
-Ceci pourrait poser des problèmes car vos contacts utilisent des versions plus récentes - et vous loupez les dernières fonctionnalités 😳
-Veuillez s\'il vous plaît faire un tour sur https://get.delta.chat ou votre magasin d\'applications pour une mise à jour.
-@linedevicemsg_self_deleted Vous avez supprimé la discussion "Messages sauvegardés".
+Cela risque de créer des dysfonctionnements parce que vos contacts utilisent des versions plus récentes - en plus, vous ratez les nouvelles fonctionnalités 😳
+ Rendez-vous sur https://get.delta.chat ou sur votre magasin d\'applications pour effectuer la mise à jour !
+@linedevicemsg_self_deleted Vous avez supprimé la discussion \"Messages sauvegardés\".
 
-ℹ️ Pour utiliser la fonctionnalité "Message enregistrés" à nouveau, commencez une nouvelle discussion avec vous-même.
+ℹ️ Pour utiliser la fonctionnalité \"Message enregistrés\" à nouveau, commencez une nouvelle discussion avec vous-même.
 @linedevicemsg_storage_exceeding ⚠️ Bientôt plus d\'espace de stockage chez votre fournisseur, %1$s%% utilisés.
 
 Vous ne serez peut-être plus en mesure de recevoir des messages quand votre espace de stockage sera plein.
 
-👉 Veuillez vérifier si vous avez d\'anciens éléments à supprimer directement sur l\'interface web de votre fournisseur et envisagez d\'activer "Paramètres / Supprimer les anciens messages". Vous pouvez vérifier à tout moment le volume d\'espace de stockage en cours d\'utilisation depuis "Paramètres / Connectivité".
+👉 Veuillez vérifier si vous avez d\'anciens éléments à supprimer directement sur l\'interface web de votre fournisseur et envisagez d\'activer \"Paramètres / Supprimer les anciens messages\". Vous pouvez vérifier à tout moment le volume d\'espace de stockage en cours d\'utilisation depuis \"Paramètres / Connectivité\".
 @linen_bytes_message %1$s message
 @linedownload_max_available_until Télécharger le plus possible jusqu\'à %1$s
 @lineincoming_messages Messages entrants
@@ -80,14 +76,14 @@ Vous ne serez peut-être plus en mesure de recevoir des messages quand votre esp
 En attente de la réponse de l’appareil de %2$s…
 @linesecure_join_replies %1$s a répondu, en attente d’être ajouté au groupe…
 @lineqrshow_join_contact_hint Scanner pour discuter avec %1$s
-@lineqrshow_join_group_hint Scannez ceci pour rejoindre le groupe "%1$s".
+@lineqrshow_join_group_hint Scannez ceci pour rejoindre le groupe \"%1$s\".
 @lineconnectivity_not_connected Non connecté
 @lineaeap_addr_changed %1$s a changé son adresse de %2$s à %3$s
-@lineaeap_explanation Vous avez changé votre adresse e-mail de %1$s à %2$s.
+@lineaeap_explanation Vous avez changé votre adresse courriel de %1$s à %2$s.
 
-Si vous envoyez maintenant un message à un groupe vérifié, les contacts de ce groupe remplaceront automatiquement l\'ancienne adresse par la nouvelle.
+Si vous envoyez maintenant un message à un groupe connu, votre ancienne adresse sera automatiquement remplacée par la nouvelle chez tous vos contacts dans ce groupe.
 
-Il est fortement conseillé de configurer votre ancien fournisseur d\'e-mail pour qu\'il transfère tous les e-mails à votre nouvelle adresse. Sinon, vous risquez de manquer des messages de contacts qui n\'ont pas encore reçu votre nouvelle adresse.
+Il est fortement conseillé de configurer votre ancien fournisseur de courriel de sorte à transférer tous vos courriels à votre nouvelle adresse. Sinon, vous risquez de manquer des messages de contacts qui n\'ont pas encore reçu votre nouvelle adresse.
 @linegroup_name_changed_by_you Nom du groupe modifié de « %1$s »  en « %2$s »  par vous.
 @linegroup_name_changed_by_other Nom de groupe modifié de « %1$s »  en « %2$s »  par %3$s.
 @linegroup_image_changed_by_you Image du groupe modifié par vous.
@@ -122,9 +118,7 @@ Il est fortement conseillé de configurer votre ancien fournisseur d\'e-mail pou
 @lineephemeral_timer_days_by_other Minuterie des messages éphémères réglée à %1$s jours par %2$s.
 @lineephemeral_timer_weeks_by_you Vous avez réglé le temps d\'affichage des messages éphémères à %1$s semaines.
 @lineephemeral_timer_weeks_by_other Minuterie des messages éphémères réglée à %1$s semaines par %2$s.
-@lineprotection_enabled_by_you Protection de discussion activée par vous.
-@lineprotection_enabled_by_other Protection de discussion activée par %1$s.
-@lineprotection_disabled_by_you Protection de discussion désactivée par vous.
-@lineprotection_disabled_by_other Protection de discussion désactivée par %1$s.
+@linechat_protection_enabled_tap_to_learn_more Les messages sont désormais garantis chiffrés de bout en bout. Appuyer pour en savoir plus.
+@linechat_protection_broken_tap_to_learn_more %1$s a envoyé un message depuis un nouvel appareil. Appuyez pour en savoir plus.
 @linemultidevice_qr_subtitle Scanner pour configurer un deuxième appareil pour %1$s
 @end

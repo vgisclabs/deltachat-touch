@@ -14,6 +14,11 @@
 @lineautocrypt_asm_subject 自動暗号化設定用ﾒｯｾｰｼﾞ
 @linelogin_error_cannot_login %1$sとしてログインできません。メールアドレスとパスワードを確認してください。
 @linedevice_talk デバイスのメッセージ
+@linechat_new_group_hint 最初のメッセージを送ってから他人が返信できるようになります。
+
+･Delta Chatを使わなくても構いません
+
+･最初のメッセージの配信は時間がかかる場合もあります。
 @linesaved_messages 保存したメッセージ
 @linecontact_verified %1$sを確認しました。
 @linecontact_not_verified %1$sを確認できません。
@@ -67,8 +72,4 @@
 @lineephemeral_timer_days_by_other %2$sから消えるメッセージを%1$s日にしました。
 @lineephemeral_timer_weeks_by_you 自分から消えるメッセージを%1$s週間にしました。
 @lineephemeral_timer_weeks_by_other %2$sから消えるメッセージを%1$s週間にしました。
-@lineprotection_enabled_by_you 自分から保護が有効です。
-@lineprotection_enabled_by_other %1$sから保護が有効です。
-@lineprotection_disabled_by_you 自分から保護が無効です。
-@lineprotection_disabled_by_other %1$sから保護が無効です。
 @end

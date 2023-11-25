@@ -9,13 +9,8 @@
 @linefile Fitxategia
 @lineencrypted_message Zifratutako mezua
 @lineqrscan_fingerprint_label Hatz-marka
-@linesystemmsg_cannot_decrypt Ezin da mezu hau deszifratu.
-
-• Mezuari erantzun diezaiokezu eta berriro bidaltzea eskatu.
-
-• Delta Chat berrinstalatu baduzu edo beste posta programa bat instalatu baduzu gailu honetan edo beste batean, AutoCrypt ezarpen mezua handik hona birbidaltzen saiatu zaitezke.
 @linesystemmsg_read_receipt_subject Irakurragiria
-@linesystemmsg_read_receipt_body Hau "%1$s" mezuaren irakurragiri bat da.
+@linesystemmsg_read_receipt_body Hau \"%1$s\" mezuaren irakurragiri bat da.
 
 Honek mezua jasotzailearen gailuan bistaratu dela esan nahi du, ez edukia irakurri dela.
 @lineautocrypt_prefer_e2ee Hobetsi muturretik muturrerako zifratzea
@@ -24,8 +19,13 @@ Honek mezua jasotzailearen gailuan bistaratu dela esan nahi du, ez edukia irakur
 @lineautocrypt_asm_general_body Hau Autocrypt ezarpen mezua da, zure muturretik muturrerako ezarpena bezeroen artean pasatzeko erabilia.
 
  Zure ezarpena deszifratu eta erabiltzeko, ireki mezua Autocrypt onartzen duen bezero batean eta sartu gailu sortzailean agertutako ezarpen kodea.
-@linelogin_error_cannot_login Ezin da "%1$s" bezala saioa hasi. Egiaztatu E-mail helbidea eta pasahitza zuzenak diren.
+@linelogin_error_cannot_login Ezin da \"%1$s\" bezala saioa hasi. Egiaztatu E-mail helbidea eta pasahitza zuzenak diren.
 @linedevice_talk Gailuaren mezuak
+@linechat_new_group_hint Idatzi lehen mezua, besteek taldera erantzutea baimenduz
+
+• Ez du axola denek ez badute Delta Chat erabiltzen.
+
+• Lehen mezua bidaltzeko denbora bat behar daiteke.
 @linesaved_messages Gordetako mezuak
 @linecontact_verified %1$s egiaztatuta.
 @linecontact_not_verified Ezin da %1$s egiaztatu
@@ -40,9 +40,9 @@ Erabili Delta Chat milaka miloika pertsonekin,  erabili bere e-mail helbidea eta
 @lineone_moment Unetxo bat...
 @lineerror_x Errorea: %1$s
 @lineqrshow_join_contact_hint Eskaneatu hau %1$s erabiltzailearen kontaktua ezartzeko
-@lineqrshow_join_group_hint Eskaneatu hau "%1$s" taldera elkartzeko.
-@linegroup_name_changed_by_you Nik: Taldearen izena "%1$s" izatetik "%2$s" izatera aldatu da
-@linegroup_name_changed_by_other %3$s(e)k: Taldearen izena "%1$s" izatetik "%2$s" izatera aldatu da
+@lineqrshow_join_group_hint Eskaneatu hau \"%1$s\" taldera elkartzeko.
+@linegroup_name_changed_by_you Nik: Taldearen izena \"%1$s\" izatetik \"%2$s\" izatera aldatu da
+@linegroup_name_changed_by_other %3$s(e)k: Taldearen izena \"%1$s\" izatetik \"%2$s\" izatera aldatu da
 @linegroup_image_changed_by_you Nik: Taldearen irudia aldatuta
 @linegroup_image_changed_by_other %1$s(e)k: Taldearen irudia aldatuta
 @lineadd_member_by_you Nik: %1$s kidea gehituta

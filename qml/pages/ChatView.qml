@@ -48,10 +48,13 @@ Page {
 
     property bool chatCanSend: DeltaHandler.chatmodel.chatCanSend()
     property bool isContactRequest: DeltaHandler.chatIsContactRequest
+    property bool isProtectionBroken: DeltaHandler.chatmodel.chatIsProtectionBroken()
 
     property real datelineIconSize: FontUtils.sizeToPixels(root.scaledFontSize) * 0.75
 
-    signal leavingChatViewPage()
+    property bool requestQrScanPage: false
+
+    signal leavingChatViewPage(bool qrScanPageRequested)
 
     signal messageQueryTextChanged(string query)
     signal searchJumpRequest(int posType)
@@ -93,6 +96,22 @@ Page {
         return time_str
     }
 
+    function closeAndStartQr() {
+        // Call this method to close this page and go
+        // to the QR scan page instead.
+        //
+        // When the page is closed, onDestruction is called
+        // which emits the signal chatViewIsClosed with
+        // requestQrScanPage as parameter. The signal
+        // is connected to a slot in DeltaHandler which
+        // itself emits a similar signal that is connected
+        // to Main.qml, again with requestQrScanPage as parameter.
+        // If it is true, Main.qml will directly go to the
+        // QR Scan page.
+        requestQrScanPage = true
+        layout.removePages(chatViewPage)
+    }
+
     Component.onCompleted: {
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatViewIsClosed)
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatmodel.chatViewIsClosed)
@@ -132,7 +151,7 @@ Page {
         DeltaHandler.chatmodel.setDraft(messageEnterField.text)
         // TODO is this signal needed? Could be used
         // to unref currentMessageDraft
-        leavingChatViewPage()
+        leavingChatViewPage(requestQrScanPage)
     }
 
     Connections {
@@ -163,6 +182,8 @@ Page {
             // CAVE: is emitted by both DeltaHandler and ChatModel
             chatname = DeltaHandler.chatName()
             chatCanSend = DeltaHandler.chatmodel.chatCanSend()
+            isProtectionBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
+
             if (!chatCanSend) {
                 if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
                     cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
@@ -172,6 +193,7 @@ Page {
                     cannotSendLabel.text = ""
                 }
             }
+
             isContactRequest = DeltaHandler.chatIsContactRequest
             leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
             leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
@@ -237,7 +259,7 @@ Page {
         leadingActionBar.actions: [
             Action {
                 id: leadingVerifiedAction
-                iconSource: Qt.resolvedUrl("../../assets/verified.png")
+                iconSource: Qt.resolvedUrl("../../assets/verified.svg")
                 text: i18n.tr("Verified Contact")
                 visible: DeltaHandler.chatIsVerified()
             },
@@ -535,7 +557,7 @@ Page {
         anchors.top: searchRect.visible ? searchRect.bottom : header.bottom
         topMargin: units.gu(1)
         width: parent.width
-        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(0.5) - (messageCreatorBox.visible ? messageCreatorBox.height + units.gu(1) : 0) - (requestReactionRect.visible ? requestReactionRect.height : 0) - (cannotSendBox.visible ? cannotSendBox.height : 0)
+        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(0.5) - (messageCreatorBox.visible ? messageCreatorBox.height + units.gu(1) : 0) - (requestReactionRect.visible ? requestReactionRect.height : 0) - (protectionBrokenBox.visible ? protectionBrokenBox.height : 0) - (cannotSendBox.visible ? cannotSendBox.height : 0)
         model: DeltaHandler.chatmodel
         //  Delegate inspired by FluffyChat (C) Christian Pauly,
         //  licensed under GPLv3
@@ -546,6 +568,7 @@ Page {
 
                 property bool isUnreadMsgsBar: model.isUnreadMsgsBar
                 property bool isInfoMsg: model.isInfo
+                property bool isProtectionInfoMsg: model.isProtectionInfo
                 property bool isSelf: model.isSelf && !(isUnreadMsgsBar || isInfoMsg)
                 property bool isOther: !(isSelf || isUnreadMsgsBar || isInfoMsg)
                 property bool isSameSenderAsNext: model.isSameSenderAsNextMsg
@@ -602,7 +625,7 @@ Page {
                 }
 
                 width: parent.width
-                height: msgbox.height + (imageLoader.active ? imageLoader.height : (animatedImageLoader.active ? animatedImageLoader.height : 0))
+                height: msgbox.height + (imageLoader.active ? imageLoader.height : (animatedImageLoader.active ? animatedImageLoader.height : 0)) + (protectionIconLoader.active ? protectionIconLoader.height : 0)
                 divider.visible: false
 
                 // TODO: implement?
@@ -699,6 +722,43 @@ Page {
                             anchors.fill: parent
                             onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("ImageViewerAnimated.qml"), { "imageSource": msgAnimatedImage.source })
                         }
+                    }
+                }
+
+                Loader {
+                    id: protectionIconLoader
+                    active: isInfo && isProtectionInfoMsg
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        bottom: msgbox.top
+                    }
+
+                    sourceComponent: Image {
+                        id: protectionImage
+                        // TODO: assign empty image if neither InfoProtectionEnabled or InfoProtectionDisabled?
+                        source: (DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) ? Qt.resolvedUrl('../assets/verified.svg') : Qt.resolvedUrl('../assets/verified_broken.svg')
+                        width: units.gu(12)
+                        fillMode: Image.PreserveAspectFit
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                // TODO implement local help
+                                if (DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) {
+                                    let popup2 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": true })
+                                    popup2.learnMore.connect(function() {
+                                        Qt.openUrlExternally("https://delta.chat/en/help#e2eeguarantee")
+                                    })
+                                } else {
+                                    let popup3 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": false , "chatuser": chatname })
+                                    popup3.scanQr.connect(closeAndStartQr)
+                                    popup3.learnMore.connect(function() {
+                                        Qt.openUrlExternally("https://delta.chat/en/help#nocryptanymore")
+                                    })
+                                }
+                            }
+                        }
+
                     }
                 }
                 
@@ -807,6 +867,30 @@ Page {
                             height: units.gu(2)
                             width: units.gu(2)
                             color: msgbox.backgroundColor
+                        }
+                    }
+
+                    MouseArea {
+                        // Is only enabled if the message is an info message
+                        // about protection status changes (enabled/disabled).
+                        // In this case, the message bubble (and the icon above, see
+                        // protectionIconLoader) should be clickable.
+                        anchors.fill: parent
+                        enabled: isProtectionInfoMsg
+                        onClicked: {
+                            // TODO implement local help
+                            if (DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) {
+                                let popup2 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": true })
+                                popup2.learnMore.connect(function() {
+                                    Qt.openUrlExternally("https://delta.chat/en/help#e2eeguarantee")
+                                })
+                            } else {
+                                let popup3 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": false , "chatuser": chatname })
+                                popup3.scanQr.connect(closeAndStartQr)
+                                popup3.learnMore.connect(function() {
+                                    Qt.openUrlExternally("https://delta.chat/en/help#nocryptanymore")
+                                })
+                            }
                         }
                     }
 
@@ -1288,7 +1372,7 @@ Page {
             top: view.bottom
             topMargin: units.gu(1)
         }
-        visible: !chatCanSend && !isContactRequest
+        visible: !chatCanSend && !isContactRequest && !isProtectionBroken
 
         Label {
             id: cannotSendLabel
@@ -1311,6 +1395,54 @@ Page {
             wrapMode: Text.WordWrap
             fontSize: root.scaledFontSize
         }
+    } // end Rectangle id: cannotSendBox
+
+    Rectangle {
+        id: protectionBrokenBox
+        height: 2* acceptBrokenProtectionButton.height + units.gu(6)
+        width: parent.width
+        color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+        anchors{
+            left: parent.left
+            right: parent.right
+            top: view.bottom
+            topMargin: units.gu(1)
+        }
+        visible: !chatCanSend && isProtectionBroken
+
+        Button {
+            id: acceptBrokenProtectionButton
+            width: parent.width - units.gu(4)
+            anchors {
+                top: protectionBrokenBox.top
+                topMargin: units.gu(2)
+                horizontalCenter: parent.horizontalCenter
+            }
+            text: i18n.tr('OK')
+            font.pixelSize: root.scaledFontSizeInPixels
+            color: theme.palette.normal.negative
+
+            onClicked: {
+                DeltaHandler.chatAccept()
+            }
+        }
+
+        Button {
+            id: protectionInfoButton
+            width: parent.width - units.gu(4)
+            anchors {
+                top: acceptBrokenProtectionButton.bottom
+                topMargin: units.gu(2)
+                horizontalCenter: parent.horizontalCenter
+            }
+            text: i18n.tr('More Info')
+            iconName: "external-link"
+            font.pixelSize: root.scaledFontSizeInPixels
+            onClicked: {
+                Qt.openUrlExternally("https://delta.chat/en/help#nocryptanymore")
+            }
+        }
+
     } // end Rectangle id: cannotSendBox
 
     Rectangle {
@@ -1926,10 +2058,11 @@ Page {
                 horizontalCenter: parent.horizontalCenter
             }
             text: i18n.tr('Accept')
+            font.pixelSize: root.scaledFontSizeInPixels
             color: theme.palette.normal.positive
 
             onClicked: {
-                DeltaHandler.chatAcceptContactRequest()
+                DeltaHandler.chatAccept()
             }
         }
 
@@ -1942,6 +2075,7 @@ Page {
                 horizontalCenter: parent.horizontalCenter
             }
             text: i18n.tr('Delete')
+            font.pixelSize: root.scaledFontSizeInPixels
             onClicked: {
                 DeltaHandler.chatDeleteContactRequest()
                 layout.removePages(chatViewPage)
@@ -1957,6 +2091,7 @@ Page {
                 horizontalCenter: parent.horizontalCenter
             }
             text: i18n.tr('Block')
+            font.pixelSize: root.scaledFontSizeInPixels
             onClicked: {
                 DeltaHandler.chatBlockContactRequest()
                 layout.removePages(chatViewPage)

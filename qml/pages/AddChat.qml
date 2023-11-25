@@ -159,7 +159,7 @@ Page {
                 
                 Image {
                     id: verifiedSymbol
-                    source: Qt.resolvedUrl('../../assets/verified.png')
+                    source: Qt.resolvedUrl('../../assets/verified.svg')
                     visible: model.isVerified
                     SlotsLayout.position: SlotsLayout.Trailing
                     height: units.gu(3)

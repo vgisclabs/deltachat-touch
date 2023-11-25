@@ -9,11 +9,6 @@
 @linefile Súbor
 @lineencrypted_message Zašifrovaná správa
 @lineqrscan_fingerprint_label Odtlačok prsta
-@linesystemmsg_cannot_decrypt Túto správu nie je možné dešifrovať.
-
-• Už by mohlo pomôcť jednoducho odpovedať na túto správu a požiadať odosielateľa, aby správu odoslal znova.
-
-• V prípade, že ste na ňu znova nainštalovali program Delta Chat alebo iný e-mailový program alebo iné zariadenie, z ktorého budete pravdepodobne chcieť odoslať správu o nastavení automatického šifrovania.
 @linesystemmsg_read_receipt_subject Správa otvorená
 @linesystemmsg_read_receipt_body %1$s Správa, ktorú ste poslali, sa zobrazila na obrazovke príjemcu.
 
@@ -26,6 +21,11 @@ Zaručujeme, že obsah nebol prečítaný.
 Ak chcete dešifrovať a použiť svoje nastavenie, otvorte správu v klientovi kompatibilnom s automatickým šifrovaním a zadajte inštalačný kód uvedený na generujúcom zariadení.
 @linelogin_error_cannot_login Nie je možné prihlásiť sa ako „%1$s“. Skontrolujte správnosť e-mailovej adresy a hesla.
 @linedevice_talk Správy zariadenia
+@linechat_new_group_hint Vytvorte prvú správu a umožnite ostatným odpovedať v rámci tejto skupiny.
+
+• Je v poriadku, ak nie všetci členovia používajú Delta Chat.
+
+• Doručenie prvej správy môže chvíľu trvať.
 @linesaved_messages Uložené správy
 @linecontact_verified %1$s overené.
 @linecontact_not_verified Cannot verify %1$s.
@@ -53,9 +53,9 @@ Upravte si hodiny ⏰🔧, aby ste zaistili správne prijímanie správ.
 
 Môže to spôsobiť problémy, pretože vaši chatový partneri používajú novšie verzie – a vám chýbajú najnovšie funkcie 😳
 Aktualizácie nájdete na https://get.delta.chat alebo obchode s aplikáciami . 
-@linedevicemsg_self_deleted Odstránili ste konverzáciu "Uložené správy".
+@linedevicemsg_self_deleted Odstránili ste konverzáciu \"Uložené správy\".
 
-ℹ️ Aby ste využili funkciu "Uložené správy" znova, vytvorte novú konverzáciu so sebou.
+ℹ️ Aby ste využili funkciu \"Uložené správy\" znova, vytvorte novú konverzáciu so sebou.
 @linedevicemsg_storage_exceeding ⚠️ Úložisko vašeho poskytovateľa čoskoro prekročí limit, už%1$s%%  sú využité.
 
  Je možné, že nebudete môcť prijímať správy, ak bude úložisko 100 %% využité.
@@ -119,8 +119,4 @@ Aktualizácie nájdete na https://get.delta.chat alebo obchode s aplikáciami .
 @lineephemeral_timer_days_by_other Časovač zmiznutia správ nastavený na %1$s dni od %2$s.
 @lineephemeral_timer_weeks_by_you Časovač zmiznutia správ nastavený na %1$s týždne mnou.
 @lineephemeral_timer_weeks_by_other Časovač zmiznutia správ nastavený na %1$s týždne od %2$s.
-@lineprotection_enabled_by_you Ochrana konverzácií je zapnutá mnou.
-@lineprotection_enabled_by_other Ochrana konverzácií je zapnutá od %1$s.
-@lineprotection_disabled_by_you Ochrana konverzácií je vypnutá mnou.
-@lineprotection_disabled_by_other Ochrana konverzácií je vypnutá od %1$s.
 @end

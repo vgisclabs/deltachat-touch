@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-24 08:21+0000\n"
+"POT-Creation-Date: 2023-11-25 20:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,12 +27,18 @@ msgstr "Kontak baru"
 msgid "Type e-mail address above"
 msgstr "Ketik alamat email di atas"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1076
+#: ../plugins/DeltaHandler/deltahandler.cpp:1663
 msgid "New message"
 msgstr "Pesan baru"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3017
-#: ../qml/pages/AccountConfig.qml:104 ../qml/pages/AccountConfig.qml:207
+#: ../plugins/DeltaHandler/deltahandler.cpp:2701
+msgid ""
+"Failed to remove the temporary copy of the backup export in the cache "
+"directory"
+msgstr ""
+
+#: ../plugins/DeltaHandler/deltahandler.cpp:3787
+#: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:418
 #: ../qml/pages/AddAccountAsSecondDevice.qml:109
 #: ../qml/pages/AddAccountAsSecondDevice.qml:140
 #: ../qml/pages/AddAccountAsSecondDevice.qml:361
@@ -40,123 +46,75 @@ msgstr "Pesan baru"
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:163
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:373
 #: ../qml/pages/AddSecondDevice.qml:82 ../qml/pages/AddSecondDevice.qml:95
-#: ../qml/pages/PickerBackupFile.qml:100
-#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:161
-#: ../qml/pages/QrShowScan.qml:291 ../qml/pages/QrShowScan.qml:721
+#: ../qml/pages/ChangeDatabasePassword.qml:141
+#: ../qml/pages/PickerBackupFile.qml:108
+#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:166
+#: ../qml/pages/QrShowScan.qml:296 ../qml/pages/QrShowScan.qml:726
+#: ../qml/pages/RequestDatabasePassword.qml:52
 msgid "Error"
 msgstr "Eror"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3097
-#: ../plugins/DeltaHandler/deltahandler.cpp:3112
+#: ../plugins/DeltaHandler/deltahandler.cpp:3866
+#: ../plugins/DeltaHandler/deltahandler.cpp:3889
 msgid "QR code could not be decoded"
 msgstr ""
 
-#: ../qml/Main.qml:49 deltatouch.desktop.in.h:1
+#: ../qml/Main.qml:79
+msgid ""
+"From last session, database encryption has not finished yet and will resume "
+"after entering the passphrase."
+msgstr ""
+
+#: ../qml/Main.qml:87
+msgid ""
+"From last session, database decryption has not finished yet and will resume "
+"after entering the passphrase."
+msgstr ""
+
+#: ../qml/Main.qml:190 deltatouch.desktop.in.h:1
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:288 ../qml/Main.qml:295
-msgid "No account configured"
-msgstr ""
-
-#: ../qml/Main.qml:288 ../qml/Main.qml:295 ../qml/Main.qml:342
-#: ../qml/pages/AccountConfig.qml:139
-msgid "no username set"
-msgstr ""
-
-#: ../qml/Main.qml:289 ../qml/Main.qml:296
-msgid "Click Settings to manage accounts"
-msgstr ""
-
-#: ../qml/Main.qml:495 ../qml/pages/ChatView.qml:237
-#: ../qml/pages/ChatView.qml:282 ../qml/pages/ForwardMessage.qml:71
-msgid "Search"
-msgstr "Cari"
-
-#: ../qml/Main.qml:546
-msgid "Archived Chats"
-msgstr "Obrolan terarsip"
-
-#: ../qml/Main.qml:751
-msgid "Request"
-msgstr ""
-
-#: ../qml/Main.qml:815
-msgid "Loading…"
-msgstr "Memuat..."
-
-#: ../qml/Main.qml:841 ../qml/pages/AddChat.qml:35
-msgid "New Chat"
-msgstr "Obrolan baru"
-
-#: ../qml/Main.qml:898 ../qml/pages/AddAccountAsSecondDevice.qml:108
+#: ../qml/Main.qml:368 ../qml/Main.qml:1135
+#: ../qml/pages/AddAccountAsSecondDevice.qml:108
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:114
-#: ../qml/pages/QrShowScan.qml:290
+#: ../qml/pages/QrShowScan.qml:295
 msgid "Error: %1"
 msgstr "Eror: %1"
 
-#: ../qml/delegates/delegOtherAnimatedImage.qml:160
-#: ../qml/delegates/delegOtherAudio.qml:135
-#: ../qml/delegates/delegOtherImage.qml:160
-#: ../qml/delegates/delegOtherTextMsg.qml:120
-#: ../qml/delegates/delegOtherUnknown.qml:119
-#: ../qml/delegates/delegSelfAnimatedImage.qml:138
-#: ../qml/delegates/delegSelfAudio.qml:97
-#: ../qml/delegates/delegSelfImage.qml:138
-#: ../qml/delegates/delegSelfTextMsg.qml:94
-#: ../qml/delegates/delegSelfUnknown.qml:95
-msgid "Forwarded Message"
-msgstr "Pesan yang diteruskan"
-
-#: ../qml/delegates/delegOtherAnimatedImage.qml:212
-#: ../qml/delegates/delegOtherAudio.qml:187
-#: ../qml/delegates/delegOtherImage.qml:212
-#: ../qml/delegates/delegOtherTextMsg.qml:172
-#: ../qml/delegates/delegOtherUnknown.qml:171
-#: ../qml/delegates/delegSelfAnimatedImage.qml:190
-#: ../qml/delegates/delegSelfAudio.qml:150
-#: ../qml/delegates/delegSelfImage.qml:190
-#: ../qml/delegates/delegSelfTextMsg.qml:146
-#: ../qml/delegates/delegSelfUnknown.qml:147
-#: ../qml/pages/AddAccountAsSecondDevice.qml:124
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
-#: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/CreateOrEditGroup.qml:293
-#: ../qml/pages/GroupAddMember.qml:125 ../qml/pages/QrShowScan.qml:393
-#: ../qml/pages/QrShowScan.qml:410
-msgid "Unknown"
-msgstr "Tak dikenal"
-
-#: ../qml/delegates/delegOtherAudio.qml:241
-#: ../qml/delegates/delegSelfAudio.qml:205
-msgid "Audio"
-msgstr "Audio"
-
-#: ../qml/delegates/delegOtherAudio.qml:241
-#: ../qml/delegates/delegSelfAudio.qml:205
-msgid "Voice Message"
-msgstr "Pesan suara"
-
-#: ../qml/delegates/delegOtherToDownload.qml:43
-#: ../qml/delegates/delegSelfToDownload.qml:49
-msgid "Download"
+#: ../qml/Main.qml:471 ../qml/Main.qml:478
+msgid "No account configured"
 msgstr ""
 
-#: ../qml/delegates/delegOtherToDownload.qml:46
-#: ../qml/delegates/delegSelfToDownload.qml:52
-msgid "Download failed"
+#: ../qml/Main.qml:471 ../qml/Main.qml:478 ../qml/Main.qml:530
+#: ../qml/pages/AccountConfig.qml:346
+msgid "no username set"
 msgstr ""
 
-#: ../qml/delegates/delegOtherToDownload.qml:49
-#: ../qml/delegates/delegOtherToDownload.qml:140
-#: ../qml/delegates/delegSelfToDownload.qml:55
-#: ../qml/delegates/delegSelfToDownload.qml:114
-msgid "Downloading…"
+#: ../qml/Main.qml:472 ../qml/Main.qml:479
+msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/delegates/delegUnreadMsgsBar.qml:48
-msgid "Unread Messages"
+#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:305
+#: ../qml/pages/ChatView.qml:350 ../qml/pages/ForwardMessage.qml:71
+msgid "Search"
+msgstr "Cari"
+
+#: ../qml/Main.qml:762
+msgid "Archived Chats"
+msgstr "Obrolan terarsip"
+
+#: ../qml/Main.qml:989
+msgid "Request"
 msgstr ""
+
+#: ../qml/Main.qml:1049
+msgid "Loading…"
+msgstr "Memuat..."
+
+#: ../qml/Main.qml:1075 ../qml/pages/AddChat.qml:35
+msgid "New Chat"
+msgstr "Obrolan baru"
 
 #: ../qml/pages/About.qml:28
 msgid "About DeltaTouch"
@@ -188,44 +146,93 @@ msgstr ""
 msgid "This app is powered by deltachat-core-rust"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:37 ../qml/pages/SettingsPage.qml:250
+#: ../qml/pages/AccountConfig.qml:153 ../qml/pages/SettingsPage.qml:379
 msgid "Known Accounts"
-msgstr "Akun yang dikenal"
+msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:42 ../qml/pages/ChatView.qml:211
-#: ../qml/pages/ProgressBackupImport.qml:69
+#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:279
+#: ../qml/pages/ProgressBackupImport.qml:70
 #: ../qml/pages/ProgressConfigAccount.qml:71
+#: ../qml/pages/ProgressDatabaseDecryption.qml:96
+#: ../qml/pages/ProgressDatabaseEncryption.qml:94
 #: ../qml/pages/ProgressQrBackupImport.qml:99
 msgid "Back"
 msgstr "Kembali"
 
-#: ../qml/pages/AccountConfig.qml:62 ../qml/pages/AccountConfig.qml:104
+#: ../qml/pages/AccountConfig.qml:178 ../qml/pages/SettingsPage.qml:317
+msgid "Settings"
+msgstr "Setelan"
+
+#: ../qml/pages/AccountConfig.qml:191 ../qml/pages/AccountConfig.qml:311
 msgid "Info"
 msgstr "Info"
 
-#: ../qml/pages/AccountConfig.qml:68 ../qml/pages/AddAccount.qml:33
+#: ../qml/pages/AccountConfig.qml:197 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
 msgstr "Tambah akun"
 
-#: ../qml/pages/AccountConfig.qml:104
+#: ../qml/pages/AccountConfig.qml:228
+msgid "Encrypted database (experimental)"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:246 ../qml/pages/SettingsPage.qml:511
+msgid ""
+"One unconfigured account exists. Unconfigured accounts cannot be converted. "
+"Please configure all unconfigured accounts or remove them prior to changes "
+"to this setting."
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:255 ../qml/pages/SettingsPage.qml:520
+msgid ""
+" unconfigured accounts exist. Unconfigured accounts cannot be converted. "
+"Please configure all unconfigured accounts or remove them prior to changes "
+"to this setting."
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:311
+msgid "Account ID: %1"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:311
 msgid "None"
 msgstr "Tidak ada"
 
-#: ../qml/pages/AccountConfig.qml:210
+#: ../qml/pages/AccountConfig.qml:421
 msgid "Account is not configured."
 msgstr ""
+
+#: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:35
+msgid "Show experimental settings"
+msgstr ""
+
+#: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:124
+#: ../qml/pages/ChangeDatabasePassword.qml:97
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1421
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:69
+#: ../qml/pages/ConfirmDeleteFromServer.qml:69
+#: ../qml/pages/CreateDatabasePassword.qml:96
+#: ../qml/pages/CreateDatabasePassword.qml:152
+#: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
+#: ../qml/pages/ProfileSelf.qml:65 ../qml/pages/ProgressKeysExport.qml:78
+#: ../qml/pages/QrConfirmPopup.qml:46
+#: ../qml/pages/RequestDatabasePassword.qml:138
+#: ../qml/pages/RequestDatabasePassword.qml:193
+#: ../qml/pages/VerifiedPopup.qml:35
+msgid "OK"
+msgstr "OK"
 
 #: ../qml/pages/AddAccount.qml:57
 msgid "Log into your E-Mail Account"
 msgstr "Masuk ke server Anda"
 
 #: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:91
-#: ../qml/pages/QrShowScan.qml:213
+#: ../qml/pages/QrShowScan.qml:218
 msgid "Add as Second Device"
 msgstr ""
 
 #: ../qml/pages/AddAccount.qml:59 ../qml/pages/PickerBackupFile.qml:35
-#: ../qml/pages/PickerBackupFile.qml:108
+#: ../qml/pages/PickerBackupFile.qml:116
 msgid "Restore from Backup"
 msgstr "Impor cadangan"
 
@@ -233,78 +240,94 @@ msgstr "Impor cadangan"
 msgid "Scan Invitation Code"
 msgstr ""
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:90 ../qml/pages/QrShowScan.qml:212
+#: ../qml/pages/AddAccountAsSecondDevice.qml:90 ../qml/pages/QrShowScan.qml:217
 msgid "Copy the account from the other device to this device?"
 msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:124
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
+#: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:992
+#: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
+#: ../qml/pages/QrShowScan.qml:398 ../qml/pages/QrShowScan.qml:415
+msgid "Unknown"
+msgstr "Tak dikenal"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:125
 #: ../qml/pages/AddAccountAsSecondDevice.qml:141
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:148
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:164
-#: ../qml/pages/QrShowScan.qml:252 ../qml/pages/QrShowScan.qml:271
-#: ../qml/pages/QrShowScan.qml:394 ../qml/pages/QrShowScan.qml:411
+#: ../qml/pages/QrShowScan.qml:257 ../qml/pages/QrShowScan.qml:276
+#: ../qml/pages/QrShowScan.qml:399 ../qml/pages/QrShowScan.qml:416
 msgid "QR Code"
 msgstr "Kode QR"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:181
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:191
-#: ../qml/pages/QrShowScan.qml:474
+#: ../qml/pages/QrShowScan.qml:479 ../qml/pages/VerifiedPopup.qml:43
 msgid "Scan QR Code"
 msgstr "Pindah kode QR"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:288
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:298
-#: ../qml/pages/QrShowScan.qml:614
+#: ../qml/pages/QrShowScan.qml:619
 msgid "Hold your camera over the QR code."
 msgstr "Pegang kamera Anda di atas kode QR."
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:301
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:311
-#: ../qml/pages/QrShowScan.qml:627
+#: ../qml/pages/QrShowScan.qml:632
 msgid "More Options"
-msgstr ""
+msgstr "Opsi Lainnya"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:313
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:323
-#: ../qml/pages/QrShowScan.qml:639
+#: ../qml/pages/QrShowScan.qml:644
 msgid "Paste from Clipboard"
 msgstr "Tempelkan dari papan klip"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:329
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:339
-#: ../qml/pages/QrShowScan.qml:655
+#: ../qml/pages/QrShowScan.qml:660
 msgid "Load QR Code as Image"
 msgstr "Muat kode QR sebagai gambar"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:353
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:363
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:770
-#: ../qml/pages/QrShowScan.qml:713
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:777
+#: ../qml/pages/QrShowScan.qml:718
 msgid "Configuring..."
 msgstr ""
 
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:95
-#: ../qml/pages/QrShowScan.qml:194
+#: ../qml/pages/QrShowScan.qml:199
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr "Buat alamat email baru di \"%1\" dan login di sana?"
 
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:130
-#: ../qml/pages/QrShowScan.qml:375
+#: ../qml/pages/QrShowScan.qml:380
 msgid "Log into \"%1\"?"
 msgstr ""
 
 #: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:112
 #: ../qml/pages/AddSecondDevice.qml:128 ../qml/pages/BlockContactPopup.qml:31
+#: ../qml/pages/ChangeDatabasePassword.qml:156
 #: ../qml/pages/ConfirmAccountDeletion.qml:61
 #: ../qml/pages/ConfirmAddSecondDevice.qml:40
+#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:51
 #: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
+#: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:55
+#: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:56
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:80
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
+#: ../qml/pages/ConfirmEncryptDatabase.qml:56
 #: ../qml/pages/ConfirmLeaveGroup.qml:47
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
-#: ../qml/pages/ConfirmMsgDeletion.qml:55 ../qml/pages/CreateOrEditGroup.qml:84
-#: ../qml/pages/GroupAddMember.qml:42 ../qml/pages/ProfileSelf.qml:58
-#: ../qml/pages/ProgressBackupExport.qml:64
+#: ../qml/pages/ConfirmMsgDeletion.qml:55
+#: ../qml/pages/ConfirmStopEncryptingDatabase.qml:49
+#: ../qml/pages/CreateDatabasePassword.qml:134
+#: ../qml/pages/CreateOrEditGroup.qml:84 ../qml/pages/GroupAddMember.qml:42
+#: ../qml/pages/ProfileSelf.qml:58 ../qml/pages/ProgressBackupExport.qml:64
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
 #: ../qml/pages/UnblockContactPopup.qml:41
 msgid "Cancel"
@@ -316,28 +339,28 @@ msgstr "Grup baru"
 
 #: ../qml/pages/AddChat.qml:86 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Verified Group"
-msgstr "Grup baru terverifikasi"
+msgstr ""
 
 #: ../qml/pages/AddChat.qml:104 ../qml/pages/GroupAddMember.qml:77
 msgid "Enter name or e-mail address"
 msgstr "Masukkan nama atau alamat email"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:52
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:794
-#: ../qml/pages/SettingsPage.qml:63 ../qml/pages/SettingsPage.qml:806
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:801
+#: ../qml/pages/SettingsPage.qml:79 ../qml/pages/SettingsPage.qml:1134
 msgid "No, chats only"
 msgstr "Tidak, hanya obrolan saja"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:55
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:808
-#: ../qml/pages/SettingsPage.qml:66 ../qml/pages/SettingsPage.qml:820
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:815
+#: ../qml/pages/SettingsPage.qml:82 ../qml/pages/SettingsPage.qml:1148
 msgid "For accepted contacts"
 msgstr "Untuk kontak yang telah diterima"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:58
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:822
-#: ../qml/pages/SettingsPage.qml:69 ../qml/pages/SettingsPage.qml:80
-#: ../qml/pages/SettingsPage.qml:834 ../qml/pages/SettingsPage.qml:862
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:829
+#: ../qml/pages/SettingsPage.qml:85 ../qml/pages/SettingsPage.qml:96
+#: ../qml/pages/SettingsPage.qml:1162 ../qml/pages/SettingsPage.qml:1190
 msgid "All"
 msgstr "Semua"
 
@@ -345,92 +368,84 @@ msgstr "Semua"
 msgid "Log In"
 msgstr "Masuk"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:117
-#: ../qml/pages/ConfirmDeleteFromDevice.qml:69
-#: ../qml/pages/ConfirmDeleteFromServer.qml:69
-#: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
-#: ../qml/pages/ProfileSelf.qml:65 ../qml/pages/ProgressKeysExport.qml:78
-#: ../qml/pages/QrConfirmPopup.qml:46
-msgid "OK"
-msgstr "OK"
-
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:202
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:209
 msgid "Log in with an existing e-mail account"
 msgstr "Masuk dengan akun surel yang ada"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:215
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:222
 msgid "E-Mail Address"
 msgstr "Alamat email"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:268
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:275
 msgid "Password"
 msgstr "Kata kunci"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:354
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:361
+#: ../qml/pages/ChatView.qml:1438
 msgid "More Info"
 msgstr "Info lebih lanjut"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:376
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
 msgid "There are no Delta Chat servers, your data stays on your device."
 msgstr "Tidak ada server Delta Chat, data Anda tetap di perangkat Anda."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:389
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:396
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
 msgstr "Pengaturan surel penyedia tambahan yang sudah diketahui dipasang secara otomatis. Terkadang IMAP perlu daktifkan di pengaturan aplikasi. Hubungi surel penyedia Anda atau minta tolong teman."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:413
-#: ../qml/pages/SettingsPage.qml:399
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:420
+#: ../qml/pages/SettingsPage.qml:706
 msgid "Show Classic E-Mails"
 msgstr "Tampilkan email klasik"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:445
-#: ../qml/pages/AdvancedSettings.qml:65 ../qml/pages/SettingsPage.qml:771
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:452
+#: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:1099
 msgid "Advanced"
 msgstr "Lanjutan"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:466
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:473
 msgid "Inbox"
 msgstr "Surel masuk"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:472
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
 msgid "IMAP Login Name"
 msgstr "Nama login IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:546
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:558
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:486
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:553
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:565
 msgid "Default (same as above)"
 msgstr "Default (sama seperti di atas)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:484
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
 msgid "IMAP Server"
 msgstr "Server IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:511
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:570
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:590
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:607
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:498
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:518
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:577
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:597
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:614
 msgid "Automatic"
 msgstr "Otomatis"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:496
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:503
 msgid "IMAP Port"
 msgstr "IMAP port"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:503
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:510
 msgid "Default (%1)"
 msgstr "Default (%1)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:509
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:516
 msgid "IMAP Security"
 msgstr "Keamanan IMAP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:514
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:593
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:521
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:600
 #: ../qml/pages/ChatInfosActionsChatlist.qml:136
 #: ../qml/pages/ChatInfosActionsChatview.qml:163
 #: ../qml/pages/EphemeralTimerSettings.qml:37
@@ -439,72 +454,72 @@ msgstr "Keamanan IMAP"
 msgid "Off"
 msgstr "Mati"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:533
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:540
 msgid "Outbox"
 msgstr "Surel keluar"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:539
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:546
 msgid "SMTP Login Name"
 msgstr "Nama login SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:551
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:558
 msgid "SMTP Password"
 msgstr "Kata sandi SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:563
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:570
 msgid "SMTP Server"
 msgstr "Server SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:575
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:582
 msgid "SMTP Port"
 msgstr "SMTP port"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:582
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:675
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:688
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:589
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:682
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:695
 msgid "Standard (%1)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:588
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:595
 msgid "SMTP Security"
 msgstr "Keamanan SMTP"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:605
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:612
 msgid "Certificate Checks"
 msgstr "Cek sertifikat"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:608
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:615
 msgid "Strict"
 msgstr "Ketat"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:609
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:616
 msgid "Accept invalid certificates"
 msgstr "Terima sertifikat yang tidak sah"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:644
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:651
 msgid "Use SOCKS5"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:663
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:670
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:668
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:675
 msgid "SOCKS5 Host"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:681
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:688
 msgid "SOCKS5 Port"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:695
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:702
 msgid "SOCKS5 User"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:707
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:714
 msgid "SOCKS5 Password"
 msgstr ""
 
@@ -513,7 +528,7 @@ msgid "ℹ️ Account transferred to your second device."
 msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:120
-#: ../qml/pages/ConfirmAddSecondDevice.qml:28 ../qml/pages/SettingsPage.qml:557
+#: ../qml/pages/ConfirmAddSecondDevice.qml:28 ../qml/pages/SettingsPage.qml:864
 msgid "Add Second Device"
 msgstr ""
 
@@ -552,77 +567,77 @@ msgid "Troubleshooting"
 msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:67
-#: ../qml/pages/QrShowScan.qml:677
+#: ../qml/pages/QrShowScan.qml:682
 msgid "Copy to Clipboard"
 msgstr "Kopi ke papan klip"
 
-#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:463
+#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:462
 msgid "Worse quality, small size"
 msgstr "Kualitas rendah, ukuran kecil"
 
-#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:449
+#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:448
 msgid "Balanced"
 msgstr "Seimbang"
 
-#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:435
+#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:434
 msgid "High"
 msgstr "Tinggi"
 
-#: ../qml/pages/AdvancedSettings.qml:124
+#: ../qml/pages/AdvancedSettings.qml:125
 msgid "Voice Message Quality"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:160
+#: ../qml/pages/AdvancedSettings.qml:161
 msgid "Autocrypt"
 msgstr "Autocrypt"
 
-#: ../qml/pages/AdvancedSettings.qml:173
+#: ../qml/pages/AdvancedSettings.qml:174
 msgid "Prefer End-To-End Encryption"
 msgstr "Lebih baik enkripsi ujung ke ujung"
 
-#: ../qml/pages/AdvancedSettings.qml:210
+#: ../qml/pages/AdvancedSettings.qml:211
 msgid "IMAP Folder Handling"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:224
+#: ../qml/pages/AdvancedSettings.qml:225
 msgid "Watch Sent Folder"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:257
+#: ../qml/pages/AdvancedSettings.qml:258
 msgid "Send Copy to Self"
 msgstr "Kirim salinan ke saya"
 
-#: ../qml/pages/AdvancedSettings.qml:258
+#: ../qml/pages/AdvancedSettings.qml:259
 msgid "Required when using this account on multiple devices."
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:292
+#: ../qml/pages/AdvancedSettings.qml:293
 msgid "Move automatically to DeltaChat Folder"
 msgstr "Perpindahan otomatis ke berkas DeltaChat"
 
-#: ../qml/pages/AdvancedSettings.qml:293
+#: ../qml/pages/AdvancedSettings.qml:294
 msgid "Chat conversations are moved to avoid cluttering the Inbox"
 msgstr "Percakapan dipindahkan untuk menghindari memenuhi kotak masuk"
 
-#: ../qml/pages/AdvancedSettings.qml:326
+#: ../qml/pages/AdvancedSettings.qml:327
 msgid "Only Fetch from DeltaChat Folder"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:327
+#: ../qml/pages/AdvancedSettings.qml:328
 msgid ""
 "Ignore other folders. Requires your server to move chat messages to the "
 "DeltaChat folder."
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:365
+#: ../qml/pages/AdvancedSettings.qml:366
 msgid "Manage Keys"
 msgstr "Kelola kunci"
 
-#: ../qml/pages/AdvancedSettings.qml:379
+#: ../qml/pages/AdvancedSettings.qml:380
 msgid "Export Secret Keys"
 msgstr "Ekspor kunci rahasia"
 
-#: ../qml/pages/AdvancedSettings.qml:399 ../qml/pages/ProgressKeysImport.qml:59
+#: ../qml/pages/AdvancedSettings.qml:400 ../qml/pages/ProgressKeysImport.qml:59
 msgid "Import Secret Keys"
 msgstr "Impor kunci rahasia"
 
@@ -636,12 +651,40 @@ msgstr "Blokir kontak ini? Anda tak akan lagi menerima pesan dari kontak ini."
 msgid "Block Contact"
 msgstr "Blokir kontak"
 
-#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:311
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:618
 msgid "Blocked Contacts"
 msgstr "Kontak yang diblokir"
 
 #: ../qml/pages/BlockedContacts.qml:46
 msgid "Blocked contacts will appear here."
+msgstr ""
+
+#: ../qml/pages/ChangeDatabasePassword.qml:45
+#: ../qml/pages/ChangeDatabasePassword.qml:176
+msgid "Enter Current Database Password"
+msgstr ""
+
+#: ../qml/pages/ChangeDatabasePassword.qml:106
+msgid "Enter New Passphrase"
+msgstr ""
+
+#: ../qml/pages/ChangeDatabasePassword.qml:117
+#: ../qml/pages/RequestDatabasePassword.qml:56
+msgid "Passphrase incorrect"
+msgstr ""
+
+#: ../qml/pages/ChangeDatabasePassword.qml:126
+msgid "Re-Enter New Password"
+msgstr ""
+
+#: ../qml/pages/ChangeDatabasePassword.qml:143
+#: ../qml/pages/CreateDatabasePassword.qml:144
+#: ../qml/pages/RequestDatabasePassword.qml:171
+msgid "Passwords do not match, try again"
+msgstr ""
+
+#: ../qml/pages/ChangeDatabasePassword.qml:178
+msgid "Enter New Database Password"
 msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:49
@@ -669,7 +712,7 @@ msgstr "Tinggalkan grup"
 #: ../qml/pages/ChatInfosActionsChatlist.qml:97
 #: ../qml/pages/ChatInfosActionsChatview.qml:111
 msgid "Show Encryption Info"
-msgstr "Tampilkan info enkripsi"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:150
 #: ../qml/pages/ChatInfosActionsChatview.qml:177
@@ -696,7 +739,7 @@ msgstr "Diamkan untuk 7 hari"
 msgid "Mute forever"
 msgstr "Diamkan seterusnya"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:202
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:270
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "Pesan yang berhilangan"
@@ -704,44 +747,68 @@ msgstr "Pesan yang berhilangan"
 #: ../qml/pages/ChatInfosActionsChatview.qml:128
 #: ../qml/pages/ConfirmClearChat.qml:42 ../qml/pages/ConfirmClearChat.qml:51
 msgid "Clear Chat"
-msgstr ""
+msgstr "Hapus Obrolan"
 
-#: ../qml/pages/ChatView.qml:109 ../qml/pages/ChatView.qml:131
-#: ../qml/pages/ChatView.qml:661
+#: ../qml/pages/ChatView.qml:165 ../qml/pages/ChatView.qml:189
+#: ../qml/pages/ChatView.qml:1388
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:111 ../qml/pages/ChatView.qml:133
-#: ../qml/pages/ChatView.qml:663
+#: ../qml/pages/ChatView.qml:167 ../qml/pages/ChatView.qml:191
+#: ../qml/pages/ChatView.qml:1390
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:195
-msgid "Verified Contact"
-msgstr "Kontak terverifikasi"
+#: ../qml/pages/ChatView.qml:250 ../qml/pages/ChatView.qml:1046
+msgid "Voice Message"
+msgstr "Pesan suara"
 
-#: ../qml/pages/ChatView.qml:223
+#: ../qml/pages/ChatView.qml:263
+msgid "Verified Contact"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:291
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1501
-msgid "Accept"
+#: ../qml/pages/ChatView.qml:937
+msgid "Forwarded Message"
+msgstr "Pesan yang diteruskan"
+
+#: ../qml/pages/ChatView.qml:1140
+msgid "Download"
+msgstr "Unduh"
+
+#: ../qml/pages/ChatView.qml:1142
+msgid "Download failed"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1517 ../qml/pages/ChatView.qml:1694
+#: ../qml/pages/ChatView.qml:1144
+msgid "Downloading…"
+msgstr "Sedang Mengunduh"
+
+#: ../qml/pages/ChatView.qml:1179
+msgid "Unread Messages"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1195
+msgid "Show Full Message…"
+msgstr "Tampilkan semua pesan..."
+
+#: ../qml/pages/ChatView.qml:2060
+msgid "Accept"
+msgstr "Terima"
+
+#: ../qml/pages/ChatView.qml:2077 ../qml/pages/ChatView.qml:2231
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "Hapus"
 
-#: ../qml/pages/ChatView.qml:1532
+#: ../qml/pages/ChatView.qml:2093
 msgid "Block"
-msgstr ""
-
-#: ../qml/pages/ChatView.qml:1662
-msgid "Click to leave without sending"
-msgstr ""
+msgstr "Blokir"
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:35
 #: ../qml/pages/ConfirmAccountDeletion.qml:51
@@ -765,8 +832,31 @@ msgid ""
 msgstr ""
 
 #: ../qml/pages/ConfirmAddSecondDevice.qml:32
+#: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:45
+#: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:46
+#: ../qml/pages/ConfirmEncryptDatabase.qml:46
 msgid "Continue"
 msgstr "Lanjutkan"
+
+#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:31
+#: ../qml/pages/MessageHtmlView.qml:164
+msgid "Always Load Remote Images"
+msgstr ""
+
+#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:36
+msgid ""
+"Remote images can track you.\n"
+"\n"
+"This setting also may load fonts and other content. If disabled, embedded or "
+"cached images may appear.\n"
+"\n"
+"Load remote images?"
+msgstr ""
+
+#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
+#: ../qml/pages/MessageHtmlView.qml:89
+msgid "Load Remote Images"
+msgstr "Memuat Gambar Jarak Jauh"
 
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:28
 msgid "Abort setting up second device?"
@@ -799,8 +889,22 @@ msgstr ""
 msgid "Delete %1 messages here and on the server?"
 msgstr ""
 
+#: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:39
+msgid ""
+"The existing account(s) will now be encrypted. This will take some time. "
+"Make sure that the app stays in foreground, and prevent the screen from "
+"locking."
+msgstr ""
+
+#: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:39
+msgid ""
+"The existing account(s) will now be decrypted. This will take some time. "
+"Make sure that the app stays in foreground, and prevent the screen from "
+"locking."
+msgstr ""
+
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
-#: ../qml/pages/SettingsPage.qml:654
+#: ../qml/pages/SettingsPage.qml:982
 msgid "Delete Messages from Device"
 msgstr "Hapus pesarn dari perangkat"
 
@@ -822,7 +926,7 @@ msgid "I understand, delete all these messages"
 msgstr "Saya mengerti, hapus semua pesan ini"
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
-#: ../qml/pages/SettingsPage.qml:682
+#: ../qml/pages/SettingsPage.qml:1010
 msgid "Delete Messages from Server"
 msgstr "Hapus pesan dari server"
 
@@ -839,6 +943,23 @@ msgid ""
 "Delta Chat"
 msgstr ""
 
+#: ../qml/pages/ConfirmEncryptDatabase.qml:35
+msgid "Really encrypt the database?"
+msgstr ""
+
+#: ../qml/pages/ConfirmEncryptDatabase.qml:40
+msgid ""
+"• Database encryption is experimental, use at your own risk. Backup your "
+"accounts or add a second device first.\n"
+"\n"
+"• It will only cover text messages and username/password of mail accounts. "
+"Pictures, voice messages, files etc. will remain unencrypted.\n"
+"\n"
+"• If the phassphrase is lost, your data will be lost as well.\n"
+"\n"
+"• You will have to enter the phassphrase upon each startup of the app."
+msgstr ""
+
 #: ../qml/pages/ConfirmLeaveGroup.qml:32
 msgid "Are you sure you want to leave this group?"
 msgstr "Apakah anda yakin untuk keluar dari grup ini?"
@@ -852,8 +973,31 @@ msgstr "Hapus %1 dari grup?"
 msgid "Delete Message"
 msgstr "Hapus pesan"
 
+#: ../qml/pages/ConfirmStopEncryptingDatabase.qml:35
+msgid "Really disable database encryption?"
+msgstr ""
+
+#: ../qml/pages/ConfirmStopEncryptingDatabase.qml:39
+msgid "Disable encryption"
+msgstr ""
+
+#: ../qml/pages/Connectivity.qml:31 ../qml/pages/SettingsPage.qml:889
+msgid "Connectivity"
+msgstr ""
+
+#: ../qml/pages/CreateDatabasePassword.qml:44
+#: ../qml/pages/CreateDatabasePassword.qml:155
+#: ../qml/pages/RequestDatabasePassword.qml:196
+msgid "Enter Database Password"
+msgstr ""
+
+#: ../qml/pages/CreateDatabasePassword.qml:107
+#: ../qml/pages/RequestDatabasePassword.qml:74
+msgid "Re-Enter Password"
+msgstr ""
+
 #: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrShowScan.qml:448 ../qml/pages/QrShowScan.qml:462
+#: ../qml/pages/QrShowScan.qml:453 ../qml/pages/QrShowScan.qml:467
 msgid "QR Invite Code"
 msgstr "Kode undangan QR"
 
@@ -889,51 +1033,51 @@ msgstr "Hapus gambar grup"
 #: ../qml/pages/EphemeralTimerSettings.qml:148
 #: ../qml/pages/EphemeralTimerSettings.qml:152
 #: ../qml/pages/EphemeralTimerSettings.qml:222
-#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1130
-#: ../qml/pages/SettingsPage.qml:1136
+#: ../qml/pages/SettingsPage.qml:169 ../qml/pages/SettingsPage.qml:1458
+#: ../qml/pages/SettingsPage.qml:1464
 msgid "After 30 seconds"
 msgstr "Setelah 30 detik"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:162
 #: ../qml/pages/EphemeralTimerSettings.qml:166
-#: ../qml/pages/SettingsPage.qml:157 ../qml/pages/SettingsPage.qml:1151
-#: ../qml/pages/SettingsPage.qml:1157
+#: ../qml/pages/SettingsPage.qml:173 ../qml/pages/SettingsPage.qml:1479
+#: ../qml/pages/SettingsPage.qml:1485
 msgid "After 1 minute"
 msgstr "Setelah 1 menit"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:49
 #: ../qml/pages/EphemeralTimerSettings.qml:176
 #: ../qml/pages/EphemeralTimerSettings.qml:180
-#: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:161
-#: ../qml/pages/SettingsPage.qml:975 ../qml/pages/SettingsPage.qml:981
-#: ../qml/pages/SettingsPage.qml:1172 ../qml/pages/SettingsPage.qml:1178
+#: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
+#: ../qml/pages/SettingsPage.qml:1303 ../qml/pages/SettingsPage.qml:1309
+#: ../qml/pages/SettingsPage.qml:1500 ../qml/pages/SettingsPage.qml:1506
 msgid "After 1 hour"
 msgstr "Setelah 1 jam"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:53
 #: ../qml/pages/EphemeralTimerSettings.qml:190
 #: ../qml/pages/EphemeralTimerSettings.qml:194
-#: ../qml/pages/SettingsPage.qml:121 ../qml/pages/SettingsPage.qml:165
-#: ../qml/pages/SettingsPage.qml:996 ../qml/pages/SettingsPage.qml:1002
-#: ../qml/pages/SettingsPage.qml:1193 ../qml/pages/SettingsPage.qml:1199
+#: ../qml/pages/SettingsPage.qml:137 ../qml/pages/SettingsPage.qml:181
+#: ../qml/pages/SettingsPage.qml:1324 ../qml/pages/SettingsPage.qml:1330
+#: ../qml/pages/SettingsPage.qml:1521 ../qml/pages/SettingsPage.qml:1527
 msgid "After 1 day"
 msgstr "Setelah 1 hari"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:57
 #: ../qml/pages/EphemeralTimerSettings.qml:204
 #: ../qml/pages/EphemeralTimerSettings.qml:208
-#: ../qml/pages/SettingsPage.qml:125 ../qml/pages/SettingsPage.qml:169
-#: ../qml/pages/SettingsPage.qml:1017 ../qml/pages/SettingsPage.qml:1023
-#: ../qml/pages/SettingsPage.qml:1214 ../qml/pages/SettingsPage.qml:1220
+#: ../qml/pages/SettingsPage.qml:141 ../qml/pages/SettingsPage.qml:185
+#: ../qml/pages/SettingsPage.qml:1345 ../qml/pages/SettingsPage.qml:1351
+#: ../qml/pages/SettingsPage.qml:1542 ../qml/pages/SettingsPage.qml:1548
 msgid "After 1 week"
 msgstr "Setelah 1 minggu"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:218
-#: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:173
-#: ../qml/pages/SettingsPage.qml:1038 ../qml/pages/SettingsPage.qml:1044
-#: ../qml/pages/SettingsPage.qml:1235 ../qml/pages/SettingsPage.qml:1241
+#: ../qml/pages/SettingsPage.qml:145 ../qml/pages/SettingsPage.qml:189
+#: ../qml/pages/SettingsPage.qml:1366 ../qml/pages/SettingsPage.qml:1372
+#: ../qml/pages/SettingsPage.qml:1563 ../qml/pages/SettingsPage.qml:1569
 msgid "After 4 weeks"
 msgstr "Setelah 4 minggu"
 
@@ -975,7 +1119,7 @@ msgstr "Detail pesan"
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:230
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:235
 msgid "Sorry, not implemented yet :-("
 msgstr ""
 
@@ -988,7 +1132,7 @@ msgstr ""
 msgid "Select"
 msgstr "Pilih"
 
-#: ../qml/pages/PickerBackupFile.qml:101
+#: ../qml/pages/PickerBackupFile.qml:109
 msgid "The selected file is not a valid backup file."
 msgstr ""
 
@@ -1002,11 +1146,11 @@ msgstr "Pilih gambar profil baru"
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen at %1"
-msgstr ""
+msgstr "Terakhir terlihat di %1"
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen: Unknown"
-msgstr ""
+msgstr "Terakhir terlihat: Tidak diketahui"
 
 #: ../qml/pages/ProfileOther.qml:47
 msgid "View Profile"
@@ -1024,7 +1168,7 @@ msgstr ""
 msgid "Signature Text"
 msgstr "Signature text"
 
-#: ../qml/pages/ProfileSelf.qml:48 ../qml/pages/SettingsPage.qml:356
+#: ../qml/pages/ProfileSelf.qml:48 ../qml/pages/SettingsPage.qml:663
 msgid "Edit Profile"
 msgstr ""
 
@@ -1062,6 +1206,31 @@ msgstr "Mulai Cadangkan"
 msgid "Failed"
 msgstr ""
 
+#: ../qml/pages/ProgressDatabaseDecryption.qml:46
+#: ../qml/pages/ProgressDatabaseDecryption.qml:70
+#: ../qml/pages/ProgressDatabaseEncryption.qml:44
+#: ../qml/pages/ProgressDatabaseEncryption.qml:68
+msgid "Conversion failed, check log for details"
+msgstr ""
+
+#: ../qml/pages/ProgressDatabaseDecryption.qml:56
+#: ../qml/pages/ProgressDatabaseEncryption.qml:54
+msgid "Extracting data of account %1 of %2"
+msgstr ""
+
+#: ../qml/pages/ProgressDatabaseDecryption.qml:58
+msgid "Setting up unencrypted account %1 of %2"
+msgstr ""
+
+#: ../qml/pages/ProgressDatabaseDecryption.qml:64
+#: ../qml/pages/ProgressDatabaseEncryption.qml:62
+msgid "Conversion successful!"
+msgstr ""
+
+#: ../qml/pages/ProgressDatabaseEncryption.qml:56
+msgid "Encrypting account %1 of %2"
+msgstr ""
+
 #: ../qml/pages/ProgressKeysExport.qml:40
 msgid "Export secret keys to \"%1\"?"
 msgstr "Ekspor kunci rahasia ke \"%1\"?"
@@ -1083,7 +1252,9 @@ msgstr "Impor kunci rahasia dari \"%1\"?\n\n• Kunci rahasia sebelumnya tidak a
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
 "To import secret keys, please place them into the directory \"%1\". Make "
-"sure that no other files are present in this directory."
+"sure that no other files are present in this directory. The directory is "
+"only available if the app is running, and will be deleted upon closure of "
+"the app."
 msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:51
@@ -1098,27 +1269,27 @@ msgstr "Selesai"
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:97
+#: ../qml/pages/QrShowScan.qml:102
 msgid "Chat with %1?"
 msgstr "Ngobrol dengan %1?"
 
-#: ../qml/pages/QrShowScan.qml:127
+#: ../qml/pages/QrShowScan.qml:132
 msgid "Do you want to join the group \"%1\"?"
 msgstr "Apakah anda ingin bergabung dengan grup \"%1\"?"
 
-#: ../qml/pages/QrShowScan.qml:143
+#: ../qml/pages/QrShowScan.qml:148
 msgid "The fingerprint of %1 is valid!"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:144 ../qml/pages/QrShowScan.qml:178
+#: ../qml/pages/QrShowScan.qml:149 ../qml/pages/QrShowScan.qml:183
 msgid "Fingerprint"
 msgstr "Sidik jari"
 
-#: ../qml/pages/QrShowScan.qml:160
+#: ../qml/pages/QrShowScan.qml:165
 msgid "The scanned fingerprint does not match the last seen for %1."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:177
+#: ../qml/pages/QrShowScan.qml:182
 msgid ""
 "This QR code contains a fingerprint but no e-mail address.\n"
 "\n"
@@ -1126,153 +1297,205 @@ msgid ""
 "the recipient first."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:251
+#: ../qml/pages/QrShowScan.qml:256
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
 msgstr "Kode QR yang dipindai  text:\n\n%1"
 
-#: ../qml/pages/QrShowScan.qml:270
+#: ../qml/pages/QrShowScan.qml:275
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
 msgstr "Kode QR yang dipindai URL:\n\n%1"
 
-#: ../qml/pages/QrShowScan.qml:307
+#: ../qml/pages/QrShowScan.qml:312
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:308 ../qml/pages/QrShowScan.qml:325
+#: ../qml/pages/QrShowScan.qml:313 ../qml/pages/QrShowScan.qml:330
 msgid "Deactivate QR Code"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:324
+#: ../qml/pages/QrShowScan.qml:329
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:341
+#: ../qml/pages/QrShowScan.qml:346
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:342 ../qml/pages/QrShowScan.qml:359
+#: ../qml/pages/QrShowScan.qml:347 ../qml/pages/QrShowScan.qml:364
 msgid "Activate QR Code"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:358
+#: ../qml/pages/QrShowScan.qml:363
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
 "The QR code is not active on this device."
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:84 ../qml/pages/SettingsPage.qml:97
-#: ../qml/pages/SettingsPage.qml:101 ../qml/pages/SettingsPage.qml:876
-#: ../qml/pages/SettingsPage.qml:918 ../qml/pages/SettingsPage.qml:932
+#: ../qml/pages/RequestDatabasePassword.qml:47
+msgid "Enter Database Passphrase"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:53
+msgid "Not connected"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:55
+msgid "Connecting…"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:57
+msgid "Updating…"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:59
+msgid "Connected"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:100 ../qml/pages/SettingsPage.qml:113
+#: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:1204
+#: ../qml/pages/SettingsPage.qml:1246 ../qml/pages/SettingsPage.qml:1260
 msgid "Up to %1"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:88 ../qml/pages/SettingsPage.qml:890
+#: ../qml/pages/SettingsPage.qml:104 ../qml/pages/SettingsPage.qml:1218
 msgid "Up to %1, most worse quality images"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:93 ../qml/pages/SettingsPage.qml:904
+#: ../qml/pages/SettingsPage.qml:109 ../qml/pages/SettingsPage.qml:1232
 msgid "Up to %1, most balanced quality images"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:113 ../qml/pages/SettingsPage.qml:145
-#: ../qml/pages/SettingsPage.qml:961 ../qml/pages/SettingsPage.qml:1095
+#: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:161
+#: ../qml/pages/SettingsPage.qml:1289 ../qml/pages/SettingsPage.qml:1423
 msgid "Never"
 msgstr "Tidak pernah"
 
-#: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
-#: ../qml/pages/SettingsPage.qml:1059 ../qml/pages/SettingsPage.qml:1065
-#: ../qml/pages/SettingsPage.qml:1256 ../qml/pages/SettingsPage.qml:1262
+#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:193
+#: ../qml/pages/SettingsPage.qml:1387 ../qml/pages/SettingsPage.qml:1393
+#: ../qml/pages/SettingsPage.qml:1584 ../qml/pages/SettingsPage.qml:1590
 msgid "After 1 year"
 msgstr "Setelah 1 tahun"
 
-#: ../qml/pages/SettingsPage.qml:137 ../qml/pages/SettingsPage.qml:181
+#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:197
 msgid "?"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:1109
-#: ../qml/pages/SettingsPage.qml:1115
+#: ../qml/pages/SettingsPage.qml:165 ../qml/pages/SettingsPage.qml:1437
+#: ../qml/pages/SettingsPage.qml:1443
 msgid "At once"
 msgstr "Segera"
 
-#: ../qml/pages/SettingsPage.qml:188
-msgid "Settings"
-msgstr "Setelan"
-
-#: ../qml/pages/SettingsPage.qml:226
+#: ../qml/pages/SettingsPage.qml:355
 msgid "Sync All"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:278
+#: ../qml/pages/SettingsPage.qml:401
+msgid "Message Font Size"
+msgstr "Ukuran huruf pesan"
+
+#: ../qml/pages/SettingsPage.qml:410 ../qml/pages/SettingsPage.qml:1622
+msgid "Small"
+msgstr "Kecil"
+
+#: ../qml/pages/SettingsPage.qml:413 ../qml/pages/SettingsPage.qml:1636
+msgid "Normal"
+msgstr "Normal"
+
+#: ../qml/pages/SettingsPage.qml:416 ../qml/pages/SettingsPage.qml:1650
+msgid "Large"
+msgstr "Besar"
+
+#: ../qml/pages/SettingsPage.qml:419 ../qml/pages/SettingsPage.qml:1664
+msgid "Extra large"
+msgstr "Sangat besar"
+
+#: ../qml/pages/SettingsPage.qml:445
+msgid "Show Experimental Settings"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:477
+msgid "Database Encryption"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:494
+msgid "Encrypted Database (experimental)"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:555
+msgid "Change Database Passphrase"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:585
 msgid "Account specific settings"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:385
+#: ../qml/pages/SettingsPage.qml:692
 msgid "Chats"
 msgstr "Obrolan"
 
-#: ../qml/pages/SettingsPage.qml:427
+#: ../qml/pages/SettingsPage.qml:734
 msgid "Auto-Download Messages"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:462
+#: ../qml/pages/SettingsPage.qml:769
 msgid "Notifications"
 msgstr "Notifikasi"
 
-#: ../qml/pages/SettingsPage.qml:474
+#: ../qml/pages/SettingsPage.qml:781
 msgid "Enable system notifications for new messages"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:491
+#: ../qml/pages/SettingsPage.qml:798
 msgid ""
 "To receive system notifications, background suspension must be disabled for "
 "the app and the app must be running."
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:507
+#: ../qml/pages/SettingsPage.qml:814
 msgid "Show message content in notification"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:508
+#: ../qml/pages/SettingsPage.qml:815
 msgid "Shows sender and first words of the message in notifications"
 msgstr "Tampilkan pengirim dan kata-kata awal dari pesan di dalam notifikasi"
 
-#: ../qml/pages/SettingsPage.qml:532
+#: ../qml/pages/SettingsPage.qml:839
 msgid "Aggregate system notifications"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:533
+#: ../qml/pages/SettingsPage.qml:840
 msgid "Only the most recent notification will persist"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:590
+#: ../qml/pages/SettingsPage.qml:918
 msgid "Privacy"
 msgstr "Privasi"
 
-#: ../qml/pages/SettingsPage.qml:602
+#: ../qml/pages/SettingsPage.qml:930
 msgid "Read Receipts"
 msgstr "Baca tanda terima"
 
-#: ../qml/pages/SettingsPage.qml:640
+#: ../qml/pages/SettingsPage.qml:968
 msgid "Delete Old Messages"
 msgstr "Hapus pesan-pesan lama"
 
-#: ../qml/pages/SettingsPage.qml:730 ../qml/pages/SettingsPage.qml:1287
+#: ../qml/pages/SettingsPage.qml:1058 ../qml/pages/SettingsPage.qml:1699
 msgid "Export Backup"
 msgstr ""
 
@@ -1284,4 +1507,26 @@ msgstr "Buka blokir kontak ini? Anda akan bisa kembali menerima pesan dari konta
 #: ../qml/pages/UnblockContactPopup.qml:47
 msgid "Unblock Contact"
 msgstr "Buka blokir kontak"
+
+#: ../qml/pages/VerifiedPopup.qml:32
+msgid ""
+"End-to-end encryption cannot be guaranteed anymore, likely because %1 "
+"reinstalled Delta Chat or sent a message from another device.\n"
+"\n"
+"You may meet them in person and scan their QR code again to reestablish "
+"guaranteed end-to-end encryption."
+msgstr ""
+
+#: ../qml/pages/VerifiedPopup.qml:32
+msgid ""
+"It is now guaranteed that all messages in this chat are end-to-end "
+"encrypted.\n"
+"\n"
+"End-to-end encryption keeps messages private between you and your chat "
+"partners. Not even your email provider can read them."
+msgstr ""
+
+#: ../qml/pages/VerifiedPopup.qml:52
+msgid "Learn More"
+msgstr ""
 

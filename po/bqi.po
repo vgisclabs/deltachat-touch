@@ -14,22 +14,22 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: ja_JP\n"
+"Language: bqi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../plugins/DeltaHandler/contactsmodel.cpp:79
 msgid "New Contact"
-msgstr "新規連絡先"
+msgstr "homdangê nu"
 
 #: ../plugins/DeltaHandler/contactsmodel.cpp:94
 msgid "Type e-mail address above"
-msgstr "上にメールアドレスを入力してください。"
+msgstr ""
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:1663
 msgid "New message"
-msgstr "新規メッセージ"
+msgstr "payomė nu"
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:2701
 msgid ""
@@ -52,12 +52,12 @@ msgstr ""
 #: ../qml/pages/QrShowScan.qml:296 ../qml/pages/QrShowScan.qml:726
 #: ../qml/pages/RequestDatabasePassword.qml:52
 msgid "Error"
-msgstr "エラー"
+msgstr "xatā"
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:3866
 #: ../plugins/DeltaHandler/deltahandler.cpp:3889
 msgid "QR code could not be decoded"
-msgstr "QRコードを読み取りできなかった"
+msgstr ""
 
 #: ../qml/Main.qml:79
 msgid ""
@@ -80,7 +80,7 @@ msgstr ""
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:114
 #: ../qml/pages/QrShowScan.qml:295
 msgid "Error: %1"
-msgstr "エラー：%1"
+msgstr "xatā: %1"
 
 #: ../qml/Main.qml:471 ../qml/Main.qml:478
 msgid "No account configured"
@@ -98,23 +98,23 @@ msgstr ""
 #: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:305
 #: ../qml/pages/ChatView.qml:350 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
-msgstr "検索"
+msgstr "pitiniďên"
 
 #: ../qml/Main.qml:762
 msgid "Archived Chats"
-msgstr "アーカイブしたチャット"
+msgstr ""
 
 #: ../qml/Main.qml:989
 msgid "Request"
-msgstr ""
+msgstr "darxāst"
 
 #: ../qml/Main.qml:1049
 msgid "Loading…"
-msgstr "読み込み中"
+msgstr "honêy bār êvane..."
 
 #: ../qml/Main.qml:1075 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
-msgstr "新規チャット"
+msgstr "goftoloftê nu"
 
 #: ../qml/pages/About.qml:28
 msgid "About DeltaTouch"
@@ -157,19 +157,19 @@ msgstr ""
 #: ../qml/pages/ProgressDatabaseEncryption.qml:94
 #: ../qml/pages/ProgressQrBackupImport.qml:99
 msgid "Back"
-msgstr "前へ"
+msgstr "vorgaštên"
 
 #: ../qml/pages/AccountConfig.qml:178 ../qml/pages/SettingsPage.qml:317
 msgid "Settings"
-msgstr "設定"
+msgstr "sāmovā"
 
 #: ../qml/pages/AccountConfig.qml:191 ../qml/pages/AccountConfig.qml:311
 msgid "Info"
-msgstr "情報"
+msgstr "zêbār"
 
 #: ../qml/pages/AccountConfig.qml:197 ../qml/pages/AddAccount.qml:33
 msgid "Add Account"
-msgstr "アカウントを追加"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:228
 msgid "Encrypted database (experimental)"
@@ -195,7 +195,7 @@ msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:311
 msgid "None"
-msgstr "無し"
+msgstr "hičkoyêki"
 
 #: ../qml/pages/AccountConfig.qml:421
 msgid "Account is not configured."
@@ -220,11 +220,11 @@ msgstr ""
 #: ../qml/pages/RequestDatabasePassword.qml:193
 #: ../qml/pages/VerifiedPopup.qml:35
 msgid "OK"
-msgstr "了承"
+msgstr "xā"
 
 #: ../qml/pages/AddAccount.qml:57
 msgid "Log into your E-Mail Account"
-msgstr "自分のメールサーバーにログインする"
+msgstr ""
 
 #: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:91
 #: ../qml/pages/QrShowScan.qml:218
@@ -234,7 +234,7 @@ msgstr ""
 #: ../qml/pages/AddAccount.qml:59 ../qml/pages/PickerBackupFile.qml:35
 #: ../qml/pages/PickerBackupFile.qml:116
 msgid "Restore from Backup"
-msgstr "バックアップをインポート"
+msgstr ""
 
 #: ../qml/pages/AddAccount.qml:60
 msgid "Scan Invitation Code"
@@ -251,7 +251,7 @@ msgstr ""
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:398 ../qml/pages/QrShowScan.qml:415
 msgid "Unknown"
-msgstr "不明"
+msgstr "nāšênās"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:125
 #: ../qml/pages/AddAccountAsSecondDevice.qml:141
@@ -260,37 +260,37 @@ msgstr "不明"
 #: ../qml/pages/QrShowScan.qml:257 ../qml/pages/QrShowScan.qml:276
 #: ../qml/pages/QrShowScan.qml:399 ../qml/pages/QrShowScan.qml:416
 msgid "QR Code"
-msgstr "QRコード"
+msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:181
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:191
 #: ../qml/pages/QrShowScan.qml:479 ../qml/pages/VerifiedPopup.qml:43
 msgid "Scan QR Code"
-msgstr "QRｺｰﾄﾞを読み取る"
+msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:288
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:298
 #: ../qml/pages/QrShowScan.qml:619
 msgid "Hold your camera over the QR code."
-msgstr "QRコードを読み取って下さい"
+msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:301
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:311
 #: ../qml/pages/QrShowScan.qml:632
 msgid "More Options"
-msgstr ""
+msgstr "guzinêyalê bištar"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:313
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:323
 #: ../qml/pages/QrShowScan.qml:644
 msgid "Paste from Clipboard"
-msgstr "クリップボードのデータを貼り付ける"
+msgstr "jā vandên zê virga"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:329
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:339
 #: ../qml/pages/QrShowScan.qml:660
 msgid "Load QR Code as Image"
-msgstr "QRコードを画像として読み込む"
+msgstr ""
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:353
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:363
@@ -302,7 +302,7 @@ msgstr ""
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:95
 #: ../qml/pages/QrShowScan.qml:199
 msgid "Create new e-mail address on \"%1\" and log in there?"
-msgstr "%1に新しいメールアドレスを作ってログしますか。"
+msgstr ""
 
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:130
 #: ../qml/pages/QrShowScan.qml:380
@@ -331,11 +331,11 @@ msgstr ""
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
 #: ../qml/pages/UnblockContactPopup.qml:41
 msgid "Cancel"
-msgstr "取消"
+msgstr "raď"
 
 #: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Group"
-msgstr "新規グループ"
+msgstr "jarga nu"
 
 #: ../qml/pages/AddChat.qml:86 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Verified Group"
@@ -343,86 +343,86 @@ msgstr ""
 
 #: ../qml/pages/AddChat.qml:104 ../qml/pages/GroupAddMember.qml:77
 msgid "Enter name or e-mail address"
-msgstr "名前かメールアドレスを入力"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:52
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:801
 #: ../qml/pages/SettingsPage.qml:79 ../qml/pages/SettingsPage.qml:1134
 msgid "No, chats only"
-msgstr "いいえ、チャットのみ"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:55
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:815
 #: ../qml/pages/SettingsPage.qml:82 ../qml/pages/SettingsPage.qml:1148
 msgid "For accepted contacts"
-msgstr "許可されたユーザーのみ"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:58
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:829
 #: ../qml/pages/SettingsPage.qml:85 ../qml/pages/SettingsPage.qml:96
 #: ../qml/pages/SettingsPage.qml:1162 ../qml/pages/SettingsPage.qml:1190
 msgid "All"
-msgstr "全部"
+msgstr "poy"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:102
 msgid "Log In"
-msgstr "ログイン"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:209
 msgid "Log in with an existing e-mail account"
-msgstr "既存のメールアカウントにログインする"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:222
 msgid "E-Mail Address"
-msgstr "メールアドレス"
+msgstr "nêšuvi imêyl"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:275
 msgid "Password"
-msgstr "パスワード"
+msgstr "razm"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:361
 #: ../qml/pages/ChatView.qml:1438
 msgid "More Info"
-msgstr "もっと詳しく"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:383
 msgid "There are no Delta Chat servers, your data stays on your device."
-msgstr "Delta Chatには専用サーバーが有りません｡つまりあなたのデータ･個人情報はこの端末内に保存されています｡"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:396
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
-msgstr "主なメールサーバーは自動で設定されます｡一般にIMAPはサーバー側で有効に設定する必要が有ります｡サーバー提供者や詳しい人に確認しましょう｡"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:420
 #: ../qml/pages/SettingsPage.qml:706
 msgid "Show Classic E-Mails"
-msgstr "一般的なメールを表示する"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:452
 #: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:1099
 msgid "Advanced"
-msgstr "追加設定"
+msgstr "pîš ra'ďa"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:473
 msgid "Inbox"
-msgstr "受信"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:479
 msgid "IMAP Login Name"
-msgstr "IMAPログイン名"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:486
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:553
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:565
 msgid "Default (same as above)"
-msgstr "初期値（同上）"
+msgstr "pîš farz (jurê ro')"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:491
 msgid "IMAP Server"
-msgstr "IMAPサーバー"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:498
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:518
@@ -430,19 +430,19 @@ msgstr "IMAPサーバー"
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:597
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:614
 msgid "Automatic"
-msgstr "自動"
+msgstr "xotkār"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:503
 msgid "IMAP Port"
-msgstr "IMAPポート"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:510
 msgid "Default (%1)"
-msgstr "初期値（%1）"
+msgstr "pîš farz (%1)"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:516
 msgid "IMAP Security"
-msgstr "IMAP暗号方式"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:521
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:600
@@ -452,27 +452,27 @@ msgstr "IMAP暗号方式"
 #: ../qml/pages/EphemeralTimerSettings.qml:134
 #: ../qml/pages/EphemeralTimerSettings.qml:138
 msgid "Off"
-msgstr "切"
+msgstr "kur"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:540
 msgid "Outbox"
-msgstr "送信"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:546
 msgid "SMTP Login Name"
-msgstr "SMTPログイン名"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:558
 msgid "SMTP Password"
-msgstr "SMTPパスワード"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:570
 msgid "SMTP Server"
-msgstr "SMTPサーバー"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:582
 msgid "SMTP Port"
-msgstr "SMTPポート"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:589
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:682
@@ -482,19 +482,19 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:595
 msgid "SMTP Security"
-msgstr "SMTP暗号方式"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:612
 msgid "Certificate Checks"
-msgstr "有効な証明書です"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:615
 msgid "Strict"
-msgstr "厳重"
+msgstr "saxtger"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:616
 msgid "Accept invalid certificates"
-msgstr "無効な証明書を受け入れます"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:651
 msgid "Use SOCKS5"
@@ -538,7 +538,7 @@ msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:155
 msgid "One moment…"
-msgstr "お待ち下さい…"
+msgstr "yadamow..."
 
 #: ../qml/pages/AddSecondDevice.qml:180
 #: ../qml/pages/ProgressQrBackupImport.qml:38
@@ -569,19 +569,19 @@ msgstr ""
 #: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:67
 #: ../qml/pages/QrShowScan.qml:682
 msgid "Copy to Clipboard"
-msgstr "クリップボードにコピー"
+msgstr "lefgiri mênê virga"
 
 #: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:462
 msgid "Worse quality, small size"
-msgstr "低画質・サイズが小さい"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:448
 msgid "Balanced"
-msgstr "普通"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:434
 msgid "High"
-msgstr "高"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:125
 msgid "Voice Message Quality"
@@ -589,11 +589,11 @@ msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:161
 msgid "Autocrypt"
-msgstr "自動暗号化"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:174
 msgid "Prefer End-To-End Encryption"
-msgstr "エンドツーエンド暗号化を好む"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:211
 msgid "IMAP Folder Handling"
@@ -601,11 +601,11 @@ msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:225
 msgid "Watch Sent Folder"
-msgstr "送信トレイを監視する"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:258
 msgid "Send Copy to Self"
-msgstr "自分にコピーを送る"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:259
 msgid "Required when using this account on multiple devices."
@@ -613,11 +613,11 @@ msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:293
 msgid "Move automatically to DeltaChat Folder"
-msgstr "DeltaChatフォルダに自動で移動する"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:294
 msgid "Chat conversations are moved to avoid cluttering the Inbox"
-msgstr "チャットは受信箱の邪魔にならないように移動されます。"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:327
 msgid "Only Fetch from DeltaChat Folder"
@@ -631,33 +631,33 @@ msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:366
 msgid "Manage Keys"
-msgstr "暗号鍵の管理"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:380
 msgid "Export Secret Keys"
-msgstr "秘密鍵のエクスポート"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:400 ../qml/pages/ProgressKeysImport.qml:59
 msgid "Import Secret Keys"
-msgstr "秘密鍵のインポート"
+msgstr ""
 
 #: ../qml/pages/BlockContactPopup.qml:28
 msgid "Block this contact? You will no longer receive messages from them."
-msgstr "この連絡先を拒否しますか"
+msgstr ""
 
 #: ../qml/pages/BlockContactPopup.qml:37
 #: ../qml/pages/ChatInfosActionsChatlist.qml:63
 #: ../qml/pages/ChatInfosActionsChatview.qml:77
 msgid "Block Contact"
-msgstr "拒否する"
+msgstr ""
 
 #: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:618
 msgid "Blocked Contacts"
-msgstr "ブロックされた人"
+msgstr ""
 
 #: ../qml/pages/BlockedContacts.qml:46
 msgid "Blocked contacts will appear here."
-msgstr "ブロックされた連絡先がここに表示されます。"
+msgstr ""
 
 #: ../qml/pages/ChangeDatabasePassword.qml:45
 #: ../qml/pages/ChangeDatabasePassword.qml:176
@@ -690,24 +690,24 @@ msgstr ""
 #: ../qml/pages/ChatInfosActionsChatlist.qml:49
 #: ../qml/pages/ChatInfosActionsChatview.qml:63
 msgid "Mute Notifications"
-msgstr "通知しない"
+msgstr "bî dong kerdên vārasuviyā"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:49
 #: ../qml/pages/ChatInfosActionsChatview.qml:63
 msgid "Unmute"
-msgstr "ミュート解除"
+msgstr "vā dong kerdên"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:72
 #: ../qml/pages/ChatInfosActionsChatview.qml:86
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
-msgstr "グループを編集"
+msgstr "ālêštê jarga"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:84
 #: ../qml/pages/ChatInfosActionsChatview.qml:98
 #: ../qml/pages/ConfirmLeaveGroup.qml:36
 msgid "Leave Group"
-msgstr "退室する"
+msgstr "ra'ďên zê jarga"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:97
 #: ../qml/pages/ChatInfosActionsChatview.qml:111
@@ -717,52 +717,52 @@ msgstr ""
 #: ../qml/pages/ChatInfosActionsChatlist.qml:150
 #: ../qml/pages/ChatInfosActionsChatview.qml:177
 msgid "Mute for 1 hour"
-msgstr "1時間停止する"
+msgstr "bî dong kerdên si 1 sāat"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:164
 #: ../qml/pages/ChatInfosActionsChatview.qml:191
 msgid "Mute for 2 hours"
-msgstr "2時間停止する"
+msgstr "bî dong kerdên si 2 sāat"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:178
 #: ../qml/pages/ChatInfosActionsChatview.qml:205
 msgid "Mute for 1 day"
-msgstr "24時間停止する"
+msgstr "bî dong kerdên si 1 ru"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:192
 #: ../qml/pages/ChatInfosActionsChatview.qml:219
 msgid "Mute for 7 days"
-msgstr "7日間停止する"
+msgstr "bî dong kerdên si 7 ru"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:206
 #: ../qml/pages/ChatInfosActionsChatview.qml:233
 msgid "Mute forever"
-msgstr "無効"
+msgstr "bî dong kerdên si hamiša"
 
 #: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:270
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
-msgstr "消えるメッセージ"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatview.qml:128
 #: ../qml/pages/ConfirmClearChat.qml:42 ../qml/pages/ConfirmClearChat.qml:51
 msgid "Clear Chat"
-msgstr ""
+msgstr "roftênê virgārê goftoloft"
 
 #: ../qml/pages/ChatView.qml:165 ../qml/pages/ChatView.qml:189
 #: ../qml/pages/ChatView.qml:1388
 msgid "This chat contains locally generated messages; writing is disabled."
-msgstr "このチャットにはローカルで生成されたメッセージがありますので、メッセージを書き込めません。"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:167 ../qml/pages/ChatView.qml:191
 #: ../qml/pages/ChatView.qml:1390
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
-msgstr "このグループに参加していないので書き込めません。参加するには、他のメンバーに知らせてください。"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:250 ../qml/pages/ChatView.qml:1046
 msgid "Voice Message"
-msgstr "音声メッセージ"
+msgstr "payomê dong"
 
 #: ../qml/pages/ChatView.qml:263
 msgid "Verified Contact"
@@ -774,11 +774,11 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:937
 msgid "Forwarded Message"
-msgstr "転送されたメッセージ"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:1140
 msgid "Download"
-msgstr "ダウンロード"
+msgstr "dānlod"
 
 #: ../qml/pages/ChatView.qml:1142
 msgid "Download failed"
@@ -786,7 +786,7 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:1144
 msgid "Downloading…"
-msgstr "ダウンロード中"
+msgstr "honêy dānlod êbu..."
 
 #: ../qml/pages/ChatView.qml:1179
 msgid "Unread Messages"
@@ -794,37 +794,37 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:1195
 msgid "Show Full Message…"
-msgstr "メッセージ全体を表示"
+msgstr "nêšow dāďên payomê kāmêl"
 
 #: ../qml/pages/ChatView.qml:2060
 msgid "Accept"
-msgstr ""
+msgstr "qêvul"
 
 #: ../qml/pages/ChatView.qml:2077 ../qml/pages/ChatView.qml:2231
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
-msgstr "削除"
+msgstr "pāk kerdên"
 
 #: ../qml/pages/ChatView.qml:2093
 msgid "Block"
-msgstr "ブロック"
+msgstr ""
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:35
 #: ../qml/pages/ConfirmAccountDeletion.qml:51
 msgid "Delete Account"
-msgstr "アカウントを削除"
+msgstr ""
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:39
 msgid "Are you sure you want to delete your account data?"
-msgstr "本当にアカウントデータを削除しますか？"
+msgstr ""
 
 #: ../qml/pages/ConfirmAccountDeletion.qml:45
 msgid ""
 "All account data of \"%1\" on this device will be deleted, including your "
 "end-to-end encryption setup, contacts, chats, messages and media. This "
 "action cannot be undone."
-msgstr "暗号鍵・連絡先・チャット・メッセージを含めて%1のアカウントデータを端末から削除します。元に戻すことはできません。"
+msgstr ""
 
 #: ../qml/pages/ConfirmAddSecondDevice.qml:29
 msgid ""
@@ -836,7 +836,7 @@ msgstr ""
 #: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:46
 #: ../qml/pages/ConfirmEncryptDatabase.qml:46
 msgid "Continue"
-msgstr "続行"
+msgstr ""
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:31
 #: ../qml/pages/MessageHtmlView.qml:164
@@ -851,12 +851,12 @@ msgid ""
 "cached images may appear.\n"
 "\n"
 "Load remote images?"
-msgstr "リモート画像で追跡ができる。\n\nこの設定はフォントや他のコンテツを読み込むことも許可する。無効にしても埋め込まれた画像やキャッシュされた画像を表示されます。\n\nリモート画像を読み込む？"
+msgstr ""
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
 #: ../qml/pages/MessageHtmlView.qml:89
 msgid "Load Remote Images"
-msgstr "リモート画像を読み込む"
+msgstr "bār vani šîvātā zê dar"
 
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:28
 msgid "Abort setting up second device?"
@@ -865,21 +865,21 @@ msgstr ""
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:31
 #: ../qml/pages/ProgressKeysExport.qml:57
 msgid "Yes"
-msgstr "はい"
+msgstr "harêy"
 
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:40
 msgid "No"
-msgstr "いいえ"
+msgstr "na"
 
 #: ../qml/pages/ConfirmChatDeletion.qml:34
 #: ../qml/pages/ConfirmChatDeletion.qml:44
 msgid "Delete Chat"
-msgstr "チャットを削除"
+msgstr "pāk kerdên poy goftoloft"
 
 #: ../qml/pages/ConfirmChatDeletion.qml:38
 #: ../qml/pages/ConfirmMsgDeletion.qml:39
 msgid "Are you sure you want to delete \"%1\"?"
-msgstr "%1を削除してよろしいですか？"
+msgstr ""
 
 #: ../qml/pages/ConfirmClearChat.qml:36
 msgid "Delete %1 message here and on the server?"
@@ -906,7 +906,7 @@ msgstr ""
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
 #: ../qml/pages/SettingsPage.qml:982
 msgid "Delete Messages from Device"
-msgstr "端末からメッセージを削除する"
+msgstr "pāk kerdên payomā zê dasgā"
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:40
 msgid ""
@@ -923,12 +923,12 @@ msgstr ""
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:62
 #: ../qml/pages/ConfirmDeleteFromServer.qml:62
 msgid "I understand, delete all these messages"
-msgstr "分かりました。メッセージを削除していいです。"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
 #: ../qml/pages/SettingsPage.qml:1010
 msgid "Delete Messages from Server"
-msgstr "サーバーからメッセージを削除する"
+msgstr "pāk kerdên payomā zê sêrvêr"
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:40
 msgid ""
@@ -962,16 +962,16 @@ msgstr ""
 
 #: ../qml/pages/ConfirmLeaveGroup.qml:32
 msgid "Are you sure you want to leave this group?"
-msgstr "本当に退室しますか"
+msgstr ""
 
 #: ../qml/pages/ConfirmMemberDeletion.qml:39
 msgid "Remove %1 from group?"
-msgstr "%1をグループから排除しますか"
+msgstr "pāk kerdên %1 zê jarga?"
 
 #: ../qml/pages/ConfirmMsgDeletion.qml:35
 #: ../qml/pages/ConfirmMsgDeletion.qml:45
 msgid "Delete Message"
-msgstr "メッセージを削除する"
+msgstr "pāk kerdên payom"
 
 #: ../qml/pages/ConfirmStopEncryptingDatabase.qml:35
 msgid "Really disable database encryption?"
@@ -983,7 +983,7 @@ msgstr ""
 
 #: ../qml/pages/Connectivity.qml:31 ../qml/pages/SettingsPage.qml:889
 msgid "Connectivity"
-msgstr "接続性"
+msgstr ""
 
 #: ../qml/pages/CreateDatabasePassword.qml:44
 #: ../qml/pages/CreateDatabasePassword.qml:155
@@ -999,35 +999,35 @@ msgstr ""
 #: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
 #: ../qml/pages/QrShowScan.qml:453 ../qml/pages/QrShowScan.qml:467
 msgid "QR Invite Code"
-msgstr "自分のQRｺｰﾄﾞ"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:206
 msgid "Group Name"
-msgstr "グループ名"
+msgstr "nomê jarga"
 
 #: ../qml/pages/CreateOrEditGroup.qml:229
 msgid "%1 member"
-msgstr ""
+msgstr "%1 mėntor"
 
 #: ../qml/pages/CreateOrEditGroup.qml:230
 msgid "%1 members"
-msgstr ""
+msgstr "%1 mėntor"
 
 #: ../qml/pages/CreateOrEditGroup.qml:247 ../qml/pages/GroupAddMember.qml:34
 msgid "Add Members"
-msgstr "メンバーを追加"
+msgstr "avordênê mêntor"
 
 #: ../qml/pages/CreateOrEditGroup.qml:346
 msgid "Please enter a name for the group."
-msgstr "グループ名を入力して下さい"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:370
 msgid "Change Group Image"
-msgstr "グループ画像の編集"
+msgstr "ālêštê šîvātê jarga"
 
 #: ../qml/pages/CreateOrEditGroup.qml:383
 msgid "Remove Group Image"
-msgstr "アイコン画像の削除"
+msgstr "pāk kerdên šîvātê jarga"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:41
 #: ../qml/pages/EphemeralTimerSettings.qml:148
@@ -1036,7 +1036,7 @@ msgstr "アイコン画像の削除"
 #: ../qml/pages/SettingsPage.qml:169 ../qml/pages/SettingsPage.qml:1458
 #: ../qml/pages/SettingsPage.qml:1464
 msgid "After 30 seconds"
-msgstr "30秒"
+msgstr "ba'ďê 30 sâniya"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:162
@@ -1044,7 +1044,7 @@ msgstr "30秒"
 #: ../qml/pages/SettingsPage.qml:173 ../qml/pages/SettingsPage.qml:1479
 #: ../qml/pages/SettingsPage.qml:1485
 msgid "After 1 minute"
-msgstr "1分"
+msgstr "ba'ďê 1 dîqa"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:49
 #: ../qml/pages/EphemeralTimerSettings.qml:176
@@ -1053,7 +1053,7 @@ msgstr "1分"
 #: ../qml/pages/SettingsPage.qml:1303 ../qml/pages/SettingsPage.qml:1309
 #: ../qml/pages/SettingsPage.qml:1500 ../qml/pages/SettingsPage.qml:1506
 msgid "After 1 hour"
-msgstr "1時間"
+msgstr "ba'ďê 1 sāat"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:53
 #: ../qml/pages/EphemeralTimerSettings.qml:190
@@ -1062,7 +1062,7 @@ msgstr "1時間"
 #: ../qml/pages/SettingsPage.qml:1324 ../qml/pages/SettingsPage.qml:1330
 #: ../qml/pages/SettingsPage.qml:1521 ../qml/pages/SettingsPage.qml:1527
 msgid "After 1 day"
-msgstr "1日後"
+msgstr "ba'ďê 1 ru"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:57
 #: ../qml/pages/EphemeralTimerSettings.qml:204
@@ -1071,7 +1071,7 @@ msgstr "1日後"
 #: ../qml/pages/SettingsPage.qml:1345 ../qml/pages/SettingsPage.qml:1351
 #: ../qml/pages/SettingsPage.qml:1542 ../qml/pages/SettingsPage.qml:1548
 msgid "After 1 week"
-msgstr "1週間後"
+msgstr "ba'ďê 1 hafta"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:218
@@ -1079,7 +1079,7 @@ msgstr "1週間後"
 #: ../qml/pages/SettingsPage.qml:1366 ../qml/pages/SettingsPage.qml:1372
 #: ../qml/pages/SettingsPage.qml:1563 ../qml/pages/SettingsPage.qml:1569
 msgid "After 4 weeks"
-msgstr "4週間後"
+msgstr "ba'ďê 4 hafta"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:65
 msgid "After %1 seconds"
@@ -1089,31 +1089,31 @@ msgstr ""
 msgid ""
 "Applies to all members of this chat if they use Delta Chat; they can still "
 "copy, save, and forward messages or use other e-mail clients."
-msgstr "この設定は、Delta Chatの利用する参加者に適用されます。ただし、参加者はメッセージをコピーしたり、保存したり、転送したり、他のアプリを利用したりすることができます。"
+msgstr ""
 
 #: ../qml/pages/ForwardMessage.qml:41
 msgid "Forward to…"
-msgstr "転送"
+msgstr ""
 
 #: ../qml/pages/ForwardMessage.qml:49
 msgid "Close"
-msgstr "閉じる"
+msgstr "bastên"
 
 #: ../qml/pages/ImageViewer.qml:39 ../qml/pages/ImageViewerAnimated.qml:39
 msgid "Save"
-msgstr "保存"
+msgstr "zaft"
 
 #: ../qml/pages/MessageInfosActions.qml:33
 msgid "Copy Text"
-msgstr "テキストをコピー"
+msgstr "lefgiri hîl"
 
 #: ../qml/pages/MessageInfosActions.qml:45
 msgid "Export Attachment"
-msgstr "添付ファイルのエクスポート"
+msgstr ""
 
 #: ../qml/pages/MessageInfosActions.qml:71
 msgid "Message Details"
-msgstr "メッセージの詳細"
+msgstr ""
 
 #: ../qml/pages/NotImplemented.qml:27
 msgid "Not Implemented Yet"
@@ -1130,7 +1130,7 @@ msgstr ""
 #: ../qml/pages/PickerImageToExport.qml:42
 #: ../qml/pages/PickerImageToSend.qml:34
 msgid "Select"
-msgstr "選択"
+msgstr "pêsand"
 
 #: ../qml/pages/PickerBackupFile.qml:109
 msgid "The selected file is not a valid backup file."
@@ -1138,27 +1138,27 @@ msgstr ""
 
 #: ../qml/pages/PickerChatPic.qml:34
 msgid "Select Group Image"
-msgstr "グループ画像を選択する"
+msgstr "pêsandê šîvātê jarga"
 
 #: ../qml/pages/PickerProfilePic.qml:34 ../qml/pages/PickerQrImageLoad.qml:34
 msgid "Select your new profile image"
-msgstr "新しいアイコン画像を選択してください"
+msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen at %1"
-msgstr ""
+msgstr "ritorê dindâyi mênê %1"
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen: Unknown"
-msgstr ""
+msgstr "ritorê dindâyi: diyār nî"
 
 #: ../qml/pages/ProfileOther.qml:47
 msgid "View Profile"
-msgstr "詳細を確認"
+msgstr "niyaštên porofāyl"
 
 #: ../qml/pages/ProfileOther.qml:236
 msgid "Locally generated messages"
-msgstr "ローカルで生成されたメッセージ"
+msgstr "payomā mêni"
 
 #: ../qml/pages/ProfileOther.qml:266
 msgid "Verified by %1"
@@ -1166,27 +1166,27 @@ msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:304 ../qml/pages/ProfileSelf.qml:249
 msgid "Signature Text"
-msgstr "署名"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:48 ../qml/pages/SettingsPage.qml:663
 msgid "Edit Profile"
-msgstr "プロフィール編集"
+msgstr "ālêštê porofāyl"
 
 #: ../qml/pages/ProfileSelf.qml:96
 msgid "Profile"
-msgstr "プロファイル"
+msgstr "porofāyl"
 
 #: ../qml/pages/ProfileSelf.qml:177
 msgid "Select Profile Image"
-msgstr "アイコン画像を選択する"
+msgstr "pêsandê šîvātê porofāyl"
 
 #: ../qml/pages/ProfileSelf.qml:190
 msgid "Delete Profile Image"
-msgstr "アイコン画像を削除する"
+msgstr "pāk kerdên šîvātê porofāyl"
 
 #: ../qml/pages/ProfileSelf.qml:210
 msgid "Your Name"
-msgstr "あなたの名前"
+msgstr "nomê to"
 
 #: ../qml/pages/ProgressBackupExport.qml:36
 msgid ""
@@ -1196,11 +1196,11 @@ msgid ""
 "The backup will contain all messages, contacts and chats and your end-to-end "
 "Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
 "as possible."
-msgstr "バックアップは、本デバイスまたは別のデバイスに新たにインストールする際に役立ちます。\n\nこのバックアップには、すべてのメッセージ、連絡先、チャット、およびエンドツーエンドの自動暗号化設定が含まれます。バックアップファイルは安全な場所に保管するか、できるだけ早く削除してください。"
+msgstr ""
 
 #: ../qml/pages/ProgressBackupExport.qml:50
 msgid "Start Backup"
-msgstr "バックアップを開始する"
+msgstr ""
 
 #: ../qml/pages/ProgressBackupImport.qml:44
 msgid "Failed"
@@ -1233,11 +1233,11 @@ msgstr ""
 
 #: ../qml/pages/ProgressKeysExport.qml:40
 msgid "Export secret keys to \"%1\"?"
-msgstr "%1に秘密鍵をエクスポートしますか？"
+msgstr ""
 
 #: ../qml/pages/ProgressKeysExport.qml:49
 msgid "Secret keys written successfully to \"%1\"."
-msgstr "暗号鍵は%1に正常に書き込まれました。"
+msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
@@ -1259,11 +1259,11 @@ msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:51
 msgid "Secret keys imported from \"%1\"."
-msgstr "暗号鍵は%1からインポートされました。"
+msgstr ""
 
 #: ../qml/pages/ProgressQrBackupImport.qml:63
 msgid "Done"
-msgstr "完了"
+msgstr "anjom vâbi"
 
 #: ../qml/pages/QrConfirmPopup.qml:79
 msgid "Open Url in Browser"
@@ -1271,11 +1271,11 @@ msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:102
 msgid "Chat with %1?"
-msgstr "%1とチャットしますか"
+msgstr "goftoloft vā %1?"
 
 #: ../qml/pages/QrShowScan.qml:132
 msgid "Do you want to join the group \"%1\"?"
-msgstr "%1グループに参加しますか"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:148
 msgid "The fingerprint of %1 is valid!"
@@ -1302,14 +1302,14 @@ msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
-msgstr "読み取り結果は以下:\n\n%1"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:275
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
-msgstr "読み取り結果は以下:\n\n:\n\n%1"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:312
 msgid ""
@@ -1353,25 +1353,25 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:53
 msgid "Not connected"
-msgstr "未接続"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:55
 msgid "Connecting…"
-msgstr "接続中"
+msgstr "honêy menpiz êbu..."
 
 #: ../qml/pages/SettingsPage.qml:57
 msgid "Updating…"
-msgstr "アップデート中"
+msgstr "honêy vê ru êbu..."
 
 #: ../qml/pages/SettingsPage.qml:59
 msgid "Connected"
-msgstr "接続済み"
+msgstr "menpiz vâbi"
 
 #: ../qml/pages/SettingsPage.qml:100 ../qml/pages/SettingsPage.qml:113
 #: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:1204
 #: ../qml/pages/SettingsPage.qml:1246 ../qml/pages/SettingsPage.qml:1260
 msgid "Up to %1"
-msgstr ""
+msgstr "tā saqfe %1"
 
 #: ../qml/pages/SettingsPage.qml:104 ../qml/pages/SettingsPage.qml:1218
 msgid "Up to %1, most worse quality images"
@@ -1384,13 +1384,13 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:161
 #: ../qml/pages/SettingsPage.qml:1289 ../qml/pages/SettingsPage.qml:1423
 msgid "Never"
-msgstr "しない"
+msgstr "hič"
 
 #: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:193
 #: ../qml/pages/SettingsPage.qml:1387 ../qml/pages/SettingsPage.qml:1393
 #: ../qml/pages/SettingsPage.qml:1584 ../qml/pages/SettingsPage.qml:1590
 msgid "After 1 year"
-msgstr "1年後"
+msgstr "ba'ďê 1 sāl"
 
 #: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:197
 msgid "?"
@@ -1399,31 +1399,31 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:165 ../qml/pages/SettingsPage.qml:1437
 #: ../qml/pages/SettingsPage.qml:1443
 msgid "At once"
-msgstr "すぐに"
+msgstr "ya kêrat"
 
 #: ../qml/pages/SettingsPage.qml:355
 msgid "Sync All"
-msgstr ""
+msgstr "vê ru kerdên poy"
 
 #: ../qml/pages/SettingsPage.qml:401
 msgid "Message Font Size"
-msgstr "文字の大きさ"
+msgstr "hêndā hîlê payom"
 
 #: ../qml/pages/SettingsPage.qml:410 ../qml/pages/SettingsPage.qml:1622
 msgid "Small"
-msgstr "小"
+msgstr "kučir"
 
 #: ../qml/pages/SettingsPage.qml:413 ../qml/pages/SettingsPage.qml:1636
 msgid "Normal"
-msgstr "中"
+msgstr "âdi"
 
 #: ../qml/pages/SettingsPage.qml:416 ../qml/pages/SettingsPage.qml:1650
 msgid "Large"
-msgstr "大"
+msgstr "gap"
 
 #: ../qml/pages/SettingsPage.qml:419 ../qml/pages/SettingsPage.qml:1664
 msgid "Extra large"
-msgstr "巨大"
+msgstr "qalêvê gap"
 
 #: ../qml/pages/SettingsPage.qml:445
 msgid "Show Experimental Settings"
@@ -1447,7 +1447,7 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:692
 msgid "Chats"
-msgstr "チャット"
+msgstr "goftoloftā"
 
 #: ../qml/pages/SettingsPage.qml:734
 msgid "Auto-Download Messages"
@@ -1455,11 +1455,11 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:769
 msgid "Notifications"
-msgstr "通知"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:781
 msgid "Enable system notifications for new messages"
-msgstr "新着メッセージ通知を有効にします"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:798
 msgid ""
@@ -1469,11 +1469,11 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:814
 msgid "Show message content in notification"
-msgstr "通知にメッセージの内容を表示します"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:815
 msgid "Shows sender and first words of the message in notifications"
-msgstr "通知には、送信者と最初の単語を表示します"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:839
 msgid "Aggregate system notifications"
@@ -1485,28 +1485,28 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:918
 msgid "Privacy"
-msgstr "機密保護"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:930
 msgid "Read Receipts"
-msgstr "既読通知"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:968
 msgid "Delete Old Messages"
-msgstr "古いメッセージの削除"
+msgstr "pāk kerdên payomā qaďimi"
 
 #: ../qml/pages/SettingsPage.qml:1058 ../qml/pages/SettingsPage.qml:1699
 msgid "Export Backup"
-msgstr "バックアップをエクスポート"
+msgstr ""
 
 #: ../qml/pages/UnblockContactPopup.qml:36
 msgid ""
 "Unblock this contact? You will then be able to receive messages from them."
-msgstr "この連絡先の拒否設定を解除しますか"
+msgstr ""
 
 #: ../qml/pages/UnblockContactPopup.qml:47
 msgid "Unblock Contact"
-msgstr "拒否を解除"
+msgstr ""
 
 #: ../qml/pages/VerifiedPopup.qml:32
 msgid ""

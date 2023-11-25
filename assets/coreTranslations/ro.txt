@@ -8,8 +8,9 @@
 @lineaudio Audio
 @linefile Fișier
 @linechat_archived_chats_title Chat-uri Arhivate
-@linelogin_error_cannot_login Nu se poate autentifica ca "%1$s". Vă rugăm să verificați dacă adresa de e-mail și parola sunt corecte.
+@linelogin_error_cannot_login Nu se poate autentifica ca \"%1$s\". Vă rugăm să verificați dacă adresa de e-mail și parola sunt corecte.
 @linedevice_talk Mesajele Dispozitivului
+@linechat_new_group_hint Ceilalți vor vedea acest grup numai după ce ați trimis un prim mesaj.
 @linesaved_messages Mesaje salvate
 @linedevice_talk_explain Mesajele din acest chat sunt generate pe dispozitivul dumneavoastră pentru a vă informa cu privire la actualizările app-ului și la problemele apărute în timpul utilizării.
 @linedevice_talk_welcome_message Bine ați venit la Delta Chat! - Delta Chat arată și se simte ca și alte app-uri populare de mesagerie, dar nu implică control centralizat, urmărire sau vânzarea dumneavoastră, a prietenilor, colegilor sau a familiei către organizații mari.

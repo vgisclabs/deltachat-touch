@@ -339,6 +339,9 @@ MainView {
         target: DeltaHandler
         onChatViewClosed: {
             root.chatOpenAlreadyClicked = false;
+            if (gotoQrScanPage) {
+                onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+            }
         }
 
         onHasConfiguredAccountChanged: {
@@ -904,10 +907,24 @@ MainView {
                         Rectangle {
                             id: dateAndMsgCount
                             SlotsLayout.position: SlotsLayout.Trailing
-                            width: (((pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) > contactRequestLabel.contentWidth ? ((pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) : contactRequestLabel.contentWidth) + units.gu(1)
+                            width: (((verifiedIcon.visible ? verifiedIcon.width + units.gu(0.5) : 0) + (mutedIcon.visible ? mutedIcon.width + units.gu(0.5) : 0) + (pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) > contactRequestLabel.contentWidth ? ((verifiedIcon.visible ? verifiedIcon.width + units.gu(0.5) : 0) + (mutedIcon.visible ? mutedIcon.width + units.gu(0.5) : 0) + (pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) : contactRequestLabel.contentWidth) + units.gu(1)
                             height: units.gu(3) + units.gu(scaleLevel)
                             color: chatListItem.color 
 
+                            Icon {
+                                id: verifiedIcon
+                                height: timestamp.contentHeight
+                                width: height
+
+                                anchors {
+                                    right: mutedIcon.visible ? mutedIcon.left : (pinnedIcon.visible ? pinnedIcon.left : timestamp.left)
+                                    rightMargin: units.gu(0.5)
+                                    top: dateAndMsgCount.top
+                                }
+                                source: "../assets/verified.svg"
+                                visible: model.chatIsVerified
+                            }
+ 
                             Icon {
                                 id: mutedIcon
                                 height: timestamp.contentHeight

@@ -72,7 +72,7 @@ Page {
         // has to explicitly choose cancel or ok.
         leadingActionBar.actions: [
             Action {
-                iconSource: Qt.resolvedUrl('../../assets/verified.png')
+                iconSource: Qt.resolvedUrl('../../assets/verified.svg')
                 visible: DeltaHandler.tempGroupIsVerified()
             }
         ]
@@ -328,7 +328,7 @@ Page {
 
                 Image {
                     id: verifiedSymbol
-                    source: Qt.resolvedUrl('../../assets/verified.png')
+                    source: Qt.resolvedUrl('../../assets/verified.svg')
                     visible: model.isVerified
                     height: units.gu(3)
                     width: height

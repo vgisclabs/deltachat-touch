@@ -252,7 +252,7 @@ Page {
                     left: parent.left
                     leftMargin: units.gu(2)
                 }
-                source: Qt.resolvedUrl("../../assets/verified.png")
+                source: Qt.resolvedUrl("../../assets/verified.svg")
                 visible: verifiedBy != "" && !isDevice
             }
 

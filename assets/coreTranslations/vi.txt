@@ -1,0 +1,131 @@
+@linechat_no_messages Không có tin nhắn.
+@lineself Tôi
+@linedraft Bản nháp
+@linevoice_message Tin nhắn thoại
+@lineimage Hình ảnh
+@linegif GIF
+@linevideo Video
+@lineaudio Âm thanh
+@linefile Tập tin
+@lineencrypted_message Tin nhắn được mã hóa
+@lineqrscan_fingerprint_label Dấu vân tay
+@linesystemmsg_cannot_decrypt Không thể giải mã tin nhắn này.
+
+• Bạn chỉ cần trả lời tin nhắn này và yêu cầu người gửi gửi lại tin nhắn là đủ.
+
+• Nếu bạn vừa cài đặt lại Delta Chat thì tốt nhất bạn nên cài đặt lại thiết lập lại Delta Chat ngay bây giờ và chọn "Thêm làm thiết bị thứ hai" hoặc nhập bản sao lưu.
+@linesystemmsg_read_receipt_subject Đã mở tin nhắn
+@linesystemmsg_read_receipt_body Tin nhắn \"%1$s\" bạn gửi đã được hiển thị trên màn hình của người nhận.
+
+Điều này không đảm bảo rằng nội dung đã được đọc.
+@lineautocrypt_prefer_e2ee Ưu tiên mã hóa đầu cuối
+@linechat_archived_chats_title Cuộc trò chuyện đã lưu trữ
+@lineautocrypt_asm_subject Thông báo thiết lập Autocrypt
+@lineautocrypt_asm_general_body Đây là Thông báo Thiết lập Autocrypt được sử dụng để truyền thiết lập hai đầu của bạn giữa các máy khách.
+
+Để giải mã và sử dụng thiết lập của bạn, hãy mở tin nhắn trong một ứng dụng khách tương thích với Autocrypt và nhập mã thiết lập được trình bày trên thiết bị tạo.
+@linelogin_error_cannot_login Không thể đăng nhập với tên \"%1$s\". Vui lòng kiểm tra xem địa chỉ e-mail và mật khẩu có đúng không.
+@linedevice_talk Tin nhắn thiết bị
+@linechat_new_group_hint Những người khác sẽ chỉ nhìn thấy nhóm này sau khi bạn gửi tin nhắn đầu tiên.
+@linesaved_messages Tin nhắn đã lưu
+@linecontact_verified %1$s đã được giới thiệu.
+@linecontact_not_verified Không thể thiết lập mã hóa đầu cuối được đảm bảo với %1$s.
+@linecontact_setup_changed Đã thay đổi thiết lập cho %1$s.
+@linedevice_talk_explain Tin nhắn trong cuộc trò chuyện này được tạo trên thiết bị của bạn để thông báo về các bản cập nhật ứng dụng và sự cố trong quá trình sử dụng.
+@linedevice_talk_welcome_message Chào mừng bạn đến với Delta Chat! – Delta Chat có giao diện giống như các ứng dụng nhắn tin phổ biến khác nhưng không liên quan đến việc kiểm soát tập trung, theo dõi hoặc bán bạn, bạn bè, đồng nghiệp hoặc gia đình cho các tổ chức lớn.
+
+Về mặt kỹ thuật, Delta Chat là một ứng dụng e-mail hiện đại giao diện trò chuyện. Gửi email trong bộ váy mới nếu bạn muốn 👻
+
+Sử dụng Delta Chat với bất kỳ ai trong số hàng tỷ người: chỉ cần sử dụng địa chỉ e-mail của họ. Người nhận không cần cài đặt Delta Chat, truy cập trang web hoặc đăng ký ở bất kỳ đâu - tuy nhiên, tất nhiên, nếu họ thích, bạn có thể chỉ họ tới 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Người gửi không xác định cho cuộc trò chuyện này. Xem \'thông tin\' để biết thêm chi tiết.
+@linesystemmsg_subject_for_new_contact Tin nhắn từ %1$s
+@linesystemmsg_failed_sending_to Không gửi được tin nhắn tới %1$s.
+@linevideochat_invitation Lời mời trò chuyện video
+@linevideochat_invitation_body Bạn được mời tham gia cuộc trò chuyện video, hãy nhấp vào %1$s để tham gia.
+@lineconfiguration_failed_with_error Cấu hình không thành công. Lỗi: %1$s
+@linereply_noun Trả lời
+@lineforwarded Đã chuyển tiếp
+@linelocation Vị trí
+@linesticker Hình dán
+@linedevicemsg_bad_time ⚠️ Ngày hoặc giờ trên thiết bị của bạn có vẻ không chính xác (%1$s).
+
+Điều chỉnh đồng hồ của bạn ⏰🔧 để đảm bảo tin nhắn của bạn được nhận chính xác.
+@linedevicemsg_update_reminder ⚠️ Phiên bản Delta Chat của bạn có thể đã lỗi thời.
+
+Điều này có thể gây ra sự cố vì đối tác trò chuyện của bạn sử dụng các phiên bản mới hơn - và bạn đang thiếu các tính năng mới nhất 😳
+Vui lòng kiểm tra https://get.delta.chat hoặc cửa hàng ứng dụng của bạn để biết thông tin cập nhật .
+@linedevicemsg_self_deleted Bạn đã xóa cuộc trò chuyện \"Tin nhắn đã lưu\".
+
+ℹ️ Để sử dụng lại tính năng \"Tin nhắn đã lưu\", hãy tạo một cuộc trò chuyện mới với chính bạn.
+@linedevicemsg_storage_exceeding ⚠️ Bộ nhớ nhà cung cấp của bạn sắp hết: %1$s%% đã được sử dụng.
+
+Bạn có thể không nhận được tin nhắn nếu bộ nhớ đầy.
+
+ 👉 Vui lòng kiểm tra xem bạn có thể xóa không dữ liệu cũ trong giao diện web của nhà cung cấp và cân nhắc bật \"Cài đặt / Xóa tin nhắn cũ\". Bạn có thể kiểm tra mức sử dụng bộ nhớ hiện tại của mình bất kỳ lúc nào tại \"Cài đặt / Kết nối\".
+@linen_bytes_message %1$s tin nhắn
+@linedownload_max_available_until Tải xuống tối đa có sẵn cho đến %1$s
+@lineincoming_messages Tin nhắn đến
+@lineoutgoing_messages Tin nhắn đi
+@linestorage_on_domain Lưu trữ trên %1$s
+@lineone_moment Một lát…
+@lineconnectivity_connected Đã kết nối
+@lineconnectivity_connecting Đang kết nối…
+@lineconnectivity_updating Đang cập nhật…
+@linesending Đang gửi…
+@linelast_msg_sent_successfully Tin nhắn cuối cùng được gửi thành công.
+@lineerror_x Lỗi: %1$s
+@linenot_supported_by_provider Không được nhà cung cấp của bạn hỗ trợ.
+@linemessages Tin nhắn
+@linebroadcast_list Danh sách phát sóng
+@linepart_of_total_used %1$s trong tổng số %2$s đã được sử dụng
+@linesecure_join_started %1$s đã mời bạn tham gia nhóm này.
+
+Đang chờ thiết bị của %2$s trả lời…
+@linesecure_join_replies %1$s đã trả lời, đang chờ được thêm vào nhóm…
+@lineqrshow_join_contact_hint Quét để trò chuyện với %1$s
+@lineqrshow_join_group_hint Quét để tham gia nhóm \"%1$s\"
+@lineconnectivity_not_connected Không được kết nối
+@lineaeap_addr_changed %1$s đã thay đổi địa chỉ của họ từ %2$s thành %3$s
+@lineaeap_explanation Bạn đã thay đổi địa chỉ email của mình từ %1$s thành %2$s.
+
+Nếu bây giờ bạn gửi thư đến một nhóm đã được xác minh, những người liên hệ ở đó sẽ tự động thay thế địa chỉ cũ bằng địa chỉ mới của bạn.
+
+Điều đó thật tuyệt vời khuyên bạn nên thiết lập nhà cung cấp email cũ để chuyển tiếp tất cả email đến địa chỉ email mới của bạn. Nếu không, bạn có thể bỏ lỡ tin nhắn của những người chưa nhận được địa chỉ mới của bạn.
+@linegroup_name_changed_by_you Bạn đã đổi tên nhóm từ \"%1$s\" thành \"%2$s\".
+@linegroup_name_changed_by_other Tên nhóm đã thay đổi từ \"%1$s\" thành \"%2$s\" bởi %3$s.
+@linegroup_image_changed_by_you Bạn đã thay đổi hình ảnh nhóm.
+@linegroup_image_changed_by_other Hình ảnh nhóm đã được thay đổi bởi %1$s.
+@lineadd_member_by_you Bạn đã thêm thành viên %1$s.
+@lineadd_member_by_other Thành viên %1$s được thêm bởi %2$s.
+@lineremove_member_by_you Bạn đã loại bỏ thành viên %1$s.
+@lineremove_member_by_other Thành viên %1$s đã bị xóa bởi %2$s.
+@linegroup_left_by_you Bạn đã rời nhóm.
+@linegroup_left_by_other Nhóm bỏ lại bởi %1$s.
+@linegroup_image_deleted_by_you Bạn đã xóa hình ảnh nhóm.
+@linegroup_image_deleted_by_other Hình ảnh nhóm đã bị xóa bởi %1$s.
+@linelocation_enabled_by_you Bạn đã bật tính năng truyền phát vị trí.
+@linelocation_enabled_by_other Tính năng phát trực tuyến vị trí được bật bởi %1$s.
+@lineephemeral_timer_disabled_by_you Bạn đã tắt tính năng hẹn giờ cho tin nhắn biến mất.
+@lineephemeral_timer_disabled_by_other Bộ hẹn giờ tin nhắn biến mất đã bị tắt bởi %1$s.
+@lineephemeral_timer_seconds_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất thành %1$s giây
+@lineephemeral_timer_seconds_by_other Bộ hẹn giờ tin nhắn biến mất được %2$s đặt thành %1$s giây.
+@lineephemeral_timer_1_minute_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất thành 1 phút.
+@lineephemeral_timer_1_minute_by_other Bộ hẹn giờ cho tin nhắn biến mất được %1$s đặt thành 1 phút.
+@lineephemeral_timer_1_hour_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất thành 1 giờ.
+@lineephemeral_timer_1_hour_by_other Bộ hẹn giờ cho tin nhắn biến mất được %1$s đặt thành 1 giờ.
+@lineephemeral_timer_1_day_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất thành 1 ngày.
+@lineephemeral_timer_1_day_by_other Bộ hẹn giờ cho tin nhắn biến mất được %1$s đặt thành 1 ngày.
+@lineephemeral_timer_1_week_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất là 1 tuần.
+@lineephemeral_timer_1_week_by_other Bộ hẹn giờ cho tin nhắn biến mất được %1$s đặt thành 1 tuần.
+@lineephemeral_timer_minutes_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất thành %1$s phút.
+@lineephemeral_timer_minutes_by_other Bộ hẹn giờ tin nhắn biến mất được đặt thành %1$s phút theo %2$s.
+@lineephemeral_timer_hours_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất thành %1$s giờ.
+@lineephemeral_timer_hours_by_other Bộ hẹn giờ tin nhắn biến mất được đặt thành %1$s giờ theo %2$s.
+@lineephemeral_timer_days_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất thành %1$s ngày.
+@lineephemeral_timer_days_by_other Bộ hẹn giờ tin nhắn biến mất được %2$s đặt thành %1$s ngày.
+@lineephemeral_timer_weeks_by_you Bạn đặt bộ hẹn giờ cho tin nhắn biến mất thành %1$s tuần.
+@lineephemeral_timer_weeks_by_other Bộ hẹn giờ cho tin nhắn biến mất được %2$s đặt thành %1$s tuần.
+@linechat_protection_enabled_tap_to_learn_more Tin nhắn được đảm bảo sẽ được mã hóa hai đầu kể từ bây giờ. Nhấn để tìm hiểu thêm.
+@linechat_protection_broken_tap_to_learn_more %1$s đã gửi tin nhắn từ một thiết bị khác. Nhấn để tìm hiểu thêm.
+@linemultidevice_qr_subtitle Quét để thiết lập thiết bị thứ hai cho %1$s
+@end

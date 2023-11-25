@@ -1,0 +1,28 @@
+@linechat_no_messages payomi nî.
+@lineself mo
+@linedraft pîš hîl
+@linevoice_message payomê dong
+@lineimage šîvāt
+@linegif gif
+@linevideo film
+@lineaudio dong
+@linefile fāyl
+@linedevice_talk payomā dasgā
+@linesaved_messages payomā zaft biďa
+@linecontact_verified %1$s taiď vâbi.
+@linevideochat_invitation mokêš bê goftoloft vidiyoyi
+@linereply_noun vêlom
+@linelocation jāga
+@linesticker êstikêr
+@linen_bytes_message payom %1$s
+@linestorage_on_domain zaft kerdên mênê %1$s
+@lineone_moment yadamow...
+@lineconnectivity_connected menpiz vâbi
+@lineconnectivity_connecting honêy menpiz êbu...
+@lineconnectivity_updating honêy vê ru êbu...
+@linesending honêy fêšnāďe êbu...
+@lineerror_x xatā: %1$s
+@linemessages payomā
+@linebroadcast_list nomga Broadcast
+@linegroup_left_by_other %1$s zê jarga ra\'ď.
+@end

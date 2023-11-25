@@ -415,6 +415,10 @@ void DeltaHandler::loadSelectedAccount()
 {
     qDebug() << "entering DeltaHandler::loadSelectedAccount()";
 
+    // Enabling verified 1:1 chats for all accounts. Done here
+    // as all startup routines will end up calling this function.
+    enableVerifiedOneOnOneForAllAccs();
+
     m_accountsmodel->configure(allAccounts, this);
 
     // safe to call repeatedly as the documentation says:
@@ -470,6 +474,23 @@ void DeltaHandler::loadSelectedAccount()
     setCoreTranslations();
 
     qDebug() << "exiting DeltaHandler::loadSelectedAccount()";
+}
+
+
+void DeltaHandler::enableVerifiedOneOnOneForAllAccs()
+{
+    dc_array_t* tempArray = dc_accounts_get_all(allAccounts);
+
+    for (size_t i = 0; i < dc_array_get_cnt(tempArray); ++i) {
+        uint32_t tempAccID = dc_array_get_id(tempArray, i);
+        dc_context_t* tempCon = dc_accounts_get_account(allAccounts, tempAccID);
+
+        dc_set_config(tempCon, "verified_one_on_one_chats", "1");
+
+        dc_context_unref(tempCon);
+    }
+
+    dc_array_unref(tempArray);
 }
 
 
@@ -902,6 +923,7 @@ QHash<int, QByteArray> DeltaHandler::roleNames() const
     roles[AvatarColorRole] = "avatarColor";
     roles[AvatarInitialRole] = "avatarInitial";
     roles[ChatIsMutedRole] = "chatIsMuted";
+    roles[ChatIsVerifiedRole] = "chatIsVerified";
     roles[NewMsgCountRole] = "newMsgCount";
     return roles;
 }
@@ -1039,6 +1061,15 @@ QVariant DeltaHandler::data(const QModelIndex &index, int role) const
 
         case DeltaHandler::ChatIsMutedRole:
             if (dc_chat_is_muted(tempChat)) {
+                retval = true;
+            } else {
+                retval = false;
+            }
+
+            break;
+
+        case DeltaHandler::ChatIsVerifiedRole:
+            if (dc_chat_is_protected(tempChat)) {
                 retval = true;
             } else {
                 retval = false;
@@ -1710,10 +1741,8 @@ bool DeltaHandler::chatIsVerified()
     bool retval = false;
     dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
 
-    if (dc_chat_get_type(tempChat) == DC_CHAT_TYPE_GROUP) {
-        if (1 == dc_chat_is_protected(tempChat)) {
-            retval = true;
-        } 
+    if (1 == dc_chat_is_protected(tempChat)) {
+        retval = true;
     } 
 
     dc_chat_unref(tempChat);
@@ -2065,6 +2094,9 @@ void DeltaHandler::prepareTempContextConfig() {
             tempContext = dc_accounts_get_account(allAccounts, accID);
         }
 
+        // Enable verified 1:1 chats on the new account
+        dc_set_config(tempContext, "verified_one_on_one_chats", "1");
+
         m_configuringNewAccount = true;
     } else {
         m_configuringNewAccount = false;
@@ -2225,6 +2257,9 @@ void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
         m_networkingIsAllowed = true;
         emit networkingIsAllowedChanged();
     } else if (perMill == 1000) {
+        // Enable verified 1:1 chats on the new account
+        dc_set_config(tempContext, "verified_one_on_one_chats", "1");
+
         beginResetModel();
 
         if (currentChatlist) {
@@ -2241,17 +2276,6 @@ void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
         }
         currentContext = tempContext;
         tempContext = nullptr;
-
-        // For a few weeks, preview version of DC Android
-        // had verified_one_on_one_chats set to 1. For the time
-        // being, it's set to 0 when exporting backup in DC.
-        // However, to take care of the former, this setting
-        // is set to 0 here after import until verified 1:1 chats
-        // are actually implemented.
-        // TODO: remove next line when verified 1:1 chats are
-        // implemented! (Or should this config be set to 1 if
-        // the UI supports it? And then for each account?)
-        setCurrentConfig("verified_one_on_one_chats", "0");
         
         contextSetupTasks();
 
@@ -2536,15 +2560,8 @@ bool DeltaHandler::isBackupFile(QString filePath)
     if (tempFile == filePath) {
         isBackup = true;
 
-        // Copy file from HubIncoming to a new directory. Reason:
-        // The HubIncoming dir cannot be removed by shutdownTasks().
-        // To clear this dir, finalize has to be called on the 
-        // ContentTransfer. To be sure that it is really called,
-        // it's done in the Picker page right after this method
-        // here is called. But at that time, the actual import
-        // has not been done yet.
-
         qDebug() << "DeltaHandler::isBackupFile: yes, it is a backup file";
+
     } else {
         isBackup = false;
         dc_context_unref(tempContext);
@@ -2598,7 +2615,7 @@ void DeltaHandler::importBackupFromFile(QString filePath)
 }
 
 
-void DeltaHandler::chatAcceptContactRequest()
+void DeltaHandler::chatAccept()
 {
     dc_accept_chat(currentContext, currentChatID);
     m_chatmodel->acceptChat();
@@ -3680,6 +3697,10 @@ void DeltaHandler::startQrBackupImport()
         m_networkingIsAllowed = true;
         emit networkingIsAllowedChanged();
     } else {
+
+        // Enable verified 1:1 chats on the new account
+        dc_set_config(tempContext, "verified_one_on_one_chats", "1");
+
         beginResetModel();
 
         if (currentChatlist) {
@@ -3696,17 +3717,6 @@ void DeltaHandler::startQrBackupImport()
         }
         currentContext = tempContext;
         tempContext = nullptr;
-
-        // For a few weeks, preview version of DC Android
-        // had verified_one_on_one_chats set to 1. For the time
-        // being, it's set to 0 when exporting backup in DC.
-        // However, to take care of the former, this setting
-        // is set to 0 here after import until verified 1:1 chats
-        // are actually implemented.
-        // TODO: remove next line when verified 1:1 chats are
-        // implemented! (Or should this config be set to 1 if
-        // the UI supports it? And then for each account?)
-        setCurrentConfig("verified_one_on_one_chats", "0");
 
         contextSetupTasks();
 
@@ -4107,10 +4117,10 @@ void DeltaHandler::changedContacts()
 }
 
 
-void DeltaHandler::chatViewIsClosed()
+void DeltaHandler::chatViewIsClosed(bool gotoQrScanPage)
 {
     chatmodelIsConfigured = false;
-    emit chatViewClosed();
+    emit chatViewClosed(gotoQrScanPage);
 }
 
 

@@ -20,6 +20,7 @@ Uzu Delta Chat-on kun iu ajn el miliardoj da homoj: simple uzu la retadreson. Ri
 @linereply_noun Respondi
 @lineforwarded Plusendita
 @linelocation Loko
+@linesticker Glumarko
 @lineone_moment Unu momenton…
 @lineerror_x Eraro: %1$s
 @linebroadcast_list Elsenda Listo

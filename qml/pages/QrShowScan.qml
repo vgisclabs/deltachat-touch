@@ -44,6 +44,7 @@ Page {
     // for switching between the sections, so the action
     // upon switching is only executed once
     property bool scanSectionActive: false
+    property bool goToScanDirectly: false
 
     Component.onDestruction: {
         captureTimer.stop()
@@ -67,6 +68,10 @@ Page {
         scanSectionActive = false
         qrImage.visible = true
         qrScanRect.visible = false
+
+        if (goToScanDirectly) {
+            qrSections.selectedIndex = 1
+        }
     }
 
     Connections {

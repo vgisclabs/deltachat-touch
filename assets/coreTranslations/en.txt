@@ -1,0 +1,131 @@
+@linechat_no_messages No messages.
+@lineself Me
+@linedraft Draft
+@linevoice_message Voice Message
+@lineimage Image
+@linegif GIF
+@linevideo Video
+@lineaudio Audio
+@linefile File
+@lineencrypted_message Encrypted message
+@lineqrscan_fingerprint_label Fingerprint
+@linesystemmsg_cannot_decrypt This message cannot be decrypted.
+
+• It might already help to simply reply to this message and ask the sender to send the message again.
+
+• If you just re-installed Delta Chat then it is best if you re-setup Delta Chat now and choose "Add as second device" or import a backup.
+@linesystemmsg_read_receipt_subject Message opened
+@linesystemmsg_read_receipt_body The \"%1$s\" message you sent was displayed on the screen of the recipient.
+
+This is no guarantee the content was read.
+@lineautocrypt_prefer_e2ee Prefer End-To-End Encryption
+@linechat_archived_chats_title Archived Chats
+@lineautocrypt_asm_subject Autocrypt Setup Message
+@lineautocrypt_asm_general_body This is the Autocrypt Setup Message used to transfer your end-to-end setup between clients.
+
+To decrypt and use your setup, open the message in an Autocrypt-compliant client and enter the setup code presented on the generating device.
+@linelogin_error_cannot_login Cannot login as \"%1$s\". Please check if the e-mail address and the password are correct.
+@linedevice_talk Device Messages
+@linechat_new_group_hint Others will only see this group after you sent a first message.
+@linesaved_messages Saved Messages
+@linecontact_verified %1$s introduced.
+@linecontact_not_verified Cannot establish guaranteed end-to-end encryption with %1$s.
+@linecontact_setup_changed Changed setup for %1$s.
+@linedevice_talk_explain Messages in this chat are generated on your device to inform about app updates and problems during usage.
+@linedevice_talk_welcome_message Welcome to Delta Chat! – Delta Chat looks and feels like other popular messenger apps, but does not involve centralized control, tracking or selling you, friends, colleagues or family out to large organizations.
+
+Technically, Delta Chat is an e-mail application with a modern chat interface. E-mail in a new dress if you will 👻
+
+Use Delta Chat with anyone out of billions of people: just use their e-mail address. Recipients don\'t need to install Delta Chat, visit websites or sign up anywhere - however, of course, if they like, you may point them to 👉 https://get.delta.chat
+@linesystemmsg_unknown_sender_for_chat Unknown sender for this chat. See \'info\' for more details.
+@linesystemmsg_subject_for_new_contact Message from %1$s
+@linesystemmsg_failed_sending_to Failed to send message to %1$s.
+@linevideochat_invitation Video chat invitation
+@linevideochat_invitation_body You are invited to a video chat, click %1$s to join.
+@lineconfiguration_failed_with_error Configuration failed. Error: %1$s
+@linereply_noun Reply
+@lineforwarded Forwarded
+@linelocation Location
+@linesticker Sticker
+@linedevicemsg_bad_time ⚠️ Date or time on your device seems to be inaccurate (%1$s).
+
+Adjust your clock ⏰🔧 to ensure your messages are received correctly.
+@linedevicemsg_update_reminder ⚠️ Your Delta Chat version might be outdated.
+
+This may cause problems because your chat partners use newer versions - and you are missing the latest features 😳
+Please check https://get.delta.chat or your app store for updates.
+@linedevicemsg_self_deleted You deleted the \"Saved messages\" chat.
+
+ℹ️ To use the \"Saved messages\" feature again, create a new chat with yourself.
+@linedevicemsg_storage_exceeding ⚠️ Your provider\'s storage is about to run out: %1$s%% are already used.
+
+You may not be able to receive messages if storage is full.
+
+👉 Please check if you can delete old data in the provider\'s web interface and consider enabling \"Settings / Delete Old Messages\". You can check your current storage usage anytime at \"Settings / Connectivity\".
+@linen_bytes_message %1$s message
+@linedownload_max_available_until Download maximum available until %1$s
+@lineincoming_messages Incoming Messages
+@lineoutgoing_messages Outgoing Messages
+@linestorage_on_domain Storage on %1$s
+@lineone_moment One moment…
+@lineconnectivity_connected Connected
+@lineconnectivity_connecting Connecting…
+@lineconnectivity_updating Updating…
+@linesending Sending…
+@linelast_msg_sent_successfully Last message sent successfully.
+@lineerror_x Error: %1$s
+@linenot_supported_by_provider Not supported by your provider.
+@linemessages Messages
+@linebroadcast_list Broadcast List
+@linepart_of_total_used %1$s of %2$s used
+@linesecure_join_started %1$s invited you to join this group.
+
+Waiting for the device of %2$s to reply…
+@linesecure_join_replies %1$s replied, waiting for being added to the group…
+@lineqrshow_join_contact_hint Scan to chat with %1$s
+@lineqrshow_join_group_hint Scan to join group \"%1$s\"
+@lineconnectivity_not_connected Not connected
+@lineaeap_addr_changed %1$s changed their address from %2$s to %3$s
+@lineaeap_explanation You changed your email address from %1$s to %2$s.
+
+If you now send a message to a verified group, contacts there will automatically replace the old with your new address.
+
+It\'s highly advised to set up your old email provider to forward all emails to your new email address. Otherwise you might miss messages of contacts who did not get your new address yet.
+@linegroup_name_changed_by_you You changed the group name from \"%1$s\" to \"%2$s\".
+@linegroup_name_changed_by_other Group name changed from \"%1$s\" to \"%2$s\" by %3$s.
+@linegroup_image_changed_by_you You changed the group image.
+@linegroup_image_changed_by_other Group image changed by %1$s.
+@lineadd_member_by_you You added member %1$s.
+@lineadd_member_by_other Member %1$s added by %2$s.
+@lineremove_member_by_you You removed member %1$s.
+@lineremove_member_by_other Member %1$s removed by %2$s.
+@linegroup_left_by_you You left the group.
+@linegroup_left_by_other Group left by %1$s.
+@linegroup_image_deleted_by_you You deleted the group image.
+@linegroup_image_deleted_by_other Group image deleted by %1$s.
+@linelocation_enabled_by_you You enabled location streaming.
+@linelocation_enabled_by_other Location streaming enabled by %1$s.
+@lineephemeral_timer_disabled_by_you You disabled disappearing messages timer.
+@lineephemeral_timer_disabled_by_other Disappearing messages timer disabled by %1$s.
+@lineephemeral_timer_seconds_by_you You set disappearing messages timer to %1$s seconds
+@lineephemeral_timer_seconds_by_other Disappearing messages timer set to %1$s seconds by %2$s.
+@lineephemeral_timer_1_minute_by_you You set disappearing messages timer to 1 minute.
+@lineephemeral_timer_1_minute_by_other Disappearing messages timer set to 1 minute by %1$s.
+@lineephemeral_timer_1_hour_by_you You set disappearing messages timer to 1 hour.
+@lineephemeral_timer_1_hour_by_other Disappearing messages timer set to 1 hour by %1$s.
+@lineephemeral_timer_1_day_by_you You set disappearing messages timer to 1 day.
+@lineephemeral_timer_1_day_by_other Disappearing messages timer set to 1 day by %1$s.
+@lineephemeral_timer_1_week_by_you You set disappearing messages timer to 1 week.
+@lineephemeral_timer_1_week_by_other Disappearing messages timer set to 1 week by %1$s.
+@lineephemeral_timer_minutes_by_you You set disappearing messages timer to %1$s minutes.
+@lineephemeral_timer_minutes_by_other Disappearing messages timer set to %1$s minutes by %2$s.
+@lineephemeral_timer_hours_by_you You set disappearing messages timer to %1$s hours.
+@lineephemeral_timer_hours_by_other Disappearing messages timer set to %1$s hours by %2$s.
+@lineephemeral_timer_days_by_you You set disappearing messages timer to %1$s days.
+@lineephemeral_timer_days_by_other Disappearing messages timer set to %1$s days by %2$s.
+@lineephemeral_timer_weeks_by_you You set disappearing messages timer to %1$s weeks.
+@lineephemeral_timer_weeks_by_other Disappearing messages timer set to %1$s weeks by %2$s.
+@linechat_protection_enabled_tap_to_learn_more Messages are guaranteed to be end-to-end encrypted from now on. Tap to learn more.
+@linechat_protection_broken_tap_to_learn_more %1$s sent a message from another device. Tap to learn more.
+@linemultidevice_qr_subtitle Scan to set up second device for %1$s
+@end

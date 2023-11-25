@@ -37,7 +37,7 @@ public:
     ~ChatModel();
 
     // TODO remove MessageSeenRole
-    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, QuoteAvatarColorRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, FilenameRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole, HasHtmlRole };
+    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsProtectionInfoRole, ProtectionInfoTypeRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, QuoteAvatarColorRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, FilenameRole, AudioFilePathRole, ImageWidthRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole, HasHtmlRole };
 
     Q_INVOKABLE void setMomentaryMessage(int myindex);
 
@@ -62,6 +62,8 @@ public:
     // TODO: similar things like chatIsContactRequest are
     // currently Q_PROPERTY, and in DeltaHandler
     Q_INVOKABLE bool chatCanSend();
+
+    Q_INVOKABLE bool chatIsProtectionBroken();
 
     Q_INVOKABLE bool chatIsDeviceTalk();
 
@@ -144,7 +146,11 @@ public slots:
     void messageStatusChangedSlot(int msgID);
     void appIsActiveAgainActions();
     void chatViewIsOpened();
-    void chatViewIsClosed();
+    // unusedParam is only there so the signal from ChatView.qml
+    // can be connected to both a slot in DeltaHandler (which
+    // needs this parameter) and here (where the parameter
+    // is not needed)
+    void chatViewIsClosed(bool unusedParam);
 
     // handles entries into the search field in ChatView
     void updateQuery(QString query);

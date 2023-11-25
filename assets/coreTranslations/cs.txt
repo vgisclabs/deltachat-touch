@@ -9,13 +9,8 @@
 @linefile Soubor
 @lineencrypted_message Šifrovaná zpráva
 @lineqrscan_fingerprint_label Otisk
-@linesystemmsg_cannot_decrypt Zprávu nelze dešifrovat.
-
-• Může pomoct jednoduchá odpověď odesílateli s požadavkem o znovuzaslání zprávy.
-
-• Pokud jde o novou instalaci Delta Chatu či jiného e-mailového programu na tomto nebo jiném zařízení, může být nutné poslat si z nich Nastavení Autocryptu.
 @linesystemmsg_read_receipt_subject Zpráva otevřena
-@linesystemmsg_read_receipt_body Odeslaná zpráva "%1$s" byla příjemci zobrazena na jeho přístroji.
+@linesystemmsg_read_receipt_body Odeslaná zpráva \"%1$s\" byla příjemci zobrazena na jeho přístroji.
 
 Nicméně přečtení obsahu není zaručeno.
 @lineautocrypt_prefer_e2ee Upřednostňuj end-to-end šifrování
@@ -24,8 +19,13 @@ Nicméně přečtení obsahu není zaručeno.
 @lineautocrypt_asm_general_body Toto je Nastavení Autocryptu, kterým lze přenést nastavení šifrování mezi klienty.
 
 K dešifrování a použití nastavení musíte zprávu otevřít v druhém klientu s Autocryptem a tam zadat kód zobrazený na prvním přístroji.
-@linelogin_error_cannot_login Přihlášení jako "%1$s" selhalo. Zkontrolujte si prosím ještě jednou e-mail a heslo.
+@linelogin_error_cannot_login Přihlášení jako \"%1$s\" selhalo. Zkontrolujte si prosím ještě jednou e-mail a heslo.
 @linedevice_talk Zprávy přístroje
+@linechat_new_group_hint Napiš první zprávu a umožni ostatním odpovídat do této skupiny.
+
+• Nevadí pokud všichni členové nemají Delta Chat.
+
+• Doručení první zprávy může trvat déle.
 @linesaved_messages Uložené zprávy
 @linecontact_verified %1$s ověřen.
 @linecontact_not_verified Nelze ověřit %1$s.
@@ -45,9 +45,9 @@ Technicky je Delta Chat e-mailový program, ale s uživatelským rozhraním chat
 @lineone_moment Okamžik ...
 @lineerror_x Chyba %1$s
 @lineqrshow_join_contact_hint K navázání spojení s %1$s vyfoť kód.
-@lineqrshow_join_group_hint K připojení ke skupině "%1$s" vyfoť kód.
-@linegroup_name_changed_by_you Názen skupiny změněn z "%1$s" na "%2$s" ode mě.
-@linegroup_name_changed_by_other Názen skupiny změněn z "%1$s" na "%2$s" od %3$s.
+@lineqrshow_join_group_hint K připojení ke skupině \"%1$s\" vyfoť kód.
+@linegroup_name_changed_by_you Názen skupiny změněn z \"%1$s\" na \"%2$s\" ode mě.
+@linegroup_name_changed_by_other Názen skupiny změněn z \"%1$s\" na \"%2$s\" od %3$s.
 @linegroup_image_changed_by_you Obrázek skupiny změněn ode mě.
 @linegroup_image_changed_by_other Obrázek skupiny změněn od %1$s.
 @lineadd_member_by_you Člen %1$s byl přidán ode mě.
@@ -76,8 +76,4 @@ Technicky je Delta Chat e-mailový program, ale s uživatelským rozhraním chat
 @lineephemeral_timer_days_by_other Samomazací zprávy vyprší po %1$s dnech od %2$s.
 @lineephemeral_timer_weeks_by_you Samomazací zprávy vyprší po %1$s týdnech ode mě.
 @lineephemeral_timer_weeks_by_other Samomazací zprávy vyprší po %1$s týdnech od %2$s.
-@lineprotection_enabled_by_you Ochrana rozhovoru zapnuta ode mě.
-@lineprotection_enabled_by_other Ochrana rozhovoru zapnuta od %1$s.
-@lineprotection_disabled_by_you Ochrana rozhovoru vypnuta ode mě.
-@lineprotection_disabled_by_other Ochrana rozhovoru vypnuta od %1$s.
 @end

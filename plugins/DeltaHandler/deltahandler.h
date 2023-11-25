@@ -49,7 +49,7 @@ public:
     explicit DeltaHandler(QObject *parent = 0);
     ~DeltaHandler();
 
-    enum { ChatnameRole, ChatIsPinnedRole, ChatIsArchivedRole, ChatIsArchiveLinkRole, MsgPreviewRole, TimestampRole, StateRole, ChatPicRole, IsContactRequestRole, AvatarColorRole, AvatarInitialRole, ChatIsMutedRole, NewMsgCountRole };
+    enum { ChatnameRole, ChatIsPinnedRole, ChatIsArchivedRole, ChatIsArchiveLinkRole, MsgPreviewRole, TimestampRole, StateRole, ChatPicRole, IsContactRequestRole, AvatarColorRole, AvatarInitialRole, ChatIsMutedRole, ChatIsVerifiedRole, NewMsgCountRole };
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
     // a module in Qt (yet?).
@@ -76,6 +76,11 @@ public:
     // a module in Qt (yet?).
     enum SearchJumpToPosition { PositionFirst, PositionPrev, PositionNext, PositionLast };
     Q_ENUM(SearchJumpToPosition)
+
+    // There are more info types, search for DC_INFO in deltachat.h. But
+    // for the time being, these are the only ones we need
+    enum DcInfoType { InfoProtectionEnabled, InfoProtectionDisabled };
+    Q_ENUM(DcInfoType)
 
     Q_INVOKABLE bool isDesktopMode();
 
@@ -212,7 +217,7 @@ public:
 
     Q_INVOKABLE void importBackupFromFile(QString filePath);
 
-    Q_INVOKABLE void chatAcceptContactRequest();
+    Q_INVOKABLE void chatAccept();
 
     Q_INVOKABLE void chatDeleteContactRequest();
 
@@ -478,7 +483,7 @@ signals:
     void updatedAccountConfig(uint32_t);
     void chatIsContactRequestChanged();
     void openChatViewRequest();
-    void chatViewClosed();
+    void chatViewClosed(bool gotoQrScanPage);
     void newTempProfilePic(QString);
     void chatBlockContactDone();
     void connectivityChangedForActiveAccount();
@@ -516,7 +521,7 @@ signals:
 
 public slots:
     void unrefTempContext();
-    void chatViewIsClosed();
+    void chatViewIsClosed(bool gotoQrScanPage);
 
     void deleteQrDecoder();
 
@@ -636,6 +641,8 @@ private:
     void setCoreTranslations();
     void contextSetupTasks();
     void sendNotification(uint32_t accID, int chatID, int msgID);
+
+    void enableVerifiedOneOnOneForAllAccs();
 
     bool m_coreTranslationsAlreadySet;
 };

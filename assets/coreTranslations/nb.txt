@@ -9,13 +9,8 @@
 @linefile Fil
 @lineencrypted_message Kryptert melding
 @lineqrscan_fingerprint_label Fingeravtrykk
-@linesystemmsg_cannot_decrypt Denne meldingen kan ikke dekrypteres.
-
-• Det kan hjelpe å svare på denne meldingen og spørre avsenderen om å sende den igjen.
-
-• I fall du har reinstallert Delta Chat eller et annet e-postprogram på denne eller en annen enhet, kan du sende en Autocrypt-oppsettsmelding derfra.
 @linesystemmsg_read_receipt_subject Meldingskvittering
-@linesystemmsg_read_receipt_body Dette er en meldingskvittering for meldingen "%1$s".
+@linesystemmsg_read_receipt_body Dette er en meldingskvittering for meldingen \"%1$s\".
 
 Denne meldingskvitteringen bekrefter bare at meldingen ble vist på mottakerens enhet. Det finnes ingen garanti for at mottakeren har lest meldingsinnholdet.
 @lineautocrypt_prefer_e2ee Foretrekk ende-til-ende -kryptering
@@ -25,6 +20,11 @@ Denne meldingskvitteringen bekrefter bare at meldingen ble vist på mottakerens 
 
 For å dekryptere å bruke din nøkkel, åpne meldingen i en Autocrypt-kompatibel klient og skriv inn oppsettskoden som vises på enheten som genererer den.
 @linedevice_talk Enhetsmeldinger
+@linechat_new_group_hint Forfatt den første meldingen, noe som lar andre svare i gruppen.
+
+• Det er greit at ikke alle medlemmer bruker Delta Chat.
+
+• Levering av den første meldingen kan ta sin tid.
 @linesaved_messages Lagrede meldinger
 @linecontact_verified %1$s bekreftet.
 @linedevice_talk_explain Meldinger i denne chatten blir generert lokalt av Delta Chat-appen. Produsentene bruker den for å informere om appoppdateringer og problemer under bruk.
@@ -40,8 +40,8 @@ Bruk Delta Chat med hvem som helst av milliarder av mennesker: bare bruk e-posta
 @lineerror_x Feil: %1$s
 @lineqrshow_join_contact_hint Skann dette for å bekrefte en kontakt med %1$s.
 @lineqrshow_join_group_hint Skann denne for å ta del i den gruppen %1$s.
-@linegroup_name_changed_by_you Gruppenavn endret fra "%1$s" til "%2$s" av meg.
-@linegroup_name_changed_by_other Gruppenavn endret fra "%1$s" til "%2$s" av %3$s.
+@linegroup_name_changed_by_you Gruppenavn endret fra \"%1$s\" til \"%2$s\" av meg.
+@linegroup_name_changed_by_other Gruppenavn endret fra \"%1$s\" til \"%2$s\" av %3$s.
 @linegroup_image_changed_by_you Gruppebilde endret av meg.
 @linegroup_image_changed_by_other Gruppebilde endret av %1$s.
 @lineadd_member_by_you Medlem %1$s lagt til av meg.

@@ -9,11 +9,6 @@
 @linefile Фајл
 @lineencrypted_message Шифрована порука
 @lineqrscan_fingerprint_label Отисак
-@linesystemmsg_cannot_decrypt Ова порука се не може дешифровати.
-
-• Оно што може да помогне је да једноставно одговорите на ову поруку и замолите пошиљаоца да поново пошаље поруку.
-
-• У случају да сте поново инсталирали Delta Chat или неки други програм за е-пошту на овом или другом уређају најбоље је да одатле пошаљете поруку за подешавање аутоматског шифровања.
 @linesystemmsg_read_receipt_subject Порука је отворена
 @linesystemmsg_read_receipt_body Порука „%1$s“ коју сте послали била је приказана на екрану примаоца.
 
@@ -26,6 +21,7 @@
 Да бисте дешифровали и користили своје подешавање, отворите поруку на клијенту који је компатибилан са аутоматским шифровањем и унесите кôд за подешавање приказан на уређају који га је генерисао.
 @linelogin_error_cannot_login Не могу да се пријавим као „%1$s“. Проверите да ли су е-адреса и лозинка тачни.
 @linedevice_talk Поруке уређаја
+@linechat_new_group_hint Остали учесници ће видети ову групу само када пошаљете прву поруку.
 @linesaved_messages Сачуване поруке
 @linecontact_verified %1$s потврђен.
 @linecontact_not_verified Немогуће је проверити %1$s.
@@ -124,8 +120,4 @@
 @lineephemeral_timer_days_by_other %2$s је подесио хронометар за нестајуће поруке на %1$s дана.
 @lineephemeral_timer_weeks_by_you Ви сте подесили хронометар за нестајуће поруке на %1$s недеља.
 @lineephemeral_timer_weeks_by_other %2$s је подесио хронометар за нестајуће поруке на %1$s недеље.
-@lineprotection_enabled_by_you Омогућили сте заштиту ћаскања.
-@lineprotection_enabled_by_other Заштита ћаскања је омогућена од %1$s.
-@lineprotection_disabled_by_you Онемогућили сте заштиту ћаскања.
-@lineprotection_disabled_by_other Заштита ћаскања је онемогућена од %1$s.
 @end

@@ -9,13 +9,8 @@
 @linefile Failas
 @lineencrypted_message Šifruota žinutė
 @lineqrscan_fingerprint_label Kontrolinis kodas
-@linesystemmsg_cannot_decrypt Nepavyksta iššifruoti šios žinutės.
-
-• Galima, tiesiog, atsakyti į šią žinutę ir paprašyti siuntėjo dar kartą išsiųsti šią žinutę.
-
-• Tuo atveju, jeigu iš naujo įdiegėte Delta Chat ar kitą el. pašto programą šiame ar kitame įrenginyje, jūs galite pageidauti išsiųsti Autocrypt sąrankos žinutę iš to įrenginio.
 @linesystemmsg_read_receipt_subject Pranešimas apie skaitymą
-@linesystemmsg_read_receipt_body Tai yra pranešimas apie žinutės "%1$s" skaitymą.
+@linesystemmsg_read_receipt_body Tai yra pranešimas apie žinutės \"%1$s\" skaitymą.
 
 Tai reiškia, kad žinutė buvo atvaizduota gavėjo įrenginyje, tačiau neužtikrina, kad jos turinys buvo perskaitytas.
 @lineautocrypt_prefer_e2ee Teikti pirmenybę ištisiniam šifravimui
@@ -24,8 +19,13 @@ Tai reiškia, kad žinutė buvo atvaizduota gavėjo įrenginyje, tačiau neužti
 @lineautocrypt_asm_general_body Tai yra Autocrypt sąrankos žinutė, kuri yra naudojama perduoti jūsų ištisinę sąranką tarp klientų.
 
 Norėdami iššifruoti ir naudoti savo sąranką, atverkite žinutę su Autocrypt suderinamame kliente ir įveskite generuojančiame įrenginyje rodomą sąrankos kodą.
-@linelogin_error_cannot_login Nepavyksta prisijungti kaip "%1$s". Patikrinkite ar el. pašto adresas ir slaptažodis yra teisingi.
+@linelogin_error_cannot_login Nepavyksta prisijungti kaip \"%1$s\". Patikrinkite ar el. pašto adresas ir slaptažodis yra teisingi.
 @linedevice_talk Įrenginio žinutės
+@linechat_new_group_hint Rašykite pirmąją žinutę, taip leisdami kitiems atsakyti šioje grupėje..
+
+• Nieko tokio, jei ne visi dalyviai naudoja Delta Chat.
+
+• Pirmosios žinutės pristatymas gali šiek tiek užtrukti.
 @linesaved_messages Įrašytos žinutės
 @linecontact_verified %1$s patvirtintas.
 @linecontact_not_verified Nepavyksta patvirtinti %1$s
@@ -52,7 +52,7 @@ Suderinkite savo laikrodį ⏰🔧 kad užtikrintumėte, jog žinutės bus gauna
 @lineerror_x Klaida: %1$s
 @linemessages Žinutės
 @lineqrshow_join_contact_hint Nuskenuokite tai, norėdami užmegzti kontaktą su %1$s
-@lineqrshow_join_group_hint Nuskenuokite tai, norėdami prisijungti prie "%1$s" grupės.
+@lineqrshow_join_group_hint Nuskenuokite tai, norėdami prisijungti prie \"%1$s\" grupės.
 @lineconnectivity_not_connected Neprisijungta
 @lineaeap_addr_changed %1$s pasikeitė adresą iš %2$s į %3$s
 @linegroup_left_by_you Jūs išėjote iš grupės.

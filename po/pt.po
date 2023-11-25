@@ -1237,7 +1237,7 @@ msgstr "Exportar chave secreta para \"%1\"?"
 
 #: ../qml/pages/ProgressKeysExport.qml:49
 msgid "Secret keys written successfully to \"%1\"."
-msgstr "Chaves secretas escritas com sucesso para "%1\"."
+msgstr "Chaves secretas escritas com sucesso para \"%1\"."
 
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
@@ -1259,7 +1259,7 @@ msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:51
 msgid "Secret keys imported from \"%1\"."
-msgstr "Chaves secretas importadas de "%1\"."
+msgstr "Chaves secretas importadas de \"%1\"."
 
 #: ../qml/pages/ProgressQrBackupImport.qml:63
 msgid "Done"

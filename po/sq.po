@@ -387,7 +387,7 @@ msgstr "Më tepër të dhëna"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:381
 msgid "There are no Delta Chat servers, your data stays on your device."
-msgstr "S\’ka shërbyes Delta Chat, të dhënat tuaja rrinë në pajisjen tuaj!"
+msgstr "S’ka shërbyes Delta Chat, të dhënat tuaja rrinë në pajisjen tuaj!"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:394
 msgid ""
@@ -643,7 +643,7 @@ msgstr "Importoni kyçe të fshehtë"
 
 #: ../qml/pages/BlockContactPopup.qml:28
 msgid "Block this contact? You will no longer receive messages from them."
-msgstr "Të bllokohet ky kontakt? S\’do të merrni më mesazhe prej këtij kontakti."
+msgstr "Të bllokohet ky kontakt? S’do të merrni më mesazhe prej këtij kontakti."
 
 #: ../qml/pages/BlockContactPopup.qml:37
 #: ../qml/pages/ChatInfosActionsChatlist.qml:63
@@ -1247,7 +1247,7 @@ msgid ""
 "\n"
 "• The last imported key will be used as the new default key unless it has "
 "the word \"legacy\" in its filename."
-msgstr "Të importohen kyçe të fshehtë prej \"%1\"?\n\n• Kyçet e fshehtë ekzistues s\’do të fshihen\n\n• Kyçi i fundit i importuar do të përdoret si kyçi i ri parazgjedhje, hiq rastin ku përmban te emri i kartelës fjalën \"legacy\""
+msgstr "Të importohen kyçe të fshehtë prej \"%1\"?\n\n• Kyçet e fshehtë ekzistues s’do të fshihen\n\n• Kyçi i fundit i importuar do të përdoret si kyçi i ri parazgjedhje, hiq rastin ku përmban te emri i kartelës fjalën \"legacy\""
 
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""

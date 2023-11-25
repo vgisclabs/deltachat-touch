@@ -23,10 +23,10 @@
 
 int main(int argc, char *argv[])
 {
+    QtWebEngine::initialize();
+
     QGuiApplication *app = new QGuiApplication(argc, (char**)argv);
     app->setApplicationName("deltatouch.lotharketterer");
-
-    QtWebEngine::initialize();
 
     qRegisterMetaType<uint32_t>("uint32_t");
     qRegisterMetaType<int64_t>("int64_t");

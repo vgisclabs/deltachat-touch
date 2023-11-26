@@ -20,7 +20,7 @@ import QtQuick 2.12
 import Lomiri.Components 1.3
 import Lomiri.Components.Popups 1.3
 import QtQuick.Layouts 1.3
-import QtWebEngine 1.5
+import QtWebEngine 1.8
 import Qt.labs.platform 1.1
 
 import DeltaHandler 1.0
@@ -255,12 +255,29 @@ Page {
         }
 
         onNavigationRequested: {
-            if (("" + request.url).startsWith("file:///home/phablet")) {
+            if ((request.url.toString()).startsWith("file:///home/phablet")) {
                 request.action = WebEngineNavigationRequest.AcceptRequest // 0
             } else {
                 PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), htmlViewPage, {externalLink: request.url})
                 request.action = WebEngineNavigationRequest.IgnoreRequest // 255
             }
+        }
+
+        // For an unknown reason, some links do not trigger
+        // navigationRequested (same in Dekko). As a workaround, these
+        // links are available via a long press, which triggers
+        // contextMenuRequested. Only requests that contain an url are
+        // handled via this slot.
+        onContextMenuRequested: { 
+            // Dekko doesn't check for linkUrl, but for linkText. But
+            // isn't it better to check whether the url is non-empty
+            // directly?
+            if (request.linkUrl.toString() !== "") {
+                request.accepted = true
+                PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), htmlViewPage, {externalLink: request.linkUrl})
+            } // TODO: Maybe add a context menu component that copies text
+              // to the clipboard if it's not an url and
+              // request.selectedText is non-empty
         }
     }
 } // end Page id: htmlViewPage

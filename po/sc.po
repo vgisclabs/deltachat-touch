@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-25 20:41+0000\n"
+"POT-Creation-Date: 2023-11-26 10:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -211,6 +211,7 @@ msgstr ""
 #: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1421
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:35
 #: ../qml/pages/CreateDatabasePassword.qml:96
 #: ../qml/pages/CreateDatabasePassword.qml:152
 #: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
@@ -324,6 +325,7 @@ msgstr ""
 #: ../qml/pages/ConfirmLeaveGroup.qml:47
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
 #: ../qml/pages/ConfirmMsgDeletion.qml:55
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:54
 #: ../qml/pages/ConfirmStopEncryptingDatabase.qml:49
 #: ../qml/pages/CreateDatabasePassword.qml:134
 #: ../qml/pages/CreateOrEditGroup.qml:84 ../qml/pages/GroupAddMember.qml:42
@@ -971,6 +973,14 @@ msgstr "Cheres bogare %1dae su grupu?"
 #: ../qml/pages/ConfirmMsgDeletion.qml:35
 #: ../qml/pages/ConfirmMsgDeletion.qml:45
 msgid "Delete Message"
+msgstr ""
+
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:30
+msgid "Do you want to open this link?"
+msgstr "Cheres abèrrere custu ligàmene?"
+
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:45
+msgid "Copy Link"
 msgstr ""
 
 #: ../qml/pages/ConfirmStopEncryptingDatabase.qml:35

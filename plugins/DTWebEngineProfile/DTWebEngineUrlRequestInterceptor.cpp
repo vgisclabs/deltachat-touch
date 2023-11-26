@@ -26,7 +26,7 @@
 
 #include "DTWebEngineUrlRequestInterceptor.h"
 #include <QWebEngineUrlRequestInfo>
-#include <QDebug>
+//#include <QDebug>
 #include <QSettings>
 
 DTWebEngineUrlRequestInterceptor::DTWebEngineUrlRequestInterceptor(QWebEngineUrlRequestInterceptor *parent) : QWebEngineUrlRequestInterceptor(parent)
@@ -54,13 +54,13 @@ void DTWebEngineUrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo
         info.block(doBlock);
         emit interceptedRemoteRequest(doBlock);
 
-        if (doBlock) {
-            //qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Blocked a request to " << info.requestUrl();
-            qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Blocked a request.";
-        } else if (info.resourceType() != QWebEngineUrlRequestInfo::ResourceTypeMainFrame) {
-            //qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Did NOT block a request to " << info.requestUrl();
-            qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Did NOT block a request.";
-        }
+        //if (doBlock) {
+        //    //qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Blocked a request to " << info.requestUrl();
+        //    qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Blocked a request.";
+        //} else if (info.resourceType() != QWebEngineUrlRequestInfo::ResourceTypeMainFrame) {
+        //    //qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Did NOT block a request to " << info.requestUrl();
+        //    qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Did NOT block a request.";
+        //}
 }
 
 void DTWebEngineUrlRequestInterceptor::setBlockRemoteResources(bool doBlock)

@@ -41,6 +41,15 @@ Dialog {
     }
 
     Button {
+        id: copyButton
+        text: i18n.tr("Copy Link")
+        onClicked: {
+            Clipboard.push(externalLink)
+            PopupUtils.close(dialog)
+        }
+    }
+
+    Button {
         id: cancelButton
         text: i18n.tr("Cancel")
         onClicked: PopupUtils.close(dialog)

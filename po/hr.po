@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-25 18:16+0000\n"
+"POT-Creation-Date: 2023-11-26 09:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,8 +95,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:302
-#: ../qml/pages/ChatView.qml:347 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:305
+#: ../qml/pages/ChatView.qml:350 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "Traži"
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:276
+#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:279
 #: ../qml/pages/ProgressBackupImport.qml:70
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
@@ -208,9 +208,10 @@ msgstr ""
 #: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:122
 #: ../qml/pages/ChangeDatabasePassword.qml:97
-#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1418
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1421
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:35
 #: ../qml/pages/CreateDatabasePassword.qml:96
 #: ../qml/pages/CreateDatabasePassword.qml:152
 #: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
@@ -247,7 +248,7 @@ msgstr ""
 #: ../qml/pages/AddAccountAsSecondDevice.qml:125
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:148
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:989
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:992
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:399 ../qml/pages/QrShowScan.qml:416
 msgid "Unknown"
@@ -324,6 +325,7 @@ msgstr ""
 #: ../qml/pages/ConfirmLeaveGroup.qml:47
 #: ../qml/pages/ConfirmMemberDeletion.qml:55
 #: ../qml/pages/ConfirmMsgDeletion.qml:55
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:54
 #: ../qml/pages/ConfirmStopEncryptingDatabase.qml:49
 #: ../qml/pages/CreateDatabasePassword.qml:134
 #: ../qml/pages/CreateOrEditGroup.qml:84 ../qml/pages/GroupAddMember.qml:42
@@ -381,7 +383,7 @@ msgid "Password"
 msgstr "Lozinka"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:359
-#: ../qml/pages/ChatView.qml:1435
+#: ../qml/pages/ChatView.qml:1438
 msgid "More Info"
 msgstr "Više informacija"
 
@@ -739,7 +741,7 @@ msgstr "Utišaj na 7 dana"
 msgid "Mute forever"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:267
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:270
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "Nestajuće poruke"
@@ -749,64 +751,64 @@ msgstr "Nestajuće poruke"
 msgid "Clear Chat"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:162 ../qml/pages/ChatView.qml:186
-#: ../qml/pages/ChatView.qml:1385
+#: ../qml/pages/ChatView.qml:165 ../qml/pages/ChatView.qml:189
+#: ../qml/pages/ChatView.qml:1388
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:164 ../qml/pages/ChatView.qml:188
-#: ../qml/pages/ChatView.qml:1387
+#: ../qml/pages/ChatView.qml:167 ../qml/pages/ChatView.qml:191
+#: ../qml/pages/ChatView.qml:1390
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:247 ../qml/pages/ChatView.qml:1043
+#: ../qml/pages/ChatView.qml:250 ../qml/pages/ChatView.qml:1046
 msgid "Voice Message"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:260
+#: ../qml/pages/ChatView.qml:263
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:288
+#: ../qml/pages/ChatView.qml:291
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:934
+#: ../qml/pages/ChatView.qml:937
 msgid "Forwarded Message"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1137
+#: ../qml/pages/ChatView.qml:1140
 msgid "Download"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1139
+#: ../qml/pages/ChatView.qml:1142
 msgid "Download failed"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1141
+#: ../qml/pages/ChatView.qml:1144
 msgid "Downloading…"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1176
+#: ../qml/pages/ChatView.qml:1179
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1192
+#: ../qml/pages/ChatView.qml:1195
 msgid "Show Full Message…"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:2057
+#: ../qml/pages/ChatView.qml:2060
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:2074 ../qml/pages/ChatView.qml:2228
+#: ../qml/pages/ChatView.qml:2077 ../qml/pages/ChatView.qml:2231
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "Obriši"
 
-#: ../qml/pages/ChatView.qml:2090
+#: ../qml/pages/ChatView.qml:2093
 msgid "Block"
 msgstr ""
 
@@ -972,6 +974,14 @@ msgstr ""
 #: ../qml/pages/ConfirmMsgDeletion.qml:45
 msgid "Delete Message"
 msgstr "Obriši poruku"
+
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:30
+msgid "Do you want to open this link?"
+msgstr ""
+
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:45
+msgid "Copy Link"
+msgstr ""
 
 #: ../qml/pages/ConfirmStopEncryptingDatabase.qml:35
 msgid "Really disable database encryption?"

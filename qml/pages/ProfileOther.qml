@@ -101,6 +101,23 @@ Page {
                 sourceFillMode: UbuntuShape.PreserveAspectCrop
             } // end UbuntuShape id: profilePic
 
+            
+            Image {
+                id: protectionIcon
+                height: units.gu(6)
+
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    leftMargin: profilePic.width
+                }
+
+                source: Qt.resolvedUrl('../assets/verified.svg')
+                fillMode: Image.PreserveAspectFit
+
+                visible: DeltaHandler.showContactCheckmark(contactID)
+            }
+
             Label {
                 id: usernameLabel
                 anchors {
@@ -109,7 +126,9 @@ Page {
                     leftMargin: units.gu(2)
                 }
                 text: username 
+                width: profilePage.width - editButtonShape.width - units.gu(6)
                 //font.bold: true
+                wrapMode: Text.Wrap
                 textSize: Label.Large
                 visible: !editMode
             }
@@ -121,8 +140,8 @@ Page {
                 anchors {
                     top: profilePic.bottom
                     topMargin: units.gu(3)
-                    left: usernameLabel.right
-                    leftMargin: units.gu(2)
+                    left: parent.left
+                    leftMargin: usernameLabel.contentWidth + units.gu(4)
                 }
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 

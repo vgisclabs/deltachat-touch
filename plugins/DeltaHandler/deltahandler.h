@@ -297,6 +297,8 @@ public:
 
     Q_INVOKABLE QString getOtherInitial(uint32_t userID);
 
+    Q_INVOKABLE bool showContactCheckmark(uint32_t userID);
+
     Q_INVOKABLE QString getOtherColor(uint32_t userID);
 
     Q_INVOKABLE QString getOtherAddress(uint32_t userID);

@@ -27,17 +27,10 @@
 #include "DTWebEngineUrlRequestInterceptor.h"
 #include <QWebEngineUrlRequestInfo>
 //#include <QDebug>
-#include <QSettings>
 
 DTWebEngineUrlRequestInterceptor::DTWebEngineUrlRequestInterceptor(QWebEngineUrlRequestInterceptor *parent) : QWebEngineUrlRequestInterceptor(parent)
 {
-    QSettings settings("deltatouch.lotharketterer", "deltatouch.lotharketterer");
-
-    if (settings.contains("alwaysLoadRemote")) {
-        this->remoteResourcesAreBlocked = !(settings.value("alwaysLoadRemote").toBool());
-    } else {
-        this->remoteResourcesAreBlocked = true;
-    }
+    this->remoteResourcesAreBlocked = true;
 }
 
 void DTWebEngineUrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)

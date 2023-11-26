@@ -48,7 +48,7 @@ Page {
 
     property bool chatCanSend: DeltaHandler.chatmodel.chatCanSend()
     property bool isContactRequest: DeltaHandler.chatIsContactRequest
-    property bool isProtectionBroken: DeltaHandler.chatmodel.chatIsProtectionBroken()
+    property bool protectionIsBroken: DeltaHandler.chatmodel.chatIsProtectionBroken()
 
     property real datelineIconSize: FontUtils.sizeToPixels(root.scaledFontSize) * 0.75
 
@@ -160,6 +160,7 @@ Page {
             // CAVE: is emitted by both DeltaHandler and ChatModel
             chatname = DeltaHandler.chatName()
             chatCanSend = DeltaHandler.chatmodel.chatCanSend()
+            protectionIsBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
             if (!chatCanSend) {
                 if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
                     cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
@@ -182,7 +183,7 @@ Page {
             // CAVE: is emitted by both DeltaHandler and ChatModel
             chatname = DeltaHandler.chatName()
             chatCanSend = DeltaHandler.chatmodel.chatCanSend()
-            isProtectionBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
+            protectionIsBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
 
             if (!chatCanSend) {
                 if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
@@ -733,32 +734,44 @@ Page {
                         bottom: msgbox.top
                     }
 
-                    sourceComponent: Image {
-                        id: protectionImage
-                        // TODO: assign empty image if neither InfoProtectionEnabled or InfoProtectionDisabled?
-                        source: (DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) ? Qt.resolvedUrl('../assets/verified.svg') : Qt.resolvedUrl('../assets/verified_broken.svg')
-                        width: units.gu(12)
-                        fillMode: Image.PreserveAspectFit
+                    sourceComponent: Rectangle {
+                        height: units.gu(9) // one more than the image height
+                        width: protectionImage.width
+                        color: "transparent"
 
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                // TODO implement local help
-                                if (DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) {
-                                    let popup2 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": true })
-                                    popup2.learnMore.connect(function() {
-                                        Qt.openUrlExternally("https://delta.chat/en/help#e2eeguarantee")
-                                    })
-                                } else {
-                                    let popup3 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": false , "chatuser": chatname })
-                                    popup3.scanQr.connect(closeAndStartQr)
-                                    popup3.learnMore.connect(function() {
-                                        Qt.openUrlExternally("https://delta.chat/en/help#nocryptanymore")
-                                    })
+                            Image {
+                            id: protectionImage
+                            height: units.gu(8)
+
+                            anchors {
+                                bottom: parent.bottom
+                                bottomMargin: units.gu(1)
+                                verticalCenter: parent.verticalCenter
+                            }
+
+                            // TODO: assign empty image if neither InfoProtectionEnabled or InfoProtectionDisabled?
+                            source: (DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) ? Qt.resolvedUrl('../assets/verified.svg') : Qt.resolvedUrl('../assets/verified_broken.svg')
+                            fillMode: Image.PreserveAspectFit
+
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    // TODO implement local help
+                                    if (DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) {
+                                        let popup2 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": true })
+                                        popup2.learnMore.connect(function() {
+                                            Qt.openUrlExternally("https://delta.chat/en/help#e2eeguarantee")
+                                        })
+                                    } else {
+                                        let popup3 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": false , "chatuser": chatname })
+                                        popup3.scanQr.connect(closeAndStartQr)
+                                        popup3.learnMore.connect(function() {
+                                            Qt.openUrlExternally("https://delta.chat/en/help#nocryptanymore")
+                                        })
+                                    }
                                 }
                             }
                         }
-
                     }
                 }
                 
@@ -1207,7 +1220,7 @@ Page {
                                 onClicked: {
                                     let urlpath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.chatmodel.getHtmlMessage(index))
                                     let msgsubject = DeltaHandler.chatmodel.getHtmlMsgSubject(index)
-                                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject})
+                                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": (protectionIsBroken && isOther)})
                                 }
                             }
 
@@ -1393,7 +1406,7 @@ Page {
             top: view.bottom
             topMargin: units.gu(1)
         }
-        visible: !chatCanSend && !isContactRequest && !isProtectionBroken
+        visible: !chatCanSend && !isContactRequest && !protectionIsBroken
 
         Label {
             id: cannotSendLabel
@@ -1420,7 +1433,7 @@ Page {
 
     Rectangle {
         id: protectionBrokenBox
-        height: 2* acceptBrokenProtectionButton.height + units.gu(6)
+        height: protectionBrokenLabel.contentHeight + 2* acceptBrokenProtectionButton.height + units.gu(8)
         width: parent.width
         color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
         anchors{
@@ -1429,13 +1442,29 @@ Page {
             top: view.bottom
             topMargin: units.gu(1)
         }
-        visible: !chatCanSend && isProtectionBroken
+        visible: !chatCanSend && protectionIsBroken
+
+        Label {
+            id: protectionBrokenLabel
+            width: parent.width - units.gu(4)
+
+            anchors {
+                top: protectionBrokenBox.top
+                topMargin: units.gu(2)
+                left: parent.left
+                leftMargin: units.gu(2)
+            }
+
+            text: i18n.tr("%1 sent a message from another device.").arg(chatname)
+            wrapMode: Text.WordWrap
+            fontSize: root.scaledFontSize
+        }
 
         Button {
             id: acceptBrokenProtectionButton
             width: parent.width - units.gu(4)
             anchors {
-                top: protectionBrokenBox.top
+                top: protectionBrokenLabel.bottom
                 topMargin: units.gu(2)
                 horizontalCenter: parent.horizontalCenter
             }

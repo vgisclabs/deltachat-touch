@@ -2851,6 +2851,26 @@ QString DeltaHandler::getOtherInitial(uint32_t userID)
 }
 
 
+bool DeltaHandler::showContactCheckmark(uint32_t userID)
+{
+    uint32_t tmpChatID = dc_get_chat_id_by_contact_id(currentContext, userID);
+    bool retval {false};
+
+    if (tmpChatID != 0) {
+        dc_chat_t* tmpChat = dc_get_chat(currentContext, tmpChatID);
+        retval = (1 == dc_chat_is_protected(tmpChat));
+        dc_chat_unref(tmpChat);
+        
+    } else {
+        dc_contact_t* tmpContact = dc_get_contact(currentContext, userID);
+        retval = (2 == dc_contact_is_verified(tmpContact));
+        dc_contact_unref(tmpContact);
+    }
+
+    return retval;
+}
+
+
 QString DeltaHandler::getOtherColor(uint32_t userID)
 {
     uint32_t tempColor {0};

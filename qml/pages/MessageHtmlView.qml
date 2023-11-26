@@ -34,12 +34,20 @@ Page {
     property string htmlPath
     property string headerTitle
     property bool remoteContentIsBlocked: false
-    property bool buttonPressed: false
+    property bool overrideAndBlockAlwaysLoadRemote: true
+    property bool loadRemoteButtonPressed: false
     property bool menuOpened: false
 
     header: PageHeader {
         id: header
         title: headerTitle
+    }
+
+    Component.onCompleted: {
+        if (root.alwaysLoadRemoteContent && !overrideAndBlockAlwaysLoadRemote) {
+            webengineprofile.setRemoteContentAllowed(true)
+            webview.reload()
+        }
     }
 
     Rectangle {
@@ -57,7 +65,7 @@ Page {
 
         Loader {
             id: row1Loader
-            active: htmlViewPage.remoteContentIsBlocked && !htmlViewPage.buttonPressed && !root.alwaysLoadRemoteContent
+            active: htmlViewPage.remoteContentIsBlocked && !htmlViewPage.loadRemoteButtonPressed && (!root.alwaysLoadRemoteContent || htmlViewPage.overrideAndBlockAlwaysLoadRemote)
 
             anchors {
                 left: parent.left
@@ -92,7 +100,7 @@ Page {
                     onTriggered: {
                         webengineprofile.setRemoteContentAllowed(true)
                         webview.reload()
-                        htmlViewPage.buttonPressed = true
+                        htmlViewPage.loadRemoteButtonPressed = true
                     }
                 }
 
@@ -100,6 +108,8 @@ Page {
                     id: menuIconCage
                     height: loadRemoteContentButton.height
                     width: height
+
+                    visible: !htmlViewPage.overrideAndBlockAlwaysLoadRemote
 
                     anchors {
                         verticalCenter: parent.verticalCenter
@@ -131,7 +141,7 @@ Page {
 
         Loader {
             id: row2Loader
-            active: root.alwaysLoadRemoteContent || htmlViewPage.menuOpened
+            active: (root.alwaysLoadRemoteContent && !htmlViewPage.overrideAndBlockAlwaysLoadRemote) || htmlViewPage.menuOpened
 
             anchors {
                 left: parent.left
@@ -167,6 +177,7 @@ Page {
 
                 Switch {
                     id: alwaysLoadRemoteContentSwitch
+                    enabled: !htmlViewPage.overrideAndBlockAlwaysLoadRemote
 
                     anchors {
                         bottom: parent.bottom
@@ -186,10 +197,10 @@ Page {
                                 let popup1 = PopupUtils.open(Qt.resolvedUrl("ConfirmAlwaysLoadRemoteContent.qml"))
                                 popup1.confirmed.connect(function() {
                                     root.alwaysLoadRemoteContent = true
-                                    if (!buttonPressed) {
+                                    if (!loadRemoteButtonPressed) {
                                         webengineprofile.setRemoteContentAllowed(true)
                                         webview.reload()
-                                        htmlViewPage.buttonPressed = true
+                                        htmlViewPage.loadRemoteButtonPressed = true
                                     }
                                 })
                                 popup1.cancelled.connect(function() {

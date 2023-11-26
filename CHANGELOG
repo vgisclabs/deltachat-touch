@@ -1,5 +1,5 @@
 x.x.x xxxx-xx-xx
-Feature: Add HTML message view
+Feature: HTML message view
 Feature: Verified 1:1 chats
 UI: Changed workflow for voice message recording
 UI: Changed attachment preview in compose area

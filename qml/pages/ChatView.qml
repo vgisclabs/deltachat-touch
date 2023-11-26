@@ -1179,7 +1179,13 @@ Page {
                                 text: isUnreadMsgsBar ? i18n.tr("Unread Messages") : msgtext
                                 color: textColor
                                 linkColor: isSearchResult ? "#0000ff" : (isOther ? root.otherMessageLinkColor : (messageSeen ? root.selfMessageSeenLinkColor : root.selfMessageSentLinkColor))
-                                wrapMode: Text.WordWrap
+
+                                // Use Text.Wrap instead of Text.WordWrap,
+                                // otherwise stuff like long links will
+                                // extend the message bubble beyond the desired
+                                // width and hide the text/link part that's off
+                                // the screen
+                                wrapMode: Text.Wrap 
                                 onLinkActivated: Qt.openUrlExternally(link)
                                 visible: isUnreadMsgsBar || (msgtext != "" && isDownloaded)
                                 fontSize: root.scaledFontSize
@@ -1239,13 +1245,28 @@ Page {
                                     id: usernameLoader
                                     active: isOther
 
-                                    sourceComponent: Label {
-                                        id: username
-                                        text: model.username + "  "
-                                        //fontSize: "x-small"
-                                        fontSize: root.scaledFontSizeSmaller
-                                        font.bold: true
-                                        color: model.avatarColor
+                                    sourceComponent: Item {
+                                        // have to put the label in an Item to set the width of the
+                                        // loader to the contentWidth instead of the width of the
+                                        // Label. Can't set it in Loader directly as this interacts
+                                        // with the width of its sourceComponent.
+                                        width: username.contentWidth
+                                        height: username.height
+
+                                        Label {
+                                            id: username
+
+                                            // Necessary to restrict the width of this label,
+                                            // otherwise it will extend the message bubble beyond
+                                            // the desired width.  datelineIconSize represents the
+                                            // size of padlockOther
+                                            width: chatViewPage.width - avatarLoader.width - msgDate.width - datelineIconSize - units.gu(7)
+                                            text: model.username
+                                            elide: Text.ElideRight
+                                            fontSize: root.scaledFontSizeSmaller
+                                            font.bold: true
+                                            color: model.avatarColor
+                                        }
                                     }
                                 }
 

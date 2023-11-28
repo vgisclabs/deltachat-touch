@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-26 09:47+0000\n"
+"POT-Creation-Date: 2023-11-28 21:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid ""
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3787
+#: ../plugins/DeltaHandler/deltahandler.cpp:3807
 #: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:418
 #: ../qml/pages/AddAccountAsSecondDevice.qml:110
 #: ../qml/pages/AddAccountAsSecondDevice.qml:141
@@ -54,8 +54,8 @@ msgstr ""
 msgid "Error"
 msgstr "خطا"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3866
-#: ../plugins/DeltaHandler/deltahandler.cpp:3889
+#: ../plugins/DeltaHandler/deltahandler.cpp:3886
+#: ../plugins/DeltaHandler/deltahandler.cpp:3909
 msgid "QR code could not be decoded"
 msgstr "امکان رمزگشایی کد کیوآر وجود ندارد"
 
@@ -95,8 +95,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:305
-#: ../qml/pages/ChatView.qml:350 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:306
+#: ../qml/pages/ChatView.qml:351 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "جستجو"
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:279
+#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:280
 #: ../qml/pages/ProgressBackupImport.qml:70
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
@@ -208,7 +208,7 @@ msgstr ""
 #: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:122
 #: ../qml/pages/ChangeDatabasePassword.qml:97
-#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1421
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1471
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:35
@@ -248,7 +248,7 @@ msgstr "حساب از دستگاه دیگر به این دستگاه کپی شو
 #: ../qml/pages/AddAccountAsSecondDevice.qml:125
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:148
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:992
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1005
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:399 ../qml/pages/QrShowScan.qml:416
 msgid "Unknown"
@@ -383,7 +383,7 @@ msgid "Password"
 msgstr "رمزعبور"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:359
-#: ../qml/pages/ChatView.qml:1438
+#: ../qml/pages/ChatView.qml:1488
 msgid "More Info"
 msgstr "جزئیات بیشتر "
 
@@ -741,7 +741,7 @@ msgstr "ساکت کردن به مدت۷ روز"
 msgid "Mute forever"
 msgstr "ساکت کردن دائمی"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:270
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:271
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "پیام‌های ناپدید شونده"
@@ -751,64 +751,68 @@ msgstr "پیام‌های ناپدید شونده"
 msgid "Clear Chat"
 msgstr "پاک کردن چت"
 
-#: ../qml/pages/ChatView.qml:165 ../qml/pages/ChatView.qml:189
-#: ../qml/pages/ChatView.qml:1388
+#: ../qml/pages/ChatView.qml:166 ../qml/pages/ChatView.qml:190
+#: ../qml/pages/ChatView.qml:1422
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr "این گپ شامل پیام‌های تولید شده به صورت داخلی است. برای همین نمی‌توانید پیامی بنویسید. "
 
-#: ../qml/pages/ChatView.qml:167 ../qml/pages/ChatView.qml:191
-#: ../qml/pages/ChatView.qml:1390
+#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
+#: ../qml/pages/ChatView.qml:1424
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr "نمی‌توانید بنویسید چرا که در این گروه نیستید. برای عضو شدن از یکی از اعضا درخواست کنید. "
 
-#: ../qml/pages/ChatView.qml:250 ../qml/pages/ChatView.qml:1046
+#: ../qml/pages/ChatView.qml:251 ../qml/pages/ChatView.qml:1059
 msgid "Voice Message"
 msgstr "پیام صوتی"
 
-#: ../qml/pages/ChatView.qml:263
+#: ../qml/pages/ChatView.qml:264
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:291
+#: ../qml/pages/ChatView.qml:292
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:937
+#: ../qml/pages/ChatView.qml:950
 msgid "Forwarded Message"
 msgstr "پیام هدایت شده"
 
-#: ../qml/pages/ChatView.qml:1140
+#: ../qml/pages/ChatView.qml:1153
 msgid "Download"
 msgstr "بارگیری"
 
-#: ../qml/pages/ChatView.qml:1142
+#: ../qml/pages/ChatView.qml:1155
 msgid "Download failed"
 msgstr "بارگیری ناموفق"
 
-#: ../qml/pages/ChatView.qml:1144
+#: ../qml/pages/ChatView.qml:1157
 msgid "Downloading…"
 msgstr "در حال بارگیری…"
 
-#: ../qml/pages/ChatView.qml:1179
+#: ../qml/pages/ChatView.qml:1192
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1195
+#: ../qml/pages/ChatView.qml:1214
 msgid "Show Full Message…"
 msgstr "نمایش پیام کامل..."
 
-#: ../qml/pages/ChatView.qml:2060
+#: ../qml/pages/ChatView.qml:1458
+msgid "%1 sent a message from another device."
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:2110
 msgid "Accept"
 msgstr "پذیرش"
 
-#: ../qml/pages/ChatView.qml:2077 ../qml/pages/ChatView.qml:2231
+#: ../qml/pages/ChatView.qml:2127 ../qml/pages/ChatView.qml:2281
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "حذف"
 
-#: ../qml/pages/ChatView.qml:2093
+#: ../qml/pages/ChatView.qml:2143
 msgid "Block"
 msgstr "مسدود کردن"
 
@@ -841,7 +845,7 @@ msgid "Continue"
 msgstr "ادامه"
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:31
-#: ../qml/pages/MessageHtmlView.qml:164
+#: ../qml/pages/MessageHtmlView.qml:174
 msgid "Always Load Remote Images"
 msgstr "تصاویر دوردست همیشه بار شوند"
 
@@ -856,7 +860,7 @@ msgid ""
 msgstr "تصاویر مربوط به نشانی‌های اینترنتی دیگر می‌توانند برای ردیابی شما استفاده شوند. \n\n این تنظیمات همچنین برای بارگیری فونت‌ها و دیگر محتواها استفاده می‌شوند. اگر غیرفعال باشد ممکن است همچنان تصاویر درون پیام و تصاویر بارگیری شده را ببینید. \n\n آيا تصاویر خارجی بارگیری شوند؟"
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
-#: ../qml/pages/MessageHtmlView.qml:89
+#: ../qml/pages/MessageHtmlView.qml:97
 msgid "Load Remote Images"
 msgstr "بارگیری تصاویر از بیرون"
 
@@ -920,7 +924,7 @@ msgid ""
 "• Messages will be deleted whether they were seen or not\n"
 "\n"
 "• \"Saved messages\" will be skipped from local deletion"
-msgstr "آیا می‌خواهید %1$d پیام جدید و دریافت شده را در زمان%2$s در آینده پاک کنید؟\n\n• این شامل همه رسانه‌ها هم می‌شود\n\n•  پیام‌ها جدای از اینکه دیده شده باشند یا نه پاک می‌شوند. \"پیام های ذخیره شده\" شامل این پاک کردن محلی نمی‌شوند. "
+msgstr "آیا می‌خواهید %1 پیام جدید و دریافت شده را در زمان%2 در آینده پاک کنید؟\n\n• این شامل همه رسانه‌ها هم می‌شود\n\n•  پیام‌ها جدای از اینکه دیده شده باشند یا نه پاک می‌شوند. \"پیام های ذخیره شده\" شامل این پاک کردن محلی نمی‌شوند. "
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:62
 #: ../qml/pages/ConfirmDeleteFromServer.qml:62
@@ -943,7 +947,7 @@ msgid ""
 "\n"
 "⚠️ Do not use this function if you are using other e-mail clients besides "
 "Delta Chat"
-msgstr "آیا می‌خواهید %1$dپیام را اکنون و تمام پیام‌های آیندهٔ «%2$s»  را پاک کنید؟/n/n⚠️ این شامل رایانامه‌ها، رسانه و «پیام‌های ذخیره شده» در همه پوشه‌های کارساز می‌شود/n/n⚠️ اگر می‌خواهید داده‌ها در کارساز باقی بمانند از این قابلیت استفاده نکنید/n/n⚠️ اگر به‌جز دلتاچت از دیگر نرم‌افزارهای رایانامه هم استفاده می‌کنید این قابلیت را به کار نگیرید."
+msgstr "آیا می‌خواهید %1پیام را اکنون و تمام پیام‌های آیندهٔ «%2»  را پاک کنید؟/n/n⚠️ این شامل رایانامه‌ها، رسانه و «پیام‌های ذخیره شده» در همه پوشه‌های کارساز می‌شود/n/n⚠️ اگر می‌خواهید داده‌ها در کارساز باقی بمانند از این قابلیت استفاده نکنید/n/n⚠️ اگر به‌جز دلتاچت از دیگر نرم‌افزارهای رایانامه هم استفاده می‌کنید این قابلیت را به کار نگیرید."
 
 #: ../qml/pages/ConfirmEncryptDatabase.qml:35
 msgid "Really encrypt the database?"
@@ -1166,15 +1170,15 @@ msgstr "آخرین زمان مشاهده: نامشخص"
 msgid "View Profile"
 msgstr "نمایش نمایه"
 
-#: ../qml/pages/ProfileOther.qml:236
+#: ../qml/pages/ProfileOther.qml:255
 msgid "Locally generated messages"
 msgstr "پیام‌های  داخلی"
 
-#: ../qml/pages/ProfileOther.qml:266
+#: ../qml/pages/ProfileOther.qml:285
 msgid "Verified by %1"
 msgstr ""
 
-#: ../qml/pages/ProfileOther.qml:304 ../qml/pages/ProfileSelf.qml:249
+#: ../qml/pages/ProfileOther.qml:323 ../qml/pages/ProfileSelf.qml:249
 msgid "Signature Text"
 msgstr "متن امضا"
 

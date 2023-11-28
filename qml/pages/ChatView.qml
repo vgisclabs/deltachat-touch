@@ -1220,7 +1220,7 @@ Page {
                                 onClicked: {
                                     let urlpath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.chatmodel.getHtmlMessage(index))
                                     let msgsubject = DeltaHandler.chatmodel.getHtmlMsgSubject(index)
-                                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": (protectionIsBroken && isOther)})
+                                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": ((protectionIsBroken || isContactRequest) && isOther)})
                                 }
                             }
 

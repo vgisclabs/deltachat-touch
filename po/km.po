@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-26 10:25+0000\n"
+"POT-Creation-Date: 2023-11-28 17:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid ""
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3787
+#: ../plugins/DeltaHandler/deltahandler.cpp:3807
 #: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:418
 #: ../qml/pages/AddAccountAsSecondDevice.qml:109
 #: ../qml/pages/AddAccountAsSecondDevice.qml:140
@@ -54,8 +54,8 @@ msgstr ""
 msgid "Error"
 msgstr "កំហុស"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3866
-#: ../plugins/DeltaHandler/deltahandler.cpp:3889
+#: ../plugins/DeltaHandler/deltahandler.cpp:3886
+#: ../plugins/DeltaHandler/deltahandler.cpp:3909
 msgid "QR code could not be decoded"
 msgstr "កូដ QR មិនអាចបានឌិកូដទេ"
 
@@ -95,8 +95,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:305
-#: ../qml/pages/ChatView.qml:350 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:306
+#: ../qml/pages/ChatView.qml:351 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "ស្វែងរក"
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:279
+#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:280
 #: ../qml/pages/ProgressBackupImport.qml:70
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
@@ -208,7 +208,7 @@ msgstr ""
 #: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:124
 #: ../qml/pages/ChangeDatabasePassword.qml:97
-#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1421
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1471
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:35
@@ -248,7 +248,7 @@ msgstr ""
 #: ../qml/pages/AddAccountAsSecondDevice.qml:124
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:992
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1005
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:398 ../qml/pages/QrShowScan.qml:415
 msgid "Unknown"
@@ -383,7 +383,7 @@ msgid "Password"
 msgstr "ពាក្យសម្ងាត់"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:361
-#: ../qml/pages/ChatView.qml:1438
+#: ../qml/pages/ChatView.qml:1488
 msgid "More Info"
 msgstr "ពត៌មានបន្ថែម"
 
@@ -741,7 +741,7 @@ msgstr "ធ្វើឲ្យមិនឃើញមិនលឺរយៈពេល
 msgid "Mute forever"
 msgstr "ធ្វើឲ្យមិនឃើញមិនលឺរយៈរហូត"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:270
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:271
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "កម្មវិធីសារដែលនឹងបាត់បន្ទាប់ពីមួយរយៈ"
@@ -751,64 +751,68 @@ msgstr "កម្មវិធីសារដែលនឹងបាត់បន្
 msgid "Clear Chat"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:165 ../qml/pages/ChatView.qml:189
-#: ../qml/pages/ChatView.qml:1388
+#: ../qml/pages/ChatView.qml:166 ../qml/pages/ChatView.qml:190
+#: ../qml/pages/ChatView.qml:1422
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr "ការសន្ទនានេះផ្ទុកសារក្នុងតំបន់។ ដូច្នេះអ្នកមិនអាចសរសេរសារណាមួយបានទេ។"
 
-#: ../qml/pages/ChatView.qml:167 ../qml/pages/ChatView.qml:191
-#: ../qml/pages/ChatView.qml:1390
+#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
+#: ../qml/pages/ChatView.qml:1424
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr "អ្នកមិនអាចសរសេរ ពីព្រោះអ្នកមិននៅក្នុងក្រុមនេះ។ ដើម្បីចូលរួម សុំសមាជិកផ្សេងទៀត។"
 
-#: ../qml/pages/ChatView.qml:250 ../qml/pages/ChatView.qml:1046
+#: ../qml/pages/ChatView.qml:251 ../qml/pages/ChatView.qml:1059
 msgid "Voice Message"
 msgstr "សារជាសម្លេង"
 
-#: ../qml/pages/ChatView.qml:263
+#: ../qml/pages/ChatView.qml:264
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:291
+#: ../qml/pages/ChatView.qml:292
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:937
+#: ../qml/pages/ChatView.qml:950
 msgid "Forwarded Message"
 msgstr "សារដែលបានបញ្ជូនបន្ត"
 
-#: ../qml/pages/ChatView.qml:1140
+#: ../qml/pages/ChatView.qml:1153
 msgid "Download"
 msgstr "ទាញយក"
 
-#: ../qml/pages/ChatView.qml:1142
+#: ../qml/pages/ChatView.qml:1155
 msgid "Download failed"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1144
+#: ../qml/pages/ChatView.qml:1157
 msgid "Downloading…"
 msgstr "កំពុងទាញយក…"
 
-#: ../qml/pages/ChatView.qml:1179
+#: ../qml/pages/ChatView.qml:1192
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1195
+#: ../qml/pages/ChatView.qml:1214
 msgid "Show Full Message…"
 msgstr "បង្ហាញសារទាំងស្រុង…"
 
-#: ../qml/pages/ChatView.qml:2060
+#: ../qml/pages/ChatView.qml:1458
+msgid "%1 sent a message from another device."
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:2110
 msgid "Accept"
 msgstr "ទទួលយក"
 
-#: ../qml/pages/ChatView.qml:2077 ../qml/pages/ChatView.qml:2231
+#: ../qml/pages/ChatView.qml:2127 ../qml/pages/ChatView.qml:2281
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "លុបចោល"
 
-#: ../qml/pages/ChatView.qml:2093
+#: ../qml/pages/ChatView.qml:2143
 msgid "Block"
 msgstr "រារាំង"
 
@@ -841,7 +845,7 @@ msgid "Continue"
 msgstr "បន្ត"
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:31
-#: ../qml/pages/MessageHtmlView.qml:164
+#: ../qml/pages/MessageHtmlView.qml:174
 msgid "Always Load Remote Images"
 msgstr ""
 
@@ -856,7 +860,7 @@ msgid ""
 msgstr "រូបភាពពីខាងក្រៅអាចប្រើបានប្រើដើម្បីតាមដានអ្នក។\n\nការកំណត់នេះក៏អនុញ្ញាតឱ្យផ្ទុកពុម្ពអក្សរនិងមាតិកាផ្សេងទៀត។ ទោះបីជាវាត្រូវបានបិទក៏ដោយអ្នកនៅតែអាចមើលឃើញរូបភាពដែលបានបង្កប់ឬលាក់ទុក។\n\nផ្ទុករូបភាពពីខាងក្រៅ?"
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
-#: ../qml/pages/MessageHtmlView.qml:89
+#: ../qml/pages/MessageHtmlView.qml:97
 msgid "Load Remote Images"
 msgstr "ផ្ទុករូបភាពពីខាងក្រៅ"
 
@@ -920,7 +924,7 @@ msgid ""
 "• Messages will be deleted whether they were seen or not\n"
 "\n"
 "• \"Saved messages\" will be skipped from local deletion"
-msgstr "តើអ្នកចង់លុបសារ %1$d ឥលូវ និងសារដែលបានទទួលថ្មីៗ នៅពេលពេល \"%2$s\" ខាងមុខ?\n\n• នេះធ្វើឱ្យរួមបញ្ចូលទាំងប្រពន្ធ័ផ្សព្វផ្សាយទាំងអស់\n\nសារនឹងត្រូវបានលុប បើទោះបីជាពួកគេបានឃើញ ឬមិនបានឃើញក៏ដោយ\n\n• \"សារដែលបានរក្សាទុក\" និងបានរំលងពីការរុករកក្នុងតំបន់។"
+msgstr "តើអ្នកចង់លុបសារ %1 ឥលូវ និងសារដែលបានទទួលថ្មីៗ នៅពេលពេល \"%2\" ខាងមុខ?\n\n• នេះធ្វើឱ្យរួមបញ្ចូលទាំងប្រពន្ធ័ផ្សព្វផ្សាយទាំងអស់\n\nសារនឹងត្រូវបានលុប បើទោះបីជាពួកគេបានឃើញ ឬមិនបានឃើញក៏ដោយ\n\n• \"សារដែលបានរក្សាទុក\" និងបានរំលងពីការរុករកក្នុងតំបន់។"
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:62
 #: ../qml/pages/ConfirmDeleteFromServer.qml:62
@@ -943,7 +947,7 @@ msgid ""
 "\n"
 "⚠️ Do not use this function if you are using other e-mail clients besides "
 "Delta Chat"
-msgstr "តើអ្នកចង់លុបសារ %1$d ឥឡូវនេះ និងសារដែលបានប្រមូលថ្មីៗទាំងអស់ នៅពេល \"%2$s\" ទៅមុខ?\n\n⚠️ រួមទាំងអុីម៉រល ប្រពន្ធ័ផ្សព្វផ្សាយ និង \"សារដែលបានរក្សាទុក\" នៅថតម៉ាសុីនមេទាំងអស់\n\n⚠️ កុំប្រើមុខងារនេះ ប្រសិនបើអ្នកចង់រក្សាទុកទិន្ន័យនៅលើម៉ាសុីនមេ\n\n⚠️ កុំប្រើមុខងារនេះ ប្រសិនបើអ្នកកំពុងប្រើសេវាអុីម៉េលផ្សេងពី សា Delta Chat ។"
+msgstr "តើអ្នកចង់លុបសារ %1 ឥឡូវនេះ និងសារដែលបានប្រមូលថ្មីៗទាំងអស់ នៅពេល \"%2\" ទៅមុខ?\n\n⚠️ រួមទាំងអុីម៉រល ប្រពន្ធ័ផ្សព្វផ្សាយ និង \"សារដែលបានរក្សាទុក\" នៅថតម៉ាសុីនមេទាំងអស់\n\n⚠️ កុំប្រើមុខងារនេះ ប្រសិនបើអ្នកចង់រក្សាទុកទិន្ន័យនៅលើម៉ាសុីនមេ\n\n⚠️ កុំប្រើមុខងារនេះ ប្រសិនបើអ្នកកំពុងប្រើសេវាអុីម៉េលផ្សេងពី សា Delta Chat ។"
 
 #: ../qml/pages/ConfirmEncryptDatabase.qml:35
 msgid "Really encrypt the database?"
@@ -1166,15 +1170,15 @@ msgstr ""
 msgid "View Profile"
 msgstr "មើលពត៌មានផ្ទាល់ខ្លួន"
 
-#: ../qml/pages/ProfileOther.qml:236
+#: ../qml/pages/ProfileOther.qml:255
 msgid "Locally generated messages"
 msgstr "សារដែលបានបង្កើតពីសា Delta Chat"
 
-#: ../qml/pages/ProfileOther.qml:266
+#: ../qml/pages/ProfileOther.qml:285
 msgid "Verified by %1"
 msgstr ""
 
-#: ../qml/pages/ProfileOther.qml:304 ../qml/pages/ProfileSelf.qml:249
+#: ../qml/pages/ProfileOther.qml:323 ../qml/pages/ProfileSelf.qml:249
 msgid "Signature Text"
 msgstr "ហត្ថលេខាជាអក្សរ"
 

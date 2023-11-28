@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-26 10:25+0000\n"
+"POT-Creation-Date: 2023-11-28 17:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid ""
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3787
+#: ../plugins/DeltaHandler/deltahandler.cpp:3807
 #: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:418
 #: ../qml/pages/AddAccountAsSecondDevice.qml:109
 #: ../qml/pages/AddAccountAsSecondDevice.qml:140
@@ -54,8 +54,8 @@ msgstr ""
 msgid "Error"
 msgstr "Erreur"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3866
-#: ../plugins/DeltaHandler/deltahandler.cpp:3889
+#: ../plugins/DeltaHandler/deltahandler.cpp:3886
+#: ../plugins/DeltaHandler/deltahandler.cpp:3909
 msgid "QR code could not be decoded"
 msgstr "Le code QR n'a pas pu être décodé"
 
@@ -95,8 +95,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:305
-#: ../qml/pages/ChatView.qml:350 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:306
+#: ../qml/pages/ChatView.qml:351 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "Chercher"
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:279
+#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:280
 #: ../qml/pages/ProgressBackupImport.qml:70
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
@@ -208,7 +208,7 @@ msgstr ""
 #: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:124
 #: ../qml/pages/ChangeDatabasePassword.qml:97
-#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1421
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1471
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:35
@@ -248,7 +248,7 @@ msgstr "Copier le compte de l'autre appareil sur celui-ci ?"
 #: ../qml/pages/AddAccountAsSecondDevice.qml:124
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:992
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1005
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:398 ../qml/pages/QrShowScan.qml:415
 msgid "Unknown"
@@ -383,7 +383,7 @@ msgid "Password"
 msgstr "Mot de passe"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:361
-#: ../qml/pages/ChatView.qml:1438
+#: ../qml/pages/ChatView.qml:1488
 msgid "More Info"
 msgstr "En savoir plus"
 
@@ -741,7 +741,7 @@ msgstr "Désactiver pour 7 jours"
 msgid "Mute forever"
 msgstr "Désactiver pour toujours"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:270
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:271
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "Messages éphémères"
@@ -751,64 +751,68 @@ msgstr "Messages éphémères"
 msgid "Clear Chat"
 msgstr "Vider la discussion"
 
-#: ../qml/pages/ChatView.qml:165 ../qml/pages/ChatView.qml:189
-#: ../qml/pages/ChatView.qml:1388
+#: ../qml/pages/ChatView.qml:166 ../qml/pages/ChatView.qml:190
+#: ../qml/pages/ChatView.qml:1422
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr "Cette discussion contient des messages générés localement. Par conséquent, l'écriture est désactivée."
 
-#: ../qml/pages/ChatView.qml:167 ../qml/pages/ChatView.qml:191
-#: ../qml/pages/ChatView.qml:1390
+#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
+#: ../qml/pages/ChatView.qml:1424
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr "Vous ne pouvez pas écrire car vous ne faites pas partie de ce groupe. Pour le rejoindre, demandez à un membre."
 
-#: ../qml/pages/ChatView.qml:250 ../qml/pages/ChatView.qml:1046
+#: ../qml/pages/ChatView.qml:251 ../qml/pages/ChatView.qml:1059
 msgid "Voice Message"
 msgstr "Message vocal"
 
-#: ../qml/pages/ChatView.qml:263
+#: ../qml/pages/ChatView.qml:264
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:291
+#: ../qml/pages/ChatView.qml:292
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:937
+#: ../qml/pages/ChatView.qml:950
 msgid "Forwarded Message"
 msgstr "Message transféré"
 
-#: ../qml/pages/ChatView.qml:1140
+#: ../qml/pages/ChatView.qml:1153
 msgid "Download"
 msgstr "Télécharger"
 
-#: ../qml/pages/ChatView.qml:1142
+#: ../qml/pages/ChatView.qml:1155
 msgid "Download failed"
 msgstr "Échec du téléchargement"
 
-#: ../qml/pages/ChatView.qml:1144
+#: ../qml/pages/ChatView.qml:1157
 msgid "Downloading…"
 msgstr "Téléchargement en cours..."
 
-#: ../qml/pages/ChatView.qml:1179
+#: ../qml/pages/ChatView.qml:1192
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1195
+#: ../qml/pages/ChatView.qml:1214
 msgid "Show Full Message…"
 msgstr "Montrer le message complet..."
 
-#: ../qml/pages/ChatView.qml:2060
+#: ../qml/pages/ChatView.qml:1458
+msgid "%1 sent a message from another device."
+msgstr "%1 a envoyé un message depuis un nouvel appareil."
+
+#: ../qml/pages/ChatView.qml:2110
 msgid "Accept"
 msgstr "Accepter"
 
-#: ../qml/pages/ChatView.qml:2077 ../qml/pages/ChatView.qml:2231
+#: ../qml/pages/ChatView.qml:2127 ../qml/pages/ChatView.qml:2281
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "Supprimer"
 
-#: ../qml/pages/ChatView.qml:2093
+#: ../qml/pages/ChatView.qml:2143
 msgid "Block"
 msgstr "Bloquer"
 
@@ -841,7 +845,7 @@ msgid "Continue"
 msgstr "Continuez"
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:31
-#: ../qml/pages/MessageHtmlView.qml:164
+#: ../qml/pages/MessageHtmlView.qml:174
 msgid "Always Load Remote Images"
 msgstr "Toujours charger les images distantes"
 
@@ -856,7 +860,7 @@ msgid ""
 msgstr "Les images distantes peuvent être utilisées pour vous pister. Ce paramètre autorise également le chargement de police d'écriture ou d'autres contenus. S'il est désactivé, vous pouvez tout de même voir les images ancrées ou en cache. Souhaitez-vous charger les images distantes ?"
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
-#: ../qml/pages/MessageHtmlView.qml:89
+#: ../qml/pages/MessageHtmlView.qml:97
 msgid "Load Remote Images"
 msgstr "Charger les images distantes"
 
@@ -920,7 +924,7 @@ msgid ""
 "• Messages will be deleted whether they were seen or not\n"
 "\n"
 "• \"Saved messages\" will be skipped from local deletion"
-msgstr "Voulez-vous supprimer %1$d messages maintenant ainsi que tous les nouveaux futurs messages reçus « %2$s » ?\n\n• Cela inclut tous les fichiers multimédia\n\n• Les messages seront effacés qu'ils aient été vus ou non\n\n• Les « Messages sauvegardés » seront préservés de la suppression locale"
+msgstr "Voulez-vous supprimer %1 messages maintenant ainsi que tous les nouveaux futurs messages reçus « %2 » ?\n\n• Cela inclut tous les fichiers multimédia\n\n• Les messages seront effacés qu'ils aient été vus ou non\n\n• Les « Messages sauvegardés » seront préservés de la suppression locale"
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:62
 #: ../qml/pages/ConfirmDeleteFromServer.qml:62
@@ -943,7 +947,7 @@ msgid ""
 "\n"
 "⚠️ Do not use this function if you are using other e-mail clients besides "
 "Delta Chat"
-msgstr "Voulez-vous supprimer %1$d messages maintenant ainsi que tous les futurs nouveaux messages reçus « %2$s » ?\n\n⚠️ Cela inclut les courriels, les fichiers multimédia et les « Messages sauvegardés » dans tous les répertoires du serveur\n\n⚠️ N'utilisez pas cette fonction si vous utilisez d'autres clients de messagerie électronique en plus de Delta Chat"
+msgstr "Voulez-vous supprimer %1 messages maintenant ainsi que tous les futurs nouveaux messages reçus « %2 » ?\n\n⚠️ Cela inclut les courriels, les fichiers multimédia et les « Messages sauvegardés » dans tous les répertoires du serveur\n\n⚠️ N'utilisez pas cette fonction si vous utilisez d'autres clients de messagerie électronique en plus de Delta Chat"
 
 #: ../qml/pages/ConfirmEncryptDatabase.qml:35
 msgid "Really encrypt the database?"
@@ -1166,15 +1170,15 @@ msgstr "Vu·e pour la dernière fois : inconnu"
 msgid "View Profile"
 msgstr "Voir le profil"
 
-#: ../qml/pages/ProfileOther.qml:236
+#: ../qml/pages/ProfileOther.qml:255
 msgid "Locally generated messages"
 msgstr "Messages générés localement"
 
-#: ../qml/pages/ProfileOther.qml:266
+#: ../qml/pages/ProfileOther.qml:285
 msgid "Verified by %1"
 msgstr ""
 
-#: ../qml/pages/ProfileOther.qml:304 ../qml/pages/ProfileSelf.qml:249
+#: ../qml/pages/ProfileOther.qml:323 ../qml/pages/ProfileSelf.qml:249
 msgid "Signature Text"
 msgstr "Signature"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-26 10:25+0000\n"
+"POT-Creation-Date: 2023-11-28 17:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid ""
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3787
+#: ../plugins/DeltaHandler/deltahandler.cpp:3807
 #: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:418
 #: ../qml/pages/AddAccountAsSecondDevice.qml:109
 #: ../qml/pages/AddAccountAsSecondDevice.qml:140
@@ -54,8 +54,8 @@ msgstr ""
 msgid "Error"
 msgstr "Eraro"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3866
-#: ../plugins/DeltaHandler/deltahandler.cpp:3889
+#: ../plugins/DeltaHandler/deltahandler.cpp:3886
+#: ../plugins/DeltaHandler/deltahandler.cpp:3909
 msgid "QR code could not be decoded"
 msgstr ""
 
@@ -95,8 +95,8 @@ msgstr ""
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:305
-#: ../qml/pages/ChatView.qml:350 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:306
+#: ../qml/pages/ChatView.qml:351 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "Serĉi"
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:279
+#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:280
 #: ../qml/pages/ProgressBackupImport.qml:70
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
@@ -208,7 +208,7 @@ msgstr ""
 #: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:124
 #: ../qml/pages/ChangeDatabasePassword.qml:97
-#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1421
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1471
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:35
@@ -248,7 +248,7 @@ msgstr ""
 #: ../qml/pages/AddAccountAsSecondDevice.qml:124
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:992
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1005
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:398 ../qml/pages/QrShowScan.qml:415
 msgid "Unknown"
@@ -383,7 +383,7 @@ msgid "Password"
 msgstr "Pasvorto"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:361
-#: ../qml/pages/ChatView.qml:1438
+#: ../qml/pages/ChatView.qml:1488
 msgid "More Info"
 msgstr "Plia informo"
 
@@ -741,7 +741,7 @@ msgstr "Silentigi por 7 tagoj"
 msgid "Mute forever"
 msgstr "Silentigi por ĉiam"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:270
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:271
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "Memviŝontaj mesaĝoj"
@@ -751,64 +751,68 @@ msgstr "Memviŝontaj mesaĝoj"
 msgid "Clear Chat"
 msgstr "Viŝi la babilejon"
 
-#: ../qml/pages/ChatView.qml:165 ../qml/pages/ChatView.qml:189
-#: ../qml/pages/ChatView.qml:1388
+#: ../qml/pages/ChatView.qml:166 ../qml/pages/ChatView.qml:190
+#: ../qml/pages/ChatView.qml:1422
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:167 ../qml/pages/ChatView.qml:191
-#: ../qml/pages/ChatView.qml:1390
+#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
+#: ../qml/pages/ChatView.qml:1424
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:250 ../qml/pages/ChatView.qml:1046
+#: ../qml/pages/ChatView.qml:251 ../qml/pages/ChatView.qml:1059
 msgid "Voice Message"
 msgstr "Voĉmesaĝo"
 
-#: ../qml/pages/ChatView.qml:263
+#: ../qml/pages/ChatView.qml:264
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:291
+#: ../qml/pages/ChatView.qml:292
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:937
+#: ../qml/pages/ChatView.qml:950
 msgid "Forwarded Message"
 msgstr "Plusendita mesaĝo"
 
-#: ../qml/pages/ChatView.qml:1140
+#: ../qml/pages/ChatView.qml:1153
 msgid "Download"
 msgstr "Elŝuti"
 
-#: ../qml/pages/ChatView.qml:1142
+#: ../qml/pages/ChatView.qml:1155
 msgid "Download failed"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1144
+#: ../qml/pages/ChatView.qml:1157
 msgid "Downloading…"
 msgstr "Elŝutado..."
 
-#: ../qml/pages/ChatView.qml:1179
+#: ../qml/pages/ChatView.qml:1192
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1195
+#: ../qml/pages/ChatView.qml:1214
 msgid "Show Full Message…"
 msgstr "Afiŝu la tutan mesaĝon..."
 
-#: ../qml/pages/ChatView.qml:2060
+#: ../qml/pages/ChatView.qml:1458
+msgid "%1 sent a message from another device."
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:2110
 msgid "Accept"
 msgstr "Akcepti"
 
-#: ../qml/pages/ChatView.qml:2077 ../qml/pages/ChatView.qml:2231
+#: ../qml/pages/ChatView.qml:2127 ../qml/pages/ChatView.qml:2281
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "Forigi"
 
-#: ../qml/pages/ChatView.qml:2093
+#: ../qml/pages/ChatView.qml:2143
 msgid "Block"
 msgstr "Bloki"
 
@@ -841,7 +845,7 @@ msgid "Continue"
 msgstr "Daŭrigi"
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:31
-#: ../qml/pages/MessageHtmlView.qml:164
+#: ../qml/pages/MessageHtmlView.qml:174
 msgid "Always Load Remote Images"
 msgstr "Ĉiam ŝargu forajn bildojn"
 
@@ -856,7 +860,7 @@ msgid ""
 msgstr "La foraj bildoj povas spuri vin.\n\nTiu ĉi agordo povas ankaŭ ŝargi tiparojn kaj aliajn enhavojn. Malŝaltite, enkorpigitaj aŭ kaŝmemorigitaj bildoj povas aperi.\n\nŜargu forajn bildojn? "
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
-#: ../qml/pages/MessageHtmlView.qml:89
+#: ../qml/pages/MessageHtmlView.qml:97
 msgid "Load Remote Images"
 msgstr "Ŝargu forajn bildojn "
 
@@ -1166,15 +1170,15 @@ msgstr "Laste vidita: nedisponebla informo"
 msgid "View Profile"
 msgstr "Vidi profilon"
 
-#: ../qml/pages/ProfileOther.qml:236
+#: ../qml/pages/ProfileOther.qml:255
 msgid "Locally generated messages"
 msgstr "Loke generitaj mesaĝoj"
 
-#: ../qml/pages/ProfileOther.qml:266
+#: ../qml/pages/ProfileOther.qml:285
 msgid "Verified by %1"
 msgstr ""
 
-#: ../qml/pages/ProfileOther.qml:304 ../qml/pages/ProfileSelf.qml:249
+#: ../qml/pages/ProfileOther.qml:323 ../qml/pages/ProfileSelf.qml:249
 msgid "Signature Text"
 msgstr ""
 

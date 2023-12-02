@@ -282,7 +282,7 @@ Page {
                     left: verifiedImage.right
                     leftMargin: units.gu(1)
                 }
-                text: i18n.tr("Verified by %1").arg(verifiedBy)
+                text: verifiedBy === "me" ? i18n.tr("Introduced by me") : i18n.tr("Introduced by %1").arg(verifiedBy)
                 visible: verifiedBy != "" && !isDevice
             }
 

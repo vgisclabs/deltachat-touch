@@ -31,7 +31,7 @@ cd deltatouch
 git submodule update --init --recursive
 ```
 
-If the submodule has been cloned for the first time or its CMakeLists.txt has been modified by an update, it needs to be patched in order to work with clickable:
+CMakeLists.txt of deltachat-core-rust needs to be patched in order to work with clickable:
 
 ```
 patch libs/deltachat-core-rust/CMakeLists.txt < libs/patches/dc_core_rust-CMakeLists.patch
@@ -43,7 +43,7 @@ Build libdeltachat.so for your architecture (arm64 in this example, could also b
 clickable build --libs deltachat-core-rust --arch arm64
 ```
 
-After building libdeltachat.so, you might want to undo the patch in order for git not to complain if you want to do anything else besides building the app:
+After building libdeltachat.so, undo the patch:
 
 ```
 cd libs/deltachat-core-rust

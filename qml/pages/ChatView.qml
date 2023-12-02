@@ -2305,59 +2305,60 @@ Page {
         }
     } // end Component id: popoverComponentConfirmDeletion
 
-
-    // Taken from from Messaging-App Copyright 2012-2016 Canonical Ltd.,
-    // licensed under GPLv3
-    // https://gitlab.com/ubports/development/core/messaging-app/-/blob/62f448f8a5bec59d8e5c3f7bf386d6d61f9a1615/src/qml/Messages.qml
-    // modified by (C) 2023 Lothar Ketterer
-    PinchHandler {
-        id: pinchHandlerChatView
-        target: null
-
-        minimumPointCount: 2
-
-        property real previousScale: 1.0
-        property real zoomThreshold: 0.5
-
-        onScaleChanged: {
-            var nextLevel = root.scaleLevel
-
-            if (activeScale > previousScale + zoomThreshold && nextLevel < root.maximumScale) { // zoom in
-                nextLevel++
-            // nextLevel > 1 (instead of > 0) so the main scaleLevel cannot go below "small"
-            } else if (activeScale < previousScale - zoomThreshold && nextLevel > 1) { // zoom out
-                nextLevel--
-            }
-
-            if (nextLevel !== root.scaleLevel) {
-
-                root.scaleLevel = nextLevel
-
-                // Ugly hack for the TextArea to correctly resize. If this is
-                // not applied, the font will resize directly, but the item
-                // height will only resize after a line will be added or
-                // removed.  If going from small to large text, the text will
-                // be partly hidden until resizing the item height.
-                let tempMsgTxt = messageEnterField.text
-                messageEnterField.text = "b\nb"
-                messageEnterField.text = tempMsgTxt
-
-
-//                 // get the index of the current drag item if any and make ListView follow it
-//                var positionInRoot = mapToItem(view.contentItem, centroid.position.x, centroid.position.y)
-//                const currentIndex = view.indexAt(positionInRoot.x,positionInRoot.y)
+// PinchHandler currently taken out due to incompatibility with ListItem
 //
-//                view.positionViewAtIndex(currentIndex, ListView.Visible)
-
-                previousScale = activeScale
-            }
-        }
-
-        onActiveChanged: {
-            if (active) {
-                previousScale = 1.0
-                view.currentIndex = -1
-            }
-        }
-    }
+//    // Taken from from Messaging-App Copyright 2012-2016 Canonical Ltd.,
+//    // licensed under GPLv3
+//    // https://gitlab.com/ubports/development/core/messaging-app/-/blob/62f448f8a5bec59d8e5c3f7bf386d6d61f9a1615/src/qml/Messages.qml
+//    // modified by (C) 2023 Lothar Ketterer
+//    PinchHandler {
+//        id: pinchHandlerChatView
+//        target: null
+//
+//        minimumPointCount: 2
+//
+//        property real previousScale: 1.0
+//        property real zoomThreshold: 0.5
+//
+//        onScaleChanged: {
+//            var nextLevel = root.scaleLevel
+//
+//            if (activeScale > previousScale + zoomThreshold && nextLevel < root.maximumScale) { // zoom in
+//                nextLevel++
+//            // nextLevel > 1 (instead of > 0) so the main scaleLevel cannot go below "small"
+//            } else if (activeScale < previousScale - zoomThreshold && nextLevel > 1) { // zoom out
+//                nextLevel--
+//            }
+//
+//            if (nextLevel !== root.scaleLevel) {
+//
+//                root.scaleLevel = nextLevel
+//
+//                // Ugly hack for the TextArea to correctly resize. If this is
+//                // not applied, the font will resize directly, but the item
+//                // height will only resize after a line will be added or
+//                // removed.  If going from small to large text, the text will
+//                // be partly hidden until resizing the item height.
+//                let tempMsgTxt = messageEnterField.text
+//                messageEnterField.text = "b\nb"
+//                messageEnterField.text = tempMsgTxt
+//
+//
+////                 // get the index of the current drag item if any and make ListView follow it
+////                var positionInRoot = mapToItem(view.contentItem, centroid.position.x, centroid.position.y)
+////                const currentIndex = view.indexAt(positionInRoot.x,positionInRoot.y)
+////
+////                view.positionViewAtIndex(currentIndex, ListView.Visible)
+//
+//                previousScale = activeScale
+//            }
+//        }
+//
+//        onActiveChanged: {
+//            if (active) {
+//                previousScale = 1.0
+//                view.currentIndex = -1
+//            }
+//        }
+//    }
 } // end Page id: chatViewPage

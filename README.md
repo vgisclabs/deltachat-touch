@@ -27,7 +27,7 @@ cd deltatouch
 git submodule update --init --recursive
 ```
 
-If the submodule has been cloned for the first time or its CMakeLists.txt has been modified by an update, it needs to be patched in order to work with clickable:
+CMakeLists.txt of deltachat-core-rust needs to be patched in order to work with clickable:
 
 ```
 patch libs/deltachat-core-rust/CMakeLists.txt < libs/patches/dc_core_rust-CMakeLists.patch
@@ -39,7 +39,9 @@ Build libdeltachat.so for your architecture (arm64 in this example, could also b
 clickable build --libs deltachat-core-rust --arch arm64
 ```
 
-After building libdeltachat.so, you might want to undo the patch in order for git to not complain if you want to do anything else besides building the app:
+If this command fails with an error stating that the version of cmake is too old, you either need to wait whether the clickable developers are willing to resolve [this issue](https://gitlab.com/clickable/clickable/-/issues/424) or you need to use an older docker image along with clickable 7.
+
+After building libdeltachat.so, undo the patch:
 
 ```
 cd libs/deltachat-core-rust

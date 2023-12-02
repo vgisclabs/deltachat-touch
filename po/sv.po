@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-28 21:56+0000\n"
+"POT-Creation-Date: 2023-12-02 17:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid ""
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3807
+#: ../plugins/DeltaHandler/deltahandler.cpp:3819
 #: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:418
 #: ../qml/pages/AddAccountAsSecondDevice.qml:110
 #: ../qml/pages/AddAccountAsSecondDevice.qml:141
@@ -54,8 +54,8 @@ msgstr ""
 msgid "Error"
 msgstr "Fel"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3886
-#: ../plugins/DeltaHandler/deltahandler.cpp:3909
+#: ../plugins/DeltaHandler/deltahandler.cpp:3898
+#: ../plugins/DeltaHandler/deltahandler.cpp:3921
 msgid "QR code could not be decoded"
 msgstr ""
 
@@ -1175,7 +1175,11 @@ msgid "Locally generated messages"
 msgstr "Lokalt genererade meddelanden"
 
 #: ../qml/pages/ProfileOther.qml:285
-msgid "Verified by %1"
+msgid "Introduced by %1"
+msgstr ""
+
+#: ../qml/pages/ProfileOther.qml:285
+msgid "Introduced by me"
 msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:323 ../qml/pages/ProfileSelf.qml:249

@@ -273,8 +273,8 @@ MainView {
     // scaledFontSizeLarger still works (which is scaleLevel + 1)
     //
     // On the other end, scaling the main scale lower than "small" probably
-    // makes no sense. This is limited in the PinchHandler in ChatView.qml
-    // and in the setting.
+    // makes no sense. This is limited by the PinchHandler
+    // and in the setting (SettingsPage.qml).
     readonly property variant fontSizeNames: ["x-small", "small", "medium", "large", "x-large", "x-large"]
     readonly property string scaledFontSize: fontSizeNames[scaleLevel]
     readonly property string scaledFontSizeSmaller: fontSizeNames[scaleLevel - 1]
@@ -1168,48 +1168,50 @@ MainView {
         }
     }
 
-    // Taken from from Messaging-App Copyright 2012-2016 Canonical Ltd.,
-    // licensed under GPLv3
-    // https://gitlab.com/ubports/development/core/messaging-app/-/blob/62f448f8a5bec59d8e5c3f7bf386d6d61f9a1615/src/qml/Messages.qml
-    // modified by (C) 2023 Lothar Ketterer
-    PinchHandler {
-        id: pinchHandlerMain
-        target: null
-        enabled: !root.chatOpenAlreadyClicked
-
-        minimumPointCount: 2
-
-        property real previousScale: 1.0
-        property real zoomThreshold: 0.5
-
-        onScaleChanged: {
-            var nextLevel = root.scaleLevel
-            if (activeScale > previousScale + zoomThreshold && nextLevel < root.maximumScale) { // zoom in
-                nextLevel++
-            // nextLevel > 1 (instead of > 0) so the main scaleLevel cannot go below "small"
-            } else if (activeScale < previousScale - zoomThreshold && nextLevel > 1) { // zoom out
-                nextLevel--
-            }
-
-            if (nextLevel !== root.scaleLevel) {
-
-                root.scaleLevel = nextLevel
-
-//                 // get the index of the current drag item if any and make ListView follow it
-//                var positionInRoot = mapToItem(messageList.contentItem, centroid.position.x, centroid.position.y)
-//                const currentIndex = messageList.indexAt(positionInRoot.x,positionInRoot.y)
+// PinchHandler currently taken out due to incompatibility with ListItem
 //
-//                messageList.positionViewAtIndex(currentIndex, ListView.Visible)
+//    // Taken from from Messaging-App Copyright 2012-2016 Canonical Ltd.,
+//    // licensed under GPLv3
+//    // https://gitlab.com/ubports/development/core/messaging-app/-/blob/62f448f8a5bec59d8e5c3f7bf386d6d61f9a1615/src/qml/Messages.qml
+//    // modified by (C) 2023 Lothar Ketterer
+//    PinchHandler {
+//        id: pinchHandlerMain
+//        target: null
+//        enabled: !root.chatOpenAlreadyClicked
 //
-                previousScale = activeScale
-            }
-        }
-
-        onActiveChanged: {
-            if (active) {
-                previousScale = 1.0
-            }
-            view.currentIndex = -1
-        }
-    }
+//        minimumPointCount: 2
+//
+//        property real previousScale: 1.0
+//        property real zoomThreshold: 0.5
+//
+//        onScaleChanged: {
+//            var nextLevel = root.scaleLevel
+//            if (activeScale > previousScale + zoomThreshold && nextLevel < root.maximumScale) { // zoom in
+//                nextLevel++
+//            // nextLevel > 1 (instead of > 0) so the main scaleLevel cannot go below "small"
+//            } else if (activeScale < previousScale - zoomThreshold && nextLevel > 1) { // zoom out
+//                nextLevel--
+//            }
+//
+//            if (nextLevel !== root.scaleLevel) {
+//
+//                root.scaleLevel = nextLevel
+//
+////                 // get the index of the current drag item if any and make ListView follow it
+////                var positionInRoot = mapToItem(messageList.contentItem, centroid.position.x, centroid.position.y)
+////                const currentIndex = messageList.indexAt(positionInRoot.x,positionInRoot.y)
+////
+////                messageList.positionViewAtIndex(currentIndex, ListView.Visible)
+////
+//                previousScale = activeScale
+//            }
+//        }
+//
+//        onActiveChanged: {
+//            if (active) {
+//                previousScale = 1.0
+//            }
+//            view.currentIndex = -1
+//        }
+//    }
 } // end of MainView id: root

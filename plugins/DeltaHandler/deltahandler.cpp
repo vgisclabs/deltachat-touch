@@ -2936,8 +2936,20 @@ QString DeltaHandler::getOtherVerifiedBy(uint32_t userID)
     char* tempText {nullptr};
 
     if (tempContact) {
-        tempText = dc_contact_get_verifier_addr(tempContact);
-        retval = tempText;
+        uint32_t contactID = dc_contact_get_verifier_id(tempContact);
+
+        if (DC_CONTACT_ID_SELF == contactID) {
+            retval = "me"; 
+        } else if (0 != contactID) {
+            dc_contact_t* verifierContact = dc_get_contact(currentContext, contactID);
+
+            if (verifierContact) {
+                tempText = dc_contact_get_name_n_addr(verifierContact);
+                retval = tempText;
+                dc_contact_unref(verifierContact);
+            }
+        }
+
         dc_contact_unref(tempContact);
     }
 

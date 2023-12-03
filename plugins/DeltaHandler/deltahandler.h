@@ -86,6 +86,10 @@ public:
 
     Q_INVOKABLE void loadSelectedAccount();
 
+    // Parameter is the version for which the message applies,
+    // not the message text itself
+    Q_INVOKABLE void addDeviceMessageForVersion(QString appVersion);
+
     // The passphrase for database encryption is passed from QML via this
     // method. If twiceChecked is true, QML has asked for it twice and both
     // entries by the user match.
@@ -645,6 +649,8 @@ private:
     void sendNotification(uint32_t accID, int chatID, int msgID);
 
     void enableVerifiedOneOnOneForAllAccs();
+
+    void addDeviceMessageToAllContexts(QString deviceMessage, QString messageLabel);
 
     bool m_coreTranslationsAlreadySet;
 };

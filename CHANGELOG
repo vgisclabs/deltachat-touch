@@ -1,10 +1,11 @@
-x.x.x xxxx-xx-xx
+1.3.0 2023-12-03
 Feature: Verified 1:1 chats
 Feature: HTML message view
 UI: Changed workflow for voice message recording
 UI: Changed attachment preview in compose area
 UI: Setting for font size in chatlist and chats
 Other: Internal refactoring to reduce delay when opening a chat
+Other: Use deltachat-core-rust v1.131.9
 Bugfix: Deleting attachments from the compose area did not work in all cases
 Bugfix: Changing the avatar in the profile settings is possible again
 

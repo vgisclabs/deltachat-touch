@@ -39,7 +39,7 @@ Build libdeltachat.so for your architecture (arm64 in this example, could also b
 clickable build --libs deltachat-core-rust --arch arm64
 ```
 
-If this command fails with an error stating that the version of cmake is too old, you either need to wait whether the clickable developers are willing to resolve [this issue](https://gitlab.com/clickable/clickable/-/issues/424) or you need to use an older docker image along with clickable 7.
+If this command fails with an error stating that the version of cmake is too old, you need to use an older docker image along with clickable 7.
 
 After building libdeltachat.so, undo the patch:
 

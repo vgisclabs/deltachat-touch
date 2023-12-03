@@ -477,6 +477,43 @@ void DeltaHandler::loadSelectedAccount()
 }
 
 
+void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
+{
+    // Device message for version 1.3.0;
+    // remove/adapt for newer versions
+    if (appVersion == "1.3.0") {
+        QString tempQString = "What's new in 1.3.0?<br><br>• 1:1 chats guarantee end-to-end encryption for introduced contacts now<br>• these contacts and chats are marked with green checkmarks<br>• voice message recording starts immediately<br>• HTML mail view (\"Show Full Message…\")<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
+
+        QString versionLabel = appVersion;
+        versionLabel.replace(QRegExp("\\."), "-");
+
+        addDeviceMessageToAllContexts(tempQString, versionLabel);
+    }
+}
+
+
+void DeltaHandler::addDeviceMessageToAllContexts(QString deviceMessage, QString messageLabel)
+{
+    // need to cycle through all contexts and add a device message to all of them
+    dc_array_t* tempArray = dc_accounts_get_all(allAccounts);
+
+    for (size_t i = 0; i < dc_array_get_cnt(tempArray); ++i) {
+        uint32_t tempAccID = dc_array_get_id(tempArray, i);
+        dc_context_t* tempCon = dc_accounts_get_account(allAccounts, tempAccID);
+
+        dc_msg_t* tempMsg = dc_msg_new(tempCon, DC_MSG_TEXT);
+        dc_msg_set_text(tempMsg, deviceMessage.toUtf8().constData());
+
+        dc_add_device_msg(tempCon, messageLabel.toUtf8().constData(), tempMsg);
+
+        dc_msg_unref(tempMsg);
+        dc_context_unref(tempCon);
+    }
+
+    dc_array_unref(tempArray);
+}
+
+
 void DeltaHandler::enableVerifiedOneOnOneForAllAccs()
 {
     dc_array_t* tempArray = dc_accounts_get_all(allAccounts);

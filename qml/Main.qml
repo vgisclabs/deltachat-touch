@@ -35,6 +35,10 @@ MainView {
     automaticOrientation: true
     anchorToKeyboard: true
 
+    property string appName: i18n.tr('DeltaTouch')
+    property string version: '1.2.1-pre06'
+    property string oldVersion: "unknown"
+
     signal appStateNowActive()
     signal ioChanged()
 
@@ -42,6 +46,55 @@ MainView {
     signal periodicTimerSignal()
 
     signal chatlistQueryTextHasChanged(string query)
+
+    // Performs actions related to a version update
+    // directly at beginning of onCompleted
+    function checkVersionUpdateEarly() {
+        if (oldVersion === version) {
+            // Last session was by the same version as this one
+            console.log("Main.qml: No version update since last session")
+
+        } else {
+            // Any code that is to be executed upon first start
+            // of a new or updated version is to be entered here
+
+            if (oldVersion !== "unknown") {
+                console.log("Main.qml: Version update detected, version of last session: " + oldVersion)
+                // stuff only for updated versions
+            } else {
+                console.log("Main.qml: New installation detected or version older than 1.1.1")
+                // stuff only for new or very old (< 1.1.1) installations
+            }
+
+            // Do NOT save the new version to the settings, this is done
+            // in checkVersionUpdateLate()
+        }
+    }
+
+    // Performs actions related to a version update
+    // at the end of the startup process, i.e., when
+    // all accounts are open
+    function checkVersionUpdateLate() {
+        // Action only needed if new version
+        if (oldVersion !== version) {
+            // Any code that is to be executed upon first start
+            // of a new or updated version is to be entered here
+
+//            if (oldVersion !== "unknown") {
+//                // stuff only for updated versions
+//            } else {
+//                // stuff only for new or updates to very old (< 1.1.1) installations
+//            }
+
+            // add device message for the current version.
+            // The version string has to be passed, the actual
+            // message is defined in the called function in C++.
+            DeltaHandler.addDeviceMessageForVersion(version)
+
+            // Save the new version to the settings
+            oldVersion = version
+        }
+    }
 
     function updateConnectivity() {
         let conn = DeltaHandler.getConnectivitySimple()
@@ -163,6 +216,8 @@ MainView {
             updateConnectivity()
         }
 
+        checkVersionUpdateLate()
+
         startStopIO()
         hintTimer.start()
 
@@ -186,10 +241,6 @@ MainView {
     function clearChatlistQuery() {
         chatlistSearchField.text = "";
     }
-
-    property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.2.1-pre05'
-    property string oldVersion: "unknown"
 
     // Color scheme
     //
@@ -1105,17 +1156,7 @@ MainView {
     Component.onCompleted: {
         console.log("Main.qml: App version " + version)
 
-        if (oldVersion === version) {
-            // Last session was by the same version as this one
-            console.log("Main.qml: No version update since last session")
-        } else {
-            // Any code that is to be executed upon first start
-            // of a new version is to be entered here
-            console.log("Main.qml: Version update detected, version of last session: " + oldVersion)
-            
-            // save the new version to the settings
-            oldVersion = version
-        }
+        checkVersionUpdateEarly()
 
         isDesktopMode = DeltaHandler.isDesktopMode()
         if (isDesktopMode) {

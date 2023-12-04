@@ -395,7 +395,7 @@ Page {
                         visible: model.isClosed
                     }
 
-                    LomiriShape {
+                    UbuntuShape {
                         id: newMsgCountShape
                         height: newMsgCountLabel.height + units.gu(0.6)
                         width: height

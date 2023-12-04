@@ -36,7 +36,7 @@ public:
 
     // IsClosedRole is for checking whether the account is an encrypted one. It
     // doesn't say whether the account has already been opened or not.
-    enum { AddrRole, IsConfiguredRole, ProfilePicRole, UsernameRole, IsClosedRole};
+    enum { AddrRole, IsConfiguredRole, ProfilePicRole, UsernameRole, IsClosedRole, FreshMsgCountRole };
 
     // TODO: reference to DeltaHandler really needed?
     void configure(dc_accounts_t* accMngr, DeltaHandler* dHandler);
@@ -62,6 +62,7 @@ signals:
 
 public slots:
     void reset();
+    void updateFreshMsgCount(uint32_t accID, int unused1, int unused2);
 
 protected:
     QHash<int, QByteArray> roleNames() const;

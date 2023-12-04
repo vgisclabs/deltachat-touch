@@ -247,6 +247,18 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
+    connectSuccess = connect(eventThread, SIGNAL(newMsg(uint32_t, int, int)), m_accountsmodel, SLOT(updateFreshMsgCount(uint32_t, int, int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal newMsg of eventThread to slot updateFreshMsgCount of m_accountsmodel";
+        // not critical, thus no exit() statement
+    }
+
+    connectSuccess = connect(eventThread, SIGNAL(msgsChanged(uint32_t, int, int)), m_accountsmodel, SLOT(updateFreshMsgCount(uint32_t, int, int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgsChanged of eventThread to slot updateFreshMsgCount of m_accountsmodel";
+        // not critical, thus no exit() statement
+    }
+
     currentContext = nullptr;
 
     dc_array_t* tempArray = dc_accounts_get_all(allAccounts);

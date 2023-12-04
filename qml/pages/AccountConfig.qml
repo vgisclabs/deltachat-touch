@@ -328,6 +328,8 @@ Page {
             height: accountsListItemLayout.height + (divider.visible ? divider.height : 0)
             divider.visible: true
 
+            property int freshMsgCount: model.freshMsgCount
+
             onClicked: {
                 if (model.isConfigured) {
                     DeltaHandler.selectAccount(index)
@@ -364,7 +366,7 @@ Page {
                     id: configStatusRect
                     SlotsLayout.position: SlotsLayout.Trailing
                     height: units.gu(3)
-                    width: units.gu(5)
+                    width: (configStatusIcon.visible ? configStatusIcon.width + units.gu(1) : 0) + (newMsgCountShape.visible ? newMsgCountShape.width + units.gu(1) : 0) + units.gu(1)
                     color: accountsItem.color
                     Label {
                         id: configStatusLabel
@@ -385,11 +387,42 @@ Page {
                         width: height
                         color: theme.palette.normal.positive
                         anchors {
-                            left: parent.left
+                            right: parent.right
+                            rightMargin: units.gu(1)
                             top: parent.top
                         }
                         name: "lock"
                         visible: model.isClosed
+                    }
+
+                    LomiriShape {
+                        id: newMsgCountShape
+                        height: newMsgCountLabel.height + units.gu(0.6)
+                        width: height
+
+                        anchors {
+                            verticalCenter: configStatusIcon.verticalCenter
+                            //top: timestamp.bottom
+                            //topMargin: units.gu(0.3) + units.gu(scaleLevel/10)
+                            right: configStatusIcon.visible ? configStatusIcon.left : parent.right
+                            rightMargin: units.gu(1)
+                        }
+                        backgroundColor: root.unreadMessageCounterColor
+                        
+                        visible: freshMsgCount > 0
+
+                        Label {
+                            id: newMsgCountLabel
+                            anchors {
+                                top: newMsgCountShape.top
+                                topMargin: units.gu(0.3)
+                                horizontalCenter: newMsgCountShape.horizontalCenter
+                            }
+                            text: freshMsgCount > 99 ? "99+" : freshMsgCount
+                            //fontSize: root.scaledFontSizeSmaller
+                            font.bold: true
+                            color: "white"
+                        }
                     }
                 }
             } // ListItemLayout id: accountsListItemLayout

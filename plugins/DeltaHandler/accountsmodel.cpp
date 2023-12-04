@@ -48,6 +48,8 @@ QHash<int, QByteArray> AccountsModel::roleNames() const
     roles[IsConfiguredRole] = "isConfigured";
     roles[ProfilePicRole] = "profilePic";
     roles[UsernameRole] = "username";
+    roles[FreshMsgCountRole] = "freshMsgCount";
+
     // IsClosedRole is for checking whether the account is an encrypted
     // one. It doesn't say whether the account has already been opened
     // or not.
@@ -79,6 +81,7 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
     QString tempQString;
     bool tempBool;
     char* tempText {nullptr};
+    dc_array_t* tempArray {nullptr};
 
     switch(role) {
         case AccountsModel::AddrRole:
@@ -125,6 +128,11 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
             retval = tempBool;
             break;
 
+        case AccountsModel::FreshMsgCountRole:
+            tempArray = dc_get_fresh_msgs(tempContext);
+            retval = (int)dc_array_get_cnt(tempArray);
+            break;
+
         default:
             retval = QVariant();
             qDebug() << "AccountsModel::data switch reached default";
@@ -137,6 +145,10 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 
     if (tempContext) {
         dc_context_unref(tempContext);
+    }
+
+    if (tempArray) {
+        dc_array_unref(tempArray);
     }
 
     return retval;
@@ -202,6 +214,33 @@ void AccountsModel::reset()
         m_accountsArray = dc_accounts_get_all(m_accountsManager);
     }
     endResetModel();
+}
+
+
+void AccountsModel::updateFreshMsgCount(uint32_t accID, int unused1, int unused2)
+{
+    if (0 == accID) {
+        beginResetModel();
+        endResetModel();
+    } else {
+        if (m_accountsArray) {
+            size_t tempIndex {0};
+            bool foundAccID {false};
+
+            for (tempIndex = 0; tempIndex < rowCount(QModelIndex()); ++tempIndex) {
+                if (dc_array_get_id(m_accountsArray, tempIndex) == accID) {
+                    foundAccID = true;
+                    break;
+                }
+            }
+
+            if (foundAccID) {
+               dataChanged(index(tempIndex, 0), index(tempIndex, 0)); 
+            } else {
+                qDebug() << "AccountsModel::updateFreshMsgCount: ERROR: Did not find the account ID.";
+            }
+        }
+    }
 }
 
 

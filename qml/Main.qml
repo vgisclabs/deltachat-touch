@@ -36,7 +36,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.3.0'
+    property string version: '1.3.1-pre01'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()

@@ -1017,7 +1017,9 @@ MainView {
                                 fontSize: root.scaledFontSizeSmaller
                             }
 
-                            Icon {
+                            Loader {
+                                id: previewStatusLoader
+                                active: model.previewMsgState !== DeltaHandler.StateUnknown && !model.isContactRequest && model.newMsgCount === 0
                                 height: timestamp.height
                                 width: height * 2
 
@@ -1028,30 +1030,30 @@ MainView {
                                     //rightMargin: units.gu(1)
                                 }
 
-                                visible: model.previewMsgState !== 0 && !model.isContactRequest && model.newMsgCount === 0
+                                sourceComponent: Icon {
+                                    source: { 
+                                        switch (model.previewMsgState) {
+                                            case DeltaHandler.StatePending:
+                                                if (root.darkmode) {
+                                                    return Qt.resolvedUrl('../assets/dotted_circle_white.svg');
+                                                    break;
+                                                } else {
+                                                    return Qt.resolvedUrl('../assets/dotted_circle_black.svg');
+                                                    break;
+                                                }
 
-                                source: { 
-                                    switch (model.previewMsgState) {
-                                        case DeltaHandler.StatePending:
-                                            if (root.darkmode) {
-                                                return Qt.resolvedUrl('../assets/dotted_circle_white.svg');
+                                            case DeltaHandler.StateDelivered:
+                                                return Qt.resolvedUrl('../assets/sent_green.svg');
                                                 break;
-                                            } else {
-                                                return Qt.resolvedUrl('../assets/dotted_circle_black.svg');
+
+                                            case DeltaHandler.StateReceived:
+                                                return Qt.resolvedUrl('../assets/read_green.svg');
                                                 break;
-                                            }
 
-                                        case DeltaHandler.StateDelivered:
-                                            return Qt.resolvedUrl('../assets/sent_green.svg');
-                                            break;
-
-                                        case DeltaHandler.StateReceived:
-                                            return Qt.resolvedUrl('../assets/read_green.svg');
-                                            break;
-
-                                        case DeltaHandler.StateFailed:
-                                            return Qt.resolvedUrl('../assets/circled_x_red.svg');
-                                            break;
+                                            case DeltaHandler.StateFailed:
+                                                return Qt.resolvedUrl('../assets/circled_x_red.svg');
+                                                break;
+                                        }
                                     }
                                 }
                             }

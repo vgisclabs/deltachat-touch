@@ -186,7 +186,7 @@ Page {
                     horizontalCenter: parent.horizontalCenter
                     top: thanksLabel1.bottom
                 }
-                text: 'Simon (treefit)\nlink2xt\nadbenitez\nMarko\nUbuntu Touch AppDev community: Maciek, dobey, Jonatan'
+                text: 'Simon (treefit)\nlink2xt\nadbenitez\nMarko\nHocuri\nholger\nUbuntu Touch AppDev community: Maciek, dobey, Jonatan'
                 wrapMode: Text.Wrap
             }
         }

@@ -1017,6 +1017,45 @@ MainView {
                                 fontSize: root.scaledFontSizeSmaller
                             }
 
+                            Icon {
+                                height: timestamp.height
+                                width: height * 2
+
+                                anchors {
+                                    top: timestamp.bottom
+                                    topMargin: units.gu(0.6) + units.gu(scaleLevel/10)
+                                    right: dateAndMsgCount.right
+                                    //rightMargin: units.gu(1)
+                                }
+
+                                visible: model.previewMsgState !== 0 && !model.isContactRequest && model.newMsgCount === 0
+
+                                source: { 
+                                    switch (model.previewMsgState) {
+                                        case DeltaHandler.StatePending:
+                                            if (root.darkmode) {
+                                                return Qt.resolvedUrl('../assets/dotted_circle_white.svg');
+                                                break;
+                                            } else {
+                                                return Qt.resolvedUrl('../assets/dotted_circle_black.svg');
+                                                break;
+                                            }
+
+                                        case DeltaHandler.StateDelivered:
+                                            return Qt.resolvedUrl('../assets/sent_green.svg');
+                                            break;
+
+                                        case DeltaHandler.StateReceived:
+                                            return Qt.resolvedUrl('../assets/read_green.svg');
+                                            break;
+
+                                        case DeltaHandler.StateFailed:
+                                            return Qt.resolvedUrl('../assets/circled_x_red.svg');
+                                            break;
+                                    }
+                                }
+                            }
+
                             Rectangle {
                                 id: contactRequestRect
                                 width: contactRequestLabel.contentWidth + units.gu(0.5)
@@ -1059,8 +1098,7 @@ MainView {
                                 }
                                 backgroundColor: model.chatIsMuted ? (root.darkmode ? "#202020" : "#e0e0e0") : root.unreadMessageCounterColor
                                 
-                                property bool shouldBeVisible: !model.isContactRequest && model.newMsgCount > 0
-                                visible: shouldBeVisible
+                                visible: !model.isContactRequest && model.newMsgCount > 0
 
                                 Label {
                                     id: newMsgCountLabel

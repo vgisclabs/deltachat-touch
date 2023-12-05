@@ -258,7 +258,7 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                 default:
                     // TODO: there are more states, and also states of
                     // incoming messages
-                    retval = 0;
+                    retval = DeltaHandler::MsgState::StateUnknown;
                     break;
             } 
             break;

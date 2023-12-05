@@ -201,7 +201,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     connectSuccess = connect(eventThread, SIGNAL(msgFailed(uint32_t, int, int)), this, SLOT(messageFailedSlot(uint32_t, int, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageReadByRecipient";
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageFailedSlot";
         exit(1);
     }
 
@@ -965,6 +965,7 @@ QHash<int, QByteArray> DeltaHandler::roleNames() const
     roles[ChatIsArchivedRole] = "chatIsArchived";
     roles[ChatIsArchiveLinkRole] = "chatIsArchiveLink";
     roles[MsgPreviewRole] = "msgPreview";
+    roles[PreviewMessageStateRole] = "previewMsgState";
     roles[TimestampRole] = "timestamp";
     roles[StateRole] = "state";
     roles[ChatPicRole] = "chatPic";
@@ -1001,6 +1002,7 @@ QVariant DeltaHandler::data(const QModelIndex &index, int role) const
     uint32_t tempColor {0};
     QDateTime timestampDate;
     QColor tempQColor;
+    int tempInt {0};
 
     switch(role) {
         case DeltaHandler::ChatnameRole:
@@ -1048,6 +1050,33 @@ QVariant DeltaHandler::data(const QModelIndex &index, int role) const
             tempText = dc_lot_get_text2(tempLot); 
             tempQString += tempText;
             retval = tempQString;
+            break;
+
+        case DeltaHandler::PreviewMessageStateRole:
+            tempInt = dc_lot_get_state(tempLot);
+            switch(tempInt) {
+                case DC_STATE_OUT_PENDING:
+                    retval = DeltaHandler::MsgState::StatePending;
+                    break;
+
+                case DC_STATE_OUT_FAILED:
+                    retval = DeltaHandler::MsgState::StateFailed;
+                    break;
+
+                case DC_STATE_OUT_DELIVERED:
+                    retval = DeltaHandler::MsgState::StateDelivered;
+                    break;
+
+                case DC_STATE_OUT_MDN_RCVD:
+                    retval = DeltaHandler::MsgState::StateReceived;
+                    break;
+                    
+                default:
+                    // TODO: there are more states, and also states of
+                    // incoming messages
+                    retval = DeltaHandler::MsgState::StateUnknown;
+                    break;
+            } 
             break;
 
         case DeltaHandler::ChatPicRole:
@@ -1746,6 +1775,11 @@ void DeltaHandler::messageReadByRecipient(uint32_t accID, int chatID, int msgID)
     if (currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
         emit messageRead(msgID);
     }
+
+    // update the chatlist to display changes in the state of the preview message
+    if (currentAccID == accID && currentChatlist) {
+        refreshPreviewMessageState(accID, chatID);
+    }
 }
 
 
@@ -1757,6 +1791,10 @@ void DeltaHandler::messageDeliveredToServer(uint32_t accID, int chatID, int msgI
         emit messageDelivered(msgID);
     }
     
+    // update the chatlist to display changes in the state of the preview message
+    if (currentAccID == accID && currentChatlist) {
+        refreshPreviewMessageState(accID, chatID);
+    }
 }
 
 
@@ -1767,7 +1805,59 @@ void DeltaHandler::messageFailedSlot(uint32_t accID, int chatID, int msgID)
     if (currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
         emit messageFailed(msgID);
     }
-    
+
+    // update the chatlist to display changes in the state of the preview message
+    if (currentAccID == accID && currentChatlist) {
+        refreshPreviewMessageState(accID, chatID);
+    }
+}
+
+
+void DeltaHandler::refreshPreviewMessageState(uint32_t accID, int chatID)
+{
+    // CAVE: The else part below (i.e., dataChanged() instead of obtaining a
+    // new chatlist) is only possible because the data that has changed is
+    // retrieved in DeltaHandler::data() by obtaining a new dc_chat_t*.  The
+    // chatlist itself is not updated by the core; if its data are not valid
+    // anymore, it has to be obtained anew! So this method cannot be used for
+    // data that is in the chatlist itself.
+    if (0 == chatID) { // multiple chats are affected, reset the whole model
+        beginResetModel();
+
+        dc_chatlist_unref(currentChatlist);
+
+        if (m_showArchivedChats) {
+            if (m_query == "") {
+                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
+            } else {
+                currentChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
+            }
+        } else {
+            if (m_query == "") {
+                currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+            } else {
+                currentChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
+            }
+        }
+
+        endResetModel();
+    } else { // a specific chat is affected, walk trough chatlist to search for the chat
+        size_t tempIndex {0};
+        bool foundChatID {false};
+
+        for (tempIndex = 0; tempIndex < rowCount(QModelIndex()); ++tempIndex) {
+            if (dc_chatlist_get_chat_id(currentChatlist, tempIndex) == chatID) {
+                foundChatID = true;
+                break;
+            }
+        }
+
+        if (foundChatID) {
+           dataChanged(index(tempIndex, 0), index(tempIndex, 0)); 
+        } else {
+            qDebug() << "DeltaHandler::refreshPreviewMessageState(): ERROR: Did not find the account ID.";
+        }
+    }
 }
 
 

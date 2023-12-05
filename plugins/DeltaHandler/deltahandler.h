@@ -49,7 +49,7 @@ public:
     explicit DeltaHandler(QObject *parent = 0);
     ~DeltaHandler();
 
-    enum { ChatnameRole, ChatIsPinnedRole, ChatIsArchivedRole, ChatIsArchiveLinkRole, MsgPreviewRole, TimestampRole, StateRole, ChatPicRole, IsContactRequestRole, AvatarColorRole, AvatarInitialRole, ChatIsMutedRole, ChatIsVerifiedRole, NewMsgCountRole };
+    enum { ChatnameRole, ChatIsPinnedRole, ChatIsArchivedRole, ChatIsArchiveLinkRole, MsgPreviewRole, PreviewMessageStateRole, TimestampRole, StateRole, ChatPicRole, IsContactRequestRole, AvatarColorRole, AvatarInitialRole, ChatIsMutedRole, ChatIsVerifiedRole, NewMsgCountRole };
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
     // a module in Qt (yet?).
@@ -58,7 +58,7 @@ public:
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
     // a module in Qt (yet?).
-    enum MsgState { StatePending, StateFailed, StateDelivered, StateReceived };
+    enum MsgState { StateUnknown, StatePending, StateFailed, StateDelivered, StateReceived };
     Q_ENUM(MsgState)
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
@@ -643,16 +643,21 @@ private:
     // for acting as primary device when adding second device
     dc_backup_provider_t* m_backupProvider;
 
+    bool m_coreTranslationsAlreadySet;
+
+
+    /**************************************
+     *********   Private methods   ********
+     **************************************/
     bool isExistingChat(uint32_t chatID);
     void setCoreTranslations();
     void contextSetupTasks();
     void sendNotification(uint32_t accID, int chatID, int msgID);
 
     void enableVerifiedOneOnOneForAllAccs();
-
     void addDeviceMessageToAllContexts(QString deviceMessage, QString messageLabel);
+    void refreshPreviewMessageState(uint32_t accID, int chatID);
 
-    bool m_coreTranslationsAlreadySet;
 };
 
 #endif // DELTAHANDLER_H

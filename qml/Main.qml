@@ -391,7 +391,7 @@ MainView {
         onChatViewClosed: {
             root.chatOpenAlreadyClicked = false;
             if (gotoQrScanPage) {
-                onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+                layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
             }
         }
 

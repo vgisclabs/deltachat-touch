@@ -178,6 +178,7 @@ void EmitterThread::run()
 
                 case DC_EVENT_MSGS_NOTICED:
                     qInfo().nospace() << "Emitter: DC_EVENT_MSGS_NOTICED" << ", account " << dc_event_get_account_id(event) << ", chat_id: " << dc_event_get_data1_int(event);
+                    emit msgsNoticed(dc_event_get_account_id(event), dc_event_get_data1_int(event));
                     break;
 
                 case DC_EVENT_NEW_BLOB_FILE:

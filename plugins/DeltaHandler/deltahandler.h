@@ -33,6 +33,7 @@
 #include "deltachat.h"
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
+#include <QDBusPendingCallWatcher>
 
 class ChatModel;
 class AccountsModel;
@@ -546,6 +547,7 @@ protected:
 
 private slots:
     void messagesChanged(uint32_t accID, int chatID, int msgID);
+    void messagesNoticed(uint32_t accID, int chatID);
     void chatDataModifiedReceived(uint32_t, int);
     void incomingMessage(uint32_t accID, int chatID, int msgID);
     void messageReadByRecipient(uint32_t accID, int chatID, int msgID);
@@ -564,6 +566,9 @@ private slots:
     void resetPassphrase();
     void addClosedAccountToList(uint32_t accID);
     void connectivityUpdate(uint32_t accID);
+    void finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* call);
+
+
 
 private:
     dc_accounts_t* allAccounts;
@@ -631,6 +636,13 @@ private:
 
     // Tag of the most recent notification
     QString m_lastTag;
+
+    // used to store the beginning of tags that should
+    // maybe be removed, consists of <accID>_<chatID>_, will
+    // be set in deleteActiveNotificationTags and used
+    // in finishDeleteActiveNotificationTags
+    QString m_tagsToDelete;
+
     bool m_enablePushNotifications;
     bool m_detailedPushNotifications;
     bool m_aggregatePushNotifications;
@@ -654,6 +666,7 @@ private:
     void contextSetupTasks();
     void sendNotification(uint32_t accID, int chatID, int msgID);
 
+    void deleteActiveNotificationTags(uint32_t accID, int chatID);
     void enableVerifiedOneOnOneForAllAccs();
     void addDeviceMessageToAllContexts(QString deviceMessage, QString messageLabel);
     void refreshPreviewMessageState(uint32_t accID, int chatID);

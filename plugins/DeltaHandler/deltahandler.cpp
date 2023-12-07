@@ -23,6 +23,8 @@
 //#include <unistd.h> // for sleep
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>
+#include <QDBusPendingReply>
+#include <QDBusError>
 
 namespace C {
 #include <libintl.h>
@@ -158,6 +160,12 @@ DeltaHandler::DeltaHandler(QObject* parent)
     }
 
     connectSuccess = connect(eventThread, SIGNAL(msgsChanged(uint32_t, int, int)), this, SLOT(messagesChanged(uint32_t, int, int)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgsChanged to slot messagesChanged";
+        exit(1);
+    }
+
+    connectSuccess = connect(eventThread, SIGNAL(msgsNoticed(uint32_t, int)), this, SLOT(messagesNoticed(uint32_t, int)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgsChanged to slot messagesChanged";
         exit(1);
@@ -1582,6 +1590,62 @@ void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
     } else { // message(s) for context other than the current one
         qDebug() << "DeltaHandler::messagesChanged(): signal newMsg received with accID: " << accID << ", chatID: " << chatID << "msgID: " << msgID;
     }
+}
+
+
+void DeltaHandler::messagesNoticed(uint32_t accID, int chatID)
+{
+    // DC_EVENT_MSGS_NOTICED will be emitted if messages were marked noticed or seen,
+    // also if this was done by other devices. Things to do now are
+    // - update new message counter in the chatlist
+    // - remove read messages from freshMsgs
+    // - remove notifications
+    //
+    // Note: DC_EVENT_MSGS_NOTICED is only emitted if the server supports
+    // the IMAP extension CONDSTORE.
+
+    // Refreshing the counter showing the new messages
+    // is only necessary for currentContext, as the
+    // chatlist will be reloaded in case of an account switch.
+    // Same for the freshMsgs array.
+    uint32_t currentAccID = dc_get_id(currentContext);
+
+    if (currentAccID == accID) {
+        // refresh the new message counter
+        refreshPreviewMessageState(accID, chatID);
+        
+        // removing the msgIDs from the vector freshMsgs
+        size_t i = 0;
+        size_t endpos = freshMsgs.size();
+        while (i < endpos) {
+            // only look at msgs in the chat given by the NOTICED event
+            if (freshMsgs[i][1] == chatID) {
+                dc_msg_t* tempMsg = dc_get_msg(currentContext, freshMsgs[i][0]);
+
+                // check if the message has actually been seen
+                if (dc_msg_get_state(tempMsg) == DC_STATE_IN_SEEN) {
+                    // remove the message from freshMsgs if it has been seen
+                    std::vector<std::array<uint32_t, 2>>::iterator it;
+                    it = freshMsgs.begin();
+                    freshMsgs.erase(it + i);
+                    --endpos;
+                } else {
+                    // only increase i if no item is removed from freshMsgs
+                    ++i;
+                }
+
+                if (tempMsg) {
+                    dc_msg_unref(tempMsg);
+                }
+            } else {
+                // only increase i if no item is removed from freshMsgs
+                ++i;
+            }
+        }
+    }
+
+    // remove notifications
+    deleteActiveNotificationTags(accID, chatID);
 }
 
 
@@ -4646,6 +4710,116 @@ void DeltaHandler::removeNotification(QString tag)
 //    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
 //    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
 
+}
+
+
+
+void DeltaHandler::deleteActiveNotificationTags(uint32_t accID, int chatID)
+{
+    // fill m_tagsToDelete with the current accID and chatID
+    QString accNumberString;
+    accNumberString.setNum(accID);
+
+    QString chatNumberString;
+    chatNumberString.setNum(chatID);
+
+    m_tagsToDelete = accNumberString + "_" + chatNumberString + "_";
+
+    // Query com.[ubuntu|lomiri].Postal for the tags of the currently active
+    // notifications
+    QDBusConnection bus = QDBusConnection::sessionBus();
+
+    QString appid("deltatouch.lotharketterer_deltatouch");
+    QString path;
+    QDBusMessage message;
+
+    if (QSysInfo::productVersion() == "16.04") {
+        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
+        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "ListPersistent");
+    } else {
+        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
+        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "ListPersistent");
+    }
+
+    message << appid;
+
+    QDBusPendingCall pcall = bus.asyncCall(message);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
+    // Actual removal will be done in the slot which receives
+    // the response to our call to Postal.
+    // CAVE: In theory, there's a race condition if m_tagsToDelete
+    // is modified before the DBus message has been received.
+    // Seems to be unlikely in case of a single person handling 
+    // multiple devices though. Also, worst case is that
+    // some notifications are not removed and the corresponding
+    // chat will still have the "Unread messages" marker
+    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(finishDeleteActiveNotificationTags(QDBusPendingCallWatcher*)));
+}
+
+
+void DeltaHandler::finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* call)
+{
+    // This method will remove active notifications if the corresponding
+    // message has been marked read on another device, in which case
+    // the event DC_EVENT_MSGS_NOTICED is received.
+    
+    // Make sure the type of QDBusPendingReply matches the signature of the
+    // expected DBus response. In this case, the signature is "as" (== array
+    // of strings, i.e. QStringList)
+    QDBusPendingReply<QStringList> reply = *call;
+
+    if (reply.isError()) {
+        QDBusError myerror = reply.error();
+        qDebug() << "DeltaHandler::finishDeleteActiveNotificationTags(): DBus error " << myerror.name() << ", message is: " << myerror.message();
+
+    } else { // no error, got valid DBus reply
+
+        // the tags of the currently active notifications
+        QStringList taglist = reply.argumentAt<0>();
+
+        // Get the context of the account for which the DC_EVENT_MSGS_NOTICED event
+        // was received. Its ID is the first part of m_tagsToDelete.
+        dc_context_t* tempCon {nullptr};
+
+        if (taglist.size() > 0) {
+            QString accIDString = m_tagsToDelete;
+            // Removing everything starting from the first '_' gets accID as string
+            int indexFirstUnderscore = accIDString.indexOf('_');
+            accIDString.remove(indexFirstUnderscore, accIDString.size() - indexFirstUnderscore);
+            uint32_t tempAccID = accIDString.toUInt();
+            tempCon = dc_accounts_get_account(allAccounts, tempAccID);
+        }
+
+        for (int i = 0; i < taglist.size(); ++i) {
+            if (taglist.at(i).startsWith(m_tagsToDelete)) {
+                // Notification with the current tag belongs to the context and
+                // chat in question. Now check if the corresponding message has
+                // actually been read, and only remove its notification if yes.
+                // To check this, we need the message ID in addition to the context.
+
+                // Get the message ID of the current tag
+                // Tags are <accID>_<chatID_<msgID>
+                QStringList templist = taglist.at(i).split('_');
+                uint32_t tempMsgID = templist.at(2).toUInt();
+
+                dc_msg_t* tempMsg = dc_get_msg(tempCon, tempMsgID);
+
+                // check if the message has been marked seen and remove, if yes
+                if (dc_msg_get_state(tempMsg) == DC_STATE_IN_SEEN) {
+                    removeNotification(taglist.at(i));
+                } 
+
+                if (tempMsg) {
+                    dc_msg_unref(tempMsg);
+                }
+            }
+        } // for
+
+        if (tempCon) {
+            dc_context_unref(tempCon);
+        }
+    } // else { // no error, got valid DBus reply
+    call->deleteLater();
 }
 
 

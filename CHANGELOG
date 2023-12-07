@@ -1,6 +1,7 @@
 x.x.x xxxx-xx-xx
 UI: Added new message count to the accounts page
-UI: Show state of outgoing message in chatlist
+UI: Show state icon of outgoing message in chatlist (pending, sent or read)
+Other: Synchronize state of received messages across devices (works only if mail server supports CONDSTORE)
 
 1.3.0 2023-12-03
 Feature: Verified 1:1 chats

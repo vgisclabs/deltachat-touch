@@ -5,6 +5,7 @@ set(
     SRC
     plugin.cpp
     emitterthread.cpp
+    jsonrpcresponsethread.cpp
     deltahandler.cpp
     chatmodel.cpp
     accountsmodel.cpp

@@ -47,6 +47,11 @@ MainView {
 
     signal chatlistQueryTextHasChanged(string query)
 
+    function receiveJsonrpcResponse(response) {
+        console.log("+++++++++++ in Main.qml: received jsonrpc response: ", response)
+    }
+
+
     // Performs actions related to a version update
     // directly at beginning of onCompleted
     function checkVersionUpdateEarly() {
@@ -236,6 +241,13 @@ MainView {
 
         periodicTimer.start()
 
+        DeltaHandler.sendJsonrpcRequest("{
+            \"jsonrpc\": \"2.0\",
+            \"method\": \"get_system_info\",
+            \"id\": 13105,
+            \"params\": []
+        }")
+
     }
 
     function clearChatlistQuery() {
@@ -388,6 +400,10 @@ MainView {
     
     Connections {
         target: DeltaHandler
+        onNewJsonrpcResponse:{
+            receiveJsonrpcResponse(response)
+        }
+
         onChatViewClosed: {
             root.chatOpenAlreadyClicked = false;
             if (gotoQrScanPage) {

@@ -152,6 +152,12 @@ DeltaHandler::DeltaHandler(QObject* parent)
     eventThread = new EmitterThread();
     eventThread->setAccounts(allAccounts);
 
+    m_jsonrpcInstance = dc_jsonrpc_init(allAccounts);
+
+    m_jsonrpcResponseThread = new JsonrpcResponseThread();
+    m_jsonrpcResponseThread->setJsonrcpInstance(m_jsonrpcInstance);
+    m_jsonrpcResponseThread->start();
+
 
     bool connectSuccess = connect(eventThread, SIGNAL(newMsg(uint32_t, int, int)), this, SLOT(incomingMessage(uint32_t, int, int)));
     if (!connectSuccess) {
@@ -212,6 +218,14 @@ DeltaHandler::DeltaHandler(QObject* parent)
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageFailedSlot";
         exit(1);
     }
+
+
+    connectSuccess = connect(m_jsonrpcResponseThread, SIGNAL(newJsonrpcResponse(QString)), this, SLOT(receiveJsonrcpResponse(QString)));
+    if (!connectSuccess) {
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal newJsonrpcResponse to slot receiveJsonrcpResponse";
+        exit(1);
+    }
+
 
     connectSuccess = connect(m_contactsmodel, SIGNAL(chatCreationSuccess(uint32_t)), this, SLOT(chatCreationReceiver(uint32_t)));
     if (!connectSuccess) {
@@ -494,6 +508,12 @@ void DeltaHandler::loadSelectedAccount()
     setCoreTranslations();
 
     qDebug() << "exiting DeltaHandler::loadSelectedAccount()";
+}
+
+
+void DeltaHandler::sendJsonrpcRequest(QString request)
+{
+    dc_jsonrpc_request(m_jsonrpcInstance, request.toUtf8().constData());
 }
 
 
@@ -5116,4 +5136,10 @@ bool DeltaHandler::isClosedAccount(uint32_t accID)
         }
     }
     return retval;
+}
+
+
+void DeltaHandler::receiveJsonrcpResponse(QString response)
+{
+    emit newJsonrpcResponse(response);
 }

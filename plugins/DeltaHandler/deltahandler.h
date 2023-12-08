@@ -30,6 +30,7 @@
 #include "contactsmodel.h"
 #include "groupmembermodel.h"
 #include "emitterthread.h"
+#include "jsonrpcresponsethread.h"
 #include "deltachat.h"
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
@@ -38,6 +39,7 @@
 class ChatModel;
 class AccountsModel;
 class EmitterThread;
+class JsonrpcResponseThread;
 class ContactsModel;
 class BlockedContactsModel;
 class GroupMemberModel;
@@ -86,6 +88,8 @@ public:
     Q_INVOKABLE bool isDesktopMode();
 
     Q_INVOKABLE void loadSelectedAccount();
+
+    Q_INVOKABLE void sendJsonrpcRequest(QString request);
 
     // Parameter is the version for which the message applies,
     // not the message text itself
@@ -451,6 +455,9 @@ signals:
 
     void chatlistShowsArchivedOnly(bool showsArchived);
 
+
+    void newJsonrpcResponse(QString response);
+
     // In case of encrypted databases
     void databaseDecryptionSuccess();
     void databaseDecryptionFailure();
@@ -542,6 +549,8 @@ public slots:
 
     void triggerProviderHintSignal(QString emailAddress);
 
+    void receiveJsonrcpResponse(QString response);
+
 protected:
     QHash<int, QByteArray> roleNames() const;
 
@@ -578,6 +587,8 @@ private:
     dc_context_t* tempContext; // for creation of new account
     dc_chatlist_t* currentChatlist;
     EmitterThread* eventThread;
+    JsonrpcResponseThread* m_jsonrpcResponseThread;
+    dc_jsonrpc_instance_t* m_jsonrpcInstance;
     ChatModel* m_chatmodel;
     AccountsModel* m_accountsmodel;
     BlockedContactsModel* m_blockedcontactsmodel;

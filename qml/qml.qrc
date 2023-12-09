@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file>client.mjs</file>
+        <file>jsonrpc.mjs</file>
         <file>Main.qml</file>
         <file>pages/About.qml</file>
         <file>pages/AccountConfig.qml</file>

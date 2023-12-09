@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-02 17:51+0000\n"
+"POT-Creation-Date: 2023-12-09 00:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,18 +25,18 @@ msgstr ""
 msgid "Type e-mail address above"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1663
+#: ../plugins/DeltaHandler/deltahandler.cpp:1825
 msgid "New message"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:2701
+#: ../plugins/DeltaHandler/deltahandler.cpp:2924
 msgid ""
 "Failed to remove the temporary copy of the backup export in the cache "
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3819
-#: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:418
+#: ../plugins/DeltaHandler/deltahandler.cpp:4042
+#: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:451
 #: ../qml/pages/AddAccountAsSecondDevice.qml:110
 #: ../qml/pages/AddAccountAsSecondDevice.qml:141
 #: ../qml/pages/AddAccountAsSecondDevice.qml:362
@@ -52,65 +52,65 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3898
-#: ../plugins/DeltaHandler/deltahandler.cpp:3921
+#: ../plugins/DeltaHandler/deltahandler.cpp:4121
+#: ../plugins/DeltaHandler/deltahandler.cpp:4144
 msgid "QR code could not be decoded"
 msgstr ""
 
-#: ../qml/Main.qml:79
+#: ../qml/Main.qml:39 deltatouch.desktop.in.h:1
+msgid "DeltaTouch"
+msgstr ""
+
+#: ../qml/Main.qml:139
 msgid ""
 "From last session, database encryption has not finished yet and will resume "
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:87
+#: ../qml/Main.qml:147
 msgid ""
 "From last session, database decryption has not finished yet and will resume "
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:190 deltatouch.desktop.in.h:1
-msgid "DeltaTouch"
-msgstr ""
-
-#: ../qml/Main.qml:368 ../qml/Main.qml:1135
+#: ../qml/Main.qml:437 ../qml/Main.qml:1237
 #: ../qml/pages/AddAccountAsSecondDevice.qml:109
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:115
 #: ../qml/pages/QrShowScan.qml:296
 msgid "Error: %1"
 msgstr ""
 
-#: ../qml/Main.qml:471 ../qml/Main.qml:478
+#: ../qml/Main.qml:540 ../qml/Main.qml:547
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:471 ../qml/Main.qml:478 ../qml/Main.qml:530
-#: ../qml/pages/AccountConfig.qml:346
+#: ../qml/Main.qml:540 ../qml/Main.qml:547 ../qml/Main.qml:599
+#: ../qml/pages/AccountConfig.qml:348
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:472 ../qml/Main.qml:479
+#: ../qml/Main.qml:541 ../qml/Main.qml:548
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:306
-#: ../qml/pages/ChatView.qml:351 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:779 ../qml/pages/ChatView.qml:308
+#: ../qml/pages/ChatView.qml:353 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr ""
 
-#: ../qml/Main.qml:762
+#: ../qml/Main.qml:832
 msgid "Archived Chats"
 msgstr ""
 
-#: ../qml/Main.qml:989
+#: ../qml/Main.qml:1100
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:1049
+#: ../qml/Main.qml:1159
 msgid "Loading…"
 msgstr ""
 
-#: ../qml/Main.qml:1075 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:1185 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr ""
 
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:280
+#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:282
 #: ../qml/pages/ProgressBackupImport.qml:70
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
@@ -195,7 +195,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:421
+#: ../qml/pages/AccountConfig.qml:454
 msgid "Account is not configured."
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 #: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:122
 #: ../qml/pages/ChangeDatabasePassword.qml:97
-#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1471
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1479
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:35
@@ -246,7 +246,7 @@ msgstr ""
 #: ../qml/pages/AddAccountAsSecondDevice.qml:125
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:148
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1005
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1007
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:399 ../qml/pages/QrShowScan.qml:416
 msgid "Unknown"
@@ -381,7 +381,7 @@ msgid "Password"
 msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:359
-#: ../qml/pages/ChatView.qml:1488
+#: ../qml/pages/ChatView.qml:1496
 msgid "More Info"
 msgstr ""
 
@@ -739,7 +739,7 @@ msgstr ""
 msgid "Mute forever"
 msgstr ""
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:271
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:273
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr ""
@@ -749,68 +749,68 @@ msgstr ""
 msgid "Clear Chat"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:166 ../qml/pages/ChatView.qml:190
-#: ../qml/pages/ChatView.qml:1422
+#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
+#: ../qml/pages/ChatView.qml:1430
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
-#: ../qml/pages/ChatView.qml:1424
+#: ../qml/pages/ChatView.qml:170 ../qml/pages/ChatView.qml:194
+#: ../qml/pages/ChatView.qml:1432
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:251 ../qml/pages/ChatView.qml:1059
+#: ../qml/pages/ChatView.qml:253 ../qml/pages/ChatView.qml:1061
 msgid "Voice Message"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:264
+#: ../qml/pages/ChatView.qml:266
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:292
+#: ../qml/pages/ChatView.qml:294
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:950
+#: ../qml/pages/ChatView.qml:952
 msgid "Forwarded Message"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1153
+#: ../qml/pages/ChatView.qml:1155
 msgid "Download"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1155
+#: ../qml/pages/ChatView.qml:1157
 msgid "Download failed"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1157
+#: ../qml/pages/ChatView.qml:1159
 msgid "Downloading…"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1192
+#: ../qml/pages/ChatView.qml:1200
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1214
+#: ../qml/pages/ChatView.qml:1222
 msgid "Show Full Message…"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1458
+#: ../qml/pages/ChatView.qml:1466
 msgid "%1 sent a message from another device."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:2110
+#: ../qml/pages/ChatView.qml:2118
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:2127 ../qml/pages/ChatView.qml:2281
+#: ../qml/pages/ChatView.qml:2135 ../qml/pages/ChatView.qml:2289
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:2143
+#: ../qml/pages/ChatView.qml:2151
 msgid "Block"
 msgstr ""
 

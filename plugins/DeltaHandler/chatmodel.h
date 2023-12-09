@@ -108,6 +108,8 @@ public:
 
     Q_INVOKABLE void forwardMessage(uint32_t chatIdToForwardTo);
 
+    Q_INVOKABLE int indexToMessageId(int myindex);
+
     Q_INVOKABLE void downloadFullMessage(int myindex);
 
     // invoked by clicking the "send" icon in a chat,

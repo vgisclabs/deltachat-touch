@@ -28,6 +28,8 @@ import QtMultimedia 5.12
 
 import DeltaHandler 1.0
 
+import "/jsonrpc.mjs" as JSONRPC
+
 Page {
     id: chatViewPage
     anchors.fill: parent
@@ -1164,7 +1166,13 @@ Page {
                                         }
                                     }
                                     onLinkActivated: {
-                                        DeltaHandler.chatmodel.downloadFullMessage(index)
+                                        // DeltaHandler.chatmodel.downloadFullMessage(index)
+                                        let msgId = DeltaHandler.chatmodel.indexToMessageId(index)
+                                        JSONRPC.client.getSelectedAccountId().then(accountId => // TODO get the selected account Id from somewhere else and cache it in a var
+                                            JSONRPC.client.downloadFullMessage(accountId, msgId)
+                                                .catch(error => console.log("msg dl request failed:", error.message)) // to try the error handling use an invalid accountId or messageId
+                                        )
+                                        
                                         linkColor = root.darkmode ? (model.messageSeen || isOther ? "#8080f7" : "#000055") : "#0000ff"
                                     }
                                     color: textColor

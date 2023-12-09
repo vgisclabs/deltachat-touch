@@ -1966,6 +1966,11 @@ void ChatModel::forwardMessage(uint32_t chatIdToForwardTo)
 }
 
 
+int ChatModel::indexToMessageId(int myindex)
+{
+    return msgVector[myindex];
+}
+
 void ChatModel::downloadFullMessage(int myindex)
 {
     uint32_t tempMsgID = msgVector[myindex];

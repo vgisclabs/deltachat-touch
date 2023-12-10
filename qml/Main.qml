@@ -27,6 +27,7 @@ import Ubuntu.Components.Popups 1.3
 
 import DeltaHandler 1.0
 import "pages"
+import "jsonrpc.mjs" as JSONRPC
 
 MainView {
     id: root
@@ -48,7 +49,8 @@ MainView {
     signal chatlistQueryTextHasChanged(string query)
 
     function receiveJsonrpcResponse(response) {
-        console.log("+++++++++++ in Main.qml: received jsonrpc response: ", response)
+         console.log("+++++++++++ in Main.qml: received jsonrpc response: ", response)
+        JSONRPC.receiveResponse(response)
     }
 
 
@@ -720,7 +722,10 @@ MainView {
             
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/About.qml'))
+                        onClicked: () => {
+                            JSONRPC.client.getSystemInfo().then((dc_info) => console.log(dc_info.deltachat_core_version))
+                            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/About.qml'))
+                        }
                         enabled: !root.chatOpenAlreadyClicked
                     }
                 }
@@ -1223,6 +1228,8 @@ MainView {
 
         darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
         startupStep1()
+
+        JSONRPC.setSendRequest((request) => DeltaHandler.sendJsonrpcRequest(request))
     }
 
     Connections {

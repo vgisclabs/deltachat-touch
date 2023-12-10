@@ -19,7 +19,7 @@
 import QtQuick 2.12
 import Ubuntu.Components 1.3
 
-import DeltaHandler 1.0
+import "../jsonrpc.mjs" as JSONRPC
 
 Page {
     id: aboutPage
@@ -28,7 +28,15 @@ Page {
         title: i18n.tr('About DeltaTouch')
     }
 
-    property string deltaversion: DeltaHandler.getCurrentConfig("sys.version")
+    property string deltaversion 
+
+    function setDeltaversion(versionString) {
+        deltaversion = versionString
+    }
+
+    Component.onCompleted: {
+        JSONRPC.client.getSystemInfo().then((dc_info) => setDeltaversion(dc_info.deltachat_core_version))
+    }
 
     Flickable {
         id: flick
@@ -147,7 +155,7 @@ Page {
                     top: supportLabel2.bottom
                     topMargin: units.gu(1)
                 }
-                text: i18n.tr('This app is powered by deltachat-core-rust') + (deltaversion == "" ? "" : " v" + deltaversion) + (' (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
+                text: i18n.tr('This app is powered by deltachat-core-rust ') + (deltaversion == "" ? "" : deltaversion) + (' (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
                 linkColor: root.dtLinkColor
                 onLinkActivated: Qt.openUrlExternally('https://github.com/deltachat/deltachat-core-rust')
                 wrapMode: Text.Wrap

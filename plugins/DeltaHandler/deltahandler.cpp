@@ -501,10 +501,10 @@ void DeltaHandler::loadSelectedAccount()
         } // else of if(dc_is_configured(currentContext)
     }
 
+    setCoreTranslations();
+
     endResetModel();
     emit accountChanged();
-
-    setCoreTranslations();
 
     qDebug() << "exiting DeltaHandler::loadSelectedAccount()";
 }

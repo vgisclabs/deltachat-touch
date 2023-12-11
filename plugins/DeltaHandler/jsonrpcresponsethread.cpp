@@ -18,9 +18,9 @@
 
 #include "jsonrpcresponsethread.h"
 
-JsonrpcResponseThread::JsonrpcResponseThread()
+JsonrpcResponseThread::JsonrpcResponseThread(dc_jsonrpc_instance_t* jsoninst)
 {
-    m_jsonrpcInstance = nullptr;
+    m_jsonrpcInstance = jsoninst;
 
 }
 
@@ -39,10 +39,4 @@ void JsonrpcResponseThread::run()
     } else {
          qDebug() << "JsonrpcResponseThread::run(): Fatal error: No dc_jsonrpc_instance_t defined, could not start response loop.";
     }
-}
-
-
-void JsonrpcResponseThread::setJsonrcpInstance(dc_jsonrpc_instance_t* jsoninst)
-{
-    m_jsonrpcInstance = jsoninst;
 }

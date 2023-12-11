@@ -149,13 +149,12 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
-    eventThread = new EmitterThread();
-    eventThread->setAccounts(allAccounts);
+    // will be started later
+    eventThread = new EmitterThread(allAccounts);
 
     m_jsonrpcInstance = dc_jsonrpc_init(allAccounts);
 
-    m_jsonrpcResponseThread = new JsonrpcResponseThread();
-    m_jsonrpcResponseThread->setJsonrcpInstance(m_jsonrpcInstance);
+    m_jsonrpcResponseThread = new JsonrpcResponseThread(m_jsonrpcInstance);
     m_jsonrpcResponseThread->start();
 
 

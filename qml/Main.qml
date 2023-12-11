@@ -49,7 +49,7 @@ MainView {
     signal chatlistQueryTextHasChanged(string query)
 
     function receiveJsonrpcResponse(response) {
-         console.log("+++++++++++ in Main.qml: received jsonrpc response: ", response)
+        //console.log("+++++++++++ in Main.qml: received jsonrpc response: ", response)
         JSONRPC.receiveResponse(response)
     }
 
@@ -722,8 +722,7 @@ MainView {
             
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: () => {
-                            JSONRPC.client.getSystemInfo().then((dc_info) => console.log(dc_info.deltachat_core_version))
+                        onClicked: {
                             layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/About.qml'))
                         }
                         enabled: !root.chatOpenAlreadyClicked
@@ -1230,6 +1229,8 @@ MainView {
         startupStep1()
 
         JSONRPC.setSendRequest((request) => DeltaHandler.sendJsonrpcRequest(request))
+
+        JSONRPC.client.getSystemInfo().then((dc_info) => console.log("Main.qml: deltachat-core-rust", dc_info.deltachat_core_version))
     }
 
     Connections {

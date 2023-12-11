@@ -30,12 +30,8 @@ Page {
 
     property string deltaversion 
 
-    function setDeltaversion(versionString) {
-        deltaversion = versionString
-    }
-
     Component.onCompleted: {
-        JSONRPC.client.getSystemInfo().then((dc_info) => setDeltaversion(dc_info.deltachat_core_version))
+        JSONRPC.client.getSystemInfo().then((dc_info) => (deltaversion = dc_info.deltachat_core_version))
     }
 
     Flickable {

@@ -18,9 +18,9 @@
 
 #include "emitterthread.h"
 
-EmitterThread::EmitterThread()
+EmitterThread::EmitterThread(dc_accounts_t* accs)
 {
-    accounts = nullptr;
+    accounts = accs;
 }
 
 void EmitterThread::run()
@@ -246,10 +246,4 @@ void EmitterThread::run()
     else {
          qDebug() << "Emitter: Fatal error: No account defined, could not start emitter.";
     }
-}
-
-
-void EmitterThread::setAccounts(dc_accounts_t* accs)
-{
-    accounts = accs;
 }

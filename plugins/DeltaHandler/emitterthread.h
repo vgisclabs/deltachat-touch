@@ -28,10 +28,9 @@ class EmitterThread : public QThread {
     Q_OBJECT
 
     public:
-        EmitterThread();
+        EmitterThread(dc_accounts_t* accs);
 
         void run();
-        void setAccounts(dc_accounts_t* accs);
 
     signals:
             void newMsg(uint32_t accID, int chatID, int msgID);

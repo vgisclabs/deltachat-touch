@@ -28,10 +28,9 @@ class JsonrpcResponseThread : public QThread {
     Q_OBJECT
 
     public:
-        JsonrpcResponseThread();
+        JsonrpcResponseThread(dc_jsonrpc_instance_t* jsoninst);
 
         void run();
-        void setJsonrcpInstance(dc_jsonrpc_instance_t* jsoninst);
 
     signals:
         void newJsonrpcResponse(QString stringResponse);

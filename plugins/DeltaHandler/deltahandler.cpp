@@ -1938,7 +1938,7 @@ void DeltaHandler::refreshPreviewMessageState(uint32_t accID, int chatID)
         if (foundChatID) {
            dataChanged(index(tempIndex, 0), index(tempIndex, 0)); 
         } else {
-            qDebug() << "DeltaHandler::refreshPreviewMessageState(): ERROR: Did not find the account ID.";
+            qDebug() << "DeltaHandler::refreshPreviewMessageState(): ERROR: Did not find chat ID " << chatID;
         }
     }
 }

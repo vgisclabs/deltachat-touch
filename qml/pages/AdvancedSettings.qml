@@ -409,6 +409,28 @@ Page {
                     PopupUtils.open(Qt.resolvedUrl("ProgressKeysImport.qml"))
                 }
             }
+
+
+            ListItem {
+                height: logviewerLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: logviewerLayout
+                    title.text: i18n.tr("View Log")
+                    title.font.bold: true
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    layout.addPageToCurrentColumn(advancedSettingsPage, Qt.resolvedUrl("LogViewer.qml"))
+                }
+            }
         }
     }
 

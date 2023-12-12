@@ -1604,7 +1604,7 @@ Page {
 
         Rectangle {
             id: attachmentPreviewRect
-            height: (attachImagePreviewMode ? attachPreviewImage.height : attachFilePreviewLabel.contentHeight + units.gu(0.5)) + cancelAttachmentShape.height
+            height: (attachImagePreviewMode ? attachPreviewImage.height : (attachFilePreviewLabel.contentHeight > cancelAttachmentShape.height ? attachFilePreviewLabel.contentHeight : cancelAttachmentShape.height) + units.gu(1.5)) + cancelAttachmentShape.height
             width: parent.width
 
             color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
@@ -2177,9 +2177,6 @@ Page {
 
         Audio {
             id: messageAudio
-            onPlaying: {
-                audioRecordBox.stopVoiceRecordingOrPlaying()
-            }
         }
 
         sourceComponent: LomiriShape {

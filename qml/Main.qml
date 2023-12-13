@@ -242,14 +242,6 @@ MainView {
         DeltaHandler.connectivityChangedForActiveAccount.connect(updateConnectivity)
 
         periodicTimer.start()
-
-        DeltaHandler.sendJsonrpcRequest("{
-            \"jsonrpc\": \"2.0\",
-            \"method\": \"get_system_info\",
-            \"id\": 13105,
-            \"params\": []
-        }")
-
     }
 
     function clearChatlistQuery() {

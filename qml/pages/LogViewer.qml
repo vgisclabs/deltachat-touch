@@ -24,6 +24,12 @@ import Qt.labs.platform 1.1
 
 import DeltaHandler 1.0
 
+// Idea + code taken in modified form from
+// https://github.com/NeoTheThird/Logviewer/tree/master
+// Copyright (C) 2017 - 2020 Jan Sprinz
+// Copyright (C) 2014 - 2016 Victor Tuson Palau and Niklas Wenzel
+// licensed under GPLv3
+
 Page {
     id: logViewerPage
 

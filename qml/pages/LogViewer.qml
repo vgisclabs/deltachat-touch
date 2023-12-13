@@ -17,8 +17,9 @@
  */
 
 import QtQuick 2.12
+import QtQml 2.12
 import Lomiri.Components 1.3
-import QtWebEngine 1.8
+//import QtWebEngine 1.8
 import Qt.labs.platform 1.1
 
 import DeltaHandler 1.0
@@ -26,20 +27,72 @@ import DeltaHandler 1.0
 Page {
     id: logViewerPage
 
+    property var locale: Qt.locale()
+    property string currentDateString
+
     header: PageHeader {
         id: header
         title: i18n.tr("Log")
+
+        trailingActionBar.actions: [
+            Action {
+                iconName: "reload"
+                text: i18n.tr("Help")
+                onTriggered: update()
+            },
+            
+            Action {
+                iconName: "save-as"
+                text: i18n.tr("Save Log")
+                onTriggered: {
+                    let textToSave = logText.text
+                    let saveFile = DeltaHandler.saveLog(textToSave, currentDateString)
+                    let fullpath = StandardPaths.locate(StandardPaths.CacheLocation, saveFile)
+                    layout.addPageToCurrentColumn(logViewerPage, Qt.resolvedUrl("PickerLogToExport.qml"), {"url": fullpath})
+                }
+            }
+        ]
     }
 
-    WebEngineView {
-        id: webview
+    function update() {
+        var xhr = new XMLHttpRequest;
+        xhr.open("GET", StandardPaths.locate(StandardPaths.CacheLocation, "/logfile.txt"));
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE && xhr.responseText) {
+                var formatedText = xhr.responseText.replace(/\n/g, "\n\n")
+                // to be able to save the file with the current date/time in its name
+                logViewerPage.currentDateString = new Date().toLocaleString(locale, "yyyy_MM_dd-hh_mm_ss")
+                logText.text = formatedText;
+            }
+        };
+        xhr.send();
+        scrollView.flickableItem.contentY = scrollView.flickableItem.contentHeight - scrollView.height
+    }
+
+    ScrollView {
+        id: scrollView
         anchors {
             top: header.bottom
-            bottom: parent.bottom
+            topMargin: units.gu(1)
             left: parent.left
             right: parent.right
+            bottom: parent.bottom
         }
-        zoomFactor: 3.0
-        url: StandardPaths.locate(StandardPaths.CacheLocation, "/logfile.txt")
+
+        TextEdit {
+            id: logText
+            wrapMode: TextEdit.Wrap
+            width: scrollView.width
+            readOnly: true
+            //font.pointSize: fontSize
+            //font.family: "Ubuntu Mono"
+            textFormat: TextEdit.PlainText
+            textMargin: units.gu(2)
+            color: theme.palette.normal.fieldText
+            selectedTextColor: theme.palette.selected.selectionText
+            selectionColor: theme.palette.selected.selection
+
+            Component.onCompleted: logViewerPage.update();
+        }
     }
 } // end Page id: logViewerPage

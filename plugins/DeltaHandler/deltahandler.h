@@ -283,6 +283,8 @@ public:
     Q_INVOKABLE int getConnectivitySimple();
     Q_INVOKABLE QString getConnectivityHtml();
 
+    Q_INVOKABLE QString saveLog(QString logtext, QString datetime);
+
     /* ========================================================
      * ===============Self Profile editing ====================
      * ======================================================== */

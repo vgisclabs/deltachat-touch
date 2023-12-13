@@ -4866,6 +4866,32 @@ QString DeltaHandler::getConnectivityHtml()
 }
 
 
+QString DeltaHandler::saveLog(QString logtext, QString datetime)
+{
+    // Takes the content of the TextEdit containing the log
+    // as taken at datetime, puts it into a file in the cache
+    // dir and returns the filename.
+    QString snapshotname("/deltatouch-log-");
+    snapshotname.append(datetime);
+    snapshotname.append(".txt");
+    snapshotname.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+
+    QFile logSnapshot(snapshotname);
+    if (!logSnapshot.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        qDebug() << "DeltaHandler::saveLog(): Could not save current log excerpt to " << snapshotname;
+    } else {
+        QTextStream out(&logSnapshot);
+        out << logtext;
+        logSnapshot.flush();
+        logSnapshot.close();
+    }
+
+    // have to remove the trailing stuff
+    snapshotname.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+    return snapshotname;
+}
+
+
 void DeltaHandler::contextSetupTasks()
 {
     m_contactsmodel->updateContext(currentContext);

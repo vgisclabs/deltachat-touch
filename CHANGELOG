@@ -2,7 +2,9 @@ x.x.x xxxx-xx-xx
 UI: Added new message count to the accounts page
 UI: Show state icon of outgoing message in chatlist (pending, sent or read)
 UI: Corrected file/audio attachment preview area
+UI: Add log viewer page
 Other: Synchronize state of received messages across devices (works only if mail server supports CONDSTORE)
+Other: Redirect logs to file in app cache dir (deleted upon app closure)
 Internal: Add infrastructure for deltachat-core-rust jsonrpc calls
 
 1.3.0 2023-12-03

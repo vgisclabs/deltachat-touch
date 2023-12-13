@@ -5073,7 +5073,6 @@ void DeltaHandler::shutdownTasks()
 {
     dc_accounts_stop_io(allAccounts);
     QDir cachepath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
-    qDebug() << "cachepath: " << cachepath.absolutePath();
     cachepath.removeRecursively();
 }
 

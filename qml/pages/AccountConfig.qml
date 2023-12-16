@@ -409,7 +409,7 @@ Page {
                         }
                         backgroundColor: root.unreadMessageCounterColor
                         
-                        visible: freshMsgCount > 0
+                        visible: freshMsgCount > 0 && model.isConfigured
 
                         Label {
                             id: newMsgCountLabel

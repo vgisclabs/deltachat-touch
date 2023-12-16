@@ -37,6 +37,9 @@ Page {
     property string chatname: DeltaHandler.chatName()
     property bool currentlyQuotingMessage: false
 
+    property int accountID
+    property int chatID
+
     // determines whether the buttons to add attachments (== true) or
     // the text entry bar are visible (== false)
     property bool attachmentMode: false
@@ -256,7 +259,41 @@ Page {
 
     header: PageHeader {
         id: header
-        title: chatname
+        //title: chatname
+
+        contents: Rectangle {
+            anchors.fill: parent
+            color: theme.palette.normal.background
+
+            Label {
+                anchors {
+                    left: parent.left
+                    verticalCenter: parent.verticalCenter
+                }
+                text: chatname
+                fontSize: "large"
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    JSONRPC.client.getFullChatById(chatViewPage.accountID, chatViewPage.chatID).then((fullChat) => {
+                        if (fullChat.chatType === DeltaHandler.ChatTypeSingle && !fullChat.isSelfTalk) {
+                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": fullChat.contactIds[0] })
+
+                        } else if (fullChat.chatType === DeltaHandler.ChatTypeGroup) {
+                            DeltaHandler.setMomentaryChatIdById(chatViewPage.chatID)
+                            DeltaHandler.momentaryChatStartEditGroup()
+                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false })
+                            
+                        } else {
+                            console.log("Header clicked, info: Neither a group nor a single chat, no action defined")
+                        }
+                    })
+                }
+            }
+
+        }
 
         leadingActionBar.numberOfSlots: 3
         leadingActionBar.actions: [

@@ -147,7 +147,7 @@ public:
 public slots:
     void messageStatusChangedSlot(int msgID);
     void appIsActiveAgainActions();
-    void chatViewIsOpened();
+    void chatViewIsOpened(uint32_t accountID, uint32_t chatID);
     // unusedParam is only there so the signal from ChatView.qml
     // can be connected to both a slot in DeltaHandler (which
     // needs this parameter) and here (where the parameter

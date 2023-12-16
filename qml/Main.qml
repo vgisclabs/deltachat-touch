@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.3.1-pre03'
+    property string version: '1.3.1-pre05'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -416,7 +416,7 @@ MainView {
         }
 
         onOpenChatViewRequest: {
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'))
+            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'), { "accountID": accID, "chatID": chatID })
         }
 
         onChatlistShowsArchivedOnly: {

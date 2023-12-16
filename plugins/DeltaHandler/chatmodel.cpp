@@ -2079,7 +2079,7 @@ void ChatModel::appIsActiveAgainActions() {
 }
 
 
-void ChatModel::chatViewIsOpened()
+void ChatModel::chatViewIsOpened(uint32_t accountID, uint32_t chatID)
 {
     m_chatIsBeingViewed = true;
 }

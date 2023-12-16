@@ -520,14 +520,23 @@ void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
 {
     // Device message for version 1.3.0;
     // remove/adapt for newer versions
-    if (appVersion == "1.3.0") {
+    if (appVersion == "1.3.0" || appVersion == "1.3.1") {
         QString tempQString = "What's new in 1.3.0?<br><br>• 1:1 chats guarantee end-to-end encryption for introduced contacts now<br>• these contacts and chats are marked with green checkmarks<br>• voice message recording starts immediately<br>• HTML mail view (\"Show Full Message…\")<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
 
-        QString versionLabel = appVersion;
-        versionLabel.replace(QRegExp("\\."), "-");
+        QString versionLabel = "1-3-0";
 
         addDeviceMessageToAllContexts(tempQString, versionLabel);
     }
+
+    // Device message for version 1.3.1;
+    if (appVersion == "1.3.1") {
+        QString tempQString = "What's new in 1.3.1?<br><br>• App logs are redirected to file in cache to avoid sensitive data persisting in journald logs. Log file is deleted upon app closure.<br>• Log viewer page (via Advanced Settings)<br>• Fixed audio/file attachment preview<br>• Click on header in chat view opens profile of chat partner (1:1 chats) or group edit page<br>• Chat list shows status of outgoing messages<br>• Synchronize state of received messages across devices (needs support by mail server)<br>• New message count in account overview page<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
+
+        QString versionLabel = "1-3-1";
+
+        addDeviceMessageToAllContexts(tempQString, versionLabel);
+    }
+
 }
 
 

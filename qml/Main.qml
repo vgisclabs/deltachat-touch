@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.3.1-pre05'
+    property string version: '1.3.1'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -69,7 +69,7 @@ MainView {
                 console.log("Main.qml: Version update detected, version of last session: " + oldVersion)
                 // stuff only for updated versions
             } else {
-                console.log("Main.qml: New installation detected or version older than 1.1.1")
+                console.log("Main.qml: New installation or previous version older than 1.1.1")
                 // stuff only for new or very old (< 1.1.1) installations
             }
 

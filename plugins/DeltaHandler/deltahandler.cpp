@@ -238,7 +238,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
         exit(1);
     }
 
-    connectSuccess = connect(this, SIGNAL(openChatViewRequest()), m_chatmodel, SLOT(chatViewIsOpened()));
+    connectSuccess = connect(this, SIGNAL(openChatViewRequest(uint32_t, uint32_t)), m_chatmodel, SLOT(chatViewIsOpened(uint32_t, uint32_t)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal openChatViewRequest to slot chatViewIsOpened";
         exit(1);
@@ -1348,7 +1348,7 @@ void DeltaHandler::openChat()
         m_chatmodel->configure(currentChatID, currentContext, this, freshMessagesOfChat, contactRequest);
         chatmodelIsConfigured = true;
 
-        emit openChatViewRequest();
+        emit openChatViewRequest(dc_get_id(currentContext), currentChatID);
     }
 }
 

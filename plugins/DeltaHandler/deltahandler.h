@@ -85,6 +85,13 @@ public:
     enum DcInfoType { InfoProtectionEnabled, InfoProtectionDisabled };
     Q_ENUM(DcInfoType)
 
+    enum DcChatType { ChatTypeUndefined = DC_CHAT_TYPE_UNDEFINED,
+        ChatTypeSingle = DC_CHAT_TYPE_SINGLE,
+        ChatTypeGroup = DC_CHAT_TYPE_GROUP,
+        ChatTypeMailinglist = DC_CHAT_TYPE_MAILINGLIST,
+        ChatTypeBroadcast =DC_CHAT_TYPE_BROADCAST };
+    Q_ENUM (DcChatType)
+
     Q_INVOKABLE bool isDesktopMode();
 
     Q_INVOKABLE void loadSelectedAccount();
@@ -498,7 +505,7 @@ signals:
     void newConfiguredAccount();
     void updatedAccountConfig(uint32_t);
     void chatIsContactRequestChanged();
-    void openChatViewRequest();
+    void openChatViewRequest(uint32_t accID, uint32_t chatID);
     void chatViewClosed(bool gotoQrScanPage);
     void newTempProfilePic(QString);
     void chatBlockContactDone();

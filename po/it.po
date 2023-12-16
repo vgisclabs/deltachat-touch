@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-02 14:26+0000\n"
+"POT-Creation-Date: 2023-12-16 16:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,18 +27,18 @@ msgstr "Nuovo Contatto"
 msgid "Type e-mail address above"
 msgstr "Inserisci qui sopra l'indirizzo e-mail"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:1663
+#: ../plugins/DeltaHandler/deltahandler.cpp:1824
 msgid "New message"
 msgstr "Nuovo messaggio"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:2701
+#: ../plugins/DeltaHandler/deltahandler.cpp:2923
 msgid ""
 "Failed to remove the temporary copy of the backup export in the cache "
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3819
-#: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:418
+#: ../plugins/DeltaHandler/deltahandler.cpp:4041
+#: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:451
 #: ../qml/pages/AddAccountAsSecondDevice.qml:109
 #: ../qml/pages/AddAccountAsSecondDevice.qml:140
 #: ../qml/pages/AddAccountAsSecondDevice.qml:361
@@ -54,65 +54,65 @@ msgstr ""
 msgid "Error"
 msgstr "Errore"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3898
-#: ../plugins/DeltaHandler/deltahandler.cpp:3921
+#: ../plugins/DeltaHandler/deltahandler.cpp:4120
+#: ../plugins/DeltaHandler/deltahandler.cpp:4143
 msgid "QR code could not be decoded"
 msgstr "Impossibile decodificare il codice QR"
 
-#: ../qml/Main.qml:79
+#: ../qml/Main.qml:39 deltatouch.desktop.in.h:1
+msgid "DeltaTouch"
+msgstr ""
+
+#: ../qml/Main.qml:139
 msgid ""
 "From last session, database encryption has not finished yet and will resume "
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:87
+#: ../qml/Main.qml:147
 msgid ""
 "From last session, database decryption has not finished yet and will resume "
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:190 deltatouch.desktop.in.h:1
-msgid "DeltaTouch"
-msgstr ""
-
-#: ../qml/Main.qml:368 ../qml/Main.qml:1135
+#: ../qml/Main.qml:429 ../qml/Main.qml:1232
 #: ../qml/pages/AddAccountAsSecondDevice.qml:108
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:114
 #: ../qml/pages/QrShowScan.qml:295
 msgid "Error: %1"
 msgstr "Errore: %1"
 
-#: ../qml/Main.qml:471 ../qml/Main.qml:478
+#: ../qml/Main.qml:532 ../qml/Main.qml:539
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:471 ../qml/Main.qml:478 ../qml/Main.qml:530
-#: ../qml/pages/AccountConfig.qml:346
+#: ../qml/Main.qml:532 ../qml/Main.qml:539 ../qml/Main.qml:591
+#: ../qml/pages/AccountConfig.qml:348
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:472 ../qml/Main.qml:479
+#: ../qml/Main.qml:533 ../qml/Main.qml:540
 msgid "Click Settings to manage accounts"
 msgstr ""
 
-#: ../qml/Main.qml:709 ../qml/pages/ChatView.qml:306
-#: ../qml/pages/ChatView.qml:351 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:772 ../qml/pages/ChatView.qml:308
+#: ../qml/pages/ChatView.qml:353 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "Cerca"
 
-#: ../qml/Main.qml:762
+#: ../qml/Main.qml:825
 msgid "Archived Chats"
 msgstr "Chat Archiviate"
 
-#: ../qml/Main.qml:989
+#: ../qml/Main.qml:1093
 msgid "Request"
 msgstr "Richiesta"
 
-#: ../qml/Main.qml:1049
+#: ../qml/Main.qml:1152
 msgid "Loading…"
 msgstr "Caricamento in Corso…"
 
-#: ../qml/Main.qml:1075 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:1178 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "Nuova Chat"
 
@@ -120,37 +120,37 @@ msgstr "Nuova Chat"
 msgid "About DeltaTouch"
 msgstr ""
 
-#: ../qml/pages/About.qml:72
+#: ../qml/pages/About.qml:76
 msgid "License:"
 msgstr ""
 
-#: ../qml/pages/About.qml:84
+#: ../qml/pages/About.qml:88
 msgid "Source code:"
 msgstr ""
 
-#: ../qml/pages/About.qml:105
+#: ../qml/pages/About.qml:109
 msgid "Report bugs here:"
 msgstr ""
 
-#: ../qml/pages/About.qml:128
+#: ../qml/pages/About.qml:132
 msgid ""
 "Support via classic email or DeltaChat compatible app (without reply "
 "guarantee and without any warranty):"
 msgstr ""
 
-#: ../qml/pages/About.qml:138
+#: ../qml/pages/About.qml:142
 msgid "deltatouch@mailbox.org"
 msgstr ""
 
-#: ../qml/pages/About.qml:150
-msgid "This app is powered by deltachat-core-rust"
+#: ../qml/pages/About.qml:154
+msgid "This app is powered by deltachat-core-rust "
 msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:153 ../qml/pages/SettingsPage.qml:379
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:280
+#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:282
 #: ../qml/pages/ProgressBackupImport.qml:70
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
@@ -197,7 +197,7 @@ msgstr ""
 msgid "None"
 msgstr "Nessuno"
 
-#: ../qml/pages/AccountConfig.qml:421
+#: ../qml/pages/AccountConfig.qml:454
 msgid "Account is not configured."
 msgstr "L'account non è configurato."
 
@@ -208,7 +208,7 @@ msgstr ""
 #: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:124
 #: ../qml/pages/ChangeDatabasePassword.qml:97
-#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1471
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1479
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:35
@@ -248,7 +248,7 @@ msgstr "Copiare l'account dall'altro dispositivo su questo dispositivo?"
 #: ../qml/pages/AddAccountAsSecondDevice.qml:124
 #: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
 #: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1005
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1007
 #: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
 #: ../qml/pages/QrShowScan.qml:398 ../qml/pages/QrShowScan.qml:415
 msgid "Unknown"
@@ -383,7 +383,7 @@ msgid "Password"
 msgstr "Password"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:361
-#: ../qml/pages/ChatView.qml:1488
+#: ../qml/pages/ChatView.qml:1496
 msgid "More Info"
 msgstr "Maggiori Informazioni"
 
@@ -573,15 +573,15 @@ msgstr "Risoluzione dei problemi"
 msgid "Copy to Clipboard"
 msgstr "Copia negli Appunti"
 
-#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:462
+#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:484
 msgid "Worse quality, small size"
 msgstr "Qualità peggiore, dimensione ridotta"
 
-#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:448
+#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:470
 msgid "Balanced"
 msgstr "Bilanciata"
 
-#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:434
+#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:456
 msgid "High"
 msgstr "Alta"
 
@@ -642,6 +642,10 @@ msgstr "Esporta Chiavi Segrete"
 #: ../qml/pages/AdvancedSettings.qml:400 ../qml/pages/ProgressKeysImport.qml:59
 msgid "Import Secret Keys"
 msgstr "Importa Chiavi Segrete"
+
+#: ../qml/pages/AdvancedSettings.qml:420
+msgid "View Log"
+msgstr "Vedi Registro"
 
 #: ../qml/pages/BlockContactPopup.qml:28
 msgid "Block this contact? You will no longer receive messages from them."
@@ -741,7 +745,7 @@ msgstr "Silenzia per 7 giorni"
 msgid "Mute forever"
 msgstr "Silenzia per sempre"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:271
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:273
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "Messaggi a Scomparsa"
@@ -751,68 +755,68 @@ msgstr "Messaggi a Scomparsa"
 msgid "Clear Chat"
 msgstr "Cancella Messaggi"
 
-#: ../qml/pages/ChatView.qml:166 ../qml/pages/ChatView.qml:190
-#: ../qml/pages/ChatView.qml:1422
+#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
+#: ../qml/pages/ChatView.qml:1430
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr "Questa chat contiene messaggi generati localmente. Quindi non puoi scrivere alcun messaggio."
 
-#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
-#: ../qml/pages/ChatView.qml:1424
+#: ../qml/pages/ChatView.qml:170 ../qml/pages/ChatView.qml:194
+#: ../qml/pages/ChatView.qml:1432
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr "Non puoi scrivere perché non sei in questo gruppo. Per partecipare, chiedi ad un altro membro."
 
-#: ../qml/pages/ChatView.qml:251 ../qml/pages/ChatView.qml:1059
+#: ../qml/pages/ChatView.qml:253 ../qml/pages/ChatView.qml:1061
 msgid "Voice Message"
 msgstr "Messaggio Vocale"
 
-#: ../qml/pages/ChatView.qml:264
+#: ../qml/pages/ChatView.qml:266
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:292
+#: ../qml/pages/ChatView.qml:294
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:950
+#: ../qml/pages/ChatView.qml:952
 msgid "Forwarded Message"
 msgstr "Messaggio Inoltrato"
 
-#: ../qml/pages/ChatView.qml:1153
+#: ../qml/pages/ChatView.qml:1155
 msgid "Download"
 msgstr "Scarica"
 
-#: ../qml/pages/ChatView.qml:1155
+#: ../qml/pages/ChatView.qml:1157
 msgid "Download failed"
 msgstr "Scaricamento fallito"
 
-#: ../qml/pages/ChatView.qml:1157
+#: ../qml/pages/ChatView.qml:1159
 msgid "Downloading…"
 msgstr "Scarico…"
 
-#: ../qml/pages/ChatView.qml:1192
+#: ../qml/pages/ChatView.qml:1200
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1214
+#: ../qml/pages/ChatView.qml:1222
 msgid "Show Full Message…"
 msgstr "Mostra Messaggio Completo…"
 
-#: ../qml/pages/ChatView.qml:1458
+#: ../qml/pages/ChatView.qml:1466
 msgid "%1 sent a message from another device."
 msgstr "%1 ha inviato un messaggio da un altro dispositivo."
 
-#: ../qml/pages/ChatView.qml:2110
+#: ../qml/pages/ChatView.qml:2118
 msgid "Accept"
 msgstr "Accetta"
 
-#: ../qml/pages/ChatView.qml:2127 ../qml/pages/ChatView.qml:2281
+#: ../qml/pages/ChatView.qml:2135 ../qml/pages/ChatView.qml:2286
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "Elimina"
 
-#: ../qml/pages/ChatView.qml:2143
+#: ../qml/pages/ChatView.qml:2151
 msgid "Block"
 msgstr "Blocca"
 
@@ -1117,6 +1121,22 @@ msgstr "Chiudi"
 msgid "Save"
 msgstr "Salva"
 
+#: ../qml/pages/LogViewer.qml:41
+msgid "Log"
+msgstr "Log"
+
+#: ../qml/pages/LogViewer.qml:46
+msgid "Scroll to the Bottom"
+msgstr "Scorri alla Fine"
+
+#: ../qml/pages/LogViewer.qml:52
+msgid "Help"
+msgstr "Aiuto"
+
+#: ../qml/pages/LogViewer.qml:58
+msgid "Save Log"
+msgstr "Salva Log"
+
 #: ../qml/pages/MessageInfosActions.qml:33
 msgid "Copy Text"
 msgstr "Copia Testo"
@@ -1142,7 +1162,7 @@ msgstr ""
 #: ../qml/pages/PickerBackupToExport.qml:42
 #: ../qml/pages/PickerFileToExport.qml:42 ../qml/pages/PickerFileToSend.qml:34
 #: ../qml/pages/PickerImageToExport.qml:42
-#: ../qml/pages/PickerImageToSend.qml:34
+#: ../qml/pages/PickerImageToSend.qml:34 ../qml/pages/PickerLogToExport.qml:41
 msgid "Select"
 msgstr "Seleziona"
 

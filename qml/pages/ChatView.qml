@@ -1654,6 +1654,7 @@ Page {
                     }
                     visible: attachAudioPreviewMode || attachVoicePreviewMode
                     color: theme.palette.normal.background
+                    aspect: LomiriShape.Inset
 
                     Icon {
                         id: attachAudioIcon

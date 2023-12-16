@@ -4844,8 +4844,14 @@ void DeltaHandler::finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* c
 
 int DeltaHandler::getConnectivitySimple()
 {
-    int temp = dc_get_connectivity(currentContext);
-    return temp;
+    int retval {-1};
+
+    if (currentContext) {
+        retval = dc_get_connectivity(currentContext);
+    } 
+
+    // will return -1 if currentContext is nullptr
+    return retval;
 }
 
 

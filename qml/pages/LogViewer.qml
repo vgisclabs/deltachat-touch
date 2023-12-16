@@ -42,6 +42,12 @@ Page {
 
         trailingActionBar.actions: [
             Action {
+                iconSource: "../assets/media-skip-downwards.svg"
+                text: i18n.tr("Scroll to the Bottom")
+                onTriggered: scrollView.flickableItem.contentY = scrollView.flickableItem.contentHeight - scrollView.height
+            },
+            
+            Action {
                 iconName: "reload"
                 text: i18n.tr("Help")
                 onTriggered: update()

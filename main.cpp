@@ -23,16 +23,18 @@
 #include <QQuickView>
 #include <QtWebEngine>
 #include <iostream>
-
-QFile myLogFile;
+#include <cstdio>
 
 // QtMessageHandler, a typedef for a pointer to a function with the following signature:
+//
 // void myMessageHandler(QtMsgType, const QMessageLogContext &, const QString &);
+//
+// For further info see the comment re logging in main()
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     QByteArray logMessage = msg.toLocal8Bit();
 
-    QString logHeading(QDateTime::currentDateTime().toString("dd MMM yyyy hh:mm:ss "));
+    QString logHeading(QDateTime::currentDateTime().toString("MMM dd hh:mm:ss "));
 
     if (context.file) {
         logHeading.append(context.file);
@@ -41,38 +43,43 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
         logHeading.append(": ");
     }
 
-    // Currently not logging the function
+    // Currently not logging the function in which the message was generated
 //    if (context.function) {
 //        logHeading.append("in: ");
 //        logHeading.append(context.function);
 //    }
 
-    QTextStream myLogStream(&myLogFile);
-
     // only needed for QtFatalMsg, to be able to rm -rf the cache dir
     QDir cachepath;
 
+    // everything except qFatal messages will be redirected to std::cerr because
+    // cerr is bound to logfile.txt via freopen in main()
     switch (type) {
     case QtDebugMsg:
-        myLogStream << logHeading << logMessage.constData() << "\n";
+        std::cerr << logHeading.toLocal8Bit().constData() << logMessage.constData() << "\n";
         break;
     case QtInfoMsg:
-        myLogStream << logHeading << "Info: " << logMessage.constData() << "\n";
+        std::cerr << logHeading.toLocal8Bit().constData() << "Info: " << logMessage.constData() << "\n";
         break;
     case QtWarningMsg:
-        myLogStream << logHeading << "Warning: " << logMessage.constData() << "\n";
+        std::cerr << logHeading.toLocal8Bit().constData() << "Warning: " << logMessage.constData() << "\n";
         break;
     case QtCriticalMsg:
-        myLogStream << logHeading << "Critical: " << logMessage.constData() << "\n";
+        std::cerr << logHeading.toLocal8Bit().constData() << "Critical: " << logMessage.constData() << "\n";
         break;
     case QtFatalMsg:
         // take care of removing the cache as DeltaHandler::shutdownTasks()
         // will not be called
         cachepath.setPath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
         cachepath.removeRecursively();
-        myLogFile.close();
 
-        std::cerr << logHeading.toLocal8Bit().constData() << "Fatal: " << logMessage.constData() << "\n";
+        // Maybe not the best solution, but as we want this message to persist,
+        // we can't send this message to cerr because cerr is bound to the
+        // logfile in the cache which will be deleted when the app is exiting.
+        // Feeding the message to std::cout will cause it to be logged by
+        // journald.
+        // No need for logHeading as journald will put a timestamp on it.
+        std::cout << "Fatal: " << logMessage.constData() << std::endl;
         break;
     }
 } // myMessageOutput
@@ -105,17 +112,22 @@ int main(int argc, char *argv[])
     // (but maybe not if the app is stopped irregularly).
     // Messages via qFatal() will appear in stderr and thus in journald
     // to be able to see reasons for fatal exits at least.
-    myLogFile.setFileName(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logfile.txt");
-    if (!myLogFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append | QIODevice::Unbuffered)) {
-        std::cerr << "ERROR: Could not open log file";
-    }
+    //
+    // If logging to <cache>/logfile.txt is changed, qml/LogViewer.qml has to be adapted.
+    //
+    // redirect stderr (and cerr) to a file, this is taking care
+    // of the error messages of libdeltachat.so
+    freopen((QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logfile.txt").toLocal8Bit().constData(), "w", stderr);
+    // install a different message handler for Qt, this
+    // will redirect Qt and QML console output and log messages
+    // (via qDebug(), qWarning() etc.
     qInstallMessageHandler(myMessageOutput);
 
+    // end logging part
 
     qRegisterMetaType<uint32_t>("uint32_t");
     qRegisterMetaType<int64_t>("int64_t");
     //qRegisterMetaType<size_t>("size_t");
-
 
     qDebug() << "Starting app from main.cpp";
 

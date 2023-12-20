@@ -1,3 +1,6 @@
+x.x.x xxxx-xx-xx
+UI: App does not block when adding account as second device, but shows progress bar now
+
 1.3.1 2023-12-16
 UI: Click on header in chat view opens chat partner's profile (1:1 chats) or group edit page
 UI: Show new message count in accounts overview

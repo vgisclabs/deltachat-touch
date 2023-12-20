@@ -25,6 +25,7 @@
 #include <QtDBus/QDBusMessage>
 #include <QDBusPendingReply>
 #include <QDBusError>
+#include <thread>
 
 namespace C {
 #include <libintl.h>
@@ -34,6 +35,14 @@ namespace C {
 DeltaHandler::DeltaHandler(QObject* parent)
     : QAbstractListModel(parent), tempContext {nullptr}, currentChatlist {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}
 {
+    // Set the initial id for jsonrpc requests to 1 billion, i.e. around half of the
+    // max of an unsigned int (although the id in libdeltachat might
+    // be unsigned). Reason is that jsonrpc.mjs as used in QML has its own
+    // ids that start with 0.
+    // TODO modify jsonrpc.mjs so that the next id after 999 999 999 is
+    // 0 again to avoid collisions. (not done yet because that might
+    // give license problems, see https://www.mozilla.org/en-US/MPL/2.0/combining-mpl-and-gpl/)
+    m_jsonrpcRequestId = 1000000000;
     {
         // to be able to access the files under assets
         Q_INIT_RESOURCE(assets);
@@ -2808,16 +2817,16 @@ bool DeltaHandler::isBackupFile(QString filePath)
 
 void DeltaHandler::importBackupFromFile(QString filePath)
 {
-    // imexProgress may be connected to imexBackupExportProgressReceiver or imexBackupProviderProgressReceiver,
-    // disconnect it...
-    // TODO: imexBackupImportProgressReceiver is disconnected, too, because
-    // it might cause problems if it's connected twice, is this true?
+    // imexProgress may be connected to imexBackupExportProgressReceiver or imexBackupProviderProgressReceiver
+    // disconnect it. Also disconnect it from imexBackupImportProgressReceiver, too, to avoid being
+    // connected twice.
+    //
     // TODO check return values?
     bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
     disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
     disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
     
-    // ... and connect it to imexBackupImportProgressReceiver instead
+    // ... and connect it to imexBackupImportProgressReceiver
     bool connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
     if (!connectSuccess) {
         qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupImportProgressReceiver";
@@ -3920,96 +3929,43 @@ void DeltaHandler::prepareQrBackupImport()
 
 void DeltaHandler::startQrBackupImport()
 {
-
-    // imexProgress may be connected to imexBackupExportProgressReceiver,
-    // imexBackupImportProgressReceiver or imexBackupProviderProgressReceiver,
-    // disconnect it.
+    // imexProgress may be connected to imexBackupExportProgressReceiver or imexBackupProviderProgressReceiver
+    // disconnect it. Also disconnect it from imexBackupImportProgressReceiver, too, to avoid being
+    // connected twice.
     //
-    // As dc_receive_backup() is blocking, imexProgress signals from eventThread will
-    // not be processed anyway, so the return value from dc_receive_backup() will
-    // be evaluated.
     // TODO check return values?
-    // TODO disconnect the slots directly after completion of the corresponding actions
     bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
     disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
     disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
  
+    // ... and connect it to imexBackupImportProgressReceiver
+    connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+
     m_networkingIsAllowed = false;
     // not emitting signal, but stopping io directly
     stop_io();
-    
-    // TODO check return value?
-    int importSuccess = dc_receive_backup(tempContext, m_qrTempText.toUtf8().constData());
-    if (0 == importSuccess) {
-        // If the backup import was not successful, re-select the
-        // currently active (and configured) account and delete the
-        // new account that has been prepared for the importing
-        // process.
-        if (currentContext) {
-            uint32_t tempAccID = dc_get_id(currentContext);
-            dc_accounts_select_account(allAccounts, tempAccID);
-        }
-        
-        if (tempContext) {
-            int tempAccID = dc_get_id(tempContext);
-            dc_context_unref(tempContext);
-            tempContext = nullptr;
-            dc_accounts_remove_account(allAccounts, tempAccID);
-        }
-        m_networkingIsAllowed = true;
-        emit networkingIsAllowedChanged();
-    } else {
 
-        // Enable verified 1:1 chats on the new account
-        dc_set_config(tempContext, "verified_one_on_one_chats", "1");
+    // construct the request string
+    QString requestString("{ \"jsonrpc\": \"2.0\", \"method\": \"get_backup\", \"id\": ");
 
-        beginResetModel();
+    QString tempString;
+    tempString.setNum(getJsonrpcRequestId());
+    requestString.append(tempString);
 
-        if (currentChatlist) {
-            dc_chatlist_unref(currentChatlist);
-        }
-        
-        if (currentContext) {
-            dc_context_unref(currentContext);
-        }
+    requestString.append(", \"params\": [");
 
-        bool restartNetwork = m_networkingIsStarted;
-        if (m_networkingIsStarted) {
-            stop_io();
-        }
-        currentContext = tempContext;
-        tempContext = nullptr;
+    tempString.setNum(dc_get_id(tempContext));
+    requestString.append(tempString);
 
-        contextSetupTasks();
+    requestString.append(", \"");
 
-        if (restartNetwork) {
-            start_io();
-        }
+    requestString.append(m_qrTempText.toUtf8().constData());
 
-        // clear the query before obtaining a new chatlist
-        if (m_query != "") {
-            m_query = "";
-            emit clearChatlistQueryRequest();
-        }
+    requestString.append("\" ] }");
+    // requestString is ready!
 
-        currentChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
-
-        chatmodelIsConfigured = false;
-
-        if (!m_hasConfiguredAccount) {
-            m_hasConfiguredAccount = true;
-            emit hasConfiguredAccountChanged();
-        }
-        endResetModel();
-
-        emit newConfiguredAccount();
-        if (m_encryptedDatabase) {
-            m_closedAccounts.push_back(dc_get_id(currentContext));
-        }
-        emit accountChanged();
-        m_networkingIsAllowed = true;
-        emit networkingIsAllowedChanged();
-    }
+    std::thread getBackupThread(&DeltaHandler::sendJsonrpcRequest, this, requestString);
+    getBackupThread.detach();
 }
 
 
@@ -5148,4 +5104,18 @@ bool DeltaHandler::isClosedAccount(uint32_t accID)
 void DeltaHandler::receiveJsonrcpResponse(QString response)
 {
     emit newJsonrpcResponse(response);
+}
+
+
+uint32_t DeltaHandler::getJsonrpcRequestId()
+{
+    // the id is circled between 1000000000 and
+    // 2147483647, see comment in constructor
+    if (m_jsonrpcRequestId == 2147483647) {
+        m_jsonrpcRequestId = 1000000000;
+    } else {
+        ++m_jsonrpcRequestId;
+    }
+
+    return m_jsonrpcRequestId;
 }

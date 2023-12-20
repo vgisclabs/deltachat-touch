@@ -675,6 +675,9 @@ private:
 
     bool m_coreTranslationsAlreadySet;
 
+    uint32_t m_jsonrpcRequestId;
+
+    uint32_t getJsonrpcRequestId();
 
     /**************************************
      *********   Private methods   ********

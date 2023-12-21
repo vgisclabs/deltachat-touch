@@ -3965,8 +3965,7 @@ void DeltaHandler::startQrBackupImport()
     requestString.append("\" ] }");
     // requestString is ready!
 
-    std::thread getBackupThread(&DeltaHandler::sendJsonrpcRequest, this, requestString);
-    getBackupThread.detach();
+    sendJsonrpcRequest(requestString);
 }
 
 

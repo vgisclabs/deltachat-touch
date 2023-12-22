@@ -66,8 +66,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
                 qDebug() << "DeltaHandler::DeltaHandler(): Directory " << keysToImportDir << " successfully created";
             }
             else {
-                // TODO: any follow-up action?
-                qDebug() << "DeltaHandler::DeltaHandler(): Error: Could not create directory " << keysToImportDir;
+                qFatal("DeltaHandler::DeltaHandler(): Error: Could not create directory ~/.cache/deltatouch.lotharketterer/keys_to_import");
             }
         }
     }
@@ -84,8 +83,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
             qDebug() << "DeltaHandler::DeltaHandler(): Config directory successfully created";
         }
         else {
-            qDebug() << "DeltaHandler::DeltaHandler(): Could not create config directory, exiting";
-            exit(1);
+            qFatal("DeltaHandler::DeltaHandler(): Could not create config directory, exiting");
         }
     }
 
@@ -101,8 +99,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
             qDebug() << "Cache directory successfully created";
         }
         else {
-            qDebug() << "Could not create Cache directory, exiting";
-            exit(1);
+            qFatal("Could not create Cache directory, exiting");
         }
     }
 
@@ -154,8 +151,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     allAccounts = dc_accounts_new(qPrintable(configdir), 1);
 
     if (!allAccounts) {
-        qDebug() << "DeltaHandler::DeltaHandler: Fatal error trying to create account manager.";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Fatal error trying to create account manager.");
     }
 
     // will be started later
@@ -169,112 +165,94 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     bool connectSuccess = connect(eventThread, SIGNAL(newMsg(uint32_t, int, int)), this, SLOT(incomingMessage(uint32_t, int, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal newMsg to slot incomingMessage";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal newMsg to slot incomingMessage");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(msgsChanged(uint32_t, int, int)), this, SLOT(messagesChanged(uint32_t, int, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgsChanged to slot messagesChanged";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal msgsChanged to slot messagesChanged");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(msgsNoticed(uint32_t, int)), this, SLOT(messagesNoticed(uint32_t, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgsChanged to slot messagesChanged";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal msgsNoticed to slot messagesNoticed");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(connectivityChanged(uint32_t)), this, SLOT(connectivityUpdate(uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal connectivityChanged to slot connectivityUpdate";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal connectivityChanged to slot connectivityUpdate");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(chatDataModified(uint32_t, int)), this, SLOT(chatDataModifiedReceived(uint32_t, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal chatModified to slot chatDataModifiedReceived";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal chatModified to slot chatDataModifiedReceived");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(configureProgress(int, QString)), this, SLOT(progressEvent(int, QString)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal configureProgress to slot progressEvent";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal configureProgress to slot progressEvent");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(contactsChanged()), this, SLOT(changedContacts()));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal contactsChanged to slot changedContacts";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal contactsChanged to slot changedContacts");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(msgDelivered(uint32_t, int, int)), this, SLOT(messageDeliveredToServer(uint32_t, int, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgDelivered to slot messageDeliveredToServer";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal msgDelivered to slot messageDeliveredToServer");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(msgRead(uint32_t, int, int)), this, SLOT(messageReadByRecipient(uint32_t, int, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageReadByRecipient";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageReadByRecipient");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(msgFailed(uint32_t, int, int)), this, SLOT(messageFailedSlot(uint32_t, int, int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgRead to slot messageFailedSlot";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal msgFailed to slot messageFailedSlot");
     }
 
 
     connectSuccess = connect(m_jsonrpcResponseThread, SIGNAL(newJsonrpcResponse(QString)), this, SLOT(receiveJsonrcpResponse(QString)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal newJsonrpcResponse to slot receiveJsonrcpResponse";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal newJsonrpcResponse to slot receiveJsonrcpResponse");
     }
 
 
     connectSuccess = connect(m_contactsmodel, SIGNAL(chatCreationSuccess(uint32_t)), this, SLOT(chatCreationReceiver(uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal chatCreationSuccess to slot chatCreationReceiver";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal chatCreationSuccess to slot chatCreationReceiver");
     }
 
     connectSuccess = connect(m_chatmodel, SIGNAL(markedAllMessagesSeen()), this, SLOT(resetCurrentChatMessageCount()));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal markedAllMessagesSeen to slot resetCurrentChatMessageCount";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal markedAllMessagesSeen to slot resetCurrentChatMessageCount");
     }
 
     connectSuccess = connect(this, SIGNAL(openChatViewRequest(uint32_t, uint32_t)), m_chatmodel, SLOT(chatViewIsOpened(uint32_t, uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal openChatViewRequest to slot chatViewIsOpened";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal openChatViewRequest to slot chatViewIsOpened");
     }
 
     connectSuccess = connect(this, SIGNAL(messageDelivered(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal messageDelivered to slot messageStatusChangedSlot";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal messageDelivered to slot messageStatusChangedSlot");
     }
 
     connectSuccess = connect(this, SIGNAL(messageRead(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal messageRead to slot messageReadSlot";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal messageRead to slot messageStatusChangedSlot");
     }
 
     connectSuccess = connect(this, SIGNAL(messageFailed(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal messageRead to slot messageReadSlot";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal messageFailed to slot messageStatusChangedSlot");
     }
 
     connectSuccess = connect(m_accountsmodel, SIGNAL(deletedAccount(uint32_t)), this, SLOT(removeClosedAccountFromList(uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal deletedAccount of m_accountsmodel to slot removeClosedAccountFromList";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal deletedAccount of m_accountsmodel to slot removeClosedAccountFromList");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(newMsg(uint32_t, int, int)), m_accountsmodel, SLOT(updateFreshMsgCount(uint32_t, int, int)));
@@ -1242,8 +1220,7 @@ void DeltaHandler::prepareBlockedContactsModel()
     }
 
     if (!currentContext) {
-        qDebug() << "DeltaHandler::blockedcontactsmodel(): FATAL ERROR: currentContext is not set, exiting.";
-        exit(1);
+        qFatal("DeltaHandler::blockedcontactsmodel(): FATAL ERROR: currentContext is not set, exiting.");
     }
     
     m_blockedcontactsmodel->updateContext(currentContext);
@@ -2830,8 +2807,7 @@ void DeltaHandler::importBackupFromFile(QString filePath)
     // ... and connect it to imexBackupImportProgressReceiver
     bool connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupImportProgressReceiver";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupImportProgressReceiver");
     }
 
     // filePath might be prepended by "file://" or "qrc:",
@@ -2891,14 +2867,12 @@ void DeltaHandler::exportBackup()
     // ... and connect it to imexBackupExportProgressReceiver instead
     bool connectSuccess = connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupExportProgressReceiver";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupExportProgressReceiver");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(imexFileWritten(QString)), this, SLOT(imexFileReceiver(QString)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexFileWritten to slot imexFileReceiver";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal imexFileWritten to slot imexFileReceiver");
     }
 
     QString cacheDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
@@ -3293,8 +3267,7 @@ void DeltaHandler::startCreateGroup(bool verifiedGroup)
     
     bool connectSuccess = connect(m_contactsmodel, SIGNAL(addContactToGroup(uint32_t)), m_groupmembermodel, SLOT(addMember(uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember";
-        exit(1);
+        qFatal("DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember");
     }
 }
 
@@ -3330,8 +3303,7 @@ void DeltaHandler::startEditGroup(int myindex)
     
     bool connectSuccess = connect(m_contactsmodel, SIGNAL(addContactToGroup(uint32_t)), m_groupmembermodel, SLOT(addMember(uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember";
-        exit(1);
+        qFatal("DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember");
     }
 }
 
@@ -3360,8 +3332,7 @@ void DeltaHandler::momentaryChatStartEditGroup()
     
     bool connectSuccess = connect(m_contactsmodel, SIGNAL(addContactToGroup(uint32_t)), m_groupmembermodel, SLOT(addMember(uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember";
-        exit(1);
+        qFatal("DeltaHandler::startCreateGroup(): Could not connect signal addContactToGroup to slot addMember");
     }
 }
 

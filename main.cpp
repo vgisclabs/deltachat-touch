@@ -99,7 +99,8 @@ int main(int argc, char *argv[])
         QDir tempdir;
         bool success = tempdir.mkpath(cachedir);
         if (!success) {
-            qFatal("Could not create Cache directory, exiting");
+            std::cerr << "main.cpp: Could not create cache directory, exiting" << std::endl;
+            exit(1);
         }
     }
 
@@ -117,7 +118,13 @@ int main(int argc, char *argv[])
     //
     // redirect stderr (and cerr) to a file, this is taking care
     // of the error messages of libdeltachat.so
-    freopen((QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logfile.txt").toLocal8Bit().constData(), "w", stderr);
+    if (!freopen((QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logfile.txt").toLocal8Bit().constData(), "w", stderr)) {
+        // have to use cout instead of cerr because in tests, cerr
+        // was not available when freopen failed
+        std::cout << "main.cpp: Could not redirect logfile, exiting" << std::endl;
+        exit(1);
+    }
+
     // install a different message handler for Qt, this
     // will redirect Qt and QML console output and log messages
     // (via qDebug(), qWarning() etc.

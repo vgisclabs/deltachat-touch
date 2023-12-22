@@ -93,14 +93,12 @@ void WorkflowDbToEncrypted::startWorkflow()
 
     bool connectSuccess = connect(m_emitterthread, SIGNAL(imexProgress(int)), this, SLOT(imexProgressReceiver(int)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupExportProgressReceiver";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal imexProgress to slot imexBackupExportProgressReceiver");
     }
 
     connectSuccess = connect(m_emitterthread, SIGNAL(imexFileWritten(QString)), this, SLOT(imexFileReceiver(QString)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal imexFileWritten to slot imexFileReceiver";
-        exit(1);
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal imexFileWritten to slot imexFileReceiver");
     }
 
     // don't get the first, but the last account so we can just

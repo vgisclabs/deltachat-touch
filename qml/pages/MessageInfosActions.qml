@@ -25,6 +25,8 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
+    property bool isInfoMsg: false
+
     Component.onCompleted: {
     }
 
@@ -63,7 +65,7 @@ Dialog {
             }
             PopupUtils.close(dialog)
         }
-        enabled: DeltaHandler.chatmodel.getMomentaryViewType() != DeltaHandler.TextType
+        enabled: DeltaHandler.chatmodel.getMomentaryViewType() != DeltaHandler.TextType && !isInfoMsg
     }
 
     Button {
@@ -89,5 +91,4 @@ Dialog {
             PopupUtils.close(dialog)
         }
     }
-
 }

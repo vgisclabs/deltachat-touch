@@ -565,6 +565,19 @@ Page {
     }
 
     ListItemActions {
+        id: trailingInfoMsgActions
+        actions: [
+            Action {
+                iconName: "navigation-menu"
+                onTriggered: {
+                    DeltaHandler.chatmodel.setMomentaryMessage(value)
+                    PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'), chatViewPage, { "isInfoMsg": true })
+                }
+            }
+        ]
+    }
+
+    ListItemActions {
         id: trailingMsgActions
         actions: [
             Action {
@@ -671,8 +684,8 @@ Page {
                 // TODO: implement?
                 //onPressAndHold: toast.show ( i18n.tr("Swipe to the left or the right for actions"))
 
-                leadingActions: (isUnreadMsgsBar || isInfoMsg) ? null : leadingMsgAction
-                trailingActions: (isUnreadMsgsBar || isInfoMsg) ? null : trailingMsgActions
+                leadingActions: (isUnreadMsgsBar) ? null : leadingMsgAction
+                trailingActions: (isUnreadMsgsBar) ? null : (isInfoMsg ? trailingInfoMsgActions : trailingMsgActions)
 
                 Loader {
                     id: avatarLoader

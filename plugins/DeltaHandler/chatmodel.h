@@ -142,7 +142,7 @@ public:
     Q_INVOKABLE int getMessageCount();
 
     // checks whether a file is a gif
-    Q_INVOKABLE bool isGif(QString fileToCheck);
+    Q_INVOKABLE bool isGif(QString fileToCheck) const;
 
 public slots:
     void messageStatusChangedSlot(int msgID);
@@ -173,7 +173,7 @@ signals:
     // from QML, and in the cause of audio, it will be copied
     // to cache first (won't play from AppConfigLocation due to AppArmor)
     void previewAudioAttachment(QString filepath, QString filename);
-    void previewImageAttachment(QString filepath, bool addCacheLocation);
+    void previewImageAttachment(QString filepath, bool addCacheLocation, bool isAnimated);
     void previewFileAttachment(QString filename);
     void previewVoiceAttachment(QString filepath, QString filename);
 

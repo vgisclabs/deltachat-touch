@@ -406,7 +406,15 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                     break;
                 
                 case DC_MSG_IMAGE:
-                    retval = QVariant(DeltaHandler::MsgViewType::ImageType);
+                    tempText = dc_msg_get_file(tempMsg);
+                    tempQString = tempText;
+                    // TODO: check if extension matches the actual mime type,
+                    // see FilePathRole
+                    if (isGif(tempQString)) {
+                        retval = QVariant(DeltaHandler::MsgViewType::GifType);
+                    } else {
+                        retval = QVariant(DeltaHandler::MsgViewType::ImageType);
+                    }
                     break;
                 
                 case DC_MSG_STICKER:
@@ -708,7 +716,7 @@ int ChatModel::getMessageCount()
 }
 
 
-bool ChatModel::isGif(QString fileToCheck)
+bool ChatModel::isGif(QString fileToCheck) const
 {
     // the url handed over by the ContentHub starts with
     // "file:///home....", so we have to remove the first 7
@@ -717,7 +725,7 @@ bool ChatModel::isGif(QString fileToCheck)
 
     QMimeDatabase mimedb;
     QMimeType mime = mimedb.mimeTypeForFile(fileToCheck);
-    if (mime.inherits("image/gif")) {
+    if (mime.inherits("image/gif") || mime.inherits("image/webp") || mime.inherits("image/avif") || mime.inherits("image/apng")) {
         return true;
     } else {
         return false;
@@ -981,8 +989,6 @@ void ChatModel::newMessage(int msgID)
 
             ++currentMsgCount;
             endInsertRows();
-            if (i <  currentMsgCount - 1) {
-            }
         }
     }
 
@@ -1640,11 +1646,14 @@ void ChatModel::setAttachment(QString filepath, int attachType)
             break;
         
         case DeltaHandler::MsgViewType::GifType:
-        
-        case DeltaHandler::MsgViewType::ImageType:
+            // fallthrough
         
         case DeltaHandler::MsgViewType::StickerType:
-            emit previewImageAttachment(filepath, addCacheLocation);
+            emit previewImageAttachment(filepath, addCacheLocation, true);
+            break;
+        
+        case DeltaHandler::MsgViewType::ImageType:
+            emit previewImageAttachment(filepath, addCacheLocation, false);
             break;
 
      //   case DeltaHandler::MsgViewType::TextType:
@@ -1722,9 +1731,13 @@ void ChatModel::emitDraftHasAttachmentSignals()
                 break;
             
             case DC_MSG_GIF:
-            case DC_MSG_IMAGE:
+                // fallthrough
             case DC_MSG_STICKER:
-                emit previewImageAttachment(filepath, addCacheLocation);
+                emit previewImageAttachment(filepath, addCacheLocation, true);
+                break;
+
+            case DC_MSG_IMAGE:
+                emit previewImageAttachment(filepath, addCacheLocation, false);
                 break;
 
          //   case DeltaHandler::MsgViewType::TextType:

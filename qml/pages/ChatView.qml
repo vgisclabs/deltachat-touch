@@ -44,6 +44,7 @@ Page {
     // the text entry bar are visible (== false)
     property bool attachmentMode: false
 
+    property bool attachAnimatedImagePreviewMode: false
     property bool attachImagePreviewMode: false
     property bool attachFilePreviewMode: false
     property bool attachAudioPreviewMode: false
@@ -226,12 +227,21 @@ Page {
         }
 
         onPreviewImageAttachment: {
+            let sourcePath
             if (addCacheLocation) {
-                attachPreviewImage.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+                sourcePath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
             } else {
-                attachPreviewImage.source = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.AppConfigLocation, filepath))
+                sourcePath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.AppConfigLocation, filepath))
             }
-            attachImagePreviewMode = true
+
+            if (isAnimated) {
+                attachPreviewAnimatedImage.source = sourcePath
+                attachAnimatedImagePreviewMode = true
+
+            } else {
+                attachPreviewImage.source = sourcePath
+                attachImagePreviewMode = true
+            }
         }
 
         onPreviewFileAttachment: {
@@ -746,6 +756,7 @@ Page {
                         source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.filepath)
                         width: model.imagewidth > (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) ? (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) : model.imagewidth
                         fillMode: Image.PreserveAspectFit
+                        autoTransform: true
 
                         MouseArea {
                             anchors.fill: parent
@@ -769,6 +780,7 @@ Page {
                         source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.filepath)
                         width: model.imagewidth > (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) ? (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) : model.imagewidth
                         fillMode: Image.PreserveAspectFit
+                        autoTransform: true
                         cache: false
 
                         MouseArea {
@@ -1654,7 +1666,20 @@ Page {
 
         Rectangle {
             id: attachmentPreviewRect
-            height: (attachImagePreviewMode ? attachPreviewImage.height : (attachFilePreviewLabel.contentHeight > cancelAttachmentShape.height ? attachFilePreviewLabel.contentHeight : cancelAttachmentShape.height) + units.gu(1.5)) + cancelAttachmentShape.height
+            height: {
+                let tempHeight
+                if (attachAnimatedImagePreviewMode) {
+                    tempHeight = attachPreviewAnimatedImage.height
+                } else if (attachImagePreviewMode) {
+                    tempHeight = attachPreviewAnimatedImage.height
+                } else if (attachFilePreviewLabel.contentHeight > cancelAttachmentShape.height) {
+                    tempHeight = attachFilePreviewLabel.contentHeight
+                } else {
+                    tempHeight = cancelAttachmentShape.height
+                }
+                return tempHeight + units.gu(1.5) + cancelAttachmentShape.height
+            }
+           // (attachImagePreviewMode ? attachPreviewImage.height : (attachFilePreviewLabel.contentHeight > cancelAttachmentShape.height ? attachFilePreviewLabel.contentHeight : cancelAttachmentShape.height) + units.gu(1.5)) + cancelAttachmentShape.height
             width: parent.width
 
             color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
@@ -1666,7 +1691,7 @@ Page {
                 left: parent.left
             }
 
-            visible: attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode
+            visible: attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode
 
             Rectangle {
                 id: attachVerticalCenterHelperRect
@@ -1742,9 +1767,33 @@ Page {
             }
 
             AnimatedImage {
+                id: attachPreviewAnimatedImage
+                width: chatViewPage.width - units.gu(3)
+                height: chatViewPage.height / 3
+                // TODO: Doesn't work. That's the reason for
+                // separating attachAnimatedImagePreviewMode and
+                // attachImagePreviewMode, otherwise images
+                // that should be rotated according to EXIF data
+                // would not be rotated in the preview, but in the
+                // chat after sending (or receiving).
+                // Only using Image here isn't the solution either
+                // as animated images would appear static.
+                autoTransform: true
+
+                anchors {
+                    bottom: parent.bottom
+                    horizontalCenter: parent.horizontalCenter
+                }
+                visible: attachAnimatedImagePreviewMode
+                fillMode: Image.PreserveAspectFit
+            }
+
+            Image {
                 id: attachPreviewImage
                 width: chatViewPage.width - units.gu(3)
                 height: chatViewPage.height / 3
+                autoTransform: true
+
                 anchors {
                     bottom: parent.bottom
                     horizontalCenter: parent.horizontalCenter
@@ -1790,6 +1839,7 @@ Page {
                                 // attachments should be easily recoverable (except
                                 // for pictures that were just taken, but well..)
                                 DeltaHandler.chatmodel.unsetAttachment()
+                                attachAnimatedImagePreviewMode = false
                                 attachImagePreviewMode = false
                                 attachFilePreviewMode = false
                                 attachAudioPreviewMode = false
@@ -1811,7 +1861,7 @@ Page {
                 leftMargin: units.gu(0.5)
                 verticalCenter: messageEnterField.verticalCenter
             }
-            enabled: !(attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode)
+            enabled: !(attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode)
 
             Icon {
                 id: attachIcon
@@ -1889,6 +1939,7 @@ Page {
                         // may be incomplete
                         messageEnterField.focus = false
 
+                        attachAnimatedImagePreviewMode = false
                         attachImagePreviewMode = false
                         attachFilePreviewMode = false
                         attachAudioPreviewMode = false
@@ -2349,6 +2400,7 @@ Page {
                             attachVoicePreviewMode = false
                         } else {
                             DeltaHandler.chatmodel.unsetAttachment()
+                            attachAnimatedImagePreviewMode = false
                             attachImagePreviewMode = false
                             attachFilePreviewMode = false
                             attachAudioPreviewMode = false

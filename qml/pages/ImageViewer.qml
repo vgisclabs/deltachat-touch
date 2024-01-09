@@ -60,6 +60,7 @@ Page {
         id: image
 
         source: imageSource
+        autoTransform: true
 
         function checkXAndY() {
             let pageWidth = viewerPage.width

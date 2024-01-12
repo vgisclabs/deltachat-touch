@@ -479,3 +479,13 @@ void ContactsModel::finalizeMemberChanges(bool actionRequested)
     }
     resetNewMemberList();
 }
+
+
+void ContactsModel::updateContacts()
+{
+    qDebug() << "ContactsModel::updateContacts(): Received signal contactsChanged by eventThread";
+    // m_contactsVector is updated in updateContext
+    if (m_context) {
+        updateContext(m_context);
+    }
+}

@@ -134,6 +134,7 @@ int main(int argc, char *argv[])
 
     qRegisterMetaType<uint32_t>("uint32_t");
     qRegisterMetaType<int64_t>("int64_t");
+    qRegisterMetaType<uint64_t>("uint64_t");
     //qRegisterMetaType<size_t>("size_t");
 
     qDebug() << "Starting app from main.cpp";

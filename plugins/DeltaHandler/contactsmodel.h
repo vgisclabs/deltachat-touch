@@ -65,6 +65,8 @@ public slots:
     void removeIndexFromMemberlist(int myindex);
     void finalizeMemberChanges(bool actionRequested);
 
+    void updateContacts();
+
 
 protected:
     QHash<int, QByteArray> roleNames() const;

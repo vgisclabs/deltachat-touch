@@ -24,6 +24,7 @@
 #include <QAudioRecorder>
 #include <string>
 #include <vector>
+#include <queue>
 #include "chatmodel.h"
 #include "accountsmodel.h"
 #include "blockedcontactsmodel.h"
@@ -35,6 +36,11 @@
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
 #include <QDBusPendingCallWatcher>
+
+struct checkNotificationsStruct {
+    uint32_t accID;
+    int chatID;
+};
 
 class ChatModel;
 class AccountsModel;
@@ -52,7 +58,8 @@ public:
     explicit DeltaHandler(QObject *parent = 0);
     ~DeltaHandler();
 
-    enum { ChatnameRole, ChatIsPinnedRole, ChatIsArchivedRole, ChatIsArchiveLinkRole, MsgPreviewRole, PreviewMessageStateRole, TimestampRole, StateRole, ChatPicRole, IsContactRequestRole, AvatarColorRole, AvatarInitialRole, ChatIsMutedRole, ChatIsVerifiedRole, NewMsgCountRole };
+    enum { ChatlistEntryRole, BasicChatInfoRole };
+    //enum { AccountIdRole, ChatlistEntryRole, ChatIdRole, BasicChatInfoRole };
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
     // a module in Qt (yet?).
@@ -101,6 +108,10 @@ public:
     // Parameter is the version for which the message applies,
     // not the message text itself
     Q_INVOKABLE void addDeviceMessageForVersion(QString appVersion);
+
+    Q_INVOKABLE QString timeToString(uint64_t unixSeconds, bool divideByThousand = false);
+
+    Q_INVOKABLE int intToMessageStatus(int status);
 
     // The passphrase for database encryption is passed from QML via this
     // method. If twiceChecked is true, QML has asked for it twice and both
@@ -577,12 +588,12 @@ private slots:
     void chatCreationReceiver(uint32_t chatID);
     void updateCurrentChatMessageCount();
     void resetCurrentChatMessageCount();
-    void changedContacts();
     void removeClosedAccountFromList(uint32_t accID);
     void resetPassphrase();
     void addClosedAccountToList(uint32_t accID);
     void connectivityUpdate(uint32_t accID);
     void finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* call);
+    void processSignalQueueTimerTimeout();
 
 
 
@@ -592,7 +603,8 @@ private:
     // TODO: rename tempContext, name's too similar to
     // local variables used in functions (tempText, tempLot etc.)
     dc_context_t* tempContext; // for creation of new account
-    dc_chatlist_t* currentChatlist;
+    std::vector<uint32_t> m_chatlistVector;
+
     EmitterThread* eventThread;
     JsonrpcResponseThread* m_jsonrpcResponseThread;
     dc_jsonrpc_instance_t* m_jsonrpcInstance;
@@ -604,6 +616,7 @@ private:
     WorkflowDbToEncrypted* m_workflowDbEncryption;
     WorkflowDbToUnencrypted* m_workflowDbDecryption;
 
+    uint32_t m_currentAccID;
     uint32_t currentChatID;
     bool chatmodelIsConfigured;
     bool m_hasConfiguredAccount;
@@ -675,9 +688,27 @@ private:
 
     bool m_coreTranslationsAlreadySet;
 
-    uint32_t m_jsonrpcRequestId;
+    mutable uint32_t m_jsonrpcRequestId;
 
-    uint32_t getJsonrpcRequestId();
+    uint32_t getJsonrpcRequestId() const;
+
+    // Returns a valid jsonrpc request for the method and arguments passed.
+    // The arguments have to be separated by ", " in one single string.
+    // String arguments have to be enclosed separately by a pair of \"
+    // Example for a method call:
+    // constructJsonrpcRequestString("get_backup", "12, \"qrcode:xxxxx\"");
+    QString constructJsonrpcRequestString(QString method, QString arguments) const;
+
+    // for the signal queue
+    bool m_signalQueue_refreshChatlist;
+    std::queue<int> m_signalQueue_chatsDataChanged;
+    std::queue<int> m_signalQueue_chatsNoticed;
+    std::queue<int> m_signalQueue_msgs;
+    std::queue<checkNotificationsStruct> m_signalQueue_notificationsToRemove;
+    //std::queue<MsgsChangedInfoStruct> m_msgsChangedQueue;
+    QTimer* m_signalQueueTimer;
+
+    static constexpr int queueTimerFreq = 1000;
 
     /**************************************
      *********   Private methods   ********
@@ -690,8 +721,11 @@ private:
     void deleteActiveNotificationTags(uint32_t accID, int chatID);
     void enableVerifiedOneOnOneForAllAccs();
     void addDeviceMessageToAllContexts(QString deviceMessage, QString messageLabel);
-    void refreshPreviewMessageState(uint32_t accID, int chatID);
 
+    void processSignalQueue();
+    bool isQueueEmpty();
+    void refreshChatlistVector(dc_chatlist_t* tempChatlist);
+    void resetChatlistVector(dc_chatlist_t* tempChatlist);
 };
 
 #endif // DELTAHANDLER_H

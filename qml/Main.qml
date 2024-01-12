@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.3.2-pre01'
+    property string version: '1.3.2-pre04'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -108,18 +108,30 @@ MainView {
         if (conn >= 1000 && conn < 2000) {
             // "Not connected"
             connectivityShape.color = "red"
+            connectivityShape.height = profilePicShape.height * (2/5)
+            connectivityIcon.visible = false
         } else if (conn >= 2000 && conn < 3000) {
             // "Connecting…"
             connectivityShape.color = "yellow"
+            connectivityShape.height = profilePicShape.height * (2/5)
+            connectivityIcon.visible = false
         } else if (conn >= 3000 && conn < 4000) {
             // "Updating…"
-            connectivityShape.color = "orange"
+            //connectivityShape.color = "orange"
+            connectivityShape.color = "yellow"
+            // When updating, we make the icon somewhat bigger
+            connectivityShape.height = profilePicShape.height * (1/2)
+            connectivityIcon.visible = true
         } else if (conn >= 4000) {
             // "Connected"
             connectivityShape.color = "green"
+            connectivityShape.height = profilePicShape.height * (2/5)
+            connectivityIcon.visible = false
         } else {
             // unknown state
             connectivityShape.color = "white"
+            connectivityShape.height = profilePicShape.height * (2/5)
+            connectivityIcon.visible = false
         }
     }
 
@@ -620,6 +632,18 @@ MainView {
                         top: parent.top
                         topMargin: units.gu(0.25)
                     }
+
+                    Icon {
+                        id: connectivityIcon
+                        name: "sync"
+                        width: connectivityShape.width * (0.9)
+                        height: width
+                        anchors{
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
+                        }
+                        color: "black"
+                    }
                 } // end Rectangle id: connectivityShape
             
                 Rectangle {
@@ -913,6 +937,85 @@ MainView {
 
                 ListItem {
                     id: chatListItem
+
+                    //property var thisChatID: model.chatId
+                    property var chatlistEntry: model.chatlistEntry; //JSON.parse(model.chatlistEntry)["result"]["" + thisChatID]
+                    property bool isArchiveLink: chatlistEntry.kind === "ArchiveLink"
+                    property string chatPicPath: ""
+                    property var previewIconSource
+                    property bool previewStatusActive
+                    property string avatarInitial
+
+                    onChatlistEntryChanged: {
+                        isArchiveLink = chatlistEntry.kind === "ArchiveLink"
+                        if (isArchiveLink) {
+                            let chatInfo = JSON.parse(model.basicChatInfo)
+                            setChatPic(chatInfo.result.profileImage)
+                         } else {
+                             setChatPic(chatlistEntry.avatarPath)
+                         }
+
+                         setPreviewStatusIcon()
+                    }
+
+                    function setChatPic(path) {
+                       if (path != null) {
+                           let lengthToSubtract = ("" + StandardPaths.writableLocation(StandardPaths.AppConfigLocation)).length - 6
+                           let temp = path.substring(lengthToSubtract)
+                           chatPicPath = StandardPaths.locate(StandardPaths.AppConfigLocation, temp)
+                       } else {
+                           chatPicPath = ""
+                           if (chatlistEntry.name === "") {
+                               avatarInitial = "#"
+                           } else {
+                               avatarInitial = chatlistEntry.name.charAt(0).toUpperCase()
+                           }
+                       }
+                    }
+
+                    function setPreviewStatusIcon() {
+                        let tempstate = DeltaHandler.intToMessageStatus(chatlistEntry.summaryStatus)
+                        switch (tempstate) {
+                            case DeltaHandler.StatePending:
+                                if (root.darkmode) {
+                                    previewIconSource = Qt.resolvedUrl('../assets/dotted_circle_white.svg');
+                                    break;
+                                } else {
+                                    previewIconSource = Qt.resolvedUrl('../assets/dotted_circle_black.svg');
+                                    break;
+                                }
+
+                            case DeltaHandler.StateDelivered:
+                                previewIconSource = Qt.resolvedUrl('../assets/sent_green.svg');
+                                break;
+
+                            case DeltaHandler.StateReceived:
+                                previewIconSource = Qt.resolvedUrl('../assets/read_green.svg');
+                                break;
+
+                            case DeltaHandler.StateFailed:
+                                previewIconSource = Qt.resolvedUrl('../assets/circled_x_red.svg');
+                                break;
+                        }
+
+                        previewStatusActive = (tempstate === DeltaHandler.StatePending || tempstate === DeltaHandler.StateFailed || tempstate === DeltaHandler.StateDelivered || tempstate === DeltaHandler.StateReceived)
+                    }
+
+                    Component.onCompleted: {
+                        if (isArchiveLink) {
+                            // does not work, setChatPic is not accessible in the arrow expression
+                            // TODO: why not? how to deal with this?
+                            //JSONRPC.setSendRequest((request) => DeltaHandler.sendJsonrpcRequest(request))
+                            //JSONRPC.client.getBasicChatInfo(model.accountId, thisChatID).then((chatInfo) => { setChatPic(chatInfo.profileImage) })
+                            let chatInfo = JSON.parse(model.basicChatInfo)
+                            setChatPic(chatInfo.result.profileImage)
+                       } else {
+                           setChatPic(chatlistEntry.avatarPath)
+                       }
+
+                       setPreviewStatusIcon()
+                    }
+
                     // shall specify the height when Using ListItemLayout inside ListItem
                     height: chatlistLayout.height //+ (divider.visible ? divider.height : 0)
                     divider.visible: true
@@ -924,15 +1027,15 @@ MainView {
                         } 
                     }
 
-                    leadingActions: model.chatIsArchiveLink ? null : leadingChatAction
-                    trailingActions: model.chatIsArchiveLink ? null : (model.chatIsArchived ? trailingChatActionsArchived : trailingChatActions)
+                    leadingActions: isArchiveLink ? null : leadingChatAction
+                    trailingActions: isArchiveLink ? null : (chatlistEntry.isArchived ? trailingChatActionsArchived : trailingChatActions)
 
                     ListItemLayout {
                         id: chatlistLayout
-                        title.text: model.chatname
+                        title.text: isArchiveLink ? i18n.tr("Archived Chats") : chatlistEntry.name
                         title.font.bold: true
                         title.font.pixelSize: scaledFontSizeInPixels
-                        subtitle.text: model.msgPreview
+                        subtitle.text: isArchiveLink ? null : ((chatlistEntry.summaryText1 === "" ? "" : chatlistEntry.summaryText1 + ": ") + chatlistEntry.summaryText2)
                         subtitle.font.pixelSize: scaledFontSizeInPixelsSmaller
 
                         // need to explicitly set the height because otherwise,
@@ -946,23 +1049,23 @@ MainView {
                             height: units.gu(4) + units.gu(scaleLevel)
                             width: height
                             
-                            source: model.chatPic == "" ? undefined : chatPicImage
+                            source: chatPicPath !== "" ? chatPicImage : undefined 
                             Image {
                                 id: chatPicImage
                                 visible: false
-                                source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.chatPic)
+                                source: chatPicPath
                             }
 
                             Label {
                                 id: avatarInitialLabel
-                                visible: model.chatPic == ""
-                                text: model.avatarInitial
+                                visible: chatPicPath === ""
+                                text: avatarInitial
                                 fontSize: "x-large"
                                 color: "white"
                                 anchors.centerIn: parent
                             }
 
-                            color: model.avatarColor
+                            color: chatlistEntry.color
 
                             sourceFillMode: UbuntuShape.PreserveAspectCrop
                         }
@@ -973,6 +1076,7 @@ MainView {
                             width: (((verifiedIcon.visible ? verifiedIcon.width + units.gu(0.5) : 0) + (mutedIcon.visible ? mutedIcon.width + units.gu(0.5) : 0) + (pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) > contactRequestLabel.contentWidth ? ((verifiedIcon.visible ? verifiedIcon.width + units.gu(0.5) : 0) + (mutedIcon.visible ? mutedIcon.width + units.gu(0.5) : 0) + (pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) : contactRequestLabel.contentWidth) + units.gu(1)
                             height: units.gu(3) + units.gu(scaleLevel)
                             color: chatListItem.color 
+                            visible: !isArchiveLink
 
                             Icon {
                                 id: verifiedIcon
@@ -985,7 +1089,7 @@ MainView {
                                     top: dateAndMsgCount.top
                                 }
                                 source: "../assets/verified.svg"
-                                visible: model.chatIsVerified
+                                visible: chatlistEntry.isProtected
                             }
  
                             Icon {
@@ -999,7 +1103,7 @@ MainView {
                                 }
                                 name: "audio-speakers-muted-symbolic"
                                 color: root.darkmode ? "white" : "black"
-                                visible: model.chatIsMuted
+                                visible: chatlistEntry.isMuted
 
                             }
 
@@ -1014,13 +1118,13 @@ MainView {
                                 }
                                 name: "pinned"
                                 color: root.darkmode ? "white" : "black"
-                                visible: model.chatIsPinned
+                                visible: chatlistEntry.isPinned
 
                             }
 
                             Label {
                                 id: timestamp
-                                text: model.timestamp
+                                text: isArchiveLink ? "" : (chatlistEntry.lastUpdated !== null ? DeltaHandler.timeToString(chatlistEntry.lastUpdated, true) : "")
                                 anchors {
                                     right: dateAndMsgCount.right
                                     top: dateAndMsgCount.top
@@ -1029,9 +1133,17 @@ MainView {
                                 fontSize: root.scaledFontSizeSmaller
                             }
 
+                            Component {
+                                id: previewIcon
+                                Icon {
+                                    source: previewIconSource
+                                }
+                            }
+
                             Loader {
                                 id: previewStatusLoader
-                                active: model.previewMsgState !== DeltaHandler.StateUnknown && !model.isContactRequest && model.newMsgCount === 0
+                                //active: chatlistEntry.summaryStatus !== DeltaHandler.StateUnknown && !chatlistEntry.isContactRequest && chatlistEntry.freshMessageCounter === 0
+                                active: previewStatusActive
                                 height: timestamp.height
                                 width: height * 2
 
@@ -1042,32 +1154,7 @@ MainView {
                                     //rightMargin: units.gu(1)
                                 }
 
-                                sourceComponent: Icon {
-                                    source: { 
-                                        switch (model.previewMsgState) {
-                                            case DeltaHandler.StatePending:
-                                                if (root.darkmode) {
-                                                    return Qt.resolvedUrl('../assets/dotted_circle_white.svg');
-                                                    break;
-                                                } else {
-                                                    return Qt.resolvedUrl('../assets/dotted_circle_black.svg');
-                                                    break;
-                                                }
-
-                                            case DeltaHandler.StateDelivered:
-                                                return Qt.resolvedUrl('../assets/sent_green.svg');
-                                                break;
-
-                                            case DeltaHandler.StateReceived:
-                                                return Qt.resolvedUrl('../assets/read_green.svg');
-                                                break;
-
-                                            case DeltaHandler.StateFailed:
-                                                return Qt.resolvedUrl('../assets/circled_x_red.svg');
-                                                break;
-                                        }
-                                    }
-                                }
+                                sourceComponent: previewIcon
                             }
 
                             Rectangle {
@@ -1085,10 +1172,6 @@ MainView {
                                     anchors {
                                         horizontalCenter: contactRequestRect.horizontalCenter
                                         verticalCenter: contactRequestRect.verticalCenter
-//                                        top: timestamp.bottom
-//                                        topMargin: units.gu(1.25)
-//                                        left: contactRequestRect.left
-//                                        leftMargin: units.gu(0.25)
                                     }
                                     text: i18n.tr('Request')
                                     fontSize: root.scaledFontSizeSmaller
@@ -1096,7 +1179,7 @@ MainView {
                                 }
                                 color: root.unreadMessageCounterColor
                                 border.color: contactRequestLabel.color
-                                visible: model.isContactRequest
+                                visible: chatlistEntry.isContactRequest
                             } // Rectangle id: contactRequestRect
 
                             UbuntuShape {
@@ -1110,9 +1193,9 @@ MainView {
                                     right: dateAndMsgCount.right
                                     //rightMargin: units.gu(1)
                                 }
-                                backgroundColor: model.chatIsMuted ? (root.darkmode ? "#202020" : "#e0e0e0") : root.unreadMessageCounterColor
+                                backgroundColor: chatlistEntry.isMuted ? (root.darkmode ? "#202020" : "#e0e0e0") : root.unreadMessageCounterColor
                                 
-                                visible: !model.isContactRequest && model.newMsgCount > 0
+                                visible: !chatlistEntry.isContactRequest && chatlistEntry.freshMessageCounter > 0
 
                                 Label {
                                     id: newMsgCountLabel
@@ -1121,12 +1204,11 @@ MainView {
                                         topMargin: units.gu(0.3)
                                         horizontalCenter: newMsgCountShape.horizontalCenter
                                     }
-                                    text: model.newMsgCount > 99 ? "99+" : model.newMsgCount
+                                    text: chatlistEntry.freshMessageCounter > 99 ? "99+" : chatlistEntry.freshMessageCounter
                                     fontSize: root.scaledFontSizeSmaller
                                     font.bold: true
-                                    color: model.chatIsMuted && !root.darkmode ? "black" : "white"
+                                    color: chatlistEntry.isMuted && !root.darkmode ? "black" : "white"
                                 }
-
                             }
                         } // Rectangle id: dateAndMsgCount
                     } // end ListItemLayout id: chatlistLayout
@@ -1221,7 +1303,6 @@ MainView {
         startupStep1()
 
         JSONRPC.setSendRequest((request) => DeltaHandler.sendJsonrpcRequest(request))
-
         JSONRPC.client.getSystemInfo().then((dc_info) => console.log("Main.qml: deltachat-core-rust", dc_info.deltachat_core_version))
     }
 

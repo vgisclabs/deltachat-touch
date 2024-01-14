@@ -188,6 +188,7 @@ void EmitterThread::run()
 
                 case DC_EVENT_REACTIONS_CHANGED:
                     qInfo().nospace() << "Emitter: DC_EVENT_REACTIONS_CHANGED" << ", account " << dc_event_get_account_id(event) << ", chat_id: " << dc_event_get_data1_int(event) << ", msg_id: " << dc_event_get_data2_int(event);
+                    emit reactionsChanged(dc_event_get_account_id(event), dc_event_get_data1_int(event), dc_event_get_data2_int(event));
                     break;
 
                 case DC_EVENT_SECUREJOIN_INVITER_PROGRESS:

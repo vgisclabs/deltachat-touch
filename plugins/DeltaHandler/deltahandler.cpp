@@ -5242,6 +5242,11 @@ void DeltaHandler::refreshChatlistVector(dc_chatlist_t* tempChatlist)
             m_chatlistVector.insert(it+i, tempChatID);
             endInsertRows();
         }
+
+        // Don't know why this is needed as we're only doing
+        // move and insert operations, but without it, the list
+        // is not displayed correctly at first
+        emit dataChanged(index(i, 0), index(i, 0));
     }
 
     size_t tempChatlistCount = dc_chatlist_get_cnt(tempChatlist);

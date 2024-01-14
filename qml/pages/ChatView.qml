@@ -1453,7 +1453,7 @@ Page {
                         selfEmoji = null
                         if (reactions.hasOwnProperty("reactions")) {
                             let temparray = reactions.reactions
-                            for (let i = 0; i < temparray.length && i < 3; i++) {
+                            for (let i = 0; i < temparray.length; i++) {
                                 let obj = temparray[i]
                                 if (obj.isFromSelf) {
                                     selfEmoji = obj.emoji
@@ -1461,11 +1461,15 @@ Page {
 
                                 if (i < 2) {
                                     reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
-                                } else if (temparray.length == 3) {
-                                    reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
-                                } else {
-                                    reactionsModel.append( { reactEmoji: "…", reactCount: 1 })
-                                }
+                                } else if (i == 3) {
+                                    if (temparray.length == 3) {
+                                        reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
+                                    } else {
+                                        reactionsModel.append( { reactEmoji: "…", reactCount: 1 })
+                                    }
+                                } // no action for the model if i > 3,
+                                  // but the loop needs to run to the end
+                                  // to set selfEmoji
                             }
                         }
                     }

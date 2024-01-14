@@ -35,7 +35,9 @@ Dialog {
         text: i18n.tr("Copy Text")
 
         onClicked: {
-            Clipboard.push(DeltaHandler.chatmodel.getMomentaryText())
+            let tempcontent = Clipboard.newData()
+            tempcontent = DeltaHandler.chatmodel.getMomentaryText()
+            Clipboard.push(tempcontent)
             PopupUtils.close(dialog)
         }
 

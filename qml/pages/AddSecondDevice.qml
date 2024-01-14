@@ -406,9 +406,11 @@ Page {
                     title.text: i18n.tr("Copy to Clipboard")
                 }
                 onClicked: {
-                     onClicked: Clipboard.push(DeltaHandler.getBackupProviderTxt())
-                     addSecondDevicePage.copiedToClipboard = true
-                     PopupUtils.close(popoverQrCopyToClipboard)
+                    let tempcontent = Clipboard.newData()
+                    tempcontent = DeltaHandler.getBackupProviderTxt()
+                    Clipboard.push(tempcontent)
+                    addSecondDevicePage.copiedToClipboard = true
+                    PopupUtils.close(popoverQrCopyToClipboard)
                 }
             }
         }

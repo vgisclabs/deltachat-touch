@@ -44,7 +44,9 @@ Dialog {
         id: copyButton
         text: i18n.tr("Copy Link")
         onClicked: {
-            Clipboard.push(externalLink)
+            let tempcontent = Clipboard.newData()
+            tempcontent = externalLink
+            Clipboard.push(tempcontent)
             PopupUtils.close(dialog)
         }
     }

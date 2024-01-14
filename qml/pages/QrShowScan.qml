@@ -683,8 +683,10 @@ Page {
                     title.text: i18n.tr("Copy to Clipboard")
                 }
                 onClicked: {
-                     onClicked: Clipboard.push(DeltaHandler.getQrInviteTxt())
-                     PopupUtils.close(popoverQrCopyToClipboard)
+                    let tempcontent = Clipboard.newData()
+                    tempcontent = DeltaHandler.getQrInviteTxt()
+                    Clipboard.push(tempcontent)
+                    PopupUtils.close(popoverQrCopyToClipboard)
                 }
             }
         }

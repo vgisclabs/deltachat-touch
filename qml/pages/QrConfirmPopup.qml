@@ -61,7 +61,9 @@ Dialog {
     Button {
         id: clipboardButton
         onClicked: {
-            Clipboard.push(clipboardContent)
+            let tempcontent = Clipboard.newData()
+            tempcontent = clipboardContent
+            Clipboard.push(tempcontent)
             confirmed()
         }
         text: i18n.tr("Copy to Clipboard")

@@ -1461,7 +1461,7 @@ Page {
 
                                 if (i < 2) {
                                     reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
-                                } else if (i == 3) {
+                                } else if (i == 2) {
                                     if (temparray.length == 3) {
                                         reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
                                     } else {

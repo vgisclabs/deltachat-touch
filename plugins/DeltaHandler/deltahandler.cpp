@@ -220,6 +220,10 @@ DeltaHandler::DeltaHandler(QObject* parent)
         qFatal("DeltaHandler::DeltaHandler: Could not connect signal msgFailed to slot messageFailedSlot");
     }
 
+    connectSuccess = connect(eventThread, SIGNAL(reactionsChanged(uint32_t, int, int)), this, SLOT(msgReactionsChanged(uint32_t, int, int)));
+    if (!connectSuccess) {
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal reactionsChanged to slot msgReactionsChanged");
+    }
 
     connectSuccess = connect(m_jsonrpcResponseThread, SIGNAL(newJsonrpcResponse(QString)), this, SLOT(receiveJsonrcpResponse(QString)));
     if (!connectSuccess) {
@@ -255,6 +259,11 @@ DeltaHandler::DeltaHandler(QObject* parent)
     connectSuccess = connect(this, SIGNAL(messageFailed(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
     if (!connectSuccess) {
         qFatal("DeltaHandler::DeltaHandler: Could not connect signal messageFailed to slot messageStatusChangedSlot");
+    }
+
+    connectSuccess = connect(this, SIGNAL(messageReaction(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
+    if (!connectSuccess) {
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal messageReaction to slot messageStatusChangedSlot");
     }
 
     connectSuccess = connect(m_accountsmodel, SIGNAL(deletedAccount(uint32_t)), this, SLOT(removeClosedAccountFromList(uint32_t)));
@@ -504,9 +513,28 @@ void DeltaHandler::loadSelectedAccount()
 }
 
 
+uint32_t DeltaHandler::getCurrentAccountId()
+{
+    return m_currentAccID;
+}
+
+
 void DeltaHandler::sendJsonrpcRequest(QString request)
 {
     dc_jsonrpc_request(m_jsonrpcInstance, request.toUtf8().constData());
+}
+
+
+QString DeltaHandler::sendJsonrpcBlockingCall(QString request) const
+{
+    char* tempText;
+    QString retval;
+
+    tempText = dc_jsonrpc_blocking_call(m_jsonrpcInstance, request.toLocal8Bit().constData());
+    retval = tempText;
+
+    dc_str_unref(tempText);
+    return retval;
 }
 
 
@@ -1087,13 +1115,11 @@ QVariant DeltaHandler::data(const QModelIndex &index, int role) const
 
             requestString = constructJsonrpcRequestString("get_chatlist_items_by_entries", paramString);
 
-            tempText = dc_jsonrpc_blocking_call(m_jsonrpcInstance, requestString.toLocal8Bit().constData());
-
             // the actual object with the chatlist entry is nested in the
             // received json like this:
             // { .....,"result":{"<chatID>":{ <this is the actual entry> }}}
             // so we extract it
-            byteArray = tempText;
+            byteArray = sendJsonrpcBlockingCall(requestString).toLocal8Bit();
             jsonDoc = QJsonDocument::fromJson(byteArray);
             jsonObj = jsonDoc.object();
             // value() returns a QJsonValue, which we directly
@@ -2016,6 +2042,14 @@ void DeltaHandler::messageFailedSlot(uint32_t accID, int chatID, int msgID)
     if (!m_signalQueueTimer->isActive()) {
         processSignalQueue();
         m_signalQueueTimer->start(queueTimerFreq);
+    }
+}
+
+
+void DeltaHandler::msgReactionsChanged(uint32_t accID, int chatID, int msgID)
+{
+    if (m_currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
+        emit messageReaction(msgID);
     }
 }
 

@@ -39,6 +39,7 @@ class EmitterThread : public QThread {
             void msgFailed(uint32_t accID, int chatID, int msgID);
             void msgDelivered(uint32_t accID, int chatID, int msgID);
             void msgRead(uint32_t accID, int chatID, int msgID);
+            void reactionsChanged(uint32_t accID, int chatID, int msgID);
             void configureProgress(int permill, QString errorMsg);
             void imexProgress(int permill);
             void imexFileWritten(QString filepath);

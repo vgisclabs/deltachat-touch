@@ -19,12 +19,10 @@
 import QtQuick 2.12
 import Ubuntu.Components 1.3
 import Ubuntu.Components.Popups 1.3
-//import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import Qt.labs.platform 1.1
 import QtMultimedia 5.12
-//import "../delegates"
 
 import DeltaHandler 1.0
 
@@ -620,7 +618,7 @@ Page {
         anchors.top: searchRect.visible ? searchRect.bottom : header.bottom
         topMargin: units.gu(1)
         width: parent.width
-        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(0.5) - (messageCreatorBox.visible ? messageCreatorBox.height + units.gu(1) : 0) - (requestReactionRect.visible ? requestReactionRect.height : 0) - (protectionBrokenBox.visible ? protectionBrokenBox.height : 0) - (cannotSendBox.visible ? cannotSendBox.height : 0)
+        height: chatlistPage.height - header.height - (searchRect.visible ? searchRect.height : 0) - units.gu(0.5) - (messageCreatorBox.visible ? messageCreatorBox.height + units.gu(1) : 0) - (contactRequestRect.visible ? contactRequestRect.height : 0) - (protectionBrokenBox.visible ? protectionBrokenBox.height : 0) - (cannotSendBox.visible ? cannotSendBox.height : 0)
         model: DeltaHandler.chatmodel
         //  Delegate inspired by FluffyChat (C) Christian Pauly,
         //  licensed under GPLv3
@@ -686,9 +684,25 @@ Page {
                         return theme.palette.normal.foregroundText;
                     }
                 }
+                property var reactions: model.reactions
+
+                onPressAndHold: {
+                    if (!isInfo && !isUnreadMsgsBar) {
+                        PopupUtils.open(popoverComponentReactions, msgbox)
+                    }
+                }
+
+                Component.onCompleted: {
+                    // already called via onReactionsChanged, also on creation
+                    //reactionsLoader.updateReactions()
+                }
+
+                onReactionsChanged: {
+                    reactionsLoader.updateReactions()
+                }
 
                 width: parent.width
-                height: msgbox.height + (imageLoader.active ? imageLoader.height : (animatedImageLoader.active ? animatedImageLoader.height : 0)) + (protectionIconLoader.active ? protectionIconLoader.height : 0)
+                height: msgbox.height + (reactionsLoader.active ? (reactionsLoader.height - units.gu(0.2)) : 0) +  (imageLoader.active ? imageLoader.height : (animatedImageLoader.active ? animatedImageLoader.height : 0)) + (protectionIconLoader.active ? protectionIconLoader.height : 0)
                 divider.visible: false
 
                 // TODO: implement?
@@ -706,13 +720,13 @@ Page {
                     anchors {
                         left: parent.left
                         leftMargin: units.gu(1)
-                        bottom: parent.bottom
+                        bottom: msgbox.bottom
                     }
 
                     sourceComponent: UbuntuShape {
                         id: avatarShape
 
-                        color: model.avatarColor
+                        backgroundColor: model.avatarColor
                         sourceFillMode: UbuntuShape.PreserveAspectCrop
 
                         property bool hasProfPic: profPic != ""
@@ -838,7 +852,7 @@ Page {
                         }
                     }
                 }
-                
+            
                 UbuntuShape {
                     id: msgbox
 
@@ -847,6 +861,7 @@ Page {
 
                     anchors {
                         bottom: parent.bottom
+                        bottomMargin: reactionsLoader.active ? reactionsLoader.height - units.gu(0.2) : 0
                         right: !isOther ? parent.right : undefined
                         rightMargin: (isUnreadMsgsBar || isInfoMsg) ? ((chatViewPage.width - msgbox.width)/2) : units.gu(1)
                         left: isOther ? avatarLoader.right : undefined
@@ -1414,7 +1429,280 @@ Page {
                         } // end Loader id: dateRowLoader
                     } // end Column id: contentColumn
                 } // end UbuntuShape id: msgbox
-             } // end ListItem id: delegateListItem
+
+                Loader {
+                    id: reactionsLoader
+                    active: reactions.hasOwnProperty("reactions")
+
+                    property var selfEmoji: ""
+
+                    anchors {
+                        bottom: parent.bottom
+                        right: !isOther ? msgbox.right : undefined
+                        rightMargin: !isOther ? units.gu(1) : undefined
+                        left: isOther ? avatarLoader.right : undefined
+                        leftMargin: isOther ? units.gu(2) : undefined
+                    }
+
+                    ListModel {
+                        id: reactionsModel
+                    }
+
+                    function updateReactions() {
+                        reactionsModel.clear()
+                        selfEmoji = null
+                        if (reactions.hasOwnProperty("reactions")) {
+                            let temparray = reactions.reactions
+                            for (let i = 0; i < temparray.length && i < 3; i++) {
+                                let obj = temparray[i]
+                                if (obj.isFromSelf) {
+                                    selfEmoji = obj.emoji
+                                }
+
+                                if (i < 2) {
+                                    reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
+                                } else if (temparray.length == 3) {
+                                    reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
+                                } else {
+                                    reactionsModel.append( { reactEmoji: "…", reactCount: 1 })
+                                }
+                            }
+                        }
+                    }
+
+                    function sendReaction(emojiToSend) {
+
+                        let msgId = DeltaHandler.chatmodel.indexToMessageId(index)
+                        JSONRPC.client.getSelectedAccountId().then(accountId => // TODO get the selected account Id from somewhere else and cache it in a var
+                            JSONRPC.client.sendReaction(accountId, msgId, [emojiToSend])
+                                .catch(error => console.log("send reaction failed:", error.message))
+                        )
+                    }
+
+                    sourceComponent: ListView {
+                        id: reactionsView
+                        height: root.scaledFontSizeInPixels + units.gu(1)
+                        width: contentWidth
+
+                        model: reactionsModel
+                        orientation: ListView.Horizontal
+
+                        delegate: UbuntuShape {
+                            id: reactionsDelegate
+                            height: root.scaledFontSizeInPixels + units.gu(1)
+                            width: reactionsLabel.contentWidth + units.gu(1)
+                            backgroundColor: root.darkmode ? "#505050" : "white"
+                            backgroundMode: UbuntuShape.SolidColor
+                            aspect: UbuntuShape.DropShadow
+                            radius: "large"
+
+                            Label {
+                                id: reactionsLabel
+                                text: model.reactEmoji + (model.reactCount > 1 ? model.reactCount : "")
+                                fontSize: root.scaledFontSize
+                                color: root.darkmode ? "white" : "black"
+                                anchors {
+                                    horizontalCenter: parent.horizontalCenter
+                                    verticalCenter: parent.verticalCenter
+                                }
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: { 
+                                    PopupUtils.open(Qt.resolvedUrl("ReactionsInfoPopup.qml"), chatViewPage, { "reactions": reactions })
+                                }
+                            }
+                        }
+                    } // ListView id: reactionsView
+
+                    Component {
+                        id: popoverComponentReactions
+                        Popover {
+                            id: popoverReactions
+
+                            width: chooseReactionsShape.width
+
+                            UbuntuShape {
+                                id: chooseReactionsShape
+                                width: chooseReactionsRow.width
+                                height: chooseReactionsRow.height + units.gu(1)
+
+                                backgroundColor: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6"
+                                aspect: UbuntuShape.Flat
+
+                                Row {
+                                    id: chooseReactionsRow
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    Item {
+                                        // spacer item
+                                        height: units.gu(1)
+                                        width: height
+                                    }
+
+                                    UbuntuShape {
+                                        width: chooseReactionsLabel1.contentWidth + units.gu(3)
+                                        height: chooseReactionsLabel1.contentHeight + units.gu(2)
+
+                                        backgroundColor: chooseReactionsLabel1.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
+                                        aspect: UbuntuShape.Flat
+
+                                        Label {
+                                            id: chooseReactionsLabel1
+                                            anchors {
+                                                horizontalCenter: parent.horizontalCenter
+                                                verticalCenter: parent.verticalCenter
+                                            }
+                                            // thumbs up, U+1F44D
+                                            text: "👍"
+                                            fontSize: "x-large"
+                                        }
+                                        
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                if (chooseReactionsLabel1.text != reactionsLoader.selfEmoji) {
+                                                    reactionsLoader.sendReaction(chooseReactionsLabel1.text)
+                                                } else {
+                                                    reactionsLoader.sendReaction("")
+                                                }
+                                                PopupUtils.close(popoverReactions)
+                                            }
+                                        }
+                                    }
+                                    UbuntuShape {
+                                        width: chooseReactionsLabel2.contentWidth + units.gu(3)
+                                        height: chooseReactionsLabel2.contentHeight + units.gu(2)
+
+                                        backgroundColor: chooseReactionsLabel2.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
+                                        aspect: UbuntuShape.Flat
+
+                                        Label {
+                                            id: chooseReactionsLabel2
+                                            anchors {
+                                                horizontalCenter: parent.horizontalCenter
+                                                verticalCenter: parent.verticalCenter
+                                            }
+                                            // thumbs down, U+1F44E
+                                            text: "👎"
+                                            fontSize: "x-large"
+                                        }
+                                        
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                if (chooseReactionsLabel2.text != reactionsLoader.selfEmoji) {
+                                                    reactionsLoader.sendReaction(chooseReactionsLabel2.text)
+                                                } else {
+                                                    reactionsLoader.sendReaction("")
+                                                }
+                                                PopupUtils.close(popoverReactions)
+                                            }
+                                        }
+                                    }
+                                    UbuntuShape {
+                                        width: chooseReactionsLabel3.contentWidth + units.gu(3)
+                                        height: chooseReactionsLabel3.contentHeight + units.gu(2)
+
+                                        backgroundColor: chooseReactionsLabel3.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
+                                        aspect: UbuntuShape.Flat
+
+                                        Label {
+                                            id: chooseReactionsLabel3
+                                            anchors {
+                                                horizontalCenter: parent.horizontalCenter
+                                                verticalCenter: parent.verticalCenter
+                                            }
+                                            // red heart, should be \"\xE2\x9D\xA4\xEF\xB8\x8F\"
+                                            text: "❤️"
+                                            fontSize: "x-large"
+                                        }
+                                        
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                if (chooseReactionsLabel3.text != reactionsLoader.selfEmoji) {
+                                                    reactionsLoader.sendReaction(chooseReactionsLabel3.text)
+                                                } else {
+                                                    reactionsLoader.sendReaction("")
+                                                }
+                                                PopupUtils.close(popoverReactions)
+                                            }
+                                        }
+                                    }
+                                    UbuntuShape {
+                                        width: chooseReactionsLabel4.contentWidth + units.gu(3)
+                                        height: chooseReactionsLabel4.contentHeight + units.gu(2)
+
+                                        backgroundColor: chooseReactionsLabel4.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
+                                        aspect: UbuntuShape.Flat
+
+                                        Label {
+                                            id: chooseReactionsLabel4
+                                            anchors {
+                                                horizontalCenter: parent.horizontalCenter
+                                                verticalCenter: parent.verticalCenter
+                                            }
+                                            // face with tears of joy, U+1F602, \"\xF0\x9F\x98\x82\" ?
+                                            text: "😂"
+                                            fontSize: "x-large"
+                                        }
+                                        
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                if (chooseReactionsLabel4.text != reactionsLoader.selfEmoji) {
+                                                    reactionsLoader.sendReaction(chooseReactionsLabel4.text)
+                                                } else {
+                                                    reactionsLoader.sendReaction("")
+                                                }
+                                                PopupUtils.close(popoverReactions)
+                                            }
+                                        }
+                                    }
+                                    UbuntuShape {
+                                        width: chooseReactionsLabel5.contentWidth + units.gu(3)
+                                        height: chooseReactionsLabel5.contentHeight + units.gu(2)
+
+                                        backgroundColor: chooseReactionsLabel5.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
+                                        aspect: UbuntuShape.Flat
+
+                                        Label {
+                                            id: chooseReactionsLabel5
+                                            anchors {
+                                                horizontalCenter: parent.horizontalCenter
+                                                verticalCenter: parent.verticalCenter
+                                            }
+                                            // slightly frowning face, U+1F641
+                                            text: "🙁"
+                                            fontSize: "x-large"
+                                        }
+
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                if (chooseReactionsLabel5.text != reactionsLoader.selfEmoji) {
+                                                    reactionsLoader.sendReaction(chooseReactionsLabel5.text)
+                                                } else {
+                                                    reactionsLoader.sendReaction("")
+                                                }
+                                                PopupUtils.close(popoverReactions)
+                                            }
+                                        }
+                                    }
+
+                                    Item {
+                                        // spacer item
+                                        height: units.gu(1)
+                                        width: height
+                                    }
+                                }
+                            }
+                        } // end Popover id: popoverReactions
+                    } // end Component id: popoverComponentReactions
+                } // end Loader id: reactionsLoader
+            } // end ListItem id: delegateListItem
 
         verticalLayoutDirection: ListView.BottomToTop
         spacing: units.gu(1)
@@ -2197,7 +2485,7 @@ Page {
 
 
     Rectangle {
-        id: requestReactionRect
+        id: contactRequestRect
         height: 3* acceptRequestButton.height + units.gu(8)
         width: parent.width
         color: theme.palette.normal.background
@@ -2213,7 +2501,7 @@ Page {
             id: acceptRequestButton
             width: parent.width - units.gu(4)
             anchors {
-                top: requestReactionRect.top
+                top: contactRequestRect.top
                 topMargin: units.gu(2)
                 horizontalCenter: parent.horizontalCenter
             }
@@ -2258,7 +2546,7 @@ Page {
             }
         }
 
-    } // end Rectangle id: requestReactionRect
+    } // end Rectangle id: contactRequestRect
 
     Loader {
         id: audioPlayLoader

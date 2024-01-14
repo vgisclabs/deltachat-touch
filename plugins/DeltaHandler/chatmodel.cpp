@@ -89,6 +89,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[IsSearchResultRole] = "isSearchResult";
     roles[ContactIdRole] = "contactID";
     roles[HasHtmlRole] = "hasHtml";
+    roles[ReactionsRole] = "reactions";
 
     return roles;
 }
@@ -132,6 +133,13 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
     }
 
     QString tempQString;
+
+    QString paramString;
+    QString requestString;
+    QByteArray byteArray;
+    QJsonDocument jsonDoc;
+    QJsonObject jsonObj;
+
     char* tempText {nullptr};
     dc_contact_t* tempContact {nullptr};
     uint32_t contactID = 0;
@@ -666,6 +674,31 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
 
         case ChatModel::HasHtmlRole:
             retval = (1 == dc_msg_has_html(tempMsg));
+            break;
+
+        case ChatModel::ReactionsRole:
+            tempQString.setNum(dc_get_id(currentMsgContext));
+            paramString.append(tempQString);
+            paramString.append(", ");
+
+            tempQString.setNum(tempMsgID);
+            paramString.append(tempQString);
+
+            requestString = m_dhandler->constructJsonrpcRequestString("get_message_reactions", paramString);
+
+            // the actual object with the chatlist entry is nested in the
+            // received json like this:
+            // { .....,"result":{ <this is the actual entry> }}
+            // so we extract it
+            byteArray = m_dhandler->sendJsonrpcBlockingCall(requestString).toLocal8Bit();
+            jsonDoc = QJsonDocument::fromJson(byteArray);
+
+            jsonObj = jsonDoc.object();
+            // value() returns a QJsonValue, which we directly
+            // transform back to an object via toObject()
+            jsonObj = jsonObj.value("result").toObject();
+
+            retval = jsonObj;
             break;
 
         default:

@@ -103,7 +103,18 @@ public:
 
     Q_INVOKABLE void loadSelectedAccount();
 
+    Q_INVOKABLE uint32_t getCurrentAccountId();
+
     Q_INVOKABLE void sendJsonrpcRequest(QString request);
+
+    Q_INVOKABLE QString sendJsonrpcBlockingCall(QString request) const;
+
+    // Returns a valid jsonrpc request for the method and arguments passed.
+    // The arguments have to be separated by ", " in one single string.
+    // String arguments have to be inside escaped quotation marks.
+    // Example for a method call:
+    // constructJsonrpcRequestString("get_backup", "12, \"qrcode:xxxxx\"");
+    Q_INVOKABLE QString constructJsonrpcRequestString(QString method, QString arguments) const;
 
     // Parameter is the version for which the message applies,
     // not the message text itself
@@ -508,6 +519,7 @@ signals:
     void messageRead(int msgID);
     void messageDelivered(int msgID);
     void messageFailed(int msgID);
+    void messageReaction(int msgID);
     void progressEventReceived(int perMill, QString errorMsg);
     void imexEventReceived(int perMill);
     void newUnconfiguredAccount();
@@ -580,6 +592,7 @@ private slots:
     void messageReadByRecipient(uint32_t accID, int chatID, int msgID);
     void messageDeliveredToServer(uint32_t accID, int chatID, int msgID);
     void messageFailedSlot(uint32_t accID, int chatID, int msgID);
+    void msgReactionsChanged(uint32_t accID, int chatID, int msgID);
     void progressEvent(int perMill, QString errorMsg);
     void imexBackupImportProgressReceiver(int perMill);
     void imexBackupExportProgressReceiver(int perMill);
@@ -691,13 +704,6 @@ private:
     mutable uint32_t m_jsonrpcRequestId;
 
     uint32_t getJsonrpcRequestId() const;
-
-    // Returns a valid jsonrpc request for the method and arguments passed.
-    // The arguments have to be separated by ", " in one single string.
-    // String arguments have to be enclosed separately by a pair of \"
-    // Example for a method call:
-    // constructJsonrpcRequestString("get_backup", "12, \"qrcode:xxxxx\"");
-    QString constructJsonrpcRequestString(QString method, QString arguments) const;
 
     // for the signal queue
     bool m_signalQueue_refreshChatlist;

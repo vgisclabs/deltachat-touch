@@ -732,7 +732,13 @@ private:
 
     void processSignalQueue();
     bool isQueueEmpty();
+
+    // adapts the internal chatlist to tempChatlist via
+    // move, remove and insert operations
     void refreshChatlistVector(dc_chatlist_t* tempChatlist);
+    
+    // adapts the internal chatlist to tempChatlist via
+    // beginResetModel() / endResetModel()
     void resetChatlistVector(dc_chatlist_t* tempChatlist);
 };
 

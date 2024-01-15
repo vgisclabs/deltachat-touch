@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.3.2-pre04'
+    property string version: '1.3.2-pre05'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -861,11 +861,8 @@ MainView {
                             onClicked: DeltaHandler.closeArchive()
                         }
                     }
-
-
                 }
                 visible: showArchiveCloseLine
-
             }
 
             ListItemActions {
@@ -1017,7 +1014,7 @@ MainView {
                     }
 
                     // shall specify the height when Using ListItemLayout inside ListItem
-                    height: chatlistLayout.height //+ (divider.visible ? divider.height : 0)
+                    height: chatlistLayout.height + (divider.visible ? divider.height : 0)
                     divider.visible: true
                     onClicked: {
                         if (!root.chatOpenAlreadyClicked) {
@@ -1220,7 +1217,7 @@ MainView {
                 clip: true
                 anchors.top: showArchiveCloseLine ? archivedChatsItem.bottom : headerRect.bottom
                 width: parent.width
-                height: chatlistPage.height - headerRect.height - bottomEdgeHint.height
+                height: chatlistPage.height - headerRect.height - bottomEdgeHint.height - (showArchiveCloseLine ? archivedChatsItem.height : 0)
                 model: DeltaHandler
                 delegate: delegateListItem
             }

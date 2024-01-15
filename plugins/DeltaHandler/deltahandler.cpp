@@ -25,7 +25,6 @@
 #include <QtDBus/QDBusMessage>
 #include <QDBusPendingReply>
 #include <QDBusError>
-#include <thread>
 
 namespace C {
 #include <libintl.h>
@@ -1290,7 +1289,7 @@ void DeltaHandler::openChat()
         }
 
         dc_chatlist_t* tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
-        refreshChatlistVector(tempChatlist);
+        resetChatlistVector(tempChatlist);
         dc_chatlist_unref(tempChatlist);
 
         emit chatlistShowsArchivedOnly(m_showArchivedChats);
@@ -1327,9 +1326,7 @@ void DeltaHandler::archiveMomentaryChat()
         processSignalQueue();
     }
 
-    // It is not needed to 
-    // - call beginResetModel() / endResetModel
-    // - unref the chatlist and get it again
+    // It is not needed to modify the model/chatlist
     // because changing the visibility will trigger
     // DC_EVENT_MSGS_CHANGED, causing the messagesChanged() slot to reset
     // the model and the chatlist
@@ -1415,13 +1412,7 @@ void DeltaHandler::closeArchive()
     }
 
     dc_chatlist_t* tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
-
-    beginResetModel();
-
     resetChatlistVector(tempChatlist);
-
-    endResetModel();
-
     dc_chatlist_unref(tempChatlist);
 
     emit chatlistShowsArchivedOnly(m_showArchivedChats);
@@ -1548,7 +1539,10 @@ void DeltaHandler::processSignalQueueTimerTimeout()
 
 void DeltaHandler::processSignalQueue()
 {
-    { // check if the chatlist has to be refreshed
+    bool resetInsteadRefresh = false;
+
+    { // check if the chatlist has to be refreshed / resetted
+
         if (m_signalQueue_refreshChatlist) {
             m_signalQueue_refreshChatlist = false;
 
@@ -1583,9 +1577,10 @@ void DeltaHandler::processSignalQueue()
                     tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
                     if (0 == dc_chatlist_get_cnt(tempChatlist)) {
                         m_showArchivedChats = false;
+                        emit chatlistShowsArchivedOnly(m_showArchivedChats);
                         dc_chatlist_unref(tempChatlist);
                         tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
-                        emit chatlistShowsArchivedOnly(m_showArchivedChats);
+                        resetInsteadRefresh = true;
                     }
                 } else {
                     tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
@@ -1600,62 +1595,77 @@ void DeltaHandler::processSignalQueue()
                 }
             }
 
-            refreshChatlistVector(tempChatlist);
+            if (resetInsteadRefresh) {
+                resetChatlistVector(tempChatlist);
+            } else {
+                refreshChatlistVector(tempChatlist);
+            }
+
             dc_chatlist_unref(tempChatlist);
         }
     }
 
-    { // Now notify the view about all changed chats.
-      // m_signalQueue_refreshChatlist contains all chat IDs
-      // that have to be notified. It's guaranteed that they
-      // belong to the currently active context.
-      //
-      // First transfer m_signalQueue_chatsDataChanged to a vector
-      // to eliminate duplicates:
-        std::vector<int> chatsToRefresh;
-        bool allChatsAffected = false;
-
-        while (!m_signalQueue_chatsDataChanged.empty()) {
-            int tempChatID = m_signalQueue_chatsDataChanged.front();
-            m_signalQueue_chatsDataChanged.pop();
-
-            if (allChatsAffected) {
-                // Don't abort the loop if all chats are affected
-                // because we have to clear the queue.
-                // No need to take care of the chatsToRefresh vector
-                // as it is only temporary.
-                continue;
+    {   // Notify the view about all changed chats.
+        // Not needed if the chatlist has been reset
+        // instead refreshed:
+        if (resetInsteadRefresh) {
+            // in this case, only m_signalQueue_chatsDataChanged has
+            // to be emptied
+            while (!m_signalQueue_chatsDataChanged.empty()) {
+                m_signalQueue_chatsDataChanged.pop();
             }
+        } else {
+            // m_signalQueue_refreshChatlist contains all chat IDs
+            // that have to be notified. It's guaranteed that they
+            // belong to the currently active context.
+            //
+            // First transfer m_signalQueue_chatsDataChanged to a vector
+            // to eliminate duplicates:
+            std::vector<int> chatsToRefresh;
+            bool allChatsAffected = false;
 
-            if (0 == tempChatID) {
-                allChatsAffected = true;
-                continue;
-            }
+            while (!m_signalQueue_chatsDataChanged.empty()) {
+                int tempChatID = m_signalQueue_chatsDataChanged.front();
+                m_signalQueue_chatsDataChanged.pop();
 
-            size_t i = 0;
-            while (i < chatsToRefresh.size()) {
-                if (tempChatID == chatsToRefresh[i]) {
-                    break;
+                if (allChatsAffected) {
+                    // Don't abort the loop if all chats are affected
+                    // because we have to clear the queue.
+                    // No need to take care of the chatsToRefresh vector
+                    // as it is only temporary.
+                    continue;
                 }
-                ++i;
-            }
 
-            if (i == chatsToRefresh.size()) {
-                // No break in the above for loop, so the chat ID
-                // is not yet in the vector, add it
-                chatsToRefresh.push_back(tempChatID);
-            }
-        }
+                if (0 == tempChatID) {
+                    allChatsAffected = true;
+                    continue;
+                }
 
-        // Then do the actual notification of the model
-        for (size_t i = 0; i < m_chatlistVector.size(); ++i) {
-            if (allChatsAffected) {
-                emit dataChanged(index(i, 0), index(i, 0));
-            } else {
-                for (size_t j = 0; j < chatsToRefresh.size(); ++j) {
-                    if (m_chatlistVector[i] == chatsToRefresh[j]) {
-                        emit dataChanged(index(i, 0), index(i, 0));
+                size_t i = 0;
+                while (i < chatsToRefresh.size()) {
+                    if (tempChatID == chatsToRefresh[i]) {
                         break;
+                    }
+                    ++i;
+                }
+
+                if (i == chatsToRefresh.size()) {
+                    // No break in the above for loop, so the chat ID
+                    // is not yet in the vector, add it
+                    chatsToRefresh.push_back(tempChatID);
+                }
+            }
+
+            // Then do the actual notification of the model
+            for (size_t i = 0; i < m_chatlistVector.size(); ++i) {
+                if (allChatsAffected) {
+                    emit dataChanged(index(i, 0), index(i, 0));
+                } else {
+                    for (size_t j = 0; j < chatsToRefresh.size(); ++j) {
+                        if (m_chatlistVector[i] == chatsToRefresh[j]) {
+                            emit dataChanged(index(i, 0), index(i, 0));
+                            break;
+                        }
                     }
                 }
             }
@@ -4822,13 +4832,7 @@ QString DeltaHandler::saveLog(QString logtext, QString datetime)
 void DeltaHandler::contextSetupTasks()
 {
     dc_chatlist_t* tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
-
-    beginResetModel();
-
     resetChatlistVector(tempChatlist);
-
-    endResetModel();
-
     dc_chatlist_unref(tempChatlist);
 
     m_currentAccID = dc_get_id(currentContext);
@@ -5217,43 +5221,69 @@ QString DeltaHandler::constructJsonrpcRequestString(QString method, QString argu
 
 void DeltaHandler::refreshChatlistVector(dc_chatlist_t* tempChatlist)
 {
-    for (size_t i = 0; i < dc_chatlist_get_cnt(tempChatlist); ++i) {
+    size_t templistSize = dc_chatlist_get_cnt(tempChatlist);
+    size_t internalVectorSize = m_chatlistVector.size();
+
+    std::vector<uint32_t>::iterator it;
+
+    for (size_t i = 0; i < templistSize; ++i) {
         size_t j;
         uint32_t tempChatID = dc_chatlist_get_chat_id(tempChatlist, i);
 
-        for (j = i; j < m_chatlistVector.size(); ++j) {
+        for (j = i; j < internalVectorSize; ++j) {
             if (m_chatlistVector[j] == tempChatID) {
                 // if j == i, then the chat is already at the right place
                 if (j != i) {
-                    beginMoveRows(QModelIndex(), j, j, QModelIndex(), i);
-                    m_chatlistVector[i] = m_chatlistVector[j];
-                    endMoveRows();
+                    it = m_chatlistVector.begin();
+
+                    if (1 == j - i) {
+                        // if j is the next higher neighbor of i, then
+                        // it's likely that the chat at i has either been deleted
+                        // or it was a pinned chat that's now unpinned. Even
+                        // in the second case it's probably more effective to
+                        // just delete it and insert it back again later on
+                        // than to move a whole lot of chats one index down.
+                        beginRemoveRows(QModelIndex(), i, i);
+                        m_chatlistVector.erase(it+i);
+                        it = m_chatlistVector.begin();
+                        internalVectorSize--;
+                        endRemoveRows();
+                    } else {
+                        beginMoveRows(QModelIndex(), j, j, QModelIndex(), i);
+                        
+                        // move m_chatlistVector[j] to m_chatlistVector[i],
+                        // this has to be achieved via erasing and inserting
+                        // Just using
+                        // m_chatlistVector[i] = m_chatlistVector[j]
+                        // doesn't do the trick because then the view and
+                        // m_chatlistVector might differ at some indices:
+                        // The view will shift every item between i and j
+                        // to one higher index, which the vector doesn't
+                        m_chatlistVector.erase(it+j);
+                        m_chatlistVector.insert(it+i, tempChatID);
+
+                        endMoveRows();
+                    }
                 }
                 break;
             }
         }
 
-        if (j == m_chatlistVector.size()) {
+        if (j == internalVectorSize) {
         // Chat at i in tempChatlist was not present in m_chatlistVector, insert it
-            std::vector<uint32_t>::iterator it;
             it = m_chatlistVector.begin();
-
             beginInsertRows(QModelIndex(), i, i);
             m_chatlistVector.insert(it+i, tempChatID);
+            internalVectorSize++;
+
             endInsertRows();
         }
-
-        // Don't know why this is needed as we're only doing
-        // move and insert operations, but without it, the list
-        // is not displayed correctly at first
-        emit dataChanged(index(i, 0), index(i, 0));
     }
 
-    size_t tempChatlistCount = dc_chatlist_get_cnt(tempChatlist);
-    size_t tempVectorSize = m_chatlistVector.size();
-    if (tempVectorSize > tempChatlistCount) {
-        beginRemoveRows(QModelIndex(), tempChatlistCount, tempVectorSize - 1);
-        m_chatlistVector.resize(tempChatlistCount);
+    if (internalVectorSize > templistSize) {
+        beginRemoveRows(QModelIndex(), templistSize, internalVectorSize - 1);
+        m_chatlistVector.resize(templistSize);
+        // internalVectorSize = templistSize;
         endRemoveRows();
     }
 }
@@ -5261,12 +5291,14 @@ void DeltaHandler::refreshChatlistVector(dc_chatlist_t* tempChatlist)
 
 void DeltaHandler::resetChatlistVector(dc_chatlist_t* tempChatlist)
 {
+    beginResetModel();
     size_t count = dc_chatlist_get_cnt(tempChatlist);
     m_chatlistVector.resize(count);
 
     for (size_t i = 0; i < count ; ++i) {
         m_chatlistVector[i] = dc_chatlist_get_chat_id(tempChatlist, i);
     }
+    endResetModel();
 }
 
 

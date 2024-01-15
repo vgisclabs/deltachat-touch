@@ -1,7 +1,11 @@
 x.x.x xxxx-xx-xx
-UI: App does not block when adding account as second device, but shows progress bar now
+UI: App does not block when adding account as second device, shows progress bar now
 UI: Enable swipe actions for informational messages
 UI: Reactions
+Bugfix: Images now auto-rotate according to EXIF data
+Bugfix: Copy to clipboard now reliable
+Bugfix: Adapt size of chatlist in the archive
+Other: Refactoring for app to stay responsive when receiving a lot of messages
 
 1.3.1 2023-12-16
 UI: Click on header in chat view opens chat partner's profile (1:1 chats) or group edit page

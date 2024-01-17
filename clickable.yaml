@@ -6,9 +6,10 @@ prebuild: mkdir -p plugins/DeltaHandler && cp ../deltachat-core-rust/install/lib
 libraries:
   deltachat-core-rust:
     builder: cmake
+    prebuild: mkdir -p ${BUILD_DIR}/target
     make_jobs: 1
     rust_channel: 1.72.0
-    build_args: -DCLICK_ARCH_RUST=${ARCH_RUST}
+    build_args: -DCLICK_ARCH_RUST=${ARCH_RUST} -DCLICK_BUILD_DIR=${BUILD_DIR}/target
   quirc:
     builder: custom
     build: rm -rf * && cp -a ../../../libs/quirc/* ./ && patch Makefile < ../../../libs/patches/quirc_Makefile.patch && make libquirc.so

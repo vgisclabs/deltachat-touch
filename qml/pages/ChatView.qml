@@ -654,6 +654,7 @@ Page {
                         case DeltaHandler.StickerType:
                         case DeltaHandler.AudioType:
                         case DeltaHandler.VoiceType:
+                        case DeltaHandler.VideoType:
                             return false;
                             break;
 
@@ -1145,14 +1146,14 @@ Page {
 
                         Loader {
                             id: unknownTypeLoader
-                            active: msgViewType === unhandledType
+                            active: unhandledType
 
                             sourceComponent: Label {
                                 id: summaryLabel
                                 width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
                                 text: model.summarytext
                                 wrapMode: Text.Wrap
-                                color: model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
+                                color: textColor //model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
                                 font.italic: true
                                 fontSize: root.scaledFontSize
                             }
@@ -1161,7 +1162,7 @@ Page {
 
                         Loader {
                             id: fileLineLoader
-                            active: msgViewType === DeltaHandler.FileType
+                            active: msgViewType === DeltaHandler.FileType || msgViewType === DeltaHandler.VideoType
 
                             sourceComponent: Row {
                                 id: fileRow

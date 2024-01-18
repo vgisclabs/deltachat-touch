@@ -1146,7 +1146,7 @@ Page {
 
                         Loader {
                             id: unknownTypeLoader
-                            active: unhandledType
+                            active: unhandledType && !isUnreadMsgsBar
 
                             sourceComponent: Label {
                                 id: summaryLabel
@@ -1294,22 +1294,32 @@ Page {
                             id: htmlLoader
                             active: model.hasHtml
 
-                            sourceComponent: Label {
-                                id: getHtmlLabel
-                                width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
-                                text: i18n.tr("Show Full Message…")
-                                color: msgLabel.linkColor
-                            }
-                            
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: {
-                                    let urlpath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.chatmodel.getHtmlMessage(index))
-                                    let msgsubject = DeltaHandler.chatmodel.getHtmlMsgSubject(index)
-                                    layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": ((protectionIsBroken || isContactRequest) && isOther)})
-                                }
-                            }
+                            sourceComponent: Rectangle {
+                                height: getHtmlLabel.height + units.gu(2)
+                                width: getHtmlLabel.contentWidth
+                                color: msgbox.color
 
+                                Label {
+                                    id: getHtmlLabel
+                                        anchors {
+                                            bottom: parent.bottom
+                                            bottomMargin: units.gu(0.5)
+                                        }
+                                    width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
+                                    text: i18n.tr("Show Full Message…")
+                                    color: msgLabel.linkColor
+                                }
+                            
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        let urlpath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.chatmodel.getHtmlMessage(index))
+                                        let msgsubject = DeltaHandler.chatmodel.getHtmlMsgSubject(index)
+                                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": ((protectionIsBroken || isContactRequest) && isOther)})
+                                    }
+                                }
+
+                            }
                         }
 
                         Loader {

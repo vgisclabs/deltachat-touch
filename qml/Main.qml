@@ -1081,7 +1081,7 @@ MainView {
                                 width: height
 
                                 anchors {
-                                    right: mutedIcon.visible ? mutedIcon.left : (pinnedIcon.visible ? pinnedIcon.left : timestamp.left)
+                                    right: mutedIcon.visible ? mutedIcon.left : timestamp.left
                                     rightMargin: units.gu(0.5)
                                     top: dateAndMsgCount.top
                                 }
@@ -1094,7 +1094,7 @@ MainView {
                                 height: timestamp.contentHeight
                                 width: height
                                 anchors {
-                                    right: pinnedIcon.visible ? pinnedIcon.left : timestamp.left
+                                    right: timestamp.left
                                     rightMargin: units.gu(0.5)
                                     top: dateAndMsgCount.top
                                 }
@@ -1109,8 +1109,7 @@ MainView {
                                 height: timestamp.contentHeight
                                 width: height
                                 anchors {
-                                    right: timestamp.left
-                                    rightMargin: units.gu(0.5)
+                                    right: dateAndMsgCount.right
                                     top: dateAndMsgCount.top
                                 }
                                 name: "pinned"
@@ -1123,7 +1122,8 @@ MainView {
                                 id: timestamp
                                 text: isArchiveLink ? "" : (chatlistEntry.lastUpdated !== null ? DeltaHandler.timeToString(chatlistEntry.lastUpdated, true) : "")
                                 anchors {
-                                    right: dateAndMsgCount.right
+                                    right: pinnedIcon.visible ? pinnedIcon.left : dateAndMsgCount.right
+                                    rightMargin: pinnedIcon.visible ? units.gu(0.5) : 0
                                     top: dateAndMsgCount.top
                                     topMargin: units.gu(0.2)
                                 }

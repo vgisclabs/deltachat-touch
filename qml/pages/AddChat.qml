@@ -40,10 +40,6 @@ Page {
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     bottomEdge.collapse()
-                    // reset the text in the TextField, otherwise the
-                    // query would remain for the next time the
-                    // model is used
-                    enterNameOrEmailField.text = ""
                 }
             }
         ]
@@ -52,77 +48,111 @@ Page {
     signal textHasChanged(string query)
     signal indexSelected(int index)
 
-    Button {
-        id: newGroupButton
-        //width: parent.width < units.gu(40) ? parent.width - units.gu(8) : units.gu(32)
-        width: (implicitWidth > newVerifiedGroupButton.implicitWidth ? implicitWidth : newVerifiedGroupButton.implicitWidth) + units.gu(4)
+    Column {
+        id: specialEntryColumn
         anchors {
             left: parent.left
-            leftMargin: units.gu(2)
             top: addChatHeader.bottom
             topMargin: units.gu(2)
         }
-        text: i18n.tr('New Group')
-        onClicked: {
-            bottomEdge.collapse()
-            // reset the text in the TextField, otherwise the
-            // selection would also be active for the add members list
-            enterNameOrEmailField.text = ""
-            DeltaHandler.startCreateGroup(false)
-            layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), {"createNewGroup": true, "createVerifiedGroup": false})
+
+        TextField {
+            id: enterNameOrEmailField
+            width: addChatPage.width - units.gu(4)
+
+            anchors {
+                left: parent.left
+                leftMargin: units.gu(2)
+            }
+
+            placeholderText: i18n.tr('Enter name or e-mail address')
+
+            // Without inputMethodHints set to Qg.ImhNoPredictiveText, the
+            // clear button only works in x86_64, but does not work
+            // correctly for  aarch64 and armhf.
+            inputMethodHints: Qt.ImhNoPredictiveText
+            onDisplayTextChanged: {
+                addChatPage.textHasChanged(displayText)
+            }
+        }
+
+        ListItem {
+            id: newContactItem
+            height: newContactLayout.height + (divider.visible ? divider.height : 0)
+            width: addChatPage.width
+
+            visible: enterNameOrEmailField.displayText === ""
+            ListItemLayout {
+                id: newContactLayout
+                title.text: i18n.tr('New Contact')
+                title.font.bold: true
+
+                LomiriShape {
+                    id: addIconShape1
+                    height: units.gu(5)
+                    width: height
+                    SlotsLayout.position: SlotsLayout.Leading
+                    source: addPic1
+
+                    Image {
+                        id: addPic1
+                        source: Qt.resolvedUrl('../../assets/addNew.svg')
+                        visible: false
+                    }
+
+
+                    color: "grey"
+                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                    aspect: LomiriShape.Flat
+                } 
+            }
+
+            onClicked: {
+                layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("AddChatForContact.qml"))
+            }
+        }
+
+        ListItem {
+            id: newGroupItem
+            height: newGroupLayout.height + (divider.visible ? divider.height : 0)
+            width: addChatPage.width
+
+            visible: enterNameOrEmailField.displayText === ""
+            ListItemLayout {
+                id: newGroupLayout
+                title.text: i18n.tr('New Group')
+                title.font.bold: true
+
+                LomiriShape {
+                    id: addIconShape2
+                    height: units.gu(5)
+                    width: height
+                    SlotsLayout.position: SlotsLayout.Leading
+                    source: addPic2
+
+                    Image {
+                        id: addPic2
+                        source: Qt.resolvedUrl('../../assets/addNew.svg')
+                        visible: false
+                    }
+
+
+                    color: "grey"
+                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                    aspect: LomiriShape.Flat
+                }
+            }
+
+            onClicked: {
+                bottomEdge.collapse()
+                DeltaHandler.startCreateGroup()
+                layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": true })
+            }
         }
     }
 
-    Button {
-        id: newVerifiedGroupButton
-        //width: parent.width < units.gu(40) ? parent.width - units.gu(8) : units.gu(32)
-        width: (newGroupButton.implicitWidth > implicitWidth ? newGroupButton.implicitWidth : implicitWidth) + units.gu(4)
-        anchors {
-            left: parent.left
-            leftMargin: units.gu(2)
-            top: newGroupButton.bottom
-            topMargin: units.gu(2)
-        }
-        text: i18n.tr('New Verified Group')
-        onClicked: {
-            bottomEdge.collapse()
-            // reset the text in the TextField, otherwise the
-            // selection would also be active for the add members list
-            enterNameOrEmailField.text = ""
-            DeltaHandler.startCreateGroup(true)
-            layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), {"createNewGroup": true, "createVerifiedGroup": true})
-        }
-    }
-
-    Label {
-        id: enterNameOrEmailLabel
-        anchors {
-            horizontalCenter: enterNameOrEmailField.horizontalCenter
-            top: newVerifiedGroupButton.bottom
-            margins: units.gu(3)
-        }
-        text: i18n.tr('Enter name or e-mail address')
-    }
-
-    TextField {
-        id: enterNameOrEmailField
-        width: parent.width < units.gu(45) ? parent.width - units.gu(8) : units.gu(37)
-        anchors {
-            left: parent.left
-            leftMargin: units.gu(2)
-            top: enterNameOrEmailLabel.bottom
-            topMargin: units.gu(1)
-        }
-
-        // Without inputMethodHints set to Qg.ImhNoPredictiveText, the
-        // clear button only works in x86_64, but does not work
-        // correctly for  aarch64 and armhf.
-        inputMethodHints: Qt.ImhNoPredictiveText
-        onDisplayTextChanged: {
-            addChatPage.textHasChanged(displayText)
-        }
-    }
-
+    // TODO: Maybe use this to delete contacts? May not be an
+    // intuitive place to do so, though
 //    ListItemActions {
 //        id: leadingContactsAction
 //        actions: Action {
@@ -147,7 +177,12 @@ Page {
             divider.visible: true
 
             onClicked: {
-                addChatPage.indexSelected(index)
+                // check if the item is the top one labeled "Add Contact"
+                if (model.profilePic == "replace_by_addNew") {
+                    layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("AddChatForContact.qml"), { "address": enterNameOrEmailField.displayText })
+                } else {
+                    addChatPage.indexSelected(index)
+                }
             }
 
 //            leadingActions: leadingContactsAction
@@ -156,6 +191,7 @@ Page {
                 id: contactsListItemLayout
                 title.text: model.displayname == '' ? i18n.tr('Unknown') : model.displayname
                 subtitle.text: model.address
+                title.font.bold: model.profilePic == "replace_by_addNew" ? true : false
                 
                 Image {
                     id: verifiedSymbol
@@ -198,35 +234,6 @@ Page {
                     sourceFillMode: LomiriShape.PreserveAspectCrop
                     aspect: LomiriShape.Flat
                 } // end of LomiriShape id: profPicShape
-
-                //Rectangle {
-                //    id: configStatusRect
-                //    SlotsLayout.position: SlotsLayout.Trailing
-                //    height: units.gu(3)
-                //    width: height
-                //    color: theme.palette.normal.background
-                //    Label {
-                //        id: configStatusLabel
-                //        text: '!'
-                //        font.bold: true
-                //        color: theme.palette.normal.negative 
-                //        anchors {
-                //            centerIn: parent
-                //        }
-                //        textSize: Label.XLarge
-                //        visible: !model.isConfigured
-                //    }
-                //    //Icon {
-                //    //    id: configStatusIcon
-                //    //    color: theme.palette.normal.positive
-                //    //    anchors {
-                //    //        fill: parent
-                //    //    }
-                //    //    name: "ok"
-                //    //    visible: model.isConfigured
-
-                //    //}
-                //}
             } // ListItemLayout id: accountsListItemLayout
         } // ListItem accountsItem
     } // Component accountsDelegate
@@ -237,8 +244,7 @@ Page {
         //height: accountConfigPage.height - header.height
         width: addChatPage.width
         anchors {
-            top: enterNameOrEmailField.bottom
-            topMargin: units.gu(1)
+            top: specialEntryColumn.bottom
             bottom: addChatPage.bottom
         }
         model: DeltaHandler.contactsmodel
@@ -249,5 +255,10 @@ Page {
     Component.onCompleted: {
         addChatPage.textHasChanged.connect(DeltaHandler.contactsmodel.updateQuery)
         addChatPage.indexSelected.connect(DeltaHandler.contactsmodel.startChatWithIndex)
+
+        // reset the text in the TextField, otherwise the
+        // query would remain for the next time the
+        // model is used
+        bottomEdge.collapseStarted.connect(function() { enterNameOrEmailField.text = "" })
     }
-} // end Page id: aboutPage
+} // end Page id: addChatPage

@@ -33,10 +33,7 @@ Page {
         id: addMemberToGroupHeader
         title: i18n.tr('Add Members')
 
-        leadingActionBar.actions: undefined
-
-        //trailingActionBar.numberOfSlots: 2
-        trailingActionBar.actions: [
+        leadingActionBar.actions: [
             Action {
                 iconName: 'close'
                 text: i18n.tr('Cancel')
@@ -45,7 +42,11 @@ Page {
                     leavingAddMemberToGroupPage(false)
                     layout.removePages(addMemberToGroupPage)
                 }
-            },
+            }
+        ]
+
+        //trailingActionBar.numberOfSlots: 2
+        trailingActionBar.actions: [
             Action {
                 iconName: 'ok'
                 text: i18n.tr('OK')

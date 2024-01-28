@@ -256,6 +256,10 @@ MainView {
         periodicTimer.start()
     }
 
+    function openScanQrPage() {
+        layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+    }
+
     function clearChatlistQuery() {
         chatlistSearchField.text = "";
     }

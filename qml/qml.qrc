@@ -10,6 +10,7 @@
         <file>pages/AddAccountAsSecondDevice.qml</file>
         <file>pages/AddAccountViaQrInvitationCode.qml</file>
         <file>pages/AddChat.qml</file>
+        <file>pages/AddChatForContact.qml</file>
         <file>pages/AdvancedSettings.qml</file>
         <file>pages/AddOrConfigureEmailAccount.qml</file>
         <file>pages/AddSecondDevice.qml</file>

@@ -181,6 +181,21 @@ std::vector<uint32_t> GroupMemberModel::getMembersAlreadyInGroup()
 }
 
 
+bool GroupMemberModel::allContactsAreVerified()
+{
+    for (size_t i = 0; i < m_membervector.size(); ++i) {
+        dc_contact_t* tempContact = dc_get_contact(m_context, m_membervector[i]);
+        if (2 != dc_contact_is_verified(tempContact)) {
+            dc_contact_unref(tempContact);
+            return false;
+        }
+        dc_contact_unref(tempContact);
+    }
+
+    return true;
+}
+
+
 void GroupMemberModel::addMember(uint32_t contactID)
 {
     bool isNotAlreadyInList = true;

@@ -61,6 +61,7 @@ public slots:
 
     // Used in the page to add members to a group
     void startChatWithIndex(int myindex);
+    void startChatWithAddress(QString address, QString name);
     void addIndexToMemberlist(int myindex);
     void removeIndexFromMemberlist(int myindex);
     void finalizeMemberChanges(bool actionRequested);

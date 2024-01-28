@@ -251,6 +251,8 @@ public:
 
     Q_INVOKABLE void stop_io();
 
+    Q_INVOKABLE bool isValidAddr(QString address);
+
     Q_INVOKABLE bool isBackupFile(QString filePath);
 
     Q_INVOKABLE void importBackupFromFile(QString filePath);
@@ -360,7 +362,7 @@ public:
      * ============== New Group / Editing Group ===============
      * ======================================================== */
 
-    Q_INVOKABLE void startCreateGroup(bool verifiedGroup);
+    Q_INVOKABLE void startCreateGroup();
     
     // will set up the currently active chat
     // (i.e., the one in currentChatID) if -1 is
@@ -657,7 +659,7 @@ private:
     // for creation of new group or editing of group
     uint32_t m_tempGroupChatID;
     bool creatingNewGroup;
-    bool creatingOrEditingVerifiedGroup;
+    bool editingVerifiedGroup;
 
     // Stores the chat ID of the chatlist index for which
     // an action was triggered. Reason is that QML does not

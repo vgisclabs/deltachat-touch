@@ -53,6 +53,8 @@ public:
 
     void setConfig(dc_context_t* tempContext, bool creationOfNewGroup, uint32_t tempChatID = 0);
 
+    bool allContactsAreVerified();
+
 public slots:
     void addMember(uint32_t contactID);
 

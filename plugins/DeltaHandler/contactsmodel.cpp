@@ -19,6 +19,10 @@
 #include "contactsmodel.h"
 //#include <unistd.h> // for sleep
 
+namespace C {
+#include <libintl.h>
+}
+
 ContactsModel::ContactsModel(QObject* parent)
     : QAbstractListModel(parent), m_context {nullptr}, m_offset {0}, m_verifiedOnly {false}, m_query {""}
 { 
@@ -76,7 +80,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
         switch(role) {
             case ContactsModel::DisplayNameRole:
                 // TODO: this will currently not appear in the po file
-                tempQString = tr("New Contact");
+                tempQString = C::gettext("New Contact");
                 retval = tempQString;
                 break;
 
@@ -90,8 +94,9 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
                 if (isEmailAddress) {
                     retval = m_query;
                 } else {
-                    // TODO: this will currently not appear in the po file
-                    tempQString = tr("Type e-mail address above");
+                    // don't replicate the query string if it's
+                    // not an email address
+                    tempQString = "";
                     retval = tempQString;
                 }
                 break;
@@ -383,6 +388,39 @@ void ContactsModel::startChatWithIndex(int myindex)
         }
     } else {
         contactID = m_contactsVector[myindex - m_offset];
+    }
+
+    uint32_t chatID = dc_create_chat_by_contact_id(m_context, contactID);
+    
+    if (0 != chatID) {
+        emit chatCreationSuccess(chatID);
+    } else {
+        // TODO error: chat could not be created
+    }
+}
+
+
+void ContactsModel::startChatWithAddress(QString address, QString name)
+{
+    if (!dc_may_be_valid_addr(address.toUtf8().constData())) {
+        qWarning() << "ContactsModel::startChatWithAddress() called for invalid email address, not starting chat";
+        return;
+    }
+
+    uint32_t contactID;
+
+    if (name == "") {
+        // If no name was given, we should check if the contact already exists,
+        // and call dc_create_contact only if it doesn't. Otherwise,
+        // the call to dc_create_contact would reset any username
+        // defined by us
+        contactID = dc_lookup_contact_id_by_addr(m_context, address.toUtf8().constData());
+
+        if (0 == contactID) {
+            contactID = dc_create_contact(m_context, NULL, address.toUtf8().constData());
+        }
+    } else {
+        contactID = dc_create_contact(m_context, name.toUtf8().constData(), address.toUtf8().constData());
     }
 
     uint32_t chatID = dc_create_chat_by_contact_id(m_context, contactID);

@@ -2831,6 +2831,16 @@ void DeltaHandler::stop_io()
 }
 
 
+bool DeltaHandler::isValidAddr(QString address)
+{
+    if (1 == dc_may_be_valid_addr(address.toUtf8().constData())) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 bool DeltaHandler::isBackupFile(QString filePath)
 {
     // filePath might be prepended by "file://" or "qrc:", remove it
@@ -3345,14 +3355,15 @@ QString DeltaHandler::setOtherUsername(uint32_t userID, QString newName)
  * ======================================================== */
 
 
-void DeltaHandler::startCreateGroup(bool verifiedGroup)
+void DeltaHandler::startCreateGroup()
 {
     creatingNewGroup = true;
-    creatingOrEditingVerifiedGroup = verifiedGroup;
+    editingVerifiedGroup = false;
+
     m_groupmembermodel = new GroupMemberModel();
     m_groupmembermodel->setConfig(currentContext, true);
 
-    m_contactsmodel->setVerifiedOnly(verifiedGroup);
+    m_contactsmodel->setVerifiedOnly(false);
     m_contactsmodel->resetNewMemberList();
     m_contactsmodel->setMembersAlreadyInGroup(m_groupmembermodel->getMembersAlreadyInGroup());
     
@@ -3382,10 +3393,10 @@ void DeltaHandler::startEditGroup(int myindex)
     dc_chat_t* tempChat = dc_get_chat(currentContext, m_tempGroupChatID);
     if (1 == dc_chat_is_protected(tempChat)) {
         m_contactsmodel->setVerifiedOnly(true);
-        creatingOrEditingVerifiedGroup = true;
+        editingVerifiedGroup = true;
     } else {
         m_contactsmodel->setVerifiedOnly(false);
-        creatingOrEditingVerifiedGroup = false;
+        editingVerifiedGroup = false;
     }
     dc_chat_unref(tempChat);
 
@@ -3411,10 +3422,10 @@ void DeltaHandler::momentaryChatStartEditGroup()
     dc_chat_t* tempChat = dc_get_chat(currentContext, m_tempGroupChatID);
     if (1 == dc_chat_is_protected(tempChat)) {
         m_contactsmodel->setVerifiedOnly(true);
-        creatingOrEditingVerifiedGroup = true;
+        editingVerifiedGroup = true;
     } else {
         m_contactsmodel->setVerifiedOnly(false);
-        creatingOrEditingVerifiedGroup = false;
+        editingVerifiedGroup = false;
     }
     dc_chat_unref(tempChat);
 
@@ -3469,7 +3480,7 @@ QString DeltaHandler::getTempGroupName()
 
 bool DeltaHandler::tempGroupIsVerified()
 {
-    return creatingOrEditingVerifiedGroup;
+    return editingVerifiedGroup;
 }
 
 
@@ -3603,7 +3614,7 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
 {
 
     if (creatingNewGroup) {
-        if (creatingOrEditingVerifiedGroup) {
+        if (m_groupmembermodel->allContactsAreVerified()) {
             m_tempGroupChatID = dc_create_group_chat(currentContext, 1, groupName.toUtf8().constData());
         } else {
             m_tempGroupChatID = dc_create_group_chat(currentContext, 0, groupName.toUtf8().constData());
@@ -3662,7 +3673,7 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
     }
 
     // removing all contactIDs from the group that are in
-    // the array received from currentContext, but no
+    // the array received from currentContext, but not
     // in the list from m_groupmembermodel
     for (size_t i = 0; i < numberOfPresentContacts; ++i) {
         bool hasToBeRemoved = true;

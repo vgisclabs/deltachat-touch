@@ -256,9 +256,31 @@ MainView {
         periodicTimer.start()
     }
 
-    function openScanQrPage() {
-        layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+    // ======= Enable QR scan from Button in AddChatForContact.qml =======
+    // While it works with "clickable desktop" to call a method in Main.qml
+    // that removes all pages except the primary page, collapses the
+    // bottomEdge and immediately adds the QrShowScan.qml page, this crashes
+    // the app on the phone.
+    //
+    // An ugly workaround is to wait for the collapse of the
+    // bottom edge to have completed. For that, the below connection
+    // is enabled (and disabled immediately in the connected function).
+    //
+    // TODO: find a better solution
+    function openScanQrPageOnBottomEdgeCollapse() {
+        bottomEdgeCollapseToQrConnection.enabled = true
     }
+
+    Connections {
+        id: bottomEdgeCollapseToQrConnection
+        target: bottomEdge
+        onCollapseCompleted: {
+            enabled = false
+            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+        }
+        enabled: false
+    }
+    // ============== END Enable QR scan from Button ===================
 
     function clearChatlistQuery() {
         chatlistSearchField.text = "";

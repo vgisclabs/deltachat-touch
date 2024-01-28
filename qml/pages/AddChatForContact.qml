@@ -88,8 +88,10 @@ Page {
             iconName: "view-grid-symbolic"
             text: i18n.tr("Scan QR Code")
             onClicked: {
+                // Very ugly hack, see Main.qml for details
+                root.openScanQrPageOnBottomEdgeCollapse()
                 layout.removePages(page)
-                root.openScanQrPage()
+                bottomEdge.collapse()
             }
         }
 
@@ -148,9 +150,15 @@ Page {
             id: nameLabel
             anchors {
                 left: parent.left
-                leftMargin: units.gu(2)
+                leftMargin: units.gu(3)
             }
             text: i18n.tr('Name')
+        }
+
+        Item {
+            // spacer item
+            height: units.gu(0.5)
+            width: height
         }
 
         TextField {
@@ -172,9 +180,15 @@ Page {
             id: emailLabel
             anchors {
                 left: parent.left
-                leftMargin: units.gu(2)
+                leftMargin: units.gu(3)
             }
             text: i18n.tr('E-Mail Address')
+        }
+
+        Item {
+            // spacer item
+            height: units.gu(0.5)
+            width: height
         }
 
         TextField {

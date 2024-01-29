@@ -1473,14 +1473,14 @@ void DeltaHandler::selectAccount(int myindex)
         dc_context_unref(currentContext);
     }
 
-    // +++++++++ TODO: this should not be needed
-    // guard context change by stopping io to avoid
-    // new messages coming in while creating the unread message
-    // vector
-    bool restartNetwork = m_networkingIsStarted;
-    if (m_networkingIsStarted) {
-        stop_io();
+    // stop the queue timer and process the queue
+    // as the queue was built with the old account
+    // in mind
+    if (m_signalQueueTimer->isActive()) {
+        m_signalQueueTimer->stop();
+        processSignalQueue();
     }
+
     currentContext = tempContext;
     tempContext = nullptr;
     contextSetupTasks();
@@ -1488,10 +1488,6 @@ void DeltaHandler::selectAccount(int myindex)
     if (m_query != "") {
         m_query = "";
         emit clearChatlistQueryRequest();
-    }
-
-    if (restartNetwork) {
-        start_io();
     }
 
     chatmodelIsConfigured = false;

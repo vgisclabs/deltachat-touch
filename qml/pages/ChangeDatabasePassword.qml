@@ -60,16 +60,16 @@ Dialog {
         Rectangle {
             id: showPwRect
             height: passwordField.height
-            width: units.gu(3)
+            width: units.gu(5)
             color: theme.palette.normal.background
 
             Icon {
                 id: showPwIcon
-                height: units.gu(3)
+                height: units.gu(3.5)
                 width: height
                 anchors {
                     verticalCenter: showPwRect.verticalCenter
-                    left: showPwRect.left
+                    horizontalCenter: showPwRect.horizontalCenter
                 }
                 name: 'view-on'
             }

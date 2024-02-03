@@ -568,14 +568,12 @@ MainView {
                 //opacity: 0.5
             
                 property string currentUsername: DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
-                property string currentEmail: DeltaHandler.hasConfiguredAccount ? DeltaHandler.getCurrentEmail() : i18n.tr("Click Settings to manage accounts")
                 property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
 
                 Connections {
                     target: DeltaHandler
                     onAccountChanged: {
                         headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
-                        headerRect.currentEmail = DeltaHandler.hasConfiguredAccount ? DeltaHandler.getCurrentEmail() : i18n.tr("Click Settings to manage accounts")
                         headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
                         bottomEdge.enabled = DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
                         bottomEdgeHint.visible = DeltaHandler.hasConfiguredAccount
@@ -603,7 +601,7 @@ MainView {
 
                     LomiriShape {
                         id: profilePicShape
-                        height: usernameLabel.contentHeight + emailLabel.contentHeight + units.gu(1)
+                        height: usernameLabel.contentHeight + units.gu(3)
                         width: height
                         anchors {
                             left: profilePicAndNameRect.left
@@ -621,30 +619,17 @@ MainView {
                         id: usernameLabel
                         anchors {
                             left: profilePicShape.right
-                            leftMargin: units.gu(1.5)
-                            bottom: emailLabel.top
+                            leftMargin: units.gu(2.5)
+                            verticalCenter: parent.verticalCenter
                         }
                         width: parent.width - units.gu(3)
                         elide: Text.ElideRight
                         text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
                         color: "#e7fcfd"
-                        fontSize: root.scaledFontSize
+                        font.pixelSize: root.scaledFontSizeInPixels * 1.3
+                        //font.bold: true
                     }
             
-                    Label {
-                        id: emailLabel
-                        anchors {
-                            left: profilePicShape.right
-                            leftMargin: units.gu(1.5)
-                            bottom: profilePicShape.bottom
-                            bottomMargin: units.gu(0.5)
-                        }
-                        text: headerRect.currentEmail
-                        width: parent.width - units.gu(3)
-                        elide: Text.ElideRight
-                        color: usernameLabel.color
-                        fontSize: root.scaledFontSize
-                    }
                 } // Rectangle id: profilePicAndNameRect
                 
                 LomiriShape {
@@ -654,7 +639,7 @@ MainView {
                     width: height
                     anchors {
                         left: parent.left
-                        leftMargin: units.gu(0.5) + profilePicShape.width - (width/2)
+                        leftMargin: units.gu(0.5) + profilePicShape.width - (width * 0.35)
                         top: parent.top
                         topMargin: units.gu(0.25)
                     }

@@ -1624,6 +1624,8 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 1
+                                // to adapt scaling of the connectivity dot
+                                root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
                             }
                         }
@@ -1638,6 +1640,7 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 2
+                                root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
                             }
                         }
@@ -1652,6 +1655,7 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 3
+                                root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
                             }
                         }
@@ -1666,6 +1670,7 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 4
+                                root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
                             }
                         }

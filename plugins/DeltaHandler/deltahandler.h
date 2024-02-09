@@ -22,10 +22,12 @@
 #include <QtCore>
 #include <QtGui>
 #include <QAudioRecorder>
+#include <QDBusPendingCallWatcher>
 #include <string>
 #include <array>
 #include <vector>
 #include <queue>
+
 #include "chatmodel.h"
 #include "accountsmodel.h"
 #include "blockedcontactsmodel.h"
@@ -33,10 +35,11 @@
 #include "groupmembermodel.h"
 #include "emitterthread.h"
 #include "jsonrpcresponsethread.h"
-#include "deltachat.h"
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
-#include <QDBusPendingCallWatcher>
+
+#include "deltachat.h"
+#include "quirc.h"
 
 struct checkNotificationsStruct {
     uint32_t accID;

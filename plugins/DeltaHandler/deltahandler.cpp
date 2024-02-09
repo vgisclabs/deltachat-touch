@@ -16,10 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <vector>
 #include <fstream>
 #include "deltahandler.h"
-#include "quirc.h"
 //#include <unistd.h> // for sleep
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>

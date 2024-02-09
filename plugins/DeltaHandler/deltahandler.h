@@ -23,6 +23,7 @@
 #include <QtGui>
 #include <QAudioRecorder>
 #include <string>
+#include <array>
 #include <vector>
 #include <queue>
 #include "chatmodel.h"

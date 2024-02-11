@@ -2102,6 +2102,21 @@ QString DeltaHandler::getCurrentUsername()
 }
 
 
+QString DeltaHandler::getCurrentEmail()
+{
+    QString retval;
+    if (currentContext) {
+        char * tempString = dc_get_config(currentContext, "addr");
+        retval = tempString;
+        dc_str_unref(tempString);
+    }
+    else {
+        retval = "";
+    }
+    return retval;
+}
+
+
 QString DeltaHandler::getCurrentProfilePic()
 {
     QString retval;

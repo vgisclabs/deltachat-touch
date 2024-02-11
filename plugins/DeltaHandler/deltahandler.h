@@ -224,6 +224,9 @@ public:
     // Returns the username of the current context
     Q_INVOKABLE QString getCurrentUsername();
 
+    // Returns the email address of the current context
+    Q_INVOKABLE QString getCurrentEmail();
+
     // Returns the relative path to the current profile
     // picture (for full path, StandardPaths.AppConfigLocation
     // needs to be prepended)

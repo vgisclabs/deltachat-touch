@@ -2146,11 +2146,11 @@ QString DeltaHandler::getCurrentConfig(QString key)
         char * tempString = dc_get_config(currentContext, key.toUtf8().constData());
         retval = tempString;
 
-        if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
-            qDebug() << "DeltaHandler::getCurrentConfig() called for " << key << ", returning " << "*****";
-        } else {
-            qDebug() << "DeltaHandler::getCurrentConfig() called for " << key << ", returning " << retval;
-        }
+//        if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
+//            qDebug() << "DeltaHandler::getCurrentConfig() called for " << key << ", returning " << "*****";
+//        } else {
+//            qDebug() << "DeltaHandler::getCurrentConfig() called for " << key << ", returning " << retval;
+//        }
 
         dc_str_unref(tempString);
     }

@@ -103,10 +103,7 @@ Page {
 
         // Switch off the back icon to avoid unclear situation. User
         // has to explicitly choose cancel or ok.
-        leadingActionBar.actions: undefined
-
-        //trailingActionBar.numberOfSlots: 2
-        trailingActionBar.actions: [
+        leadingActionBar.actions: [
             Action {
                 iconName: 'close'
                 text: i18n.tr('Cancel')
@@ -118,7 +115,11 @@ Page {
                     DeltaHandler.deleteTemporaryAccount()
                     layout.removePages(addEmailPage)
                 }
-            },
+            }
+        ]
+
+        //trailingActionBar.numberOfSlots: 2
+        trailingActionBar.actions: [
             Action {
                 iconName: 'ok'
                 text: i18n.tr('OK')

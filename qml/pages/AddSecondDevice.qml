@@ -119,10 +119,7 @@ Page {
         id: header
         title: i18n.tr("Add Second Device")
 
-        leadingActionBar.actions: undefined
-
-        trailingActionBar.numberOfSlots: 1
-        trailingActionBar.actions: [
+        leadingActionBar.actions: [
             Action {
                 iconName: 'close'
                 text: i18n.tr('Cancel')
@@ -139,6 +136,8 @@ Page {
                 }
             }
         ]
+
+        trailingActionBar.actions: undefined
     }
 
     Label {

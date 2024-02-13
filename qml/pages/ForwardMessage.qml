@@ -41,9 +41,7 @@ Page {
         title: i18n.tr("Forward to…")
 
         // disable the "back" icon
-        leadingActionBar.actions: undefined
-
-        trailingActionBar.actions: [
+        leadingActionBar.actions: [
             Action {
                 iconName: 'close'
                 text: i18n.tr('Close')
@@ -53,6 +51,8 @@ Page {
                 }
             }
         ]
+
+        trailingActionBar.actions: undefined
     } //PageHeader id:header
 
 

@@ -4811,7 +4811,20 @@ QString DeltaHandler::getConnectivityHtml()
 void DeltaHandler::contextSetupTasks()
 {
     dc_chatlist_t* tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
-    resetChatlistVector(tempChatlist);
+
+    // can't call resetChatlistVector() because in this
+    // method, beginResetModel() / endResetModel() are called
+    //resetChatlistVector(tempChatlist);
+    //
+    // Do the reset here:
+
+    size_t count = dc_chatlist_get_cnt(tempChatlist);
+    m_chatlistVector.resize(count);
+
+    for (size_t i = 0; i < count ; ++i) {
+        m_chatlistVector[i] = dc_chatlist_get_chat_id(tempChatlist, i);
+    }
+
     dc_chatlist_unref(tempChatlist);
 
     m_currentAccID = dc_get_id(currentContext);

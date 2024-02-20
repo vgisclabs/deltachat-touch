@@ -1280,6 +1280,44 @@ MainView {
                 height: chatlistPage.height - headerRect.height - bottomEdgeHint.height - (showArchiveCloseLine ? archivedChatsItem.height : 0)
                 model: DeltaHandler
                 delegate: delegateListItem
+
+                UbuntuShape {
+                    id: toTopButton
+                    anchors {
+                        right: view.right
+                        rightMargin: units.gu(4)
+                        bottom: view.bottom
+                        bottomMargin: units.gu(4)
+                    }
+                    backgroundColor: "#F7F7F7"
+                    opacity: 0.5
+                    visible: isScrolled
+
+                    property bool isScrolled: view.visibleArea.yPosition != 0
+
+                    width: units.gu(5)
+                    height: width
+
+                        Icon {
+                            id: toTopIcon
+                            width: parent.width - units.gu(1)
+                            height: width
+                            name: "go-up"
+                            anchors{
+                                horizontalCenter: parent.horizontalCenter
+                                verticalCenter: parent.verticalCenter
+                            }
+                            color: root.darkmode ? "white" : "black"
+                            opacity: 0.5
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                view.positionViewAtBeginning()
+                            }
+                        }
+                } // end UbuntuShape id: toTopButton
             }
 
             Rectangle {

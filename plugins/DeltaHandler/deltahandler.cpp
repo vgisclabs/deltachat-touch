@@ -30,7 +30,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
+    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}, m_signalQueue_newMsgForInactiveAcc {false}
 {
     // Set the initial id for jsonrpc requests to 1 billion, i.e. around half of the
     // max of an unsigned int (although the id in libdeltachat might
@@ -138,7 +138,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     bool connectSuccess = connect(m_signalQueueTimer, SIGNAL(timeout()), this, SLOT(processSignalQueueTimerTimeout()));
     if (!connectSuccess) {
-        qFatal("DeltaHandler::DeltaHandler: Could not connect signal newMsg to slot incomingMessage");
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal timeout to slot processSignalQueueTimerTimeout");
     }
 
     configdir.append("/accounts/");  
@@ -189,7 +189,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     connectSuccess = connect(eventThread, SIGNAL(chatDataModified(uint32_t, int)), this, SLOT(chatDataModifiedReceived(uint32_t, int)));
     if (!connectSuccess) {
-        qFatal("DeltaHandler::DeltaHandler: Could not connect signal chatModified to slot chatDataModifiedReceived");
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal chatDataModified to slot chatDataModifiedReceived");
     }
 
     connectSuccess = connect(eventThread, SIGNAL(configureProgress(int, QString)), this, SLOT(progressEvent(int, QString)));
@@ -268,15 +268,9 @@ DeltaHandler::DeltaHandler(QObject* parent)
         qFatal("DeltaHandler::DeltaHandler: Could not connect signal deletedAccount of m_accountsmodel to slot removeClosedAccountFromList");
     }
 
-    connectSuccess = connect(eventThread, SIGNAL(newMsg(uint32_t, int, int)), m_accountsmodel, SLOT(updateFreshMsgCount(uint32_t, int, int)));
+    connectSuccess = connect(this, SIGNAL(chatIsNotContactRequestAnymore(uint32_t, uint32_t)), m_accountsmodel, SLOT(removeChatIdFromContactRequestList(uint32_t, uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal newMsg of eventThread to slot updateFreshMsgCount of m_accountsmodel";
-        // not critical, thus no exit() statement
-    }
-
-    connectSuccess = connect(eventThread, SIGNAL(msgsChanged(uint32_t, int, int)), m_accountsmodel, SLOT(updateFreshMsgCount(uint32_t, int, int)));
-    if (!connectSuccess) {
-        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal msgsChanged of eventThread to slot updateFreshMsgCount of m_accountsmodel";
+        qDebug() << "DeltaHandler::DeltaHandler: Could not connect signal chatIsNotContactRequestAnymore of eventThread to slot removeChatIdFromContactRequestList of m_accountsmodel";
         // not critical, thus no exit() statement
     }
 
@@ -510,7 +504,7 @@ void DeltaHandler::loadSelectedAccount()
 }
 
 
-uint32_t DeltaHandler::getCurrentAccountId()
+uint32_t DeltaHandler::getCurrentAccountId() const
 {
     return m_currentAccID;
 }
@@ -1107,6 +1101,7 @@ QVariant DeltaHandler::data(const QModelIndex &index, int role) const
             paramString.append(", [");
 
             tempString.setNum(tempChatID);
+
             paramString.append(tempString);
             paramString.append("]");
 
@@ -1425,9 +1420,9 @@ void DeltaHandler::selectAccount(int myindex)
         return;
     }
 
-    uint32_t accID = dc_array_get_id(contextArray, myindex);
+    uint32_t newAccID = dc_array_get_id(contextArray, myindex);
 
-    if (currentContext && accID == m_currentAccID) {
+    if (currentContext && newAccID == m_currentAccID) {
         qDebug() << "DeltaHandler::selectAccount: Selected account already active, doing nothing.";
         return;
     }
@@ -1451,11 +1446,12 @@ void DeltaHandler::selectAccount(int myindex)
         dc_context_unref(tempContext);
     }
 
-    beginResetModel();
+    uint32_t previousAccID = m_currentAccID;
 
-    int success = dc_accounts_select_account(allAccounts, accID);
+    int success = dc_accounts_select_account(allAccounts, newAccID);
     if (0 == success) {
         qDebug() << "DeltaHandler::selectAccount: ERROR: dc_accounts_select_account was unsuccessful";
+        return;
     }
 
     tempContext = dc_accounts_get_selected_account(allAccounts);
@@ -1463,20 +1459,14 @@ void DeltaHandler::selectAccount(int myindex)
     if (!dc_is_configured(tempContext)) {
         qDebug() << "DeltaHandler::selectAccount: trying to select unconfigured account, refusing";
         dc_context_unref(tempContext);
-        endResetModel();
+        dc_accounts_select_account(allAccounts, previousAccID);
         return;
     }
 
+    beginResetModel();
+
     if (currentContext) {
         dc_context_unref(currentContext);
-    }
-
-    // stop the queue timer and process the queue
-    // as the queue was built with the old account
-    // in mind
-    if (m_signalQueueTimer->isActive()) {
-        m_signalQueueTimer->stop();
-        processSignalQueue();
     }
 
     currentContext = tempContext;
@@ -1510,6 +1500,21 @@ void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
         }
     }
 
+    {
+        // m_signalQueue_accountsmodelInfo is for m_accountsmodel,
+        // make sure to avoid duplicate entries already here
+        bool found {false};
+        for (size_t i = 0; i < m_signalQueue_accountsmodelInfo.size(); ++i) {
+            if (accID == m_signalQueue_accountsmodelInfo[i]) {
+                found = true;
+            }
+        }
+
+        if (!found) {
+            m_signalQueue_accountsmodelInfo.push_back(accID);
+        }
+    }
+
     if (!m_signalQueueTimer->isActive()) {
         processSignalQueue();
         m_signalQueueTimer->start(queueTimerFreq);
@@ -1518,8 +1523,6 @@ void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
 
 void DeltaHandler::processSignalQueueTimerTimeout()
 {
-    qDebug() << "++++++++++++++++++++++++ processSignalQueueTimerTimeout";
-
     if (isQueueEmpty()) {
         m_signalQueueTimer->stop();
         return;
@@ -1534,7 +1537,7 @@ void DeltaHandler::processSignalQueue()
 {
     bool resetInsteadRefresh = false;
 
-    { // check if the chatlist has to be refreshed / resetted
+    { // check if the chatlist has to be refreshed / reset
 
         if (m_signalQueue_refreshChatlist) {
             m_signalQueue_refreshChatlist = false;
@@ -1608,7 +1611,7 @@ void DeltaHandler::processSignalQueue()
                 m_signalQueue_chatsDataChanged.pop();
             }
         } else {
-            // m_signalQueue_refreshChatlist contains all chat IDs
+            // m_signalQueue_chatsDataChanged contains all chat IDs
             // that have to be notified. It's guaranteed that they
             // belong to the currently active context.
             //
@@ -1755,15 +1758,15 @@ void DeltaHandler::processSignalQueue()
 
     {
         // Remove notifications. As usual, check for duplicates first.
-        std::vector<checkNotificationsStruct> structsToConsider;
+        std::vector<AccIdAndChatIdStruct> structsToConsider;
 
         while (!m_signalQueue_notificationsToRemove.empty()) {
-            checkNotificationsStruct tempStruct = m_signalQueue_notificationsToRemove.front();
+            AccIdAndChatIdStruct tempStruct = m_signalQueue_notificationsToRemove.front();
             m_signalQueue_notificationsToRemove.pop();
 
             size_t i = 0;
             while (i < structsToConsider.size()) {
-                checkNotificationsStruct vecTemp = structsToConsider[i];
+                AccIdAndChatIdStruct vecTemp = structsToConsider[i];
                 if (tempStruct.accID == vecTemp.accID && tempStruct.chatID == vecTemp.chatID) {
                     break;
                 }
@@ -1779,8 +1782,26 @@ void DeltaHandler::processSignalQueue()
 
         // call deleteActiveNotificationTags for all concerned account/chat combinations
         for (size_t i = 0; i < structsToConsider.size(); ++i) {
-            checkNotificationsStruct tempStruct = structsToConsider[i];
+            AccIdAndChatIdStruct tempStruct = structsToConsider[i];
             deleteActiveNotificationTags(tempStruct.accID, tempStruct.chatID);
+        }
+    }
+
+    {
+        // Inform m_accountsmodel about changes.
+        m_accountsmodel->updateFreshMsgCountAndContactRequests(m_signalQueue_accountsmodelInfo);
+        m_signalQueue_accountsmodelInfo.resize(0);
+    }
+
+    {
+        // if at least one incoming message was received for an 
+        // account that is not the currently active one, notify
+        // the GUI
+        // TODO: Check whether it's a contact request? For now,
+        // this is a simple solution.
+        if (m_signalQueue_newMsgForInactiveAcc) {
+            emit newMessageForInactiveAccount();
+            m_signalQueue_newMsgForInactiveAcc = false;
         }
     }
 }
@@ -1810,7 +1831,7 @@ void DeltaHandler::messagesNoticed(uint32_t accID, int chatID)
     }
 
     // Notifications have to be removed for all accounts
-    m_signalQueue_notificationsToRemove.push(checkNotificationsStruct { accID, chatID });
+    m_signalQueue_notificationsToRemove.push(AccIdAndChatIdStruct { accID, chatID });
 
     if (!m_signalQueueTimer->isActive()) {
         processSignalQueue();
@@ -1824,13 +1845,38 @@ void DeltaHandler::chatDataModifiedReceived(uint32_t accID, int chatID)
     if (m_currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
         emit chatDataChanged();
     }
+
+    if (m_currentAccID == accID) {
+        // to update the chatlist entry
+        m_signalQueue_chatsDataChanged.push(chatID);
+    }
+
+    // to update m_accountsmodel
+    {
+        // m_signalQueue_accountsmodelInfo is for m_accountsmodel,
+        // make sure to avoid duplicate entries already here
+        bool found {false};
+        for (size_t i = 0; i < m_signalQueue_accountsmodelInfo.size(); ++i) {
+            if (accID == m_signalQueue_accountsmodelInfo[i]) {
+                found = true;
+            }
+        }
+
+        if (!found) {
+            m_signalQueue_accountsmodelInfo.push_back(accID);
+        }
+    }
+
+
+    if (!m_signalQueueTimer->isActive()) {
+        processSignalQueue();
+        m_signalQueueTimer->start(queueTimerFreq);
+    }
 }
 
 
 void DeltaHandler::incomingMessage(uint32_t accID, int chatID, int msgID)
 {
-    // needs to be done in any case, whether a notification is 
-    // created or not
     if (m_currentAccID == accID) {
         // insert the new message into the vector containing all
         // unread messages of this context
@@ -1838,6 +1884,8 @@ void DeltaHandler::incomingMessage(uint32_t accID, int chatID, int msgID)
             std::array<uint32_t, 2> tempStdArr {msgID, chatID};
             freshMsgs.push_back(tempStdArr);
         }
+    } else {
+        m_signalQueue_newMsgForInactiveAcc = true;
     }
 
     sendNotification(accID, chatID, msgID);
@@ -2947,21 +2995,51 @@ void DeltaHandler::importBackupFromFile(QString filePath)
 
 void DeltaHandler::chatAccept()
 {
+    // need to check whether it's really a contact request
+    // because dc_accept_chat is also used for protected
+    // chats (to continue if the partner has not used its key)
+    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    bool isContactRequest = dc_chat_is_contact_request(tempChat);
+    dc_chat_unref(tempChat);
+
     dc_accept_chat(currentContext, currentChatID);
     m_chatmodel->acceptChat();
-    emit chatIsContactRequestChanged();
+
+    if (isContactRequest) {
+        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+    }
 }
 
 
 void DeltaHandler::chatDeleteContactRequest()
 {
+    // probably not needed to check if it's really 
+    // a contact request, but done anyway
+    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    bool isContactRequest = dc_chat_is_contact_request(tempChat);
+    dc_chat_unref(tempChat);
+
     dc_delete_chat(currentContext, currentChatID);
+
+    if (isContactRequest) {
+        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+    }
 }
 
 
 void DeltaHandler::chatBlockContactRequest()
 {
+    // probably not needed to check if it's really 
+    // a contact request, but done anyway
+    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    bool isContactRequest = dc_chat_is_contact_request(tempChat);
+    dc_chat_unref(tempChat);
+
     dc_block_chat(currentContext, currentChatID);
+
+    if (isContactRequest) {
+        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+    }
 }
 
 

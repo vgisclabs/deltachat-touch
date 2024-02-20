@@ -30,6 +30,14 @@ Page {
     id: accountConfigPage
     anchors.fill: parent
 
+    Component.onCompleted: {
+        // TODO: Should this be done in onDestruction instead as
+        // new messages may arrive while the user is looking at this
+        // page?
+        // See also comments in Main.qml
+        root.inactiveAccsNewMsgsSinceLastCheck = false
+    }
+
     function loadAddAccountPage() {
         layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))
     }
@@ -179,9 +187,9 @@ Page {
                 onTriggered: {
                     // TODO
                     PopupUtils.open(Qt.resolvedUrl(
-                        "AccountsExperimentalSettingsSwitch.qml"),
+                        "AccountConfigPageSettings.qml"),
                         null,
-                        { "experimentalEnabled": root.showAccountsExperimentalSettings }
+                        { "experimentalEnabled": root.showAccountsExperimentalSettings, "showContactRequests": root.accountConfigPageShowContactRequests }
                     )
                 }
             },
@@ -328,6 +336,7 @@ Page {
             height: accountsListItemLayout.height + (divider.visible ? divider.height : 0)
             divider.visible: true
 
+            property int chatRequestCount: model.chatRequestCount
             property int freshMsgCount: model.freshMsgCount
 
             onClicked: {
@@ -395,11 +404,7 @@ Page {
                         visible: model.isClosed
                     }
 
-                    UbuntuShape {
-                        id: newMsgCountShape
-                        height: newMsgCountLabel.height + units.gu(0.6)
-                        width: height
-
+                    Column {
                         anchors {
                             verticalCenter: configStatusIcon.verticalCenter
                             //top: timestamp.bottom
@@ -407,21 +412,56 @@ Page {
                             right: configStatusIcon.visible ? configStatusIcon.left : parent.right
                             rightMargin: units.gu(1)
                         }
-                        backgroundColor: root.unreadMessageCounterColor
-                        
-                        visible: freshMsgCount > 0 && model.isConfigured
 
-                        Label {
-                            id: newMsgCountLabel
-                            anchors {
-                                top: newMsgCountShape.top
-                                topMargin: units.gu(0.3)
-                                horizontalCenter: newMsgCountShape.horizontalCenter
+                        Rectangle {
+                            id: contactRequestRect
+                            width: contactRequestLabel.contentWidth + units.gu(0.5)
+                            height: contactRequestLabel.contentHeight + units.gu(0.5)
+
+                            Label {
+                                id: contactRequestLabel
+                                anchors {
+                                    horizontalCenter: contactRequestRect.horizontalCenter
+                                    verticalCenter: contactRequestRect.verticalCenter
+                                }
+                                text: i18n.tr('Request') + " (" + (chatRequestCount > 99 ? "99+" : chatRequestCount) + ")"
+                                fontSize: root.scaledFontSizeSmaller
+                                color: "white"
                             }
-                            text: freshMsgCount > 99 ? "99+" : freshMsgCount
-                            //fontSize: root.scaledFontSizeSmaller
-                            font.bold: true
-                            color: "white"
+                            color: root.unreadMessageCounterColor
+                            border.color: contactRequestLabel.color
+                            visible: root.accountConfigPageShowContactRequests && chatRequestCount > 0
+                        } // Rectangle id: contactRequestRect
+
+                        Item {
+                            id: spacerItem1
+                            width: units.gu(1)
+                            height: units.gu(0.5)
+                            //visible: contactRequestRect.visible && newMsgCountShape.visible
+                        }
+
+                        UbuntuShape {
+                            id: newMsgCountShape
+                            height: newMsgCountLabel.height + units.gu(0.6)
+                            width: height
+                            anchors.right: parent.right
+
+                            backgroundColor: root.unreadMessageCounterColor
+                            
+                            visible: freshMsgCount > 0 && model.isConfigured
+
+                            Label {
+                                id: newMsgCountLabel
+                                anchors {
+                                    top: newMsgCountShape.top
+                                    topMargin: units.gu(0.3)
+                                    horizontalCenter: newMsgCountShape.horizontalCenter
+                                }
+                                text: freshMsgCount > 99 ? "99+" : freshMsgCount
+                                //fontSize: root.scaledFontSizeSmaller
+                                font.bold: true
+                                color: "white"
+                            }
                         }
                     }
                 }

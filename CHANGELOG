@@ -3,6 +3,7 @@ UI: App does not block when adding account as second device, shows progress bar 
 UI: Enable swipe actions for informational messages
 UI: Reactions
 UI: Move "cancel" action in headers to the left (away from "ok" action) for alignment with DC Android and to avoid fat-fingering
+UI: Show icon for new messages in accounts other than the currently active one
 UI: Refactor "Add Chat" page for alignment with DC Android.
 Bugfix: Images now auto-rotate according to EXIF data
 Bugfix: Copy to clipboard now reliable

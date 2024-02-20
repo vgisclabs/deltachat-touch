@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.3.2-pre06'
+    property string version: '1.3.2-pre07'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -254,6 +254,19 @@ MainView {
         DeltaHandler.connectivityChangedForActiveAccount.connect(updateConnectivity)
 
         periodicTimer.start()
+
+        setVisibilityOfInactiveAccountsNotification()
+    }
+
+    function setVisibilityOfInactiveAccountsNotification() {
+        let noOfInactiveMsgs = DeltaHandler.accountsmodel.noOfFreshMsgsInInactiveAccounts();
+        noOfInactiveMsgs += DeltaHandler.accountsmodel.noOfChatRequestsInInactiveAccounts();
+
+        if (noOfInactiveMsgs > 0) {
+            newMsgsInOtherAccsIndicator.visible = true
+        } else {
+            newMsgsInOtherAccsIndicator.visible = false
+        }
     }
 
     // ======= Enable QR scan from Button in AddChatForContact.qml =======
@@ -354,6 +367,7 @@ MainView {
 
     // see AccountConfig.qml
     property bool showAccountsExperimentalSettings: false
+    property bool accountConfigPageShowContactRequests: true
 
     /* ********** Text Zoom ***********/
     // valid values are from 1 to 4. Must NOT be 0, otherwise
@@ -380,6 +394,14 @@ MainView {
 
     property bool alwaysLoadRemoteContent: false
 
+    // Indicates whether new messages have been received for
+    // accounts other than the active one since the last
+    // time the user took a look at the account overview.
+    // onCompleted in AccountConfig.qml will set it to false.
+    // TODO: Should AccountConfig.qml set it to false in 
+    // onDestruction instead?
+    property bool inactiveAccsNewMsgsSinceLastCheck: false
+
     Settings {
         id: settings
         property alias synca: root.syncAll
@@ -389,8 +411,10 @@ MainView {
         property alias aggregatePushNotif: root.aggregatePushNotifications
         property alias versionAtLastSession: root.oldVersion
         property alias accountsExpSettings: root.showAccountsExperimentalSettings
+        property alias accountsShowContactReq: root.accountConfigPageShowContactRequests
         property alias scaleLevelTextZoom: root.scaleLevel
         property alias alwaysLoadRemote: root.alwaysLoadRemoteContent
+        property alias inactAccsNewMsgsSinceLastCheck: root.inactiveAccsNewMsgsSinceLastCheck
     }
 
     width: units.gu(45)
@@ -466,6 +490,11 @@ MainView {
             errorShape.visible = true
             errorLabel.text = i18n.tr("Error: %1").arg(errorMessage)
         }
+
+        onNewMessageForInactiveAccount: {
+            root.inactiveAccsNewMsgsSinceLastCheck = true
+            newMsgsInOtherAccsIndicator.color = "#4f4f4f"
+        }
     }
 
     Connections {
@@ -503,6 +532,13 @@ MainView {
         target: DeltaHandler.contactsmodel
         onChatCreationSuccess: {
             bottomEdge.collapse()
+        }
+    }
+
+    Connections {
+        target: DeltaHandler.accountsmodel
+        onInactiveFreshMsgsMayHaveChanged: {
+            setVisibilityOfInactiveAccountsNotification()
         }
     }
 
@@ -578,13 +614,15 @@ MainView {
                         bottomEdge.enabled = DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
                         bottomEdgeHint.visible = DeltaHandler.hasConfiguredAccount
                         updateConnectivity()
+
+                        setVisibilityOfInactiveAccountsNotification()
                     }
                 }
 
                 Rectangle {
                     id: profilePicAndNameRect
 
-                    width: headerRect.width - qrIconCage.width - settingsIconCage.width - infoIconCage.width - units.gu(1)
+                    width: headerRect.width - searchIconCage.width - qrIconCage.width - settingsIconCage.width - units.gu(1)
                     height: headerTopBackgroundColor.height
                     anchors {
                         left: headerRect.left
@@ -595,7 +633,11 @@ MainView {
                     MouseArea {
                         id: headerMouse
                         anchors.fill: parent
-                        onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+                        onClicked: {
+                            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+                            root.inactiveAccsNewMsgsSinceLastCheck = false
+                            newMsgsInOtherAccsIndicator.color = headerTopBackgroundColor.color
+                        }
                         enabled: !root.chatOpenAlreadyClicked
                     }
                 
@@ -620,18 +662,57 @@ MainView {
                         anchors {
                             left: profilePicShape.right
                             leftMargin: units.gu(2.5)
-                            verticalCenter: parent.verticalCenter
+                            bottom: parent.bottom
+                            bottomMargin: newMsgsInOtherAccsIndicator.visible ? units.gu(1.3) : units.gu(2)
                         }
-                        width: parent.width - units.gu(3)
+                        width: parent.width - profilePicShape.width - units.gu(3) //units.gu(3)
                         elide: Text.ElideRight
                         text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
                         color: "#e7fcfd"
                         font.pixelSize: root.scaledFontSizeInPixels * 1.3
-                        //font.bold: true
                     }
-            
                 } // Rectangle id: profilePicAndNameRect
                 
+                UbuntuShape {
+                    id: newMsgsInOtherAccsIndicator
+                    width: scaledFontSizeInPixelsSmaller + units.gu(2)
+                    height: scaledFontSizeInPixelsSmaller * 1.2
+                    anchors {
+                        top: parent.top
+                        // if it's set to the horizontalCenter of the
+                        // page, then it might be partly covered by
+                        // searchIconCage when the font size is set
+                        // to extra large
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                    color: root.inactiveAccsNewMsgsSinceLastCheck ? "#4f4f4f" : headerTopBackgroundColor.color
+                    visible: false
+
+                    // removes the rounded edges on top of newMsgsInOtherAccsIndicator
+                    Rectangle {
+                        height: parent.height / 2
+                        width: parent.width
+                        anchors {
+                            top: parent.top
+                            left: parent.left
+                        }
+                        color: parent.color
+                    }
+
+                    Icon {
+                        id: mailIcon
+                        anchors.verticalCenter: parent.verticalCenter
+                        height: scaledFontSizeInPixelsSmaller
+                        width: scaledFontSizeInPixelsSmaller
+                        name: "mail-unread"
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                        color: usernameLabel.color
+                    }
+                } // UbuntuShape id: newMsgsInOtherAccsIndicator
+            
                 UbuntuShape {
                     id: connectivityShape
 
@@ -656,7 +737,7 @@ MainView {
                         color: "black"
                     }
                 } // end Rectangle id: connectivityShape
-            
+
                 Rectangle {
                     id: searchIconCage
                     height: profilePicShape.height + units.gu(1)
@@ -699,7 +780,7 @@ MainView {
                     height: profilePicShape.height + units.gu(1)
                     width: searchIcon.width + units.gu(2)
                     anchors {
-                        right: infoIconCage.left
+                        right: settingsIconCage.left
                         top: profilePicAndNameRect.top
                         bottom: profilePicAndNameRect.bottom
                     }
@@ -720,38 +801,6 @@ MainView {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'))
-                        enabled: !root.chatOpenAlreadyClicked
-                    }
-                }
-            
-                Rectangle {
-                    id: infoIconCage
-                    height: profilePicShape.height + units.gu(1)
-                    width: searchIcon.width + units.gu(2)
-                    anchors {
-                        right: settingsIconCage.left
-                        top: profilePicAndNameRect.top
-                        bottom: profilePicAndNameRect.bottom
-                    }
-                    color: headerTopBackgroundColor.color
-            
-                    Icon {
-                        id: infoIcon
-                        name: "info"
-                        width: profilePicShape.width * (2/5)
-                        height: width
-                        anchors{
-                            horizontalCenter: parent.horizontalCenter
-                            verticalCenter: parent.verticalCenter
-                        }
-                        color: usernameLabel.color
-                    }
-            
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/About.qml'))
-                        }
                         enabled: !root.chatOpenAlreadyClicked
                     }
                 }

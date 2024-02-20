@@ -25,6 +25,16 @@
 #include "deltahandler.h"
 #include "deltachat.h"
 
+#include <vector>
+
+// Used in m_chatRequests to store the account ID
+// along with the number of chat (contact) requests
+// for this account
+struct AccAndContactRequestList {
+    uint32_t accID;
+    std::vector<uint32_t> contactRequestChatIDs;
+};
+
 class DeltaHandler;
 
 class AccountsModel : public QAbstractListModel {
@@ -36,7 +46,7 @@ public:
 
     // IsClosedRole is for checking whether the account is an encrypted one. It
     // doesn't say whether the account has already been opened or not.
-    enum { AddrRole, IsConfiguredRole, ProfilePicRole, UsernameRole, IsClosedRole, FreshMsgCountRole };
+    enum { AddrRole, IsConfiguredRole, ProfilePicRole, UsernameRole, IsClosedRole, FreshMsgCountRole, ChatRequestCountRole };
 
     // TODO: reference to DeltaHandler really needed?
     void configure(dc_accounts_t* accMngr, DeltaHandler* dHandler);
@@ -52,6 +62,10 @@ public:
     Q_INVOKABLE QString getInfoOfAccount(int myindex);
 
     Q_INVOKABLE QString getLastErrorOfAccount(int myindex);
+
+    Q_INVOKABLE int noOfChatRequestsInInactiveAccounts();
+
+    Q_INVOKABLE int noOfFreshMsgsInInactiveAccounts();
     
     // QAbstractListModel interface
     virtual int rowCount(const QModelIndex &parent) const;
@@ -59,10 +73,13 @@ public:
 
 signals:
     void deletedAccount(uint32_t accID);
+    void inactiveFreshMsgsMayHaveChanged();
 
 public slots:
     void reset();
-    void updateFreshMsgCount(uint32_t accID, int unused1, int unused2);
+    void notifyViewForAccount(uint32_t accID);
+    void updateFreshMsgCountAndContactRequests(const std::vector<uint32_t> &accountsToRefresh);
+    void removeChatIdFromContactRequestList(uint32_t accID, uint32_t chatID);
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -75,6 +92,16 @@ private:
     dc_accounts_t* m_accountsManager;
     dc_array_t* m_accountsArray;
     DeltaHandler* m_deltaHandler;
+    std::vector<AccAndContactRequestList> m_chatRequests;
+
+    /* Private methods */
+
+    // Generates the entry in m_chatRequests for the passed
+    // account ID. If an entry for this account is already
+    // present in m_chatRequests, it is replaced.
+    void generateOrRefreshChatRequestEntries(uint32_t accID);
+
+    int getNumberOfFreshMsgs(uint32_t tempAccID) const;
 };
 
 #endif // ACCOUNTSMODEL_H

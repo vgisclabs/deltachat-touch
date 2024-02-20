@@ -41,7 +41,7 @@
 #include "deltachat.h"
 #include "quirc.h"
 
-struct checkNotificationsStruct {
+struct AccIdAndChatIdStruct {
     uint32_t accID;
     int chatID;
 };
@@ -107,7 +107,7 @@ public:
 
     Q_INVOKABLE void loadSelectedAccount();
 
-    Q_INVOKABLE uint32_t getCurrentAccountId();
+    Q_INVOKABLE uint32_t getCurrentAccountId() const;
 
     Q_INVOKABLE void sendJsonrpcRequest(QString request);
 
@@ -505,6 +505,11 @@ signals:
     // - a username was modified by the user
     void chatDataChanged();
 
+    // emitted if a chat was a contact request,
+    // but is not anymore because the request was
+    // accepted, deleted or blocked
+    void chatIsNotContactRequestAnymore(uint32_t accID, uint32_t chatID);
+
     // Informs about provider specific prerequisites
     // when setting up a new account via login with
     // email address + password
@@ -539,6 +544,8 @@ signals:
     void newTempProfilePic(QString);
     void chatBlockContactDone();
     void connectivityChangedForActiveAccount();
+
+    void newMessageForInactiveAccount();
 
     // For adding second device; see prepareBackupProvider().
     void backupProviderCreationSuccess();
@@ -715,11 +722,16 @@ private:
 
     // for the signal queue
     bool m_signalQueue_refreshChatlist;
+    bool m_signalQueue_newMsgForInactiveAcc;
+    // queue for the active account
     std::queue<int> m_signalQueue_chatsDataChanged;
     std::queue<int> m_signalQueue_chatsNoticed;
     std::queue<int> m_signalQueue_msgs;
-    std::queue<checkNotificationsStruct> m_signalQueue_notificationsToRemove;
-    //std::queue<MsgsChangedInfoStruct> m_msgsChangedQueue;
+    std::queue<AccIdAndChatIdStruct> m_signalQueue_notificationsToRemove;
+    // queue for all accounts, will be used by m_accountsmodel,
+    // contains all accID/chatID combinations for which DeltaHandler::messagesChanged()
+    // was called
+    std::vector<uint32_t> m_signalQueue_accountsmodelInfo;
     QTimer* m_signalQueueTimer;
 
     static constexpr int queueTimerFreq = 1000;

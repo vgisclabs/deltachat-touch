@@ -317,7 +317,7 @@ Page {
         title: i18n.tr("Settings")
 
         //trailingActionBar.numberOfSlots: 2
-//        trailingActionBar.actions: [
+        trailingActionBar.actions: [
 //          //  Action {
 //          //      iconName: 'help'
 //          //      text: i18n.tr('Help')
@@ -325,14 +325,14 @@ Page {
 //          //          layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('Help.qml'))
 //          //      }
 //          //  },
-//            Action {
-//                iconName: 'info'
-//                text: i18n.tr('About DeltaTouch')
-//                onTriggered: {
-//                            layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('About.qml'))
-//                }
-//            }
-//        ]
+            Action {
+                iconName: 'info'
+                text: i18n.tr('About DeltaTouch')
+                onTriggered: {
+                            layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('About.qml'))
+                }
+            }
+        ]
     }
 
     Flickable {
@@ -775,6 +775,7 @@ Page {
             ListItem {
                 height: sysNotifsEnabledLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: sysNotifsEnabledLayout
@@ -808,6 +809,7 @@ Page {
             ListItem {
                 height: sysNotifsDetailedLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: sysNotifsDetailedLayout
@@ -1089,6 +1091,27 @@ Page {
 //                }
 //                color: theme.palette.normal.background
 //            }
+
+            ListItem {
+                height: aboutLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: aboutLayout
+                    title.text: i18n.tr("About DeltaTouch")
+                    title.font.bold: true
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("About.qml"))
+                }
+            }
 
             ListItem {
                 height: advancedLayout.height + (divider.visible ? divider.height : 0)

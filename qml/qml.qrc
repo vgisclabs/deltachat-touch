@@ -5,7 +5,7 @@
         <file>Main.qml</file>
         <file>pages/About.qml</file>
         <file>pages/AccountConfig.qml</file>
-        <file>pages/AccountsExperimentalSettingsSwitch.qml</file>
+        <file>pages/AccountConfigPageSettings.qml</file>
         <file>pages/AddAccount.qml</file>
         <file>pages/AddAccountAsSecondDevice.qml</file>
         <file>pages/AddAccountViaQrInvitationCode.qml</file>

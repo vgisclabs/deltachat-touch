@@ -26,20 +26,54 @@ Dialog {
     id: dialog
 
     property bool experimentalEnabled
+    property bool showContactRequests
 
-    Row {
-        spacing: units.gu(1)
+    Rectangle {
+        width: dialog.width
+        height: experimentalSettingsLabel.contentHeight + units.gu(1)
+
+        color: theme.palette.normal.background
 
         Label {
+            id: experimentalSettingsLabel
+            width: dialog.width - experimentalSettingsSwitch.width - units.gu(1)
             // String not translated yet!
             text: i18n.tr("Show experimental settings")
-            wrapMode: Text.Wrap
+            wrapMode: Text.WordWrap
         }
 
         Switch {
             id: experimentalSettingsSwitch
+            anchors.right: parent.right
             checked: experimentalEnabled
             enabled: !experimentalEnabled || !DeltaHandler.databaseIsEncryptedSetting()
+        }
+    }
+
+    Item {
+        // spacer item
+        width: units.gu(1)
+        height: units.gu(1)
+    }
+
+    Rectangle {
+        width: dialog.width
+        height: contactReqLabel.contentHeight + units.gu(1)
+
+        color: theme.palette.normal.background
+
+        Label {
+            id: contactReqLabel
+            width: dialog.width - contactRequestsSwitch.width - units.gu(1)
+            // String not translated yet!
+            text: i18n.tr("Show contact requests")
+            wrapMode: Text.WordWrap
+        }
+
+        Switch {
+            id: contactRequestsSwitch
+            anchors.right: parent.right
+            checked: showContactRequests
         }
     }
 
@@ -48,8 +82,8 @@ Dialog {
         text: i18n.tr("OK")
         color: theme.palette.normal.positive
         onClicked: {
-            console.log("setting root.showAccountsExperimentalSettings to ", experimentalSettingsSwitch.checked)
             root.showAccountsExperimentalSettings = experimentalSettingsSwitch.checked
+            root.accountConfigPageShowContactRequests = contactRequestsSwitch.checked
             PopupUtils.close(dialog)
         }
     }

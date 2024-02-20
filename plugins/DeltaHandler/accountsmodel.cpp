@@ -49,7 +49,7 @@ QHash<int, QByteArray> AccountsModel::roleNames() const
     roles[ProfilePicRole] = "profilePic";
     roles[UsernameRole] = "username";
     roles[FreshMsgCountRole] = "freshMsgCount";
-
+    roles[ChatRequestCountRole] = "chatRequestCount";
     // IsClosedRole is for checking whether the account is an encrypted
     // one. It doesn't say whether the account has already been opened
     // or not.
@@ -81,7 +81,7 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
     QString tempQString;
     bool tempBool;
     char* tempText {nullptr};
-    dc_array_t* tempArray {nullptr};
+    size_t i;
 
     switch(role) {
         case AccountsModel::AddrRole:
@@ -129,8 +129,17 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
             break;
 
         case AccountsModel::FreshMsgCountRole:
-            tempArray = dc_get_fresh_msgs(tempContext);
-            retval = (int)dc_array_get_cnt(tempArray);
+            retval = getNumberOfFreshMsgs(accID);
+            break;
+
+        case AccountsModel::ChatRequestCountRole:
+            retval = 0;
+            for (i = 0; i < m_chatRequests.size(); ++i) {
+                if (m_chatRequests[i].accID == accID) {
+                    retval = static_cast<int>(m_chatRequests[i].contactRequestChatIDs.size());
+                    break;
+                }
+            }
             break;
 
         default:
@@ -147,16 +156,14 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
         dc_context_unref(tempContext);
     }
 
-    if (tempArray) {
-        dc_array_unref(tempArray);
-    }
-
     return retval;
 }
 
 
 void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
 {
+    m_deltaHandler = dHandler;
+
     beginResetModel();
 
     m_accountsManager = accMngr;
@@ -166,9 +173,22 @@ void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
     }
     m_accountsArray = dc_accounts_get_all(m_accountsManager);
 
-    endResetModel();
+    {
+        // build up m_chatRequests
+        m_chatRequests.resize(0);
 
-    m_deltaHandler = dHandler;
+        // Check for chat requests in the chatlist entries for each
+        // account.
+        if (m_accountsArray) {
+            // call generateOrRefreshChatRequestEntries for each account
+            for (size_t i = 0; i < dc_array_get_cnt(m_accountsArray); ++i) {
+                uint32_t tempAccID = dc_array_get_id(m_accountsArray, i);
+                generateOrRefreshChatRequestEntries(tempAccID);
+            }
+        }
+    }
+
+    endResetModel();
 
     // disconnect in case configure() is not called for the first time. Otherwise, multiple
     // connections would be created.
@@ -190,14 +210,13 @@ void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
     if (!connectSuccess) {
         qDebug() << "Chatmodel::configure: Could not connect signal updatedAccountConfig to slot updatedAccount";
     }
+
+    emit inactiveFreshMsgsMayHaveChanged();
 }
 
 
 void AccountsModel::newAccount()
 {
-    // reset the model instead of inserting a row in case
-    // the core inserts the new account in between existing
-    // accounts
     reset();
 }
 
@@ -213,34 +232,89 @@ void AccountsModel::reset()
     if (m_accountsManager) {
         m_accountsArray = dc_accounts_get_all(m_accountsManager);
     }
+
+    // recreate m_chatRequests
+    if (m_accountsArray) {
+        for (size_t i = 0; i < dc_array_get_cnt(m_accountsArray); ++i) {
+            uint32_t tempAccID = dc_array_get_id(m_accountsArray, i);
+            generateOrRefreshChatRequestEntries(tempAccID);
+        }
+    }
+
     endResetModel();
+
+    emit inactiveFreshMsgsMayHaveChanged();
 }
 
 
-void AccountsModel::updateFreshMsgCount(uint32_t accID, int unused1, int unused2)
+void AccountsModel::notifyViewForAccount(uint32_t accID)
 {
-    if (0 == accID) {
-        beginResetModel();
-        endResetModel();
-    } else {
-        if (m_accountsArray) {
-            size_t tempIndex {0};
-            bool foundAccID {false};
+    if (m_accountsArray) {
+        size_t tempIndex {0};
+        bool foundAccID {false};
 
-            for (tempIndex = 0; tempIndex < rowCount(QModelIndex()); ++tempIndex) {
-                if (dc_array_get_id(m_accountsArray, tempIndex) == accID) {
-                    foundAccID = true;
+        for (tempIndex = 0; tempIndex < rowCount(QModelIndex()); ++tempIndex) {
+            if (dc_array_get_id(m_accountsArray, tempIndex) == accID) {
+                foundAccID = true;
+                break;
+            }
+        }
+
+        if (foundAccID) {
+           dataChanged(index(tempIndex, 0), index(tempIndex, 0)); 
+        } else {
+            qDebug() << "AccountsModel::updateFreshMsgCount: ERROR: Did not find the account ID.";
+        }
+    }
+}
+
+
+// Parameter passed by reference, the queue will be empty after calling this method!
+void AccountsModel::updateFreshMsgCountAndContactRequests(const std::vector<uint32_t>& accountsToRefresh)
+{
+    for (size_t i = 0; i < accountsToRefresh.size(); ++i) {
+        uint32_t accID = accountsToRefresh[i];
+        generateOrRefreshChatRequestEntries(accID);
+
+        // notify the view that the model has changed for this accID
+        notifyViewForAccount(accID);
+    }
+    
+    emit inactiveFreshMsgsMayHaveChanged();
+}
+
+
+// Removes the chat ID from the list of contact requests for this accID.
+void AccountsModel::removeChatIdFromContactRequestList(uint32_t accID, uint32_t chatID)
+{
+    // find the account
+    for (size_t i = 0; i < m_chatRequests.size(); ++i) {
+        if (m_chatRequests[i].accID == accID) {
+
+            // find the chat ID and remove the chat from the vector
+            std::vector<uint32_t>::iterator it;
+            for (it = m_chatRequests[i].contactRequestChatIDs.begin(); it != m_chatRequests[i].contactRequestChatIDs.end(); ++it) {
+                if (*it == chatID) {
+                    m_chatRequests[i].contactRequestChatIDs.erase(it);
+                    // TODO: remove the complete entry from m_chatRequests if contactRequestChatIDs is empty?
                     break;
                 }
             }
+            break;
+        }
+    }
 
-            if (foundAccID) {
-               dataChanged(index(tempIndex, 0), index(tempIndex, 0)); 
-            } else {
-                qDebug() << "AccountsModel::updateFreshMsgCount: ERROR: Did not find the account ID.";
+    // notify the view that the model has changed
+    if (m_accountsArray) {
+        for (size_t i = 0; i < dc_array_get_cnt(m_accountsArray); ++i) {
+            if (accID == dc_array_get_id(m_accountsArray, i)) {
+                dataChanged(index(i, 0), index(i, 0)); 
+                break;
             }
         }
     }
+
+    emit inactiveFreshMsgsMayHaveChanged();
 }
 
 
@@ -330,6 +404,37 @@ QString AccountsModel::getLastErrorOfAccount(int myindex)
 }
 
 
+int AccountsModel::noOfChatRequestsInInactiveAccounts()
+{
+    int retval {0};
+    uint32_t currentAccID = m_deltaHandler->getCurrentAccountId();
+
+    for (size_t i = 0; i < m_chatRequests.size(); ++i) {
+        if (m_chatRequests[i].accID != currentAccID) {
+            retval += static_cast<int>(m_chatRequests[i].contactRequestChatIDs.size());
+        }
+    }
+
+    return retval;
+}
+
+
+int AccountsModel::noOfFreshMsgsInInactiveAccounts()
+{
+    int retval {0};
+    uint32_t currentAccID = m_deltaHandler->getCurrentAccountId();
+
+    for (size_t i = 0; i < dc_array_get_cnt(m_accountsArray); ++i) {
+        uint32_t tempAccID = dc_array_get_id(m_accountsArray, i);
+        if (tempAccID != currentAccID) {
+            retval += getNumberOfFreshMsgs(tempAccID);
+        }
+    }
+
+    return retval;
+}
+
+
 int AccountsModel::deleteAccount(int myindex)
 {
     // check whether the account to be removed is the selected one
@@ -364,6 +469,8 @@ int AccountsModel::deleteAccount(int myindex)
     //endRemoveRows();
     endResetModel();
 
+    emit inactiveFreshMsgsMayHaveChanged();
+
     return success;
 }
 
@@ -386,4 +493,123 @@ void AccountsModel::updatedAccount(uint32_t accID)
     else {
         qDebug() << "AccountsModel::updatedAccount: ERROR: Did not find the account ID.";
     }
+}
+
+
+void AccountsModel::generateOrRefreshChatRequestEntries(uint32_t accID)
+{
+    // remove the old entry
+    std::vector<AccAndContactRequestList>::iterator it;
+    for (it = m_chatRequests.begin(); it != m_chatRequests.end(); ++it) {
+        if (it->accID == accID) {
+            m_chatRequests.erase(it);
+            break;
+        }
+    }
+
+    // create the entry
+    std::vector<uint32_t> tempContactRequList;
+
+    QString paramString = "";
+
+    // First get the chatlist entries as array of numbers by using the Jsonrpc call
+    // get_chatlist_entries(accountId: number, listFlags: null | number, queryString: null | string, queryContactId: null | number)
+    QString tempString;
+    tempString.setNum(accID);
+    paramString.append(tempString);
+    paramString.append(", null, null, null");
+
+    // create a request string and send it as blocking Jsonrpc call
+    QString requestString = m_deltaHandler->constructJsonrpcRequestString("get_chatlist_entries", paramString);
+    QByteArray jsonResponseByteArray = m_deltaHandler->sendJsonrpcBlockingCall(requestString).toLocal8Bit();
+
+    // the actual object with the chat IDs is an array nested in the
+    // received json like this:
+    // { .....,,\"result\":[22,12,13,38,10,37]}
+    // so we extract it
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonResponseByteArray);
+    QJsonObject jsonObj = jsonDoc.object();
+    // value() returns a QJsonValue of type array, which we 
+    // transform to an QJsonArray
+    QJsonArray jsonArray = jsonObj.value("result").toArray();
+    
+    // With the array containing chat IDs, retrieve
+    // the actual chatlist items by using the Jsonrpc call
+    // get_chalist_items_by_entries(accountId: number, entries: number[])
+    paramString = "";
+    // tempString still contains the account ID
+    paramString.append(tempString);
+    paramString.append(", ");
+    // convert jsonArray to a QByteArray via an unnamed QJsonDocument
+    paramString.append(QJsonDocument(jsonArray).toJson());
+
+    requestString = m_deltaHandler->constructJsonrpcRequestString("get_chatlist_items_by_entries", paramString);
+    jsonResponseByteArray = m_deltaHandler->sendJsonrpcBlockingCall(requestString).toLocal8Bit();
+
+    // jsonResponseByteArray now has a huge JSON with chatlist entries for each chat ID.
+    // The actual object with the chatlist entry is nested in the received json like this:
+    // { .....,"result":{"<chatID>":{ <this is the actual entry per chat ID> }}}
+    jsonDoc = QJsonDocument::fromJson(jsonResponseByteArray);
+    jsonObj = jsonDoc.object();
+    QJsonObject jsonResultObj = jsonObj.value("result").toObject();
+
+    // Go through all chats by looping through the array with chat IDs.
+    // Add each chat that is a contact request to tempContactRequList.
+
+    std::vector<int> listOfChatIDs;
+    QVariantList tempVariantList = jsonArray.toVariantList();
+    // Copying the entries of jsonArray to a vector first
+    // because when looping through jsonArray directly, there
+    // was some strange error where it would crash mid-loop
+    for (QVariant temp : tempVariantList) {
+        listOfChatIDs.push_back(temp.toInt());
+    }
+
+    for (size_t i = 0; i < listOfChatIDs.size(); ++i) {
+        int tempChatID = listOfChatIDs[i];
+
+        tempString.setNum(tempChatID);
+        jsonObj = jsonResultObj.value(tempString).toObject();
+
+        // if it's a contact request, then add it to the vector
+        QJsonValue tempValue = jsonObj.value("isContactRequest");
+        if (tempValue != QJsonValue::Undefined) {
+            if (tempValue.toBool()) {
+                tempContactRequList.push_back(tempChatID);
+            }
+        }
+    }
+
+    // save the account ID along with the vector that contains
+    // chat IDs which are contact requests
+    m_chatRequests.push_back({accID, tempContactRequList});
+
+    // Not needed here: Will be emitted at the end of each
+    // block that calls generateOrRefreshChatRequestEntries
+    //emit inactiveFreshMsgsMayHaveChanged();
+}
+
+
+int AccountsModel::getNumberOfFreshMsgs(uint32_t tempAccID) const
+{
+    QString tempString;
+    tempString.setNum(tempAccID);
+    QString paramString;
+    paramString.append(tempString);
+
+    // create a request string and send it as blocking Jsonrpc call
+    QString requestString = m_deltaHandler->constructJsonrpcRequestString("get_fresh_msgs", paramString);
+    QByteArray jsonResponseByteArray = m_deltaHandler->sendJsonrpcBlockingCall(requestString).toLocal8Bit();
+
+    // the actual object with the IDs of the fresh msgs is an array nested in the
+    // received json like this:
+    // { .....,,\"result\":[125,204]}
+    // so we extract it
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonResponseByteArray);
+    QJsonObject jsonObj = jsonDoc.object();
+    // value() returns a QJsonValue of type array, which we 
+    // transform to an QJsonArray
+    QJsonArray jsonArray = jsonObj.value("result").toArray();
+
+    return jsonArray.size();
 }

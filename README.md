@@ -1,10 +1,14 @@
 # DeltaTouch
 
-Messaging app for Ubuntu Touch, powered by deltachat-core. 
+Messaging app for Ubuntu Touch (and Nix), powered by deltachat-core. 
+
+## Important notice to users of the Nix package
+
+This is the xenial branch which contains the version for Ubuntu Touch 16.04 (xenial). Please checkout the nixpkg branch for anything related to the Nix package.
 
 ## Notice to focal (20.04) users
 
-This version of the README is in the xenial branch. The main branch is dedicated to focal, so please checkout main if you want to build for focal.
+This the xenial branch which contains the version for xenial. Please checkout the main branch if you want to build for focal.
 
 ## Building
 

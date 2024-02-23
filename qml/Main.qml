@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.3.2-pre07'
+    property string version: '1.3.2-pre08'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -402,6 +402,10 @@ MainView {
     // onDestruction instead?
     property bool inactiveAccsNewMsgsSinceLastCheck: false
 
+    // used in ReactionsSelectionPopover.qml, but already loaded here to
+    // save time when creating the popup
+    property var emojiRecentArray: ["😬", "😂", "🙂", "😞", "☹", "😄", "😅", "😳", "😢", "👍", "👎", "💪", "👀", "🤦", "🤷", "🤞", "🙈", "🍀", "❤", "💓", "💯", "🚀", "🎉"]
+
     Settings {
         id: settings
         property alias synca: root.syncAll
@@ -415,6 +419,7 @@ MainView {
         property alias scaleLevelTextZoom: root.scaleLevel
         property alias alwaysLoadRemote: root.alwaysLoadRemoteContent
         property alias inactAccsNewMsgsSinceLastCheck: root.inactiveAccsNewMsgsSinceLastCheck
+        property alias recentlyUsedEmojis: root.emojiRecentArray
     }
 
     width: units.gu(45)

@@ -689,7 +689,8 @@ Page {
 
                 onPressAndHold: {
                     if (!isInfo && !isUnreadMsgsBar) {
-                        PopupUtils.open(popoverComponentReactions, msgbox)
+                        let popup1 = PopupUtils.open(Qt.resolvedUrl("ReactionsSelectionPopover.qml"), msgbox, {"reactions": reactions })
+                        popup1.sendReactions.connect(reactionsLoader.sendReaction)
                     }
                 }
 
@@ -1445,8 +1446,6 @@ Page {
                     id: reactionsLoader
                     active: reactions.hasOwnProperty("reactions")
 
-                    property var selfEmoji: ""
-
                     anchors {
                         bottom: parent.bottom
                         right: !isOther ? msgbox.right : undefined
@@ -1461,14 +1460,10 @@ Page {
 
                     function updateReactions() {
                         reactionsModel.clear()
-                        selfEmoji = null
                         if (reactions.hasOwnProperty("reactions")) {
                             let temparray = reactions.reactions
                             for (let i = 0; i < temparray.length; i++) {
                                 let obj = temparray[i]
-                                if (obj.isFromSelf) {
-                                    selfEmoji = obj.emoji
-                                }
 
                                 if (i < 2) {
                                     reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
@@ -1478,18 +1473,19 @@ Page {
                                     } else {
                                         reactionsModel.append( { reactEmoji: "…", reactCount: 1 })
                                     }
-                                } // no action for the model if i > 3,
-                                  // but the loop needs to run to the end
-                                  // to set selfEmoji
+                                } else {
+                                    // no need to go beyond the third element here
+                                    break
+                                }
                             }
                         }
                     }
 
-                    function sendReaction(emojiToSend) {
+                    function sendReaction(emojisToSend) {
 
                         let msgId = DeltaHandler.chatmodel.indexToMessageId(index)
                         JSONRPC.client.getSelectedAccountId().then(accountId => // TODO get the selected account Id from somewhere else and cache it in a var
-                            JSONRPC.client.sendReaction(accountId, msgId, [emojiToSend])
+                            JSONRPC.client.sendReaction(accountId, msgId, emojisToSend)
                                 .catch(error => console.log("send reaction failed:", error.message))
                         )
                     }
@@ -1530,192 +1526,6 @@ Page {
                             }
                         }
                     } // ListView id: reactionsView
-
-                    Component {
-                        id: popoverComponentReactions
-                        Popover {
-                            id: popoverReactions
-
-                            width: chooseReactionsShape.width
-
-                            LomiriShape {
-                                id: chooseReactionsShape
-                                width: chooseReactionsRow.width
-                                height: chooseReactionsRow.height + units.gu(1)
-
-                                backgroundColor: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6"
-                                aspect: LomiriShape.Flat
-
-                                Row {
-                                    id: chooseReactionsRow
-                                    anchors.verticalCenter: parent.verticalCenter
-
-                                    Item {
-                                        // spacer item
-                                        height: units.gu(1)
-                                        width: height
-                                    }
-
-                                    LomiriShape {
-                                        width: chooseReactionsLabel1.contentWidth + units.gu(3)
-                                        height: chooseReactionsLabel1.contentHeight + units.gu(2)
-
-                                        backgroundColor: chooseReactionsLabel1.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
-                                        aspect: LomiriShape.Flat
-
-                                        Label {
-                                            id: chooseReactionsLabel1
-                                            anchors {
-                                                horizontalCenter: parent.horizontalCenter
-                                                verticalCenter: parent.verticalCenter
-                                            }
-                                            // thumbs up, U+1F44D
-                                            text: "👍"
-                                            fontSize: "x-large"
-                                        }
-                                        
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            onClicked: {
-                                                if (chooseReactionsLabel1.text != reactionsLoader.selfEmoji) {
-                                                    reactionsLoader.sendReaction(chooseReactionsLabel1.text)
-                                                } else {
-                                                    reactionsLoader.sendReaction("")
-                                                }
-                                                PopupUtils.close(popoverReactions)
-                                            }
-                                        }
-                                    }
-                                    LomiriShape {
-                                        width: chooseReactionsLabel2.contentWidth + units.gu(3)
-                                        height: chooseReactionsLabel2.contentHeight + units.gu(2)
-
-                                        backgroundColor: chooseReactionsLabel2.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
-                                        aspect: LomiriShape.Flat
-
-                                        Label {
-                                            id: chooseReactionsLabel2
-                                            anchors {
-                                                horizontalCenter: parent.horizontalCenter
-                                                verticalCenter: parent.verticalCenter
-                                            }
-                                            // thumbs down, U+1F44E
-                                            text: "👎"
-                                            fontSize: "x-large"
-                                        }
-                                        
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            onClicked: {
-                                                if (chooseReactionsLabel2.text != reactionsLoader.selfEmoji) {
-                                                    reactionsLoader.sendReaction(chooseReactionsLabel2.text)
-                                                } else {
-                                                    reactionsLoader.sendReaction("")
-                                                }
-                                                PopupUtils.close(popoverReactions)
-                                            }
-                                        }
-                                    }
-                                    LomiriShape {
-                                        width: chooseReactionsLabel3.contentWidth + units.gu(3)
-                                        height: chooseReactionsLabel3.contentHeight + units.gu(2)
-
-                                        backgroundColor: chooseReactionsLabel3.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
-                                        aspect: LomiriShape.Flat
-
-                                        Label {
-                                            id: chooseReactionsLabel3
-                                            anchors {
-                                                horizontalCenter: parent.horizontalCenter
-                                                verticalCenter: parent.verticalCenter
-                                            }
-                                            // red heart, should be \"\xE2\x9D\xA4\xEF\xB8\x8F\"
-                                            text: "❤️"
-                                            fontSize: "x-large"
-                                        }
-                                        
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            onClicked: {
-                                                if (chooseReactionsLabel3.text != reactionsLoader.selfEmoji) {
-                                                    reactionsLoader.sendReaction(chooseReactionsLabel3.text)
-                                                } else {
-                                                    reactionsLoader.sendReaction("")
-                                                }
-                                                PopupUtils.close(popoverReactions)
-                                            }
-                                        }
-                                    }
-                                    LomiriShape {
-                                        width: chooseReactionsLabel4.contentWidth + units.gu(3)
-                                        height: chooseReactionsLabel4.contentHeight + units.gu(2)
-
-                                        backgroundColor: chooseReactionsLabel4.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
-                                        aspect: LomiriShape.Flat
-
-                                        Label {
-                                            id: chooseReactionsLabel4
-                                            anchors {
-                                                horizontalCenter: parent.horizontalCenter
-                                                verticalCenter: parent.verticalCenter
-                                            }
-                                            // face with tears of joy, U+1F602, \"\xF0\x9F\x98\x82\" ?
-                                            text: "😂"
-                                            fontSize: "x-large"
-                                        }
-                                        
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            onClicked: {
-                                                if (chooseReactionsLabel4.text != reactionsLoader.selfEmoji) {
-                                                    reactionsLoader.sendReaction(chooseReactionsLabel4.text)
-                                                } else {
-                                                    reactionsLoader.sendReaction("")
-                                                }
-                                                PopupUtils.close(popoverReactions)
-                                            }
-                                        }
-                                    }
-                                    LomiriShape {
-                                        width: chooseReactionsLabel5.contentWidth + units.gu(3)
-                                        height: chooseReactionsLabel5.contentHeight + units.gu(2)
-
-                                        backgroundColor: chooseReactionsLabel5.text != reactionsLoader.selfEmoji ? chooseReactionsShape.backgroundColor : root.darkmode ? "#e6e6e6" : theme.palette.normal.overlay
-                                        aspect: LomiriShape.Flat
-
-                                        Label {
-                                            id: chooseReactionsLabel5
-                                            anchors {
-                                                horizontalCenter: parent.horizontalCenter
-                                                verticalCenter: parent.verticalCenter
-                                            }
-                                            // slightly frowning face, U+1F641
-                                            text: "🙁"
-                                            fontSize: "x-large"
-                                        }
-
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            onClicked: {
-                                                if (chooseReactionsLabel5.text != reactionsLoader.selfEmoji) {
-                                                    reactionsLoader.sendReaction(chooseReactionsLabel5.text)
-                                                } else {
-                                                    reactionsLoader.sendReaction("")
-                                                }
-                                                PopupUtils.close(popoverReactions)
-                                            }
-                                        }
-                                    }
-
-                                    Item {
-                                        // spacer item
-                                        height: units.gu(1)
-                                        width: height
-                                    }
-                                }
-                            }
-                        } // end Popover id: popoverReactions
-                    } // end Component id: popoverComponentReactions
                 } // end Loader id: reactionsLoader
             } // end ListItem id: delegateListItem
 

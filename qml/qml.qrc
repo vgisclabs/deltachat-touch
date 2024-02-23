@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>client.mjs</file>
         <file>jsonrpc.mjs</file>
+        <file>emojis.js</file>
         <file>Main.qml</file>
         <file>pages/About.qml</file>
         <file>pages/AccountConfig.qml</file>
@@ -76,6 +77,7 @@
         <file>pages/QrGroupInvite.qml</file>
         <file>pages/QrShowScan.qml</file>
         <file>pages/ReactionsInfoPopup.qml</file>
+        <file>pages/ReactionsSelectionPopover.qml</file>
         <file>pages/RequestDatabasePassword.qml</file>
         <file>pages/SettingsPage.qml</file>
         <file>pages/UnblockContactPopup.qml</file>

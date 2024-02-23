@@ -52,13 +52,13 @@ Dialog {
        }
     }
 
-    function getEmojiString(emojiArray) {
-        let tempstring = ""
-        for (let i = 0; i < emojiArray.length; i++) {
-            tempstring += emojiArray[i]
-        }
-        return tempstring
-    }
+//    function getEmojiString(emojiArray) {
+//        let tempstring = ""
+//        for (let i = 0; i < emojiArray.length; i++) {
+//            tempstring += emojiArray[i]
+//        }
+//        return tempstring
+//    }
 
     function addModelEntry(emojiArray, contact) {
         let contactName = contact.displayName
@@ -66,14 +66,22 @@ Dialog {
         let contactAvatar = Qt.resolvedUrl(setAvatar(contact.profileImage))
         let contactInitial = getInitial(contactName)
         let contactColor = contact.color
-        reactionsInfoModel.append( {
-            displayname: contactName,
-            address: contactAddress,
-            avatarPath: contactAvatar,
-            avatarInitial: contactInitial,
-            contactColor: contactColor,
-            emoji: getEmojiString(emojiArray)
-        })
+
+        for (let i = 0; i < emojiArray.length; i++) {
+            reactionsInfoModel.append( {
+                displayname: contactName,
+                address: contactAddress,
+                avatarPath: contactAvatar,
+                avatarInitial: contactInitial,
+                contactColor: contactColor,
+                // In case a user has set a lot of emojis, it's problematic
+                // if all emojis set by a single user are shown
+                // in one string/one line (to still do it, remove
+                // the for loop)
+                //emoji: getEmojiString(emojiArray)
+                emoji: emojiArray[i]
+            })
+        }
     }
 
     Component.onCompleted: {

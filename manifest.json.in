@@ -13,7 +13,7 @@
             "push-helper": "push.json"
         }
     },
-    "version": "1.3.2-pre07",
+    "version": "1.3.2-pre08",
     "maintainer": "Lothar Ketterer <deltatouch@mailbox.org>",
     "framework" : "@CLICK_FRAMEWORK@"
 }

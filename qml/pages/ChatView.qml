@@ -655,6 +655,7 @@ Page {
                         case DeltaHandler.AudioType:
                         case DeltaHandler.VoiceType:
                         case DeltaHandler.VideoType:
+                        case DeltaHandler.FileType:
                             return false;
                             break;
 

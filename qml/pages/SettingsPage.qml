@@ -835,6 +835,7 @@ Page {
             ListItem {
                 height: sysNotifsAggregatedLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
+                divider.visible: false
 
                 ListItemLayout {
                     id: sysNotifsAggregatedLayout
@@ -851,6 +852,32 @@ Page {
                             if (sysNotifsAggregatedSwitch.checked != root.AggregatedPushNotifications) {
                                 root.aggregatePushNotifications = sysNotifsAggregatedSwitch.checked
                                 DeltaHandler.setAggregatePushNotifications(root.aggregatePushNotifications)
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                height: otherAccountsNewMsgsLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+                visible: root.showAccountsExperimentalSettings
+
+                ListItemLayout {
+                    id: otherAccountsNewMsgsLayout
+                    title.text: i18n.tr("New msgs in other accounts (experimental)")
+                    summary.text: i18n.tr("(via mail icon in the chatlist header)")
+                    summary.wrapMode: Text.WordWrap
+                    // This is independent of push notifications
+                    //enabled: root.sendPushNotifications
+
+                    Switch {
+                        id: otherAccountsNewMsgsSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.showInAppNotificationsOtherAccounts
+                        onCheckedChanged: {
+                            if (otherAccountsNewMsgsSwitch.checked != root.showInAppNotificationsOtherAccounts) {
+                                root.showInAppNotificationsOtherAccounts = otherAccountsNewMsgsSwitch.checked
                             }
                         }
                     }

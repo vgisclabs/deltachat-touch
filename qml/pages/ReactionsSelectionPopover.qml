@@ -288,16 +288,27 @@ Popover {
                             popoverReactions.needToSend = true
                             chosenReactionsModel.append( { chosenEmo: model.emoji })
                         } else {
-                            let found = false
-                            for (let i = 0; i < chosenReactionsModel.count; i++) {
-                                if (chosenReactionsModel.get(i).chosenEmo === model.emoji) {
-                                    found = true
-                                }
-                            }
-                            if (found === false) {
+                            // This is an implementation which only allows one reaction
+                            // per user. To allow multiple reactions, remove this and
+                            // use the previous implementation below.
+                            if (chosenReactionsModel.get(0).chosenEmo !== model.emoji) {
                                 popoverReactions.needToSend = true
+                                chosenReactionsModel.remove(0)
                                 chosenReactionsModel.append( { chosenEmo: model.emoji })
                             }
+
+                            // This is the previous implementation which allows for multiple
+                            // reactions.
+                            //let found = false
+                            //for (let i = 0; i < chosenReactionsModel.count; i++) {
+                            //    if (chosenReactionsModel.get(i).chosenEmo === model.emoji) {
+                            //        found = true
+                            //    }
+                            //}
+                            //if (found === false) {
+                            //    popoverReactions.needToSend = true
+                            //    chosenReactionsModel.append( { chosenEmo: model.emoji })
+                            //}
                         }
                     }
                 }

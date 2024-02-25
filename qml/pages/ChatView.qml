@@ -689,7 +689,7 @@ Page {
                 property var reactions: model.reactions
 
                 onPressAndHold: {
-                    if (!isInfo && !isUnreadMsgsBar) {
+                    if (!isInfo && !isUnreadMsgsBar && chatCanSend) {
                         let popup1 = PopupUtils.open(Qt.resolvedUrl("ReactionsSelectionPopover.qml"), msgbox, {"reactions": reactions })
                         popup1.sendReactions.connect(reactionsLoader.sendReaction)
                     }

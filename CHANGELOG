@@ -5,6 +5,7 @@ UI: Reactions (send and display)
 UI: Move "cancel" action in headers to the left (away from "ok" action) for alignment with DC Android and to avoid fat-fingering
 UI: Show icon for new messages in accounts other than the currently active one
 UI: Refactor "Add Chat" page for alignment with DC Android.
+UI: Don't show summarytext for file type messages
 Bugfix: Images now auto-rotate according to EXIF data
 Bugfix: Copy to clipboard now reliable
 Bugfix: Adapt size of chatlist in the archive

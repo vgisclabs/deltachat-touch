@@ -263,9 +263,9 @@ MainView {
         noOfInactiveMsgs += DeltaHandler.accountsmodel.noOfChatRequestsInInactiveAccounts();
 
         if (noOfInactiveMsgs > 0) {
-            newMsgsInOtherAccsIndicator.visible = true
+            hasNewMsgsInOtherAccs = true
         } else {
-            newMsgsInOtherAccsIndicator.visible = false
+            hasNewMsgsInOtherAccs = false
         }
     }
 
@@ -353,6 +353,8 @@ MainView {
     property bool sendPushNotifications: false
     property bool detailedPushNotifications: true
     property bool aggregatePushNotifications: false
+    property bool showInAppNotificationsOtherAccounts: false
+    property bool hasNewMsgsInOtherAccs: false
 
     // to protect against clicks on multiple chat lines
     property bool chatOpenAlreadyClicked: false
@@ -413,6 +415,7 @@ MainView {
         property alias sendPushNotif: root.sendPushNotifications
         property alias detailedPushNotif: root.detailedPushNotifications
         property alias aggregatePushNotif: root.aggregatePushNotifications
+        property alias otherAccsNewMsgsInAppNotif: root.showInAppNotificationsOtherAccounts
         property alias versionAtLastSession: root.oldVersion
         property alias accountsExpSettings: root.showAccountsExperimentalSettings
         property alias accountsShowContactReq: root.accountConfigPageShowContactRequests
@@ -691,7 +694,7 @@ MainView {
                         horizontalCenter: parent.horizontalCenter
                     }
                     color: root.inactiveAccsNewMsgsSinceLastCheck ? "#4f4f4f" : headerTopBackgroundColor.color
-                    visible: false
+                    visible: hasNewMsgsInOtherAccs && showInAppNotificationsOtherAccounts
 
                     // removes the rounded edges on top of newMsgsInOtherAccsIndicator
                     Rectangle {

@@ -75,6 +75,7 @@ void WorkflowDbToUnencrypted::startWorkflow()
         // No accounts in the account manager
         // TODO: how to communicate to the caller of this method?
         qDebug() << "WorkflowDbToUnencrypted::startWorkflow(): Warning: Method called but no accounts found";
+        m_settings->setValue("workflowDbToUnencryptedRunning", false);
         emit workflowCompleted();
         return;
     }

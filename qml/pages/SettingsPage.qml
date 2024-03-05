@@ -909,7 +909,7 @@ Page {
             ListItem {
                 height: sysNotifsAggregatedLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
-                divider.visible: false
+                divider.visible: true
 
                 ListItemLayout {
                     id: sysNotifsAggregatedLayout
@@ -932,31 +932,32 @@ Page {
                 }
             }
 
-            ListItem {
-                height: otherAccountsNewMsgsLayout.height + (divider.visible ? divider.height : 0)
-                width: settingsPage.width
-                visible: root.showAccountsExperimentalSettings
-
-                ListItemLayout {
-                    id: otherAccountsNewMsgsLayout
-                    title.text: i18n.tr("New msgs in other accounts (experimental)")
-                    summary.text: i18n.tr("(via mail icon in the chatlist header)")
-                    summary.wrapMode: Text.WordWrap
-                    // This is independent of push notifications
-                    //enabled: root.sendPushNotifications
-
-                    Switch {
-                        id: otherAccountsNewMsgsSwitch
-                        SlotsLayout.position: SlotsLayout.Trailing
-                        checked: root.showInAppNotificationsOtherAccounts
-                        onCheckedChanged: {
-                            if (otherAccountsNewMsgsSwitch.checked != root.showInAppNotificationsOtherAccounts) {
-                                root.showInAppNotificationsOtherAccounts = otherAccountsNewMsgsSwitch.checked
-                            }
-                        }
-                    }
-                }
-            }
+            // temporarily disabled as it is not release ready (see also divider in ListItem above)
+//            ListItem {
+//                height: otherAccountsNewMsgsLayout.height + (divider.visible ? divider.height : 0)
+//                width: settingsPage.width
+//                visible: root.showAccountsExperimentalSettings
+//
+//                ListItemLayout {
+//                    id: otherAccountsNewMsgsLayout
+//                    title.text: i18n.tr("New msgs in other accounts (experimental)")
+//                    summary.text: i18n.tr("(via mail icon in the chatlist header)")
+//                    summary.wrapMode: Text.WordWrap
+//                    // This is independent of push notifications
+//                    //enabled: root.sendPushNotifications
+//
+//                    Switch {
+//                        id: otherAccountsNewMsgsSwitch
+//                        SlotsLayout.position: SlotsLayout.Trailing
+//                        checked: root.showInAppNotificationsOtherAccounts
+//                        onCheckedChanged: {
+//                            if (otherAccountsNewMsgsSwitch.checked != root.showInAppNotificationsOtherAccounts) {
+//                                root.showInAppNotificationsOtherAccounts = otherAccountsNewMsgsSwitch.checked
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
             ListItem {
                 height: secDeviceLayout.height + (divider.visible ? divider.height : 0)

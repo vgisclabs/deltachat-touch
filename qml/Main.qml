@@ -696,7 +696,8 @@ MainView {
                         horizontalCenter: parent.horizontalCenter
                     }
                     color: root.inactiveAccsNewMsgsSinceLastCheck ? "#4f4f4f" : headerTopBackgroundColor.color
-                    visible: hasNewMsgsInOtherAccs && showInAppNotificationsOtherAccounts
+                    // TODO: feature disabled as it is not release ready
+                    visible: false //hasNewMsgsInOtherAccs && showInAppNotificationsOtherAccounts
 
                     // removes the rounded edges on top of newMsgsInOtherAccsIndicator
                     Rectangle {

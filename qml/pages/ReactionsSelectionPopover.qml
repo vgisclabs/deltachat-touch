@@ -127,7 +127,8 @@ Popover {
                 id: chosenDescLabel
                 anchors.verticalCenter: parent.verticalCenter
 
-                text: i18n.tr("Chosen Emojis: ")
+                // TODO: string not translated yet
+                text: i18n.tr("Selected: ")
                 fontSize: "large"
             }
 

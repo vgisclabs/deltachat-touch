@@ -53,7 +53,7 @@ Page {
                     top: parent.top
                     margins: units.gu(1)
                 }
-                text: '%1 v%2'.arg(root.appName).arg(root.version) + " (focal)"
+                text: '%1 v%2'.arg(root.appName).arg(root.version) //+ " (focal)"
             }
 
             Label {

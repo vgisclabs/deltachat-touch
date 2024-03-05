@@ -58,7 +58,10 @@
         <file>pages/PickerBackupToExport.qml</file>
         <file>pages/PickerChatPic.qml</file>
         <file>pages/PickerFileToExport.qml</file>
-        <file>pages/PickerFileToSend.qml</file>
+        <file>pages/FileImportDialog.qml</file>
+        <file>pages/+ubuntu-touch/FileImportDialog.qml</file>
+        <file>pages/FileExportDialog.qml</file>
+        <file>pages/+ubuntu-touch/FileExportDialog.qml</file>
         <file>pages/PickerImageToExport.qml</file>
         <file>pages/PickerImageToSend.qml</file>
         <file>pages/PickerLogToExport.qml</file>

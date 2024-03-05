@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2019 Tim Süberkrüb <dev@timsueberkrueb.io>
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024  Lothar Ketterer
  *
  * Originally from the app Webber by <Tim Süberkrüb <dev@timsueberkrueb.io>>,
  * this file has been modified to be part of the app "DeltaTouch".
@@ -26,38 +26,56 @@ import Lomiri.Content 1.3
 
 import DeltaHandler 1.0
 
+// File is only available on Ubuntu Touch, see
+// the QQmlFileSelector in main.cpp
+
 Page {
-    id: imageToSendPage
+    id: fileImportPage
 
     header: PageHeader {
-        id: imageToSendHeader
+        id: fileToSendHeader
         title: i18n.tr("Select")
     }
 
-
-    property url source
+    property var conType: DeltaHandler.FileType
     property var activeTransfer: null
+
+    signal fileSelected(string fileUrl)
+    signal cancelled()
 
     ContentPeerPicker {
         id: peerPicker
-        //height: imageToSendPage.height - imageToSendHeader.height - cancelButton.height - units.gu(6)
 
         anchors {
-            top: imageToSendHeader.bottom
+            top: fileToSendHeader.bottom
             topMargin: units.gu(2)
             bottom: cancelButton.top
             bottomMargin: units.gu(2)
-            left: imageToSendPage.left
-            right: imageToSendPage.right
+            left: fileImportPage.left
+            right: fileImportPage.right
         }
 
-        contentType: ContentType.Pictures
+        contentType: {
+            switch (conType) {
+                case DeltaHandler.AudioType:
+                    return ContentType.Music
+                    break
+                case DeltaHandler.ImageType:
+                    return ContentType.Pictures
+                    break
+                case DeltaHandler.FileType: // fallthrough
+                default:
+                    return ContentType.All
+                    break
+            }
+        }
+
         handler: ContentHandler.Source
         showTitle: false
 
         onPeerSelected: {
             peer.selectionType = ContentTransfer.Single
-            imageToSendPage.activeTransfer = peer.request()
+            fileImportPage.activeTransfer = peer.request()
         }
     }
 
@@ -69,25 +87,24 @@ Page {
             right: parent.right
             rightMargin: units.gu(4)
         }
-        text: "Cancel"
-        onClicked: layout.removePages(imageToSendPage)
+        text: i18n.tr("Cancel")
+        onClicked: {
+            layout.removePages(fileImportPage)
+            cancelled()
+        }
     }
 
     Connections {
-        target: imageToSendPage.activeTransfer
+        target: fileImportPage.activeTransfer
         onStateChanged: {
-            if (imageToSendPage.activeTransfer.state === ContentTransfer.Charged) {
-                if (imageToSendPage.activeTransfer.items.length > 0) {
-                    imageToSendPage.source = DeltaHandler.copyToCache(imageToSendPage.activeTransfer.items[0].url);
-                    console.log('Setting image attachment: ', imageToSendPage.source)
-                    if (DeltaHandler.chatmodel.isGif(imageToSendPage.source)) {
-                        DeltaHandler.chatmodel.setAttachment(imageToSendPage.source, DeltaHandler.GifType)
-                    } else {
-                        DeltaHandler.chatmodel.setAttachment(imageToSendPage.source, DeltaHandler.ImageType)
-                    }
+            if (fileImportPage.activeTransfer.state === ContentTransfer.Charged) {
+                if (fileImportPage.activeTransfer.items.length > 0) {
+                    let fileUrl = DeltaHandler.copyToCache(fileImportPage.activeTransfer.items[0].url);
+                    console.log('Selected file via ContentHub: ', fileUrl)
+                    fileSelected(fileUrl)
                 }
-                imageToSendPage.activeTransfer.finalize()
-                layout.removePages(imageToSendPage)
+                fileImportPage.activeTransfer.finalize()
+                layout.removePages(fileImportPage)
             }
         }
     }

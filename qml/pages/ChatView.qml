@@ -116,6 +116,85 @@ Page {
         layout.removePages(chatViewPage)
     }
 
+
+    Loader {
+        // Only for non-Ubuntu Touch platforms
+        id: momFileExpLoader
+    }
+
+
+    Connections {
+        // Only for non-Ubuntu Touch platforms
+        target: momFileExpLoader.item
+        onFolderSelected: {
+            let exportedPath = DeltaHandler.chatmodel.exportMomentaryFileToFolder(urlOfFolder)
+            showExportSuccess(exportedPath)
+            momFileExpLoader.source = ""
+        }
+        onCancelled: {
+            momFileExpLoader.source = ""
+        }
+    }
+
+
+    function showExportSuccess(exportedPath) {
+        // Only for non-Ubuntu Touch platforms
+        if (exportedPath === "") {
+            // error, file was not exported
+            PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
+            chatViewPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("File could not be saved") , "title": i18n.tr("Error") })
+        } else {
+            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"),
+            chatViewPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("Saved file ") + exportedPath })
+        }
+    }
+
+    
+    function exportMomentaryMessageFile() {
+        if (DeltaHandler.chatmodel.setUrlToExport()) {
+            let tempType
+
+            switch (DeltaHandler.chatmodel.getMomentaryViewType()) {
+                case DeltaHandler.GifType:
+                    // fallthrough; both ContentHub and FileDialog
+                    // don't differentiate between animated and non-animated
+                    // images when saving the file
+                case DeltaHandler.ImageType:
+                    tempType = DeltaHandler.ImageType
+                    break;
+                    
+                case DeltaHandler.AudioType:
+                case DeltaHandler.VoiceType:
+                    tempType = DeltaHandler.AudioType
+                    break;
+
+                default:
+                    tempType = DeltaHandler.FileType
+                    break;
+            }
+
+            // different code depending on platform
+            if (root.onUbuntuTouch) {
+                // Ubuntu Touch
+                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileExportDialog.qml'), { "url": StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.chatmodel.getUrlToExport()), "conType": tempType })
+
+            } else {
+                // non-Ubuntu Touch
+                momFileExpLoader.source = "FileExportDialog.qml"
+
+                // TODO: String not translated yet
+                momFileExpLoader.item.title = "Choose folder to save " + DeltaHandler.chatmodel.getMomentaryFilenameToExport()
+                momFileExpLoader.item.setFileType(tempType)
+                momFileExpLoader.item.open()
+            }
+        }
+    }
+
+
     Component.onCompleted: {
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatViewIsClosed)
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatmodel.chatViewIsClosed)
@@ -136,7 +215,7 @@ Page {
                 quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
             }
 
-            DeltaHandler.chatmodel.emitDraftHasAttachmentSignals()
+            DeltaHandler.chatmodel.checkDraftHasAttachment()
         }
 
         chatViewPage.messageQueryTextChanged.connect(DeltaHandler.chatmodel.updateQuery)
@@ -225,12 +304,7 @@ Page {
         }
 
         onPreviewImageAttachment: {
-            let sourcePath
-            if (addCacheLocation) {
-                sourcePath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
-            } else {
-                sourcePath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.AppConfigLocation, filepath))
-            }
+            let sourcePath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepathInCache))
 
             if (isAnimated) {
                 attachPreviewAnimatedImage.source = sourcePath
@@ -250,7 +324,7 @@ Page {
         onPreviewAudioAttachment: {
             // Audio is guaranteed to always be located in the CacheLocation because
             // it won't play if it's in AppConfigLocation due to AppArmor
-            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepathInCache))
             attachAudioPreviewMode = true
             attachFilePreviewLabel.text = filename;
         }
@@ -259,7 +333,7 @@ Page {
         onPreviewVoiceAttachment: {
             // Audio is guaranteed to always be located in the CacheLocation because
             // it won't play if it's in AppConfigLocation due to AppArmor
-            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepathInCache))
             attachVoicePreviewMode = true
             attachFilePreviewLabel.text = i18n.tr("Voice Message")
         }
@@ -416,7 +490,7 @@ Page {
                 id: skipToFirstIcon
                 name: "media-skip-backward"
                 width: units.gu(2.5)
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -448,7 +522,7 @@ Page {
                 id: prevMsgIcon
                 name: "media-playback-start-rtl"
                 width: units.gu(2.5)
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -492,7 +566,7 @@ Page {
                 id: nextMsgIcon
                 name: "media-playback-start"
                 width: units.gu(2.5)
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -524,7 +598,7 @@ Page {
                 id: skipToLastIcon
                 name: "media-skip-forward"
                 width: units.gu(2.5)
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -598,7 +672,8 @@ Page {
                 iconName: "navigation-menu"
                 onTriggered: {
                     DeltaHandler.chatmodel.setMomentaryMessage(value)
-                    PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'))
+                    let popup6 = PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'))
+                    popup6.startFileExport.connect(exportMomentaryMessageFile)
                 }
             },
             Action {
@@ -1190,9 +1265,7 @@ Page {
                                         anchors.fill: parent
                                         onClicked: {
                                             DeltaHandler.chatmodel.setMomentaryMessage(index)
-                                            if (DeltaHandler.chatmodel.setUrlToExport()) {
-                                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToExport.qml'))
-                                            }
+                                            exportMomentaryMessageFile()
                                         }
                                     }
                                 }
@@ -1563,7 +1636,7 @@ Page {
                 width: parent.width - units.gu(1)
                 height: width
                 name: "go-down"
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -1584,7 +1657,7 @@ Page {
         height: cannotSendLabel.contentHeight + units.gu(2)
         width: parent.width
         color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: view.bottom
@@ -1620,7 +1693,7 @@ Page {
         height: protectionBrokenLabel.contentHeight + 2* acceptBrokenProtectionButton.height + units.gu(8)
         width: parent.width
         color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: view.bottom
@@ -1684,7 +1757,7 @@ Page {
         height: messageEnterField.height + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(1) : 0) + (attachmentPreviewRect.visible ? attachmentPreviewRect.height + units.gu(1) : 0) 
         width: parent.width
         color: theme.palette.normal.background
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: view.bottom
@@ -1762,7 +1835,7 @@ Page {
                     width: parent.width - units.gu(1)
                     height: width
                     name: "close"
-                    anchors{
+                    anchors {
                         horizontalCenter: parent.horizontalCenter
                         verticalCenter: parent.verticalCenter
                     }
@@ -1938,13 +2011,14 @@ Page {
                     // taken by camera, but it's hard to check for this
                     // case)
                     name: attachVoicePreviewMode ? "delete" : "close"
-                    anchors{
+                    anchors {
                         horizontalCenter: parent.horizontalCenter
                         verticalCenter: parent.verticalCenter
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
+                            messageAudio.stop()
                             if (attachVoicePreviewMode) {
                                 // actual deletion is done by the popup
                                 PopupUtils.open(popoverComponentConfirmDeletion, cancelAttachmentShape)
@@ -1970,7 +2044,7 @@ Page {
             height: width
             color: theme.palette.normal.overlay
 
-            anchors{
+            anchors {
                 left: parent.left
                 leftMargin: units.gu(0.5)
                 verticalCenter: messageEnterField.verticalCenter
@@ -1982,7 +2056,7 @@ Page {
                 width: parent.width - units.gu(1)
                 height: width
                 name: attachmentMode ? "close" : "add"
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -1999,7 +2073,7 @@ Page {
         TextArea {
             id: messageEnterField
             width: parent.width - attachIconShape.width - sendIconShape.width - units.gu(2)
-            anchors{
+            anchors {
                 left: attachIconShape.right
                 leftMargin: units.gu(0.5)
                 top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)
@@ -2016,7 +2090,7 @@ Page {
             width: units.gu(4)
             height: width
             color: theme.palette.normal.overlay
-            anchors{
+            anchors {
                 right: parent.right
                 rightMargin: units.gu(0.5)
                 verticalCenter: messageEnterField.verticalCenter
@@ -2028,7 +2102,7 @@ Page {
                 width: parent.width - units.gu(1)
                 height: width
                 name: (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) ? "audio-input-microphone-symbolic" : "send"
-                anchors{
+                anchors {
                     verticalCenter: parent.verticalCenter
                     horizontalCenter: parent.horizontalCenter
                 }
@@ -2089,15 +2163,23 @@ Page {
 
             visible: attachmentMode
 
-            LomiriShape{
+            LomiriShape {
                 id: sendImageIconShape
                 width: units.gu(4)
                 height: width
                 color: theme.palette.normal.overlay
 
-                anchors{
+                anchors {
                     right: filetypeToSendCage.right
                     verticalCenter: parent.verticalCenter
+                }
+
+                function attachImage(imagePath) {
+                    if (DeltaHandler.chatmodel.isGif(imagePath)) {
+                        DeltaHandler.chatmodel.setAttachment(imagePath, DeltaHandler.GifType)
+                    } else {
+                        DeltaHandler.chatmodel.setAttachment(imagePath, DeltaHandler.ImageType)
+                    }
                 }
 
                 Icon {
@@ -2105,28 +2187,64 @@ Page {
                     width: parent.width - units.gu(1)
                     height: width
                     name: "stock_image"
-                    anchors{
+                    anchors {
                         horizontalCenter: sendImageIconShape.horizontalCenter
                         verticalCenter: sendImageIconShape.verticalCenter
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerImageToSend.qml'))
+                            if (root.onUbuntuTouch) {
+                                let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                                if (incubator.status != Component.Ready) {
+                                    // have to wait for the object to be ready to connect to the signal,
+                                    // see documentation on AdaptivePageLayout and
+                                    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                    incubator.onStatusChanged = function(status) {
+                                        if (status == Component.Ready) {
+                                            incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
+                                        }
+                                    }
+                                } else {
+                                    // object was directly ready
+                                    incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
+                                }
+                            } else {
+                                picImportLoader.source = "FileImportDialog.qml"
+                                picImportLoader.item.setFileType(DeltaHandler.ImageType)
+                                picImportLoader.item.open()
+                            }
+
                             attachmentMode = false
                         }
                         enabled: true
                     }
+
+                    Loader {
+                        id: picImportLoader
+                    }
+
+                    Connections {
+                        target: picImportLoader.item
+                        onFileSelected: {
+                            sendImageIconShape.attachImage(urlOfFile)
+                            picImportLoader.source = ""
+                        }
+                        onCancelled: {
+                            picImportLoader.source = ""
+                        }
+                    }
                 }
             } // end LomiriShape id: sendImageIconShape
 
-            LomiriShape{
+            LomiriShape {
                 id: sendAudioIconShape
                 width: units.gu(4)
                 height: width
                 color: theme.palette.normal.overlay
 
-                anchors{
+                anchors {
                     right: sendImageIconShape.left
                     rightMargin: units.gu(2)
                     verticalCenter: parent.verticalCenter
@@ -2137,19 +2255,59 @@ Page {
                     width: parent.width - units.gu(1)
                     height: width
                     name: "stock_music"
-                    anchors{
+                    anchors {
                         horizontalCenter: sendAudioIconShape.horizontalCenter
                         verticalCenter: sendAudioIconShape.verticalCenter
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerAudioToSend.qml'))
+                            if (root.onUbuntuTouch) {
+                                let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
+
+                                if (incubator.status != Component.Ready) {
+                                    // have to wait for the object to be ready to connect to the signal,
+                                    // see documentation on AdaptivePageLayout and
+                                    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                    incubator.onStatusChanged = function(status) {
+                                        if (status == Component.Ready) {
+                                            incubator.object.fileSelected.connect(function(fileUrl) {
+                                                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
+                                            } )
+                                        }
+                                    }
+                                } else {
+                                    // object was directly ready
+                                    incubator.object.fileSelected.connect(function(fileUrl) {
+                                        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
+                                    } )
+                                }
+                            } else {
+                                audioImportLoader.source = "FileImportDialog.qml"
+                                audioImportLoader.item.setFileType(DeltaHandler.AudioType)
+                                audioImportLoader.item.open()
+                            }
+
                             attachmentMode = false
                         }
                         enabled: true
+                    } // MouseArea
+
+                    Loader {
+                        id: audioImportLoader
                     }
-                }
+
+                    Connections {
+                        target: audioImportLoader.item
+                        onFileSelected: {
+                            DeltaHandler.chatmodel.setAttachment(urlOfFile, DeltaHandler.AudioType)
+                            audioImportLoader.source = ""
+                        }
+                        onCancelled: {
+                            audioImportLoader.source = ""
+                        }
+                    }
+                } // Icon id: audioIcon
             } // end LomiriShape id: sendAudioIconShape
 
             LomiriShape {
@@ -2158,7 +2316,7 @@ Page {
                 height: width
                 color: theme.palette.normal.overlay
 
-                anchors{
+                anchors {
                     right: sendAudioIconShape.left
                     rightMargin: units.gu(2)
                     verticalCenter: parent.verticalCenter
@@ -2169,19 +2327,59 @@ Page {
                     width: parent.width - units.gu(1)
                     height: width
                     name: "attachment"
-                    anchors{
+                    anchors {
                         horizontalCenter: sendFileIconShape.horizontalCenter
                         verticalCenter: sendFileIconShape.verticalCenter
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToSend.qml'))
+                            if (root.onUbuntuTouch) {
+                                let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+
+                                if (incubator.status != Component.Ready) {
+                                    // have to wait for the object to be ready to connect to the signal,
+                                    // see documentation on AdaptivePageLayout and
+                                    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                    incubator.onStatusChanged = function(status) {
+                                        if (status == Component.Ready) {
+                                            incubator.object.fileSelected.connect(function(fileUrl) {
+                                                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
+                                            } )
+                                        }
+                                    }
+                                } else {
+                                    // object was directly ready
+                                    incubator.object.fileSelected.connect(function(fileUrl) {
+                                        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
+                                    } )
+                                }
+                            } else {
+                                fileImportLoader.source = "FileImportDialog.qml"
+                                fileImportLoader.item.setFileType(DeltaHandler.FileType)
+                                fileImportLoader.item.open()
+                            }
+
                             attachmentMode = false
                         }
                         enabled: true
                     }
-                }
+
+                    Loader {
+                        id: fileImportLoader
+                    }
+
+                    Connections {
+                        target: fileImportLoader.item
+                        onFileSelected: {
+                            DeltaHandler.chatmodel.setAttachment(urlOfFile, DeltaHandler.FileType)
+                            fileImportLoader.source = ""
+                        }
+                        onCancelled: {
+                            fileImportLoader.source = ""
+                        }
+                    }
+                } // Icon id: attachmentIcon
             } // end LomiriShape id: sendFileIconShape
 
             LomiriShape {
@@ -2190,7 +2388,7 @@ Page {
                 height: width
                 color: theme.palette.normal.overlay
 
-                anchors{
+                anchors {
                     right: sendFileIconShape.left
                     rightMargin: units.gu(2)
                     verticalCenter: parent.verticalCenter
@@ -2201,7 +2399,7 @@ Page {
                     width: parent.width - units.gu(1)
                     height: width
                     name: "audio-input-microphone-symbolic"
-                    anchors{
+                    anchors {
                         horizontalCenter: voiceMessageIconShape.horizontalCenter
                         verticalCenter: voiceMessageIconShape.verticalCenter
                     }
@@ -2315,7 +2513,7 @@ Page {
         height: 3* acceptRequestButton.height + units.gu(8)
         width: parent.width
         color: theme.palette.normal.background
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: view.bottom

@@ -28,15 +28,15 @@ import Qt.labs.platform 1.1
 import DeltaHandler 1.0
 
 Page {
-    id: picker
+    id: fileExportPage
     property var activeTransfer
 
     property string url: StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.chatmodel.getUrlToExport())
     property var handler
-    property var contentType
+    property var conType: DeltaHandler.FileType
 
-    signal cancel()
-    signal imported(string fileUrl)
+    signal success()
+    signal cancelled()
 
     header: PageHeader {
         title: i18n.tr("Select")
@@ -45,36 +45,62 @@ Page {
     ContentPeerPicker {
         anchors {
             fill: parent
-            topMargin: picker.header.height
+            topMargin: fileExportPage.header.height
         }
 
         visible: parent.visible
         showTitle: false
-        contentType: ContentType.All
+        contentType: {
+            switch (conType) {
+                case DeltaHandler.AudioType:
+                    return ContentType.Music
+                    break
+                case DeltaHandler.ImageType:
+                    return ContentType.Pictures
+                    break
+                case DeltaHandler.FileType: // fallthrough
+                default:
+                    return ContentType.All
+                    break
+            }
+        }
+
         handler: ContentHandler.Destination
 
         onPeerSelected: {
-            picker.activeTransfer = peer.request()
-            picker.activeTransfer.stateChanged.connect(function() {
-                //console.log('in connected function, picker.activeTransfer.state is: ', picker.activeTransfer.state)
-                if (picker.activeTransfer.state === ContentTransfer.InProgress) {
+            fileExportPage.activeTransfer = peer.request()
+            fileExportPage.activeTransfer.stateChanged.connect(function() {
+                //console.log('in connected function, fileExportPage.activeTransfer.state is: ', fileExportPage.activeTransfer.state)
+                if (fileExportPage.activeTransfer.state === ContentTransfer.InProgress) {
                 //    console.log("Export: In progress, url is:", url);
-                    picker.activeTransfer.items = [ resultComponent.createObject(parent, {"url": url}) ];
-                    picker.activeTransfer.state = ContentTransfer.Charged;
-                    layout.removePages(picker)
+                    fileExportPage.activeTransfer.items = [ resultComponent.createObject(parent, {"url": url}) ];
+                    fileExportPage.activeTransfer.state = ContentTransfer.Charged;
+                    layout.removePages(fileExportPage)
+                    success()
                 }
             })
         }
+    }
 
-        onCancelPressed: {
-            layout.removePages(picker)
+    Button {
+        id: cancelButton
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: units.gu(2)
+            right: parent.right
+            rightMargin: units.gu(4)
+        }
+        text: i18n.tr("Cancel")
+        onClicked: {
+            layout.removePages(fileExportPage)
+            cancelled()
         }
     }
 
     ContentTransferHint {
         id: transferHint
         anchors.fill: parent
-        activeTransfer: picker.activeTransfer
+        activeTransfer: fileExportPage.activeTransfer
     }
 
     Component {

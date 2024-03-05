@@ -104,6 +104,8 @@ public:
     Q_ENUM (DcChatType)
 
     Q_INVOKABLE bool isDesktopMode();
+    
+    Q_INVOKABLE bool onUbuntuTouch();
 
     Q_INVOKABLE void loadSelectedAccount();
 
@@ -268,6 +270,8 @@ public:
     Q_INVOKABLE void chatBlockContactRequest();
 
     Q_INVOKABLE void exportBackup();
+
+    Q_INVOKABLE QString saveBackupFile(QString destinationFolder);
 
     Q_INVOKABLE QString getUrlToExport();
 
@@ -735,6 +739,9 @@ private:
     QTimer* m_signalQueueTimer;
 
     static constexpr int queueTimerFreq = 1000;
+
+    bool m_onUbuntuTouch;
+    bool m_isDesktopMode;
 
     /**************************************
      *********   Private methods   ********

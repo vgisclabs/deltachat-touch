@@ -51,6 +51,12 @@ public:
 
     Q_INVOKABLE int getMomentaryViewType();
 
+    Q_INVOKABLE QString exportMomentaryFileToFolder(QString destinationFolder);
+
+    Q_INVOKABLE QString getMomentaryFilenameToExport();
+
+    Q_INVOKABLE QString exportFileToFolder(QString sourceFilePath, QString destinationFolder);
+
     Q_INVOKABLE QString getMomentaryInfo();
 
     Q_INVOKABLE uint32_t getCurrentChatId();
@@ -90,7 +96,7 @@ public:
     Q_INVOKABLE void setAttachment(QString filepath, int attachType);
 
     // called upon entering ChatView to create the attachment preview
-    Q_INVOKABLE void emitDraftHasAttachmentSignals();
+    Q_INVOKABLE void checkDraftHasAttachment();
 
     Q_INVOKABLE void unsetAttachment();
 
@@ -172,10 +178,10 @@ signals:
     // for images because only images and audio need to be accessed
     // from QML, and in the cause of audio, it will be copied
     // to cache first (won't play from AppConfigLocation due to AppArmor)
-    void previewAudioAttachment(QString filepath, QString filename);
-    void previewImageAttachment(QString filepath, bool addCacheLocation, bool isAnimated);
+    void previewAudioAttachment(QString filepathInCache, QString filename);
+    void previewImageAttachment(QString filepathInCache, bool isAnimated);
     void previewFileAttachment(QString filename);
-    void previewVoiceAttachment(QString filepath, QString filename);
+    void previewVoiceAttachment(QString filepathInCache);
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -246,6 +252,8 @@ private:
 
     bool toggleQuoteVectorContainsId(const uint32_t tempID) const;
     void toggleQuoteVectorRemoveId(uint32_t tempID);
+
+    void emitDraftHasAttachmentSignals(QString filepath, int messageType);
 };
 
 

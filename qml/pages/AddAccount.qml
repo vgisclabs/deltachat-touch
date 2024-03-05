@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -18,9 +18,12 @@
 
 import QtQuick 2.12
 import Lomiri.Components 1.3
+import Lomiri.Components.Popups 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.platform 1.1
+
+import DeltaHandler 1.0
 
 Page {
     id: addAccountPage
@@ -48,6 +51,30 @@ Page {
 
     } //PageHeader id:header
         
+    function startBackupImport(backupFile) {
+        if (DeltaHandler.isBackupFile(backupFile)) {
+            // Actual import will be started in the popup.
+            PopupUtils.open(progressBackupImport, addAccountPage, { "backupSource": backupFile })
+        } else {
+            PopupUtils.open(errorMessage)
+        }
+
+    }
+    
+    Loader {
+        id: backupImportLoader
+    }
+
+    Connections {
+        target: backupImportLoader.item
+        onFileSelected: {
+            addAccountPage.startBackupImport(urlOfFile)
+            backupImportLoader.source = ""
+        }
+        onCancelled: {
+            backupImportLoader.source = ""
+        }
+    }
 
     ListModel {
         id: addAccountModel
@@ -56,7 +83,7 @@ Page {
         Component.onCompleted: {
             addAccountModel.append({ "name": i18n.tr("Log into your E-Mail Account"), "linkToPage": "AddOrConfigureEmailAccount.qml" } )
             addAccountModel.append({ "name": i18n.tr("Add as Second Device"), "linkToPage": "AddAccountAsSecondDevice.qml" } )
-            addAccountModel.append({ "name": i18n.tr("Restore from Backup"), "linkToPage": "PickerBackupFile.qml" } )
+            addAccountModel.append({ "name": i18n.tr("Restore from Backup"), "linkToPage": "restoreFromBackup--noLink" } )
             addAccountModel.append({ "name": i18n.tr("Scan Invitation Code"), "linkToPage": "AddAccountViaQrInvitationCode.qml" } )
         }
     }
@@ -99,10 +126,50 @@ Page {
                     // pass this page so it can be used as parameter for layout.removePages() later on in
                     // the process if needed, see ProgressConfigAccount (called pageToRemove there)
                     layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl(linkToPage), { "addAccPage": addAccountPage })
+                } else if (linkToPage == "restoreFromBackup--noLink") {
+                    if (root.onUbuntuTouch) {
+                        // Ubuntu Touch
+                        let incubator = layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+
+                        if (incubator.status != Component.Ready) {
+                            // have to wait for the object to be ready to connect to the signal,
+                            // see documentation on AdaptivePageLayout and
+                            // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                            incubator.onStatusChanged = function(status) {
+                                if (status == Component.Ready) {
+                                    incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
+                                }
+                            }
+                        } else {
+                            // object was directly ready
+                            incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
+                        }
+                    } else {
+                        // non-Ubuntu Touch
+                        backupImportLoader.source = "FileImportDialog.qml"
+                        backupImportLoader.item.setFileType(DeltaHandler.FileType)
+                        backupImportLoader.item.open()
+                    }
                 } else {
                     layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl(linkToPage))
                 }
             }
+        }
+    }
+
+    Component {
+        id: progressBackupImport
+        ProgressBackupImport {
+            title: i18n.tr('Restore from Backup')
+        }
+    }
+
+    Component {
+        id: errorMessage
+        ErrorMessage {
+            title: i18n.tr('Error')
+            // TODO: string not translated yet
+            text: i18n.tr('The selected file is not a valid backup file.')
         }
     }
 } // end of Page id: addAccountPage

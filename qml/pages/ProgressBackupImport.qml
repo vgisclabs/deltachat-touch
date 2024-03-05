@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -32,9 +32,11 @@ Dialog {
         value: 0
     }
 
+    property string backupSource
+
     Component.onCompleted: {
         DeltaHandler.imexEventReceived.connect(updateProgress)
-        DeltaHandler.importBackupFromFile(backupPickerPage.source)
+        DeltaHandler.importBackupFromFile(backupSource)
     }
 
     function updateProgress(progValue) {
@@ -71,7 +73,6 @@ Dialog {
         color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)
-            layout.removePages(backupPickerPage)
         }
         visible: false
     }

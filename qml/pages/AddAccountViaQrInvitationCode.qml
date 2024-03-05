@@ -73,6 +73,10 @@ Page {
         onDeleteDecoder: DeltaHandler.deleteQrDecoder()
     }
 
+    function passQrImage(imagePath) {
+        DeltaHandler.loadQrImage(imagePath)
+    }
+
     function startQrProcessing(content) {
         camera.stopAll()
         qrActionSwitch(DeltaHandler.evaluateQrCode(content))
@@ -183,6 +187,22 @@ Page {
         } else {
             PopupUtils.open(errorPopup)
             setTempContextNull()
+        }
+    }
+
+    Loader {
+        id: picImportLoader
+    }
+
+    Connections {
+        target: picImportLoader.item
+        onFileSelected: {
+            let tempPath = DeltaHandler.copyToCache(urlOfFile);
+            addAccountViaQrPage.passQrImage(tempPath)
+            picImportLoader.source = ""
+        }
+        onCancelled: {
+            picImportLoader.source = ""
         }
     }
 
@@ -339,7 +359,29 @@ Page {
                 text: i18n.tr("Load QR Code as Image")
                 onClicked: {
                     camera.stopAll()
-                    layout.addPageToCurrentColumn(addAccountViaQrPage, Qt.resolvedUrl("PickerQrImageLoad.qml"))
+                    if (root.onUbuntuTouch) {
+                        // Ubuntu Touch
+                        let incubator = layout.addPageToCurrentColumn(addAccountViaQrPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                        if (incubator.status != Component.Ready) {
+                            // have to wait for the object to be ready to connect to the signal,
+                            // see documentation on AdaptivePageLayout and
+                            // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                            incubator.onStatusChanged = function(status) {
+                                if (status == Component.Ready) {
+                                    incubator.object.fileSelected.connect(addAccountViaQrPage.passQrImage)
+                                }
+                            }
+                        } else {
+                            // object was directly ready
+                            incubator.object.fileSelected.connect(addAccountViaQrPage.passQrImage)
+                        }
+                    } else {
+                        // non-Ubuntu Touch
+                        picImportLoader.source = "FileImportDialog.qml"
+                        picImportLoader.item.setFileType(DeltaHandler.ImageType)
+                        picImportLoader.item.open()
+                    }
                 }
             }
         } // end Rectangle id: scanButtonRect

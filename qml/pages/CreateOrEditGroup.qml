@@ -37,6 +37,21 @@ Page {
 
     signal prepareAddMembers()
 
+    Loader {
+        id: picImportLoader
+    }
+
+    Connections {
+        target: picImportLoader.item
+        onFileSelected: {
+            createGroupPage.setPic(urlOfFile)
+            picImportLoader.source = ""
+        }
+        onCancelled: {
+            picImportLoader.source = ""
+        }
+    }
+
     function updateChatPic(newPath) {
         if (newPath != "") {
             chatPicImage.source = StandardPaths.locate(StandardPaths.CacheLocation, newPath)
@@ -46,6 +61,18 @@ Page {
 
     function updateMemberCount(mcount) {
         memberCount = mcount
+    }
+
+    function setPic(imagePath) {
+        let tempPath = DeltaHandler.copyToCache(imagePath)
+        DeltaHandler.setGroupPic(tempPath)
+    }
+
+    function openFileDialog() {
+        // only for non-UT
+        picImportLoader.source = "FileImportDialog.qml"
+        picImportLoader.item.setFileType(DeltaHandler.ImageType)
+        picImportLoader.item.open()
     }
 
     Component.onCompleted: {
@@ -371,7 +398,26 @@ Page {
                     }
                     onClicked: {
                         PopupUtils.close(popoverChatPicActions)
-                        layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('PickerChatPic.qml'))
+
+                        if (root.onUbuntuTouch) {
+                            let incubator = layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                            if (incubator.status != Component.Ready) {
+                                // have to wait for the object to be ready to connect to the signal,
+                                // see documentation on AdaptivePageLayout and
+                                // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                incubator.onStatusChanged = function(status) {
+                                    if (status == Component.Ready) {
+                                        incubator.object.fileSelected.connect(createGroupPage.setPic)
+                                    }
+                                }
+                            } else {
+                                // object was directly ready
+                                incubator.object.fileSelected.connect(createGroupPage.setPic)
+                            }
+                        } else {
+                            createGroupPage.openFileDialog()
+                        }
                     }
                 }
 

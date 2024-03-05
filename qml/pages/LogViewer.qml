@@ -19,6 +19,7 @@
 import QtQuick 2.12
 import QtQml 2.12
 import Lomiri.Components 1.3
+import Lomiri.Components.Popups 1.3
 //import QtWebEngine 1.8
 import Qt.labs.platform 1.1
 
@@ -36,9 +37,45 @@ Page {
     property var locale: Qt.locale()
     property string currentDateString
 
+    property var fullpath
+
+    function showExportSuccess(exportedPath) {
+        // Only for non-Ubuntu Touch platforms
+        if (exportedPath === "") {
+            // error, file was not exported
+            PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
+            logViewerPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("File could not be saved") , "title": i18n.tr("Error") })
+        } else {
+            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"),
+            logViewerPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("Saved file ") + exportedPath })
+        }
+    }
+
     header: PageHeader {
         id: header
         title: i18n.tr("Log")
+
+        Loader {
+            // Only for non-Ubuntu Touch platforms
+            id: fileExpLoader
+        }
+
+        Connections {
+            // Only for non-Ubuntu Touch platforms
+            target: fileExpLoader.item
+            onFolderSelected: {
+                let exportedPath = DeltaHandler.chatmodel.exportFileToFolder(fullpath, urlOfFolder)
+                showExportSuccess(exportedPath)
+                fileExpLoader.source = ""
+            }
+            onCancelled: {
+                fileExpLoader.source = ""
+            }
+        }
 
         trailingActionBar.actions: [
             Action {
@@ -59,8 +96,20 @@ Page {
                 onTriggered: {
                     let textToSave = logText.text
                     let saveFile = DeltaHandler.saveLog(textToSave, currentDateString)
-                    let fullpath = StandardPaths.locate(StandardPaths.CacheLocation, saveFile)
-                    layout.addPageToCurrentColumn(logViewerPage, Qt.resolvedUrl("PickerLogToExport.qml"), {"url": fullpath})
+                    fullpath = StandardPaths.locate(StandardPaths.CacheLocation, saveFile)
+
+                    // different code depending on platform
+                    if (root.onUbuntuTouch) {
+                        layout.addPageToCurrentColumn(logViewerPage, Qt.resolvedUrl("FileExportDialog.qml"), {"url": fullpath, "conType": DeltaHandler.FileType})
+                    } else {
+                        // non-Ubuntu Touch
+                        fileExpLoader.source = "FileExportDialog.qml"
+
+                        // TODO: String not translated yet
+                        fileExpLoader.item.title = "Choose folder to save log"
+                        fileExpLoader.item.setFileType(DeltaHandler.FileType)
+                        fileExpLoader.item.open()
+                    }
                 }
             }
         ]

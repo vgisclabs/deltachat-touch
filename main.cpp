@@ -144,5 +144,10 @@ int main(int argc, char *argv[])
     view->setResizeMode(QQuickView::SizeRootObjectToView);
     view->show();
 
+    // Ubuntu Touch sets QT_FILE_SELECTOR=ubuntu-touch, so on Ubuntu
+    // Touch, the engine will look in a subdir called "+ubuntu-touch"
+    // first for any QML file
+    QQmlFileSelector* selector = new QQmlFileSelector(view->engine());
+
     return app->exec();
 }

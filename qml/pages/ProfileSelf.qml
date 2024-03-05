@@ -30,8 +30,35 @@ import DeltaHandler 1.0
 Page {
     id: profilePage
 
+    Loader {
+        id: picImportLoader
+    }
+
+    Connections {
+        target: picImportLoader.item
+        onFileSelected: {
+            profilePage.setProfilePic(urlOfFile)
+            picImportLoader.source = ""
+        }
+        onCancelled: {
+            picImportLoader.source = ""
+        }
+    }
+
     function updateProfilePic(newPath) {
         profilePicImage.source = StandardPaths.locate(StandardPaths.CacheLocation, newPath)
+    }
+
+    function setProfilePic(imagePath) {
+        let tempPath = DeltaHandler.copyToCache(imagePath);
+        DeltaHandler.setProfileValue("selfavatar", tempPath)
+    }
+
+    function openFileDialog() {
+        // only for non-UT
+        picImportLoader.source = "FileImportDialog.qml"
+        picImportLoader.item.setFileType(DeltaHandler.ImageType)
+        picImportLoader.item.open()
     }
 
     Component.onCompleted: {
@@ -166,6 +193,7 @@ Page {
                             top: parent.top
                             right: parent.right
                         }
+
                         ListItem {
                             height: layout1.height
                             // should be automatically be themed with something like
@@ -177,11 +205,31 @@ Page {
                                 id: layout1
                                 title.text: i18n.tr("Select Profile Image")
                             }
+                            
                             onClicked: {
                                 PopupUtils.close(popoverProfilePicActions)
-                                layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('PickerProfilePic.qml'))
+
+                                if (root.onUbuntuTouch) {
+                                    let incubator = layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                                    if (incubator.status != Component.Ready) {
+                                        // have to wait for the object to be ready to connect to the signal,
+                                        // see documentation on AdaptivePageLayout and
+                                        // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                        incubator.onStatusChanged = function(status) {
+                                            if (status == Component.Ready) {
+                                                incubator.object.fileSelected.connect(profilePage.setProfilePic)
+                                            }
+                                        }
+                                    } else {
+                                        // object was directly ready
+                                        incubator.object.fileSelected.connect(profilePage.setProfilePic)
+                                    }
+                                } else {
+                                    profilePage.openFileDialog()
+                                }
                             }
-                        }
+                        } // ListItem
 
                         ListItem {
                             height: layout2.height

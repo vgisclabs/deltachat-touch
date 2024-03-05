@@ -340,6 +340,8 @@ MainView {
     // check will be disabled."
     property bool isDesktopMode: false
 
+    property bool onUbuntuTouch: false
+
     // Will connect to the network if true. Offline mode if
     // set to false. Connected to the "Sync all" switch
     // in the Settings page. Setting takes effect on all
@@ -431,7 +433,7 @@ MainView {
     function startStopIO() {
         if (DeltaHandler.networkingIsStarted) { // network is up, check if it needs to be stopped
             //if (Qt.application.state != Qt.ApplicationActive || !DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode) || !root.syncAll) {
-            if (!DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode) || !root.syncAll) {
+            if (!DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode || !onUbuntuTouch) || !root.syncAll) {
                 DeltaHandler.stop_io();
                 console.log('startStopIO(): network is currently up, calling stop_io()')
                 ioChanged();
@@ -442,7 +444,7 @@ MainView {
         }
         else { // network is down, check if it can be brought up
             //if (Qt.application.state == Qt.ApplicationActive && DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode) && root.syncAll) {
-            if (DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode) && root.syncAll) {
+            if (DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode || !onUbuntuTouch) && root.syncAll) {
                 DeltaHandler.start_io()
                 console.log('startStopIO(): network is currently down, calling start_io()')
                 ioChanged();
@@ -458,7 +460,7 @@ MainView {
         target: Connectivity
         onOnlineChanged: {
             startStopIO()
-            console.log('connectivity signal onlineChanged')
+            console.log('Main.qml: received connectivity signal onlineChanged')
         }
     }
     
@@ -1396,11 +1398,7 @@ MainView {
         checkVersionUpdateEarly()
 
         isDesktopMode = DeltaHandler.isDesktopMode()
-        if (isDesktopMode) {
-            console.log("Main.qml: Running in desktop mode")
-        } else {
-            console.log("Main.qml: NOT running in desktop mode")
-        }
+        onUbuntuTouch = DeltaHandler.onUbuntuTouch()
 
         darkmode = (theme.name == "Lomiri.Components.Themes.SuruDark")
         startupStep1()

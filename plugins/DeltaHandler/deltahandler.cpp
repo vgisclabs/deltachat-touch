@@ -32,6 +32,38 @@ namespace C {
 DeltaHandler::DeltaHandler(QObject* parent)
     : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}, m_signalQueue_newMsgForInactiveAcc {false}
 {
+    // Determine if the app is running on Ubuntu Touch
+    // and if it is in desktop mode
+    m_onUbuntuTouch = false;
+    m_isDesktopMode = false;
+
+    QProcessEnvironment procenv = QProcessEnvironment::systemEnvironment();
+    QStringList sysvarlist = procenv.keys();
+    for (int i = 0; i < sysvarlist.size(); ++i) {
+        if (sysvarlist.at(i) == "QT_FILE_SELECTORS") {
+            if (procenv.value("QT_FILE_SELECTORS") == "ubuntu-touch") {
+                m_onUbuntuTouch = true;
+            }
+        }
+
+        // 'clickable desktop' sets the env var CLICKABLE_DESKTOP_MODE.
+        // In this case, QT_FILE_SELECTORS is not set to "ubuntu-touch"
+        // , but m_onUbuntuTouch should still be true as desktop mode
+        // is to test code that will run on Ubuntu Touch.
+        if (sysvarlist.at(i) == "CLICKABLE_DESKTOP_MODE") {
+            m_onUbuntuTouch = true;
+            m_isDesktopMode = true;
+        }
+    }
+
+    if (m_onUbuntuTouch && !m_isDesktopMode) {
+        qDebug() << "DeltaHandler::DeltaHandler(): Running on Ubuntu Touch " << QSysInfo::productVersion();
+    } else if (m_isDesktopMode) {
+        qDebug() << "DeltaHandler::DeltaHandler(): Running in clickable desktop mode";
+    } else {
+        qDebug() << "DeltaHandler::DeltaHandler(): Not running on Ubuntu Touch";
+    }
+
     // Set the initial id for jsonrpc requests to 1 billion, i.e. around half of the
     // max of an unsigned int (although the id in libdeltachat might
     // be unsigned). Reason is that jsonrpc.mjs as used in QML has its own
@@ -420,17 +452,13 @@ DeltaHandler::~DeltaHandler()
 
 bool DeltaHandler::isDesktopMode()
 {
-    // checks if the app is running in desktop mode, i.e.
-    // via 'clickable desktop'. Clickable sets the
-    // env var CLICKABLE_DESKTOP_MODE in that case.
-    QProcessEnvironment procenv = QProcessEnvironment::systemEnvironment();
-    QStringList sysvarlist = procenv.keys();
-    for (int i = 0; i < sysvarlist.size(); ++i) {
-        if (sysvarlist.at(i) == "CLICKABLE_DESKTOP_MODE") {
-            return true;
-        }
-    }
-    return false;
+    return m_isDesktopMode;
+}
+
+
+bool DeltaHandler::onUbuntuTouch()
+{
+    return m_onUbuntuTouch;
 }
 
 
@@ -3074,6 +3102,54 @@ void DeltaHandler::exportBackup()
 }
 
 
+QString DeltaHandler::saveBackupFile(QString destinationFolder)
+{
+    QString tempQString = destinationFolder;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        destinationFolder.remove(0, 7);
+    }
+
+    tempQString = destinationFolder;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        destinationFolder.remove(0, 4);
+    }
+
+    QString sourceFileName = m_tempExportPath.section('/', -1);
+
+    QString destinationFile = destinationFolder + "/" + sourceFileName;
+
+    unsigned int counter {1};
+
+    while (QFile::exists(destinationFile)) {
+        QString basename = sourceFileName;
+        QString suffix = basename.section('.', -1);
+        basename.remove(basename.length() - 4, 4);
+        QString tempNumber;
+        tempNumber.setNum(counter);
+        basename.append("_");
+        basename.append(tempNumber);
+        basename.append(".");
+        basename.append(suffix);
+        destinationFile = destinationFolder + "/" + basename;
+
+        ++counter;
+    }
+
+    QString sourceFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + m_tempExportPath);
+    bool success = QFile::copy(sourceFile, destinationFile);
+
+    if (success) {
+        return destinationFile;
+    } else {
+        qDebug() << "DeltaHandler::saveBackupFile(): ERROR: Could not save the backup to " << destinationFile;
+        // Do not emit errorEvent, but return empty string
+        // and let the GUI handle it
+        //emit errorEvent(C::gettext("Could not save the backup file"));
+        return "";
+    }
+}
+
+
 QString DeltaHandler::getUrlToExport()
 {
     return m_tempExportPath;
@@ -3094,6 +3170,15 @@ void DeltaHandler::removeTempExportFile()
         // would choose the same number and thus file name for each
         // backup file. To avoid this, a dummy file is created with the
         // same file name as the backup file that has just been removed.
+        //
+        // TODO: This only works if the app is not closed at some time
+        // because closing removes the cache dir.
+        //
+        // If the app is closed, the backup file in the cache will
+        // have the same name as a previously exported one, but 
+        // in the folder chosen by the user the file will then be
+        // named ....._1.tar
+
         QFile dummyFile(fileToRemove);
         if (!dummyFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
             qDebug() << "DeltaHandler::removeTempExportFile(): Could not open dummy file to represent the removed backup file";

@@ -21,6 +21,7 @@ import Lomiri.Components 1.3
 import QtQuick.Layouts 1.3
 import Lomiri.Components.Popups 1.3
 import Qt.labs.settings 1.0
+import Qt.labs.platform 1.1
 import QtMultimedia 5.12
 import QtQml.Models 2.12
 
@@ -62,12 +63,85 @@ Page {
         }
     }
 
+    function backupExportFinished() {
+        DeltaHandler.removeTempExportFile()
+    }
+
     // Opens the file export dialog once the backup
     // file has been written to the cache.
     function startFileExport()
     {
-        layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('PickerBackupToExport.qml'))
+        // different code depending on platform
+        if (root.onUbuntuTouch) {
+            // Ubuntu Touch
+            // In contrast to to other file exports, the temporary
+            // backup file should be removed from the cache. Connect
+            // the success and cancelled signal from FileExportDialog
+            // to the function that removes the temp file.
+            let tempBackupPath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getUrlToExport())
+            let incubator = layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('FileExportDialog.qml'), { "url": tempBackupPath, "conType": DeltaHandler.FileType })
 
+            if (incubator.status != Component.Ready) {
+                // have to wait for the object to be ready to connect to the signal,
+                // see documentation on AdaptivePageLayout and
+                // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                incubator.onStatusChanged = function(status) {
+                    if (status == Component.Ready) {
+                        incubator.object.success.connect(settingsPage.backupExportFinished)
+                        incubator.object.cancelled.connect(settingsPage.backupExportFinished)
+                    }
+                }
+            } else {
+                // object was directly ready
+                incubator.object.fileSelected.success(settingsPage.backupExportFinished)
+                incubator.object.fileSelected.cancelled(settingsPage.backupExportFinished)
+            }
+
+        } else {
+            // non-Ubuntu Touch
+            fileExpLoader.source = "FileExportDialog.qml"
+
+            // TODO: String not translated yet
+            fileExpLoader.item.title = "Choose folder to save backup"
+            fileExpLoader.item.setFileType(DeltaHandler.FileType)
+            fileExpLoader.item.open()
+        }
+    }
+
+    Loader {
+        // Only for non-Ubuntu Touch platforms
+        id: fileExpLoader
+    }
+
+    Connections {
+        // Only for non-Ubuntu Touch platforms
+        target: fileExpLoader.item
+        onFolderSelected: {
+            let exportedPath = DeltaHandler.saveBackupFile(urlOfFolder)
+            showExportSuccess(exportedPath)
+            fileExpLoader.source = ""
+            backupExportFinished()
+        }
+        onCancelled: {
+            fileExpLoader.source = ""
+            backupExportFinished()
+        }
+    }
+
+    function showExportSuccess(exportedPath) {
+        // Only for non-Ubuntu Touch platforms
+        if (exportedPath === "") {
+            // error, file was not exported
+            PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
+            settingsPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("File could not be saved") , "title": i18n.tr("Error") })
+        } else {
+            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"),
+            settingsPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("Saved file ") + exportedPath })
+        }
     }
 
     // Updating the displayed setting for "Show Classic Emails",

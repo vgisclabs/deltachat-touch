@@ -1,20 +1,14 @@
 # DeltaTouch
 
-Messaging app for Ubuntu Touch (and Nix), powered by deltachat-core. 
+Messaging app for Ubuntu Touch (and now also Nix), powered by deltachat-core. 
 
-## Important notice to users of the Nix package
-
-This is the main branch which contains the version for Ubuntu Touch 20.04 (focal). Please checkout the nixpkg branch for anything related to the Nix package.
+This is the main branch which contains the version for Ubuntu Touch 20.04 (focal) and Nix. The branch nixpkg, which was previously used for the Nix package, has been merged into main. Please do not base on nixpkg anymore.
 
 ## Important notice to xenial (16.04) users
 
-This is the main branch which contains the focal version. Please checkout the xenial branch if you want to build for xenial.
+This is the main branch which contains the focal version. It will **not** work on xenial. Please checkout the xenial branch if you want to build for xenial.
 
-## Important notice to focal (20.04) users
-
-To build for focal, make sure you are on the main branch.
-
-## Building
+## Building for Ubuntu Touch 20.04 (focal)
 
 ### General
 
@@ -41,7 +35,7 @@ CMakeLists.txt of deltachat-core-rust needs to be patched in order to work with 
 patch libs/deltachat-core-rust/CMakeLists.txt < libs/patches/dc_core_rust-CMakeLists.patch
 ```
 
-Build libdeltachat.so for your architecture (arm64 in this example, could also be armhf or amd64 if you want to use `clickable desktop`). This will take some time:
+Build libdeltachat.so for your architecture (arm64 in this example, could also be armhf, or amd64 if you want to use `clickable desktop`). This will take some time:
 
 ```
 clickable build --libs deltachat-core-rust --arch arm64
@@ -89,10 +83,10 @@ clickable desktop
 For some options like dark mode or using a different language, see <https://clickable-ut.dev/en/latest/commands.html#desktop>.
 
 Limitations to `clickable desktop` are:
-- The resolution is quite low, so don't be surprised if it looks blurred. This will not the case on the phone.
-- Anything requiring a service that's running in Ubuntu Touch will not work. As a consequence, file exchange will not be possible as it needs the so-called content hub which is not running on the desktop. This means:
-    - Backups cannot be im- or exported, so accounts have to be set up via logging in to your account.
-    - Images and sound files / voice recordings cannot be sent.
+- The resolution is quite low, so don't be surprised if it looks blurred. This will not be the case on the phone.
+- Anything requiring a service that's running in Ubuntu Touch will not work. As a consequence, file exchange will not be possible as it needs the so-called ContentHub which is not available on the desktop. This means:
+    - Backups cannot be im- or exported, so accounts have to be set up via logging in to your account or by adding as second device (if the camera doesn't work, copy the code from the QR to the clipboard and paste from clipboard).
+    - Images and sound files cannot be attached.
     - Attachments cannot be saved.
     - It may not be possible to use a potentially present camera for QR code scanning.
 

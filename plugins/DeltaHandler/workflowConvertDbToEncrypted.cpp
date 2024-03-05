@@ -76,6 +76,7 @@ void WorkflowDbToEncrypted::startWorkflow()
     if (0 == m_totalAccounts) {
         // No accounts to encrypt present
         qDebug() << "WorkflowDbToEncrypted::startWorkflow(): Warning: Method called but no accounts found";
+        m_settings->setValue("workflowDbToEncryptedRunning", false);
         emit workflowCompleted();
         return;
     }

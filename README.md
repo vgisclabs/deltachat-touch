@@ -1,14 +1,10 @@
 # DeltaTouch
 
-Messaging app for Ubuntu Touch (and Nix), powered by deltachat-core. 
+Messaging app for Ubuntu Touch (and now also Nix), powered by deltachat-core. 
 
-## Important notice to users of the Nix package
+## Important notice to users of Ubuntu Touch focal and the Nix package
 
-This is the xenial branch which contains the version for Ubuntu Touch 16.04 (xenial). Please checkout the nixpkg branch for anything related to the Nix package.
-
-## Notice to focal (20.04) users
-
-This the xenial branch which contains the version for xenial. Please checkout the main branch if you want to build for focal.
+This is the xenial branch which contains the version for Ubuntu Touch 16.04 (xenial). Please checkout the main branch for Ubuntu Touch 20.04 (focal) and the Nix package.
 
 ## Building
 
@@ -43,8 +39,6 @@ Build libdeltachat.so for your architecture (arm64 in this example, could also b
 clickable build --libs deltachat-core-rust --arch arm64
 ```
 
-If this command fails with an error stating that the version of cmake is too old, you need to use an older docker image along with clickable 7.
-
 After building libdeltachat.so, undo the patch:
 
 ```
@@ -60,7 +54,7 @@ Of course, the patch needs to be applied again before you start a new build of l
 
 Activating/updating the quirc submodule should have already been done by running `git submodule update --init --recursive` for libdeltachat.so above.
 
-Build libquirc.so.1.2 for your architecture (arm64 in this example, could also be armhf or amd64 if you want to use `clickable desktop`):
+Build libquirc.so.1.2 for your architecture (arm64 in this example, could also be armhf, or amd64 if you want to use `clickable desktop`):
 
 ```
 clickable build --libs quirc --arch arm64
@@ -88,10 +82,10 @@ clickable desktop
 For some options like dark mode or using a different language, see <https://clickable-ut.dev/en/latest/commands.html#desktop>.
 
 Limitations to `clickable desktop` are:
-- The resolution is quite low, so don't be surprised if it looks blurred. This will not the case on the phone.
-- Anything requiring a service that's running in Ubuntu Touch will not work. As a consequence, file exchange will not be possible as it needs the so-called content hub which is not running on the desktop. This means:
-    - Backups cannot be im- or exported, so accounts have to be set up via logging in to your account.
-    - Images and sound files / voice recordings cannot be sent.
+- The resolution is quite low, so don't be surprised if it looks blurred. This will not be the case on the phone.
+- Anything requiring a service that's running in Ubuntu Touch will not work. As a consequence, file exchange will not be possible as it needs the so-called ContentHub which is not available on the desktop. This means:
+    - Backups cannot be im- or exported, so accounts have to be set up via logging in to your account or by adding as second device (if the camera doesn't work, copy the code from the QR to the clipboard and paste from clipboard).
+    - Images and sound files cannot be attached.
     - Attachments cannot be saved.
     - It may not be possible to use a potentially present camera for QR code scanning.
 

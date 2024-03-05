@@ -51,21 +51,10 @@
         <file>pages/MessageHtmlView.qml</file>
         <file>pages/MessageInfosActions.qml</file>
         <file>pages/NotImplemented.qml</file>
-        <file>pages/PickerProfilePic.qml</file>
-        <file>pages/PickerBackupFile.qml</file>
-        <file>pages/PickerAudioToExport.qml</file>
-        <file>pages/PickerAudioToSend.qml</file>
-        <file>pages/PickerBackupToExport.qml</file>
-        <file>pages/PickerChatPic.qml</file>
-        <file>pages/PickerFileToExport.qml</file>
         <file>pages/FileImportDialog.qml</file>
         <file>pages/+ubuntu-touch/FileImportDialog.qml</file>
         <file>pages/FileExportDialog.qml</file>
         <file>pages/+ubuntu-touch/FileExportDialog.qml</file>
-        <file>pages/PickerImageToExport.qml</file>
-        <file>pages/PickerImageToSend.qml</file>
-        <file>pages/PickerLogToExport.qml</file>
-        <file>pages/PickerQrImageLoad.qml</file>
         <file>pages/ProgressConfigAccount.qml</file>
         <file>pages/ProgressBackupImport.qml</file>
         <file>pages/ProgressBackupExport.qml</file>

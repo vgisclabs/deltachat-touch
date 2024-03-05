@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-16 16:31+0000\n"
+"POT-Creation-Date: 2024-03-05 17:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,43 +19,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../plugins/DeltaHandler/contactsmodel.cpp:79
+#: ../plugins/DeltaHandler/contactsmodel.cpp:83 ../qml/pages/AddChat.qml:87
+#: ../qml/pages/AddChatForContact.qml:40
 msgid "New Contact"
 msgstr "مخاطب جدید"
 
-#: ../plugins/DeltaHandler/contactsmodel.cpp:94
-msgid "Type e-mail address above"
-msgstr "نشانی رایانامه را در بخش بالا وارد کنید"
-
-#: ../plugins/DeltaHandler/deltahandler.cpp:1824
+#: ../plugins/DeltaHandler/deltahandler.cpp:2046
 msgid "New message"
 msgstr "پیام جدید"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:2923
+#: ../plugins/DeltaHandler/deltahandler.cpp:3193
 msgid ""
 "Failed to remove the temporary copy of the backup export in the cache "
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:4041
-#: ../qml/pages/AccountConfig.qml:311 ../qml/pages/AccountConfig.qml:451
+#: ../plugins/DeltaHandler/deltahandler.cpp:4231
+#: ../qml/pages/AccountConfig.qml:319 ../qml/pages/AccountConfig.qml:491
+#: ../qml/pages/AddAccount.qml:170
 #: ../qml/pages/AddAccountAsSecondDevice.qml:109
 #: ../qml/pages/AddAccountAsSecondDevice.qml:140
-#: ../qml/pages/AddAccountAsSecondDevice.qml:361
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:115
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:163
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:373
+#: ../qml/pages/AddAccountAsSecondDevice.qml:403
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:119
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:167
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:415
 #: ../qml/pages/AddSecondDevice.qml:82 ../qml/pages/AddSecondDevice.qml:95
-#: ../qml/pages/ChangeDatabasePassword.qml:141
-#: ../qml/pages/PickerBackupFile.qml:108
-#: ../qml/pages/ProgressQrBackupImport.qml:56 ../qml/pages/QrShowScan.qml:166
-#: ../qml/pages/QrShowScan.qml:296 ../qml/pages/QrShowScan.qml:726
-#: ../qml/pages/RequestDatabasePassword.qml:52
+#: ../qml/pages/ChangeDatabasePassword.qml:141 ../qml/pages/ChatView.qml:147
+#: ../qml/pages/ImageViewer.qml:39 ../qml/pages/ImageViewerAnimated.qml:39
+#: ../qml/pages/LogViewer.qml:49 ../qml/pages/ProgressQrBackupImport.qml:56
+#: ../qml/pages/QrShowScan.qml:170 ../qml/pages/QrShowScan.qml:300
+#: ../qml/pages/QrShowScan.qml:770 ../qml/pages/RequestDatabasePassword.qml:52
+#: ../qml/pages/SettingsPage.qml:138
 msgid "Error"
 msgstr "خطا"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:4120
-#: ../plugins/DeltaHandler/deltahandler.cpp:4143
+#: ../plugins/DeltaHandler/deltahandler.cpp:4310
+#: ../plugins/DeltaHandler/deltahandler.cpp:4333
 msgid "QR code could not be decoded"
 msgstr "امکان رمزگشایی کد کیوآر وجود ندارد"
 
@@ -63,60 +62,91 @@ msgstr "امکان رمزگشایی کد کیوآر وجود ندارد"
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:139
+#: ../qml/Main.qml:151
 msgid ""
 "From last session, database encryption has not finished yet and will resume "
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:147
+#: ../qml/Main.qml:159
 msgid ""
 "From last session, database decryption has not finished yet and will resume "
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:429 ../qml/Main.qml:1232
+#: ../qml/Main.qml:501 ../qml/Main.qml:1414
 #: ../qml/pages/AddAccountAsSecondDevice.qml:108
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:114
-#: ../qml/pages/QrShowScan.qml:295
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:118
+#: ../qml/pages/QrShowScan.qml:299
 msgid "Error: %1"
 msgstr "خطا: %1"
 
-#: ../qml/Main.qml:532 ../qml/Main.qml:539
+#: ../qml/Main.qml:616 ../qml/Main.qml:622
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:532 ../qml/Main.qml:539 ../qml/Main.qml:591
-#: ../qml/pages/AccountConfig.qml:348
+#: ../qml/Main.qml:616 ../qml/Main.qml:622 ../qml/Main.qml:680
+#: ../qml/pages/AccountConfig.qml:357
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:533 ../qml/Main.qml:540
-msgid "Click Settings to manage accounts"
-msgstr ""
-
-#: ../qml/Main.qml:772 ../qml/pages/ChatView.qml:308
-#: ../qml/pages/ChatView.qml:353 ../qml/pages/ForwardMessage.qml:71
+#: ../qml/Main.qml:866 ../qml/pages/ChatView.qml:427
+#: ../qml/pages/ChatView.qml:472 ../qml/pages/ForwardMessage.qml:71
 msgid "Search"
 msgstr "جستجو"
 
-#: ../qml/Main.qml:825
+#: ../qml/Main.qml:919 ../qml/Main.qml:1102
 msgid "Archived Chats"
 msgstr "گپ‌های بایگانی شده"
 
-#: ../qml/Main.qml:1093
+#: ../qml/Main.qml:1243 ../qml/pages/AccountConfig.qml:427
 msgid "Request"
 msgstr "درخواست"
 
-#: ../qml/Main.qml:1152
+#: ../qml/Main.qml:1339
 msgid "Loading…"
 msgstr "در حال بارگیری..."
 
-#: ../qml/Main.qml:1178 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:1365 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "گپ جدید"
 
-#: ../qml/pages/About.qml:28
+#: ../qml/pages/+ubuntu-touch/FileExportDialog.qml:42
+#: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:37
+msgid "Select"
+msgstr "انتخاب"
+
+#: ../qml/pages/+ubuntu-touch/FileExportDialog.qml:93
+#: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:90
+#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddChatForContact.qml:47
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:109
+#: ../qml/pages/AddSecondDevice.qml:125 ../qml/pages/BlockContactPopup.qml:31
+#: ../qml/pages/ChangeDatabasePassword.qml:156
+#: ../qml/pages/ConfirmAccountDeletion.qml:61
+#: ../qml/pages/ConfirmAddSecondDevice.qml:40
+#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:51
+#: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
+#: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:55
+#: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:56
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:80
+#: ../qml/pages/ConfirmDeleteFromServer.qml:80
+#: ../qml/pages/ConfirmEncryptDatabase.qml:56
+#: ../qml/pages/ConfirmLeaveGroup.qml:47
+#: ../qml/pages/ConfirmMemberDeletion.qml:55
+#: ../qml/pages/ConfirmMsgDeletion.qml:55
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:56
+#: ../qml/pages/ConfirmStopEncryptingDatabase.qml:49
+#: ../qml/pages/CreateDatabasePassword.qml:134
+#: ../qml/pages/CreateOrEditGroup.qml:107 ../qml/pages/GroupAddMember.qml:39
+#: ../qml/pages/ProfileSelf.qml:82 ../qml/pages/ProgressBackupExport.qml:64
+#: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
+#: ../qml/pages/ReactionsSelectionPopover.qml:342
+#: ../qml/pages/UnblockContactPopup.qml:41
+msgid "Cancel"
+msgstr "لغو"
+
+#: ../qml/pages/About.qml:28 ../qml/pages/SettingsPage.qml:404
+#: ../qml/pages/SettingsPage.qml:1202
 msgid "About DeltaTouch"
 msgstr ""
 
@@ -146,12 +176,12 @@ msgstr ""
 msgid "This app is powered by deltachat-core-rust "
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:153 ../qml/pages/SettingsPage.qml:379
+#: ../qml/pages/AccountConfig.qml:161 ../qml/pages/SettingsPage.qml:453
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:158 ../qml/pages/ChatView.qml:282
-#: ../qml/pages/ProgressBackupImport.qml:70
+#: ../qml/pages/AccountConfig.qml:166 ../qml/pages/ChatView.qml:401
+#: ../qml/pages/ProgressBackupImport.qml:72
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
 #: ../qml/pages/ProgressDatabaseEncryption.qml:94
@@ -159,210 +189,208 @@ msgstr ""
 msgid "Back"
 msgstr "بازگشت"
 
-#: ../qml/pages/AccountConfig.qml:178 ../qml/pages/SettingsPage.qml:317
+#: ../qml/pages/AccountConfig.qml:186 ../qml/pages/SettingsPage.qml:391
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: ../qml/pages/AccountConfig.qml:191 ../qml/pages/AccountConfig.qml:311
+#: ../qml/pages/AccountConfig.qml:199 ../qml/pages/AccountConfig.qml:319
 msgid "Info"
 msgstr "درباره"
 
-#: ../qml/pages/AccountConfig.qml:197 ../qml/pages/AddAccount.qml:33
+#: ../qml/pages/AccountConfig.qml:205 ../qml/pages/AddAccount.qml:36
 msgid "Add Account"
 msgstr "افزودن حساب کاربری"
 
-#: ../qml/pages/AccountConfig.qml:228
+#: ../qml/pages/AccountConfig.qml:236
 msgid "Encrypted database (experimental)"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:246 ../qml/pages/SettingsPage.qml:511
+#: ../qml/pages/AccountConfig.qml:254 ../qml/pages/SettingsPage.qml:585
 msgid ""
 "One unconfigured account exists. Unconfigured accounts cannot be converted. "
 "Please configure all unconfigured accounts or remove them prior to changes "
 "to this setting."
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:255 ../qml/pages/SettingsPage.qml:520
+#: ../qml/pages/AccountConfig.qml:263 ../qml/pages/SettingsPage.qml:594
 msgid ""
 " unconfigured accounts exist. Unconfigured accounts cannot be converted. "
 "Please configure all unconfigured accounts or remove them prior to changes "
 "to this setting."
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:311
+#: ../qml/pages/AccountConfig.qml:319
 msgid "Account ID: %1"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:311
+#: ../qml/pages/AccountConfig.qml:319
 msgid "None"
 msgstr "هیچ‌کدام"
 
-#: ../qml/pages/AccountConfig.qml:454
+#: ../qml/pages/AccountConfig.qml:494
 msgid "Account is not configured."
 msgstr "حساب تنظیم نشده است"
 
-#: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:35
+#: ../qml/pages/AccountConfigPageSettings.qml:41
 msgid "Show experimental settings"
 msgstr ""
 
-#: ../qml/pages/AccountsExperimentalSettingsSwitch.qml:48
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:124
+#: ../qml/pages/AccountConfigPageSettings.qml:69
+msgid "Show contact requests"
+msgstr ""
+
+#: ../qml/pages/AccountConfigPageSettings.qml:82
+#: ../qml/pages/AddChatForContact.qml:58
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:125
 #: ../qml/pages/ChangeDatabasePassword.qml:97
-#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1479
+#: ../qml/pages/ChangeDatabasePassword.qml:172 ../qml/pages/ChatView.qml:1728
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:35
 #: ../qml/pages/CreateDatabasePassword.qml:96
 #: ../qml/pages/CreateDatabasePassword.qml:152
-#: ../qml/pages/CreateOrEditGroup.qml:92 ../qml/pages/GroupAddMember.qml:51
-#: ../qml/pages/ProfileSelf.qml:65 ../qml/pages/ProgressKeysExport.qml:78
-#: ../qml/pages/QrConfirmPopup.qml:46
+#: ../qml/pages/CreateOrEditGroup.qml:119 ../qml/pages/GroupAddMember.qml:52
+#: ../qml/pages/ProfileSelf.qml:93 ../qml/pages/ProgressKeysExport.qml:78
+#: ../qml/pages/QrConfirmPopup.qml:46 ../qml/pages/ReactionsInfoPopup.qml:182
+#: ../qml/pages/ReactionsSelectionPopover.qml:354
 #: ../qml/pages/RequestDatabasePassword.qml:138
 #: ../qml/pages/RequestDatabasePassword.qml:193
 #: ../qml/pages/VerifiedPopup.qml:35
 msgid "OK"
 msgstr "تأیید"
 
-#: ../qml/pages/AddAccount.qml:57
+#: ../qml/pages/AddAccount.qml:84
 msgid "Log into your E-Mail Account"
 msgstr "به سرور خود وارد شوید"
 
-#: ../qml/pages/AddAccount.qml:58 ../qml/pages/AddAccountAsSecondDevice.qml:91
-#: ../qml/pages/QrShowScan.qml:218
+#: ../qml/pages/AddAccount.qml:85 ../qml/pages/AddAccountAsSecondDevice.qml:91
+#: ../qml/pages/QrShowScan.qml:222
 msgid "Add as Second Device"
 msgstr "افزودن به عنوان دستگاه دوم"
 
-#: ../qml/pages/AddAccount.qml:59 ../qml/pages/PickerBackupFile.qml:35
-#: ../qml/pages/PickerBackupFile.qml:116
+#: ../qml/pages/AddAccount.qml:86 ../qml/pages/AddAccount.qml:163
 msgid "Restore from Backup"
 msgstr "وارد کردن نسخه پشتیبانی"
 
-#: ../qml/pages/AddAccount.qml:60
+#: ../qml/pages/AddAccount.qml:87
 msgid "Scan Invitation Code"
 msgstr "اسکن کردن کد دعوت"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:90 ../qml/pages/QrShowScan.qml:217
+#: ../qml/pages/AddAccount.qml:172
+msgid "The selected file is not a valid backup file."
+msgstr ""
+
+#: ../qml/pages/AddAccountAsSecondDevice.qml:90 ../qml/pages/QrShowScan.qml:221
 msgid "Copy the account from the other device to this device?"
 msgstr "حساب از دستگاه دیگر به این دستگاه کپی شود؟"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:124
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:147
-#: ../qml/pages/AddChat.qml:157 ../qml/pages/BlockedContacts.qml:63
-#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1007
-#: ../qml/pages/CreateOrEditGroup.qml:293 ../qml/pages/GroupAddMember.qml:125
-#: ../qml/pages/QrShowScan.qml:398 ../qml/pages/QrShowScan.qml:415
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:151
+#: ../qml/pages/AddChat.qml:192 ../qml/pages/BlockedContacts.qml:63
+#: ../qml/pages/BlockedContacts.qml:69 ../qml/pages/ChatView.qml:1162
+#: ../qml/pages/CreateOrEditGroup.qml:320 ../qml/pages/GroupAddMember.qml:126
+#: ../qml/pages/QrShowScan.qml:402 ../qml/pages/QrShowScan.qml:419
 msgid "Unknown"
 msgstr "ناشناس"
 
 #: ../qml/pages/AddAccountAsSecondDevice.qml:125
 #: ../qml/pages/AddAccountAsSecondDevice.qml:141
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:148
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:164
-#: ../qml/pages/QrShowScan.qml:257 ../qml/pages/QrShowScan.qml:276
-#: ../qml/pages/QrShowScan.qml:399 ../qml/pages/QrShowScan.qml:416
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:152
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:168
+#: ../qml/pages/QrShowScan.qml:261 ../qml/pages/QrShowScan.qml:280
+#: ../qml/pages/QrShowScan.qml:403 ../qml/pages/QrShowScan.qml:420
 msgid "QR Code"
 msgstr "کد QR"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:181
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:191
-#: ../qml/pages/QrShowScan.qml:479 ../qml/pages/VerifiedPopup.qml:43
+#: ../qml/pages/AddAccountAsSecondDevice.qml:201
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:211
+#: ../qml/pages/AddChatForContact.qml:89 ../qml/pages/QrShowScan.qml:483
+#: ../qml/pages/VerifiedPopup.qml:43
 msgid "Scan QR Code"
 msgstr "اسکن کردن کد کیو آر"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:288
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:298
-#: ../qml/pages/QrShowScan.qml:619
+#: ../qml/pages/AddAccountAsSecondDevice.qml:308
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:318
+#: ../qml/pages/QrShowScan.qml:623
 msgid "Hold your camera over the QR code."
 msgstr "دوربین خود را روی کد کیوآر نگه دارید. "
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:301
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:311
-#: ../qml/pages/QrShowScan.qml:632
+#: ../qml/pages/AddAccountAsSecondDevice.qml:321
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:331
+#: ../qml/pages/QrShowScan.qml:636
 msgid "More Options"
 msgstr "گزینه‌های بیشتر"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:313
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:323
-#: ../qml/pages/QrShowScan.qml:644
+#: ../qml/pages/AddAccountAsSecondDevice.qml:333
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:343
+#: ../qml/pages/QrShowScan.qml:648
 msgid "Paste from Clipboard"
 msgstr "چسباندن از حافظه"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:329
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:339
-#: ../qml/pages/QrShowScan.qml:660
+#: ../qml/pages/AddAccountAsSecondDevice.qml:349
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:359
+#: ../qml/pages/QrShowScan.qml:664
 msgid "Load QR Code as Image"
 msgstr "بارگیری کیو آر کد به صورت تصویر"
 
-#: ../qml/pages/AddAccountAsSecondDevice.qml:353
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:363
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:777
-#: ../qml/pages/QrShowScan.qml:718
+#: ../qml/pages/AddAccountAsSecondDevice.qml:395
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:405
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:778
+#: ../qml/pages/QrShowScan.qml:762
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:95
-#: ../qml/pages/QrShowScan.qml:199
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:99
+#: ../qml/pages/QrShowScan.qml:203
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr "ایجاد رایانامهٔ جدید روی «%1» و ورود به آنجا؟"
 
-#: ../qml/pages/AddAccountViaQrInvitationCode.qml:130
-#: ../qml/pages/QrShowScan.qml:380
+#: ../qml/pages/AddAccountViaQrInvitationCode.qml:134
+#: ../qml/pages/QrShowScan.qml:384
 msgid "Log into \"%1\"?"
 msgstr "آیا به \"%1\" وارد شوید؟"
 
-#: ../qml/pages/AddChat.qml:40 ../qml/pages/AddOrConfigureEmailAccount.qml:112
-#: ../qml/pages/AddSecondDevice.qml:128 ../qml/pages/BlockContactPopup.qml:31
-#: ../qml/pages/ChangeDatabasePassword.qml:156
-#: ../qml/pages/ConfirmAccountDeletion.qml:61
-#: ../qml/pages/ConfirmAddSecondDevice.qml:40
-#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:51
-#: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
-#: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:55
-#: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:56
-#: ../qml/pages/ConfirmDeleteFromDevice.qml:80
-#: ../qml/pages/ConfirmDeleteFromServer.qml:80
-#: ../qml/pages/ConfirmEncryptDatabase.qml:56
-#: ../qml/pages/ConfirmLeaveGroup.qml:47
-#: ../qml/pages/ConfirmMemberDeletion.qml:55
-#: ../qml/pages/ConfirmMsgDeletion.qml:55
-#: ../qml/pages/ConfirmOpenExternalUrl.qml:54
-#: ../qml/pages/ConfirmStopEncryptingDatabase.qml:49
-#: ../qml/pages/CreateDatabasePassword.qml:134
-#: ../qml/pages/CreateOrEditGroup.qml:84 ../qml/pages/GroupAddMember.qml:42
-#: ../qml/pages/ProfileSelf.qml:58 ../qml/pages/ProgressBackupExport.qml:64
-#: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
-#: ../qml/pages/UnblockContactPopup.qml:41
-msgid "Cancel"
-msgstr "لغو"
-
-#: ../qml/pages/AddChat.qml:65 ../qml/pages/CreateOrEditGroup.qml:36
-msgid "New Group"
-msgstr "گروه جدید"
-
-#: ../qml/pages/AddChat.qml:86 ../qml/pages/CreateOrEditGroup.qml:36
-msgid "New Verified Group"
-msgstr ""
-
-#: ../qml/pages/AddChat.qml:104 ../qml/pages/GroupAddMember.qml:77
+#: ../qml/pages/AddChat.qml:68 ../qml/pages/GroupAddMember.qml:78
 msgid "Enter name or e-mail address"
 msgstr "نام یا نشانی رایانامه را وارد کنید"
 
+#: ../qml/pages/AddChat.qml:123 ../qml/pages/CreateOrEditGroup.qml:35
+msgid "New Group"
+msgstr "گروه جدید"
+
+#: ../qml/pages/AddChatForContact.qml:66
+msgid "Please enter a valid e-mail address"
+msgstr "لطفاً یک نشانی رایانامهٔ معتبر وارد کنید"
+
+#: ../qml/pages/AddChatForContact.qml:126
+msgid "or"
+msgstr ""
+
+#: ../qml/pages/AddChatForContact.qml:155
+msgid "Name"
+msgstr "نام"
+
+#: ../qml/pages/AddChatForContact.qml:185
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:223
+msgid "E-Mail Address"
+msgstr "نشانی رایانامه"
+
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:52
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:801
-#: ../qml/pages/SettingsPage.qml:79 ../qml/pages/SettingsPage.qml:1134
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:802
+#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:1258
 msgid "No, chats only"
 msgstr "نه، فقط گپ‌ها"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:55
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:815
-#: ../qml/pages/SettingsPage.qml:82 ../qml/pages/SettingsPage.qml:1148
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:816
+#: ../qml/pages/SettingsPage.qml:156 ../qml/pages/SettingsPage.qml:1272
 msgid "For accepted contacts"
 msgstr "برای مخاطبین پذیرفته شده"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:58
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:829
-#: ../qml/pages/SettingsPage.qml:85 ../qml/pages/SettingsPage.qml:96
-#: ../qml/pages/SettingsPage.qml:1162 ../qml/pages/SettingsPage.qml:1190
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:830
+#: ../qml/pages/SettingsPage.qml:159 ../qml/pages/SettingsPage.qml:170
+#: ../qml/pages/SettingsPage.qml:1286 ../qml/pages/SettingsPage.qml:1314
 msgid "All"
 msgstr "همه"
 
@@ -370,84 +398,80 @@ msgstr "همه"
 msgid "Log In"
 msgstr "ورود"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:209
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:210
 msgid "Log in with an existing e-mail account"
 msgstr "ورود با یک رایانامه موجود"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:222
-msgid "E-Mail Address"
-msgstr "نشانی رایانامه"
-
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:275
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:276
 msgid "Password"
 msgstr "رمزعبور"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:361
-#: ../qml/pages/ChatView.qml:1496
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:362
+#: ../qml/pages/ChatView.qml:1745
 msgid "More Info"
 msgstr "جزئیات بیشتر "
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:383
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:384
 msgid "There are no Delta Chat servers, your data stays on your device."
 msgstr "دلتاچت هیچ سروری ندارد، داده‌های شما در دستگاه شما باقی می‌ماند."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:396
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:397
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
 msgstr "برای ارائه‌دهندگان شناخته شده تنظبمات اضافه به صورت خودکار انجام می‌شود. گاهی اوقات IMAP باید در تنظیمات رایانامهٔ شما فعال شود. از ارائه‌دهندهٔ رایانامه یا دوستانتان در این مورد کمک بگیرید."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:420
-#: ../qml/pages/SettingsPage.qml:706
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:421
+#: ../qml/pages/SettingsPage.qml:780
 msgid "Show Classic E-Mails"
 msgstr "نمایش رایانامه‌های معمولی"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:452
-#: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:1099
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:453
+#: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:1223
 msgid "Advanced"
 msgstr "پیشرفته"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:473
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:474
 msgid "Inbox"
 msgstr "ورودی"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:479
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:480
 msgid "IMAP Login Name"
 msgstr "IMAP Login Name"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:486
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:553
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:565
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:487
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:554
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:566
 msgid "Default (same as above)"
 msgstr "پیش‌فرض (مانند بالا)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:491
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:492
 msgid "IMAP Server"
 msgstr "IMAP Server"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:498
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:518
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:577
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:597
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:614
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:499
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:519
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:578
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:598
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:615
 msgid "Automatic"
 msgstr "خودکار"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:503
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:504
 msgid "IMAP Port"
 msgstr "IMAP port "
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:510
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:511
 msgid "Default (%1)"
 msgstr "پیش‌فرض (%1)"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:516
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:517
 msgid "IMAP Security"
 msgstr "IMAP Security"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:521
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:600
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:522
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:601
 #: ../qml/pages/ChatInfosActionsChatlist.qml:136
 #: ../qml/pages/ChatInfosActionsChatview.qml:163
 #: ../qml/pages/EphemeralTimerSettings.qml:37
@@ -456,72 +480,72 @@ msgstr "IMAP Security"
 msgid "Off"
 msgstr "خاموش"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:540
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:541
 msgid "Outbox"
 msgstr "خروجی"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:546
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:547
 msgid "SMTP Login Name"
 msgstr "SMTP Login Name"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:558
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:559
 msgid "SMTP Password"
 msgstr "SMTP Password"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:570
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:571
 msgid "SMTP Server"
 msgstr "SMTP Server"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:582
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:583
 msgid "SMTP Port"
 msgstr "SMTP Port"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:589
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:682
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:695
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:590
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:683
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:696
 msgid "Standard (%1)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:595
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:596
 msgid "SMTP Security"
 msgstr "SMTP Security"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:612
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:613
 msgid "Certificate Checks"
 msgstr "بررسی‌های گواهینامه"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:615
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:616
 msgid "Strict"
 msgstr "سخت‌گیرانه"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:616
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:617
 msgid "Accept invalid certificates"
 msgstr "پذیرش گواهینامه‌های نامعتبر"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:651
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:652
 msgid "Use SOCKS5"
 msgstr "استفاده از SOCKS5"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:670
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:671
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr "پشتیبانی از قابلیت SOCKS5 هنوز آزمایشی است. لطفا در صورت استفاده،‌خطرات را بپذیرید. اگر یک آدرس را در بخش رایانامه وارد کنید همچنان  DNS lookup  رخ می‌دهد که ممکن است از طریق SOCKS5 صورت نگیرد. "
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:675
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:676
 msgid "SOCKS5 Host"
 msgstr "SOCKS5 Host"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:688
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:689
 msgid "SOCKS5 Port"
 msgstr "SOCKS5 Port"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:702
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:703
 msgid "SOCKS5 User"
 msgstr "SOCKS5 User"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:714
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:715
 msgid "SOCKS5 Password"
 msgstr "SOCKS5 Password"
 
@@ -530,46 +554,46 @@ msgid "ℹ️ Account transferred to your second device."
 msgstr "ℹ️ حساب به دستگاه دوم شما منتقل شد."
 
 #: ../qml/pages/AddSecondDevice.qml:120
-#: ../qml/pages/ConfirmAddSecondDevice.qml:28 ../qml/pages/SettingsPage.qml:864
+#: ../qml/pages/ConfirmAddSecondDevice.qml:28 ../qml/pages/SettingsPage.qml:967
 msgid "Add Second Device"
 msgstr "افزودن دستگاه دوم"
 
-#: ../qml/pages/AddSecondDevice.qml:133
+#: ../qml/pages/AddSecondDevice.qml:130
 msgid "This will invalidate the QR code copied to clipboard."
 msgstr "این کار رمزینهٔ پاس رونوشت شده در تخته‌گیره را باطل می کند."
 
-#: ../qml/pages/AddSecondDevice.qml:155
+#: ../qml/pages/AddSecondDevice.qml:154
 msgid "One moment…"
 msgstr "یک لحظه..."
 
-#: ../qml/pages/AddSecondDevice.qml:180
+#: ../qml/pages/AddSecondDevice.qml:179
 #: ../qml/pages/ProgressQrBackupImport.qml:38
 msgid "Transferring…"
 msgstr "در حال انتقال…"
 
-#: ../qml/pages/AddSecondDevice.qml:266
+#: ../qml/pages/AddSecondDevice.qml:265
 msgid "(experimental, version 1.36 required)"
 msgstr "(آزمایشی، نسخه 1.36 مورد نیاز است)"
 
-#: ../qml/pages/AddSecondDevice.qml:266
+#: ../qml/pages/AddSecondDevice.qml:265
 msgid "Install Delta Chat on your other device (https://get.delta.chat)"
 msgstr "دلتاچت را روی دستگاه دیگر خود نصب کنید (https://get.delta.chat)"
 
-#: ../qml/pages/AddSecondDevice.qml:307
+#: ../qml/pages/AddSecondDevice.qml:306
 msgid "Make sure both devices are on the same Wi-Fi or network"
 msgstr "مطمئن شوید هر دو دستگاه در یک وای‌فای یا شبکه هستند"
 
-#: ../qml/pages/AddSecondDevice.qml:348
+#: ../qml/pages/AddSecondDevice.qml:347
 msgid ""
 "Start Delta Chat, tap “Add as Second Device” and scan the code shown here"
 msgstr "دلتاچت را اجرا کنید، روی «افزودن به عنوان دستگاه دوم» بزنید و کد نشان داده شده در اینجا را پویش کنید"
 
-#: ../qml/pages/AddSecondDevice.qml:358
+#: ../qml/pages/AddSecondDevice.qml:357
 msgid "Troubleshooting"
 msgstr "عیب‌یابی"
 
-#: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:67
-#: ../qml/pages/QrShowScan.qml:682
+#: ../qml/pages/AddSecondDevice.qml:405 ../qml/pages/QrConfirmPopup.qml:69
+#: ../qml/pages/QrShowScan.qml:724
 msgid "Copy to Clipboard"
 msgstr "رونوشت‌برداری در حافظه"
 
@@ -657,7 +681,7 @@ msgstr "مخاطب مسدود شود؟ شما دیگر پیامی از این م
 msgid "Block Contact"
 msgstr "انسداد مخاطب"
 
-#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:618
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:692
 msgid "Blocked Contacts"
 msgstr "مخاطبین مسدود شده"
 
@@ -705,7 +729,7 @@ msgstr "صدا دار کردن"
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:72
 #: ../qml/pages/ChatInfosActionsChatview.qml:86
-#: ../qml/pages/CreateOrEditGroup.qml:37
+#: ../qml/pages/CreateOrEditGroup.qml:36
 msgid "Edit Group"
 msgstr "ویرایش گروه"
 
@@ -745,7 +769,7 @@ msgstr "ساکت کردن به مدت۷ روز"
 msgid "Mute forever"
 msgstr "ساکت کردن دائمی"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:273
+#: ../qml/pages/ChatInfosActionsChatview.qml:51 ../qml/pages/ChatView.qml:392
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
 msgstr "پیام‌های ناپدید شونده"
@@ -755,68 +779,80 @@ msgstr "پیام‌های ناپدید شونده"
 msgid "Clear Chat"
 msgstr "پاک کردن چت"
 
-#: ../qml/pages/ChatView.qml:168 ../qml/pages/ChatView.qml:192
-#: ../qml/pages/ChatView.qml:1430
+#: ../qml/pages/ChatView.qml:147 ../qml/pages/ImageViewer.qml:39
+#: ../qml/pages/ImageViewerAnimated.qml:39 ../qml/pages/LogViewer.qml:49
+#: ../qml/pages/SettingsPage.qml:138
+msgid "File could not be saved"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:152 ../qml/pages/ImageViewer.qml:44
+#: ../qml/pages/ImageViewerAnimated.qml:44 ../qml/pages/LogViewer.qml:54
+#: ../qml/pages/SettingsPage.qml:143
+msgid "Saved file "
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:249 ../qml/pages/ChatView.qml:273
+#: ../qml/pages/ChatView.qml:1679
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr "این گپ شامل پیام‌های تولید شده به صورت داخلی است. برای همین نمی‌توانید پیامی بنویسید. "
 
-#: ../qml/pages/ChatView.qml:170 ../qml/pages/ChatView.qml:194
-#: ../qml/pages/ChatView.qml:1432
+#: ../qml/pages/ChatView.qml:251 ../qml/pages/ChatView.qml:275
+#: ../qml/pages/ChatView.qml:1681
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr "نمی‌توانید بنویسید چرا که در این گروه نیستید. برای عضو شدن از یکی از اعضا درخواست کنید. "
 
-#: ../qml/pages/ChatView.qml:253 ../qml/pages/ChatView.qml:1061
+#: ../qml/pages/ChatView.qml:338 ../qml/pages/ChatView.qml:1216
 msgid "Voice Message"
 msgstr "پیام صوتی"
 
-#: ../qml/pages/ChatView.qml:266
+#: ../qml/pages/ChatView.qml:385
 msgid "Verified Contact"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:294
+#: ../qml/pages/ChatView.qml:413
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:952
+#: ../qml/pages/ChatView.qml:1107
 msgid "Forwarded Message"
 msgstr "پیام هدایت شده"
 
-#: ../qml/pages/ChatView.qml:1155
+#: ../qml/pages/ChatView.qml:1308
 msgid "Download"
 msgstr "بارگیری"
 
-#: ../qml/pages/ChatView.qml:1157
+#: ../qml/pages/ChatView.qml:1310
 msgid "Download failed"
 msgstr "بارگیری ناموفق"
 
-#: ../qml/pages/ChatView.qml:1159
+#: ../qml/pages/ChatView.qml:1312
 msgid "Downloading…"
 msgstr "در حال بارگیری…"
 
-#: ../qml/pages/ChatView.qml:1200
+#: ../qml/pages/ChatView.qml:1353
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1222
+#: ../qml/pages/ChatView.qml:1384
 msgid "Show Full Message…"
 msgstr "نمایش پیام کامل..."
 
-#: ../qml/pages/ChatView.qml:1466
+#: ../qml/pages/ChatView.qml:1715
 msgid "%1 sent a message from another device."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:2118
+#: ../qml/pages/ChatView.qml:2532
 msgid "Accept"
 msgstr "پذیرش"
 
-#: ../qml/pages/ChatView.qml:2135 ../qml/pages/ChatView.qml:2286
+#: ../qml/pages/ChatView.qml:2549 ../qml/pages/ChatView.qml:2700
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
 msgstr "حذف"
 
-#: ../qml/pages/ChatView.qml:2151
+#: ../qml/pages/ChatView.qml:2565
 msgid "Block"
 msgstr "مسدود کردن"
 
@@ -914,7 +950,7 @@ msgid ""
 msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
-#: ../qml/pages/SettingsPage.qml:982
+#: ../qml/pages/SettingsPage.qml:1085
 msgid "Delete Messages from Device"
 msgstr "پاک کردن پیام‌ها از دستگاه"
 
@@ -936,7 +972,7 @@ msgid "I understand, delete all these messages"
 msgstr "متوجه هستم، همه پیام‌ها حذف شوند"
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
-#: ../qml/pages/SettingsPage.qml:1010
+#: ../qml/pages/SettingsPage.qml:1113
 msgid "Delete Messages from Server"
 msgstr "پاک کردن پیام‌ها از سرور"
 
@@ -999,7 +1035,7 @@ msgstr ""
 msgid "Disable encryption"
 msgstr ""
 
-#: ../qml/pages/Connectivity.qml:31 ../qml/pages/SettingsPage.qml:889
+#: ../qml/pages/Connectivity.qml:31 ../qml/pages/SettingsPage.qml:992
 msgid "Connectivity"
 msgstr "اتصالات"
 
@@ -1014,36 +1050,36 @@ msgstr ""
 msgid "Re-Enter Password"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:106 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrShowScan.qml:453 ../qml/pages/QrShowScan.qml:467
+#: ../qml/pages/CreateOrEditGroup.qml:133 ../qml/pages/QrGroupInvite.qml:42
+#: ../qml/pages/QrShowScan.qml:457 ../qml/pages/QrShowScan.qml:471
 msgid "QR Invite Code"
 msgstr "کد دعوت کیوآر"
 
-#: ../qml/pages/CreateOrEditGroup.qml:206
+#: ../qml/pages/CreateOrEditGroup.qml:233
 msgid "Group Name"
 msgstr "نام گروه"
 
-#: ../qml/pages/CreateOrEditGroup.qml:229
+#: ../qml/pages/CreateOrEditGroup.qml:256
 msgid "%1 member"
 msgstr "%1 عضو"
 
-#: ../qml/pages/CreateOrEditGroup.qml:230
+#: ../qml/pages/CreateOrEditGroup.qml:257
 msgid "%1 members"
 msgstr "%1 عضو"
 
-#: ../qml/pages/CreateOrEditGroup.qml:247 ../qml/pages/GroupAddMember.qml:34
+#: ../qml/pages/CreateOrEditGroup.qml:274 ../qml/pages/GroupAddMember.qml:34
 msgid "Add Members"
 msgstr "افزودن اعضا"
 
-#: ../qml/pages/CreateOrEditGroup.qml:346
+#: ../qml/pages/CreateOrEditGroup.qml:373
 msgid "Please enter a name for the group."
 msgstr "لطفا نامی برای گروه وارد کنید. "
 
-#: ../qml/pages/CreateOrEditGroup.qml:370
+#: ../qml/pages/CreateOrEditGroup.qml:397
 msgid "Change Group Image"
 msgstr "حذف تصویر گروه"
 
-#: ../qml/pages/CreateOrEditGroup.qml:383
+#: ../qml/pages/CreateOrEditGroup.qml:429
 msgid "Remove Group Image"
 msgstr "حذف تصویر گروه"
 
@@ -1051,51 +1087,51 @@ msgstr "حذف تصویر گروه"
 #: ../qml/pages/EphemeralTimerSettings.qml:148
 #: ../qml/pages/EphemeralTimerSettings.qml:152
 #: ../qml/pages/EphemeralTimerSettings.qml:222
-#: ../qml/pages/SettingsPage.qml:169 ../qml/pages/SettingsPage.qml:1458
-#: ../qml/pages/SettingsPage.qml:1464
+#: ../qml/pages/SettingsPage.qml:243 ../qml/pages/SettingsPage.qml:1582
+#: ../qml/pages/SettingsPage.qml:1588
 msgid "After 30 seconds"
 msgstr "بعد از ۳۰ ثانیه"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:162
 #: ../qml/pages/EphemeralTimerSettings.qml:166
-#: ../qml/pages/SettingsPage.qml:173 ../qml/pages/SettingsPage.qml:1479
-#: ../qml/pages/SettingsPage.qml:1485
+#: ../qml/pages/SettingsPage.qml:247 ../qml/pages/SettingsPage.qml:1603
+#: ../qml/pages/SettingsPage.qml:1609
 msgid "After 1 minute"
 msgstr "بعد از ۱ دقیقه"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:49
 #: ../qml/pages/EphemeralTimerSettings.qml:176
 #: ../qml/pages/EphemeralTimerSettings.qml:180
-#: ../qml/pages/SettingsPage.qml:133 ../qml/pages/SettingsPage.qml:177
-#: ../qml/pages/SettingsPage.qml:1303 ../qml/pages/SettingsPage.qml:1309
-#: ../qml/pages/SettingsPage.qml:1500 ../qml/pages/SettingsPage.qml:1506
+#: ../qml/pages/SettingsPage.qml:207 ../qml/pages/SettingsPage.qml:251
+#: ../qml/pages/SettingsPage.qml:1427 ../qml/pages/SettingsPage.qml:1433
+#: ../qml/pages/SettingsPage.qml:1624 ../qml/pages/SettingsPage.qml:1630
 msgid "After 1 hour"
 msgstr "بعد از ۱ ساعت"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:53
 #: ../qml/pages/EphemeralTimerSettings.qml:190
 #: ../qml/pages/EphemeralTimerSettings.qml:194
-#: ../qml/pages/SettingsPage.qml:137 ../qml/pages/SettingsPage.qml:181
-#: ../qml/pages/SettingsPage.qml:1324 ../qml/pages/SettingsPage.qml:1330
-#: ../qml/pages/SettingsPage.qml:1521 ../qml/pages/SettingsPage.qml:1527
+#: ../qml/pages/SettingsPage.qml:211 ../qml/pages/SettingsPage.qml:255
+#: ../qml/pages/SettingsPage.qml:1448 ../qml/pages/SettingsPage.qml:1454
+#: ../qml/pages/SettingsPage.qml:1645 ../qml/pages/SettingsPage.qml:1651
 msgid "After 1 day"
 msgstr "بعد از ۱  روز"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:57
 #: ../qml/pages/EphemeralTimerSettings.qml:204
 #: ../qml/pages/EphemeralTimerSettings.qml:208
-#: ../qml/pages/SettingsPage.qml:141 ../qml/pages/SettingsPage.qml:185
-#: ../qml/pages/SettingsPage.qml:1345 ../qml/pages/SettingsPage.qml:1351
-#: ../qml/pages/SettingsPage.qml:1542 ../qml/pages/SettingsPage.qml:1548
+#: ../qml/pages/SettingsPage.qml:215 ../qml/pages/SettingsPage.qml:259
+#: ../qml/pages/SettingsPage.qml:1469 ../qml/pages/SettingsPage.qml:1475
+#: ../qml/pages/SettingsPage.qml:1666 ../qml/pages/SettingsPage.qml:1672
 msgid "After 1 week"
 msgstr "بعد از ۱ هفته"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:218
-#: ../qml/pages/SettingsPage.qml:145 ../qml/pages/SettingsPage.qml:189
-#: ../qml/pages/SettingsPage.qml:1366 ../qml/pages/SettingsPage.qml:1372
-#: ../qml/pages/SettingsPage.qml:1563 ../qml/pages/SettingsPage.qml:1569
+#: ../qml/pages/SettingsPage.qml:219 ../qml/pages/SettingsPage.qml:263
+#: ../qml/pages/SettingsPage.qml:1490 ../qml/pages/SettingsPage.qml:1496
+#: ../qml/pages/SettingsPage.qml:1687 ../qml/pages/SettingsPage.qml:1693
 msgid "After 4 weeks"
 msgstr "بعد از۴ هفته"
 
@@ -1109,43 +1145,47 @@ msgid ""
 "copy, save, and forward messages or use other e-mail clients."
 msgstr "روی تمام اعضای این گپ، اگر از دلتاچت استفاده کنند، اعمال می‌شود؛ ولی همچنان می‌توانند پیام‌ها را رونوشت، ذخیره و هدایت کنند یا از کارخواه‌های رایانامهٔ دیگر استفاده کنند."
 
+#: ../qml/pages/FileImportDialog.qml:33
+msgid "Add Attachment"
+msgstr "افزودن ضمیمه"
+
 #: ../qml/pages/ForwardMessage.qml:41
 msgid "Forward to…"
 msgstr "هدایت به..."
 
-#: ../qml/pages/ForwardMessage.qml:49
+#: ../qml/pages/ForwardMessage.qml:47
 msgid "Close"
 msgstr "بستن"
 
-#: ../qml/pages/ImageViewer.qml:39 ../qml/pages/ImageViewerAnimated.qml:39
+#: ../qml/pages/ImageViewer.qml:73 ../qml/pages/ImageViewerAnimated.qml:73
 msgid "Save"
 msgstr "ذخیره"
 
-#: ../qml/pages/LogViewer.qml:41
+#: ../qml/pages/LogViewer.qml:60
 msgid "Log"
 msgstr "گزارش"
 
-#: ../qml/pages/LogViewer.qml:46
+#: ../qml/pages/LogViewer.qml:83
 msgid "Scroll to the Bottom"
 msgstr "رفتن به پایین"
 
-#: ../qml/pages/LogViewer.qml:52
+#: ../qml/pages/LogViewer.qml:89
 msgid "Help"
 msgstr "کمک"
 
-#: ../qml/pages/LogViewer.qml:58
+#: ../qml/pages/LogViewer.qml:95
 msgid "Save Log"
 msgstr "ذخیره گزارش"
 
-#: ../qml/pages/MessageInfosActions.qml:33
+#: ../qml/pages/MessageInfosActions.qml:37
 msgid "Copy Text"
 msgstr "رونوشت گرفتن از متن"
 
-#: ../qml/pages/MessageInfosActions.qml:45
+#: ../qml/pages/MessageInfosActions.qml:51
 msgid "Export Attachment"
 msgstr "صادر کردن ضمیمه"
 
-#: ../qml/pages/MessageInfosActions.qml:71
+#: ../qml/pages/MessageInfosActions.qml:63
 msgid "Message Details"
 msgstr "جزئیات پیام"
 
@@ -1153,30 +1193,9 @@ msgstr "جزئیات پیام"
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:235
+#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:239
 msgid "Sorry, not implemented yet :-("
 msgstr ""
-
-#: ../qml/pages/PickerAudioToExport.qml:42
-#: ../qml/pages/PickerAudioToSend.qml:34
-#: ../qml/pages/PickerBackupToExport.qml:42
-#: ../qml/pages/PickerFileToExport.qml:42 ../qml/pages/PickerFileToSend.qml:34
-#: ../qml/pages/PickerImageToExport.qml:42
-#: ../qml/pages/PickerImageToSend.qml:34 ../qml/pages/PickerLogToExport.qml:41
-msgid "Select"
-msgstr "انتخاب"
-
-#: ../qml/pages/PickerBackupFile.qml:109
-msgid "The selected file is not a valid backup file."
-msgstr ""
-
-#: ../qml/pages/PickerChatPic.qml:34
-msgid "Select Group Image"
-msgstr "انتخاب تصویر گروه"
-
-#: ../qml/pages/PickerProfilePic.qml:34 ../qml/pages/PickerQrImageLoad.qml:34
-msgid "Select your new profile image"
-msgstr "تصویر نمایهٔ جدیدتان را برگزینید"
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen at %1"
@@ -1202,27 +1221,27 @@ msgstr "احراز هویت شده توسط %1"
 msgid "Introduced by me"
 msgstr ""
 
-#: ../qml/pages/ProfileOther.qml:323 ../qml/pages/ProfileSelf.qml:249
+#: ../qml/pages/ProfileOther.qml:323 ../qml/pages/ProfileSelf.qml:298
 msgid "Signature Text"
 msgstr "متن امضا"
 
-#: ../qml/pages/ProfileSelf.qml:48 ../qml/pages/SettingsPage.qml:663
+#: ../qml/pages/ProfileSelf.qml:75 ../qml/pages/SettingsPage.qml:737
 msgid "Edit Profile"
 msgstr "ویرایش نمایه"
 
-#: ../qml/pages/ProfileSelf.qml:96
+#: ../qml/pages/ProfileSelf.qml:124
 msgid "Profile"
 msgstr "نمایه"
 
-#: ../qml/pages/ProfileSelf.qml:177
+#: ../qml/pages/ProfileSelf.qml:206
 msgid "Select Profile Image"
 msgstr "انتخاب تصویر نمایه"
 
-#: ../qml/pages/ProfileSelf.qml:190
+#: ../qml/pages/ProfileSelf.qml:239
 msgid "Delete Profile Image"
 msgstr "حذف تصویر نمایه"
 
-#: ../qml/pages/ProfileSelf.qml:210
+#: ../qml/pages/ProfileSelf.qml:259
 msgid "Your Name"
 msgstr "اسم شما"
 
@@ -1240,7 +1259,7 @@ msgstr "تهیهٔ پشتیبان به شما  کمک می‌کند روی ای�
 msgid "Start Backup"
 msgstr "شروع تهیه نسخه پشتیبان"
 
-#: ../qml/pages/ProgressBackupImport.qml:44
+#: ../qml/pages/ProgressBackupImport.qml:46
 msgid "Failed"
 msgstr ""
 
@@ -1303,31 +1322,31 @@ msgstr "کلیدهای خصوصی از \"%1\" وارد شدند. "
 msgid "Done"
 msgstr "انجام شد"
 
-#: ../qml/pages/QrConfirmPopup.qml:79
+#: ../qml/pages/QrConfirmPopup.qml:81
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:102
+#: ../qml/pages/QrShowScan.qml:106
 msgid "Chat with %1?"
 msgstr "گپ زدن با %1؟"
 
-#: ../qml/pages/QrShowScan.qml:132
+#: ../qml/pages/QrShowScan.qml:136
 msgid "Do you want to join the group \"%1\"?"
 msgstr "آیا می خواهید به گروه\"%1\" ملحق شوید؟"
 
-#: ../qml/pages/QrShowScan.qml:148
+#: ../qml/pages/QrShowScan.qml:152
 msgid "The fingerprint of %1 is valid!"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:149 ../qml/pages/QrShowScan.qml:183
+#: ../qml/pages/QrShowScan.qml:153 ../qml/pages/QrShowScan.qml:187
 msgid "Fingerprint"
 msgstr "اثر انگشت"
 
-#: ../qml/pages/QrShowScan.qml:165
+#: ../qml/pages/QrShowScan.qml:169
 msgid "The scanned fingerprint does not match the last seen for %1."
 msgstr "اثرانگشت اسکن شده با انچه که برای %1مشاهده شده بود انطباق ندارد. "
 
-#: ../qml/pages/QrShowScan.qml:182
+#: ../qml/pages/QrShowScan.qml:186
 msgid ""
 "This QR code contains a fingerprint but no e-mail address.\n"
 "\n"
@@ -1335,205 +1354,221 @@ msgid ""
 "the recipient first."
 msgstr "این کیوآر حاوی یک شناساگر است ولی ادرس رایانامه‌ای در آن نیست. \n\n برای یک تأییدیه به روش‌های دیگر لطفا ابتدا یک ارتباط رمزگذاری شده با دریافت کننده برقرار کنید. "
 
-#: ../qml/pages/QrShowScan.qml:256
+#: ../qml/pages/QrShowScan.qml:260
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
 msgstr "کیوآر کد اسکن شده:\n\n %1"
 
-#: ../qml/pages/QrShowScan.qml:275
+#: ../qml/pages/QrShowScan.qml:279
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
 msgstr "آدرس اینترنتی کیوآر اسکن شده:\n\n %1"
 
-#: ../qml/pages/QrShowScan.qml:312
+#: ../qml/pages/QrShowScan.qml:316
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "دیگران برای ارتباط با شما می‌توانند این کد کیوآر را اسکن کنند. \n\n می‌توان کد کیوآر را در اینجا غیر فعال کنید و با اسکن کردن مجدد، آن را فعال کنید. "
 
-#: ../qml/pages/QrShowScan.qml:313 ../qml/pages/QrShowScan.qml:330
+#: ../qml/pages/QrShowScan.qml:317 ../qml/pages/QrShowScan.qml:334
 msgid "Deactivate QR Code"
 msgstr "غیرفعال کردن کد کیوآر"
 
-#: ../qml/pages/QrShowScan.qml:329
+#: ../qml/pages/QrShowScan.qml:333
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "این کد کیوآر می‌تواند توسط دیگران و برای پیوستن به گروه \"%1\" اسکن شود.\n\n شما می‌تواند این کد کیوآر را در اینجا غیرفعال کنید و با اسکن کردن مجدد، آن را فعال نمایید. "
 
-#: ../qml/pages/QrShowScan.qml:346
+#: ../qml/pages/QrShowScan.qml:350
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
 msgstr "دیگران برای تماس با شما می‌توانند این کد کیوآر را اسکن کنند. \n\n این کد کیوآر در این دستگاه فعال نیست. "
 
-#: ../qml/pages/QrShowScan.qml:347 ../qml/pages/QrShowScan.qml:364
+#: ../qml/pages/QrShowScan.qml:351 ../qml/pages/QrShowScan.qml:368
 msgid "Activate QR Code"
 msgstr "فعال کردن کد کیوآر"
 
-#: ../qml/pages/QrShowScan.qml:363
+#: ../qml/pages/QrShowScan.qml:367
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
 "The QR code is not active on this device."
 msgstr "دیگران می‌توانند برای پیوستن به گروه \"%1\" این کد کیوآر را اسکن کنند. این کد کیوآر روی این دستگاه فعال نیست. "
 
+#: ../qml/pages/ReactionsInfoPopup.qml:31
+msgid "Reactions"
+msgstr ""
+
+#: ../qml/pages/ReactionsSelectionPopover.qml:131
+msgid "Selected: "
+msgstr ""
+
 #: ../qml/pages/RequestDatabasePassword.qml:47
 msgid "Enter Database Passphrase"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:53
+#: ../qml/pages/SettingsPage.qml:54
 msgid "Not connected"
 msgstr "متصل نیست"
 
-#: ../qml/pages/SettingsPage.qml:55
+#: ../qml/pages/SettingsPage.qml:56
 msgid "Connecting…"
 msgstr "در حال اتصال"
 
-#: ../qml/pages/SettingsPage.qml:57
+#: ../qml/pages/SettingsPage.qml:58
 msgid "Updating…"
 msgstr "درحال به روز رسانی..."
 
-#: ../qml/pages/SettingsPage.qml:59
+#: ../qml/pages/SettingsPage.qml:60
 msgid "Connected"
 msgstr "متصل شد"
 
-#: ../qml/pages/SettingsPage.qml:100 ../qml/pages/SettingsPage.qml:113
-#: ../qml/pages/SettingsPage.qml:117 ../qml/pages/SettingsPage.qml:1204
-#: ../qml/pages/SettingsPage.qml:1246 ../qml/pages/SettingsPage.qml:1260
+#: ../qml/pages/SettingsPage.qml:174 ../qml/pages/SettingsPage.qml:187
+#: ../qml/pages/SettingsPage.qml:191 ../qml/pages/SettingsPage.qml:1328
+#: ../qml/pages/SettingsPage.qml:1370 ../qml/pages/SettingsPage.qml:1384
 msgid "Up to %1"
 msgstr "تا سقف %1"
 
-#: ../qml/pages/SettingsPage.qml:104 ../qml/pages/SettingsPage.qml:1218
+#: ../qml/pages/SettingsPage.qml:178 ../qml/pages/SettingsPage.qml:1342
 msgid "Up to %1, most worse quality images"
 msgstr "تا سقف %1، بدترین کیفیت تصویر"
 
-#: ../qml/pages/SettingsPage.qml:109 ../qml/pages/SettingsPage.qml:1232
+#: ../qml/pages/SettingsPage.qml:183 ../qml/pages/SettingsPage.qml:1356
 msgid "Up to %1, most balanced quality images"
 msgstr "تا سقف %1، متعادل‌ترین کیفیت تصویر"
 
-#: ../qml/pages/SettingsPage.qml:129 ../qml/pages/SettingsPage.qml:161
-#: ../qml/pages/SettingsPage.qml:1289 ../qml/pages/SettingsPage.qml:1423
+#: ../qml/pages/SettingsPage.qml:203 ../qml/pages/SettingsPage.qml:235
+#: ../qml/pages/SettingsPage.qml:1413 ../qml/pages/SettingsPage.qml:1547
 msgid "Never"
 msgstr "هرگز"
 
-#: ../qml/pages/SettingsPage.qml:149 ../qml/pages/SettingsPage.qml:193
-#: ../qml/pages/SettingsPage.qml:1387 ../qml/pages/SettingsPage.qml:1393
-#: ../qml/pages/SettingsPage.qml:1584 ../qml/pages/SettingsPage.qml:1590
+#: ../qml/pages/SettingsPage.qml:223 ../qml/pages/SettingsPage.qml:267
+#: ../qml/pages/SettingsPage.qml:1511 ../qml/pages/SettingsPage.qml:1517
+#: ../qml/pages/SettingsPage.qml:1708 ../qml/pages/SettingsPage.qml:1714
 msgid "After 1 year"
 msgstr "بعد از ۱ سال"
 
-#: ../qml/pages/SettingsPage.qml:153 ../qml/pages/SettingsPage.qml:197
+#: ../qml/pages/SettingsPage.qml:227 ../qml/pages/SettingsPage.qml:271
 msgid "?"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:165 ../qml/pages/SettingsPage.qml:1437
-#: ../qml/pages/SettingsPage.qml:1443
+#: ../qml/pages/SettingsPage.qml:239 ../qml/pages/SettingsPage.qml:1561
+#: ../qml/pages/SettingsPage.qml:1567
 msgid "At once"
 msgstr "یک بار"
 
-#: ../qml/pages/SettingsPage.qml:355
+#: ../qml/pages/SettingsPage.qml:429
 msgid "Sync All"
 msgstr "به روزرسانی همه "
 
-#: ../qml/pages/SettingsPage.qml:401
+#: ../qml/pages/SettingsPage.qml:475
 msgid "Message Font Size"
 msgstr "اندازه نوشته‌های پیام"
 
-#: ../qml/pages/SettingsPage.qml:410 ../qml/pages/SettingsPage.qml:1622
+#: ../qml/pages/SettingsPage.qml:484 ../qml/pages/SettingsPage.qml:1746
 msgid "Small"
 msgstr "کوچک"
 
-#: ../qml/pages/SettingsPage.qml:413 ../qml/pages/SettingsPage.qml:1636
+#: ../qml/pages/SettingsPage.qml:487 ../qml/pages/SettingsPage.qml:1762
 msgid "Normal"
 msgstr "عادی"
 
-#: ../qml/pages/SettingsPage.qml:416 ../qml/pages/SettingsPage.qml:1650
+#: ../qml/pages/SettingsPage.qml:490 ../qml/pages/SettingsPage.qml:1777
 msgid "Large"
 msgstr "بزرگ"
 
-#: ../qml/pages/SettingsPage.qml:419 ../qml/pages/SettingsPage.qml:1664
+#: ../qml/pages/SettingsPage.qml:493 ../qml/pages/SettingsPage.qml:1792
 msgid "Extra large"
 msgstr "خیلی بزرگ"
 
-#: ../qml/pages/SettingsPage.qml:445
+#: ../qml/pages/SettingsPage.qml:519
 msgid "Show Experimental Settings"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:477
+#: ../qml/pages/SettingsPage.qml:551
 msgid "Database Encryption"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:494
+#: ../qml/pages/SettingsPage.qml:568
 msgid "Encrypted Database (experimental)"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:555
+#: ../qml/pages/SettingsPage.qml:629
 msgid "Change Database Passphrase"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:585
+#: ../qml/pages/SettingsPage.qml:659
 msgid "Account specific settings"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:692
+#: ../qml/pages/SettingsPage.qml:766
 msgid "Chats"
 msgstr "گپ‌ها"
 
-#: ../qml/pages/SettingsPage.qml:734
+#: ../qml/pages/SettingsPage.qml:808
 msgid "Auto-Download Messages"
 msgstr "بارگیری خودکار پیام‌ها"
 
-#: ../qml/pages/SettingsPage.qml:769
+#: ../qml/pages/SettingsPage.qml:843
 msgid "Notifications"
 msgstr "اعلان‌ها"
 
-#: ../qml/pages/SettingsPage.qml:781
+#: ../qml/pages/SettingsPage.qml:856
 msgid "Enable system notifications for new messages"
 msgstr "فعال کردن اعلان‌های سیستم برای پیام‌های جدید"
 
-#: ../qml/pages/SettingsPage.qml:798
+#: ../qml/pages/SettingsPage.qml:873
 msgid ""
 "To receive system notifications, background suspension must be disabled for "
 "the app and the app must be running."
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:814
+#: ../qml/pages/SettingsPage.qml:890
 msgid "Show message content in notification"
 msgstr "نمایش محتوای پیام در اعلان"
 
-#: ../qml/pages/SettingsPage.qml:815
+#: ../qml/pages/SettingsPage.qml:891
 msgid "Shows sender and first words of the message in notifications"
 msgstr "نمایش ارسال کننده و اولین کلمات پیام در اعلان"
 
-#: ../qml/pages/SettingsPage.qml:839
+#: ../qml/pages/SettingsPage.qml:916
 msgid "Aggregate system notifications"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:840
+#: ../qml/pages/SettingsPage.qml:917
 msgid "Only the most recent notification will persist"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:918
+#: ../qml/pages/SettingsPage.qml:942
+msgid "New msgs in other accounts (experimental)"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:943
+msgid "(via mail icon in the chatlist header)"
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:1021
 msgid "Privacy"
 msgstr "حریم خصوصی"
 
-#: ../qml/pages/SettingsPage.qml:930
+#: ../qml/pages/SettingsPage.qml:1033
 msgid "Read Receipts"
 msgstr "رسید خوانده شدن"
 
-#: ../qml/pages/SettingsPage.qml:968
+#: ../qml/pages/SettingsPage.qml:1071
 msgid "Delete Old Messages"
 msgstr "پاک کردن پیام‌های قدیمی"
 
-#: ../qml/pages/SettingsPage.qml:1058 ../qml/pages/SettingsPage.qml:1699
+#: ../qml/pages/SettingsPage.qml:1161 ../qml/pages/SettingsPage.qml:1828
 msgid "Export Backup"
 msgstr "صادر کردن نسخه پشتیبان"
 

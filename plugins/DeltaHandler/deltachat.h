@@ -423,19 +423,16 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  *                    Sending messages to self is needed for a proper multi-account setup,
  *                    however, on the other hand, may lead to unwanted notifications in non-delta clients.
  * - `sentbox_watch`= 1=watch `Sent`-folder for changes,
- *                    0=do not watch the `Sent`-folder (default),
- *                    changes require restarting IO by calling dc_stop_io() and then dc_start_io().
+ *                    0=do not watch the `Sent`-folder (default).
  * - `mvbox_move`   = 1=detect chat messages,
  *                    move them to the `DeltaChat` folder,
  *                    and watch the `DeltaChat` folder for updates (default),
  *                    0=do not move chat-messages
- *                    changes require restarting IO by calling dc_stop_io() and then dc_start_io().
  * - `only_fetch_mvbox` = 1=Do not fetch messages from folders other than the
  *                    `DeltaChat` folder. Messages will still be fetched from the
  *                    spam folder and `sendbox_watch` will also still be respected
  *                    if enabled.
  *                    0=watch all folders normally (default)
- *                    changes require restarting IO by calling dc_stop_io() and then dc_start_io().
  * - `show_emails`  = DC_SHOW_EMAILS_OFF (0)=
  *                    show direct replies to chats only,
  *                    DC_SHOW_EMAILS_ACCEPTED_CONTACTS (1)=
@@ -687,6 +684,24 @@ int             dc_get_connectivity          (dc_context_t* context);
  * @return An HTML page with some info about the current connectivity and status.
  */
 char*           dc_get_connectivity_html     (dc_context_t* context);
+
+
+#define DC_PUSH_NOT_CONNECTED 0
+#define DC_PUSH_HEARTBEAT     1
+#define DC_PUSH_CONNECTED     2
+
+/**
+ * Get the current push notification state.
+ * One of:
+ * - DC_PUSH_NOT_CONNECTED
+ * - DC_PUSH_HEARTBEAT
+ * - DC_PUSH_CONNECTED
+ *
+ * @memberof dc_context_t
+ * @param context The context object.
+ * @return Push notification state.
+ */
+int              dc_get_push_state           (dc_context_t* context);
 
 
 /**
@@ -3152,6 +3167,33 @@ void           dc_accounts_maybe_network_lost    (dc_accounts_t* accounts);
 
 
 /**
+ * Perform a background fetch for all accounts in parallel with a timeout.
+ * Pauses the scheduler, fetches messages from imap and then resumes the scheduler.
+ *
+ * dc_accounts_background_fetch() was created for the iOS Background fetch.
+ *
+ * The `DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE` event is emitted at the end
+ * even in case of timeout, unless the function fails and returns 0.
+ * Process all events until you get this one and you can safely return to the background
+ * without forgetting to create notifications caused by timing race conditions.
+ *
+ * @memberof dc_accounts_t
+ * @param timeout The timeout in seconds
+ * @return Return 1 if DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE was emitted and 0 otherwise.
+ */
+int            dc_accounts_background_fetch    (dc_accounts_t* accounts, uint64_t timeout);
+
+
+/**
+ * Sets device token for Apple Push Notification service.
+ * Returns immediately.
+ *
+ * @memberof dc_accounts_t
+ * @param token Hexadecimal device token
+ */
+void           dc_accounts_set_push_device_token (dc_accounts_t* accounts, const char *token);
+
+/**
  * Create the event emitter that is used to receive events.
  *
  * The library will emit various @ref DC_EVENT events as "new message", "message read" etc.
@@ -4397,6 +4439,9 @@ int             dc_msg_is_info                (const dc_msg_t* msg);
  * Currently, the following types are defined:
  * - DC_INFO_PROTECTION_ENABLED (11) - Info-message for "Chat is now protected"
  * - DC_INFO_PROTECTION_DISABLED (12) - Info-message for "Chat is no longer protected"
+ * - DC_INFO_INVALID_UNENCRYPTED_MAIL (13) - Info-message for "Provider requires end-to-end encryption which is not setup yet",
+ *   the UI should change the corresponding string using #DC_STR_INVALID_UNENCRYPTED_MAIL
+ *   and also offer a way to fix the encryption, eg. by a button offering a QR scan
  *
  * Even when you display an icon,
  * you should still display the text of the informational message using dc_msg_get_text()
@@ -4423,6 +4468,7 @@ int             dc_msg_get_info_type          (const dc_msg_t* msg);
 #define         DC_INFO_EPHEMERAL_TIMER_CHANGED   10
 #define         DC_INFO_PROTECTION_ENABLED        11
 #define         DC_INFO_PROTECTION_DISABLED       12
+#define         DC_INFO_INVALID_UNENCRYPTED_MAIL  13
 #define         DC_INFO_WEBXDC_INFO_MESSAGE       32
 
 /**
@@ -5067,6 +5113,15 @@ int             dc_contact_is_blocked        (const dc_contact_t* contact);
  *    2: SELF and contact have verified their fingerprints in both directions; in the UI typically checkmarks are shown.
  */
 int             dc_contact_is_verified       (dc_contact_t* contact);
+
+/**
+ * Returns whether contact is a bot.
+ *
+ * @memberof dc_contact_t
+ * @param contact The contact object.
+ * @return 0 if the contact is not a bot, 1 otherwise.
+ */
+int             dc_contact_is_bot            (dc_contact_t* contact);
 
 
 /**
@@ -6207,6 +6262,18 @@ void dc_event_unref(dc_event_t* event);
 
 
 /**
+ * A multi-device synced config value changed. Maybe the app needs to refresh smth. For uniformity
+ * this is emitted on the source device too. The value isn't reported, otherwise it would be logged
+ * which might not be good for privacy. You can get the new value with
+ * `dc_get_config(context, data2)`.
+ *
+ * @param data1 0
+ * @param data2 (char*) Configuration key.
+ */
+#define DC_EVENT_CONFIG_SYNCED                    2111
+
+
+/**
  * webxdc status update received.
  * To get the received status update, use dc_get_webxdc_status_updates() with
  * `serial` set to the last known update
@@ -6230,6 +6297,16 @@ void dc_event_unref(dc_event_t* event);
 
 #define DC_EVENT_WEBXDC_INSTANCE_DELETED          2121
 
+/**
+ * Tells that the Background fetch was completed (or timed out).
+ *
+ * This event acts as a marker, when you reach this event you can be sure
+ * that all events emitted during the background fetch were processed.
+ * 
+ * This event is only emitted by the account manager
+ */
+
+#define DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE  2200
 
 /**
  * @}
@@ -6998,6 +7075,8 @@ void dc_event_unref(dc_event_t* event);
 /// "You added member %1$s."
 ///
 /// Used in status messages.
+///
+/// `%1$s` will be replaced by the added member's name.
 #define DC_STR_ADD_MEMBER_BY_YOU 128
 
 /// "Member %1$s added by %2$s."
@@ -7218,6 +7297,21 @@ void dc_event_unref(dc_event_t* event);
 ///
 /// Used as the first info messages in newly created groups.
 #define DC_STR_NEW_GROUP_SEND_FIRST_MESSAGE 172
+
+/// "Member %1$s added."
+///
+/// Used as info messages.
+///
+/// `%1$s` will be replaced by the added member's name.
+#define DC_STR_MESSAGE_ADD_MEMBER 173
+
+/// "Your email provider %1$s requires end-to-end encryption which is not setup yet."
+///
+/// Used as info messages when a message cannot be sent because it cannot be encrypted.
+///
+/// `%1$s` will be replaced by the provider's domain.
+#define DC_STR_INVALID_UNENCRYPTED_MAIL 174
+
 
 /**
  * @}

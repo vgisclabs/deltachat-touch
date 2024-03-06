@@ -1597,6 +1597,14 @@ Page {
                                 onClicked: { 
                                     PopupUtils.open(Qt.resolvedUrl("ReactionsInfoPopup.qml"), chatViewPage, { "reactions": reactions })
                                 }
+
+                                onPressAndHold: {
+                                    if (chatCanSend) {
+                                        let popup1 = PopupUtils.open(Qt.resolvedUrl("ReactionsSelectionPopover.qml"), msgbox, {"reactions": reactions })
+                                        popup1.sendReactions.connect(reactionsLoader.sendReaction)
+                                    }
+                                }
+
                             }
                         }
                     } // ListView id: reactionsView

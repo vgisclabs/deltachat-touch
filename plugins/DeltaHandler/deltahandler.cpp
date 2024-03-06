@@ -578,6 +578,14 @@ void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
         addDeviceMessageToAllContexts(tempQString, versionLabel);
     }
 
+    // Device message for version 1.4.0;
+    if (appVersion == "1.4.0") {
+        QString tempQString = "What's new in 1.4.0?<br><br>• Reactions! Long-press messages to react with an emoji.<br>• Many bugfixes and refactorings to enhance performance, improve UX and increase consistency with official clients.<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
+
+        QString versionLabel = "1-4-0";
+
+        addDeviceMessageToAllContexts(tempQString, versionLabel);
+    }
 }
 
 

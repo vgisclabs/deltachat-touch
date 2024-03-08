@@ -8,6 +8,23 @@ This is the main branch which contains the version for Ubuntu Touch 20.04 (focal
 
 This is the main branch which contains the focal version. It will **not** work on xenial. Please checkout the xenial branch if you want to build for xenial.
 
+## Infos regarding the Nix package
+
+
+Originally targeted for Ubuntu Touch, work is in progress for a Nix package. Differences to the Ubuntu Touch version are:
+
+* File im- and export is managed via QML FileDialog instead of the Ubuntu Touch specific ContentHub.
+* ~~The Lomiri Connectivity module is not used~~ (after merging into main, the module is needed again)
+
+Currently, some things are broken in the Nix package:
+
+* Recording voice messages fails due to missing codec
+* Playing audio files does not work
+* Camera does not work
+* No notifications
+* GUI is not adapted to non-phone screens (i.e., no convergence yet)
+* Most emoji are not displayed
+
 ## Building for Ubuntu Touch 20.04 (focal)
 
 ### General

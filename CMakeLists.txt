@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(deltatouch C CXX)
 
+include(GNUInstallDirs)
+
 # Automatically create moc files
 set(CMAKE_AUTOMOC ON)
 
@@ -53,6 +55,7 @@ install(FILES push-apparmor.json DESTINATION ${DATA_DIR})
 qt5_add_resources(QT_RESOURCES qml/qml.qrc)
 qt5_add_resources(QT_RESOURCES assets/assets.qrc)
 add_executable(${PROJECT_NAME} main.cpp ${QT_RESOURCES})
+add_definitions(-DI18N_DIRECTORY="${CMAKE_INSTALL_FULL_LOCALEDIR}")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE -s)
 target_link_libraries(${PROJECT_NAME} Qt5::Gui Qt5::Qml Qt5::Quick Qt5::QuickControls2 Qt5::WebEngine)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})

@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.4.0'
+    property string version: '1.4.1-pre01'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -1400,6 +1400,17 @@ MainView {
 
         isDesktopMode = DeltaHandler.isDesktopMode()
         onUbuntuTouch = DeltaHandler.onUbuntuTouch()
+
+        i18n.domain = "deltatouch.lotharketterer"
+        if (onUbuntuTouch) {
+            // on Ubuntu Touch, CMAKE_INSTALL_FULL_LOCALEDIR is "/./share/locale"
+            console.log("Main.qml: Calling i18n.bindtextdomain(\"deltatouch.lotharketterer\", ", "." + i18nDirectory)
+            i18n.bindtextdomain("deltatouch.lotharketterer", "." + i18nDirectory)
+        } else {
+            i18n.bindtextdomain("deltatouch.lotharketterer", i18nDirectory)
+            console.log("Main.qml: Calling i18n.bindtextdomain(\"deltatouch.lotharketterer\", ", i18nDirectory, ")")
+        }
+        console.log("Main.qml: i18n.language is ", i18n.language)
 
         darkmode = (theme.name == "Lomiri.Components.Themes.SuruDark")
         startupStep1()

@@ -13,7 +13,7 @@
             "push-helper": "push.json"
         }
     },
-    "version": "1.4.0",
+    "version": "1.4.1-pre01",
     "maintainer": "Lothar Ketterer <deltatouch@mailbox.org>",
     "framework" : "ubuntu-sdk-20.04"
 }

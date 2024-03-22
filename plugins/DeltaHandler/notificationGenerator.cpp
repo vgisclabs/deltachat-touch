@@ -345,8 +345,7 @@ void NotificationGenerator::finishProcessIncomingMsgBunch(QDBusPendingCallWatche
         // Trigger the notification depending on settings
         // and the number of notifications to be generated
         if (m_detailedPushNotifications) {
-            // TODO: change back from 2 to 9
-            if ((messagesToNotify.size() + numberOfPresentNotifications) > 2) {
+            if ((messagesToNotify.size() + numberOfPresentNotifications) > 9) {
                 // don't send out a notification for each message if there 
                 // are more than 9 messages to notify
                 // First, delete the old notifications

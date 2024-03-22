@@ -246,6 +246,26 @@ void ContactsModel::setVerifiedOnly(bool verifOnly)
 }
 
 
+QString ContactsModel::getNameNAddressByIndex(int myindex)
+{
+    uint32_t tempContactID = m_contactsVector[myindex - m_offset];
+
+    dc_contact_t* tempcon = dc_get_contact(m_context, tempContactID);
+    char* tempText = dc_contact_get_name_n_addr(tempcon);
+    QString retval = tempText;
+    dc_str_unref(tempText);
+    dc_contact_unref(tempcon);
+    return retval;
+}
+
+
+void ContactsModel::deleteContactByIndex(int myindex)
+{
+    uint32_t tempContactID = m_contactsVector[myindex - m_offset];
+    dc_delete_contact(m_context, tempContactID);
+}
+
+
 void ContactsModel::updateContext(dc_context_t* cContext)
 {
     beginResetModel();
@@ -285,7 +305,8 @@ void ContactsModel::setMembersAlreadyInGroup(const std::vector<uint32_t> &alread
 }
 
 
-void ContactsModel::updateQuery(QString query) {
+void ContactsModel::updateQuery(QString query)
+{
     // need to check if something has changed and exit, if not.
     // Otherwise the app will crash because a click on an item in the
     // list will trigger onDisplayTextChanged, which is connected to
@@ -298,77 +319,7 @@ void ContactsModel::updateQuery(QString query) {
 
     m_query = query;
 
-    beginResetModel();
-    
-    uint32_t tempContactID {0};
-    dc_contact_t* tempContact {nullptr};
-    char* tempText {nullptr};
-    QString tempQString {""};
-
-    dc_array_t* contactsArray;
-
-    if (query != "") {
-        if (m_verifiedOnly) {
-            contactsArray = dc_get_contacts(m_context, DC_GCL_VERIFIED_ONLY, query.toUtf8().constData());
-        } else {
-            contactsArray = dc_get_contacts(m_context, 0, query.toUtf8().constData());
-        }
-
-        m_contactsVector.resize(dc_array_get_cnt(contactsArray));
-
-        for (size_t i = 0; i < m_contactsVector.size(); ++i) {
-            m_contactsVector[i] = dc_array_get_id(contactsArray, i);
-        }
-        dc_array_unref(contactsArray);
-
-        if (m_verifiedOnly) {
-            m_offset = 0;
-        } else {
-            m_offset = 1;
-            
-            // Check whether the entered string equals any of the email
-            // addresses in the array. If yes, don't show the additional
-            // line with a newly to be added contact (i.e., set m_offset
-            // to 0)
-            for (size_t i = 0; i < m_contactsVector.size(); ++i) {
-                tempContactID = m_contactsVector[i];
-                tempContact = dc_get_contact(m_context, tempContactID);
-                tempText = dc_contact_get_addr(tempContact);
-                tempQString = tempText;
-
-                if (QString::compare(tempQString, query, Qt::CaseInsensitive) == 0) {
-                    m_offset = 0;
-                    break;
-                }
-            }
-        }
-
-    } else { // query is empty string
-        if (m_verifiedOnly) {
-            contactsArray = dc_get_contacts(m_context, DC_GCL_VERIFIED_ONLY, NULL);
-        } else {
-            contactsArray = dc_get_contacts(m_context, 0, NULL);
-        }
-
-        m_contactsVector.resize(dc_array_get_cnt(contactsArray));
-
-        for (size_t i = 0; i < m_contactsVector.size(); ++i) {
-            m_contactsVector[i] = dc_array_get_id(contactsArray, i);
-        }
-        dc_array_unref(contactsArray);
-        
-        m_offset = 0;
-    }
-
-    if (tempContact) {
-        dc_contact_unref(tempContact);
-    }
-
-    if (tempText) {
-        dc_str_unref(tempText);
-    }
-
-    endResetModel();
+    updateContactsArray();
 }
 
 
@@ -521,9 +472,87 @@ void ContactsModel::finalizeMemberChanges(bool actionRequested)
 
 void ContactsModel::updateContacts()
 {
-    qDebug() << "ContactsModel::updateContacts(): Received signal contactsChanged by eventThread";
-    // m_contactsVector is updated in updateContext
-    if (m_context) {
-        updateContext(m_context);
+    qDebug() << "ContactsModel::updateContacts(): Received signal contactsChanged by eventThread, updating model";
+    if (!m_context) {
+        qWarning() << "ContactsModel::updateContacts() called, but m_context is NULL";
+        return;
     }
+
+    updateContactsArray();
+}
+
+
+void ContactsModel::updateContactsArray()
+{
+    beginResetModel();
+    
+    uint32_t tempContactID {0};
+    dc_contact_t* tempContact {nullptr};
+    char* tempText {nullptr};
+    QString tempQString {""};
+
+    dc_array_t* contactsArray;
+
+    if (m_query != "") {
+        if (m_verifiedOnly) {
+            contactsArray = dc_get_contacts(m_context, DC_GCL_VERIFIED_ONLY, m_query.toUtf8().constData());
+        } else {
+            contactsArray = dc_get_contacts(m_context, 0, m_query.toUtf8().constData());
+        }
+
+        m_contactsVector.resize(dc_array_get_cnt(contactsArray));
+
+        for (size_t i = 0; i < m_contactsVector.size(); ++i) {
+            m_contactsVector[i] = dc_array_get_id(contactsArray, i);
+        }
+        dc_array_unref(contactsArray);
+
+        if (m_verifiedOnly) {
+            m_offset = 0;
+        } else {
+            m_offset = 1;
+            
+            // Check whether the entered string equals any of the email
+            // addresses in the array. If yes, don't show the additional
+            // line with a newly to be added contact (i.e., set m_offset
+            // to 0)
+            for (size_t i = 0; i < m_contactsVector.size(); ++i) {
+                tempContactID = m_contactsVector[i];
+                tempContact = dc_get_contact(m_context, tempContactID);
+                tempText = dc_contact_get_addr(tempContact);
+                tempQString = tempText;
+
+                if (QString::compare(tempQString, m_query, Qt::CaseInsensitive) == 0) {
+                    m_offset = 0;
+                    break;
+                }
+            }
+        }
+
+    } else { // m_query is empty string
+        if (m_verifiedOnly) {
+            contactsArray = dc_get_contacts(m_context, DC_GCL_VERIFIED_ONLY, NULL);
+        } else {
+            contactsArray = dc_get_contacts(m_context, 0, NULL);
+        }
+
+        m_contactsVector.resize(dc_array_get_cnt(contactsArray));
+
+        for (size_t i = 0; i < m_contactsVector.size(); ++i) {
+            m_contactsVector[i] = dc_array_get_id(contactsArray, i);
+        }
+        dc_array_unref(contactsArray);
+        
+        m_offset = 0;
+    }
+
+    if (tempContact) {
+        dc_contact_unref(tempContact);
+    }
+
+    if (tempText) {
+        dc_str_unref(tempText);
+    }
+
+    endResetModel();
 }

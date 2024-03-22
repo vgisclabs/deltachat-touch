@@ -31,6 +31,7 @@
         <file>pages/ConfirmDatabaseConversionToUnencrypted.qml</file>
         <file>pages/ConfirmDeleteFromDevice.qml</file>
         <file>pages/ConfirmDeleteFromServer.qml</file>
+        <file>pages/ConfirmDialog.qml</file>
         <file>pages/ConfirmEncryptDatabase.qml</file>
         <file>pages/ConfirmLeaveGroup.qml</file>
         <file>pages/ConfirmMemberDeletion.qml</file>

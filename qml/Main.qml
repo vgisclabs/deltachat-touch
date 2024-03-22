@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.4.0'
+    property string version: '1.4.1-pre01'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -237,33 +237,41 @@ MainView {
 
         checkVersionUpdateLate()
 
+        refreshOtherAccsIndicator()
+
+        DeltaHandler.notificationGenerator.setEnablePushNotifications(sendPushNotifications)
+        DeltaHandler.notificationGenerator.setDetailedPushNotifications(detailedPushNotifications)
+        DeltaHandler.notificationGenerator.setNotifyContactRequests(notifyContactRequests)
+
+        DeltaHandler.connectivityChangedForActiveAccount.connect(updateConnectivity)
+        root.periodicTimerSignal.connect(DeltaHandler.periodicTimerActions)
+        root.chatlistQueryTextHasChanged.connect(DeltaHandler.updateChatlistQueryText)
+        DeltaHandler.clearChatlistQueryRequest.connect(root.clearChatlistQuery)
+        root.appStateNowActive.connect(DeltaHandler.appIsActiveAgainActions)
+        root.appStateNowActive.connect(DeltaHandler.chatmodel.appIsActiveAgainActions)
+
         startStopIO()
         hintTimer.start()
 
-        root.appStateNowActive.connect(DeltaHandler.chatmodel.appIsActiveAgainActions)
-
-        DeltaHandler.setEnablePushNotifications(sendPushNotifications)
-        DeltaHandler.setDetailedPushNotifications(detailedPushNotifications)
-        DeltaHandler.setAggregatePushNotifications(aggregatePushNotifications)
-
-        root.periodicTimerSignal.connect(DeltaHandler.periodicTimerActions)
-
-        root.chatlistQueryTextHasChanged.connect(DeltaHandler.updateChatlistQueryText)
-        DeltaHandler.clearChatlistQueryRequest.connect(root.clearChatlistQuery)
-
-        DeltaHandler.connectivityChangedForActiveAccount.connect(updateConnectivity)
-
-        periodicTimer.start()
-
-        setVisibilityOfInactiveAccountsNotification()
+        if (Qt.application.state == Qt.ApplicationActive) {
+            periodicTimer.start()
+        }
     }
 
-    function setVisibilityOfInactiveAccountsNotification() {
+    function refreshOtherAccsIndicator() {
         let noOfInactiveMsgs = DeltaHandler.accountsmodel.noOfFreshMsgsInInactiveAccounts();
-        noOfInactiveMsgs += DeltaHandler.accountsmodel.noOfChatRequestsInInactiveAccounts();
+        if (root.notifyContactRequests) {
+            noOfInactiveMsgs += DeltaHandler.accountsmodel.noOfChatRequestsInInactiveAccounts();
+        }
 
         if (noOfInactiveMsgs > 0) {
             hasNewMsgsInOtherAccs = true
+
+            if (noOfInactiveMsgs > 99) {
+                newMsgsInOtherAccsCountLabel.text = "99+"
+            } else {
+                newMsgsInOtherAccsCountLabel.text = noOfInactiveMsgs
+            }
         } else {
             hasNewMsgsInOtherAccs = false
         }
@@ -325,6 +333,9 @@ MainView {
     property string selfMessageSentLinkColor: root.darkmode ? "#0000aa" : "#0000c2"
     property string selfMessageSeenLinkColor: root.darkmode ? "#b8b8ff" : "#0000BB"
 
+    property string otherAccsIndicatorBackgroundColor: inactiveAccsNewMsgsSinceLastCheck ? "#cbecf0" : "#111111" //"#182828"
+    property string otherAccsIndicatorTextColor: inactiveAccsNewMsgsSinceLastCheck ? "black" : "#f5f5dc"
+
 
     // If there are any archived chats, a pseudo-chat "Archived Chats" will
     // be shown in the list of chats. When clicked, only the archived chats
@@ -353,8 +364,15 @@ MainView {
     property bool sendPushNotifications: false
     property bool detailedPushNotifications: true
     property bool aggregatePushNotifications: false
-    property bool showInAppNotificationsOtherAccounts: false
     property bool hasNewMsgsInOtherAccs: false
+
+    // Indicates whether new messages have been received for
+    // accounts other than the active one since the last
+    // time the user took a look at the account overview.
+    // onCompleted in AccountConfig.qml will set it to false.
+    // TODO: Should AccountConfig.qml set it to false in 
+    // onDestruction instead?
+    property bool inactiveAccsNewMsgsSinceLastCheck: false
 
     // to protect against clicks on multiple chat lines
     property bool chatOpenAlreadyClicked: false
@@ -369,7 +387,7 @@ MainView {
 
     // see AccountConfig.qml
     property bool showAccountsExperimentalSettings: false
-    property bool accountConfigPageShowContactRequests: true
+    property bool notifyContactRequests: true
 
     /* ********** Text Zoom ***********/
     // valid values are from 1 to 4. Must NOT be 0, otherwise
@@ -396,14 +414,6 @@ MainView {
 
     property bool alwaysLoadRemoteContent: false
 
-    // Indicates whether new messages have been received for
-    // accounts other than the active one since the last
-    // time the user took a look at the account overview.
-    // onCompleted in AccountConfig.qml will set it to false.
-    // TODO: Should AccountConfig.qml set it to false in 
-    // onDestruction instead?
-    property bool inactiveAccsNewMsgsSinceLastCheck: false
-
     // used in ReactionsSelectionPopover.qml, but already loaded here to
     // save time when creating the popup
     property var emojiRecentArray: ["😬", "😂", "🙂", "😞", "☹", "😄", "😅", "😳", "😢", "👍", "👎", "💪", "👀", "🤦", "🤷", "🤞", "🙈", "🍀", "❤", "💓", "💯", "🚀", "🎉"]
@@ -415,10 +425,9 @@ MainView {
         property alias sendPushNotif: root.sendPushNotifications
         property alias detailedPushNotif: root.detailedPushNotifications
         property alias aggregatePushNotif: root.aggregatePushNotifications
-        property alias otherAccsNewMsgsInAppNotif: root.showInAppNotificationsOtherAccounts
         property alias versionAtLastSession: root.oldVersion
         property alias accountsExpSettings: root.showAccountsExperimentalSettings
-        property alias accountsShowContactReq: root.accountConfigPageShowContactRequests
+        property alias showChatRequests: root.notifyContactRequests
         property alias scaleLevelTextZoom: root.scaleLevel
         property alias alwaysLoadRemote: root.alwaysLoadRemoteContent
         property alias inactAccsNewMsgsSinceLastCheck: root.inactiveAccsNewMsgsSinceLastCheck
@@ -498,10 +507,13 @@ MainView {
             errorShape.visible = true
             errorLabel.text = i18n.tr("Error: %1").arg(errorMessage)
         }
+    }
 
+    Connections {
+        target: DeltaHandler.notificationGenerator
         onNewMessageForInactiveAccount: {
             root.inactiveAccsNewMsgsSinceLastCheck = true
-            newMsgsInOtherAccsIndicator.color = "#4f4f4f"
+            refreshOtherAccsIndicator()
         }
     }
 
@@ -546,7 +558,7 @@ MainView {
     Connections {
         target: DeltaHandler.accountsmodel
         onInactiveFreshMsgsMayHaveChanged: {
-            setVisibilityOfInactiveAccountsNotification()
+            refreshOtherAccsIndicator()
         }
     }
 
@@ -623,7 +635,7 @@ MainView {
                         bottomEdgeHint.visible = DeltaHandler.hasConfiguredAccount
                         updateConnectivity()
 
-                        setVisibilityOfInactiveAccountsNotification()
+                        refreshOtherAccsIndicator()
                     }
                 }
 
@@ -644,7 +656,6 @@ MainView {
                         onClicked: {
                             layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
                             root.inactiveAccsNewMsgsSinceLastCheck = false
-                            newMsgsInOtherAccsIndicator.color = headerTopBackgroundColor.color
                         }
                         enabled: !root.chatOpenAlreadyClicked
                     }
@@ -671,55 +682,15 @@ MainView {
                             left: profilePicShape.right
                             leftMargin: units.gu(2.5)
                             bottom: parent.bottom
-                            bottomMargin: newMsgsInOtherAccsIndicator.visible ? units.gu(1.3) : units.gu(2)
+                            bottomMargin: units.gu(2)
                         }
-                        width: parent.width - profilePicShape.width - units.gu(3) //units.gu(3)
+                        width: parent.width - profilePicShape.width - (hasNewMsgsInOtherAccs ? newMsgsInOtherAccsIndicator.width + units.gu(1) : 0) - units.gu(3)
                         elide: Text.ElideRight
                         text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
                         color: "#e7fcfd"
                         font.pixelSize: root.scaledFontSizeInPixels * 1.3
                     }
                 } // Rectangle id: profilePicAndNameRect
-                
-                UbuntuShape {
-                    id: newMsgsInOtherAccsIndicator
-                    width: scaledFontSizeInPixelsSmaller + units.gu(2)
-                    height: scaledFontSizeInPixelsSmaller * 1.2
-                    anchors {
-                        top: parent.top
-                        // if it's set to the horizontalCenter of the
-                        // page, then it might be partly covered by
-                        // searchIconCage when the font size is set
-                        // to extra large
-                        horizontalCenter: parent.horizontalCenter
-                    }
-                    color: root.inactiveAccsNewMsgsSinceLastCheck ? "#4f4f4f" : headerTopBackgroundColor.color
-                    visible: hasNewMsgsInOtherAccs && showInAppNotificationsOtherAccounts
-
-                    // removes the rounded edges on top of newMsgsInOtherAccsIndicator
-                    Rectangle {
-                        height: parent.height / 2
-                        width: parent.width
-                        anchors {
-                            top: parent.top
-                            left: parent.left
-                        }
-                        color: parent.color
-                    }
-
-                    Icon {
-                        id: mailIcon
-                        anchors.verticalCenter: parent.verticalCenter
-                        height: scaledFontSizeInPixelsSmaller
-                        width: scaledFontSizeInPixelsSmaller
-                        name: "mail-unread"
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                            horizontalCenter: parent.horizontalCenter
-                        }
-                        color: usernameLabel.color
-                    }
-                } // UbuntuShape id: newMsgsInOtherAccsIndicator
             
                 UbuntuShape {
                     id: connectivityShape
@@ -745,6 +716,37 @@ MainView {
                         color: "black"
                     }
                 } // end Rectangle id: connectivityShape
+
+                UbuntuShape {
+                    id: newMsgsInOtherAccsIndicator
+                    height: profilePicShape.height * (2/5)
+                    width: height
+                    anchors {
+                        right: searchIconCage.left
+                        rightMargin: units.gu(0.5)
+                        verticalCenter: searchIconCage.verticalCenter
+                    }
+                    color: root.otherAccsIndicatorBackgroundColor
+                    //aspect: UbuntuShape.Flat
+                    visible: hasNewMsgsInOtherAccs
+
+                    Label {
+                        id: newMsgsInOtherAccsCountLabel
+                        anchors {
+                            top: parent.top
+                            topMargin: units.gu(0.3)
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                        fontSize: root.scaledFontSizeSmaller
+                        font.bold: true
+                        color: root.otherAccsIndicatorTextColor
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: headerMouse.clicked(mouse)
+                    }
+                } // UbuntuShape id: newMsgsInOtherAccsIndicator
 
                 Rectangle {
                     id: searchIconCage

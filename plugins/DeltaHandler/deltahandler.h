@@ -35,6 +35,7 @@
 #include "groupmembermodel.h"
 #include "emitterthread.h"
 #include "jsonrpcresponsethread.h"
+#include "notificationGenerator.h"
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
 
@@ -53,6 +54,7 @@ class JsonrpcResponseThread;
 class ContactsModel;
 class BlockedContactsModel;
 class GroupMemberModel;
+class NotificationGenerator;
 class WorkflowDbToEncrypted;
 class WorkflowDbToUnencrypted;
 
@@ -108,6 +110,10 @@ public:
     Q_INVOKABLE void loadSelectedAccount();
 
     Q_INVOKABLE uint32_t getCurrentAccountId() const;
+
+    // returns the ID of the currently opened chat (-1 if no
+    // chat opened)
+    int getCurrentChatId() const;
 
     Q_INVOKABLE void sendJsonrpcRequest(QString request);
 
@@ -206,6 +212,8 @@ public:
     Q_INVOKABLE void closeArchive();
 
     Q_INVOKABLE void selectAccount(int myindex);
+
+    void deleteActiveNotificationTags(uint32_t accID, int chatID);
 
     // Returns the name of the currently selected chat
     Q_INVOKABLE QString chatName();
@@ -312,7 +320,6 @@ public:
     Q_INVOKABLE QString prepareExportKeys();
     Q_INVOKABLE void startExportKeys(QString dirToExportTo);
 
-    Q_INVOKABLE void createNotification(QString summary, QString body, QString tag, QString icon);
     Q_INVOKABLE void removeNotification(QString tag = "");
 
     Q_INVOKABLE int getConnectivitySimple();
@@ -425,10 +432,6 @@ public:
     Q_INVOKABLE void stopAudioRecording();
     /* ============ End audio message recording =============== */
 
-    Q_INVOKABLE void setEnablePushNotifications(bool enabled);
-    Q_INVOKABLE void setDetailedPushNotifications(bool detailed);
-    Q_INVOKABLE void setAggregatePushNotifications(bool aggregated);
-
     // Copies the given file to another location in the cache.
     // Used for, e.g., enabling ContentHub to immediately remove
     // the file in HubIncoming (can't be removed by the app itself,
@@ -453,6 +456,7 @@ public:
     // dc_receive_backup() blocks, so the DeltaHandler singleton will not pass the progress events
     // until dc_receive_backup() returns, and at this point, everything has already happened
     Q_PROPERTY(EmitterThread* emitterthread READ emitterthread NOTIFY emitterthreadChanged);
+    Q_PROPERTY(NotificationGenerator* notificationGenerator READ notificationGenerator NOTIFY notificationGeneratorChanged);
     Q_PROPERTY(WorkflowDbToEncrypted* workflowdbencryption READ workflowdbencryption NOTIFY workflowdbencryptionChanged());
     Q_PROPERTY(WorkflowDbToUnencrypted* workflowdbdecryption READ workflowdbdecryption NOTIFY workflowdbdecryptionChanged());
 
@@ -462,6 +466,7 @@ public:
     BlockedContactsModel* blockedcontactsmodel();
     GroupMemberModel* groupmembermodel();
     EmitterThread* emitterthread();
+    NotificationGenerator* notificationGenerator();
     WorkflowDbToEncrypted* workflowdbencryption();
     WorkflowDbToUnencrypted* workflowdbdecryption();
 
@@ -485,6 +490,7 @@ signals:
     void blockedcontactsmodelChanged();
     void groupmembermodelChanged();
     void emitterthreadChanged();
+    void notificationGeneratorChanged();
     void workflowdbencryptionChanged();
     void workflowdbdecryptionChanged();
 
@@ -543,8 +549,6 @@ signals:
     void chatBlockContactDone();
     void connectivityChangedForActiveAccount();
 
-    void newMessageForInactiveAccount();
-
     // For adding second device; see prepareBackupProvider().
     void backupProviderCreationSuccess();
     void backupProviderCreationFailed(QString errorMessage);
@@ -577,6 +581,7 @@ signals:
     void errorEvent(QString errorMessage);
 
 public slots:
+    void appIsActiveAgainActions();
     void unrefTempContext();
     void chatViewIsClosed(bool gotoQrScanPage);
 
@@ -622,7 +627,6 @@ private slots:
     void processSignalQueueTimerTimeout();
 
 
-
 private:
     dc_accounts_t* allAccounts;
     dc_context_t* currentContext;
@@ -644,7 +648,10 @@ private:
 
     uint32_t m_currentAccID;
     uint32_t currentChatID;
-    bool chatmodelIsConfigured;
+
+    // Page with chat is opened, but the app
+    // is not necessarily shown at the screen atm
+    bool currentChatIsOpened;
     bool m_hasConfiguredAccount;
 
     // This member is needed, it can't just be
@@ -691,20 +698,12 @@ private:
 
     struct quirc* m_qr;
 
-    // Tag of the most recent notification
-    QString m_lastTag;
-
     // used to store the beginning of tags that should
     // maybe be removed, consists of <accID>_<chatID>_, will
     // be set in deleteActiveNotificationTags and used
     // in finishDeleteActiveNotificationTags
-    QString m_tagsToDelete;
-
-    bool m_enablePushNotifications;
-    bool m_detailedPushNotifications;
-    bool m_aggregatePushNotifications;
-    // if true, the previous push notification is removed when creating a new one
-    bool m_aggregateNotifications;
+    std::vector<QString> m_notificationTagsToDelete;
+    bool m_notifTagsToDeletePendingReply;
 
     // for recording of audio messages
     QAudioRecorder* m_audioRecorder;
@@ -720,19 +719,23 @@ private:
 
     // for the signal queue
     bool m_signalQueue_refreshChatlist;
-    bool m_signalQueue_newMsgForInactiveAcc;
+
     // queue for the active account
     std::queue<int> m_signalQueue_chatsDataChanged;
     std::queue<int> m_signalQueue_chatsNoticed;
     std::queue<int> m_signalQueue_msgs;
     std::queue<AccIdAndChatIdStruct> m_signalQueue_notificationsToRemove;
-    // queue for all accounts, will be used by m_accountsmodel,
+
+    // vector for all accounts, will be used by m_accountsmodel,
     // contains all accID/chatID combinations for which DeltaHandler::messagesChanged()
     // was called
     std::vector<uint32_t> m_signalQueue_accountsmodelInfo;
+
     QTimer* m_signalQueueTimer;
 
     static constexpr int queueTimerFreq = 1000;
+
+    NotificationGenerator* m_notificationGenerator;
 
     /**************************************
      *********   Private methods   ********
@@ -740,9 +743,7 @@ private:
     bool isExistingChat(uint32_t chatID);
     void setCoreTranslations();
     void contextSetupTasks();
-    void sendNotification(uint32_t accID, int chatID, int msgID);
 
-    void deleteActiveNotificationTags(uint32_t accID, int chatID);
     void enableVerifiedOneOnOneForAllAccs();
     void addDeviceMessageToAllContexts(QString deviceMessage, QString messageLabel);
 

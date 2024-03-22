@@ -346,6 +346,24 @@ Page {
             id: flickContent
             width: parent.width
 
+            Rectangle {
+                id: allAccountsSeparator
+                height: profileSpecificSeparatorLabel.contentHeight + units.gu(4)
+                width: parent.width
+                Label {
+                    id: allAccountsSeparatorLabel
+                    anchors {
+                        top: allAccountsSeparator.top
+                        topMargin: units.gu(3)
+                        horizontalCenter: allAccountsSeparator.horizontalCenter
+                    }
+                    text: i18n.tr("All Accounts")
+                    //font.bold: true
+                    fontSize: "large"
+                }
+                color: theme.palette.normal.background
+            }
+
             ListItem {
                 height: offlineLayout.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
@@ -442,7 +460,7 @@ Page {
 
                 ListItemLayout {
                     id: expSettings
-                    title.text: i18n.tr("Show Experimental Settings")
+                    title.text: i18n.tr("Experimental Features")
                     title.font.bold: true
 
                     Switch {
@@ -566,12 +584,140 @@ Page {
                 }
             }
 
+            Rectangle {
+                id: prefNotifsSectionHeader
+                height: prefNotifsSectionHeaderLabel.contentHeight + units.gu(3)
+                width: parent.width
+                Label {
+                    id: prefNotifsSectionHeaderLabel
+                    anchors {
+                        top: prefNotifsSectionHeader.top
+                        topMargin: units.gu(3)
+                        left: prefNotifsSectionHeader.left
+                        leftMargin: units.gu(2)
+                    }
+                    // TODO: string not translated
+                    // TODO: maybe solve issue in a different way?
+                    text: i18n.tr("Notifications")
+                    font.bold: true
+                }
+                color: theme.palette.normal.background
+            }
 
+            ListItem {
+                height: sysNotifsEnabledLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+                divider.visible: false
 
+                ListItemLayout {
+                    id: sysNotifsEnabledLayout
+                    title.text: i18n.tr("Notifications")
+                    summary.text: i18n.tr("Enable system notifications for new messages")
+                    summary.wrapMode: Text.WordWrap
+
+                    Switch {
+                        id: sysNotifsEnabledSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.sendPushNotifications
+                        onCheckedChanged: {
+                            if (sysNotifsEnabledSwitch.checked != root.sendPushNotifications) {
+                            // need to check whether it is really needed to change the setting
+                            // because checkedChanged is be emitted when setting the switch at
+                            // initialization
+                                root.sendPushNotifications = sysNotifsEnabledSwitch.checked
+                                DeltaHandler.notificationGenerator.setEnablePushNotifications(root.sendPushNotifications)
+                                if (root.sendPushNotifications) {
+                                    PopupUtils.open(
+                                        Qt.resolvedUrl('InfoPopup.qml'),
+                                        null,
+                                        { text: i18n.tr("To receive system notifications, background suspension must be disabled for the app and the app must be running.") }
+                                    )
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                height: sysNotifsDetailedLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+                divider.visible: false
+
+                ListItemLayout {
+                    id: sysNotifsDetailedLayout
+                    title.text: i18n.tr("Show message content in notification")
+                    summary.text: i18n.tr("Shows sender and first words of the message in notifications")
+                    summary.wrapMode: Text.WordWrap
+                    enabled: root.sendPushNotifications
+
+                    Switch {
+                        id: sysNotifsDetailedSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.detailedPushNotifications
+                        onCheckedChanged: {
+                            if (sysNotifsDetailedSwitch.checked != root.detailedPushNotifications) {
+                                root.detailedPushNotifications = sysNotifsDetailedSwitch.checked
+                                DeltaHandler.notificationGenerator.setDetailedPushNotifications(root.detailedPushNotifications)
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                height: notifContactReqLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+                divider.visible: true
+
+                ListItemLayout {
+                    id: notifContactReqLayout
+                    // TODO string not translated yet
+                    title.text: i18n.tr("Contact requests")
+                    // TODO string not translated yet
+                    summary.text: i18n.tr("Include contact requests in counters and notifications")
+                    summary.wrapMode: Text.WordWrap
+
+                    Switch {
+                        id: notifyContRequSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.notifyContactRequests
+                        onCheckedChanged: {
+                            if (notifyContRequSwitch.checked != root.notifyContactRequests) {
+                                root.notifyContactRequests = notifyContRequSwitch.checked
+                                DeltaHandler.notificationGenerator.setNotifyContactRequests(root.notifyContactRequests)
+                                root.refreshOtherAccsIndicator()
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
+                height: aboutLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+
+                ListItemLayout {
+                    id: aboutLayout
+                    title.text: i18n.tr("About DeltaTouch")
+                    title.font.bold: true
+
+                    Icon {
+                        name: "go-next"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("About.qml"))
+                }
+            }
 
             Rectangle {
                 id: profileSpecificSeparator
-                height: profileSpecificSeparatorLabel.contentHeight + units.gu(3)
+                height: profileSpecificSeparatorLabel.contentHeight + units.gu(4)
                 width: parent.width
                 Label {
                     id: profileSpecificSeparatorLabel
@@ -580,9 +726,7 @@ Page {
                         topMargin: units.gu(3)
                         horizontalCenter: profileSpecificSeparator.horizontalCenter
                     }
-                    // TODO: string not translated
-                    // TODO: maybe solve issue in a different way?
-                    text: i18n.tr("Account specific settings")
+                    text: i18n.tr("Current Account")
                     //font.bold: true
                     fontSize: "large"
                 }
@@ -749,138 +893,6 @@ Page {
                 }
                 onClicked: {
                     PopupUtils.open(popoverComponentAutoDownload, autoDownloadItem)
-                }
-            }
-
-            Rectangle {
-                id: prefNotifsSectionHeader
-                height: prefNotifsSectionHeaderLabel.contentHeight + units.gu(3)
-                width: parent.width
-                Label {
-                    id: prefNotifsSectionHeaderLabel
-                    anchors {
-                        top: prefNotifsSectionHeader.top
-                        topMargin: units.gu(3)
-                        left: prefNotifsSectionHeader.left
-                        leftMargin: units.gu(2)
-                    }
-                    // TODO: string not translated
-                    // TODO: maybe solve issue in a different way?
-                    text: i18n.tr("Notifications")
-                    font.bold: true
-                }
-                color: theme.palette.normal.background
-            }
-
-            ListItem {
-                height: sysNotifsEnabledLayout.height + (divider.visible ? divider.height : 0)
-                width: settingsPage.width
-                divider.visible: false
-
-                ListItemLayout {
-                    id: sysNotifsEnabledLayout
-                    title.text: i18n.tr("Enable system notifications for new messages")
-
-                    Switch {
-                        id: sysNotifsEnabledSwitch
-                        SlotsLayout.position: SlotsLayout.Trailing
-                        checked: root.sendPushNotifications
-                        onCheckedChanged: {
-                            if (sysNotifsEnabledSwitch.checked != root.sendPushNotifications) {
-                            // need to check whether it is really needed to change the setting
-                            // because checkedChanged is be emitted when setting the switch at
-                            // initialization
-                                root.sendPushNotifications = sysNotifsEnabledSwitch.checked
-                                DeltaHandler.setEnablePushNotifications(root.sendPushNotifications)
-                                if (root.sendPushNotifications) {
-                                    PopupUtils.open(
-                                        Qt.resolvedUrl('InfoPopup.qml'),
-                                        null,
-                                        { text: i18n.tr("To receive system notifications, background suspension must be disabled for the app and the app must be running.") }
-                                    )
-
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            ListItem {
-                height: sysNotifsDetailedLayout.height + (divider.visible ? divider.height : 0)
-                width: settingsPage.width
-                divider.visible: false
-
-                ListItemLayout {
-                    id: sysNotifsDetailedLayout
-                    title.text: i18n.tr("Show message content in notification")
-                    summary.text: i18n.tr("Shows sender and first words of the message in notifications")
-                    summary.wrapMode: Text.WordWrap
-                    enabled: root.sendPushNotifications
-
-                    Switch {
-                        id: sysNotifsDetailedSwitch
-                        SlotsLayout.position: SlotsLayout.Trailing
-                        checked: root.detailedPushNotifications
-                        onCheckedChanged: {
-                            if (sysNotifsDetailedSwitch.checked != root.detailedPushNotifications) {
-                                root.detailedPushNotifications = sysNotifsDetailedSwitch.checked
-                                DeltaHandler.setDetailedPushNotifications(root.detailedPushNotifications)
-                            }
-                        }
-                    }
-                }
-            }
-
-            ListItem {
-                height: sysNotifsAggregatedLayout.height + (divider.visible ? divider.height : 0)
-                width: settingsPage.width
-                divider.visible: false
-
-                ListItemLayout {
-                    id: sysNotifsAggregatedLayout
-                    title.text: i18n.tr("Aggregate system notifications")
-                    summary.text: i18n.tr("Only the most recent notification will persist")
-                    summary.wrapMode: Text.WordWrap
-                    enabled: root.sendPushNotifications
-
-                    Switch {
-                        id: sysNotifsAggregatedSwitch
-                        SlotsLayout.position: SlotsLayout.Trailing
-                        checked: root.aggregatePushNotifications
-                        onCheckedChanged: {
-                            if (sysNotifsAggregatedSwitch.checked != root.AggregatedPushNotifications) {
-                                root.aggregatePushNotifications = sysNotifsAggregatedSwitch.checked
-                                DeltaHandler.setAggregatePushNotifications(root.aggregatePushNotifications)
-                            }
-                        }
-                    }
-                }
-            }
-
-            ListItem {
-                height: otherAccountsNewMsgsLayout.height + (divider.visible ? divider.height : 0)
-                width: settingsPage.width
-                visible: root.showAccountsExperimentalSettings
-
-                ListItemLayout {
-                    id: otherAccountsNewMsgsLayout
-                    title.text: i18n.tr("New msgs in other accounts (experimental)")
-                    summary.text: i18n.tr("(via mail icon in the chatlist header)")
-                    summary.wrapMode: Text.WordWrap
-                    // This is independent of push notifications
-                    //enabled: root.sendPushNotifications
-
-                    Switch {
-                        id: otherAccountsNewMsgsSwitch
-                        SlotsLayout.position: SlotsLayout.Trailing
-                        checked: root.showInAppNotificationsOtherAccounts
-                        onCheckedChanged: {
-                            if (otherAccountsNewMsgsSwitch.checked != root.showInAppNotificationsOtherAccounts) {
-                                root.showInAppNotificationsOtherAccounts = otherAccountsNewMsgsSwitch.checked
-                            }
-                        }
-                    }
                 }
             }
 
@@ -1118,27 +1130,6 @@ Page {
 //                }
 //                color: theme.palette.normal.background
 //            }
-
-            ListItem {
-                height: aboutLayout.height + (divider.visible ? divider.height : 0)
-                width: settingsPage.width
-
-                ListItemLayout {
-                    id: aboutLayout
-                    title.text: i18n.tr("About DeltaTouch")
-                    title.font.bold: true
-
-                    Icon {
-                        name: "go-next"
-                        SlotsLayout.position: SlotsLayout.Trailing;
-                        width: units.gu(2)
-                    }
-                }
-
-                onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("About.qml"))
-                }
-            }
 
             ListItem {
                 height: advancedLayout.height + (divider.visible ? divider.height : 0)

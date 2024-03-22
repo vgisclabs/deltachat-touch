@@ -46,6 +46,7 @@ QHash<int, QByteArray> AccountsModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[AddrRole] = "address";
     roles[IsConfiguredRole] = "isConfigured";
+    roles[IsMutedRole] = "isMuted";
     roles[ProfilePicRole] = "profilePic";
     roles[UsernameRole] = "username";
     roles[FreshMsgCountRole] = "freshMsgCount";
@@ -103,6 +104,16 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
         case AccountsModel::IsConfiguredRole:
             tempBool = dc_is_configured(tempContext);
             retval = tempBool;
+            break;
+
+        case AccountsModel::IsMutedRole:
+            tempText = dc_get_config(tempContext, "ui.desktop.muted");
+            tempQString = tempText;
+            if (tempQString == "1") {
+                retval = true;
+            } else {
+                retval = false;
+            }
             break;
 
         case AccountsModel::ProfilePicRole:
@@ -410,7 +421,8 @@ int AccountsModel::noOfChatRequestsInInactiveAccounts()
     uint32_t currentAccID = m_deltaHandler->getCurrentAccountId();
 
     for (size_t i = 0; i < m_chatRequests.size(); ++i) {
-        if (m_chatRequests[i].accID != currentAccID) {
+        uint32_t tempAccId = m_chatRequests[i].accID;
+        if (tempAccId != currentAccID && !accountIsMuted(tempAccId)) {
             retval += static_cast<int>(m_chatRequests[i].contactRequestChatIDs.size());
         }
     }
@@ -426,7 +438,7 @@ int AccountsModel::noOfFreshMsgsInInactiveAccounts()
 
     for (size_t i = 0; i < dc_array_get_cnt(m_accountsArray); ++i) {
         uint32_t tempAccID = dc_array_get_id(m_accountsArray, i);
-        if (tempAccID != currentAccID) {
+        if (tempAccID != currentAccID && !accountIsMuted(tempAccID)) {
             retval += getNumberOfFreshMsgs(tempAccID);
         }
     }
@@ -612,4 +624,62 @@ int AccountsModel::getNumberOfFreshMsgs(uint32_t tempAccID) const
     QJsonArray jsonArray = jsonObj.value("result").toArray();
 
     return jsonArray.size();
+}
+
+
+bool AccountsModel::accountIsMuted(uint32_t accID)
+{
+    dc_context_t* tempContext = dc_accounts_get_account(m_accountsManager, accID);
+
+    if (!tempContext) {
+        return false;
+    }
+
+    char* tempText = dc_get_config(tempContext, "ui.desktop.muted");
+    QString tempQString = tempText;
+
+    dc_context_unref(tempContext);
+    dc_str_unref(tempText);
+
+    if (tempQString == "1") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+void AccountsModel::muteUnmuteAccountById(uint32_t accID)
+{
+    dc_context_t* tempContext = dc_accounts_get_account(m_accountsManager, accID);
+
+    if (!tempContext) {
+        return;
+    }
+
+    char* tempText = dc_get_config(tempContext, "ui.desktop.muted");
+    QString tempQString = tempText;
+
+    dc_str_unref(tempText);
+
+    if (tempQString == "1") {
+        dc_set_config(tempContext, "ui.desktop.muted", "0");
+    } else {
+        dc_set_config(tempContext, "ui.desktop.muted", "1");
+    }
+
+    dc_context_unref(tempContext);
+
+
+    // notify the view that the model has changed
+    if (m_accountsArray) {
+        for (size_t i = 0; i < dc_array_get_cnt(m_accountsArray); ++i) {
+            if (accID == dc_array_get_id(m_accountsArray, i)) {
+                dataChanged(index(i, 0), index(i, 0)); 
+                break;
+            }
+        }
+    }
+
+    emit inactiveFreshMsgsMayHaveChanged();
 }

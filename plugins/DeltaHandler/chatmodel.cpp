@@ -918,6 +918,9 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
         // to check whether there are messages that are included in the count from
         // dc_get_fresh_msg_count, but are not in the freshMsgs vector
         emit markedAllMessagesSeen();
+    } else {
+        // it's a contact request, just delete possible notifications
+        m_dhandler->deleteActiveNotificationTags(m_dhandler->getCurrentAccountId(), m_chatID);
     }
 
     // insert an info message "Unread messages" above the first unread message

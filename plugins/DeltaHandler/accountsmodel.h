@@ -46,7 +46,7 @@ public:
 
     // IsClosedRole is for checking whether the account is an encrypted one. It
     // doesn't say whether the account has already been opened or not.
-    enum { AddrRole, IsConfiguredRole, ProfilePicRole, UsernameRole, IsClosedRole, FreshMsgCountRole, ChatRequestCountRole };
+    enum { AddrRole, IsConfiguredRole, IsMutedRole, ProfilePicRole, UsernameRole, IsClosedRole, FreshMsgCountRole, ChatRequestCountRole };
 
     // TODO: reference to DeltaHandler really needed?
     void configure(dc_accounts_t* accMngr, DeltaHandler* dHandler);
@@ -67,6 +67,10 @@ public:
 
     Q_INVOKABLE int noOfFreshMsgsInInactiveAccounts();
     
+    bool accountIsMuted(uint32_t accID);
+
+    Q_INVOKABLE void muteUnmuteAccountById(uint32_t accID);
+
     // QAbstractListModel interface
     virtual int rowCount(const QModelIndex &parent) const;
     virtual QVariant data(const QModelIndex &index, int role) const;

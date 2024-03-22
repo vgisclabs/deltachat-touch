@@ -132,14 +132,9 @@ void EmitterThread::run()
                     break;
                     
                 case DC_EVENT_INCOMING_MSG_BUNCH:
-                    eventData2Str = dc_event_get_data2_str(event);
-                    qInfo().nospace() << "Emitter: DC_EVENT_INCOMING_MSG_BUNCH" << ", account " << dc_event_get_account_id(event) << ": " << qUtf8Printable(eventData2Str);
-                    // TODO: eventData2Str contains a json with the messge IDs.
-                    // From the DC documentation:
-                    // This is an event to allow the UI to only show one notification per
-                    // message bunch, instead of cluttering the user with many
-                    // notifications. For each of the msg_ids, an additional
-                    // DC_EVENT_INCOMING_MSG event was emitted before.
+                    // TODO: might be removed from the event soon
+                    qInfo().nospace() << "Emitter: DC_EVENT_INCOMING_MSG_BUNCH" << ", account " << dc_event_get_account_id(event);
+                    emit incomingMsgBunch(dc_event_get_account_id(event));
                     break;
                     
                 case DC_EVENT_INFO: 

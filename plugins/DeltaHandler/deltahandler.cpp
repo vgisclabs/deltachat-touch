@@ -30,7 +30,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}, m_signalQueue_newMsgForInactiveAcc {false}
+    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_notifTagsToDeletePendingReply {false}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
 {
     // Determine if the app is running on Ubuntu Touch
     // and if it is in desktop mode
@@ -148,10 +148,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
         qDebug() << "Setting \"encrypted database\" is off";
     }
 
-    // Get the previous push notification (needed if "aggregate
-    // system notifications" is set)
-    m_lastTag = settings->value("settingsLastTag").toByteArray();
-
     m_chatmodel = new ChatModel();
     // TODO: should be something like chatIsCurrentlyViewed or
     // similar because the only time the variable is used is
@@ -160,7 +156,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     // currently shown to the user.
     // Also, the page that shows the chat needs to set it to false
     // when the page is destroyed.
-    chatmodelIsConfigured = false;
+    currentChatIsOpened = false;
 
     m_accountsmodel = new AccountsModel();
 
@@ -192,6 +188,8 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     // will be started later
     eventThread = new EmitterThread(allAccounts);
+
+    m_notificationGenerator = new NotificationGenerator(this, allAccounts, eventThread, m_accountsmodel);
 
     m_jsonrpcInstance = dc_jsonrpc_init(allAccounts);
 
@@ -486,6 +484,7 @@ void DeltaHandler::loadSelectedAccount()
         // may not be called if there's no configured context
         // in this dc_accounts_t
         m_currentAccID = dc_get_id(currentContext);
+        m_notificationGenerator->setCurrentAccId(m_currentAccID);
 
         if (dc_is_configured(currentContext)) {
             m_hasConfiguredAccount = true;
@@ -535,6 +534,16 @@ void DeltaHandler::loadSelectedAccount()
 uint32_t DeltaHandler::getCurrentAccountId() const
 {
     return m_currentAccID;
+}
+
+
+int DeltaHandler::getCurrentChatId() const
+{
+    if (!currentChatIsOpened) {
+        return -1;
+    } else {
+        return currentChatID;
+    }
 }
 
 
@@ -1339,7 +1348,7 @@ void DeltaHandler::openChat()
         }
 
         m_chatmodel->configure(currentChatID, currentContext, this, freshMessagesOfChat, contactRequest);
-        chatmodelIsConfigured = true;
+        currentChatIsOpened = true;
 
         emit openChatViewRequest(m_currentAccID, currentChatID);
     }
@@ -1515,13 +1524,15 @@ void DeltaHandler::selectAccount(int myindex)
         emit clearChatlistQueryRequest();
     }
 
-    chatmodelIsConfigured = false;
+    currentChatIsOpened = false;
 
     endResetModel();
 
     emit accountChanged();
     
     dc_array_unref(contextArray);
+
+    m_notificationGenerator->removeSummaryNotification(m_currentAccID);
 }
 
 
@@ -1532,7 +1543,7 @@ void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
 
         m_signalQueue_chatsDataChanged.push(chatID);
 
-        if (currentChatID == chatID && chatmodelIsConfigured) {
+        if (currentChatID == chatID && currentChatIsOpened) {
             m_signalQueue_msgs.push(msgID);
         }
     }
@@ -1820,6 +1831,9 @@ void DeltaHandler::processSignalQueue()
         // call deleteActiveNotificationTags for all concerned account/chat combinations
         for (size_t i = 0; i < structsToConsider.size(); ++i) {
             AccIdAndChatIdStruct tempStruct = structsToConsider[i];
+            // TODO: need to take care of the fact that when deleteActiveNotificationTags
+            // returns, the notification has NOT been deleted yet - the actual
+            // deletion will happen upon processing a signal triggered by DBus
             deleteActiveNotificationTags(tempStruct.accID, tempStruct.chatID);
         }
     }
@@ -1828,18 +1842,6 @@ void DeltaHandler::processSignalQueue()
         // Inform m_accountsmodel about changes.
         m_accountsmodel->updateFreshMsgCountAndContactRequests(m_signalQueue_accountsmodelInfo);
         m_signalQueue_accountsmodelInfo.resize(0);
-    }
-
-    {
-        // if at least one incoming message was received for an 
-        // account that is not the currently active one, notify
-        // the GUI
-        // TODO: Check whether it's a contact request? For now,
-        // this is a simple solution.
-        if (m_signalQueue_newMsgForInactiveAcc) {
-            emit newMessageForInactiveAccount();
-            m_signalQueue_newMsgForInactiveAcc = false;
-        }
     }
 }
 
@@ -1879,7 +1881,7 @@ void DeltaHandler::messagesNoticed(uint32_t accID, int chatID)
 
 void DeltaHandler::chatDataModifiedReceived(uint32_t accID, int chatID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
+    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
         emit chatDataChanged();
     }
 
@@ -1921,169 +1923,18 @@ void DeltaHandler::incomingMessage(uint32_t accID, int chatID, int msgID)
             std::array<uint32_t, 2> tempStdArr {msgID, chatID};
             freshMsgs.push_back(tempStdArr);
         }
-    } else {
-        m_signalQueue_newMsgForInactiveAcc = true;
     }
-
-    sendNotification(accID, chatID, msgID);
 
     messagesChanged(accID, chatID, msgID);
-}
 
-
-void DeltaHandler::sendNotification(uint32_t accID, int chatID, int msgID)
-{
-    if (!m_enablePushNotifications) {
-        // disabled in the settings
-        return;
-    }
-
-    if (accID == m_currentAccID && chatID == currentChatID && chatmodelIsConfigured && QGuiApplication::applicationState() == Qt::ApplicationActive) {
-        // don't send a notification if the user is looking at the chat
-        return;
-    }
-
-    if (accID == m_currentAccID && !chatmodelIsConfigured && QGuiApplication::applicationState() == Qt::ApplicationActive) {
-        // don't send a notification if the user is looking at the chatlist of
-        // the account for which a message was received
-        return;
-    }
-
-    dc_context_t* tempContext = dc_accounts_get_account(allAccounts, accID);
-
-    if (!tempContext) {
-        qDebug() << "DeltaHandler::sendNotification(): ERROR: tempContect is NULL";
-        return;
-    }
-
-    dc_chat_t* tempChat = dc_get_chat(tempContext, chatID);
-
-    if (!tempChat) {
-        qDebug() << "DeltaHandler::sendNotification(): ERROR: tempChat is NULL";
-        dc_context_unref(tempContext);
-        return;
-    }
-
-    if (dc_chat_is_muted(tempChat)) {
-        // don't create notification if the chat is muted
-        dc_chat_unref(tempChat);
-        dc_context_unref(tempContext);
-        return;
-    }
-
-    QString accNumberString;
-    accNumberString.setNum(accID);
-
-    QString chatNumberString;
-    chatNumberString.setNum(chatID);
-
-    QString msgNumberString;
-    msgNumberString.setNum(msgID);
-
-    // the email address of the user
-    QString accNameString("?");
-    char* tempText = dc_get_config(tempContext, "mail_user");
-    if (tempText) {
-        accNameString = tempText;
-        dc_str_unref(tempText);
-        tempText = nullptr;
-    } 
-
-    QString chatNameString("?");
-    tempText = dc_chat_get_name(tempChat);
-    if (tempText) {
-        chatNameString = tempText;
-        dc_str_unref(tempText);
-        tempText = nullptr;
-    }
-
-    dc_msg_t* tempMsg = dc_get_msg(tempContext, msgID);
-    if (!tempMsg) {
-        qDebug() << "DeltaHandler::sendNotification(): ERROR: tempMsg is NULL";
-        dc_chat_unref(tempChat);
-        dc_context_unref(tempContext);
-        return;
-    }
-
-    dc_lot_t* tempLot = dc_msg_get_summary(tempMsg, tempChat);
-
-    QString fromString;
-    tempText = dc_msg_get_override_sender_name(tempMsg);
-    if (!tempText) {
-        tempText = dc_contact_get_display_name(dc_get_contact(tempContext, dc_msg_get_from_id(tempMsg)));
-        fromString = tempText;
-    } else {
-        fromString = "~";
-        fromString += tempText;
-        dc_str_unref(tempText);
-        tempText = nullptr;
-    }
-
-    QString messageExcerpt("?");
-    tempText = dc_lot_get_text2(tempLot);
-    if (tempText) {
-        messageExcerpt = tempText;
-        dc_str_unref(tempText);
-        tempText = nullptr;
-    }
-
-    QString icon("");
-
-    if (m_detailedPushNotifications) {
-    // only show name of sender + content of message
-    // if m_detailedPushNotifications is set
-    //
-    // Get the avatar of the user or group
-        tempText = dc_chat_get_profile_image(tempChat);
-        if (tempText) {
-            icon = tempText;
-            dc_str_unref(tempText);
-            tempText = nullptr;
-        }
-
-        createNotification(fromString, messageExcerpt, accNumberString + "_" + chatNumberString + "_" + msgNumberString, icon);
-    } else { // if (m_detailedPushNotifications)
-        // m_detailedPushNotifications is not set, just send generic notification
-        //
-        // Instead of the avatar of the user or group, the DeltaTouch icon is used
-        QString icon;
-        QFile logoFile(":assets/logo.svg");
-        logoFile.copy(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logo.svg");
-        icon = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/logo.svg";
-
-        createNotification(C::gettext("New message"), C::gettext("New message"), accNumberString + "_" + chatNumberString + "_" + msgNumberString, icon);
-    }
-
-    dc_msg_unref(tempMsg);
-    dc_chat_unref(tempChat);
-    dc_context_unref(tempContext);
-
-    if (tempLot) {
-        dc_lot_unref(tempLot);
-    }
-}
-
-void DeltaHandler::setEnablePushNotifications(bool enabled)
-{
-    m_enablePushNotifications = enabled;
-}
-
-
-void DeltaHandler::setDetailedPushNotifications(bool detailed)
-{
-    m_detailedPushNotifications = detailed;
-}
-
-
-void DeltaHandler::setAggregatePushNotifications(bool aggregate)
-{
-    m_aggregateNotifications = aggregate;
+    // notifications are handled via m_notificationGenerator which
+    // is connected to the incoming message event as well
 }
 
 
 void DeltaHandler::messageReadByRecipient(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
+    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
         emit messageRead(msgID);
     }
 
@@ -2101,7 +1952,7 @@ void DeltaHandler::messageReadByRecipient(uint32_t accID, int chatID, int msgID)
 
 void DeltaHandler::messageDeliveredToServer(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
+    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
         emit messageDelivered(msgID);
     }
     
@@ -2119,7 +1970,7 @@ void DeltaHandler::messageDeliveredToServer(uint32_t accID, int chatID, int msgI
 
 void DeltaHandler::messageFailedSlot(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
+    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
         emit messageFailed(msgID);
     }
 
@@ -2137,7 +1988,7 @@ void DeltaHandler::messageFailedSlot(uint32_t accID, int chatID, int msgID)
 
 void DeltaHandler::msgReactionsChanged(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && chatmodelIsConfigured) {
+    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
         emit messageReaction(msgID);
     }
 }
@@ -2145,7 +1996,7 @@ void DeltaHandler::msgReactionsChanged(uint32_t accID, int chatID, int msgID)
 
 QString DeltaHandler::chatName()
 {
-    if (chatmodelIsConfigured) {
+    if (currentChatIsOpened) {
         dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
         char* tempName = dc_chat_get_name(tempChat);
         QString name = tempName;
@@ -2620,7 +2471,7 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
             emit clearChatlistQueryRequest();
         }
 
-        chatmodelIsConfigured = false;
+        currentChatIsOpened = false;
 
         if (restartNetwork) {
             start_io();
@@ -2702,7 +2553,7 @@ void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
             start_io();
         }
 
-        chatmodelIsConfigured = false;
+        currentChatIsOpened = false;
 
         if (!m_hasConfiguredAccount) {
             m_hasConfiguredAccount = true;
@@ -2755,6 +2606,14 @@ void DeltaHandler::chatCreationReceiver(uint32_t chatID)
 }
 
 
+void DeltaHandler::appIsActiveAgainActions()
+{
+    if (!currentChatIsOpened) {
+        m_notificationGenerator->removeSummaryNotification(m_currentAccID);
+    }
+}
+
+
 void DeltaHandler::unrefTempContext()
 {
     if (tempContext != currentContext) {
@@ -2784,6 +2643,7 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
         dc_context_unref(currentContext);
         currentContext = nullptr;
         m_currentAccID = 0;
+        m_notificationGenerator->setCurrentAccId(m_currentAccID);
         m_chatlistVector.resize(0);
         if (m_hasConfiguredAccount) {
             m_hasConfiguredAccount = false;
@@ -2858,6 +2718,7 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
             currentContext = dc_accounts_get_account(allAccounts, accountToSwitchTo);
             // not calling contextSetupTasks() here as the context is not configured
             m_currentAccID = dc_get_id(currentContext);
+            m_notificationGenerator->setCurrentAccId(m_currentAccID);
 
             // TODO restarting network in this case makes no sense
             if (restartNetwork) {
@@ -2873,7 +2734,7 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
             m_hasConfiguredAccount = !m_hasConfiguredAccount;
             emit hasConfiguredAccountChanged();
         }
-            //chatmodelIsConfigured = false; // should be set by the
+            //currentChatIsOpened = false; // should be set by the
             //chatview page, see comment on introduction of this
             //variable
 
@@ -4439,6 +4300,13 @@ EmitterThread* DeltaHandler::emitterthread()
 }
 
 
+NotificationGenerator* DeltaHandler::notificationGenerator()
+{
+    return m_notificationGenerator;
+}
+
+
+
 WorkflowDbToEncrypted* DeltaHandler::workflowdbencryption()
 {
     if (m_workflowDbEncryption) {
@@ -4480,8 +4348,9 @@ void DeltaHandler::chatViewIsClosed(bool gotoQrScanPage)
         processSignalQueue();
     }
 
-    chatmodelIsConfigured = false;
+    currentChatIsOpened = false;
     emit chatViewClosed(gotoQrScanPage);
+    m_notificationGenerator->removeSummaryNotification(m_currentAccID);
 }
 
 
@@ -4779,42 +4648,9 @@ void DeltaHandler::setCoreTranslations()
 }
 
 
-void DeltaHandler::createNotification(QString summary, QString body, QString tag, QString icon)
-{
-    qDebug() << "DeltaHandler::createNotification(): creating tag " << tag;
-    qDebug() << "DeltaHandler::createNotification(): icon is " << icon;
-    QDBusConnection bus = QDBusConnection::sessionBus();
-
-    QString appid("deltatouch.lotharketterer_deltatouch");
-    QString path;
-    QDBusMessage message;
-
-    path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
-    message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "Post");
-
-    // replace_tag doesn't work, maybe it's positioned wrongly?
-    QString mynotif("{\"message\": \"foobar\", \"notification\":{\"tag\": \"" + tag + "\", \"card\": {\"summary\": \"" + summary + "\", \"body\": \"" + body + "\", \"popup\": true, \"persist\": true, \"icon\": \"" + icon + "\"}, \"sound\": true, \"vibrate\": {\"pattern\": [200], \"duration\": 200, \"repeat\": 1 }}}");
-
-    message << appid << mynotif;
-    bus.send(message);
-//    QDBusPendingCall pcall = bus.asyncCall(message);
-//    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
-//    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
-    
-    if (m_lastTag != "" && m_aggregateNotifications) {
-        removeNotification(m_lastTag);
-    }
-    m_lastTag = tag;
-    settings->setValue("settingsLastTag", m_lastTag);
-}
-
 void DeltaHandler::removeNotification(QString tag)
 {
     qDebug() << "DeltaHandler::removeNotification(): removing tag " << tag;
-    // remove the notification with m_lastTag as default
-    if (tag == "") {
-        tag = m_lastTag;
-    }
 
     QDBusConnection bus = QDBusConnection::sessionBus();
 
@@ -4839,17 +4675,22 @@ void DeltaHandler::removeNotification(QString tag)
 }
 
 
-
 void DeltaHandler::deleteActiveNotificationTags(uint32_t accID, int chatID)
 {
-    // fill m_tagsToDelete with the current accID and chatID
+    // fill m_notificationTagsToDelete with the current accID and chatID
     QString accNumberString;
     accNumberString.setNum(accID);
 
     QString chatNumberString;
     chatNumberString.setNum(chatID);
 
-    m_tagsToDelete = accNumberString + "_" + chatNumberString + "_";
+    m_notificationTagsToDelete.push_back(QString(accNumberString + "_" + chatNumberString + "_"));
+
+    if (m_notifTagsToDeletePendingReply) {
+        // the DBus method ListPersistent has already
+        // been called, we're waiting for the response
+        return;
+    }
 
     // Query com.[ubuntu|lomiri].Postal for the tags of the currently active
     // notifications
@@ -4873,12 +4714,6 @@ void DeltaHandler::deleteActiveNotificationTags(uint32_t accID, int chatID)
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
     // Actual removal will be done in the slot which receives
     // the response to our call to Postal.
-    // CAVE: In theory, there's a race condition if m_tagsToDelete
-    // is modified before the DBus message has been received.
-    // Seems to be unlikely in case of a single person handling 
-    // multiple devices though. Also, worst case is that
-    // some notifications are not removed and the corresponding
-    // chat will still have the "Unread messages" marker
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(finishDeleteActiveNotificationTags(QDBusPendingCallWatcher*)));
 }
 
@@ -4888,6 +4723,7 @@ void DeltaHandler::finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* c
     // This method will remove active notifications if the corresponding
     // message has been marked read on another device, in which case
     // the event DC_EVENT_MSGS_NOTICED is received.
+    m_notifTagsToDeletePendingReply = false;
     
     // Make sure the type of QDBusPendingReply matches the signature of the
     // expected DBus response. In this case, the signature is "as" (== array
@@ -4897,53 +4733,60 @@ void DeltaHandler::finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* c
     if (reply.isError()) {
         QDBusError myerror = reply.error();
         qDebug() << "DeltaHandler::finishDeleteActiveNotificationTags(): DBus error " << myerror.name() << ", message is: " << myerror.message();
+        // erase the vector to avoid it growing forever in case of constant DBus errors
+        m_notificationTagsToDelete.resize(0);
 
     } else { // no error, got valid DBus reply
+        for (size_t j = 0; j < m_notificationTagsToDelete.size(); ++j) {
+            // the tags of the currently active notifications
+            QStringList taglist = reply.argumentAt<0>();
 
-        // the tags of the currently active notifications
-        QStringList taglist = reply.argumentAt<0>();
+            // Get the context of the account for which the DC_EVENT_MSGS_NOTICED event
+            // was received. Its ID is the first part of m_notificationTagsToDelete[j].
+            dc_context_t* tempCon {nullptr};
 
-        // Get the context of the account for which the DC_EVENT_MSGS_NOTICED event
-        // was received. Its ID is the first part of m_tagsToDelete.
-        dc_context_t* tempCon {nullptr};
-
-        if (taglist.size() > 0) {
-            QString accIDString = m_tagsToDelete;
-            // Removing everything starting from the first '_' gets accID as string
-            int indexFirstUnderscore = accIDString.indexOf('_');
-            accIDString.remove(indexFirstUnderscore, accIDString.size() - indexFirstUnderscore);
-            uint32_t tempAccID = accIDString.toUInt();
-            tempCon = dc_accounts_get_account(allAccounts, tempAccID);
-        }
-
-        for (int i = 0; i < taglist.size(); ++i) {
-            if (taglist.at(i).startsWith(m_tagsToDelete)) {
-                // Notification with the current tag belongs to the context and
-                // chat in question. Now check if the corresponding message has
-                // actually been read, and only remove its notification if yes.
-                // To check this, we need the message ID in addition to the context.
-
-                // Get the message ID of the current tag
-                // Tags are <accID>_<chatID_<msgID>
-                QStringList templist = taglist.at(i).split('_');
-                uint32_t tempMsgID = templist.at(2).toUInt();
-
-                dc_msg_t* tempMsg = dc_get_msg(tempCon, tempMsgID);
-
-                // check if the message has been marked seen and remove, if yes
-                if (dc_msg_get_state(tempMsg) == DC_STATE_IN_SEEN) {
-                    removeNotification(taglist.at(i));
-                } 
-
-                if (tempMsg) {
-                    dc_msg_unref(tempMsg);
-                }
+            if (taglist.size() > 0) {
+                QString accIDString = m_notificationTagsToDelete[j];
+                // Removing everything starting from the first '_' gets accID as string
+                int indexFirstUnderscore = accIDString.indexOf('_');
+                accIDString.remove(indexFirstUnderscore, accIDString.size() - indexFirstUnderscore);
+                uint32_t tempAccID = accIDString.toUInt();
+                tempCon = dc_accounts_get_account(allAccounts, tempAccID);
             }
-        } // for
 
-        if (tempCon) {
-            dc_context_unref(tempCon);
+            for (int i = 0; i < taglist.size(); ++i) {
+                if (taglist.at(i).startsWith(m_notificationTagsToDelete[j])) {
+                    // Notification with the current tag belongs to the context and
+                    // chat in question. Now check if the corresponding message has
+                    // actually been read, and only remove its notification if yes.
+                    // To check this, we need the message ID in addition to the context.
+
+                    // Get the message ID of the current tag
+                    // Tags are <accID>_<chatID_<msgID>
+                    QStringList templist = taglist.at(i).split('_');
+                    uint32_t tempMsgID = templist.at(2).toUInt();
+
+                    dc_msg_t* tempMsg = dc_get_msg(tempCon, tempMsgID);
+
+                    // check if the message has been marked seen and remove, if yes
+                    if (dc_msg_get_state(tempMsg) == DC_STATE_IN_SEEN) {
+                        removeNotification(taglist.at(i));
+                    } 
+
+                    if (tempMsg) {
+                        dc_msg_unref(tempMsg);
+                    }
+                }
+            } // for
+
+            if (tempCon) {
+                dc_context_unref(tempCon);
+            }
         }
+
+        // don't forget to empty the cache
+        m_notificationTagsToDelete.resize(0);
+
     } // else { // no error, got valid DBus reply
     call->deleteLater();
 }
@@ -5025,6 +4868,7 @@ void DeltaHandler::contextSetupTasks()
     dc_chatlist_unref(tempChatlist);
 
     m_currentAccID = dc_get_id(currentContext);
+    m_notificationGenerator->setCurrentAccId(m_currentAccID);
 
     m_contactsmodel->updateContext(currentContext);
 
@@ -5115,7 +4959,7 @@ void DeltaHandler::resetCurrentChatMessageCount()
     size_t endpos = freshMsgs.size();
     while (i < endpos) {
         if (freshMsgs[i][1] == currentChatID) {
-            // assemble the tag of the message (see sendNotification())
+            // assemble the tag of the message (see sendDetailedNotification())
             QString accNumberString;
             accNumberString.setNum(m_currentAccID);
 
@@ -5170,7 +5014,7 @@ void DeltaHandler::resetCurrentChatMessageCount()
                 dc_markseen_msgs(currentContext, &tempMsgID, 1);
 
                 // remove notification that might be present, for that
-                // assemble the tag of the message (see sendNotification())
+                // assemble the tag of the message (see sendDetailedNotification())
                 QString accNumberString;
                 accNumberString.setNum(m_currentAccID);
 
@@ -5321,13 +5165,17 @@ void DeltaHandler::shutdownTasks()
 
 void DeltaHandler::removeClosedAccountFromList(uint32_t accID)
 {
+    size_t i = 0;
     size_t endpos = m_closedAccounts.size();
-    for (size_t i = 0; i < endpos; ++i) {
+    while (i < endpos) {
         if (m_closedAccounts[i] == accID) {
             qDebug() << "DeltaHandler::removeClosedAccountFromList(): removing account ID " << m_closedAccounts[i] << " from list of closed accounts";
             m_closedAccounts.erase(m_closedAccounts.begin() + i);
             --endpos;
             // could break now, but don't in case an account ID is listed twice
+        } else {
+            // only increase i if no item is removed from m_closedAccounts
+            ++i;
         }
     }
 

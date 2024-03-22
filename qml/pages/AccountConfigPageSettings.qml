@@ -29,17 +29,18 @@ Dialog {
     property bool showContactRequests
 
     Rectangle {
-        width: dialog.width
+        width: dialog.contentWidth
         height: experimentalSettingsLabel.contentHeight + units.gu(1)
 
         color: theme.palette.normal.background
 
         Label {
             id: experimentalSettingsLabel
-            width: dialog.width - experimentalSettingsSwitch.width - units.gu(1)
+            width: parent.width - experimentalSettingsSwitch.width - units.gu(1)
+            anchors.left: parent.left
             // String not translated yet!
-            text: i18n.tr("Show experimental settings")
-            wrapMode: Text.WordWrap
+            text: i18n.tr("Experimental Features")
+            wrapMode: Text.Wrap
         }
 
         Switch {
@@ -50,12 +51,6 @@ Dialog {
         }
     }
 
-    Item {
-        // spacer item
-        width: units.gu(1)
-        height: units.gu(1)
-    }
-
     Rectangle {
         width: dialog.width
         height: contactReqLabel.contentHeight + units.gu(1)
@@ -64,10 +59,11 @@ Dialog {
 
         Label {
             id: contactReqLabel
-            width: dialog.width - contactRequestsSwitch.width - units.gu(1)
+            width: parent.width - contactRequestsSwitch.width - units.gu(1)
+            anchors.left: parent.left
             // String not translated yet!
-            text: i18n.tr("Show contact requests")
-            wrapMode: Text.WordWrap
+            text: i18n.tr("Include contact requests in counters and notifications")
+            wrapMode: Text.Wrap
         }
 
         Switch {
@@ -83,7 +79,11 @@ Dialog {
         color: theme.palette.normal.positive
         onClicked: {
             root.showAccountsExperimentalSettings = experimentalSettingsSwitch.checked
-            root.accountConfigPageShowContactRequests = contactRequestsSwitch.checked
+            
+            root.notifyContactRequests = contactRequestsSwitch.checked
+            DeltaHandler.notificationGenerator.setNotifyContactRequests(contactRequestsSwitch.checked)
+            root.refreshOtherAccsIndicator()
+            
             PopupUtils.close(dialog)
         }
     }

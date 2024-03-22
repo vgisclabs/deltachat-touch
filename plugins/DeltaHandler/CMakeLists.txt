@@ -13,6 +13,7 @@ set(
     contactsmodel.cpp
     chatlistmodel.cpp
     groupmembermodel.cpp
+    notificationGenerator.cpp
     workflowConvertDbToEncrypted.cpp
     workflowConvertDbToUnencrypted.cpp
 )

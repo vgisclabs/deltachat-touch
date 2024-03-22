@@ -36,6 +36,10 @@ Page {
         // page?
         // See also comments in Main.qml
         root.inactiveAccsNewMsgsSinceLastCheck = false
+
+        // With 0 as parameter, a possible summary notification is removed that
+        // was generated if notifs are configured to contain no detail.
+        DeltaHandler.notificationGenerator.removeSummaryNotification(0)
     }
 
     function loadAddAccountPage() {
@@ -189,7 +193,7 @@ Page {
                     PopupUtils.open(Qt.resolvedUrl(
                         "AccountConfigPageSettings.qml"),
                         null,
-                        { "experimentalEnabled": root.showAccountsExperimentalSettings, "showContactRequests": root.accountConfigPageShowContactRequests }
+                        { "experimentalEnabled": root.showAccountsExperimentalSettings, "showContactRequests": root.notifyContactRequests }
                     )
                 }
             },
@@ -323,6 +327,13 @@ Page {
                         { text: tempString }
                     )
                 }
+            },
+            Action {
+                iconName: "audio-speakers-muted-symbolic"
+                onTriggered: {
+                    let tempAccID = DeltaHandler.accountsmodel.getIdOfAccount(value)
+                    DeltaHandler.accountsmodel.muteUnmuteAccountById(tempAccID)
+                }
             }
         ]
     }
@@ -338,6 +349,7 @@ Page {
 
             property int chatRequestCount: model.chatRequestCount
             property int freshMsgCount: model.freshMsgCount
+            property bool isMuted: model.isMuted
 
             onClicked: {
                 if (model.isConfigured) {
@@ -372,10 +384,10 @@ Page {
                 } // end of LomiriShape id:profilePicShape
 
                 Rectangle {
-                    id: configStatusRect
+                    id: trailingIconsRect
                     SlotsLayout.position: SlotsLayout.Trailing
                     height: units.gu(3)
-                    width: (configStatusIcon.visible ? configStatusIcon.width + units.gu(1) : 0) + (newMsgCountShape.visible ? newMsgCountShape.width + units.gu(1) : 0) + units.gu(1)
+                    width: (mutedIcon.visible ? mutedIcon.width + units.gu(1) : 0) + (dbEncryptedIcon.visible ? dbEncryptedIcon.width + units.gu(1) : 0) + (contactRequestRect.visible ? contactRequestRect.width + units.gu(1) : (newMsgCountShape.visible ? newMsgCountShape.width + units.gu(1) : 0)) + units.gu(1)
                     color: accountsItem.color
                     Label {
                         id: configStatusLabel
@@ -391,25 +403,39 @@ Page {
                     }
 
                     Icon {
-                        id: configStatusIcon
+                        id: dbEncryptedIcon
                         height: units.gu(3)
                         width: height
                         color: theme.palette.normal.positive
+                        //color: root.darkmode ? "white" : "black"
                         anchors {
                             right: parent.right
-                            rightMargin: units.gu(1)
                             top: parent.top
                         }
                         name: "lock"
                         visible: model.isClosed
                     }
 
+                    Icon {
+                        id: mutedIcon
+                        height: units.gu(3)
+                        width: height
+                        color: root.darkmode ? "white" : "black"
+                        anchors {
+                            right: dbEncryptedIcon.visible ? dbEncryptedIcon.left : parent.right
+                            rightMargin: units.gu(1)
+                            top: parent.top
+                        }
+                        name: "audio-speakers-muted-symbolic"
+                        visible: isMuted
+                    }
+
                     Column {
                         anchors {
-                            verticalCenter: configStatusIcon.verticalCenter
+                            verticalCenter: dbEncryptedIcon.verticalCenter
                             //top: timestamp.bottom
                             //topMargin: units.gu(0.3) + units.gu(scaleLevel/10)
-                            right: configStatusIcon.visible ? configStatusIcon.left : parent.right
+                            right: mutedIcon.visible ? mutedIcon.left : (dbEncryptedIcon.visible ? dbEncryptedIcon.left : parent.right)
                             rightMargin: units.gu(1)
                         }
 
@@ -425,12 +451,12 @@ Page {
                                     verticalCenter: contactRequestRect.verticalCenter
                                 }
                                 text: i18n.tr('Request') + " (" + (chatRequestCount > 99 ? "99+" : chatRequestCount) + ")"
-                                fontSize: root.scaledFontSizeSmaller
-                                color: "white"
+                                fontSize: "small"
+                                color: isMuted && !root.darkmode ? "black" : "white"
                             }
-                            color: root.unreadMessageCounterColor
+                            color: isMuted ? (root.darkmode ? "#202020" : "#e0e0e0") : root.unreadMessageCounterColor
                             border.color: contactRequestLabel.color
-                            visible: root.accountConfigPageShowContactRequests && chatRequestCount > 0
+                            visible: root.notifyContactRequests && chatRequestCount > 0
                         } // Rectangle id: contactRequestRect
 
                         Item {
@@ -446,7 +472,7 @@ Page {
                             width: height
                             anchors.right: parent.right
 
-                            backgroundColor: root.unreadMessageCounterColor
+                            backgroundColor: isMuted? (root.darkmode ? "#202020" : "#e0e0e0") : root.unreadMessageCounterColor
                             
                             visible: freshMsgCount > 0 && model.isConfigured
 
@@ -460,7 +486,7 @@ Page {
                                 text: freshMsgCount > 99 ? "99+" : freshMsgCount
                                 //fontSize: root.scaledFontSizeSmaller
                                 font.bold: true
-                                color: "white"
+                                color: isMuted && !root.darkmode ? "black" : "white"
                             }
                         }
                     }

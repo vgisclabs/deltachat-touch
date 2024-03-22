@@ -34,6 +34,7 @@ class EmitterThread : public QThread {
 
     signals:
             void newMsg(uint32_t accID, int chatID, int msgID);
+            void incomingMsgBunch(uint32_t accID);
             void msgsChanged(uint32_t accID, int chatID, int msgID);
             void msgsNoticed(uint32_t accID, int chatID);
             void msgFailed(uint32_t accID, int chatID, int msgID);

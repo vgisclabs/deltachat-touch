@@ -2,6 +2,7 @@ x.x.x xxxx-xx-xx
 UI: Allow to mute accounts
 UI: Show counter for new messages in other accounts
 UI: Remove setting for notification aggregation.
+UI: Allow removal of contacts via list of contacts when creating a new chat
 Other: Limit detailed notifications to 9 per account, use summary if beyond.
 Other: Move notification code into separate class
 

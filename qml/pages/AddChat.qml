@@ -151,22 +151,21 @@ Page {
         }
     }
 
-    // TODO: Maybe use this to delete contacts? May not be an
-    // intuitive place to do so, though
-//    ListItemActions {
-//        id: leadingContactsAction
-//        actions: Action {
-//            iconName: "delete"
-//            onTriggered: {
-//                // the index is passed as parameter and can
-//                // be accessed via 'value'
-//                // TODO
-//                //PopupUtils.open(Qt.resolvedUrl('ConfirmAccountDeletion.qml'), null, {
-//                //    'accountArrayIndex': value,
-//                //})
-//            }
-//        }
-//    }
+    ListItemActions {
+        id: leadingContactsAction
+        actions: Action {
+            iconName: "delete"
+            onTriggered: {
+                // the index is passed as parameter and can be accessed via 'value'
+                let nameAndAddress = DeltaHandler.contactsmodel.getNameNAddressByIndex(value);
+                let popup = PopupUtils.open(Qt.resolvedUrl('ConfirmDialog.qml'), null, {
+                    //'dialogTitle': i18n.tr("Delete Contact"),
+                    'dialogText': i18n.tr("Delete contact %1?\n\nContacts with ongoing chats or from the system address book cannot be deleted permanently.").arg(nameAndAddress)
+                })
+                popup.confirmed.connect(function() { DeltaHandler.contactsmodel.deleteContactByIndex(value) })
+            }
+        }
+    }
 
     Component {
         id: contactsDelegate
@@ -185,7 +184,7 @@ Page {
                 }
             }
 
-//            leadingActions: leadingContactsAction
+            leadingActions: leadingContactsAction
 
             ListItemLayout {
                 id: contactsListItemLayout

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -49,6 +49,8 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const;
 
     Q_INVOKABLE void setVerifiedOnly(bool verifOnly);
+    Q_INVOKABLE QString getNameNAddressByIndex(int myindex);
+    Q_INVOKABLE void deleteContactByIndex(int myindex);
 
     void updateContext(dc_context_t* cContext);
 
@@ -94,6 +96,9 @@ private:
     std::vector<uint32_t> m_membersAlreadyInGroup;
     // stores the additionally selected members
     std::vector<uint32_t> m_newMembers;
+
+    // private methods
+    void updateContactsArray();
 };
 
 #endif // CONTACTSMODEL_H

@@ -2767,9 +2767,32 @@ bool DeltaHandler::isBackupFile(QString filePath)
         filePath.remove(0, 4);
     }
 
+    // filename, filePath, purePath, origFile refer to the actual location
+    // of the (potential) backup file
     QString fileName = filePath.section('/', -1);
     QString purePath = filePath;
     purePath.resize(filePath.length() - fileName.length());
+
+    QFile origFile(filePath);
+
+    // dc_imex_has_backup expects a directory as parameter,
+    // not a file, so to avoid that the core checks the wrong file,
+    // a dedicated directory in the cache dir is created.
+    // This directory must only contain one single file/link.
+    // Just delete the dir, if it exists, and re-create it - it
+    // should never contain anything else than a link to a
+    // potential backup file
+    QString linkdirString(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/backupfile-testdir/");
+    QDir linkDir(linkdirString);
+    linkDir.removeRecursively();
+    linkDir.mkpath(linkdirString);
+    
+    QString linkname(linkdirString + fileName);
+
+    bool success = origFile.link(linkname);
+    if (!success) {
+        qDebug() << "DeltaHandler::isBackupFile(): Could not create the link to the backup file, function will return false, backup will not succeed";
+    }
     
     if (tempContext) {
         qDebug() << "DeltaHandler::isBackupFile: tempContext is unexpectedly set, will now be unref'd";
@@ -2802,12 +2825,12 @@ bool DeltaHandler::isBackupFile(QString filePath)
         tempContext = dc_accounts_get_account(allAccounts, accID);
     }
 
-    char* tempText = dc_imex_has_backup(tempContext, purePath.toUtf8().constData());
+    char* tempText = dc_imex_has_backup(tempContext, linkdirString.toUtf8().constData());
     QString tempFile = tempText;
     
     bool isBackup;
 
-    if (tempFile == filePath) {
+    if (tempFile == linkname) {
         isBackup = true;
 
         qDebug() << "DeltaHandler::isBackupFile: yes, it is a backup file";

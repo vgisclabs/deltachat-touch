@@ -1,0 +1,11 @@
+[Desktop Entry]
+X-Desktop-File-Install-Version=0.11
+Name=DeltaTouch
+
+Comment=Messaging app based on deltachat-core-rust
+
+Exec=deltatouch.sh
+Icon=/home/droidian/bin/deltatouch/assets/logo.svg
+Terminal=false
+Type=Application
+Categories=Mobile

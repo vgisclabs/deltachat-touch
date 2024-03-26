@@ -68,6 +68,16 @@ Page {
         onDisplayTextChanged: {
             forwardMessagePage.textHasChanged(displayText)
         }
+
+        onFocusChanged: {
+            if (root.oskViaDbus) {
+                if (focus) {
+                    DeltaHandler.openOskViaDbus()
+                } else {
+                    DeltaHandler.closeOskViaDbus()
+                }
+            }
+        }
         placeholderText: i18n.tr("Search")
     }
 

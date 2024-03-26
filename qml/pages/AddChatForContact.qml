@@ -168,6 +168,16 @@ Page {
                 left: parent.left
                 leftMargin: units.gu(2)
             }
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
         }
 
         Item {
@@ -197,6 +207,16 @@ Page {
             anchors {
                 left: parent.left
                 leftMargin: units.gu(2)
+            }
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
             }
         }
     }

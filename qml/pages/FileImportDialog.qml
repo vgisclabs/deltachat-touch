@@ -60,6 +60,6 @@ FileDialog {
     }
     onRejected: {
         cancelled()
-        Qt.quit()
+        //Qt.quit()
     }
 }

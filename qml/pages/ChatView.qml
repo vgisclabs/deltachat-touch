@@ -471,6 +471,16 @@ Page {
                 messageQueryTextChanged(displayText)            }
             placeholderText: i18n.tr("Search")
             font.pixelSize: root.scaledFontSizeInPixels
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
         }
 
         Rectangle {
@@ -2091,6 +2101,20 @@ Page {
             maximumLineCount: 5
             font.pixelSize: root.scaledFontSizeInPixels
             visible: !attachmentMode
+
+            onFocusChanged: {
+                console.log("+++++++++++++ focus changed")
+                if (root.oskViaDbus) {
+                console.log("+++++++++++++ root.oskViaDbus is true")
+                    if (focus) {
+                console.log("+++++++++++++ focus is true")
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                console.log("+++++++++++++ focus is false")
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
         }
 
         LomiriShape {

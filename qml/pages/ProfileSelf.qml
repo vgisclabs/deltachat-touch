@@ -285,6 +285,16 @@ Page {
                         flickTimer.start()
                     }
                 }
+
+                onFocusChanged: {
+                    if (root.oskViaDbus) {
+                        if (focus) {
+                            DeltaHandler.openOskViaDbus()
+                        } else {
+                            DeltaHandler.closeOskViaDbus()
+                        }
+                    }
+                }
             }
 
             Label {
@@ -308,6 +318,16 @@ Page {
                     leftMargin: units.gu(2)
                 }
                 text: DeltaHandler.getCurrentSignature()
+
+                onFocusChanged: {
+                    if (root.oskViaDbus) {
+                        if (focus) {
+                            DeltaHandler.openOskViaDbus()
+                        } else {
+                            DeltaHandler.closeOskViaDbus()
+                        }
+                    }
+                }
             }
         } // Item id: flickContent
 

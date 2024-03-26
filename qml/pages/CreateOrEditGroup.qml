@@ -249,6 +249,16 @@ Page {
         autoSize: true
         maximumLineCount: 3
         //text: DeltaHandler.getCurrentxxxxxxx
+
+        onFocusChanged: {
+            if (root.oskViaDbus) {
+                if (focus) {
+                    DeltaHandler.openOskViaDbus()
+                } else {
+                    DeltaHandler.closeOskViaDbus()
+                }
+            }
+        }
     }
 
 

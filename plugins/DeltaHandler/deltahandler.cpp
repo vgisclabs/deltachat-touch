@@ -32,10 +32,14 @@ namespace C {
 DeltaHandler::DeltaHandler(QObject* parent)
     : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_notifTagsToDeletePendingReply {false}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
 {
-    // Determine if the app is running on Ubuntu Touch
-    // and if it is in desktop mode
+    // Determine if the app is running on Ubuntu Touch,
+    // if it is in desktop mode and if the on-screen
+    // keyboard shall be summoned via
+    // dbus session bus call sm.puri.OSK0 /sm/puri/OSK0 sm.puri.OSK0 SetVisible b true
     m_onUbuntuTouch = false;
     m_isDesktopMode = false;
+    m_openOskViaDbus = false;
+
 
     QProcessEnvironment procenv = QProcessEnvironment::systemEnvironment();
     QStringList sysvarlist = procenv.keys();
@@ -53,6 +57,11 @@ DeltaHandler::DeltaHandler(QObject* parent)
         if (sysvarlist.at(i) == "CLICKABLE_DESKTOP_MODE") {
             m_onUbuntuTouch = true;
             m_isDesktopMode = true;
+        }
+
+        if (sysvarlist.at(i) == "OPEN_OSK_VIA_DBUS") {
+            qDebug() << "DeltaHandler::DeltaHandler(): Found env var OPEN_OSK_VIA_DBUS, setting m_openOskViaDbus to true";
+            m_openOskViaDbus = true;
         }
     }
 
@@ -457,6 +466,12 @@ bool DeltaHandler::isDesktopMode()
 bool DeltaHandler::onUbuntuTouch()
 {
     return m_onUbuntuTouch;
+}
+
+
+bool DeltaHandler::shouldOpenOskViaDbus()
+{
+    return m_openOskViaDbus;
 }
 
 
@@ -4695,6 +4710,54 @@ void DeltaHandler::removeNotification(QString tag)
 //    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
 //    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
 
+}
+
+
+void DeltaHandler::openOskViaDbus()
+{
+    // Wait for 50 millisecs with the execution of
+    // the DBus call to show the on-screen keyboard
+    // to make sure that the open call will be
+    // later than a potential close call (if the
+    // focus switched from one TextField to another
+    // one, the one that loses focus will call close,
+    // while the one that gains focus will call open
+    // => open has to come last)
+    QTimer::singleShot(50, this, SLOT(internalOpenOskViaDbus()));
+}
+
+
+void DeltaHandler::internalOpenOskViaDbus()
+{
+    qDebug() << "DeltaHandler::openOskViaDbus()";
+    QDBusConnection bus = QDBusConnection::sessionBus();
+
+    bool param1 = true;
+    QString path;
+    QDBusMessage message;
+
+    path = "/sm/puri/OSK0";
+    message = QDBusMessage::createMethodCall("sm.puri.OSK0", path, "sm.puri.OSK0", "SetVisible");
+
+    message << param1;
+    bus.send(message);
+}
+
+
+void DeltaHandler::closeOskViaDbus()
+{
+    qDebug() << "DeltaHandler::close()";
+    QDBusConnection bus = QDBusConnection::sessionBus();
+
+    bool param1 = false;
+    QString path;
+    QDBusMessage message;
+
+    path = "/sm/puri/OSK0";
+    message = QDBusMessage::createMethodCall("sm.puri.OSK0", path, "sm.puri.OSK0", "SetVisible");
+
+    message << param1;
+    bus.send(message);
 }
 
 

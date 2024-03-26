@@ -109,6 +109,8 @@ public:
     
     Q_INVOKABLE bool onUbuntuTouch();
 
+    Q_INVOKABLE bool shouldOpenOskViaDbus();
+
     Q_INVOKABLE void loadSelectedAccount();
 
     Q_INVOKABLE uint32_t getCurrentAccountId() const;
@@ -214,6 +216,9 @@ public:
     Q_INVOKABLE void closeArchive();
 
     Q_INVOKABLE void selectAccount(int myindex);
+
+    Q_INVOKABLE void openOskViaDbus();
+    Q_INVOKABLE void closeOskViaDbus();
 
     void deleteActiveNotificationTags(uint32_t accID, int chatID);
 
@@ -631,6 +636,7 @@ private slots:
     void connectivityUpdate(uint32_t accID);
     void finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* call);
     void processSignalQueueTimerTimeout();
+    void internalOpenOskViaDbus();
 
 
 private:
@@ -743,6 +749,7 @@ private:
 
     bool m_onUbuntuTouch;
     bool m_isDesktopMode;
+    bool m_openOskViaDbus;
 
     NotificationGenerator* m_notificationGenerator;
 

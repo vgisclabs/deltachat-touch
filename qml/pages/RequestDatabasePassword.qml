@@ -41,6 +41,9 @@ Dialog {
 
     Component.onCompleted: {
         passwordField.focus = true
+        if (root.oskViaDbus) {
+            DeltaHandler.openOskViaDbus()
+        }
     }
 
     // TODO: String not translated yet!
@@ -95,6 +98,16 @@ Dialog {
 
             onAccepted: {
                 okButton.clicked()
+            }
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (passwordField.focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
             }
         }
 

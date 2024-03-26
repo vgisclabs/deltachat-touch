@@ -187,6 +187,16 @@ Page {
                         flickTimer.start()
                     }
                 }
+
+                onFocusChanged: {
+                    if (root.oskViaDbus) {
+                        if (focus) {
+                            DeltaHandler.openOskViaDbus()
+                        } else {
+                            DeltaHandler.closeOskViaDbus()
+                        }
+                    }
+                }
             }
 
             LomiriShape {

@@ -353,6 +353,8 @@ MainView {
 
     property bool onUbuntuTouch: false
 
+    property bool oskViaDbus: false
+
     // Will connect to the network if true. Offline mode if
     // set to false. Connected to the "Sync all" switch
     // in the Settings page. Setting takes effect on all
@@ -873,6 +875,16 @@ MainView {
                         }
                     }
                     visible: searchVisible && !chatOpenAlreadyClicked
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 ListItem {
@@ -1401,6 +1413,7 @@ MainView {
 
         isDesktopMode = DeltaHandler.isDesktopMode()
         onUbuntuTouch = DeltaHandler.onUbuntuTouch()
+        oskViaDbus = DeltaHandler.shouldOpenOskViaDbus()
 
         i18n.domain = "deltatouch.lotharketterer"
         if (onUbuntuTouch) {

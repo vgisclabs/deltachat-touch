@@ -74,6 +74,16 @@ Page {
             onDisplayTextChanged: {
                 addChatPage.textHasChanged(displayText)
             }
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
         }
 
         ListItem {

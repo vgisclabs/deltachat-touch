@@ -99,6 +99,16 @@ Page {
         onDisplayTextChanged: {
             addMemberToGroupPage.textHasChanged(displayText)
         }
+
+        onFocusChanged: {
+            if (root.oskViaDbus) {
+                if (focus) {
+                    DeltaHandler.openOskViaDbus()
+                } else {
+                    DeltaHandler.closeOskViaDbus()
+                }
+            }
+        }
     }
 
     Component {

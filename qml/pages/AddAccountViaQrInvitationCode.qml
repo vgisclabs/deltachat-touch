@@ -47,7 +47,7 @@ Page {
     signal deleteDecoder()
 
     Component.onDestruction: {
-        captureTimer.stop()
+        camera.stopAll()
         // emit this because a QR code to set up an account might
         // have been scanned, but the configuration was unsuccessful.
         // In this case, tempContext is set in C++, but needs to be
@@ -246,16 +246,7 @@ Page {
 
             function stopAll() {
                 captureTimer.stop()
-                // // if stop() is called, the camera will take a VERY long
-                // // time to recover. If the user switches back to the 
-                // // section with the invite code and then back to the
-                // // scanning section, the videoOutput rectangle will stay
-                // // black and no code will be scanned for a long time.
-                // // Don't know why, sometimes putting the app in the background
-                // // shortly will fix it party. But in addition, focussing will not
-                // // work after starting the camera again. So just
-                // // don't stop().
-                // stop()
+                stop()
             }
         }
 

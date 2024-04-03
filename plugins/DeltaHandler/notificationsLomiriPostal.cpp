@@ -16,55 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGuiApplication>
 #include <QFile>
 #include <QStandardPaths>
-#include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>
 #include <QDBusPendingReply>
 #include <QDBusError>
 
-#include "notificationGenerator.h"
+#include "notificationsLomiriPostal.h"
 
 namespace C {
 #include <libintl.h>
 }
 
-NotificationGenerator::NotificationGenerator(DeltaHandler* dhandler, dc_accounts_t* accounts, EmitterThread* emthread, AccountsModel* accmodel)
-    : m_dbusListPersistentReplyPending {false}, m_dbusRemoveSummaryNotifsPending {false}
-{
-    m_deltaHandler = dhandler;
-    m_accountsManager = accounts;
-    m_emitterthread = emthread;
-    m_accountsmodel = accmodel;
 
+NotificationsLomiriPostal::NotificationsLomiriPostal(DeltaHandler* dhandler, dc_accounts_t* accounts, EmitterThread* emthread, AccountsModel* accmodel, QDBusConnection* bus)
+    : NotificationHelper(dhandler, accounts, emthread, accmodel), m_dbusListPersistentReplyPending {false}, m_dbusRemoveSummaryNotifsPending {false}, m_bus {bus}, m_notifTagsToDeletePendingReply {false}
+{
     bool connectSuccess = connect(m_emitterthread, SIGNAL(newMsg(uint32_t, int, int)), this, SLOT(processIncomingMessage(uint32_t, int, int)));
     if (!connectSuccess) {
-        qFatal("NotificationGenerator::NotificationGenerator(): Could not connect signal newMsg to slot incomingMessage");
+        qFatal("NotificationsLomiriPostal::NotificationsLomiriPostal(): Could not connect signal newMsg to slot incomingMessage");
     }
 
     connectSuccess = connect(m_emitterthread, SIGNAL(incomingMsgBunch(uint32_t)), this, SLOT(processIncomingMsgBunch(uint32_t)));
     if (!connectSuccess) {
-        qFatal("NotificationGenerator::NotificationGenerator(): Could not connect signal incomingMsgBunch to slot processIncomingMsgBunch");
+        qFatal("NotificationsLomiriPostal::NotificationsLomiriPostal(): Could not connect signal incomingMsgBunch to slot processIncomingMsgBunch");
     }
 }
 
 
-NotificationGenerator::~NotificationGenerator()
+NotificationsLomiriPostal::~NotificationsLomiriPostal()
 {
     disconnect(m_emitterthread, SIGNAL(newMsg(uint32_t, int, int)), this, SLOT(incomingMessage(uint32_t, int, int)));
     disconnect(m_emitterthread, SIGNAL(incomingMsgBunch(uint32_t)), this, SLOT(processIncomingMsgBunch(uint32_t)));
 }
 
 
-void NotificationGenerator::setCurrentAccId(uint32_t newAccId)
+void NotificationsLomiriPostal::processIncomingMessage(uint32_t accID, int chatID, int msgID)
 {
-    m_currentAccID = newAccId;
-}
-
-
-void NotificationGenerator::processIncomingMessage(uint32_t accID, int chatID, int msgID)
-{
+    // When the event DC_INCOMING_MSG is received, just store the information in
+    // m_incomingMsgCache. It will be processed when the core has finished
+    // fetching the messages and emits the DC_INCOMING_MSG_BUNCH event.
+    //
     // Don't create notifications if disabled in settings or if the account is muted
     if (m_enablePushNotifications && !(m_accountsmodel->accountIsMuted(accID))) {
         m_incomingMsgCache.push_back(IncomingMsgStruct {accID, chatID, msgID});
@@ -72,28 +64,10 @@ void NotificationGenerator::processIncomingMessage(uint32_t accID, int chatID, i
 }
 
 
-void NotificationGenerator::setEnablePushNotifications(bool enabled)
-{
-    m_enablePushNotifications = enabled;
-}
-
-
-void NotificationGenerator::setDetailedPushNotifications(bool detailed)
-{
-    m_detailedPushNotifications = detailed;
-}
-
-
-void NotificationGenerator::setNotifyContactRequests(bool notifContReq)
-{
-    m_notifyContactRequests = notifContReq;
-}
-
-
-void NotificationGenerator::processIncomingMsgBunch(uint32_t accID)
+void NotificationsLomiriPostal::processIncomingMsgBunch(uint32_t accID)
 {
     // The signal for DC_EVENT_INCOMING_MSG_BUNCH is used to
-    // generate notifications.
+    // trigger notification generation.
 
     if (!m_enablePushNotifications) {
         // Notifications disabled in the settings, so just
@@ -106,10 +80,10 @@ void NotificationGenerator::processIncomingMsgBunch(uint32_t accID)
         return;
     }
 
-    // Aim is to not have more than 6 detailed notifications per
+    // Aim is to not have more than 9 detailed notifications per
     // account, including the already existing notifications.
     // The list of existing ("persistent") notifications is
-    // obtained via a DBus call to com.[ubuntu|lomiri].Postal.
+    // obtained via a DBus call to com.lomiri.Postal.
     // The response is obtained via a signal, so it's possible
     // that another call to processIncomingMsgBunch() occurs
     // while the previous one has not been processed yet. For
@@ -126,29 +100,19 @@ void NotificationGenerator::processIncomingMsgBunch(uint32_t accID)
 
     m_dbusListPersistentReplyPending = true;
 
-    QDBusConnection bus = QDBusConnection::sessionBus();
-
     QString appid("deltatouch.lotharketterer_deltatouch");
-    QString path;
     QDBusMessage message;
-
-    if (QSysInfo::productVersion() == "16.04") {
-        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "ListPersistent");
-    } else {
-        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "ListPersistent");
-    }
+    message = QDBusMessage::createMethodCall("com.lomiri.Postal", "/com/lomiri/Postal/deltatouch_2elotharketterer", "com.lomiri.Postal", "ListPersistent");
 
     message << appid;
 
-    QDBusPendingCall pcall = bus.asyncCall(message);
+    QDBusPendingCall pcall = m_bus->asyncCall(message);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(finishProcessIncomingMsgBunch(QDBusPendingCallWatcher*)));
 }
 
 
-void NotificationGenerator::finishProcessIncomingMsgBunch(QDBusPendingCallWatcher* call)
+void NotificationsLomiriPostal::finishProcessIncomingMsgBunch(QDBusPendingCallWatcher* call)
 {
     m_dbusListPersistentReplyPending = false;
 
@@ -160,8 +124,8 @@ void NotificationGenerator::finishProcessIncomingMsgBunch(QDBusPendingCallWatche
 
     if (reply.isError()) {
         QDBusError myerror = reply.error();
-        qDebug() << "NotificationGenerator::finishProcessIncomingMsgBunch(): DBus error " << myerror.name() << ", message is: " << myerror.message();
-        qDebug() << "NotificationGenerator::finishProcessIncomingMsgBunch(): Notification limit cannot be guaranteed";
+        qDebug() << "NotificationsLomiriPostal::finishProcessIncomingMsgBunch(): DBus error " << myerror.name() << ", message is: " << myerror.message();
+        qDebug() << "NotificationsLomiriPostal::finishProcessIncomingMsgBunch(): Notification limit cannot be guaranteed";
         // taglist will remain empty
     } else { // no error, got valid DBus reply
         // the tags of the currently active notifications
@@ -210,7 +174,7 @@ void NotificationGenerator::finishProcessIncomingMsgBunch(QDBusPendingCallWatche
         // should be created:
         // - muted chats
         // - contact requests if the corresponding setting is off
-        // - the chat the user is currently looking at, if
+        // - the chat the user is currently looking at, if any and if
         //   the app is active
         //
         // Cache the info about whether a notification should
@@ -218,8 +182,8 @@ void NotificationGenerator::finishProcessIncomingMsgBunch(QDBusPendingCallWatche
         struct SendNotifForChatStruct { int chatID; bool shouldSendNotification; };
         std::vector<SendNotifForChatStruct> chatInfoVec;
 
-        // The context of accID is needed for several operations later on,
-        // get it here (don't exit without unreferencing it!).
+        // The context of accID is needed for several operations later on
+        // (don't exit without unreferencing it!).
         dc_context_t* tempCon = dc_accounts_get_account(m_accountsManager, accID);
 
         // go through m_incomingMsgCache and put only those IDs for which a notification
@@ -247,7 +211,7 @@ void NotificationGenerator::finishProcessIncomingMsgBunch(QDBusPendingCallWatche
             bool isInChatInfoVec = false;
 
             // true by default, will be sent to false if any of the
-            // do-not-send conditions is fulfilled
+            // do-not-notify conditions is fulfilled
             bool needToSendNotif = true;
 
             for (size_t j = 0; j < chatInfoVec.size(); ++j) {
@@ -352,18 +316,18 @@ void NotificationGenerator::finishProcessIncomingMsgBunch(QDBusPendingCallWatche
                 for (int o = 0; o < tagsToMaybeDelete.size(); ++o) {
                     removeNotification(tagsToMaybeDelete[o]);
                 }
-                sendSummaryNotification(accID, messagesToNotify.size() + numberOfPresentNotifications, true);
+                createSummaryNotification(accID, messagesToNotify.size() + numberOfPresentNotifications, true);
             } else {
                 for (size_t l = 0; l < messagesToNotify.size(); ++l) {
                     IncomingMsgStruct tempStruct = messagesToNotify[l];
-                    sendDetailedNotification(tempStruct.accID, tempStruct.chatID, tempStruct.msgID);
+                    createDetailedNotification(tempStruct.accID, tempStruct.chatID, tempStruct.msgID);
                 }
             }
         } else { // if (m_detailedPushNotifications)
             for (int o = 0; o < tagsToMaybeDelete.size(); ++o) {
                 removeNotification(tagsToMaybeDelete[o]);
             }
-            sendSummaryNotification(0, messagesToNotify.size() + numberOfPresentNotifications, false);
+            createSummaryNotification(0, messagesToNotify.size() + numberOfPresentNotifications, false);
         }
     }
 
@@ -371,7 +335,7 @@ void NotificationGenerator::finishProcessIncomingMsgBunch(QDBusPendingCallWatche
 }
 
 
-void NotificationGenerator::sendSummaryNotification(uint32_t accID, int numberOfMessages, bool showSelfAvatar)
+void NotificationsLomiriPostal::createSummaryNotification(uint32_t accID, int numberOfMessages, bool showSelfAvatar)
 {
     QString icon;
     if (showSelfAvatar) {
@@ -425,23 +389,23 @@ void NotificationGenerator::sendSummaryNotification(uint32_t accID, int numberOf
 
     tagString.append(tempNumQStr);
 
-    createNotification(notifTitle, notifBody, tagString, icon);
+    sendNotification(notifTitle, notifBody, tagString, icon);
 }
 
 
-void NotificationGenerator::sendDetailedNotification(uint32_t accID, int chatID, int msgID)
+void NotificationsLomiriPostal::createDetailedNotification(uint32_t accID, int chatID, int msgID)
 {
     dc_context_t* tempCon = dc_accounts_get_account(m_accountsManager, accID);
 
     if (!tempCon) {
-        qWarning() << "NotificationGenerator::sendDetailedNotification(): ERROR: tempCon is NULL";
+        qWarning() << "NotificationsLomiriPostal::createDetailedNotification(): ERROR: tempCon is NULL";
         return;
     }
 
     dc_chat_t* tempChat = dc_get_chat(tempCon, chatID);
 
     if (!tempChat) {
-        qDebug() << "NotificationGenerator::sendDetailedNotification(): ERROR: tempChat is NULL";
+        qDebug() << "NotificationsLomiriPostal::createDetailedNotification(): ERROR: tempChat is NULL";
         dc_context_unref(tempCon);
         return;
     }
@@ -457,7 +421,7 @@ void NotificationGenerator::sendDetailedNotification(uint32_t accID, int chatID,
 
     dc_msg_t* tempMsg = dc_get_msg(tempCon, msgID);
     if (!tempMsg) {
-        qWarning() << "NotificationGenerator::sendDetailedNotification(): ERROR: tempMsg is NULL";
+        qWarning() << "NotificationsLomiriPostal::createDetailedNotification(): ERROR: tempMsg is NULL";
         dc_chat_unref(tempChat);
         dc_context_unref(tempCon);
         return;
@@ -465,7 +429,7 @@ void NotificationGenerator::sendDetailedNotification(uint32_t accID, int chatID,
 
     dc_lot_t* tempLot = dc_msg_get_summary(tempMsg, tempChat);
     if (!tempLot) {
-        qWarning() << "NotificationGenerator::sendDetailedNotification(): ERROR: tempLot is NULL";
+        qWarning() << "NotificationsLomiriPostal::createDetailedNotification(): ERROR: tempLot is NULL";
         dc_chat_unref(tempChat);
         dc_context_unref(tempCon);
         dc_msg_unref(tempMsg);
@@ -504,7 +468,7 @@ void NotificationGenerator::sendDetailedNotification(uint32_t accID, int chatID,
         tempText = nullptr;
     }
 
-    createNotification(fromString, messageExcerpt, accNumberString + "_" + chatNumberString + "_" + msgNumberString, icon);
+    sendNotification(fromString, messageExcerpt, accNumberString + "_" + chatNumberString + "_" + msgNumberString, icon);
 
     dc_msg_unref(tempMsg);
     dc_chat_unref(tempChat);
@@ -513,55 +477,43 @@ void NotificationGenerator::sendDetailedNotification(uint32_t accID, int chatID,
 }
 
 
-void NotificationGenerator::createNotification(QString summary, QString body, QString tag, QString icon)
+void NotificationsLomiriPostal::sendNotification(QString summary, QString body, QString tag, QString icon)
 {
-    qDebug() << "NotificationGenerator::createNotification(): creating notification with tag " << tag;
-    QDBusConnection bus = QDBusConnection::sessionBus();
+    qDebug() << "NotificationsLomiriPostal::sendNotification(): creating notification with tag " << tag;
 
-    QString appid("deltatouch.lotharketterer_deltatouch");
-    QString path;
     QDBusMessage message;
-
-    path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
-    message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "Post");
-
+    message = QDBusMessage::createMethodCall("com.lomiri.Postal", "/com/lomiri/Postal/deltatouch_2elotharketterer", "com.lomiri.Postal", "Post");
+    QString appid("deltatouch.lotharketterer_deltatouch");
     // replace_tag doesn't work, maybe it's positioned wrongly?
     QString mynotif("{\"message\": \"foobar\", \"notification\":{\"tag\": \"" + tag + "\", \"card\": {\"summary\": \"" + summary + "\", \"body\": \"" + body + "\", \"popup\": true, \"persist\": true, \"icon\": \"" + icon + "\"}, \"sound\": true, \"vibrate\": {\"pattern\": [200], \"duration\": 200, \"repeat\": 1 }}}");
 
     message << appid << mynotif;
-    bus.send(message);
-//    QDBusPendingCall pcall = bus.asyncCall(message);
-//    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
-//    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
-}
-
-
-void NotificationGenerator::removeNotification(QString tag)
-{
-    qDebug() << "NotificationGenerator::removeNotification(): removing tag " << tag;
-    QDBusConnection bus = QDBusConnection::sessionBus();
-
-    QString appid("deltatouch.lotharketterer_deltatouch");
-    QString path;
-    QDBusMessage message;
-
-    if (QSysInfo::productVersion() == "16.04") {
-        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "ClearPersistent");
-    } else {
-        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "ClearPersistent");
+    bool success = m_bus->send(message);
+    if (!success) {
+        qDebug() << "NotificationsLomiriPostal::sendNotification(): ERROR: Queueing notification with tag " << tag << " was not successful";
     }
-
-    message << appid << tag;
-    bus.send(message);
-//    QDBusPendingCall pcall = bus.asyncCall(message);
+//    QDBusPendingCall pcall = m_bus->asyncCall(message);
 //    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
 //    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
 }
 
 
-void NotificationGenerator::removeSummaryNotification(uint32_t accID)
+void NotificationsLomiriPostal::removeNotification(QString tag)
+{
+    qDebug() << "NotificationsLomiriPostal::removeNotification(): removing tag " << tag;
+
+    QDBusMessage message;
+    message = QDBusMessage::createMethodCall("com.lomiri.Postal", "/com/lomiri/Postal/deltatouch_2elotharketterer", "com.lomiri.Postal", "ClearPersistent");
+    QString appid("deltatouch.lotharketterer_deltatouch");
+    message << appid << tag;
+    m_bus->send(message);
+//    QDBusPendingCall pcall = m_bus->asyncCall(message);
+//    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
+//    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
+}
+
+
+void NotificationsLomiriPostal::removeSummaryNotification(uint32_t accID)
 {
     // Removes summary notifications for the given account ID.
     // This is triggered when the user switches to the account
@@ -581,30 +533,19 @@ void NotificationGenerator::removeSummaryNotification(uint32_t accID)
 
     m_dbusRemoveSummaryNotifsPending = true;
 
-    QDBusConnection bus = QDBusConnection::sessionBus();
-
-    QString appid("deltatouch.lotharketterer_deltatouch");
-    QString path;
     QDBusMessage message;
-
-    if (QSysInfo::productVersion() == "16.04") {
-        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "ListPersistent");
-    } else {
-        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "ListPersistent");
-    }
-
+    message = QDBusMessage::createMethodCall("com.lomiri.Postal", "/com/lomiri/Postal/deltatouch_2elotharketterer", "com.lomiri.Postal", "ListPersistent");
+    QString appid("deltatouch.lotharketterer_deltatouch");
     message << appid;
 
-    QDBusPendingCall pcall = bus.asyncCall(message);
+    QDBusPendingCall pcall = m_bus->asyncCall(message);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(finishRemoveSummaryNotification(QDBusPendingCallWatcher*)));
     // the actual removal is done by finishRemoveSummaryNotification()
 }
 
 
-void NotificationGenerator::finishRemoveSummaryNotification(QDBusPendingCallWatcher* call)
+void NotificationsLomiriPostal::finishRemoveSummaryNotification(QDBusPendingCallWatcher* call)
 {
     m_dbusRemoveSummaryNotifsPending = false;
 
@@ -616,8 +557,8 @@ void NotificationGenerator::finishRemoveSummaryNotification(QDBusPendingCallWatc
 
     if (reply.isError()) {
         QDBusError myerror = reply.error();
-        qDebug() << "NotificationGenerator::finishRemoveSummaryNotification(): DBus error " << myerror.name() << ", message is: " << myerror.message();
-        qDebug() << "NotificationGenerator::finishRemoveSummaryNotification(): Summary notification cannot be removed";
+        qDebug() << "NotificationsLomiriPostal::finishRemoveSummaryNotification(): DBus error " << myerror.name() << ", message is: " << myerror.message();
+        qDebug() << "NotificationsLomiriPostal::finishRemoveSummaryNotification(): Summary notification cannot be removed";
         // taglist will remain empty
     } else { // no error, got valid DBus reply
         // the tags of the currently active notifications
@@ -646,4 +587,108 @@ void NotificationGenerator::finishRemoveSummaryNotification(QDBusPendingCallWatc
     }
 
     m_accIDsToRemoveSummaryNotifs.resize(0);
+}
+
+
+void NotificationsLomiriPostal::removeActiveNotificationsOfChat(uint32_t accID, int chatID)
+{
+    // fill m_notificationTagsToDelete with the current accID and chatID
+    QString accNumberString;
+    accNumberString.setNum(accID);
+
+    QString chatNumberString;
+    chatNumberString.setNum(chatID);
+
+    m_notificationTagsToDelete.push_back(QString(accNumberString + "_" + chatNumberString + "_"));
+
+    if (m_notifTagsToDeletePendingReply) {
+        // the DBus method ListPersistent has already
+        // been called, we're waiting for the response
+        return;
+    }
+
+    // Query com.lomiri.Postal for the tags of the currently active notifications
+    QDBusMessage message;
+    message = QDBusMessage::createMethodCall("com.lomiri.Postal", "/com/lomiri/Postal/deltatouch_2elotharketterer", "com.lomiri.Postal", "ListPersistent");
+    QString appid("deltatouch.lotharketterer_deltatouch");
+    message << appid;
+
+    QDBusPendingCall pcall = m_bus->asyncCall(message);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
+    // Actual removal will be done in the slot which receives the response to our call to Postal.
+    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(finishRemoveActiveNotificationsOfChat(QDBusPendingCallWatcher*)));
+}
+
+
+void NotificationsLomiriPostal::finishRemoveActiveNotificationsOfChat(QDBusPendingCallWatcher* call)
+{
+    // This method will remove active notifications if the corresponding
+    // message has been marked read on another device, in which case
+    // the event DC_EVENT_MSGS_NOTICED is received.
+    m_notifTagsToDeletePendingReply = false;
+    
+    // Make sure the type of QDBusPendingReply matches the signature of the
+    // expected DBus response. In this case, the signature is "as" (== array
+    // of strings, i.e. QStringList)
+    QDBusPendingReply<QStringList> reply = *call;
+
+    if (reply.isError()) {
+        QDBusError myerror = reply.error();
+        qDebug() << "NotificationsLomiriPostal::finishRemoveActiveNotificationsOfChat(): DBus error " << myerror.name() << ", message is: " << myerror.message();
+        // erase the vector to avoid it growing forever in case of constant DBus errors
+        m_notificationTagsToDelete.resize(0);
+
+    } else { // no error, got valid DBus reply
+        for (size_t j = 0; j < m_notificationTagsToDelete.size(); ++j) {
+            // the tags of the currently active notifications
+            QStringList taglist = reply.argumentAt<0>();
+
+            // Get the context of the account for which the DC_EVENT_MSGS_NOTICED event
+            // was received. Its ID is the first part of m_notificationTagsToDelete[j].
+            dc_context_t* tempCon {nullptr};
+
+            if (taglist.size() > 0) {
+                QString accIDString = m_notificationTagsToDelete[j];
+                // Removing everything starting from the first '_' gets accID as string
+                int indexFirstUnderscore = accIDString.indexOf('_');
+                accIDString.remove(indexFirstUnderscore, accIDString.size() - indexFirstUnderscore);
+                uint32_t tempAccID = accIDString.toUInt();
+                tempCon = dc_accounts_get_account(m_accountsManager, tempAccID);
+            }
+
+            for (int i = 0; i < taglist.size(); ++i) {
+                if (taglist.at(i).startsWith(m_notificationTagsToDelete[j])) {
+                    // Notification with the current tag belongs to the context and
+                    // chat in question. Now check if the corresponding message has
+                    // actually been read, and only remove its notification if yes.
+                    // To check this, we need the message ID in addition to the context.
+
+                    // Get the message ID of the current tag
+                    // Tags are <accID>_<chatID_<msgID>
+                    QStringList templist = taglist.at(i).split('_');
+                    uint32_t tempMsgID = templist.at(2).toUInt();
+
+                    dc_msg_t* tempMsg = dc_get_msg(tempCon, tempMsgID);
+
+                    // check if the message has been marked seen and remove, if yes
+                    if (dc_msg_get_state(tempMsg) == DC_STATE_IN_SEEN) {
+                        removeNotification(taglist.at(i));
+                    } 
+
+                    if (tempMsg) {
+                        dc_msg_unref(tempMsg);
+                    }
+                }
+            } // for
+
+            if (tempCon) {
+                dc_context_unref(tempCon);
+            }
+        }
+
+        // don't forget to empty the cache
+        m_notificationTagsToDelete.resize(0);
+
+    } // else // no error
+    call->deleteLater();
 }

@@ -699,7 +699,7 @@ Page {
                             // because checkedChanged is be emitted when setting the switch at
                             // initialization
                                 root.sendPushNotifications = sysNotifsEnabledSwitch.checked
-                                DeltaHandler.notificationGenerator.setEnablePushNotifications(root.sendPushNotifications)
+                                DeltaHandler.notificationHelper.setEnablePushNotifications(root.sendPushNotifications)
                                 if (root.sendPushNotifications && root.onUbuntuTouch) {
                                     PopupUtils.open(
                                         Qt.resolvedUrl('InfoPopup.qml'),
@@ -733,7 +733,7 @@ Page {
                         onCheckedChanged: {
                             if (sysNotifsDetailedSwitch.checked != root.detailedPushNotifications) {
                                 root.detailedPushNotifications = sysNotifsDetailedSwitch.checked
-                                DeltaHandler.notificationGenerator.setDetailedPushNotifications(root.detailedPushNotifications)
+                                DeltaHandler.notificationHelper.setDetailedPushNotifications(root.detailedPushNotifications)
                             }
                         }
                     }
@@ -760,7 +760,7 @@ Page {
                         onCheckedChanged: {
                             if (notifyContRequSwitch.checked != root.notifyContactRequests) {
                                 root.notifyContactRequests = notifyContRequSwitch.checked
-                                DeltaHandler.notificationGenerator.setNotifyContactRequests(root.notifyContactRequests)
+                                DeltaHandler.notificationHelper.setNotifyContactRequests(root.notifyContactRequests)
                                 root.refreshOtherAccsIndicator()
                             }
                         }

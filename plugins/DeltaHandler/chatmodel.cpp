@@ -926,7 +926,7 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
         emit markedAllMessagesSeen();
     } else {
         // it's a contact request, just delete possible notifications
-        m_dhandler->deleteActiveNotificationTags(m_dhandler->getCurrentAccountId(), m_chatID);
+        m_dhandler->removeActiveNotificationsOfChat(m_dhandler->getCurrentAccountId(), m_chatID);
     }
 
     // insert an info message "Unread messages" above the first unread message

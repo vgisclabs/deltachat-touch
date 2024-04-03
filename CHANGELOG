@@ -5,6 +5,7 @@ UI: Remove setting for notification aggregation.
 UI: Allow removal of contacts via list of contacts when creating a new chat
 Other: Limit detailed notifications to 9 per account, use summary if beyond.
 Other: Move notification code into separate class
+Other: Enable notifications via org.freedesktop.Notification DBus service
 
 
 1.4.0 2024-03-06

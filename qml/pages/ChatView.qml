@@ -2103,14 +2103,10 @@ Page {
             visible: !attachmentMode
 
             onFocusChanged: {
-                console.log("+++++++++++++ focus changed")
                 if (root.oskViaDbus) {
-                console.log("+++++++++++++ root.oskViaDbus is true")
                     if (focus) {
-                console.log("+++++++++++++ focus is true")
                         DeltaHandler.openOskViaDbus()
                     } else {
-                console.log("+++++++++++++ focus is false")
                         DeltaHandler.closeOskViaDbus()
                     }
                 }

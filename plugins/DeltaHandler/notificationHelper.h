@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFICATIONGENERATOR_H
-#define NOTIFICATIONGENERATOR_H
+#ifndef NOTIFICATIONHELPER_H
+#define NOTIFICATIONHELPER_H
 
 #include <QObject>
 #include <QString>
-#include <vector>
 
 #include "deltachat.h"
 
@@ -33,62 +32,47 @@ class DeltaHandler;
 class EmitterThread;
 class AccountsModel;
 
+// Not needed in the abstract class, but in two subclasses
 struct IncomingMsgStruct {
     uint32_t accID;
     int chatID;
     int msgID;
 };
 
-class NotificationGenerator : public QObject {
+/* 
+ * Abstract class for notifications, cannot be instantiated. A specialized subclass has to be
+ * selected that is suitable for the notification service present on the system running the app.
+ */
+class NotificationHelper : public QObject {
     Q_OBJECT
 
 signals:
     void newMessageForInactiveAccount();
 
 public:
-    explicit NotificationGenerator(DeltaHandler* dhandler, dc_accounts_t* accounts, EmitterThread* emthread, AccountsModel* accmodel);
-    ~NotificationGenerator();
+    explicit NotificationHelper(DeltaHandler* dhandler, dc_accounts_t* accounts, EmitterThread* emthread, AccountsModel* accmodel);
+    virtual ~NotificationHelper() = default;
 
     void setCurrentAccId(uint32_t newAccId);
     Q_INVOKABLE void setEnablePushNotifications(bool enabled);
     Q_INVOKABLE void setDetailedPushNotifications(bool detailed);
     Q_INVOKABLE void setNotifyContactRequests(bool notifContReq);
-    Q_INVOKABLE void removeSummaryNotification(uint32_t accID);
+    virtual Q_INVOKABLE void removeSummaryNotification(uint32_t accID) = 0;
+    virtual void removeNotification(QString tag) = 0;
+    virtual void removeActiveNotificationsOfChat(uint32_t accID, int chatID) = 0;
 
-private slots:
-    void processIncomingMessage(uint32_t accID, int chatID, int msgID);
-    void processIncomingMsgBunch(uint32_t accID);
-    void finishProcessIncomingMsgBunch(QDBusPendingCallWatcher* call);
-    void finishRemoveSummaryNotification(QDBusPendingCallWatcher* call);
-
-private:
+protected:
     // set in constructor
     DeltaHandler* m_deltaHandler;
     dc_accounts_t* m_accountsManager;
     EmitterThread* m_emitterthread;
     AccountsModel* m_accountsmodel;
-    uint32_t m_currentAccID;
     // end set in constructor
 
+    uint32_t m_currentAccID;
     bool m_enablePushNotifications;
     bool m_detailedPushNotifications;
     bool m_notifyContactRequests;
-
-    // Caching incoming msgs along with their accIDs and chatIDs.
-    // Will then be processed once the incoming msg bunch
-    // event is received.
-    std::vector<IncomingMsgStruct> m_incomingMsgCache;
-    std::vector<uint32_t> m_accIDsToProcess;
-    bool m_dbusListPersistentReplyPending;
-
-    std::vector<uint32_t> m_accIDsToRemoveSummaryNotifs;
-    bool m_dbusRemoveSummaryNotifsPending;
-
-    // private methods
-    void sendDetailedNotification(uint32_t accID, int chatID, int msgID);
-    void sendSummaryNotification(uint32_t accID, int numberOfMessages, bool showSelfAvatar);
-    void createNotification(QString summary, QString body, QString tag, QString icon);
-    void removeNotification(QString tag);
 };
 
-#endif // NOTIFICATIONGENERATOR_H
+#endif // NOTIFICATIONHELPER_H

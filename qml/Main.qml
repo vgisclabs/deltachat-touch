@@ -37,7 +37,7 @@ MainView {
     anchorToKeyboard: true
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.4.1-pre03'
+    property string version: '1.4.1-pre04'
     property string oldVersion: "unknown"
 
     signal appStateNowActive()
@@ -239,9 +239,9 @@ MainView {
 
         refreshOtherAccsIndicator()
 
-        DeltaHandler.notificationGenerator.setEnablePushNotifications(sendPushNotifications)
-        DeltaHandler.notificationGenerator.setDetailedPushNotifications(detailedPushNotifications)
-        DeltaHandler.notificationGenerator.setNotifyContactRequests(notifyContactRequests)
+        DeltaHandler.notificationHelper.setEnablePushNotifications(sendPushNotifications)
+        DeltaHandler.notificationHelper.setDetailedPushNotifications(detailedPushNotifications)
+        DeltaHandler.notificationHelper.setNotifyContactRequests(notifyContactRequests)
 
         DeltaHandler.connectivityChangedForActiveAccount.connect(updateConnectivity)
         root.periodicTimerSignal.connect(DeltaHandler.periodicTimerActions)
@@ -514,7 +514,7 @@ MainView {
     }
 
     Connections {
-        target: DeltaHandler.notificationGenerator
+        target: DeltaHandler.notificationHelper
         onNewMessageForInactiveAccount: {
             root.inactiveAccsNewMsgsSinceLastCheck = true
             refreshOtherAccsIndicator()

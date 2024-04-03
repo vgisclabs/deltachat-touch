@@ -39,7 +39,7 @@ Page {
 
         // With 0 as parameter, a possible summary notification is removed that
         // was generated if notifs are configured to contain no detail.
-        DeltaHandler.notificationGenerator.removeSummaryNotification(0)
+        DeltaHandler.notificationHelper.removeSummaryNotification(0)
     }
 
     function loadAddAccountPage() {

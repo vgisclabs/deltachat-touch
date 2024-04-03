@@ -13,7 +13,10 @@ set(
     contactsmodel.cpp
     chatlistmodel.cpp
     groupmembermodel.cpp
-    notificationGenerator.cpp
+    notificationHelper.cpp
+    notificationsLomiriPostal.cpp
+    notificationsFreedesktop.cpp
+    notificationsMissing.cpp
     workflowConvertDbToEncrypted.cpp
     workflowConvertDbToUnencrypted.cpp
 )

@@ -81,7 +81,7 @@ Dialog {
             root.showAccountsExperimentalSettings = experimentalSettingsSwitch.checked
             
             root.notifyContactRequests = contactRequestsSwitch.checked
-            DeltaHandler.notificationGenerator.setNotifyContactRequests(contactRequestsSwitch.checked)
+            DeltaHandler.notificationHelper.setNotifyContactRequests(contactRequestsSwitch.checked)
             root.refreshOtherAccsIndicator()
             
             PopupUtils.close(dialog)

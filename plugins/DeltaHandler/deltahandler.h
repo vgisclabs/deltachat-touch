@@ -23,6 +23,7 @@
 #include <QtGui>
 #include <QAudioRecorder>
 #include <QDBusPendingCallWatcher>
+#include <QtDBus/QDBusConnection>
 #include <string>
 #include <array>
 #include <vector>
@@ -35,7 +36,7 @@
 #include "groupmembermodel.h"
 #include "emitterthread.h"
 #include "jsonrpcresponsethread.h"
-#include "notificationGenerator.h"
+#include "notificationHelper.h"
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
 
@@ -54,7 +55,10 @@ class JsonrpcResponseThread;
 class ContactsModel;
 class BlockedContactsModel;
 class GroupMemberModel;
-class NotificationGenerator;
+class NotificationHelper;
+class NotificationsLomiriPostal;
+class NotificationsFreedesktop;
+class NotificationsMissing;
 class WorkflowDbToEncrypted;
 class WorkflowDbToUnencrypted;
 
@@ -220,7 +224,7 @@ public:
     Q_INVOKABLE void openOskViaDbus();
     Q_INVOKABLE void closeOskViaDbus();
 
-    void deleteActiveNotificationTags(uint32_t accID, int chatID);
+    void removeActiveNotificationsOfChat(uint32_t accID, int chatID);
 
     // Returns the name of the currently selected chat
     Q_INVOKABLE QString chatName();
@@ -328,8 +332,6 @@ public:
 
     Q_INVOKABLE QString prepareExportKeys();
     Q_INVOKABLE void startExportKeys(QString dirToExportTo);
-
-    Q_INVOKABLE void removeNotification(QString tag = "");
 
     Q_INVOKABLE int getConnectivitySimple();
     Q_INVOKABLE QString getConnectivityHtml();
@@ -467,7 +469,7 @@ public:
     // dc_receive_backup() blocks, so the DeltaHandler singleton will not pass the progress events
     // until dc_receive_backup() returns, and at this point, everything has already happened
     Q_PROPERTY(EmitterThread* emitterthread READ emitterthread NOTIFY emitterthreadChanged);
-    Q_PROPERTY(NotificationGenerator* notificationGenerator READ notificationGenerator NOTIFY notificationGeneratorChanged);
+    Q_PROPERTY(NotificationHelper* notificationHelper READ notificationHelper NOTIFY notificationHelperChanged);
     Q_PROPERTY(WorkflowDbToEncrypted* workflowdbencryption READ workflowdbencryption NOTIFY workflowdbencryptionChanged());
     Q_PROPERTY(WorkflowDbToUnencrypted* workflowdbdecryption READ workflowdbdecryption NOTIFY workflowdbdecryptionChanged());
 
@@ -477,7 +479,7 @@ public:
     BlockedContactsModel* blockedcontactsmodel();
     GroupMemberModel* groupmembermodel();
     EmitterThread* emitterthread();
-    NotificationGenerator* notificationGenerator();
+    NotificationHelper* notificationHelper();
     WorkflowDbToEncrypted* workflowdbencryption();
     WorkflowDbToUnencrypted* workflowdbdecryption();
 
@@ -501,7 +503,7 @@ signals:
     void blockedcontactsmodelChanged();
     void groupmembermodelChanged();
     void emitterthreadChanged();
-    void notificationGeneratorChanged();
+    void notificationHelperChanged();
     void workflowdbencryptionChanged();
     void workflowdbdecryptionChanged();
 
@@ -634,7 +636,6 @@ private slots:
     void resetPassphrase();
     void addClosedAccountToList(uint32_t accID);
     void connectivityUpdate(uint32_t accID);
-    void finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* call);
     void processSignalQueueTimerTimeout();
     void internalOpenOskViaDbus();
 
@@ -702,6 +703,8 @@ private:
     // for searching the chatlist
     QString m_query;
 
+    QDBusConnection m_bus;
+
     // for scanning QR codes
     int m_qrTempState;
     uint32_t m_qrTempContactID;
@@ -709,13 +712,6 @@ private:
     QString m_qrTempLotTextOne;
 
     struct quirc* m_qr;
-
-    // used to store the beginning of tags that should
-    // maybe be removed, consists of <accID>_<chatID>_, will
-    // be set in deleteActiveNotificationTags and used
-    // in finishDeleteActiveNotificationTags
-    std::vector<QString> m_notificationTagsToDelete;
-    bool m_notifTagsToDeletePendingReply;
 
     // for recording of audio messages
     QAudioRecorder* m_audioRecorder;
@@ -751,7 +747,7 @@ private:
     bool m_isDesktopMode;
     bool m_openOskViaDbus;
 
-    NotificationGenerator* m_notificationGenerator;
+    NotificationHelper* m_notificationHelper;
 
     /**************************************
      *********   Private methods   ********

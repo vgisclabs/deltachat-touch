@@ -231,7 +231,7 @@ Page {
             left: parent.left
             right: parent.right
         }
-        zoomFactor: 3.0
+        zoomFactor: root.onUbuntuTouch ? 3.0 : 1.0
         url: htmlPath
 
         // Comments in the next lines as per original DekkoWebView.qml:
@@ -266,7 +266,7 @@ Page {
         }
 
         onNavigationRequested: {
-            if ((request.url.toString()).startsWith("file:///home/phablet")) {
+            if ((request.url.toString()).startsWith(StandardPaths.locate(StandardPaths.CacheLocation)) || (request.url.toString()).startsWith(StandardPaths.locate(StandardPaths.AppConfigLocation))) {
                 request.action = WebEngineNavigationRequest.AcceptRequest // 0
             } else {
                 PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), htmlViewPage, {externalLink: request.url})

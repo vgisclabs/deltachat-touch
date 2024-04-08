@@ -62,7 +62,7 @@ Page {
             left: parent.left
             right: parent.right
         }
-        zoomFactor: 3.0
+        zoomFactor: root.onUbuntuTouch ? 3.0 : 1.0
         url: StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getConnectivityHtml())
     }
 } // end Page id: connectivityPage

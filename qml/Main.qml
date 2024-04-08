@@ -471,7 +471,14 @@ MainView {
         target: Connectivity
         onOnlineChanged: {
             startStopIO()
-            console.log('Main.qml: received connectivity signal onlineChanged')
+            if (Connectivity.online) {
+                if (!onUbuntuTouch) {
+                    JSONRPC.maybeNetwork()
+                }
+                console.log('Main.qml: received Lomiri Connectivity signal onlineChanged: Now online')
+            } else {
+                console.log('Main.qml: received Lomiri Connectivity signal onlineChanged: Now offline')
+            }
         }
     }
     

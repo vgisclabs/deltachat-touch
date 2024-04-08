@@ -50,7 +50,7 @@ if (stringName == "chat_no_messages") {
     dc_set_stock_translation(currentContext, DC_STR_CONTACT_SETUP_CHANGED, stringText.toUtf8().constData());
 } else if (stringName == "device_talk_explain") {
     dc_set_stock_translation(currentContext, DC_STR_DEVICE_MESSAGES_HINT, stringText.toUtf8().constData());
-} else if (stringName == "device_talk_welcome_message") {
+} else if (stringName == "device_talk_welcome_message2") {
     dc_set_stock_translation(currentContext, DC_STR_WELCOME_MESSAGE, stringText.toUtf8().constData());
 } else if (stringName == "systemmsg_unknown_sender_for_chat") {
     dc_set_stock_translation(currentContext, DC_STR_UNKNOWN_SENDER_FOR_CHAT, stringText.toUtf8().constData());

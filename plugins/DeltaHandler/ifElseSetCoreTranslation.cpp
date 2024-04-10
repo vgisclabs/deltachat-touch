@@ -38,8 +38,8 @@ if (stringName == "chat_no_messages") {
     dc_set_stock_translation(currentContext, DC_STR_CANNOT_LOGIN, stringText.toUtf8().constData());
 } else if (stringName == "device_talk") {
     dc_set_stock_translation(currentContext, DC_STR_DEVICE_MESSAGES, stringText.toUtf8().constData());
-//} else if (stringName == "chat_new_group_hint") {
-//    dc_set_stock_translation(currentContext, DC_STR_NEW_GROUP_SEND_FIRST_MESSAGE, stringText.toUtf8().constData());
+} else if (stringName == "chat_new_group_hint") {
+    dc_set_stock_translation(currentContext, DC_STR_NEW_GROUP_SEND_FIRST_MESSAGE, stringText.toUtf8().constData());
 } else if (stringName == "saved_messages") {
     dc_set_stock_translation(currentContext, DC_STR_SAVED_MESSAGES, stringText.toUtf8().constData());
 } else if (stringName == "contact_verified") {
@@ -201,4 +201,6 @@ if (stringName == "chat_no_messages") {
     dc_set_stock_translation(currentContext, DC_STR_CHAT_PROTECTION_DISABLED, stringText.toUtf8().constData());
 } else if (stringName == "multidevice_qr_subtitle") {
     dc_set_stock_translation(currentContext, DC_STR_BACKUP_TRANSFER_QR, stringText.toUtf8().constData());
+} else if (stringName == "multidevice_transfer_done_devicemsg") {
+    dc_set_stock_translation(currentContext, DC_STR_BACKUP_TRANSFER_MSG_BODY, stringText.toUtf8().constData());
 }

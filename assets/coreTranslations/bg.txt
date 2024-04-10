@@ -116,4 +116,5 @@
 @lineephemeral_timer_weeks_by_you Установихте таймера на изчезващите съобщения на %1$s седмици.
 @lineephemeral_timer_weeks_by_other Таймерът на изчезващите съобщения е установен на %1$s седмици от %2$s.
 @linemultidevice_qr_subtitle Сканирайте, за да установите допълнително устройство за %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Акаунтът е прехвърлен на второто Ви устройство.
 @end

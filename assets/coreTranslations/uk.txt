@@ -128,4 +128,5 @@
 @linechat_protection_enabled_tap_to_learn_more Відтепер повідомлення гарантовано будуть мати наскрізне шифрування. Торкніться, щоб дізнатися більше.
 @linechat_protection_broken_tap_to_learn_more %1$s відправив (-ла) повідомлення з іншого пристрою. Торкніться, щоб дізнатися більше.
 @linemultidevice_qr_subtitle Скануйте, щоб налаштувати другий пристрій %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Обліковий запис перенесено на ваш другий пристрій.
 @end

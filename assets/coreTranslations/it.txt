@@ -134,4 +134,5 @@ Si consiglia vivamente di impostare il tuo vecchio provider email per inoltrare 
 @linechat_protection_enabled_tap_to_learn_more D\'ora in poi i messaggi saranno garantiti crittografati end-to-end.  Tocca per saperne di più.
 @linechat_protection_broken_tap_to_learn_more %1$s ha inviato un messaggio da un altro dispositivo. Tocca per saperne di più.
 @linemultidevice_qr_subtitle Scansiona per impostare un secondo dispositivo per %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Account trasferito sul tuo secondo dispositivo.
 @end

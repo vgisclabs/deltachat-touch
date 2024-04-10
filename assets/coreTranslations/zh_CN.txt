@@ -130,4 +130,5 @@
 @linechat_protection_enabled_tap_to_learn_more 从现在起，消息保证都是端到端加密。轻按了解更多。
 @linechat_protection_broken_tap_to_learn_more %1$s 从另一台设备发送了一则消息。轻按了解更多。
 @linemultidevice_qr_subtitle 扫描此处为 %1$s 设置第二台设备
+@linemultidevice_transfer_done_devicemsg ℹ️ 账户已传输到你的第二台设备。
 @end

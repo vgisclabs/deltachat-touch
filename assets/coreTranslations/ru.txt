@@ -121,4 +121,5 @@
 @linechat_protection_enabled_tap_to_learn_more Теперь сообщения гарантированно шифруются сквозным шифрованием. Нажмите, чтобы узнать подробности.
 @linechat_protection_broken_tap_to_learn_more %1$s отправил(а) сообщение с другого устройства. Нажмите, чтобы узнать больше.
 @linemultidevice_qr_subtitle Отсканируйте, чтобы настроить второе устройство для %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Аккаунт перенесен на ваше второе устройство.
 @end

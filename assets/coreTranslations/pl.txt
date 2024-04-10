@@ -134,4 +134,5 @@ Bardzo zalecane jest, aby ustawić swojego starego dostawcę emaila tak, aby prz
 @linechat_protection_enabled_tap_to_learn_more Od teraz gwarantujemy, że wiadomości będą szyfrowane metodą end-to-end. Dotknij, aby przeczytać więcej.
 @linechat_protection_broken_tap_to_learn_more Użytkownik %1$s wysłał wiadomość z innego urządzenia. Dotknij, aby przeczytać więcej.
 @linemultidevice_qr_subtitle Zeskanuj, aby skonfigurować kolejne urządzenie dla %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Konto przeniesione na twoje kolejne urządzenie.
 @end

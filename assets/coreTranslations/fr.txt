@@ -10,14 +10,14 @@
 @lineencrypted_message Message chiffré
 @lineqrscan_fingerprint_label Empreinte digitale
 @linesystemmsg_read_receipt_subject Accusé de lecture
-@linesystemmsg_read_receipt_body Ceci est un accusé de lecture pour le message \"%1$s\".
+@linesystemmsg_read_receipt_body Ceci est un accusé de lecture pour le message "%1$s".
 
 Cela signifie que le message a été affiché sur l\'appareil du destinataire, pas forcément que le contenu ait été lu.
 @lineautocrypt_prefer_e2ee Préférez le chiffrement de bout en bout
 @linechat_archived_chats_title Discussions archivées
 @lineautocrypt_asm_subject Message de configuration Autocrypt
 @lineautocrypt_asm_general_body Ceci est le message de configuration Autocrypt utilisé pour transférer votre configuration de bout en bout entre clients. Pour déchiffrer et utiliser votre configuration, ouvrez le message dans un client compatible Autocrypt et entrez le code de configuration présenté sur le périphérique de génération.
-@linelogin_error_cannot_login Connexion en tant que \"%1$s\" échouée. Vérifiez que votre adresse courriel et votre mot de passe sont corrects.
+@linelogin_error_cannot_login Connexion en tant que "%1$s" échouée. Vérifiez que votre adresse courriel et votre mot de passe sont corrects.
 @linedevice_talk Messages de l\'appareil
 @linechat_new_group_hint Les autres participants ne verront ce groupe qu\'après que vous avez envoyé un premier message.
 @linesaved_messages Messages sauvegardés
@@ -25,11 +25,6 @@ Cela signifie que le message a été affiché sur l\'appareil du destinataire, p
 @linecontact_not_verified Impossible de garantir le chiffrement de bout en bout avec %1$s.
 @linecontact_setup_changed Configuration modifiée pour %1$s
 @linedevice_talk_explain Les messages dans cette discussion sont générés localement par votre application Delta Chat. Cela vous permet de recevoir des informations concernant les mises à jour et problèmes rencontrés à l\'utilisation.
-@linedevice_talk_welcome_message Bienvenue sur Delta Chat ! – Delta Chat ressemble à d\'autres applications de messagerie populaires, mais n\'implique pas un contrôle centralisé, le traçage ou la revente de vos données, de celles de vos amis, vos collègues ou votre famille à de grandes organisations.
-
-D\'un point de vue technique, Delta Chat est une application de courrier électronique avec une interface de discussion instantanée moderne. Un courriel retoiletté si vous voulez 👻
-
-Utilisez Delta Chat avec n\'importe qui parmi des milliards de personnes : vous avez seulement besoin de leur adresse de courriel. Les destinataires n\'ont pas besoin d\'installer Delta Chat, d\'accéder à des sites internet ni de s\'inscrire où que ce soit – mais s\'ils le souhaitent, vous pouvez évidemment les diriger vers 👉 https://get.delta.chat 
 @linesystemmsg_unknown_sender_for_chat Expéditeur inconnu de cette discussion. Voir « Info » pour plus de détails.
 @linesystemmsg_subject_for_new_contact Message de %1$s
 @linesystemmsg_failed_sending_to Échec de l\'envoi du message à %1$s.
@@ -47,14 +42,14 @@ Réglez votre horloge ⏰🔧 pour que vos messages soient bien reçus.
 
 Cela risque de créer des dysfonctionnements parce que vos contacts utilisent des versions plus récentes - en plus, vous ratez les nouvelles fonctionnalités 😳
  Rendez-vous sur https://get.delta.chat ou sur votre magasin d\'applications pour effectuer la mise à jour !
-@linedevicemsg_self_deleted Vous avez supprimé la discussion \"Messages sauvegardés\".
+@linedevicemsg_self_deleted Vous avez supprimé la discussion "Messages sauvegardés".
 
-ℹ️ Pour utiliser la fonctionnalité \"Message enregistrés\" à nouveau, commencez une nouvelle discussion avec vous-même.
+ℹ️ Pour utiliser la fonctionnalité "Message enregistrés" à nouveau, commencez une nouvelle discussion avec vous-même.
 @linedevicemsg_storage_exceeding ⚠️ Bientôt plus d\'espace de stockage chez votre fournisseur, %1$s%% utilisés.
 
 Vous ne serez peut-être plus en mesure de recevoir des messages quand votre espace de stockage sera plein.
 
-👉 Veuillez vérifier si vous avez d\'anciens éléments à supprimer directement sur l\'interface web de votre fournisseur et envisagez d\'activer \"Paramètres / Supprimer les anciens messages\". Vous pouvez vérifier à tout moment le volume d\'espace de stockage en cours d\'utilisation depuis \"Paramètres / Connectivité\".
+👉 Veuillez vérifier si vous avez d\'anciens éléments à supprimer directement sur l\'interface web de votre fournisseur et envisagez d\'activer "Paramètres / Supprimer les anciens messages". Vous pouvez vérifier à tout moment le volume d\'espace de stockage en cours d\'utilisation depuis "Paramètres / Connectivité".
 @linen_bytes_message %1$s message
 @linedownload_max_available_until Télécharger le plus possible jusqu\'à %1$s
 @lineincoming_messages Messages entrants
@@ -76,7 +71,7 @@ Vous ne serez peut-être plus en mesure de recevoir des messages quand votre esp
 En attente de la réponse de l’appareil de %2$s…
 @linesecure_join_replies %1$s a répondu, en attente d’être ajouté au groupe…
 @lineqrshow_join_contact_hint Scanner pour discuter avec %1$s
-@lineqrshow_join_group_hint Scannez ceci pour rejoindre le groupe \"%1$s\".
+@lineqrshow_join_group_hint Scannez ceci pour rejoindre le groupe "%1$s".
 @lineconnectivity_not_connected Non connecté
 @lineaeap_addr_changed %1$s a changé son adresse de %2$s à %3$s
 @lineaeap_explanation Vous avez changé votre adresse courriel de %1$s à %2$s.

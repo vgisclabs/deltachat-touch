@@ -10,7 +10,7 @@
 @lineencrypted_message Mensagem encriptada
 @lineqrscan_fingerprint_label Impressão digital
 @linesystemmsg_read_receipt_subject Ler recibos
-@linesystemmsg_read_receipt_body Este é um recibo de confirmação de leitura da mensagem \"%1$s\".
+@linesystemmsg_read_receipt_body Este é um recibo de confirmação de leitura da mensagem "%1$s".
 
 Esta mensagem foi exibida no dispositivo do destinatário, não necessariamente que o conteúdo foi lido.
 @lineautocrypt_prefer_e2ee Preferir encriptação ponta a ponta
@@ -19,7 +19,7 @@ Esta mensagem foi exibida no dispositivo do destinatário, não necessariamente 
 @lineautocrypt_asm_general_body Esta é a Mensagem de Configuração de Autocrypt usada para transferir sua configuração de ponta a ponta entre clientes (dispositivos). 
 
 Para descriptar e usar, abra a mensagem em um cliente compatível com Autocrypt e insira o código de configuração apresentado no dispositivo de geração.
-@linelogin_error_cannot_login Não é possível fazer o login como \"%1$s\". Por favor, verifique se o endereço de email e a palavra-chave estão corretos.
+@linelogin_error_cannot_login Não é possível fazer o login como "%1$s". Por favor, verifique se o endereço de email e a palavra-chave estão corretos.
 @linechat_new_group_hint Componha a primeira mensagem, permitindo que outras pessoas respondam dentro deste grupo.
 
 • Tudo bem se nem todos os membros usarem o Delta Chat.
@@ -32,9 +32,9 @@ Para descriptar e usar, abra a mensagem em um cliente compatível com Autocrypt 
 @lineone_moment Um momento...
 @lineerror_x Erro: %1$s
 @lineqrshow_join_contact_hint Digitalize para configurar um contato com %1$s
-@lineqrshow_join_group_hint Digitalize para se juntar ao geupo \"%1$s\".
-@linegroup_name_changed_by_you O nome do grupo mudou de \"%1$s\" para \"%2$s\" por mim.
-@linegroup_name_changed_by_other O nome do grupo mudou de \"%1$s\" para \"%2$s\" por %3$s.
+@lineqrshow_join_group_hint Digitalize para se juntar ao geupo "%1$s".
+@linegroup_name_changed_by_you O nome do grupo mudou de "%1$s" para "%2$s" por mim.
+@linegroup_name_changed_by_other O nome do grupo mudou de "%1$s" para "%2$s" por %3$s.
 @linegroup_image_changed_by_you Imagem do grupo modificada por mim.
 @linegroup_image_changed_by_other Imagem do grupo modificada por %1$s.
 @lineadd_member_by_you Membro %1$s adicionado por mim.

@@ -24,7 +24,7 @@ Dit betekent echter niet dat het ook gelezen is.
 @lineautocrypt_asm_general_body Dit is het Autocrypt-instelbericht dat wordt gebruikt om je instellingen over te zetten.
 
 Om te ontsleutelen en te gebruiken, open je het bericht in een met Autocrypt compatibele app en voer je de code in die wordt getoond op het apparaat dat de code heeft gegenereerd.
-@linelogin_error_cannot_login Kan niet inloggen als \"%1$s\". Controleer het e-mailadres en wachtwoord.
+@linelogin_error_cannot_login Het inloggen als ‘%1$s’ is mislukt. Controleer je e-mailadres en wachtwoord.
 @linedevice_talk Berichten op apparaat
 @linechat_new_group_hint Stel het eerste bericht op zodat anderen binnen deze groep kunnen reageren.
 @linesaved_messages Bewaarde berichten
@@ -32,11 +32,13 @@ Om te ontsleutelen en te gebruiken, open je het bericht in een met Autocrypt com
 @linecontact_not_verified Er kan geen eind-tot-eindversleuteling met %1$s worden gegarandeerd.
 @linecontact_setup_changed Gewijzigde instellingen voor %1$s
 @linedevice_talk_explain Berichten in dit gesprek worden geplaatst door de app zelf. Zo blijf je op de hoogte van app-updates en gebruiksproblemen.
-@linedevice_talk_welcome_message Welkom bij Delta Chat! Delta Chat lijkt heel erg op andere chatapps, maar is toch écht anders! Zo is er geen centraal beheer, wordt je niet gevolgd en worden jouw gegevens of die van je vrienden/familie niet verkocht aan bedrijven.
+@linedevice_talk_welcome_message2 Kom in contact!
 
-Technisch gesproken is het een e-mailapp in een modern jasje (of moderne jurk 👻).
+🙌 Druk op beide apparaten op het hoofdscherm op ‘QR-code’. Kies vervolgens ‘QR-code scannen’ op het ene apparaat en houd hem boven het andere.
 
-Gebruik Delta Chat om te communiceren met iedereen die een e-mailadres heeft. Ontvangers hoeven het niet te installeren, naar een website te gaan of ergens te registreren. Maar als ze dat willen, kun je ze natuurlijk altíjd doorverwijzen naar 👉 https://get.delta.chat
+🌍 Als jullie niet ter plaatse zijn, scan de code dan via een videogesprek of deel de code via een uitnodigingslink (‘QR-code delen’).
+
+Daarna kunnen jullie beide vertrouwen op het voeren van gesprekken via het grootste gedecentraliseerde netwerk ooit: e-mail. En in tegenstelling tot andere populaire apps, is er geen centraal beheer, word je niet gevolgd en worden de gegevens van jou, je vrienden, collega\'s en familieleden niet verkocht.
 @linesystemmsg_unknown_sender_for_chat Dit gesprek bevat een onbekende afzender. Zie ‘Informatie’ voor meer informatie.
 @linesystemmsg_subject_for_new_contact Bericht van %1$s
 @linesystemmsg_failed_sending_to Het bericht kan niet worden verstuurd aan %1$s.
@@ -57,11 +59,11 @@ Ga naar https://get.delta.chat of de appwinkel van je apparaat om te controleren
 @linedevicemsg_self_deleted Je hebt het gesprek ‘Bewaarde berichten’ verwijderd.
 
 ℹ️ Als je weer gebruik wilt maken van deze functie, begin dan een nieuw gesprek met jezelf.
-@linedevicemsg_storage_exceeding ⚠️ De opslagruimte die je provider je biedt is bijna overschreden - momenteel heb je %1$s%% ervan in gebruik.
+@linedevicemsg_storage_exceeding ⚠️ De opslagruimte die je provider biedt is bijna overschreden. Momenteel heb je %1$s%% ervan in gebruik.
 
-Als je alle ruimte verbruikt hebt, kun je mogelijk geen berichten meer ontvangen.
+Als je geen ruimte meer hebt, kun je mogelijk geen berichten meer ontvangen.
 
-👉 Kijk of je oude gegevens kunt verwijderen in de webclient van je provider. Overweeg ook ‘Instellingen --> Oude berichten verwijderen’ in te schakelen. Je kunt je huidige gebruik te allen tijde bekijken in ‘Instellingen --> Verbindingen’.
+👉 Kijk of je oude gegevens kunt verwijderen in de webclient van je provider. Overweeg ook ‘Instellingen → Oude berichten verwijderen’ in te schakelen. Je kunt je huidige gebruik te allen tijde bekijken via ‘Instellingen → Verbindingen’.
 @linen_bytes_message %1$s bericht
 @linedownload_max_available_until Maximaal downloaden tot en met een aantal van %1$s
 @lineincoming_messages Inkomende berichten
@@ -80,8 +82,8 @@ Als je alle ruimte verbruikt hebt, kun je mogelijk geen berichten meer ontvangen
 @linepart_of_total_used %1$s van %2$s in gebruik
 @linesecure_join_started %1$s heeft je uitgenodigd voor deze groep.
 
-Er wordt gewacht op antwoord van het apparaat %2$s…
-@linesecure_join_replies %1$s heefn geantwoord en wacht op toelating tot de groep…
+Er wordt gewacht op antwoord van het apparaat van %2$s…
+@linesecure_join_replies %1$s heeft geantwoord en wacht op toelating tot de groep…
 @lineqrshow_join_contact_hint Scan dit om een gesprek te beginnen met %1$s
 @lineqrshow_join_group_hint Scan dit om deel te nemen aan de groep ‘%1$s’.
 @lineconnectivity_not_connected Niet verbonden
@@ -93,16 +95,16 @@ Als je een bericht stuurt aan een goedgekeurde groep, dan zien contactpersonen i
 Wel raden we aan om bij je oude provider in te stellen dat je e-mails wilt doorsturen naar je nieuwe adres, anders missen sommige contactpersonen mogelijk je berichten.
 @linegroup_name_changed_by_you Je hebt de groepsnaam gewijzigd. Oude naam: “%1$s” - Nieuwe naam: “%2$s”
 @linegroup_name_changed_by_other De groepsnaam is gewijzigd door %3$s. Oude naam: “%1$s” - Nieuwe naam: “%2$s”
-@linegroup_image_changed_by_you Je hebt de groepsafbeelding gewijzigd.
-@linegroup_image_changed_by_other De groepsafbeelding is gewijzigd door %1$s.
+@linegroup_image_changed_by_you Je hebt de groepsfoto gewijzigd.
+@linegroup_image_changed_by_other De groepsfoto is gewijzigd door %1$s.
 @lineadd_member_by_you Je hebt ‘%1$s’ toegevoegd.
 @lineadd_member_by_other ‘%1$s’ is toegevoegd door %2$s.
 @lineremove_member_by_you Je hebt ‘%1$s’ verwijderd.
 @lineremove_member_by_other ‘%1$s’ is verwijderd door %2$s.
 @linegroup_left_by_you Je hebt de groep verlaten.
 @linegroup_left_by_other De groep is verlaten door %1$s.
-@linegroup_image_deleted_by_you Je hebt de groepsafbeelding verwijderd.
-@linegroup_image_deleted_by_other De groepsafbeelding is verwijderd door %1$s.
+@linegroup_image_deleted_by_you Je hebt de groepsfoto verwijderd.
+@linegroup_image_deleted_by_other De groepfoto is verwijderd door %1$s.
 @linelocation_enabled_by_you Je hebt locatiedeling ingeschakeld.
 @linelocation_enabled_by_other Locatiedeling is ingeschakeld door %1$s.
 @lineephemeral_timer_disabled_by_you Je hebt de tijdklok van verdwijnende berichten uitgeschakeld.
@@ -125,7 +127,7 @@ Wel raden we aan om bij je oude provider in te stellen dat je e-mails wilt doors
 @lineephemeral_timer_days_by_other De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s dagen.
 @lineephemeral_timer_weeks_by_you Je hebt de tijdklok van verdwijnende berichten ingesteld op %1$s weken.
 @lineephemeral_timer_weeks_by_other De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s weken.
-@linechat_protection_enabled_tap_to_learn_more Berichten zijn vanaf nu gegarandeerd van eind-tot-eindversleuteling. Druk hier voor meer informatie.
+@linechat_protection_enabled_tap_to_learn_more Berichten zijn vanaf nu gegarandeerd van eind-tot-eindversleuteling voorzien. Druk hier voor meer informatie.
 @linechat_protection_broken_tap_to_learn_more %1$s heeft een bericht verstuurd vanaf een ander apparaat. Druk hier voor meer informatie.
 @linemultidevice_qr_subtitle Scan om een secundair apparaat voor %1$s in te stellen
 @end

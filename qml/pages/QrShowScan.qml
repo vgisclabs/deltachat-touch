@@ -452,6 +452,17 @@ Page {
     header: PageHeader {
         id: qrHeader
         title: i18n.tr("QR Invite Code")
+
+        trailingActionBar.actions: [
+            Action {
+                iconName: 'share'
+                text: i18n.tr('Share')
+                visible: !scanSectionActive
+                onTriggered: {
+                    PopupUtils.open(Qt.resolvedUrl("QrSharePopup.qml"), qrShowScanPage)
+                }
+            }
+        ]
     }
 
     Sections {
@@ -503,14 +514,6 @@ Page {
         }
         source: StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getQrInviteSvg())
         fillMode: Image.PreserveAspectFit
-
-        MouseArea {
-            id: qrImageMouse
-            anchors.fill: parent
-            onClicked: {
-                PopupUtils.open(popoverQrComp, qrImage)
-            }
-        }
     }
 
     Rectangle {
@@ -666,31 +669,6 @@ Page {
             }
         } // end Rectangle id: scanButtonRect
     } // end Rectangle id: qrScanRect
-
-    Component {
-        id: popoverQrComp
-        Popover {
-            id: popoverQrCopyToClipboard
-            ListItem {
-                height: layout1.height
-                // should be automatically be themed with something like
-                // theme.palette.normal.overlay, but this
-                // doesn't seem to work for Ambiance (and importing
-                // Ubuntu.Components.Themes 1.3 doesn't solve it). 
-                color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-                ListItemLayout {
-                    id: layout1
-                    title.text: i18n.tr("Copy to Clipboard")
-                }
-                onClicked: {
-                    let tempcontent = Clipboard.newData()
-                    tempcontent = DeltaHandler.getQrInviteTxt()
-                    Clipboard.push(tempcontent)
-                    PopupUtils.close(popoverQrCopyToClipboard)
-                }
-            }
-        }
-    }
 
     Timer {
         id: continueTimer

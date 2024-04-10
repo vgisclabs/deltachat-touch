@@ -15,7 +15,7 @@
 
 • Nëse sapo riinstaluat Delta Chat-in, atëherë më e mira është të riujdisni Delta Chat-in tani dhe të zgjidhni “Shtoje si pajisje të dytë”, ose të importoni një kopjeruajtje.
 @linesystemmsg_read_receipt_subject Dëftesë leximi
-@linesystemmsg_read_receipt_body Kjo është dëftesë leximi për mesazhin \"%1$s\".
+@linesystemmsg_read_receipt_body Kjo është dëftesë leximi për mesazhin "%1$s".
 
 Do të thotë që mesazhi u shfaq te pajisja e marrësit, jo domosdo që lënda u lexua.
 @lineautocrypt_prefer_e2ee Parapëlqe fshehtëzim skaj-më-skaj
@@ -36,11 +36,13 @@ Që ta shfshehtëzoni rregullimin tuaj, hapeni mesazhin te një klient që mund 
 @linecontact_not_verified S\’verifikohet dot %1$s
 @linecontact_setup_changed U ndryshua rregullimi për %1$s
 @linedevice_talk_explain Mesazhet në këtë fjalosje prodhohen lokalisht nga aplikacioni juaj Delta Chat. Krijuesit e tij e përdorin për t’ju bërë të ditur përditësime dhe probleme gjatë përdorimit.
-@linedevice_talk_welcome_message Mirë se vini te Delta Chat! – Delta Chat duket si aplikacione të tjerë popullorë për shkëmbim mesazhesh, por nuk përmban kontroll të centralizuar, s’ju gjurmon apo shet te ente të mëdha ju, shokët tuaj, kolegët apo familjen tuaj.
+@linedevice_talk_welcome_message2 Lidhuni!
 
-Teknikisht, Delta Chat është një aplikacion email me një ndërfaqe moderne. Email me rroba të reja, nëse doni kështu 👻
+🙌 Prekni “Kod QR” te skena kryesore në të dyja pajisjet. Zgjidhni “Skano Kod QR” në një pajisje dhe drejtojani tjetrës
 
-Përdoreni Delta Chat-in me cilindo prej miliarda vetash: thjesht përdorni adresat e tyre email. Marrësit s’ka nevojë të instalojnë Delta Chat-in, të vizitojnë sajte apo të regjistrohen diku - por sigurisht, nëse duan, mund t’i drejtoni te 👉 https://get.delta.chat
+🌍 Nëse s’gjenden në të njëjtën dhomë, skanojeni përmes një thirrjeje video, ose ndani një lidhje ftese që nga “Skanoni kod QR”
+
+Mandej: Shijoni punimin e shkëmbyesit të mesazheve përmes rrjetit më të madh të decentralizuar që ka ekzistuar ndonjëherë: email-it. Dhe, në kontrast me aplikacione të tjera popullore, pa kontroll të centralizuar, apo gjurmim, apo shitje të dhënash tuajat, të shokëve, kolegëve apo familjes te ente të mëdha.
 @linesystemmsg_unknown_sender_for_chat Dërgues i panjohur për këtë fjalosje. Për më tepër hollësi, shihni \'info\'.
 @linesystemmsg_subject_for_new_contact Mesazh nga %1$s
 @linesystemmsg_failed_sending_to S’u arrit të dërgohej mesazh te %1$s.
@@ -65,7 +67,7 @@ Për përditësime, ju lutemi, shihni te https://get.delta.chat ose te shitorja 
 
 Kur depozita është 100%% e përdorur, mund të mos jeni në gjendje të merrni mesazhe.
 
-👉 Ju lutemi, shihni se mos mund të fshini të dhëna të vjetra që nga ndërfaqja web e furnizuesit të shërbimit dhe shihni mundësinë të aktivizoni “Rregullime / Fshi Mesazhe të Vjetër”. Se sa depozitë është aktualisht e përdorur mund ta kontrolloni kurdo, që nga \"Rregullime / Lidhje\".
+👉 Ju lutemi, shihni se mos mund të fshini të dhëna të vjetra që nga ndërfaqja web e furnizuesit të shërbimit dhe shihni mundësinë të aktivizoni “Rregullime / Fshi Mesazhe të Vjetër”. Se sa depozitë është aktualisht e përdorur mund ta kontrolloni kurdo, që nga "Rregullime / Lidhje".
 @linen_bytes_message Mesazh %1$s
 @linedownload_max_available_until Shkarko maksimumin e mundshëm deri më %1$s
 @lineincoming_messages Mesazhe të Marrë
@@ -87,7 +89,7 @@ Kur depozita është 100%% e përdorur, mund të mos jeni në gjendje të merrni
 Po pritet për pajisjen e %2$s që të përgjigjet…
 @linesecure_join_replies %1$s u përgjigj, po pritet që të shtohet te grupi…
 @lineqrshow_join_contact_hint Skanojeni këtë që të rregullohet një kontakt %1$s
-@lineqrshow_join_group_hint Që të bëheni pjesë e grupit \"%1$s\", skanoni këtë.
+@lineqrshow_join_group_hint Që të bëheni pjesë e grupit "%1$s", skanoni këtë.
 @lineconnectivity_not_connected I palidhur
 @lineaeap_addr_changed %1$s ndryshoi adresën e vet nga %2$s në %3$s
 @lineaeap_explanation Ndryshuat adresën tuaj nga %1$s në %2$s.

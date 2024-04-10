@@ -115,4 +115,5 @@
 @lineephemeral_timer_weeks_by_you زمان‌سنج ناپدید شدن پیام‌ها را روی %1$s هفته تنظیم کردید.
 @lineephemeral_timer_weeks_by_other زمان‌سنج ناپدید شدن پیام‌ها توسط %2$s روی %1$s هفته تنظیم شد.
 @linemultidevice_qr_subtitle برای راه اندازی دستگاه دوم برای %1$s اسکن کنید
+@linemultidevice_transfer_done_devicemsg ℹ️ حساب به دستگاه دوم شما منتقل شد.
 @end

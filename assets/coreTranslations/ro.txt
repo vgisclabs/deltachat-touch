@@ -42,4 +42,5 @@ Dacă trimiteți acum un mesaj către un grup verificat, contactele de acolo vor
 
 Se recomandă să vă configurați vechiul furnizor de e-mail pentru a redirecționa toate e-mailurile către noua dumneavoastră adresă de e-mail. În caz contrar, s-ar putea să pierdeți mesaje ale contactelor care nu au primit încă noua dumneavoastră adresă.
 @linemultidevice_qr_subtitle Scanare pentru a configura un al doilea dispozitiv pentru %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Contul a fost transferat pe dispozitivul secundar.
 @end

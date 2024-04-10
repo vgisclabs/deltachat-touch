@@ -120,4 +120,5 @@ Se você agora enviar uma mensagem para um grupo verificado, os contatos lá sub
 @lineephemeral_timer_weeks_by_you Você definiu o temporizador de desaparecimento de mensagens para  %1$s semanas.
 @lineephemeral_timer_weeks_by_other Temporizador de desaparecimento de mensagens definido para %1$s semanas por %2$s.
 @linemultidevice_qr_subtitle Escaneie para configurar outro dispositivo para %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Conta transferida para seu outro dispositivo.
 @end

@@ -134,4 +134,5 @@ Nëse dërgoni tani një mesazh te një grup i verifikuar, kontaktet atje do të
 @linechat_protection_enabled_tap_to_learn_more Nga sot e tutje për mesazhet garantohet fshehtëzimi skaj-më-skaj. Prekeni që të mësoni më tepër.
 @linechat_protection_broken_tap_to_learn_more %1$s dërgoi një mesazh nga një pajisje tjetër. Prekeni që të mësoni më tepër.
 @linemultidevice_qr_subtitle Skanojeni, që të ujdisni pajise të dytë për %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Llogaria u shpërngul te pajisja juaj e dytë.
 @end

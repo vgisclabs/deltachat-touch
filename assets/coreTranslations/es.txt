@@ -130,4 +130,5 @@ Es muy recomendable que configures tu antiguo proveedor de correo electrónico p
 @linechat_protection_enabled_tap_to_learn_more A partir de ahora se garantiza que los mensajes están cifrados de extremo a extremo . Toca para obtener más información.
 @linechat_protection_broken_tap_to_learn_more %1$s envió un mensaje desde otro dispositivo. Toca para obtener más información.
 @linemultidevice_qr_subtitle Escanea para configurar otro dispositivo para %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Cuenta transferida a tu otro dispositivo.
 @end

@@ -130,4 +130,5 @@ Wel raden we aan om bij je oude provider in te stellen dat je e-mails wilt doors
 @linechat_protection_enabled_tap_to_learn_more Berichten zijn vanaf nu gegarandeerd van eind-tot-eindversleuteling voorzien. Druk hier voor meer informatie.
 @linechat_protection_broken_tap_to_learn_more %1$s heeft een bericht verstuurd vanaf een ander apparaat. Druk hier voor meer informatie.
 @linemultidevice_qr_subtitle Scan om een secundair apparaat voor %1$s in te stellen
+@linemultidevice_transfer_done_devicemsg ℹ️ Het account is overgezet naar je tweede apparaat.
 @end

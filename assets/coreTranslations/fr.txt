@@ -116,4 +116,5 @@ Il est fortement conseillé de configurer votre ancien fournisseur de courriel d
 @linechat_protection_enabled_tap_to_learn_more Les messages sont désormais garantis chiffrés de bout en bout. Appuyer pour en savoir plus.
 @linechat_protection_broken_tap_to_learn_more %1$s a envoyé un message depuis un nouvel appareil. Appuyez pour en savoir plus.
 @linemultidevice_qr_subtitle Scanner pour configurer un deuxième appareil pour %1$s
+@linemultidevice_transfer_done_devicemsg ℹ️ Compte transféré sur votre deuxième appareil.
 @end

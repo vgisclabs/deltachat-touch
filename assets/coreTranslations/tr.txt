@@ -130,4 +130,5 @@ Tüm e-postaları yeni e-posta adresinize iletmek için eski e-posta sağlayıc�
 @linechat_protection_enabled_tap_to_learn_more Bundan böyle iletiler uçtan uca şifreleme güvencelidir. Daha fazlasını öğrenmek için dokunun.
 @linechat_protection_broken_tap_to_learn_more %1$s başka bir aygıttan bir ileti gönderdi. Daha fazlasını öğrenmek için dokunun.
 @linemultidevice_qr_subtitle %1$s için ikinci aygıtı ayarlamak üzere tarayın
+@linemultidevice_transfer_done_devicemsg ℹ️ Hesap, ikinci aygıtınıza aktarıldı.
 @end

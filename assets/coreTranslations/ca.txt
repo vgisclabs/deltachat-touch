@@ -10,7 +10,7 @@
 @lineencrypted_message Missatge encriptat
 @lineqrscan_fingerprint_label Empremta
 @linesystemmsg_read_receipt_subject Confirmació de lectura
-@linesystemmsg_read_receipt_body Confirmació de lectura del missatge \"%1$s\".
+@linesystemmsg_read_receipt_body Confirmació de lectura del missatge "%1$s".
 
 Vol dir que el missatge s\'ha mostrat al dispositiu del receptor, no necessàriament que s\'hagi llegit.
 @lineautocrypt_prefer_e2ee Prefereix l\'encriptació d\'extrem a extrem
@@ -19,7 +19,7 @@ Vol dir que el missatge s\'ha mostrat al dispositiu del receptor, no necessària
 @lineautocrypt_asm_general_body Aquest és el missatge de configuració Autocrypt que s’utilitza per transferir la vostra configuració d\'extrem a extrem entre dispositius.
 
 Per desxifrar i utilitzar aquesta configuració, obriu el missatge en un dispositiu compatible amb Autocript i introduïu el codi de configuració que apareix al dispositiu primari.
-@linelogin_error_cannot_login No es pot iniciar la sessió com a \"%1$s\". Comproveu que l\'adreça electrònica i la contrasenya són correctes.
+@linelogin_error_cannot_login No es pot iniciar la sessió com a "%1$s". Comproveu que l\'adreça electrònica i la contrasenya són correctes.
 @linedevice_talk Missatges del dispositiu
 @linechat_new_group_hint Escriviu el primer missatge i així els altres podran respondre a tot el grup.
 
@@ -31,11 +31,6 @@ Per desxifrar i utilitzar aquesta configuració, obriu el missatge en un disposi
 @linecontact_not_verified No es pot verificar%1$s
 @linecontact_setup_changed Configuració canviada per %1$s
 @linedevice_talk_explain Els missatges d\'aquest xat són generats localment per la vostra app de Delta Chat. Els seus creadors els usen per informar-vos d\'actualitzacions de l\'app i problemes durant el seu ús.
-@linedevice_talk_welcome_message Benvingut a Delta Chat! – Delta Chat te la pinta d\'altres apps de missatgeria, però no comporta un control centralitzat, ni un seguiment o una venda teva ni dels teus amics, col·legues o família a una corporació.
-
-Tecnicament, Delta Chat és una aplicació de  correu electrònic amb una interfície de xat moderna. Per dir-ho així, correu electrònic en un vestit nou 👻
-
-Useu Delta Chat amb qualsevol dels milers de milions de persones: només us cal la seva adreça de correu electrònic. Als destinataris no els cal instal·lar-se Delta Chat, visitar webs o donar-se d\'alta enlloc - tot i que, només faltaria, si volen, els podeu adreçar a 👉 https://get.delta.chat
 @linevideochat_invitation Invitació a un vídeo xat
 @linevideochat_invitation_body Heu sigut convidats a un vídeo xat, cliqueu %1$s per unir-vos-hi.
 @linereply_noun Respon
@@ -56,10 +51,10 @@ Useu Delta Chat amb qualsevol dels milers de milions de persones: només us cal 
 @linebroadcast_list Llista de difusió
 @linepart_of_total_used %1$s de %2$s usats
 @lineqrshow_join_contact_hint Escanegeu això per establir contacte amb %1$s
-@lineqrshow_join_group_hint Escanegeu això per unir-vos al grup \"%1$s\".
+@lineqrshow_join_group_hint Escanegeu això per unir-vos al grup "%1$s".
 @lineconnectivity_not_connected Desconnectat
-@linegroup_name_changed_by_you Nom del grup \"%1$s\" canviat a \"%2$s\" per mi.
-@linegroup_name_changed_by_other Nom del grup \"%1$s\" canviat a \"%2$s\" per %3$s.
+@linegroup_name_changed_by_you Nom del grup "%1$s" canviat a "%2$s" per mi.
+@linegroup_name_changed_by_other Nom del grup "%1$s" canviat a "%2$s" per %3$s.
 @linegroup_image_changed_by_you Imatge de grup canviada per mi.
 @linegroup_image_changed_by_other Imatge de grup canviada per %1$s.
 @lineadd_member_by_you Membre %1$s afegit per mi.

@@ -13,9 +13,9 @@
 
 • Potrebbe essere già utile rispondere semplicemente a questo messaggio e chiedere al mittente d\'inviare nuovamente il messaggio.
 
-• Se hai appena reinstallato Delta Chat, è meglio se riconfiguri ora Delta Chat e scegli \"Aggiungi come secondo dispositivo\" o importa un backup.
+• Se hai appena reinstallato Delta Chat, è meglio se riconfiguri ora Delta Chat e scegli "Aggiungi come secondo dispositivo" o importa un backup.
 @linesystemmsg_read_receipt_subject Ricevuta di lettura
-@linesystemmsg_read_receipt_body Questa è una ricevuta di lettura del messaggio \"%1$s\".
+@linesystemmsg_read_receipt_body Questa è una ricevuta di lettura del messaggio "%1$s".
 
 Ciò significa che il messaggio è stato mostrato nel dispositivo del destinatario, ma non necessariamente che il contenuto è stato letto.
 @lineautocrypt_prefer_e2ee Preferisci Cifratura End-To-End
@@ -24,7 +24,7 @@ Ciò significa che il messaggio è stato mostrato nel dispositivo del destinatar
 @lineautocrypt_asm_general_body Questo è un messaggio di configurazione Autocrypt per trasferire le impostazioni end-to-end tra dispositivi.
 
 Per decifrarlo e usare le impostazioni, apri questo messaggio con un client compatibile e inserisci il codice mostrato nel dispositivo di origine.
-@linelogin_error_cannot_login Impossibile accedere come \"%1$s\". Verifica che l\'indirizzo email e la password siano corretti.
+@linelogin_error_cannot_login Impossibile accedere come "%1$s". Verifica che l\'indirizzo email e la password siano corretti.
 @linedevice_talk Messaggi del Dispositivo
 @linechat_new_group_hint Invia il primo messaggio per permettere agli altri di rispondere nel gruppo
 
@@ -36,11 +36,13 @@ Per decifrarlo e usare le impostazioni, apri questo messaggio con un client comp
 @linecontact_not_verified Impossibile verificare %1$s
 @linecontact_setup_changed Impostazioni modificate per %1$s
 @linedevice_talk_explain I messaggi in questa chat vengono generati localmente da Delta Chat. Gli sviluppatori li usano per informarti sugli aggiornamenti o sui problemi di utilizzo.
-@linedevice_talk_welcome_message Benvenuto in Delta Chat! - Delta Chat ha l\'aspetto e lo stile di altre popolari applicazioni di messaggistica, ma non costringe a un controllo centralizzato, al tracciamento o alla vendita dei dati personali tuoi, dei tuoi amici, colleghi o familiari a grandi organizzazioni.
+@linedevice_talk_welcome_message2 Mettiti in contatto!
 
-Tecnicamente, Delta Chat è un\'applicazione di posta elettronica con un\'interfaccia moderna. L\'e-mail in una nuova veste 👻
+🙌 Tocca "Codice QR" sulla schermata principale di entrambi i dispositivi. Scegli "Scansiona codice QR" su un dispositivo e puntalo verso l\'altro
 
-Utilizza Delta Chat con chiunque: basta conoscere il loro indirizzo e-mail. I destinatari non hanno bisogno di installare Delta Chat, visitare siti web o iscriversi da nessuna parte - ma, naturalmente se lo desiderano, puoi suggerirgli 👉 https://get.delta.chat
+🌍 Se non siete nella stessa stanza, esegui la scansione tramite videochiamata o condividi un collegamento di invito da "Scansiona codice QR"
+
+Quindi: goditi la ​​tua esperienza di messaggistica sulla più grande rete decentralizzata mai esistita: l\'E-mail. E a differenza di altre app popolari, senza controllo centrale né monitoraggio o vendita dati tuoi, dei tuoi amici, colleghi o familiari a grandi organizzazioni.
 @linesystemmsg_unknown_sender_for_chat Mittente sconosciuto per questa chat. Vedi \'info\' per maggiori dettagli.
 @linesystemmsg_subject_for_new_contact Messaggio da %1$s
 @linesystemmsg_failed_sending_to Impossibile inviare il messaggio a %1$s.
@@ -58,14 +60,14 @@ Regola l\'orologio ⏰🔧 per assicurarti che i tuoi messaggi vengano ricevuti 
 
 Ciò potrebbe causare problemi perché i tuoi partner di chat utilizzano versioni più recenti - e ti mancano le funzionalità più recenti 😳
 Controlla https://get.delta.chat o il tuo app store per gli aggiornamenti. 
-@linedevicemsg_self_deleted Hai eliminato la chat \"Messaggi salvati\".
+@linedevicemsg_self_deleted Hai eliminato la chat "Messaggi salvati".
 
-ℹ️ Per utilizzare nuovamente la funzione \"Messaggi salvati\", crea una nuova chat con te stesso.
+ℹ️ Per utilizzare nuovamente la funzione "Messaggi salvati", crea una nuova chat con te stesso.
 @linedevicemsg_storage_exceeding ⚠️ Lo spazio di archiviazione del tuo fornitore sta per essere superato, già %1$s%% vengono utilizzati.
 
 Potrebbe non essere possibile ricevere messaggi quando lo spazio di archiviazione è 100%% utilizzato.
 
-👉 Si prega di verificare se è possibile eliminare i vecchi dati nell\'interfaccia web del fornitore e considerare di abilitare \"Impostazioni / Elimina Vecchi Messaggi\". Puoi controllare l\'utilizzo corrente dello spazio di archiviazione in qualsiasi momento in \"Impostazioni / Connettività\".
+👉 Si prega di verificare se è possibile eliminare i vecchi dati nell\'interfaccia web del fornitore e considerare di abilitare "Impostazioni / Elimina Vecchi Messaggi". Puoi controllare l\'utilizzo corrente dello spazio di archiviazione in qualsiasi momento in "Impostazioni / Connettività".
 @linen_bytes_message %1$s messaggio
 @linedownload_max_available_until Download disponibile massimo fino a %1$s
 @lineincoming_messages Messaggi in arrivo
@@ -87,7 +89,7 @@ Potrebbe non essere possibile ricevere messaggi quando lo spazio di archiviazion
 In attesa che il dispositivo di %2$s risponda…
 @linesecure_join_replies %1$s ha risposto, in attesa di essere aggiunto al gruppo…
 @lineqrshow_join_contact_hint Scansionalo per chattare con %1$s
-@lineqrshow_join_group_hint Scansionalo per entrare nel gruppo \"%1$s\"
+@lineqrshow_join_group_hint Scansionalo per entrare nel gruppo "%1$s"
 @lineconnectivity_not_connected Non connesso
 @lineaeap_addr_changed %1$s ha cambiato l\'indirizzo da %2$s a %3$s
 @lineaeap_explanation Hai cambiato il tuo indirizzo email da %1$s a %2$s.
@@ -95,8 +97,8 @@ In attesa che il dispositivo di %2$s risponda…
 Se ora invii un messaggio a un gruppo verificato, i contatti sostituiranno automaticamente il vecchio indirizzo con il tuo nuovo.
 
 Si consiglia vivamente di impostare il tuo vecchio provider email per inoltrare tutte le email al tuo nuovo indirizzo email. Altrimenti potresti perdere i messaggi di contatti che non hanno ancora ricevuto il tuo nuovo indirizzo.
-@linegroup_name_changed_by_you Hai cambiato il nome del gruppo da \"%1$s\" a \"%2$s\".
-@linegroup_name_changed_by_other Nome gruppo cambiato da \"%1$s\" a \"%2$s\" da %3$s.
+@linegroup_name_changed_by_you Hai cambiato il nome del gruppo da "%1$s" a "%2$s".
+@linegroup_name_changed_by_other Nome gruppo cambiato da "%1$s" a "%2$s" da %3$s.
 @linegroup_image_changed_by_you Hai cambiato l\'immagine del gruppo.
 @linegroup_image_changed_by_other Immagine del gruppo cambiata da %1$s.
 @lineadd_member_by_you Hai aggiunto un membro %1$s.

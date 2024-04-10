@@ -36,11 +36,13 @@ Aby odszyfrować i użyć klucza, otwórz wiadomość w kliencie zgodnym z autom
 @linecontact_not_verified Nie można zweryfikować szyfrowania typu end-to-end %1$s
 @linecontact_setup_changed Zmieniono konfigurację dla %1$s
 @linedevice_talk_explain Wiadomości w tym czacie są generowane lokalnie przez twoją aplikację Delta Chat. Twórcy używają go do informowania o aktualizacjach aplikacji i problemach podczas użytkowania.
-@linedevice_talk_welcome_message Witamy w Delta Chat! - Delta Chat wygląda i działa podobnie jak inne popularne komunikatory, ale nie miesza się w scentralizowaną kontrolę, śledzenie ani sprzedaż ciebie, przyjaciół, kolegów lub rodziny dużym organizacjom.
+@linedevice_talk_welcome_message2 Skontaktuj się!
 
-Technicznie Delta Chat jest aplikacją e-mail z nowoczesnym interfejsem czatu. Jeśli chcesz, wyślij e-mail w nowej sukience 👻.
+🙌 Dotknij „Kod QR” na ekranie głównym obu urządzeń. Wybierz opcję „Zeskanuj kod QR” na jednym urządzeniu i skieruj go na drugie
 
-Korzystaj z Delta Chat z każdym spośród miliardów ludzi: po prostu użyj ich adresu e-mail. Odbiorcy nie muszą instalować Delta Chat, odwiedzać stron internetowych ani rejestrować się gdziekolwiek - oczywiście, jeśli im się spodoba, możesz ich skierować na 👉 https://get.delta.chat.
+🌍 Jeśli nie znajdujesz się w tym samym pokoju, zeskanuj kod podczas rozmowy wideo lub udostępnij link z zaproszeniem w sekcji „Zeskanuj kod QR”
+
+Następnie: korzystaj z komunikatora za pośrednictwem największej zdecentralizowanej sieci, jaka kiedykolwiek istniała: e-mail. W przeciwieństwie do innych popularnych aplikacji bez centralnej kontroli, śledzenia lub sprzedawania Ciebie, znajomych, współpracowników lub rodziny dużym organizacjom.
 @linesystemmsg_unknown_sender_for_chat Nieznany nadawca tego czatu. Więcej szczegółów znajdziesz w sekcji „Informacje”.
 @linesystemmsg_subject_for_new_contact Wiadomość od %1$s
 @linesystemmsg_failed_sending_to Nie udało się wysłać wiadomości do %1$s.
@@ -65,7 +67,7 @@ Sprawdź aktualizacje na stronie https://get.delta.chat lub w sklepie z aplikacj
 
 Możesz nie być w stanie otrzymywać wiadomości, gdy pamięć jest pełna.
 
-👉 Sprawdzić, czy możesz usunąć stare dane w interfejsie internetowym dostawcy i rozważyć włączenie opcji \"Ustawienia » Czaty i media » Usuwanie starych wiadomości\". W dowolnym momencie możesz sprawdzić swoje bieżące wykorzystanie pamięci w \"Ustawienia » Łączność\".
+👉 Sprawdzić, czy możesz usunąć stare dane w interfejsie internetowym dostawcy i rozważyć włączenie opcji "Ustawienia » Czaty i media » Usuwanie starych wiadomości". W dowolnym momencie możesz sprawdzić swoje bieżące wykorzystanie pamięci w "Ustawienia » Łączność".
 @linen_bytes_message Wiadomość %1$s
 @linedownload_max_available_until Maksymalna ilość do pobrania dostępna do %1$s
 @lineincoming_messages Wiadomości przychodzące

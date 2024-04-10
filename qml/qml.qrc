@@ -67,6 +67,7 @@
         <file>pages/ProfileSelf.qml</file>
         <file>pages/ProfileOther.qml</file>
         <file>pages/QrConfirmPopup.qml</file>
+        <file>pages/QrSharePopup.qml</file>
         <file>pages/QrGroupInvite.qml</file>
         <file>pages/QrShowScan.qml</file>
         <file>pages/ReactionsInfoPopup.qml</file>

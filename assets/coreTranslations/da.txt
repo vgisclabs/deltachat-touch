@@ -10,7 +10,7 @@
 @lineencrypted_message Krypteret besked
 @lineqrscan_fingerprint_label Fingeraftryk
 @linesystemmsg_read_receipt_subject Besked åbnet
-@linesystemmsg_read_receipt_body Beskeden \"%1$s\" du har sendt blev vist på modtagerens skærm.
+@linesystemmsg_read_receipt_body Beskeden "%1$s" du har sendt blev vist på modtagerens skærm.
 
 Dette er ikke en garanti for at indholdet blev læst.
 @lineautocrypt_prefer_e2ee Foretræk end-to-end kryptering
@@ -19,7 +19,7 @@ Dette er ikke en garanti for at indholdet blev læst.
 @lineautocrypt_asm_general_body Dette er Autocrypt opsætning besked brugt til at overføre ende-til-ende opsætning mellem klienter.
 
 For at af kryptere og bruge opsætning åben beskeden i en Autocrypt kompatibel klient og indtast opsæt koden vist på den genererende enhed.
-@linelogin_error_cannot_login Kan ikke logge ind som  \"%1$s\". Kontroller om e-mailadresse og adgangskode er korrekt.
+@linelogin_error_cannot_login Kan ikke logge ind som  "%1$s". Kontroller om e-mailadresse og adgangskode er korrekt.
 @linedevice_talk Enhedsbeskeder
 @linechat_new_group_hint Skriv første besked, tillader andre at svare i denne gruppe.
 
@@ -31,11 +31,6 @@ For at af kryptere og bruge opsætning åben beskeden i en Autocrypt kompatibel 
 @linecontact_not_verified Kan ikke bekræfte %1$s
 @linecontact_setup_changed Ændret opsætning for %1$s
 @linedevice_talk_explain Beskederne i denne chat er blevet generated lokalt af din Delta Chat app. Skaberne af appen bruger dette til at informere om app-opdateringer og problemer under brug.
-@linedevice_talk_welcome_message Velkommen til Delta Chat! - Delta Chat ser ud og føles som andre populære messenger apps men kontrolleres ikke fra centralt hold, tracker ikke eller sælger ikke dine, dine venners, dine kollegaers og din families oplysninger til store organisationer.
-
-Teknisk set er Delta Chat en email-klient med et moderne chat interface. E-mail i nye klæder om man vil. 👻
-
-Brug Delta Chat med hvem som helst ud af milliarder af mennesker: brug blot deres email-adresse. Modtagerne behøver ikke at installere Delta Chat, besøge websider eller melde sig ind nogen steder - men, selvfølgelig, hvis du vil kan du henvise dem til 👉https://get.delta.chat
 @linesystemmsg_unknown_sender_for_chat Ukent afsender af denne chat. Se \'info\' for flere detaljer.
 @linesystemmsg_subject_for_new_contact Besked fra %1$s
 @linesystemmsg_failed_sending_to Mislykket forsøg på afsendelse af besked til %1$s.
@@ -57,10 +52,10 @@ Brug Delta Chat med hvem som helst ud af milliarder af mennesker: brug blot dere
 @linemessages Beskeder
 @linepart_of_total_used %1$s af %2$s brugt
 @lineqrshow_join_contact_hint Skan dette for at indstille kontakt med %1$s
-@lineqrshow_join_group_hint Skan dette for at deltage i gruppen \"%1$s\".
+@lineqrshow_join_group_hint Skan dette for at deltage i gruppen "%1$s".
 @lineconnectivity_not_connected Ikke forbundet
-@linegroup_name_changed_by_you Gruppenavn ændret fra \"%1$s\" til \"%2$s\" af mig.
-@linegroup_name_changed_by_other Gruppenavn ændret fra \"%1$s\" til \"%2$s\" af %3$s.
+@linegroup_name_changed_by_you Gruppenavn ændret fra "%1$s" til "%2$s" af mig.
+@linegroup_name_changed_by_other Gruppenavn ændret fra "%1$s" til "%2$s" af %3$s.
 @linegroup_image_changed_by_you Gruppebillede ændret af mig.
 @linegroup_image_changed_by_other Gruppebillede ændret af %1$s.
 @lineadd_member_by_you Medlem %1$s tilføjet af mig.

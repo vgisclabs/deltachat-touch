@@ -3961,6 +3961,21 @@ QString DeltaHandler::getQrInviteTxt()
 }
 
 
+QString DeltaHandler::getQrInviteLink()
+{
+    QString qrstring = getQrInviteTxt();
+    // qrstring is now something like OPENPGP4FPR:..., remove the
+    // beginning until and including the ":"
+    qrstring.remove(0, qrstring.indexOf(":") + 1);
+
+    // remove the first occurrence of "#" by "&"
+    qrstring.replace(qrstring.indexOf("#"), 1, "&");
+
+    QString retval = "http://i.delta.chat/#" + qrstring;
+    return retval;
+}
+
+
 QString DeltaHandler::getQrContactEmail()
 {
     dc_contact_t* tempContact = dc_get_contact(currentContext, m_qrTempContactID);

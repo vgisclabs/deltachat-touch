@@ -119,6 +119,12 @@ public:
 
     Q_INVOKABLE QString sendJsonrpcBlockingCall(QString request) const;
 
+    // Checks if a jsonrpc response from the core contains an
+    // error.
+    // Returns the error as string; "Error" if the response has an error without
+    // an error message; empty string if no error.
+    Q_INVOKABLE QString getErrorFromJsonrpcResponse(QString jsonrpcResponse);
+
     // Returns a valid jsonrpc request for the method and arguments passed.
     // The arguments have to be separated by ", " in one single string.
     // String arguments have to be inside escaped quotation marks.
@@ -395,6 +401,8 @@ public:
     Q_INVOKABLE void setGroupPic(QString filepath);
 
     Q_INVOKABLE QString getTempGroupQrSvg();
+    Q_INVOKABLE QString getTempGroupQrTxt();
+    Q_INVOKABLE QString getTempGroupQrLink();
 
     // Starts the process to add a second device; this device
     // will act as primary device. Will emit backupProviderCreationSuccess

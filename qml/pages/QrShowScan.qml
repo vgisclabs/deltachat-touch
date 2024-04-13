@@ -455,11 +455,61 @@ Page {
 
         trailingActionBar.actions: [
             Action {
-                iconName: 'share'
-                text: i18n.tr('Share')
+                iconName: "contextual-menu"
+                text: i18n.tr("More Options")
                 visible: !scanSectionActive
                 onTriggered: {
-                    PopupUtils.open(Qt.resolvedUrl("QrSharePopup.qml"), qrShowScanPage)
+                    // Popup contains a few buttons:
+                    // - copy to clipboard: basically the same as in the "share" action
+                    //   for non-UT below, everything is done in the popup itself for that
+                    // - Deactivate the QR code (which automatically creates a new one):
+                    //   This one needs the logic below to first confirm whether
+                    //   the user really wants to deactivate, then check whether
+                    //   deactivation was successful, and lastly refresh the image,
+                    //   which is also not trivial
+                    let popup1 = PopupUtils.open(Qt.resolvedUrl("QrMenuPopup.qml"), qrShowScanPage, { "qrInviteLink": DeltaHandler.getQrInviteLink() })
+                    popup1.continueAskUserQrDeactivation.connect(function() {
+                        // if the signal continueAskUserQrDeactivation is received,
+                        // the user has clicked to deactive the QR code. Ask
+                        // for confirmation.
+                        let popup2 = PopupUtils.open(
+                            Qt.resolvedUrl("ConfirmDialog.qml"),
+                            qrShowScanPage,
+                            {
+                                dialogText: i18n.tr("This QR code can be scanned by others to contact you.\n\nYou can deactivate the QR code here and reactivate it by scanning it again."),
+                                okButtonText: i18n.tr("Deactivate QR Code")
+                            }
+                        )
+                        popup2.confirmed.connect(function() {
+                            let paramStr = ""
+                            paramStr += DeltaHandler.getCurrentAccountId()
+                            paramStr += ", "
+                            let requestString = DeltaHandler.constructJsonrpcRequestString("set_config_from_qr", paramStr + "\"" + DeltaHandler.getQrInviteTxt() + "\"")
+                            let responseStr = DeltaHandler.sendJsonrpcBlockingCall(requestString)
+                            let errorStr = DeltaHandler.getErrorFromJsonrpcResponse(responseStr)
+                            if (errorStr === "") {
+                                // No error, load new QR code. Can't just set qrImage.source
+                                // to a new call of DeltaHandler.getQrInviteSvg() because
+                                // it takes the core some secs to generate a new image.
+                                // The timer refreshes the image every second for 10
+                                // seconds.
+                                // Also, see comments in DeltaHandler.getQrInviteSvg()
+                                // regarding the refresh of the Image source.
+                                newQrImageTimer.newQrImageCounter = 0
+                                newQrImageTimer.start()
+                            } else {
+                                PopupUtils.open(errorPopup, qrShowScanPage, { text: errorStr })
+                            }
+                        })
+                    })
+                }
+            },
+            Action {
+                iconName: "share"
+                text: i18n.tr("Share")
+                visible: !scanSectionActive
+                onTriggered: {
+                    layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getQrInviteLink() })
                 }
             }
         ]
@@ -689,6 +739,24 @@ Page {
         triggeredOnStart: false
         onTriggered: {
             layout.removePages(primaryPage)
+        }
+    }
+
+    Timer {
+        id: newQrImageTimer
+        // CAVE when starting the timer, make sure
+        // to set newQrImageTimer.newQrImageCounter to 0
+        property int newQrImageCounter: 0
+        interval: 1000
+        repeat: true
+        triggeredOnStart: false
+        onTriggered: {
+            qrImage.source = ""
+            qrImage.source = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getQrInviteSvg())
+            newQrImageCounter++
+            if (newQrImageCounter === 10) {
+                stop()
+            }
         }
     }
 

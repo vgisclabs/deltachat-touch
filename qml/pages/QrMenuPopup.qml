@@ -17,39 +17,46 @@
  */
 
 import QtQuick 2.7
-import Lomiri.Components 1.3
-import Lomiri.Components.Popups 1.3
-
-import DeltaHandler 1.0
+import Ubuntu.Components 1.3
+import Ubuntu.Components.Popups 1.3
 
 Dialog {
     id: dialog
 
-    property string qrInviteCode: DeltaHandler.getQrInviteLink()
+    property string qrInviteLink
 
-    title: i18n.tr("QR Invite Code")
+    signal continueAskUserQrDeactivation()
 
-    Label {
-        id: qrLabel
-        text: qrInviteCode
-        wrapMode: Text.WrapAnywhere
+    Button {
+        id: deactivateButton
+        text: i18n.tr("Deactivate QR code")
+        color: theme.palette.normal.negative
+
+        onClicked: {
+            PopupUtils.close(dialog)
+            continueAskUserQrDeactivation()
+        }
     }
 
     Button {
         id: clipboardButton
+        text: i18n.tr("Copy to Clipboard")
+
         onClicked: {
             let tempcontent = Clipboard.newData()
-            tempcontent = qrInviteCode
+            tempcontent = qrInviteLink
             Clipboard.push(tempcontent)
-            qrLabel.text = i18n.tr("Copied QR url to clipboard")
+
+            // Don't close directly, but show for 2 secs
+            // that the url has been copied to the clipboard
+            dialog.text = i18n.tr("Copied QR url to clipboard")
             title = ""
             cancelButton.visible = false
+            deactivateButton.visible = false
             clipboardButton.visible = false
             closeTimer.start()
 
         }
-        text: i18n.tr("Copy to Clipboard")
-        color: theme.palette.normal.positive
     }
 
     Button {

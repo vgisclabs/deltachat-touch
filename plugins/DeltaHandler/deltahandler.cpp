@@ -538,6 +538,28 @@ QString DeltaHandler::sendJsonrpcBlockingCall(QString request) const
 }
 
 
+QString DeltaHandler::getErrorFromJsonrpcResponse(QString jsonrpcResponse)
+{
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonrpcResponse.toLocal8Bit());
+    QJsonObject jsonObj = jsonDoc.object();
+    QJsonValue jsonVal = jsonObj.value("error");
+    if (jsonVal.isUndefined()) {
+        // no error in this Jsonrpc response
+        return "";
+    }
+        
+    // the response contains an error, get the message
+    jsonObj = jsonVal.toObject();
+    jsonVal = jsonObj.value("message");
+    if (!jsonVal.isString()) {
+        // no string, return standard error
+        return C::gettext("Error");
+    } else {
+        return jsonVal.toString();
+    }
+}
+
+
 void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
 {
     // Device message for version 1.3.0;
@@ -3471,7 +3493,15 @@ void DeltaHandler::setGroupPic(QString filepath)
 
 QString DeltaHandler::getTempGroupQrSvg()
 {
+    // need to switch between two filenames because otherwise,
+    // QML image won't pick up changes in the file, even if
+    // the image source is set to empty string and back
+    // to <cache>/qrGroupInvite.svg again
     QString retval(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/qrGroupInvite.svg");
+    if (QFile::exists(retval)) {
+        QFile::remove(retval);
+        retval = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/qrGroupInvite2.svg";
+    }
     std::ofstream outfile(retval.toStdString());
     char* tempImage = dc_get_securejoin_qr_svg(currentContext, m_tempGroupChatID);
     outfile << tempImage;
@@ -3479,6 +3509,30 @@ QString DeltaHandler::getTempGroupQrSvg()
     dc_str_unref(tempImage);
 
     retval.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length());
+    return retval;
+}
+
+
+QString DeltaHandler::getTempGroupQrTxt()
+{
+    char* tempText = dc_get_securejoin_qr(currentContext, m_tempGroupChatID);
+    QString retval(tempText);
+    dc_str_unref(tempText);
+    return retval;
+}
+
+
+QString DeltaHandler::getTempGroupQrLink()
+{
+    QString qrstring = getTempGroupQrTxt();
+    // qrstring is now something like OPENPGP4FPR:..., remove the
+    // beginning until and including the ":"
+    qrstring.remove(0, qrstring.indexOf(":") + 1);
+
+    // remove the first occurrence of "#" by "&"
+    qrstring.replace(qrstring.indexOf("#"), 1, "&");
+
+    QString retval = "http://i.delta.chat/#" + qrstring;
     return retval;
 }
 
@@ -3655,7 +3709,10 @@ void DeltaHandler::finalizeGroupEdit(QString groupName, QString imagePath)
     }
 
     dc_array_unref(tempContactsArray);
-    delete m_groupmembermodel;
+    if (m_groupmembermodel) {
+        delete m_groupmembermodel;
+        m_groupmembermodel = nullptr;
+    }
     m_contactsmodel->setVerifiedOnly(false);
 }
 
@@ -3668,7 +3725,10 @@ void DeltaHandler::momentaryChatLeaveGroup()
 
 void DeltaHandler::stopCreateOrEditGroup()
 {
-    delete m_groupmembermodel;
+    if (m_groupmembermodel) {
+        delete m_groupmembermodel;
+        m_groupmembermodel = nullptr;
+    }
     m_contactsmodel->setVerifiedOnly(false);
 }
 
@@ -3778,7 +3838,15 @@ void DeltaHandler::continueQrCodeAction()
 
 QString DeltaHandler::getQrInviteSvg()
 {
+    // need to switch between two filenames because otherwise,
+    // QML image won't pick up changes in the file, even if
+    // the image source is set to empty string and back
+    // to <cache>/qrInvite.svg again
     QString retval(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/qrInvite.svg");
+    if (QFile::exists(retval)) {
+        QFile::remove(retval);
+        retval = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/qrInvite2.svg";
+    }
     std::ofstream outfile(retval.toStdString());
     char* tempImage = dc_get_securejoin_qr_svg(currentContext, 0);
     outfile << tempImage;

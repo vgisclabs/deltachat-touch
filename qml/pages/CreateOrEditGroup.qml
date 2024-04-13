@@ -31,6 +31,7 @@ Page {
 
     property bool hasChatPic: false
     property bool createNewGroup: false
+    property bool selfIsInGroup: true
 
     property string headerNew: i18n.tr("New Group")
     property string headerEdit: i18n.tr("Edit Group")
@@ -64,8 +65,13 @@ Page {
     }
 
     function setPic(imagePath) {
-        let tempPath = DeltaHandler.copyToCache(imagePath)
-        DeltaHandler.setGroupPic(tempPath)
+        if (!root.onUbuntuTouch) {
+            let tempPath = DeltaHandler.copyToCache(imagePath)
+            DeltaHandler.setGroupPic(tempPath)
+        } else {
+            // the UT specific file import has already called copyToCache
+            DeltaHandler.setGroupPic(imagePath)
+        }
     }
 
     function openFileDialog() {
@@ -127,6 +133,7 @@ Page {
                         layout.removePages(createGroupPage)
                     }
                 }
+                visible: selfIsInGroup
             },
             Action {
                 iconName: 'view-grid-symbolic'
@@ -134,6 +141,7 @@ Page {
                 onTriggered: {
                     layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl("QrGroupInvite.qml"))
                 }
+                visible: selfIsInGroup && !createNewGroup
             }
         ]
     }
@@ -197,6 +205,7 @@ Page {
             horizontalCenter: chatPic.right
         }
         color: theme.palette.normal.background
+        visible: selfIsInGroup
     }
 
     LomiriShape {
@@ -221,6 +230,7 @@ Page {
                 PopupUtils.open(componentChatPicActions, editImageShape)
             }
         }
+        visible: selfIsInGroup
     }
     
     Label {
@@ -259,6 +269,7 @@ Page {
                 }
             }
         }
+        enabled: selfIsInGroup
     }
 
 
@@ -296,6 +307,7 @@ Page {
             prepareAddMembers()
             layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl("GroupAddMember.qml"))
         }
+        visible: selfIsInGroup
     }
 
     ListView {
@@ -323,7 +335,7 @@ Page {
             //onClicked: {
             //}
 
-            leadingActions: model.isSelf ? undefined : leadingMemberAction
+            leadingActions: model.isSelf || !selfIsInGroup ? undefined : leadingMemberAction
 
             ListItemLayout {
                 id: memberListItemLayout

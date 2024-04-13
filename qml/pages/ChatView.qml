@@ -366,7 +366,7 @@ Page {
                         } else if (fullChat.chatType === DeltaHandler.ChatTypeGroup) {
                             DeltaHandler.setMomentaryChatIdById(chatViewPage.chatID)
                             DeltaHandler.momentaryChatStartEditGroup()
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false })
+                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false, "selfIsInGroup": DeltaHandler.momentaryChatSelfIsInGroup() })
                             
                         } else {
                             console.log("Header clicked, info: Neither a group nor a single chat, no action defined")

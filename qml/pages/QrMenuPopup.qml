@@ -25,20 +25,23 @@ Dialog {
 
     property string qrInviteLink
 
-    title: i18n.tr("QR Invite Code")
+    signal continueAskUserQrDeactivation()
 
-    // TODO: offer a share to app function, similar as on Ubuntu Touch
-    
-    Label {
-        // not using dialog.text, but a separate Label
-        // to be able to set the wrapMode
-        id: qrLabel
-        text: qrInviteLink
-        wrapMode: Text.WrapAnywhere
+    Button {
+        id: deactivateButton
+        text: i18n.tr("Deactivate QR code")
+        color: theme.palette.normal.negative
+
+        onClicked: {
+            PopupUtils.close(dialog)
+            continueAskUserQrDeactivation()
+        }
     }
 
     Button {
         id: clipboardButton
+        text: i18n.tr("Copy to Clipboard")
+
         onClicked: {
             let tempcontent = Clipboard.newData()
             tempcontent = qrInviteLink
@@ -46,16 +49,14 @@ Dialog {
 
             // Don't close directly, but show for 2 secs
             // that the url has been copied to the clipboard
-            qrLabel.visible = false
             dialog.text = i18n.tr("Copied QR url to clipboard")
             title = ""
             cancelButton.visible = false
+            deactivateButton.visible = false
             clipboardButton.visible = false
             closeTimer.start()
 
         }
-        text: i18n.tr("Copy to Clipboard")
-        color: theme.palette.normal.positive
     }
 
     Button {

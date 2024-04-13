@@ -72,7 +72,7 @@ Dialog {
         text: i18n.tr("Edit Group")
         onClicked: {
             DeltaHandler.momentaryChatStartEditGroup()
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false })
+            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false, "selfIsInGroup": DeltaHandler.momentaryChatSelfIsInGroup() })
             PopupUtils.close(dialog)
         }
         visible: isGroup

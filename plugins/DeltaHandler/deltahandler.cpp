@@ -2091,6 +2091,18 @@ void DeltaHandler::msgReactionsChanged(uint32_t accID, int chatID, int msgID)
     if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
         emit messageReaction(msgID);
     }
+
+    // update chatlist as reactions may change message preview
+    if (m_currentAccID == accID) {
+        m_signalQueue_refreshChatlist = true;
+
+        m_signalQueue_chatsDataChanged.push(chatID);
+    }
+
+    if (!m_signalQueueTimer->isActive()) {
+        processSignalQueue();
+        m_signalQueueTimer->start(queueTimerFreq);
+    }
 }
 
 

@@ -177,9 +177,6 @@ Page {
     }
 
     function passQrImage(imagePath) {
-        if (root.onUbuntuTouch) {
-            root.fileImported.disconnect(addAccountAsSecondPage.passQrImage)
-        }
         DeltaHandler.loadQrImage(imagePath)
     }
 

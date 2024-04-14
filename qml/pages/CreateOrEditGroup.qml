@@ -71,7 +71,6 @@ Page {
         } else {
             // the UT specific file import has already called copyToCache
             DeltaHandler.setGroupPic(imagePath)
-            root.fileImported.disconnect(createGroupPage.setPic)
         }
     }
 

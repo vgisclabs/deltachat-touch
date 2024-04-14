@@ -2007,7 +2007,38 @@ Page {
         TextArea {
             id: messageEnterField
             width: parent.width - attachIconShape.width - sendIconShape.width - units.gu(2)
-            anchors{
+
+            Keys.onPressed: {
+                if ((event.key == Qt.Key_Return) && (event.modifiers & Qt.ControlModifier)) {
+                    event.accepted = true
+
+                    // similar to the MouseArea in sendIconShape below
+                    if (messageEnterField.displayText != "" && !attachmentPreviewRect.visible && !isRecording) {
+                        // Without removing the focus from the TextArea,
+                        // the text passed to DeltaHandler.sendMessage
+                        // may be incomplete
+                        messageEnterField.focus = false
+
+                        attachAnimatedImagePreviewMode = false
+                        attachImagePreviewMode = false
+                        attachFilePreviewMode = false
+                        attachAudioPreviewMode = false
+                        attachVoicePreviewMode = false
+
+                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
+
+                        // TODO: is the comment below still correct?
+                        // clear() does not work as we are using the TextArea
+                        // from Ubuntu.Components, not the one from
+                        // QtQuickControls
+                        //messageEnterField.clear()
+                        messageEnterField.text = ""
+                        messageEnterField.focus = true
+                    }
+                }
+            }
+
+            anchors {
                 left: attachIconShape.right
                 leftMargin: units.gu(0.5)
                 top: attachmentPreviewRect.visible ? attachmentPreviewRect.bottom : (quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top)

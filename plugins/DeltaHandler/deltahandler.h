@@ -39,6 +39,7 @@
 #include "notificationHelper.h"
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
+#include "fileImportSignalHelper.h"
 
 #include "deltachat.h"
 #include "quirc.h"
@@ -460,6 +461,9 @@ public:
     // finalize() has to be called on ContentTransfer).
     Q_INVOKABLE QString copyToCache(QString fromFilePath);
 
+    Q_INVOKABLE void newFileImportSignalHelper();
+    Q_INVOKABLE void deleteFileImportSignalHelper();
+
     // Will be executed when the app is closed
     Q_INVOKABLE void shutdownTasks();
 
@@ -481,6 +485,7 @@ public:
     Q_PROPERTY(NotificationHelper* notificationHelper READ notificationHelper NOTIFY notificationHelperChanged);
     Q_PROPERTY(WorkflowDbToEncrypted* workflowdbencryption READ workflowdbencryption NOTIFY workflowdbencryptionChanged());
     Q_PROPERTY(WorkflowDbToUnencrypted* workflowdbdecryption READ workflowdbdecryption NOTIFY workflowdbdecryptionChanged());
+    Q_PROPERTY(FileImportSignalHelper* fileImportSignalHelper READ fileImportSignalHelper NOTIFY fileImportSignalHelperChanged());
 
     ChatModel* chatmodel();
     AccountsModel* accountsmodel();
@@ -491,6 +496,7 @@ public:
     NotificationHelper* notificationHelper();
     WorkflowDbToEncrypted* workflowdbencryption();
     WorkflowDbToUnencrypted* workflowdbdecryption();
+    FileImportSignalHelper* fileImportSignalHelper();
 
     Q_PROPERTY(bool hasConfiguredAccount READ hasConfiguredAccount NOTIFY hasConfiguredAccountChanged);
     Q_PROPERTY(bool networkingIsAllowed READ networkingIsAllowed NOTIFY networkingIsAllowedChanged);
@@ -515,6 +521,7 @@ signals:
     void notificationHelperChanged();
     void workflowdbencryptionChanged();
     void workflowdbdecryptionChanged();
+    void fileImportSignalHelperChanged();
 
     void chatlistShowsArchivedOnly(bool showsArchived);
 
@@ -667,6 +674,7 @@ private:
     GroupMemberModel* m_groupmembermodel;
     WorkflowDbToEncrypted* m_workflowDbEncryption;
     WorkflowDbToUnencrypted* m_workflowDbDecryption;
+    FileImportSignalHelper* m_fileImportSignalHelper;
 
     uint32_t m_currentAccID;
     uint32_t currentChatID;

@@ -715,21 +715,25 @@ Page {
                     camera.stopAll()
                     if (root.onUbuntuTouch) {
                         // Ubuntu Touch
-                        let incubator = layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                        DeltaHandler.newFileImportSignalHelper()
+                        DeltaHandler.fileImportSignalHelper.fileImported.connect(qrShowScanPage.passQrImage)
+                        layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                        // See comments in CreateOrEditGroup.qml
+                        //let incubator = layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 
-                        if (incubator.status != Component.Ready) {
-                            // have to wait for the object to be ready to connect to the signal,
-                            // see documentation on AdaptivePageLayout and
-                            // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                            incubator.onStatusChanged = function(status) {
-                                if (status == Component.Ready) {
-                                    incubator.object.fileSelected.connect(qrShowScanPage.passQrImage)
-                                }
-                            }
-                        } else {
-                            // object was directly ready
-                            incubator.object.fileSelected.connect(qrShowScanPage.passQrImage)
-                        }
+                        //if (incubator.status != Component.Ready) {
+                        //    // have to wait for the object to be ready to connect to the signal,
+                        //    // see documentation on AdaptivePageLayout and
+                        //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                        //    incubator.onStatusChanged = function(status) {
+                        //        if (status == Component.Ready) {
+                        //            incubator.object.fileSelected.connect(qrShowScanPage.passQrImage)
+                        //        }
+                        //    }
+                        //} else {
+                        //    // object was directly ready
+                        //    incubator.object.fileSelected.connect(qrShowScanPage.passQrImage)
+                        //}
                     } else {
                         // non-Ubuntu Touch
                         picImportLoader.source = "FileImportDialog.qml"

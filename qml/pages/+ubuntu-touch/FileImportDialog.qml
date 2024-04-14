@@ -43,6 +43,15 @@ Page {
     signal fileSelected(string fileUrl)
     signal cancelled()
 
+    Component.onCompleted: {
+        fileImportPage.fileSelected.connect(DeltaHandler.fileImportSignalHelper.processFileImportSignal)
+        DeltaHandler.fileImportSignalHelper.increaseCounter()
+    }
+
+    Component.onDestruction: {
+        DeltaHandler.deleteFileImportSignalHelper()
+    }
+
     ContentPeerPicker {
         id: peerPicker
 

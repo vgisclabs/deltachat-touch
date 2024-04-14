@@ -19,6 +19,7 @@ set(
     notificationsMissing.cpp
     workflowConvertDbToEncrypted.cpp
     workflowConvertDbToUnencrypted.cpp
+    fileImportSignalHelper.cpp
 )
 
 add_library(deltachat SHARED IMPORTED)

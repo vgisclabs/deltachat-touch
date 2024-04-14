@@ -2223,21 +2223,25 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             if (root.onUbuntuTouch) {
-                                let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                                DeltaHandler.newFileImportSignalHelper()
+                                DeltaHandler.fileImportSignalHelper.fileImported.connect(sendImageIconShape.attachImage)
+                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                                // See comments in CreateOrEditGroup.qml
+                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 
-                                if (incubator.status != Component.Ready) {
-                                    // have to wait for the object to be ready to connect to the signal,
-                                    // see documentation on AdaptivePageLayout and
-                                    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                                    incubator.onStatusChanged = function(status) {
-                                        if (status == Component.Ready) {
-                                            incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
-                                        }
-                                    }
-                                } else {
-                                    // object was directly ready
-                                    incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
-                                }
+                                //if (incubator.status != Component.Ready) {
+                                //    // have to wait for the object to be ready to connect to the signal,
+                                //    // see documentation on AdaptivePageLayout and
+                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                //    incubator.onStatusChanged = function(status) {
+                                //        if (status == Component.Ready) {
+                                //            incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
+                                //        }
+                                //    }
+                                //} else {
+                                //    // object was directly ready
+                                //    incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
+                                //}
                             } else {
                                 picImportLoader.source = "FileImportDialog.qml"
                                 picImportLoader.item.setFileType(DeltaHandler.ImageType)
@@ -2291,25 +2295,31 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             if (root.onUbuntuTouch) {
-                                let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
+                                DeltaHandler.newFileImportSignalHelper()
+                                DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
+                                    DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
+                                } )
+                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
+                                // See comments in CreateOrEditGroup.qml
+                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
 
-                                if (incubator.status != Component.Ready) {
-                                    // have to wait for the object to be ready to connect to the signal,
-                                    // see documentation on AdaptivePageLayout and
-                                    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                                    incubator.onStatusChanged = function(status) {
-                                        if (status == Component.Ready) {
-                                            incubator.object.fileSelected.connect(function(fileUrl) {
-                                                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
-                                            } )
-                                        }
-                                    }
-                                } else {
-                                    // object was directly ready
-                                    incubator.object.fileSelected.connect(function(fileUrl) {
-                                        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
-                                    } )
-                                }
+                                //if (incubator.status != Component.Ready) {
+                                //    // have to wait for the object to be ready to connect to the signal,
+                                //    // see documentation on AdaptivePageLayout and
+                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                //    incubator.onStatusChanged = function(status) {
+                                //        if (status == Component.Ready) {
+                                //            incubator.object.fileSelected.connect(function(fileUrl) {
+                                //                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
+                                //            } )
+                                //        }
+                                //    }
+                                //} else {
+                                //    // object was directly ready
+                                //    incubator.object.fileSelected.connect(function(fileUrl) {
+                                //        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
+                                //    } )
+                                //}
                             } else {
                                 audioImportLoader.source = "FileImportDialog.qml"
                                 audioImportLoader.item.setFileType(DeltaHandler.AudioType)
@@ -2363,25 +2373,31 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             if (root.onUbuntuTouch) {
-                                let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                                DeltaHandler.newFileImportSignalHelper()
+                                DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
+                                    DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
+                                } )
+                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                                // See comments in CreateOrEditGroup.qml
+                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
 
-                                if (incubator.status != Component.Ready) {
-                                    // have to wait for the object to be ready to connect to the signal,
-                                    // see documentation on AdaptivePageLayout and
-                                    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                                    incubator.onStatusChanged = function(status) {
-                                        if (status == Component.Ready) {
-                                            incubator.object.fileSelected.connect(function(fileUrl) {
-                                                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
-                                            } )
-                                        }
-                                    }
-                                } else {
-                                    // object was directly ready
-                                    incubator.object.fileSelected.connect(function(fileUrl) {
-                                        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
-                                    } )
-                                }
+                                //if (incubator.status != Component.Ready) {
+                                //    // have to wait for the object to be ready to connect to the signal,
+                                //    // see documentation on AdaptivePageLayout and
+                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                //    incubator.onStatusChanged = function(status) {
+                                //        if (status == Component.Ready) {
+                                //            incubator.object.fileSelected.connect(function(fileUrl) {
+                                //                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
+                                //            } )
+                                //        }
+                                //    }
+                                //} else {
+                                //    // object was directly ready
+                                //    incubator.object.fileSelected.connect(function(fileUrl) {
+                                //        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
+                                //    } )
+                                //}
                             } else {
                                 fileImportLoader.source = "FileImportDialog.qml"
                                 fileImportLoader.item.setFileType(DeltaHandler.FileType)

@@ -71,6 +71,7 @@ Page {
         } else {
             // the UT specific file import has already called copyToCache
             DeltaHandler.setGroupPic(imagePath)
+            root.fileImported.disconnect(createGroupPage.setPic)
         }
     }
 
@@ -422,21 +423,40 @@ Page {
                         PopupUtils.close(popoverChatPicActions)
 
                         if (root.onUbuntuTouch) {
-                            let incubator = layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                            // The strategy with incubation below did not work reliably.
+                            // When called for the first time after start of the app,
+                            // the method fileSelected of incubator.object could not be 
+                            // connected to createGroupPage.setPic. In these cases,
+                            // function(status) was called twice: The first time, the status
+                            // was not Component.Ready, the second time it was, but the method
+                            // fileSelected of incubator.object could not be connected to 
+                            // createGroupPage.setPic (failed silently). This also happened
+                            // if the incubator was not a local variable ("let incubator =..."),
+                            // but a property of createGroupPage.
+                            //
+                            // It was also not possible to pass the function that should be connected
+                            // to fileSelected in the JSON with the properties. So a workaround via
+                            // DeltaHandler is done, see the comments in fileImportSignalHelper.h.
+                            DeltaHandler.newFileImportSignalHelper()
+                            DeltaHandler.fileImportSignalHelper.fileImported.connect(createGroupPage.setPic)
+                            layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                            //let incubator = layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 
-                            if (incubator.status != Component.Ready) {
-                                // have to wait for the object to be ready to connect to the signal,
-                                // see documentation on AdaptivePageLayout and
-                                // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                                incubator.onStatusChanged = function(status) {
-                                    if (status == Component.Ready) {
-                                        incubator.object.fileSelected.connect(createGroupPage.setPic)
-                                    }
-                                }
-                            } else {
-                                // object was directly ready
-                                incubator.object.fileSelected.connect(createGroupPage.setPic)
-                            }
+                            //if (incubator.status != Component.Ready) {
+                            //    // have to wait for the object to be ready to connect to the signal,
+                            //    // see documentation on AdaptivePageLayout and
+                            //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                            //    incubator.onStatusChanged = function(status) {
+                            //        if (status == Component.Ready) {
+                            //            incubator.object.fileSelected.connect(createGroupPage.setPic)
+                            //        } else {
+                            //            // status is not Component.Ready
+                            //        }
+                            //    }
+                            //} else {
+                            //    // object was directly ready
+                            //    incubator.object.fileSelected.connect(createGroupPage.setPic)
+                            //}
                         } else {
                             createGroupPage.openFileDialog()
                         }

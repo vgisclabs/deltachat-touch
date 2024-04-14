@@ -129,21 +129,25 @@ Page {
                 } else if (linkToPage == "restoreFromBackup--noLink") {
                     if (root.onUbuntuTouch) {
                         // Ubuntu Touch
-                        let incubator = layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                        DeltaHandler.newFileImportSignalHelper()
+                        DeltaHandler.fileImportSignalHelper.fileImported.connect(addAccountPage.startBackupImport)
+                        layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                        // See comments in CreateOrEditGroup.qml
+                        //let incubator = layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
 
-                        if (incubator.status != Component.Ready) {
-                            // have to wait for the object to be ready to connect to the signal,
-                            // see documentation on AdaptivePageLayout and
-                            // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                            incubator.onStatusChanged = function(status) {
-                                if (status == Component.Ready) {
-                                    incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
-                                }
-                            }
-                        } else {
-                            // object was directly ready
-                            incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
-                        }
+                        //if (incubator.status != Component.Ready) {
+                        //    // have to wait for the object to be ready to connect to the signal,
+                        //    // see documentation on AdaptivePageLayout and
+                        //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                        //    incubator.onStatusChanged = function(status) {
+                        //        if (status == Component.Ready) {
+                        //            incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
+                        //        }
+                        //    }
+                        //} else {
+                        //    // object was directly ready
+                        //    incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
+                        //}
                     } else {
                         // non-Ubuntu Touch
                         backupImportLoader.source = "FileImportDialog.qml"

@@ -34,7 +34,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_bus("DeltaTouch"), m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
+    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_fileImportSignalHelper {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_bus("DeltaTouch"), m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
 {
     // Determine if the app is running on Ubuntu Touch,
     // if it is in desktop mode and if the on-screen
@@ -5426,4 +5426,32 @@ bool DeltaHandler::isQueueEmpty()
 void DeltaHandler::removeActiveNotificationsOfChat(uint32_t accID, int chatID)
 {
     m_notificationHelper->removeActiveNotificationsOfChat(accID, chatID);
+}
+
+
+FileImportSignalHelper* DeltaHandler::fileImportSignalHelper()
+{
+    return m_fileImportSignalHelper;
+}
+
+
+void DeltaHandler::newFileImportSignalHelper()
+{
+    if (m_fileImportSignalHelper) {
+        qWarning() << "DeltaHandler::newFileImportSignalHelper(): m_fileImportSignalHelper is unexpectedly not NULL";
+        delete m_fileImportSignalHelper;
+    }
+
+    m_fileImportSignalHelper = new FileImportSignalHelper();
+}
+
+
+void DeltaHandler::deleteFileImportSignalHelper()
+{
+    if (m_fileImportSignalHelper) {
+        delete m_fileImportSignalHelper;
+        m_fileImportSignalHelper = nullptr;
+    } else {
+        qWarning() << "DeltaHandler::deleteFileImportSignalHelper(): m_fileImportSignalHelper is unexpectedly NULL";
+    }
 }

@@ -131,4 +131,6 @@ Es wird dringend empfohlen, Ihren alten E-Mail-Anbieter so einzurichten, dass er
 @linechat_protection_broken_tap_to_learn_more %1$s hat eine Nachricht von einem anderen Gerät gesendet. Tippen, um mehr zu erfahren.
 @linemultidevice_qr_subtitle Scannen, um ein zweites Gerät für %1$s hinzuzufügen
 @linemultidevice_transfer_done_devicemsg ℹ️ Konto wurde auf Ihr Zweitgerät übertragen.
+@linereaction_by_you Sie reagieren mit %1$s auf "%2$s"
+@linereaction_by_other %1$s reagiert mit %2$s auf "%3$s"
 @end

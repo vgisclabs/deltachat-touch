@@ -203,4 +203,8 @@ if (stringName == "chat_no_messages") {
     dc_set_stock_translation(currentContext, DC_STR_BACKUP_TRANSFER_QR, stringText.toUtf8().constData());
 } else if (stringName == "multidevice_transfer_done_devicemsg") {
     dc_set_stock_translation(currentContext, DC_STR_BACKUP_TRANSFER_MSG_BODY, stringText.toUtf8().constData());
+} else if (stringName == "reaction_by_you") {
+    dc_set_stock_translation(currentContext, DC_STR_YOU_REACTED, stringText.toUtf8().constData());
+} else if (stringName == "reaction_by_other") {
+    dc_set_stock_translation(currentContext, DC_STR_REACTED_BY, stringText.toUtf8().constData());
 }

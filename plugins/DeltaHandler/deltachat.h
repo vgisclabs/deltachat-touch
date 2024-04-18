@@ -17,7 +17,6 @@ typedef struct _dc_array     dc_array_t;
 typedef struct _dc_chatlist  dc_chatlist_t;
 typedef struct _dc_chat      dc_chat_t;
 typedef struct _dc_msg       dc_msg_t;
-typedef struct _dc_reactions dc_reactions_t;
 typedef struct _dc_contact   dc_contact_t;
 typedef struct _dc_lot       dc_lot_t;
 typedef struct _dc_provider  dc_provider_t;
@@ -705,7 +704,6 @@ int              dc_get_push_state           (dc_context_t* context);
 
 
 /**
- * Standalone version of dc_accounts_all_work_done().
  * Only used by the python tests.
  */
 int             dc_all_work_done             (dc_context_t* context);
@@ -1116,36 +1114,6 @@ uint32_t        dc_send_text_msg             (dc_context_t* context, uint32_t ch
  *     or 0 for errors.
  */
 uint32_t dc_send_videochat_invitation (dc_context_t* context, uint32_t chat_id);
-
-
-/**
- * Send a reaction to message.
- *
- * Reaction is a string of emojis separated by spaces. Reaction to a
- * single message can be sent multiple times. The last reaction
- * received overrides all previously received reactions. It is
- * possible to remove all reactions by sending an empty string.
- *
- * @deprecated 2023-11-27, use jsonrpc method `send_reaction` instead
- * @memberof dc_context_t
- * @param context The context object.
- * @param msg_id ID of the message you react to.
- * @param reaction A string consisting of emojis separated by spaces.
- * @return The ID of the message sent out or 0 for errors.
- */
-uint32_t dc_send_reaction (dc_context_t* context, uint32_t msg_id, char *reaction);
-
-
-/**
- * Get a structure with reactions to the message.
- *
- * @deprecated 2023-11-27, use jsonrpc method `get_message_reactions` instead
- * @memberof dc_context_t
- * @param context The context object.
- * @param msg_id The message ID to get reactions for.
- * @return A structure with all reactions to the message.
- */
-dc_reactions_t* dc_get_msg_reactions (dc_context_t *context, int msg_id);
 
 
 /**
@@ -3097,23 +3065,6 @@ dc_context_t*  dc_accounts_get_selected_account (dc_accounts_t* accounts);
  * @return 1=success, 0=error
  */
 int            dc_accounts_select_account       (dc_accounts_t* accounts, uint32_t account_id);
-
-
-/**
- * This is meant especially for iOS, because iOS needs to tell the system when its background work is done.
- *
- * iOS can:
- * - call dc_start_io() (in case IO was not running)
- * - call dc_maybe_network()
- * - while dc_accounts_all_work_done() returns false:
- *   - Wait for #DC_EVENT_CONNECTIVITY_CHANGED
- *
- * @memberof dc_accounts_t
- * @param accounts The account manager as created by dc_accounts_new().
- * @return Whether all accounts finished their background work.
- *      #DC_EVENT_CONNECTIVITY_CHANGED will be sent when this turns to true.
- */
-int            dc_accounts_all_work_done        (dc_accounts_t* accounts);
 
 
 /**
@@ -5339,52 +5290,6 @@ int64_t         dc_lot_get_timestamp     (const dc_lot_t* lot);
 
 
 /**
- * @class dc_reactions_t
- * @deprecated 2023-11-27, use jsonrpc method `get_message_reactions` instead
- *
- * An object representing all reactions for a single message.
- */
-
-/**
- * Returns array of contacts which reacted to the given message.
- *
- * @deprecated 2023-11-27, use jsonrpc method `get_message_reactions` instead
- * @memberof dc_reactions_t
- * @param reactions The object containing message reactions.
- * @return array of contact IDs. Use dc_array_get_cnt() to get array length and
- *         dc_array_get_id() to get the IDs. Should be freed using `dc_array_unref()` after usage.
- */
-dc_array_t*     dc_reactions_get_contacts(dc_reactions_t* reactions);
-
-
-/**
- * Returns a string containing space-separated reactions of a single contact.
- *
- * @deprecated 2023-11-27, use jsonrpc method `get_message_reactions` instead
- * @memberof dc_reactions_t
- * @param reactions The object containing message reactions.
- * @param contact_id ID of the contact.
- * @return Space-separated list of emoji sequences, which could be empty.
- *         Returned string should not be modified and should be freed
- *         with dc_str_unref() after usage.
- */
-char*           dc_reactions_get_by_contact_id(dc_reactions_t* reactions, uint32_t contact_id);
-
-
-/**
- * Frees an object containing message reactions.
- *
- * Reactions objects are created by dc_get_msg_reactions().
- *
- * @deprecated 2023-11-27
- * @memberof dc_reactions_t
- * @param reactions The object to free.
- *     If NULL is given, nothing is done.
- */
-void            dc_reactions_unref       (dc_reactions_t* reactions);
-
-
-/**
  * @defgroup DC_MSG DC_MSG
  *
  * With these constants the type of a message is defined.
@@ -6074,10 +5979,12 @@ void dc_event_unref(dc_event_t* event);
  * Downloading a bunch of messages just finished. This is an
  * event to allow the UI to only show one notification per message bunch,
  * instead of cluttering the user with many notifications.
- * For each of the msg_ids, an additional #DC_EVENT_INCOMING_MSG event was emitted before.
+ * UI may store #DC_EVENT_INCOMING_MSG events
+ * and display notifications for all messages at once
+ * when this event arrives.
  * 
  * @param data1 0
- * @param data2 (char*) msg_ids, a json object with the message ids.
+ * @param data2 0
  */
 #define DC_EVENT_INCOMING_MSG_BUNCH       2006
 
@@ -6306,7 +6213,24 @@ void dc_event_unref(dc_event_t* event);
  * This event is only emitted by the account manager
  */
 
-#define DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE  2200
+#define DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE   2200
+
+/**
+ * Inform that set of chats or the order of the chats in the chatlist has changed.
+ *
+ * Sometimes this is emitted together with `DC_EVENT_CHATLIST_ITEM_CHANGED`.
+ */
+
+#define DC_EVENT_CHATLIST_CHANGED              2300
+
+/**
+ * Inform that all or a single chat list item changed and needs to be rerendered
+ * If `chat_id` is set to 0, then all currently visible chats need to be rerendered, and all not-visible items need to be cleared from cache if the UI has a cache.
+ * 
+ * @param data1 (int) chat_id chat id of chatlist item to be rerendered, if chat_id = 0 all (cached & visible) items need to be rerendered
+ */
+
+#define DC_EVENT_CHATLIST_ITEM_CHANGED         2301
 
 /**
  * @}
@@ -7312,6 +7236,22 @@ void dc_event_unref(dc_event_t* event);
 /// `%1$s` will be replaced by the provider's domain.
 #define DC_STR_INVALID_UNENCRYPTED_MAIL 174
 
+/// "You reacted %1$s to '%2$s'"
+///
+/// `%1$s` will be replaced by the reaction, usually an emoji
+/// `%2$s` will be replaced by the summary of the message the reaction refers to
+///
+/// Used in summaries.
+#define DC_STR_YOU_REACTED 176
+
+/// "%1$s reacted %2$s to '%3$s'"
+///
+/// `%1$s` will be replaced by the name the contact who reacted
+/// `%2$s` will be replaced by the reaction, usually an emoji
+/// `%3$s` will be replaced by the summary of the message the reaction refers to
+///
+/// Used in summaries.
+#define DC_STR_REACTED_BY 177
 
 /**
  * @}

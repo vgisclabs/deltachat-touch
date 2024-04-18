@@ -55,6 +55,7 @@ Aktualizace najdete na https://get.delta.chat nebo v obchodě s aplikacemi . 
 ℹ️ Chcete-li znovu použít funkci „Uložené zprávy“, vytvořte si nový chat. 
 @lineone_moment Okamžik ...
 @lineerror_x Chyba %1$s
+@linebroadcast_list Seznam vysílání
 @lineqrshow_join_contact_hint K navázání spojení s %1$s vyfoť kód.
 @lineqrshow_join_group_hint K připojení ke skupině "%1$s" vyfoť kód.
 @linegroup_name_changed_by_you Názen skupiny změněn z "%1$s" na "%2$s" ode mě.

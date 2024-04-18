@@ -15,7 +15,7 @@
 
 • Nëse sapo riinstaluat Delta Chat-in, atëherë më e mira është të riujdisni Delta Chat-in tani dhe të zgjidhni “Shtoje si pajisje të dytë”, ose të importoni një kopjeruajtje.
 @linesystemmsg_read_receipt_subject Dëftesë leximi
-@linesystemmsg_read_receipt_body Kjo është dëftesë leximi për mesazhin "%1$s".
+@linesystemmsg_read_receipt_body Kjo është dëftesë leximi për mesazhin “%1$s”.
 
 Do të thotë që mesazhi u shfaq te pajisja e marrësit, jo domosdo që lënda u lexua.
 @lineautocrypt_prefer_e2ee Parapëlqe fshehtëzim skaj-më-skaj
@@ -89,14 +89,14 @@ Kur depozita është 100%% e përdorur, mund të mos jeni në gjendje të merrni
 Po pritet për pajisjen e %2$s që të përgjigjet…
 @linesecure_join_replies %1$s u përgjigj, po pritet që të shtohet te grupi…
 @lineqrshow_join_contact_hint Skanojeni këtë që të rregullohet një kontakt %1$s
-@lineqrshow_join_group_hint Që të bëheni pjesë e grupit "%1$s", skanoni këtë.
+@lineqrshow_join_group_hint Që të bëheni pjesë e grupit “%1$s”, skanoni këtë.
 @lineconnectivity_not_connected I palidhur
 @lineaeap_addr_changed %1$s ndryshoi adresën e vet nga %2$s në %3$s
 @lineaeap_explanation Ndryshuat adresën tuaj nga %1$s në %2$s.
 
 Nëse dërgoni tani një mesazh te një grup i verifikuar, kontaktet atje do të zëvendësojnë automatikisht adresën tuaj të vjetër me të renë.
 
-Është tejet e këshillueshme të ujdisni shërbimin tuaj të vjetër të email-it të përcjellë krejt email-et te adresa juaj e re email. Përndryshme, mund të humbni mesazhe të kontakteve që s’e kanë marrë ende adresën tuaj të re.
+Është tejet e këshillueshme të ujdisni shërbimin tuaj të vjetër të email-it të përcjellë krejt email-et te adresa juaj e re email. Përndryshe, mund të humbni mesazhe të kontakteve që s’e kanë marrë ende adresën tuaj të re.
 @linegroup_name_changed_by_you E ndryshuat emrin e grupit nga “%1$s” në “%2$s”.
 @linegroup_name_changed_by_other Emri i grupit u ndryshua nga “%1$s” në “%2$s” nga %3$s.
 @linegroup_image_changed_by_you Ndryshuat figurën e grupit
@@ -135,4 +135,6 @@ Nëse dërgoni tani një mesazh te një grup i verifikuar, kontaktet atje do të
 @linechat_protection_broken_tap_to_learn_more %1$s dërgoi një mesazh nga një pajisje tjetër. Prekeni që të mësoni më tepër.
 @linemultidevice_qr_subtitle Skanojeni, që të ujdisni pajise të dytë për %1$s
 @linemultidevice_transfer_done_devicemsg ℹ️ Llogaria u shpërngul te pajisja juaj e dytë.
+@linereaction_by_you Reaguat me %1$s ndaj “%2$s”
+@linereaction_by_other %1$s reagoi me %2$s ndaj “%3$s”
 @end

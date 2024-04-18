@@ -145,7 +145,7 @@ void BlockedContactsModel::updateContext(dc_context_t* cContext)
 
 void BlockedContactsModel::unblockContact(int myindex)
 {
-    uint32_t contactID = contactID = dc_array_get_id(m_contactsArray, myindex);
+    uint32_t contactID = dc_array_get_id(m_contactsArray, myindex);
     dc_block_contact(m_context, contactID, 0);
 
     beginResetModel();

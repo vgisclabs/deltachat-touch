@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -221,6 +221,26 @@ void EmitterThread::run()
                     qInfo().nospace() << "Emitter: DC_EVENT_WEBXDC_STATUS_UPDATE" << ", account " << dc_event_get_account_id(event);
                     // has parameters, but at least one of them (data2) must
                     // not be queried to avoid "races in the status replication".
+                    break;
+
+                case DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE:
+                    // TODO: emit and react to this event
+                    qInfo().nospace() << "Emitter: DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE" << ", account " << dc_event_get_account_id(event);
+                    break;
+
+                case DC_EVENT_CHATLIST_CHANGED:
+                    // TODO: emit and react to this event
+                    qInfo().nospace() << "Emitter: DC_EVENT_CHATLIST_CHANGED << " << ", account " << dc_event_get_account_id(event);
+                    break;
+
+                case DC_EVENT_CHATLIST_ITEM_CHANGED:
+                    // TODO: emit and react to this event
+                    qInfo().nospace() << "Emitter: DC_EVENT_CHATLIST_ITEM_CHANGED" << ", account " << dc_event_get_account_id(event) << ", chat_id: " << dc_event_get_data1_int(event);
+                    break;
+
+                case DC_EVENT_CONFIG_SYNCED:
+                    // TODO: emit and react to this event
+                    qInfo().nospace() << "Emitter: DC_EVENT_CONFIG_SYNCED" << ", account " << dc_event_get_account_id(event)  << ", key: " << qUtf8Printable(eventData2Str);
                     break;
 
                 default:

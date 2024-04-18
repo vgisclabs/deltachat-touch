@@ -11,10 +11,9 @@ This is the main branch which contains the focal version. It will **not** work o
 ## Infos regarding the Nix package
 
 
-Originally targeted for Ubuntu Touch, work is in progress for a Nix package. Differences to the Ubuntu Touch version are:
+Originally targeted for Ubuntu Touch, work is in progress for a Nix package. Difference(s) to the Ubuntu Touch version:
 
 * File im- and export is managed via QML FileDialog instead of the Ubuntu Touch specific ContentHub.
-* ~~The Lomiri Connectivity module is not used~~ (after merging into main, the module is needed again)
 
 Currently, some things are broken in the Nix package:
 
@@ -46,33 +45,17 @@ cd deltatouch
 git submodule update --init --recursive
 ```
 
-CMakeLists.txt of deltachat-core-rust needs to be patched in order to work with clickable:
-
-```
-patch libs/deltachat-core-rust/CMakeLists.txt < libs/patches/dc_core_rust-CMakeLists.patch
-```
-
-Build libdeltachat.so for your architecture (arm64 in this example, could also be armhf, or amd64 if you want to use `clickable desktop`). This will take some time:
+Build libdeltachat.so for your architecture (arm64 in this example, could also be `armhf`, or `amd64` if you want to use `clickable desktop`). This will take some time:
 
 ```
 clickable build --libs deltachat-core-rust --arch arm64
 ```
 
-After building libdeltachat.so, undo the patch:
-
-```
-cd libs/deltachat-core-rust
-git restore CMakeLists.txt
-cd ../..
-```
-
-Of course, the patch needs to be applied again before you start a new build of libdeltachat.so.
-
 ### Buidling libquirc.so.1.2
 
 Activating/updating the quirc submodule should have already been done by running `git submodule update --init --recursive` for libdeltachat.so above.
 
-Build libquirc.so.1.2 for your architecture (arm64 in this example, could also be armhf or amd64 if you want to use `clickable desktop`):
+Build libquirc.so.1.2 for your architecture (arm64 in this example, could also be `armhf` or `amd64` if you want to use `clickable desktop`):
 
 ```
 clickable build --libs quirc --arch arm64
@@ -81,7 +64,7 @@ clickable build --libs quirc --arch arm64
 
 ### Build the app
 
-Preqrequisite: libdeltachat.so and libquirc.so.1.2 have been built for your architecture as described above. Then build the app for your architecture (arm64 in this example, could also be armhf):
+Preqrequisite: libdeltachat.so and libquirc.so.1.2 have been built for your architecture as described above. Then build the app for your architecture (`arm64` in this example, could also be `armhf`):
 
 ```
 clickable build --arch arm64
@@ -109,7 +92,7 @@ Limitations to `clickable desktop` are:
 
 ## License
 
-Copyright (C) 2023  Lothar Ketterer
+Copyright (C) 2023, 2024  Lothar Ketterer
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License version 3, as published
 by the Free Software Foundation.

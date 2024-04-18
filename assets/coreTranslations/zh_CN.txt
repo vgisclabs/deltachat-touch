@@ -131,4 +131,6 @@
 @linechat_protection_broken_tap_to_learn_more %1$s 从另一台设备发送了一则消息。轻按了解更多。
 @linemultidevice_qr_subtitle 扫描此处为 %1$s 设置第二台设备
 @linemultidevice_transfer_done_devicemsg ℹ️ 账户已传输到你的第二台设备。
+@linereaction_by_you 你对 “%2$s” 回应了 %1$s
+@linereaction_by_other %1$s 对 “%3$s” 回应了 %2$s
 @end

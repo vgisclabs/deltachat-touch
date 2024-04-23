@@ -41,8 +41,10 @@ Popover {
     property var emoHeartArray: DtEmojis.emojiHearts
     property var emoAnimalArray: DtEmojis.emojiAnimals
     property var emoThingsArray: DtEmojis.emojiThings
+    property var emoSymbolsArray: DtEmojis.emojiSymbols
+    property var emoFlagsArray: DtEmojis.emojiFlags
 
-    property var emoAllArrays: [emoRecentArray, emoFaceArray, emoHandArray, emoHeartArray, emoAnimalArray, emoThingsArray]
+    property var emoAllArrays: [emoRecentArray, emoFaceArray, emoHandArray, emoHeartArray, emoAnimalArray, emoThingsArray, emoSymbolsArray, emoFlagsArray]
 
     signal sendReactions(var reactionArray)
 
@@ -70,7 +72,7 @@ Popover {
         }
 
         ListElement {
-            sectionHeader: "❤"
+            sectionHeader: "❤️"
         }
 
         ListElement {
@@ -79,6 +81,14 @@ Popover {
 
         ListElement {
             sectionHeader: "🏆"
+        }
+
+        ListElement {
+            sectionHeader: "☮️"
+        }
+
+        ListElement {
+            sectionHeader: "🇦🇽"
         }
     }
 

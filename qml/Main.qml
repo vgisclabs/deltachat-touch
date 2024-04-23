@@ -420,7 +420,7 @@ MainView {
 
     // used in ReactionsSelectionPopover.qml, but already loaded here to
     // save time when creating the popup
-    property var emojiRecentArray: ["😬", "😂", "🙂", "😞", "☹", "😄", "😅", "😳", "😢", "👍", "👎", "💪", "👀", "🤦", "🤷", "🤞", "🙈", "🍀", "❤", "💓", "💯", "🚀", "🎉"]
+    property var emojiRecentArray: ["🙂", "😂", "😄", "😅", "😬", "😞", "☹️", "🙁", "😳", "😢", "👍", "👎", "💪", "👀", "🤦", "🤷", "🤞", "🙈", "🍀", "❤️", "💓", "💯", "🚀", "🎉"]
 
     Settings {
         id: settings
@@ -435,7 +435,7 @@ MainView {
         property alias scaleLevelTextZoom: root.scaleLevel
         property alias alwaysLoadRemote: root.alwaysLoadRemoteContent
         property alias inactAccsNewMsgsSinceLastCheck: root.inactiveAccsNewMsgsSinceLastCheck
-        property alias recentlyUsedEmojis: root.emojiRecentArray
+        property alias recentlyUsedEmojisNew: root.emojiRecentArray
     }
 
     width: units.gu(45)

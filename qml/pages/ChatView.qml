@@ -956,6 +956,21 @@ Page {
                         leftMargin: isOther ? units.gu(1) : undefined
                     }
 
+                    onWidthChanged: {
+                        // Re-create the reactions below the message as the max number of
+                        // reactions to show depends on the width of msgbox, and
+                        // msgbox.width at the time of onCompleted is not final
+                        // yet. In tests, the width changed four times until
+                        // it reached its final value. It's costly ofc to re-calculate
+                        // four times, but the only other way to add reactions against
+                        // the final width of msgbox I can think of is a timer, which
+                        // will bring its own overhead, and additionally introduces a
+                        // visible delay in drawing of reactions.
+                        if (reactionsLoader.active) {
+                            reactionsLoader.updateReactions()
+                        }
+                    }
+
                     backgroundColor: {
                         if (isSearchResult) {
                             return root.searchResultMessageColor;
@@ -1546,20 +1561,40 @@ Page {
                         reactionsModel.clear()
                         if (reactions.hasOwnProperty("reactions")) {
                             let temparray = reactions.reactions
+
+                            // I've found no way so far to interactively track the width of
+                            // reactionsView while it is being build up. So it is estimated,
+                            // see the comparison to msgbox.width below. To account for
+                            // single reactions being wider when the count is displayed,
+                            // noOfReactionsWithCountGt1 holds the number of reactions with a count > 1.
+                            let noOfReactionsWithCountGt1 = 0
+
                             for (let i = 0; i < temparray.length; i++) {
                                 let obj = temparray[i]
 
+                                if (obj.count > 1) {
+                                    noOfReactionsWithCountGt1++
+                                }
+
                                 if (i < 2) {
+                                    // show at least
+                                    // - three reactions or
+                                    // - two reactions plus one with "..." if > 3 reactions
                                     reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
-                                } else if (i == 2) {
-                                    if (temparray.length == 3) {
+
+                                    // from the third reaction on, check against the width of the msgbox;
+                                    // the calculation of the width of the reactionsView is just an
+                                    // estimation as reactionsView.width seems to be of no use while building
+                                    // up during this loop, see also comment for noOfReactionsWithCountGt1 above
+                                } else if (msgbox.width < ( ((i+2) * 1.2 * (root.scaledFontSizeInPixels + units.gu(1))) + (noOfReactionsWithCountGt1 * (root.scaledFontSizeInPixels/2)) )) {
+                                    if (temparray.length == (i+1) ) {
                                         reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
                                     } else {
                                         reactionsModel.append( { reactEmoji: "…", reactCount: 1 })
                                     }
+                                    break;
                                 } else {
-                                    // no need to go beyond the third element here
-                                    break
+                                    reactionsModel.append( { reactEmoji: obj.emoji, reactCount: obj.count })
                                 }
                             }
                         }

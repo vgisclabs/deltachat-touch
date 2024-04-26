@@ -240,6 +240,7 @@ void EmitterThread::run()
 
                 case DC_EVENT_CONFIG_SYNCED:
                     // TODO: emit and react to this event
+                    eventData2Str = dc_event_get_data2_str(event);
                     qInfo().nospace() << "Emitter: DC_EVENT_CONFIG_SYNCED" << ", account " << dc_event_get_account_id(event)  << ", key: " << qUtf8Printable(eventData2Str);
                     break;
 

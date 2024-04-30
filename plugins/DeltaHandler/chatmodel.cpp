@@ -540,7 +540,8 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
             tempQString = tempText;
 
             // special case: Images
-            if (DC_MSG_IMAGE == dc_msg_get_viewtype(tempMsg)) {
+            tempInt = dc_msg_get_viewtype(tempMsg);
+            if (DC_MSG_IMAGE == tempInt || DC_MSG_STICKER == tempInt || DC_MSG_GIF == tempInt) {
                 // In case of images, if the file extension does not
                 // match the actual format of the image, QML Image
                 // will not display anything (e.g., the file is named

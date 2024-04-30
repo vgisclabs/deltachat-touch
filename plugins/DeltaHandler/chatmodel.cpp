@@ -84,6 +84,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[FilenameRole] = "filename";
     roles[AudioFilePathRole] = "audiofilepath";
     roles[ImageWidthRole] = "imagewidth";
+    roles[ImageHeightRole] = "imageheight";
     roles[AvatarColorRole] = "avatarColor";
     roles[AvatarInitialRole] = "avatarInitial";
     roles[IsSearchResultRole] = "isSearchResult";
@@ -608,6 +609,10 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
 
         case ChatModel::ImageWidthRole:
             retval = dc_msg_get_width(tempMsg);
+            break;
+
+        case ChatModel::ImageHeightRole:
+            retval = dc_msg_get_height(tempMsg);
             break;
 
         case ChatModel::TextRole:

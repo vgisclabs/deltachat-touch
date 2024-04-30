@@ -771,7 +771,8 @@ Page {
                     sourceComponent: Image {
                         id: msgImage
                         source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.filepath)
-                        width: model.imagewidth > (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) ? (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) : model.imagewidth
+                        width: model.imagewidth > (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) ? (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) : (model.imagewidth < root.scaledFontSizeInPixels * 8 ? root.scaledFontSizeInPixels * 8 : model.imagewidth)
+                        height: width * (model.imageheight / model.imagewidth)
                         fillMode: Image.PreserveAspectFit
                         autoTransform: true
 
@@ -795,7 +796,8 @@ Page {
                     sourceComponent: AnimatedImage {
                         id: msgAnimatedImage
                         source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.filepath)
-                        width: model.imagewidth > (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) ? (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) : model.imagewidth
+                        width: model.imagewidth > (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) ? (chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(5)) : (model.imagewidth < root.scaledFontSizeInPixels * 8 ? root.scaledFontSizeInPixels * 8 : model.imagewidth)
+                        height: width * (model.imageheight / model.imagewidth)
                         fillMode: Image.PreserveAspectFit
                         autoTransform: true
                         cache: false

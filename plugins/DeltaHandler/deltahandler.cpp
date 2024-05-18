@@ -3733,7 +3733,7 @@ QString DeltaHandler::getTempGroupQrLink()
     // remove the first occurrence of "#" by "&"
     qrstring.replace(qrstring.indexOf("#"), 1, "&");
 
-    QString retval = "http://i.delta.chat/#" + qrstring;
+    QString retval = "https://i.delta.chat/#" + qrstring;
     return retval;
 }
 
@@ -4085,7 +4085,7 @@ QString DeltaHandler::getQrInviteLink()
     // remove the first occurrence of "#" by "&"
     qrstring.replace(qrstring.indexOf("#"), 1, "&");
 
-    QString retval = "http://i.delta.chat/#" + qrstring;
+    QString retval = "https://i.delta.chat/#" + qrstring;
     return retval;
 }
 

@@ -46,7 +46,7 @@ Page {
                 iconName: 'close'
                 text: i18n.tr('Close')
                 onTriggered: {
-                    layout.removePages(forwardMessagePage)
+                    extraStack.pop()
                     DeltaHandler.chatmodel.forwardingFinished()
                 }
             }
@@ -93,7 +93,7 @@ Page {
             onClicked: {
                 let chatID = DeltaHandler.chatmodel.chatlistmodel.getChatID(index)
                 DeltaHandler.chatmodel.forwardMessage(chatID)
-                layout.removePages(forwardMessagePage)
+                extraStack.pop()
                 DeltaHandler.chatmodel.forwardingFinished()
             }
 

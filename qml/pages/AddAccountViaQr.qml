@@ -37,12 +37,6 @@ import DeltaHandler 1.0
 Page {
     id: addAccountViaQrPage
 
-    // for the popup to be able to remove pages so only
-    // the AccountConfig.qml page is visible in case
-    // the configuration of the account failed (e.g., 
-    // due to wrong credentials)
-    property Page addAccPage
-
     signal setTempContextNull()
     signal deleteDecoder()
 
@@ -61,6 +55,7 @@ Page {
 
     Component.onCompleted: {
         DeltaHandler.finishedSetConfigFromQr.connect(continueQrAccountCreation)
+        DeltaHandler.readyForQrBackupImport.connect(continueQrBackupImport)
         DeltaHandler.qrDecoded.connect(startQrProcessing)
         DeltaHandler.qrDecodingFailed.connect(imageDecodingFailed)
         
@@ -83,96 +78,75 @@ Page {
     }
 
     function imageDecodingFailed(errorMsg) {
-        PopupUtils.open(errorPopup, addAccountViaQrPage, { text: errorMsg })
+        let popup1 = PopupUtils.open(errorPopup, addAccountViaQrPage, { text: errorMsg })
         // Function is called as a result of loading an image;
         // for that, the camera was stopped. Need to
         // start it again now.
-        camera.startAndConfigure()
+        popup1.done.connect(function() { camera.startAndConfigure() })
     }
 
     function qrActionSwitch(qrstate) {
         switch (qrstate) {
-            case DeltaHandler.DT_QR_ACCOUNT:
-                let popup = PopupUtils.open(
-                    Qt.resolvedUrl("QrConfirmPopup.qml"),
+            case DeltaHandler.DT_QR_BACKUP:
+                let popup4 = PopupUtils.open(
+                    Qt.resolvedUrl("ConfirmDialog.qml"),
                     null,
-                    { textOne: i18n.tr("Create new e-mail address on \"%1\" and log in there?").arg(DeltaHandler.getQrTextOne()) }
+                    { dialogText: i18n.tr("Copy the account from the other device to this device?"),
+                      dialogTitle: i18n.tr("Add as Second Device") }
                 )
-                popup.confirmed.connect(function() {
-                    PopupUtils.close(popup)
-                    // don't start continueTimer here as the page will be closed
-                    // in a subsequent action
+                popup4.confirmed.connect(function() {
                     DeltaHandler.continueQrCodeAction()
                 })
-                popup.cancel.connect(function() {
-                    PopupUtils.close(popup)
+                popup4.cancelled.connect(function() {
                     // need to call camera.startAndConfigure() to start
                     // the captureTimer again.
                     camera.startAndConfigure()
                 })
                 break;
-            case DeltaHandler.DT_QR_ERROR:
-                popup = PopupUtils.open(
-                    Qt.resolvedUrl("QrConfirmPopup.qml"),
+            case DeltaHandler.DT_QR_ACCOUNT:
+                let popup5 = PopupUtils.open(
+                    Qt.resolvedUrl("ConfirmDialog.qml"),
                     null,
-                    { textOne: i18n.tr("Error: %1").arg(DeltaHandler.getQrTextOne()),
-                      titleString: i18n.tr("Error") }
+                    { dialogText: i18n.tr("Create new e-mail address on \"%1\" and log in there?").arg(DeltaHandler.getQrTextOne()) }
                 )
-                popup.confirmed.connect(function() {
-                    PopupUtils.close(popup)
-                    continueTimer.start()
+                popup5.confirmed.connect(function() {
+                    DeltaHandler.continueQrCodeAction()
                 })
-                popup.cancel.connect(function() {
-                    PopupUtils.close(popup)
+                popup5.cancelled.connect(function() {
                     camera.startAndConfigure()
                 })
                 break;
             case DeltaHandler.DT_QR_LOGIN:
-                popup = PopupUtils.open(
-                    Qt.resolvedUrl("QrConfirmPopup.qml"),
+                let popup6 = PopupUtils.open(
+                    Qt.resolvedUrl("ConfirmDialog.qml"),
                     null,
-                    { textOne: i18n.tr("Log into \"%1\"?").arg(DeltaHandler.getQrTextOne()) }
+                    { dialogText: i18n.tr("Log into \"%1\"?").arg(DeltaHandler.getQrTextOne()) }
                 )
-                popup.confirmed.connect(function() {
-                    PopupUtils.close(popup)
-                    // don't start continueTimer here as the page will be closed
-                    // in a subsequent action
+                popup6.confirmed.connect(function() {
                     DeltaHandler.continueQrCodeAction()
                 })
-                popup.cancel.connect(function() {
-                    PopupUtils.close(popup)
+                popup6.cancelled.connect(function() {
                     camera.startAndConfigure()
                 })
                 break;
-            case DeltaHandler.DT_UNKNOWN:
-                popup = PopupUtils.open(
-                    Qt.resolvedUrl("QrConfirmPopup.qml"),
+            case DeltaHandler.DT_QR_ERROR:
+                let popup7 = PopupUtils.open(
+                    Qt.resolvedUrl("ErrorMessage.qml"),
                     null,
-                    { textOne: i18n.tr("Unknown"),
-                      titleString: i18n.tr("QR Code") }
+                    { text: i18n.tr("Error: %1").arg(DeltaHandler.getQrTextOne()) }
                 )
-                popup.confirmed.connect(function() {
-                    PopupUtils.close(popup)
-                    continueTimer.start()
-                })
-                popup.cancel.connect(function() {
-                    PopupUtils.close(popup)
+                popup7.done.connect(function() {
                     camera.startAndConfigure()
                 })
                 break;
+            case DeltaHandler.DT_UNKNOWN: // fallthrough
             default: 
-                popup = PopupUtils.open(
-                    Qt.resolvedUrl("QrConfirmPopup.qml"),
+                let popup8 = PopupUtils.open(
+                    Qt.resolvedUrl("ErrorMessage.qml"),
                     null,
-                    { textOne: i18n.tr("Error"),
-                      titleString: i18n.tr("QR Code") }
+                    { text: i18n.tr("The scanned QR code cannot be used to set up a new account.") }
                 )
-                popup.confirmed.connect(function() {
-                    PopupUtils.close(popup)
-                    continueTimer.start()
-                })
-                popup.cancel.connect(function() {
-                    PopupUtils.close(popup)
+                popup8.done.connect(function() {
                     camera.startAndConfigure()
                 })
                 break;
@@ -183,11 +157,20 @@ Page {
         if (wasSuccessful) {
             // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
             // the account should not persist if the configuration fails (or should it?)
-            PopupUtils.open(configProgress)
+            let popup3 = PopupUtils.open(configProgress)
+            popup3.success.connect(function() { extraStack.clear() })
+            popup3.failed.connect(function() { extraStack.pop() })
         } else {
             PopupUtils.open(errorPopup)
             setTempContextNull()
         }
+    }
+
+    function continueQrBackupImport() {
+        let popup2 = PopupUtils.open(progressQrBackupImport)
+        popup2.failed.connect(function() { extraStack.pop() })
+        popup2.cancelled.connect(function() { extraStack.pop() })
+        popup2.success.connect(function() { extraStack.clear() })
     }
 
     Loader {
@@ -263,13 +246,13 @@ Page {
 
         Rectangle {
             id: videoRect
-            width: (addAccountViaQrPage.width > addAccountViaQrPage.height ? addAccountViaQrPage.height : addAccountViaQrPage.width) - qrHeader.height - units.gu(4)
+            width: (qrScanRect.width > qrScanRect.height ? (qrScanRect.width / 2 > qrScanRect.height ? qrScanRect.height : qrScanRect.width / 2) : (qrScanRect.height / 2 > qrScanRect.width ? qrScanRect.width : qrScanRect.height / 2)) - units.gu(4)
             height: width
             anchors {
                 top: qrScanRect.top
                 topMargin: units.gu(2)
                 left: qrScanRect.left
-                leftMargin: qrScanRect.width > qrScanRect.height ? units.gu(2) : (qrScanRect.width - width) / 2
+                leftMargin: qrScanRect.height < qrScanRect.width * 0.8 ? units.gu(2) : ((qrScanRect.width - width) / 2)
             }
             color: theme.palette.normal.background
 
@@ -285,13 +268,13 @@ Page {
 
         Rectangle {
             id: scanButtonRect
-            width: addAccountViaQrPage.width > addAccountViaQrPage.height ? (addAccountViaQrPage.width - units.gu(2) - videoRect.width - units.gu(3) - units.gu(3)) : (addAccountViaQrPage.width - units.gu(3) - units.gu(3))
-            height: addAccountViaQrPage.width > addAccountViaQrPage.height ? (addAccountViaQrPage.height - units.gu(2) - qrHeader.height - units.gu(2)) : (addAccountViaQrPage.height - qrHeader.height - units.gu(2) - videoRect.height - units.gu(2) - units.gu(2))
+            width: qrScanRect.height < qrScanRect.width * 0.8 ? (qrScanRect.width - units.gu(2) - videoRect.width - units.gu(3) - units.gu(3)) : (qrScanRect.width - units.gu(3) - units.gu(3))
+            height: qrScanRect.height < qrScanRect.width * 0.8 ? (qrScanRect.height - units.gu(2) - units.gu(2)) : (qrScanRect.height - units.gu(2) - videoRect.height - units.gu(2) - units.gu(2))
 
             anchors {
-                top: addAccountViaQrPage.width > addAccountViaQrPage.height ? qrScanRect.top : videoRect.bottom
+                top: qrScanRect.height < qrScanRect.width * 0.8 ? qrScanRect.top : videoRect.bottom
                 topMargin: units.gu(2)
-                left: addAccountViaQrPage.width > addAccountViaQrPage.height ? videoRect.right : qrScanRect.left
+                left: qrScanRect.height < qrScanRect.width * 0.8 ? videoRect.right : qrScanRect.left
                 leftMargin: units.gu(3)
             }
             color: theme.palette.normal.background
@@ -354,7 +337,7 @@ Page {
                         // Ubuntu Touch
                         DeltaHandler.newFileImportSignalHelper()
                         DeltaHandler.fileImportSignalHelper.fileImported.connect(addAccountViaQrPage.passQrImage)
-                        layout.addPageToCurrentColumn(addAccountViaQrPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                        extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
                         // See comments in CreateOrEditGroup.qml
                         //let incubator = layout.addPageToCurrentColumn(addAccountViaQrPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 
@@ -382,24 +365,11 @@ Page {
         } // end Rectangle id: scanButtonRect
     } // end Rectangle id: qrScanRect
 
-    Timer {
-        id: continueTimer
-        interval: 100
-        repeat: false
-        triggeredOnStart: false
-        onTriggered: {
-            layout.removePages(addAccountViaQrPage)
-            DeltaHandler.continueQrCodeAction()
-        }
-    }
-
     Component {
         id: configProgress
 
         ProgressConfigAccount { // see file ProgressConfigAccount.qml
             title: i18n.tr('Configuring...')
-            pageToRemove: addAccPage
-            calledFromQrInviteCode: true
         }
     }
 
@@ -410,6 +380,13 @@ Page {
             title: i18n.tr("Error")
             // where to get the error from if dc_set_config_from_qr() failed?
             text: ""
+        }
+    }
+
+    Component {
+        id: progressQrBackupImport
+
+        ProgressQrBackupImport { // see file ProgressQrBackupImport.qml
         }
     }
 }

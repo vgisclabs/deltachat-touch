@@ -45,6 +45,16 @@ Page {
     header: PageHeader {
         id: profileHeader
         title: i18n.tr("View Profile")
+
+        leadingActionBar.actions: [
+            Action {
+                iconName: 'close'
+                text: i18n.tr('Cancel')
+                onTriggered: {
+                    onClicked: extraStack.pop()
+                }
+            }
+        ]
     }
 
     Flickable {
@@ -91,7 +101,8 @@ Page {
                     anchors.fill: parent
                     onClicked: {
                         if (profileImagePath != "") {
-                            layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": avatarImage.source, "enableDownloading": false })
+                            // don't use imageStack as it is layered below extraStack
+                            extraStack.push(Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": avatarImage.source, "enableDownloading": false, "onExtraStack": true })
                         }
                     }
                 }

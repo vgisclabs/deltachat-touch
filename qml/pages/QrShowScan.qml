@@ -109,7 +109,8 @@ Page {
                 popup.confirmed.connect(function() {
                     PopupUtils.close(popup)
                     // TODO: Trying to close the page here by calling
-                    // layout.removePages(qrShowScanPage)
+                    // layout.removePages(qrShowScanPage) [EDIT: that was before the switch to pageStack,
+                    // maybe try if it works now?]
                     // always results in an error
                     // QQmlExpression: Attempted to evaluate an expression in an invalid context
                     // Same if DeltaHandler.continueQrCodeAction() emits a signal closeQrPage()
@@ -450,12 +451,25 @@ Page {
     }
 
     function goBackToMain() {
-        layout.removePages(primaryPage)
+        extraStack.clear()
     }
 
     header: PageHeader {
         id: qrHeader
         title: i18n.tr("QR Invite Code")
+
+        leadingActionBar.actions: [
+            Action {
+                iconName: "close"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    extraStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
 
         trailingActionBar.actions: [
             Action {
@@ -514,7 +528,7 @@ Page {
                 visible: !scanSectionActive
                 onTriggered: {
                     if (root.onUbuntuTouch) {
-                        layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getQrInviteLink() })
+                        extraStack.push(Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getQrInviteLink() })
                     } else {
                         PopupUtils.open(Qt.resolvedUrl("QrSharePopup.qml"), qrShowScanPage, { "qrInviteLink": DeltaHandler.getQrInviteLink() })
                     }
@@ -717,7 +731,7 @@ Page {
                         // Ubuntu Touch
                         DeltaHandler.newFileImportSignalHelper()
                         DeltaHandler.fileImportSignalHelper.fileImported.connect(qrShowScanPage.passQrImage)
-                        layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                        extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
                         // See comments in CreateOrEditGroup.qml
                         //let incubator = layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 
@@ -767,7 +781,7 @@ Page {
         repeat: false
         triggeredOnStart: false
         onTriggered: {
-            layout.removePages(primaryPage)
+            extraStack.clear()
             DeltaHandler.continueQrCodeAction()
         }
     }
@@ -779,7 +793,7 @@ Page {
         repeat: false
         triggeredOnStart: false
         onTriggered: {
-            layout.removePages(primaryPage)
+            extraStack.clear()
         }
     }
 

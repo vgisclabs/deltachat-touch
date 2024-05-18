@@ -96,7 +96,7 @@ Page {
                 text: i18n.tr("Share")
                 onTriggered: {
                     if (root.onUbuntuTouch) {
-                        layout.addPageToCurrentColumn(qrInvitePage, Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getTempGroupQrLink() })
+                        extraStack.push(Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getTempGroupQrLink() })
                     } else {
                         PopupUtils.open(Qt.resolvedUrl("QrSharePopup.qml"), qrInvitePage, { "qrInviteLink": DeltaHandler.getTempGroupQrLink() })
                     }

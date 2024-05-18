@@ -45,7 +45,7 @@ Page {
 //            Action {
 //                iconName: 'info'
 //                text: i18n.tr('About DeltaTouch')
-//                onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('About.qml'))
+//                onTriggered: extraStack.push(Qt.resolvedUrl('About.qml'))
 //            }
 //        ]
 
@@ -82,9 +82,9 @@ Page {
         dynamicRoles: true
         Component.onCompleted: {
             addAccountModel.append({ "name": i18n.tr("Log into your E-Mail Account"), "linkToPage": "AddOrConfigureEmailAccount.qml" } )
-            addAccountModel.append({ "name": i18n.tr("Add as Second Device"), "linkToPage": "AddAccountAsSecondDevice.qml" } )
+            addAccountModel.append({ "name": i18n.tr("Add as Second Device"), "linkToPage": "AddAccountViaQr.qml" } )
             addAccountModel.append({ "name": i18n.tr("Restore from Backup"), "linkToPage": "restoreFromBackup--noLink" } )
-            addAccountModel.append({ "name": i18n.tr("Scan Invitation Code"), "linkToPage": "AddAccountViaQrInvitationCode.qml" } )
+            addAccountModel.append({ "name": i18n.tr("Scan Invitation Code"), "linkToPage": "AddAccountViaQr.qml" } )
         }
     }
     
@@ -122,16 +122,14 @@ Page {
             }
 
             onClicked: {
-                if (linkToPage == "AddAccountViaQrInvitationCode.qml") {
-                    // pass this page so it can be used as parameter for layout.removePages() later on in
-                    // the process if needed, see ProgressConfigAccount (called pageToRemove there)
-                    layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl(linkToPage), { "addAccPage": addAccountPage })
-                } else if (linkToPage == "restoreFromBackup--noLink") {
+                if (linkToPage == "restoreFromBackup--noLink") {
                     if (root.onUbuntuTouch) {
                         // Ubuntu Touch
                         DeltaHandler.newFileImportSignalHelper()
                         DeltaHandler.fileImportSignalHelper.fileImported.connect(addAccountPage.startBackupImport)
-                        layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                        extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                        // TODO: regarding the below, maybe after the switch "let xy = extraStack.push(...); xy.bla.connect(...)" works?
+                        //
                         // See comments in CreateOrEditGroup.qml
                         //let incubator = layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
 
@@ -155,7 +153,7 @@ Page {
                         backupImportLoader.item.open()
                     }
                 } else {
-                    layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl(linkToPage))
+                    extraStack.push(Qt.resolvedUrl(linkToPage))
                 }
             }
         }

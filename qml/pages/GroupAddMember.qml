@@ -40,7 +40,7 @@ Page {
                 onTriggered: {
                     clearQuery()
                     leavingAddMemberToGroupPage(false)
-                    layout.removePages(addMemberToGroupPage)
+                    extraStack.pop()
                 }
             }
         ]
@@ -53,7 +53,7 @@ Page {
                 onTriggered: {
                     clearQuery()
                     leavingAddMemberToGroupPage(true)
-                    layout.removePages(addMemberToGroupPage)
+                    extraStack.pop()
                 }
             }
         ]

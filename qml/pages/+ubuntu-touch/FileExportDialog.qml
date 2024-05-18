@@ -75,7 +75,7 @@ Page {
                 //    console.log("Export: In progress, url is:", url);
                     fileExportPage.activeTransfer.items = [ resultComponent.createObject(parent, {"url": url}) ];
                     fileExportPage.activeTransfer.state = ContentTransfer.Charged;
-                    layout.removePages(fileExportPage)
+                    pageStack.pop()
                     success()
                 }
             })
@@ -92,7 +92,7 @@ Page {
         }
         text: i18n.tr("Cancel")
         onClicked: {
-            layout.removePages(fileExportPage)
+            pageStack.pop()
             cancelled()
         }
     }

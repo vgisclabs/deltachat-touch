@@ -17,7 +17,7 @@
  */
 
 import QtQuick 2.12
-import QtQuick.Shapes 1.12
+//import QtQuick.Shapes 1.12
 import Lomiri.Components 1.3
 import Lomiri.Components.Popups 1.3 
 //import QtQuick.Layouts 1.3
@@ -46,7 +46,7 @@ Page {
                 iconName: 'close'
                 text: i18n.tr('Cancel')
                 onTriggered: {
-                    layout.removePages(page)
+                    extraStack.pop()
                 }
             }
         ]
@@ -58,7 +58,7 @@ Page {
                 text: i18n.tr('OK')
                 onTriggered: {
                     if (DeltaHandler.isValidAddr(emailField.displayText)) {
-                        layout.removePages(page)
+                        extraStack.pop()
                         DeltaHandler.contactsmodel.startChatWithAddress(emailField.displayText, nameField.displayText)
                     } else {
                         PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
@@ -90,7 +90,7 @@ Page {
             onClicked: {
                 // Very ugly hack, see Main.qml for details
                 root.openScanQrPageOnBottomEdgeCollapse()
-                layout.removePages(page)
+                extraStack.pop()
                 bottomEdge.collapse()
             }
         }

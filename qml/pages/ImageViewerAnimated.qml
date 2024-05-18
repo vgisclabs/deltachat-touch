@@ -49,6 +49,19 @@ Page {
         id: pageheader
         title: ""
 
+        leadingActionBar.actions: [
+            Action {
+                iconName: "close"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    imageStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
+
         Loader {
             // Only for non-Ubuntu Touch platforms
             id: fileExpLoader
@@ -75,7 +88,7 @@ Page {
                     // different code depending on platform
                     if (root.onUbuntuTouch) {
                         // Ubuntu Touch
-                        layout.addPageToCurrentColumn(viewerPage, Qt.resolvedUrl('FileExportDialog.qml'), { "url": image.source, "conType": DeltaHandler.ImageType })
+                        extraStack.push(Qt.resolvedUrl('FileExportDialog.qml'), { "url": image.source, "conType": DeltaHandler.ImageType })
 
                     } else {
                         // non-Ubuntu Touch

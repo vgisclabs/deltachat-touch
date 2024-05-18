@@ -34,7 +34,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_fileImportSignalHelper {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_bus("DeltaTouch"), m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
+    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_fileImportSignalHelper {nullptr}, m_currentAccID {0}, m_currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_bus("DeltaTouch"), m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
 {
     // Determine if the app is running on Ubuntu Touch,
     // if it is in desktop mode and if the on-screen
@@ -156,13 +156,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
     }
 
     m_chatmodel = new ChatModel();
-    // TODO: should be something like chatIsCurrentlyViewed or
-    // similar because the only time the variable is used is
-    // when a new message arrives. Actions to do upon arrival of
-    // a new message depends on whether the corresponding chat is
-    // currently shown to the user.
-    // Also, the page that shows the chat needs to set it to false
-    // when the page is destroyed.
     currentChatIsOpened = false;
 
     m_accountsmodel = new AccountsModel();
@@ -337,11 +330,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
     connectSuccess = connect(m_chatmodel, SIGNAL(markedAllMessagesSeen()), this, SLOT(resetCurrentChatMessageCount()));
     if (!connectSuccess) {
         qFatal("DeltaHandler::DeltaHandler: Could not connect signal markedAllMessagesSeen to slot resetCurrentChatMessageCount");
-    }
-
-    connectSuccess = connect(this, SIGNAL(openChatViewRequest(uint32_t, uint32_t)), m_chatmodel, SLOT(chatViewIsOpened(uint32_t, uint32_t)));
-    if (!connectSuccess) {
-        qFatal("DeltaHandler::DeltaHandler: Could not connect signal openChatViewRequest to slot chatViewIsOpened");
     }
 
     connectSuccess = connect(this, SIGNAL(messageDelivered(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
@@ -539,8 +527,6 @@ bool DeltaHandler::shouldOpenOskViaDbus()
 
 void DeltaHandler::loadSelectedAccount()
 {
-    qDebug() << "entering DeltaHandler::loadSelectedAccount()";
-
     // Enabling verified 1:1 chats for all accounts. Done here
     // as all startup routines will end up calling this function.
     enableVerifiedOneOnOneForAllAccs();
@@ -602,9 +588,8 @@ void DeltaHandler::loadSelectedAccount()
     setCoreTranslations();
 
     endResetModel();
+    
     emit accountChanged();
-
-    qDebug() << "exiting DeltaHandler::loadSelectedAccount()";
 }
 
 
@@ -619,7 +604,7 @@ int DeltaHandler::getCurrentChatId() const
     if (!currentChatIsOpened) {
         return -1;
     } else {
-        return currentChatID;
+        return m_currentChatID;
     }
 }
 
@@ -1400,7 +1385,7 @@ void DeltaHandler::setMomentaryChatIdById(uint32_t myId)
 
 void DeltaHandler::selectChat(int myindex)
 {
-    currentChatID = m_chatlistVector[myindex];
+    m_currentChatID = m_chatlistVector[myindex];
 }
 
 
@@ -1413,7 +1398,7 @@ void DeltaHandler::openChat()
     }
 
 
-    if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+    if (m_currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
         // If the archive link has been clicked, reset
         // the model to show the archived chats only.
         m_showArchivedChats = true;
@@ -1434,23 +1419,34 @@ void DeltaHandler::openChat()
     } else {
         // If it's not the archive link, open the corresponding
         // chat.
-        dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+        dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
         bool contactRequest = dc_chat_is_contact_request(tempChat);
         dc_chat_unref(tempChat);
 
         std::vector<uint32_t> freshMessagesOfChat;
 
         for (size_t i = 0; i < freshMsgs.size(); ++i) {
-            if (freshMsgs[i][1] == currentChatID) {
+            if (freshMsgs[i][1] == m_currentChatID) {
                 freshMessagesOfChat.push_back(freshMsgs[i][0]);
             }
         }
 
-        m_chatmodel->configure(currentChatID, currentContext, this, freshMessagesOfChat, contactRequest);
+        // save the lastchatid directly when opening the chat
+        QString chatIdAsString {""};
+        chatIdAsString.setNum(m_currentChatID);
+        dc_set_config(currentContext, "ui.lastchatid", chatIdAsString.toUtf8().constData());
+
+        m_chatmodel->configure(m_currentChatID, dc_get_id(currentContext), allAccounts, this, freshMessagesOfChat, contactRequest);
         currentChatIsOpened = true;
 
-        emit openChatViewRequest(m_currentAccID, currentChatID);
+        emit openChatViewRequest(m_currentAccID, m_currentChatID);
     }
+}
+
+
+void DeltaHandler::setChatViewIsShown()
+{
+    currentChatIsOpened = true;
 }
 
 
@@ -1623,8 +1619,6 @@ void DeltaHandler::selectAccount(int myindex)
         emit clearChatlistQueryRequest();
     }
 
-    currentChatIsOpened = false;
-
     endResetModel();
 
     emit accountChanged();
@@ -1642,7 +1636,7 @@ void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
 
         m_signalQueue_chatsDataChanged.push(chatID);
 
-        if (currentChatID == chatID && currentChatIsOpened) {
+        if (m_currentChatID == chatID && currentChatIsOpened) {
             m_signalQueue_msgs.push(msgID);
         }
     }
@@ -1981,7 +1975,7 @@ void DeltaHandler::messagesNoticed(uint32_t accID, int chatID)
 
 void DeltaHandler::chatDataModifiedReceived(uint32_t accID, int chatID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit chatDataChanged();
     }
 
@@ -2034,7 +2028,7 @@ void DeltaHandler::incomingMessage(uint32_t accID, int chatID, int msgID)
 
 void DeltaHandler::messageReadByRecipient(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit messageRead(msgID);
     }
 
@@ -2052,7 +2046,7 @@ void DeltaHandler::messageReadByRecipient(uint32_t accID, int chatID, int msgID)
 
 void DeltaHandler::messageDeliveredToServer(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit messageDelivered(msgID);
     }
     
@@ -2070,7 +2064,7 @@ void DeltaHandler::messageDeliveredToServer(uint32_t accID, int chatID, int msgI
 
 void DeltaHandler::messageFailedSlot(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit messageFailed(msgID);
     }
 
@@ -2088,7 +2082,7 @@ void DeltaHandler::messageFailedSlot(uint32_t accID, int chatID, int msgID)
 
 void DeltaHandler::msgReactionsChanged(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit messageReaction(msgID);
     }
 
@@ -2106,24 +2100,10 @@ void DeltaHandler::msgReactionsChanged(uint32_t accID, int chatID, int msgID)
 }
 
 
-QString DeltaHandler::chatName()
-{
-    if (currentChatIsOpened) {
-        dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
-        char* tempName = dc_chat_get_name(tempChat);
-        QString name = tempName;
-        dc_str_unref(tempName);
-        dc_chat_unref(tempChat);
-        return name;
-    }
-    else return QString();
-}
-
-
 bool DeltaHandler::chatIsVerified()
 {
     bool retval = false;
-    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
 
     if (1 == dc_chat_is_protected(tempChat)) {
         retval = true;
@@ -2181,6 +2161,33 @@ QString DeltaHandler::getCurrentProfilePic()
     else {
         retval = "";
     }
+    return retval;
+}
+
+
+QString DeltaHandler::getCurrentProfileColor()
+{
+    if (!m_hasConfiguredAccount) {
+        return "#000000";
+    }
+
+    // looks like the color of an account can only be obtained via jsonrpc
+    QString paramString;
+    paramString.setNum(m_currentAccID);
+
+    QString requestString = constructJsonrpcRequestString("get_account_info", paramString);
+    QByteArray jsonResponseByteArray = sendJsonrpcBlockingCall(requestString).toLocal8Bit();
+
+    QString retval;
+    QJsonObject jsonObj = QJsonDocument::fromJson(jsonResponseByteArray).object();
+
+    jsonObj = jsonObj.value("result").toObject();
+    if (jsonObj.value("kind").toString() == "Configured") {
+        retval = jsonObj.value("color").toString();
+    } else {
+        retval = "#000000";
+    }
+
     return retval;
 }
 
@@ -2251,7 +2258,7 @@ uint32_t DeltaHandler::getChatEphemeralTimer(int myindex)
     uint32_t tempChatID;
 
     if (myindex == -1) {
-        tempChatID = currentChatID;
+        tempChatID = m_currentChatID;
     } else {
         tempChatID = m_chatlistVector[myindex];
     }
@@ -2265,7 +2272,7 @@ void DeltaHandler::setChatEphemeralTimer(int myindex, uint32_t timer)
     uint32_t tempChatID;
 
     if (myindex == -1) {
-        tempChatID = currentChatID;
+        tempChatID = m_currentChatID;
     } else {
         tempChatID = m_chatlistVector[myindex];
     }
@@ -2286,6 +2293,11 @@ void DeltaHandler::deleteMomentaryChat()
     }
 
     dc_delete_chat(currentContext, m_momentaryChatId);
+
+    if (m_momentaryChatId == m_currentChatID) {
+        // If in two-column mode, the chat to be deleted may be the one currently visible.
+        emit closeChatViewRequest();
+    }
 }
 
 
@@ -2303,7 +2315,7 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
                 qDebug() << "DeltaHandler::setCurrentConfig: ERROR: Setting key " << key << " to \"\" was not successful.";
             }
  
-            emit accountChanged();
+            emit accountDataChanged();
             return;
         }
         else {
@@ -2346,9 +2358,9 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
         start_io();
     }
  
-    // TODO: emit only if profile pic or displayname changed?
-    emit accountChanged();
-//    emit updatedAccountConfig(dc_get_id(currentContext));
+    if ("addr" == key || "displayname" == key || "selfavatar" == key) {
+        emit accountDataChanged();
+    }
 }
 
 
@@ -2547,7 +2559,7 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
                 m_closedAccounts.push_back(dc_get_id(tempContext));
             }
         } else {
-            emit updatedAccountConfig(dc_get_id(tempContext));
+            emit accountIsConfiguredChanged(dc_get_id(tempContext));
         }
 
         // allow networking again, see configureTempContext()
@@ -2607,7 +2619,7 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
             // (for more details see same line above)
             m_configuringNewAccount = false;
         } else {
-            emit updatedAccountConfig(m_currentAccID);
+            emit accountIsConfiguredChanged(m_currentAccID);
             emit accountChanged();
         }
 
@@ -2713,7 +2725,7 @@ void DeltaHandler::chatCreationReceiver(uint32_t chatID)
      
     // NOT calling selectChat(int) as the parameter of
     // this method is the array index, not the chatID
-    currentChatID = chatID; 
+    m_currentChatID = chatID; 
     openChat();
 }
 
@@ -3031,15 +3043,15 @@ void DeltaHandler::chatAccept()
     // need to check whether it's really a contact request
     // because dc_accept_chat is also used for protected
     // chats (to continue if the partner has not used its key)
-    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
     bool isContactRequest = dc_chat_is_contact_request(tempChat);
     dc_chat_unref(tempChat);
 
-    dc_accept_chat(currentContext, currentChatID);
+    dc_accept_chat(currentContext, m_currentChatID);
     m_chatmodel->acceptChat();
 
     if (isContactRequest) {
-        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+        emit chatIsNotContactRequestAnymore(m_currentAccID, m_currentChatID);
     }
 }
 
@@ -3048,14 +3060,14 @@ void DeltaHandler::chatDeleteContactRequest()
 {
     // probably not needed to check if it's really 
     // a contact request, but done anyway
-    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
     bool isContactRequest = dc_chat_is_contact_request(tempChat);
     dc_chat_unref(tempChat);
 
-    dc_delete_chat(currentContext, currentChatID);
+    dc_delete_chat(currentContext, m_currentChatID);
 
     if (isContactRequest) {
-        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+        emit chatIsNotContactRequestAnymore(m_currentAccID, m_currentChatID);
     }
 }
 
@@ -3064,14 +3076,14 @@ void DeltaHandler::chatBlockContactRequest()
 {
     // probably not needed to check if it's really 
     // a contact request, but done anyway
-    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
     bool isContactRequest = dc_chat_is_contact_request(tempChat);
     dc_chat_unref(tempChat);
 
-    dc_block_chat(currentContext, currentChatID);
+    dc_block_chat(currentContext, m_currentChatID);
 
     if (isContactRequest) {
-        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+        emit chatIsNotContactRequestAnymore(m_currentAccID, m_currentChatID);
     }
 }
 
@@ -3541,10 +3553,10 @@ void DeltaHandler::startEditGroup(int myindex)
     creatingNewGroup = false;
 
     // will set up the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     if (-1 == myindex) {
-        m_tempGroupChatID = currentChatID;
+        m_tempGroupChatID = m_currentChatID;
     } else {
         m_tempGroupChatID = m_chatlistVector[myindex];
     }
@@ -3917,18 +3929,18 @@ void DeltaHandler::continueQrCodeAction()
 {
     switch (m_qrTempState) {
         case DT_QR_ASK_VERIFYCONTACT:
-            currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
+            m_currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
             // dc_join_securejoin() returns 0 on error, so don't call
             // openChat() in this case
-            if (currentChatID != 0) {
+            if (m_currentChatID != 0) {
                 openChat();
             }
             break;
         case DT_QR_ASK_VERIFYGROUP:
-            currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
+            m_currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
             // dc_join_securejoin() returns 0 on error, so don't call
             // openChat() in this case
-            if (currentChatID != 0) {
+            if (m_currentChatID != 0) {
                 openChat();
             }
             break;
@@ -3936,7 +3948,7 @@ void DeltaHandler::continueQrCodeAction()
             // TODO: what to do here?
             // => nothing for the moment because no translated strings exist
             // for the action suggested in the documentation
-            //currentChatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
+            //m_currentChatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
             //openChat();
             break;
         case DT_QR_FPR_MISMATCH:
@@ -4528,7 +4540,7 @@ WorkflowDbToUnencrypted* DeltaHandler::workflowdbdecryption()
 void DeltaHandler::updateCurrentChatMessageCount()
 {
     for (size_t i = 0; i < m_chatlistVector.size(); ++i) {
-        if (m_chatlistVector[i] == currentChatID) {
+        if (m_chatlistVector[i] == m_currentChatID) {
             QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
         }
     }
@@ -4547,6 +4559,12 @@ void DeltaHandler::chatViewIsClosed(bool gotoQrScanPage)
     currentChatIsOpened = false;
     emit chatViewClosed(gotoQrScanPage);
     m_notificationHelper->removeSummaryNotification(m_currentAccID);
+}
+
+
+void DeltaHandler::emitFontSizeChangedSignal()
+{
+    emit fontSizeChanged();
 }
 
 
@@ -4614,10 +4632,10 @@ bool DeltaHandler::chatIsGroup(int myindex)
     uint32_t chatID {0};
 
     // will check for the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     if (-1 == myindex) {
-        chatID = currentChatID;
+        chatID = m_currentChatID;
     } else {
         chatID = m_chatlistVector[myindex];
     }
@@ -4653,10 +4671,10 @@ bool DeltaHandler::selfIsInGroup(int myindex)
     uint32_t chatID {0};
 
     // will check for the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     if (-1 == myindex) {
-        chatID = currentChatID;
+        chatID = m_currentChatID;
     } else {
         chatID = m_chatlistVector[myindex];
     }
@@ -4981,6 +4999,82 @@ void DeltaHandler::contextSetupTasks()
 }
 
 
+void DeltaHandler::selectAndOpenLastChatId()
+{
+    if (!currentContext) {
+        qFatal("DeltaHandler::lastChatId() called, but currentContext is NULL");
+    }
+
+    char* tempText = dc_get_config(currentContext, "ui.lastchatid"); 
+    QString tempQString {""};
+    if (tempText) {
+        tempQString = tempText;
+        dc_str_unref(tempText);
+    }
+
+    bool useDeviceTalk {false};
+    bool foundDeviceTalk {false};
+    uint32_t deviceTalkChatId {0};
+
+    bool foundLastChatId {false};
+    uint32_t lastChatId {0};
+
+    if (tempQString == "") {
+        // no ui.lastchatid, select the device talk
+        useDeviceTalk = true;
+    } else {
+        lastChatId = tempQString.toUInt();
+        // to be safe, don't just set m_currentChatID to this number,
+        // check if the chat exists below
+    }
+    
+    dc_chatlist_t* tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+    size_t count = dc_chatlist_get_cnt(tempChatlist);
+
+    for (size_t i = 0; i < count; ++i) {
+        uint32_t tempId = dc_chatlist_get_chat_id(tempChatlist, i);
+
+        if (!useDeviceTalk) {
+            if (lastChatId == tempId) {
+                foundLastChatId = true;
+                break;
+            }
+        }
+
+        // need to check for device talk even if useDeviceTalk is false
+        // in case lastChatId is not found
+        if (!foundDeviceTalk) {
+            dc_chat_t* tempChat = dc_get_chat(currentContext, tempId);
+            if (tempChat) {
+                if (1 == dc_chat_is_device_talk(tempChat)) {
+                    deviceTalkChatId = tempId;
+                    foundDeviceTalk = true;
+
+                    if (useDeviceTalk) {
+                        dc_chat_unref(tempChat);
+                        break;
+                    }
+                }
+
+                dc_chat_unref(tempChat);
+            }
+        }
+    }
+
+    if (useDeviceTalk && foundDeviceTalk) {
+        m_currentChatID = deviceTalkChatId;
+        openChat();
+    } else if (!useDeviceTalk && foundLastChatId) {
+        m_currentChatID = lastChatId;
+        openChat();
+    } else {
+        emit closeChatViewRequest();
+    }
+
+    dc_chatlist_unref(tempChatlist);
+}
+
+
 void DeltaHandler::periodicTimerActions()
 {
     // currently the only periodically triggered
@@ -5017,13 +5111,13 @@ void DeltaHandler::updateChatlistQueryText(QString query)
 
         // if the query is empty, need to pass NULL instead of empty string
         if (m_query == "") {
-            if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+            if (m_currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
                 tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
             } else {
                 tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
             }
         } else {
-            if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+            if (m_currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
                 tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
             } else {
                 tempChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
@@ -5044,13 +5138,13 @@ void DeltaHandler::resetCurrentChatMessageCount()
     size_t i = 0;
     size_t endpos = freshMsgs.size();
     while (i < endpos) {
-        if (freshMsgs[i][1] == currentChatID) {
+        if (freshMsgs[i][1] == m_currentChatID) {
             // assemble the tag of the message (see sendDetailedNotification())
             QString accNumberString;
             accNumberString.setNum(m_currentAccID);
 
             QString chatNumberString;
-            chatNumberString.setNum(currentChatID);
+            chatNumberString.setNum(m_currentChatID);
 
             QString msgNumberString;
             msgNumberString.setNum(freshMsgs[i][0]);
@@ -5079,9 +5173,9 @@ void DeltaHandler::resetCurrentChatMessageCount()
     // >> returned; these messages should not be notified and also badge counters
     // >> should not include these messages.
 
-    int freshMsgCount = dc_get_fresh_msg_cnt(currentContext, currentChatID);
+    int freshMsgCount = dc_get_fresh_msg_cnt(currentContext, m_currentChatID);
     if (freshMsgCount != 0) {
-        dc_array_t* tempArray = dc_get_chat_msgs(currentContext, currentChatID, 0, 0);
+        dc_array_t* tempArray = dc_get_chat_msgs(currentContext, m_currentChatID, 0, 0);
 
         // start with the newest message, stop the loop if the end of the array
         // has been reached OR if the number of unseen messages given by
@@ -5105,7 +5199,7 @@ void DeltaHandler::resetCurrentChatMessageCount()
                 accNumberString.setNum(m_currentAccID);
 
                 QString chatNumberString;
-                chatNumberString.setNum(currentChatID);
+                chatNumberString.setNum(m_currentChatID);
 
                 QString msgNumberString;
                 msgNumberString.setNum(tempMsgID);
@@ -5117,6 +5211,25 @@ void DeltaHandler::resetCurrentChatMessageCount()
     }
     // notify the view about changes in the model
     updateCurrentChatMessageCount();
+
+    // inform m_accountsmodel (needed for update of sidebar)
+    // m_signalQueue_accountsmodelInfo is for m_accountsmodel,
+    // make sure to avoid duplicate entries already here
+    bool found {false};
+    for (size_t i = 0; i < m_signalQueue_accountsmodelInfo.size(); ++i) {
+        if (m_currentAccID == m_signalQueue_accountsmodelInfo[i]) {
+            found = true;
+        }
+    }
+
+    if (!found) {
+        m_signalQueue_accountsmodelInfo.push_back(m_currentAccID);
+    }
+
+    if (!m_signalQueueTimer->isActive()) {
+        processSignalQueue();
+        m_signalQueueTimer->start(queueTimerFreq);
+    }
 }
 
 
@@ -5244,6 +5357,7 @@ QString DeltaHandler::copyToCache(QString fromFilePath)
 void DeltaHandler::shutdownTasks()
 {
     dc_accounts_stop_io(allAccounts);
+    m_chatmodel->saveDraft();
     QDir cachepath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     cachepath.removeRecursively();
 }

@@ -43,7 +43,7 @@ Page {
     }
 
     function loadAddAccountPage() {
-        layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))
+        extraStack.push(Qt.resolvedUrl('AddAccount.qml'))
     }
 
     /* ==========================================================
@@ -169,7 +169,7 @@ Page {
                 iconName: "go-previous"
                 text: i18n.tr("Back")
                 onTriggered: {
-                    layout.removePages(accountConfigPage)
+                    extraStack.pop()
                 }
                 // only allow leaving account configuration
                 // if there's a configured account
@@ -178,13 +178,6 @@ Page {
         ]
 
         trailingActionBar.actions: [
-//            Action {
-//                iconName: 'help'
-//                text: i18n.tr('Help')
-//                // TODO make help page for the Account config page
-//                onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
-//            },
-
             Action {
                 iconName: 'settings'
                 text: i18n.tr('Settings')
@@ -201,7 +194,7 @@ Page {
             Action {
                 iconName: 'info'
                 text: i18n.tr('Info')
-                onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
+                onTriggered: extraStack.push(Qt.resolvedUrl('About.qml'))
             },
 
             Action {
@@ -212,7 +205,7 @@ Page {
                         let popup = PopupUtils.open(Qt.resolvedUrl("RequestDatabasePassword.qml"), accountConfigPage)
                         popup.success.connect(loadAddAccountPage)
                     } else {
-                        layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))
+                        extraStack.push(Qt.resolvedUrl('AddAccount.qml'))
                     }
                 }
             }
@@ -298,11 +291,14 @@ Page {
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
-                PopupUtils.open(
-                    Qt.resolvedUrl('ConfirmAccountDeletion.qml'),
+                let popup1 = PopupUtils.open(
+                    Qt.resolvedUrl('ConfirmDialog.qml'),
                     null,
-                    { 'accountArrayIndex': value, }
+                    { "dialogTitle": i18n.tr("Delete Account"),
+                      "dialogText": i18n.tr('Are you sure you want to delete your account data?') + "\n" + i18n.tr('All account data of \"%1\" on this device will be deleted, including your end-to-end encryption setup, contacts, chats, messages and media. This action cannot be undone.').arg(DeltaHandler.accountsmodel.getAddressOfIndex(value)),
+                      "okButtonText": i18n.tr("Delete Account")}
                 )
+                popup1.confirmed.connect(function() { DeltaHandler.accountsmodel.deleteAccount(value) })
             }
         }
     }
@@ -314,7 +310,7 @@ Page {
                 iconName: "edit"
                 onTriggered: {
                     DeltaHandler.accountsmodel.configureAccount(value)
-                    layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddOrConfigureEmailAccount.qml'))
+                    extraStack.push(Qt.resolvedUrl('AddOrConfigureEmailAccount.qml'))
                 }
             },
             Action {
@@ -353,8 +349,8 @@ Page {
 
             onClicked: {
                 if (model.isConfigured) {
+                    extraStack.clear()
                     DeltaHandler.selectAccount(index)
-                    layout.removePages(primaryPage)
                 }
                 else {
                     PopupUtils.open(errorMessage)
@@ -374,11 +370,26 @@ Page {
                     height: units.gu(5)
                     width: height
                     SlotsLayout.position: SlotsLayout.Leading
-                    source: Image {
+                    color: model.color
+
+                    source: (model.profilePic !== "" || !(model.isConfigured)) ? profPic : undefined
+                    
+                    Image {
                         id: profPic
                         anchors.fill: parent
                         source: model.profilePic == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, model.profilePic)
+                        visible: false
                     }
+
+                    Label {
+                        id: profInitialLabel
+                        visible: !(model.profilePic !== "" || !(model.isConfigured))
+                        text: model.username === "" ? "#" : model.username.charAt(0).toUpperCase()
+                        font.pixelSize: parent.height * 0.6
+                        color: "white"
+                        anchors.centerIn: parent
+                    }
+
                     sourceFillMode: LomiriShape.PreserveAspectCrop
                     aspect: LomiriShape.Flat
                 } // end of LomiriShape id:profilePicShape
@@ -395,7 +406,8 @@ Page {
                         font.bold: true
                         color: theme.palette.normal.negative 
                         anchors {
-                            right: parent.right
+                            right: mutedIcon.visible ? mutedIcon.left : (dbEncryptedIcon.visible ? dbEncryptedIcon.left : parent.right)
+                            rightMargin: (mutedIcon.visible || dbEncryptedIcon.visible) ? units.gu(1) : 0
                             verticalCenter: parent.verticalCenter
                         }
                         textSize: Label.XLarge
@@ -423,7 +435,7 @@ Page {
                         color: root.darkmode ? "white" : "black"
                         anchors {
                             right: dbEncryptedIcon.visible ? dbEncryptedIcon.left : parent.right
-                            rightMargin: units.gu(1)
+                            rightMargin: dbEncryptedIcon.visible ? units.gu(1) : 0
                             top: parent.top
                         }
                         name: "audio-speakers-muted-symbolic"
@@ -474,7 +486,7 @@ Page {
 
                             backgroundColor: isMuted? (root.darkmode ? "#202020" : "#e0e0e0") : root.unreadMessageCounterColor
                             
-                            visible: freshMsgCount > 0 && model.isConfigured
+                            visible: freshMsgCount > 0
 
                             Label {
                                 id: newMsgCountLabel

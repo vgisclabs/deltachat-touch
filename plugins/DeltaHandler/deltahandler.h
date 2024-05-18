@@ -212,7 +212,11 @@ public:
     // on the chat overview page
     Q_INVOKABLE void selectChat(int myindex);
 
+    Q_INVOKABLE void selectAndOpenLastChatId();
+
     Q_INVOKABLE void openChat();
+
+    Q_INVOKABLE void setChatViewIsShown();
 
     Q_INVOKABLE void archiveMomentaryChat();
 
@@ -232,9 +236,6 @@ public:
     Q_INVOKABLE void closeOskViaDbus();
 
     void removeActiveNotificationsOfChat(uint32_t accID, int chatID);
-
-    // Returns the name of the currently selected chat
-    Q_INVOKABLE QString chatName();
 
     // Returns whether the currently selected chat is verified/protected
     Q_INVOKABLE bool chatIsVerified();
@@ -257,6 +258,8 @@ public:
     // picture (for full path, StandardPaths.AppConfigLocation
     // needs to be prepended)
     Q_INVOKABLE QString getCurrentProfilePic();
+
+    Q_INVOKABLE QString getCurrentProfileColor();
 
     // TODO: replace all getCurrentXY() by this method (EXCEPT
     // the ones that return a path, see the data() method in chatmodel.cpp,
@@ -312,7 +315,7 @@ public:
 
     // expects the index of the chat in the chatlist,
     // will check for the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     // TODO: other parameter than -1 is not used anymore, see momentaryChatIsGroup
     // => adapt?
@@ -396,7 +399,7 @@ public:
     Q_INVOKABLE void startCreateGroup();
     
     // will set up the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     // TODO: combine with momentaryChatStartEditGroup() ?
     Q_INVOKABLE void startEditGroup(int myindex);
@@ -464,6 +467,8 @@ public:
     Q_INVOKABLE void newFileImportSignalHelper();
     Q_INVOKABLE void deleteFileImportSignalHelper();
 
+    Q_INVOKABLE void emitFontSizeChangedSignal();
+
     // Will be executed when the app is closed
     Q_INVOKABLE void shutdownTasks();
 
@@ -524,7 +529,9 @@ signals:
     void fileImportSignalHelperChanged();
 
     void chatlistShowsArchivedOnly(bool showsArchived);
+    void closeChatViewRequest();
 
+    void fontSizeChanged();
 
     void newJsonrpcResponse(QString response);
 
@@ -561,6 +568,7 @@ signals:
     void networkingIsAllowedChanged();
     void networkingIsStartedChanged();
     void accountChanged();
+    void accountDataChanged();
     void msgsChanged(int msgID);
     void messageRead(int msgID);
     void messageDelivered(int msgID);
@@ -570,7 +578,7 @@ signals:
     void imexEventReceived(int perMill);
     void newUnconfiguredAccount();
     void newConfiguredAccount();
-    void updatedAccountConfig(uint32_t);
+    void accountIsConfiguredChanged(uint32_t);
     void chatIsContactRequestChanged();
     void openChatViewRequest(uint32_t accID, uint32_t chatID);
     void chatViewClosed(bool gotoQrScanPage);
@@ -677,7 +685,7 @@ private:
     FileImportSignalHelper* m_fileImportSignalHelper;
 
     uint32_t m_currentAccID;
-    uint32_t currentChatID;
+    uint32_t m_currentChatID;
 
     // Page with chat is opened, but the app
     // is not necessarily shown at the screen atm

@@ -420,7 +420,7 @@ Page {
         interval: 200
         repeat: false
         triggeredOnStart: false
-        onTriggered: layout.removePages(primaryPage)
+        onTriggered: extraStack.clear()
     }
 
     Timer {

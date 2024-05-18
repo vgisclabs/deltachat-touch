@@ -79,23 +79,10 @@ Page {
             // the success and cancelled signal from FileExportDialog
             // to the function that removes the temp file.
             let tempBackupPath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getUrlToExport())
-            let incubator = layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('FileExportDialog.qml'), { "url": tempBackupPath, "conType": DeltaHandler.FileType })
+            let popup8 = extraStack.push(Qt.resolvedUrl('FileExportDialog.qml'), { "url": tempBackupPath, "conType": DeltaHandler.FileType })
 
-            if (incubator.status != Component.Ready) {
-                // have to wait for the object to be ready to connect to the signal,
-                // see documentation on AdaptivePageLayout and
-                // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                incubator.onStatusChanged = function(status) {
-                    if (status == Component.Ready) {
-                        incubator.object.success.connect(settingsPage.backupExportFinished)
-                        incubator.object.cancelled.connect(settingsPage.backupExportFinished)
-                    }
-                }
-            } else {
-                // object was directly ready
-                incubator.object.fileSelected.success(settingsPage.backupExportFinished)
-                incubator.object.fileSelected.cancelled(settingsPage.backupExportFinished)
-            }
+            popup8.success.connect(settingsPage.backupExportFinished)
+            popup8.cancelled.connect(settingsPage.backupExportFinished)
 
         } else {
             // non-Ubuntu Touch
@@ -137,10 +124,11 @@ Page {
             // TODO: string not translated yet
             {"text": i18n.tr("File could not be saved") , "title": i18n.tr("Error") })
         } else {
-            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"),
+            let popup10 = PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"),
             settingsPage,
             // TODO: string not translated yet
             {"text": i18n.tr("Saved file ") + exportedPath })
+            popup10.done.connect(function() { extraStack.clear() })
         }
     }
 
@@ -390,6 +378,19 @@ Page {
         id: settingsHeader
         title: i18n.tr("Settings")
 
+        leadingActionBar.actions: [
+            Action {
+                iconName: "close"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    extraStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
+
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
 //          //  Action {
@@ -403,7 +404,7 @@ Page {
                 iconName: 'info'
                 text: i18n.tr('About DeltaTouch')
                 onTriggered: {
-                            layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('About.qml'))
+                    extraStack.push(Qt.resolvedUrl('About.qml'))
                 }
             }
         ]
@@ -479,7 +480,7 @@ Page {
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AccountConfig.qml"))
+                    extraStack.push(Qt.resolvedUrl("AccountConfig.qml"))
                 }
             }
 
@@ -785,7 +786,7 @@ Page {
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("About.qml"))
+                    extraStack.push(Qt.resolvedUrl("About.qml"))
                 }
             }
 
@@ -889,7 +890,9 @@ Page {
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("ProfileSelf.qml"))
+                    if (DeltaHandler.hasConfiguredAccount) {
+                        extraStack.push(Qt.resolvedUrl("ProfileSelf.qml"))
+                    }
                 }
             }
 
@@ -990,7 +993,7 @@ Page {
                     let popup2 = PopupUtils.open(Qt.resolvedUrl('ConfirmAddSecondDevice.qml'))
                     popup2.confirmed.connect(function() {
                         PopupUtils.close(popup2)
-                        layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AddSecondDevice.qml"))
+                        extraStack.push(Qt.resolvedUrl("AddSecondDevice.qml"))
                     })
                 }
             }
@@ -1011,8 +1014,9 @@ Page {
                     }
                 }
 
+                enabled: root.syncAll
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("Connectivity.qml"))
+                    extraStack.push(Qt.resolvedUrl("Connectivity.qml"))
                 }
             }
 
@@ -1222,7 +1226,7 @@ Page {
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AdvancedSettings.qml"))
+                    extraStack.push(Qt.resolvedUrl("AdvancedSettings.qml"))
                 }
             }
 
@@ -1739,9 +1743,13 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 1
+                                // to adapt entry fields etc.
+                                DeltaHandler.emitFontSizeChangedSignal()
+
                                 // to adapt scaling of the connectivity dot
                                 root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
+                                extraStack.clear()
                             }
                         }
 
@@ -1755,8 +1763,10 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 2
+                                DeltaHandler.emitFontSizeChangedSignal()
                                 root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
+                                extraStack.clear()
                             }
                         }
 
@@ -1770,8 +1780,10 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 3
+                                DeltaHandler.emitFontSizeChangedSignal()
                                 root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
+                                extraStack.clear()
                             }
                         }
 
@@ -1785,8 +1797,10 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 4
+                                DeltaHandler.emitFontSizeChangedSignal()
                                 root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
+                                extraStack.clear()
                             }
                         }
                     }
@@ -1798,7 +1812,7 @@ Page {
     Connections {
         target: DeltaHandler
         onBlockedcontactsmodelChanged: {
-            layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("BlockedContacts.qml"))
+            extraStack.push(Qt.resolvedUrl("BlockedContacts.qml"))
         }
 
         onConnectivityChangedForActiveAccount: {

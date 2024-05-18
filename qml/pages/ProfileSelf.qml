@@ -64,7 +64,7 @@ Page {
     Component.onCompleted: {
         // TODO: probably not needed as it is checked in SettingsPage.qml?
         if (!DeltaHandler.hasConfiguredAccount) {
-            layout.removePages(layout.primaryPage)
+            extraStack.pop()
         }
         DeltaHandler.startProfileEdit()
         DeltaHandler.newTempProfilePic.connect(updateProfilePic)
@@ -74,14 +74,12 @@ Page {
         id: profileHeader
         title: i18n.tr("Edit Profile")
 
-        // Switch off the back icon to avoid unclear situation. User
-        // has to explicitly choose cancel or ok.
         leadingActionBar.actions: [
             Action {
                 iconName: 'close'
                 text: i18n.tr('Cancel')
                 onTriggered: {
-                    onClicked: layout.removePages(layout.primaryPage)
+                    onClicked: extraStack.pop()
                 }
             }
         ]
@@ -97,7 +95,7 @@ Page {
                     DeltaHandler.setProfileValue("displayname", usernameField.text)
                     DeltaHandler.setProfileValue("selfstatus", signatureField.text)
                     DeltaHandler.finalizeProfileEdit()
-                    layout.removePages(layout.primaryPage)
+                    extraStack.clear()
                 }
             }
         ]
@@ -212,7 +210,7 @@ Page {
                                 if (root.onUbuntuTouch) {
                                     DeltaHandler.newFileImportSignalHelper()
                                     DeltaHandler.fileImportSignalHelper.fileImported.connect(profilePage.setProfilePic)
-                                    layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                                    extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
                                     // See comments in CreateOrEditGroup.qml
                                     //let incubator = layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 

@@ -41,6 +41,19 @@ Page {
     header: PageHeader {
         id: header
         title: headerTitle
+
+        leadingActionBar.actions: [
+            Action {
+                iconName: "close"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    extraStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
     }
 
     Component.onCompleted: {

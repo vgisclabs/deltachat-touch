@@ -98,7 +98,7 @@ Page {
         }
         text: i18n.tr("Cancel")
         onClicked: {
-            layout.removePages(fileImportPage)
+            pageStack.pop()
             cancelled()
         }
     }
@@ -113,7 +113,7 @@ Page {
                     fileSelected(fileUrl)
                 }
                 fileImportPage.activeTransfer.finalize()
-                layout.removePages(fileImportPage)
+                pageStack.pop()
             }
         }
     }

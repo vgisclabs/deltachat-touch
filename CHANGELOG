@@ -1,9 +1,14 @@
 x.x.x xxxx-xx-xx
+UI: Convergence (huge refactoring)
+UI: Show avatar (or color + initial) in chat header
+UI: Adapt initials according to font size
+UI: Viewer page for avatar images
 UI: Allow to mute accounts
 UI: Show counter for new messages in other accounts
 UI: Remove setting for notification aggregation.
 UI: Allow removal of contacts via list of contacts when creating a new chat
-Other: Limit detailed notifications to 9 per account, use summary if beyond.
+Bugfix: Set new message count of unconfigured account to zero
+Other: Limit detailed notifications to 9 per account, use summary if beyond
 Other: Move notification code into separate class
 Other: Enable notifications via org.freedesktop.Notification DBus service
 Other: Use deltachat-core-rust v1.137.3

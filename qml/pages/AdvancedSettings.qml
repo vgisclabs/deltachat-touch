@@ -78,7 +78,7 @@ Page {
 //                iconName: 'info'
 //                text: i18n.tr('About DeltaTouch')
 //                onTriggered: {
-//                            layout.addPageToCurrentColumn(advancedSettingsPage, Qt.resolvedUrl('About.qml'))
+//                    extraStack.push(Qt.resolvedUrl('About.qml'))
 //                }
 //            }
 //        ]
@@ -428,7 +428,7 @@ Page {
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(advancedSettingsPage, Qt.resolvedUrl("LogViewer.qml"))
+                    extraStack.push(Qt.resolvedUrl("LogViewer.qml"))
                 }
             }
         }

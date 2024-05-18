@@ -113,7 +113,7 @@ Page {
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     DeltaHandler.stopCreateOrEditGroup()
-                    layout.removePages(createGroupPage)
+                    extraStack.pop()
                 }
             }
         ]
@@ -130,7 +130,7 @@ Page {
                     } else {
                         groupNameField.focus = false
                         DeltaHandler.finalizeGroupEdit(groupNameField.text, chatPicImage.source)
-                        layout.removePages(createGroupPage)
+                        extraStack.pop()
                     }
                 }
                 visible: selfIsInGroup
@@ -139,7 +139,7 @@ Page {
                 iconName: 'view-grid-symbolic'
                 text: i18n.tr("QR Invite Code")
                 onTriggered: {
-                    layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl("QrGroupInvite.qml"))
+                    extraStack.push(Qt.resolvedUrl("QrGroupInvite.qml"))
                 }
                 visible: selfIsInGroup && !createNewGroup
             }
@@ -188,7 +188,10 @@ Page {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                // TODO: implement image view
+                if (chatPicImage.source != "") {
+                    // don't use imageStack as it is layered below extraStack
+                    extraStack.push(Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": chatPicImage.source, "enableDownloading": false, "onExtraStack": true })
+                }
             }
         }
     }
@@ -305,7 +308,7 @@ Page {
         }
         onClicked: {
             prepareAddMembers()
-            layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl("GroupAddMember.qml"))
+            extraStack.push(Qt.resolvedUrl("GroupAddMember.qml"))
         }
         visible: selfIsInGroup
     }
@@ -438,7 +441,7 @@ Page {
                             // DeltaHandler is done, see the comments in fileImportSignalHelper.h.
                             DeltaHandler.newFileImportSignalHelper()
                             DeltaHandler.fileImportSignalHelper.fileImported.connect(createGroupPage.setPic)
-                            layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                            extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
                             //let incubator = layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 
                             //if (incubator.status != Component.Ready) {

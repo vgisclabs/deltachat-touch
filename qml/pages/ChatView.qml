@@ -32,15 +32,22 @@ Page {
     id: chatViewPage
     anchors.fill: parent
 
-    property string chatname: DeltaHandler.chatName()
     property bool currentlyQuotingMessage: false
 
-    property int accountID
-    property int chatID
+    property int pageAccID
+    property int pageChatID
+
+    property var fullChatJson
+    property string chatname
+    property string chatImagePath
+    property string chatInitial
+    property string chatColor
 
     // determines whether the buttons to add attachments (== true) or
     // the text entry bar are visible (== false)
     property bool attachmentMode: false
+
+    property bool enterFieldChangeUpdatesDraft: true
 
     property bool attachAnimatedImagePreviewMode: false
     property bool attachImagePreviewMode: false
@@ -180,7 +187,7 @@ Page {
             // different code depending on platform
             if (root.onUbuntuTouch) {
                 // Ubuntu Touch
-                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileExportDialog.qml'), { "url": StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.chatmodel.getUrlToExport()), "conType": tempType })
+                extraStack.push(Qt.resolvedUrl('FileExportDialog.qml'), { "url": StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.chatmodel.getUrlToExport()), "conType": tempType })
 
             } else {
                 // non-Ubuntu Touch
@@ -196,6 +203,8 @@ Page {
 
 
     Component.onCompleted: {
+        DeltaHandler.setChatViewIsShown();
+
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatViewIsClosed)
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatmodel.chatViewIsClosed)
 
@@ -203,11 +212,14 @@ Page {
         // it, when resizing, the font will have the size according to
         // scaledFontSize, but the item height will still correlate to
         // "medium".
+        // TODO take care of this in two-column mode
+        chatViewPage.enterFieldChangeUpdatesDraft = false
         messageEnterField.text = "b\nb"
         messageEnterField.text = ""
+        chatViewPage.enterFieldChangeUpdatesDraft = true
 
         if (DeltaHandler.chatmodel.hasDraft) {
-            messageEnterField.text = DeltaHandler.chatmodel.getDraft()
+            messageEnterField.text = DeltaHandler.chatmodel.getDraftText()
 
             if (DeltaHandler.chatmodel.draftHasQuote) {
                 currentlyQuotingMessage = true;
@@ -221,6 +233,27 @@ Page {
         chatViewPage.messageQueryTextChanged.connect(DeltaHandler.chatmodel.updateQuery)
         DeltaHandler.chatmodel.searchCountUpdate.connect(updateSearchStatusLabel)
         chatViewPage.searchJumpRequest.connect(DeltaHandler.chatmodel.searchJumpSlot)
+
+        let requestString = DeltaHandler.constructJsonrpcRequestString("get_full_chat_by_id", "" + chatViewPage.pageAccID + ", " + chatViewPage.pageChatID)
+        let jsonresponse = JSON.parse(DeltaHandler.sendJsonrpcBlockingCall(requestString))
+        fullChatJson = jsonresponse.result
+
+        chatname = fullChatJson.name
+        chatColor = fullChatJson.color
+
+        if (fullChatJson.profileImage != null) {
+            let path = fullChatJson.profileImage
+            let lengthToSubtract = ("" + StandardPaths.writableLocation(StandardPaths.AppConfigLocation)).length - 6
+            chatImagePath = path.substring(lengthToSubtract)
+        } else {
+            chatImagePath = ""
+        }
+
+        if (fullChatJson.name === "") {
+            chatInitial = "#"
+        } else {
+            chatInitial = fullChatJson.name.charAt(0).toUpperCase()
+        }
     }
 
     Component.onDestruction: {
@@ -231,31 +264,64 @@ Page {
             DeltaHandler.dismissAudioRecording()
         }
 
-        DeltaHandler.chatmodel.setDraft(messageEnterField.text)
+        root.chatViewIsOpen = false
+
         // TODO is this signal needed? Could be used
         // to unref currentMessageDraft
         leavingChatViewPage(requestQrScanPage)
+    }
+
+    function updateChatData() {
+        let requestString = DeltaHandler.constructJsonrpcRequestString("get_full_chat_by_id", "" + chatViewPage.pageAccID + ", " + chatViewPage.pageChatID)
+        let jsonresponse = JSON.parse(DeltaHandler.sendJsonrpcBlockingCall(requestString))
+        fullChatJson = jsonresponse.result
+
+        chatname = fullChatJson.name
+        chatColor = fullChatJson.color
+
+        if (fullChatJson.profileImage != null) {
+            let path = fullChatJson.profileImage
+            let lengthToSubtract = ("" + StandardPaths.writableLocation(StandardPaths.AppConfigLocation)).length - 6
+            chatImagePath = path.substring(lengthToSubtract)
+        } else {
+            chatImagePath = ""
+        }
+
+        if (fullChatJson.name === "") {
+            chatInitial = "#"
+        } else {
+            chatInitial = fullChatJson.name.charAt(0).toUpperCase()
+        }
+
+        chatCanSend = DeltaHandler.chatmodel.chatCanSend()
+        protectionIsBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
+        if (!chatCanSend) {
+            if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
+                cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
+            } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
+                cannotSendLabel.text = i18n.tr("You must be in this group to post a message. To join, ask another member.")
+            } else {
+                cannotSendLabel.text = ""
+            }
+        }
+        isContactRequest = DeltaHandler.chatIsContactRequest
+        verifiedIcon.visible = DeltaHandler.chatIsVerified()
+        ephemeralIcon.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
     }
 
     Connections {
         target: DeltaHandler
         onChatDataChanged: {
             // CAVE: is emitted by both DeltaHandler and ChatModel
-            chatname = DeltaHandler.chatName()
-            chatCanSend = DeltaHandler.chatmodel.chatCanSend()
-            protectionIsBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
-            if (!chatCanSend) {
-                if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
-                    cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
-                } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
-                    cannotSendLabel.text = i18n.tr("You must be in this group to post a message. To join, ask another member.")
-                } else {
-                    cannotSendLabel.text = ""
-                }
-            }
-            isContactRequest = DeltaHandler.chatIsContactRequest
-            leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
-            leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
+            updateChatData()   
+        }
+
+        onFontSizeChanged: {
+            let tempentry = messageEnterField.text
+            chatViewPage.enterFieldChangeUpdatesDraft = false
+            messageEnterField.text = "b\nb"
+            messageEnterField.text = tempentry
+            chatViewPage.enterFieldChangeUpdatesDraft = true
         }
     }
 
@@ -264,23 +330,58 @@ Page {
 
         onChatDataChanged: {
             // CAVE: is emitted by both DeltaHandler and ChatModel
-            chatname = DeltaHandler.chatName()
-            chatCanSend = DeltaHandler.chatmodel.chatCanSend()
-            protectionIsBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
+            updateChatData()
+        }
 
-            if (!chatCanSend) {
-                if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
-                    cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
-                } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
-                    cannotSendLabel.text = i18n.tr("You must be in this group to post a message. To join, ask another member.")
-                } else {
-                    cannotSendLabel.text = ""
-                }
+        onNewChatConfigured: {
+            // chatID is from the newChatConfigured signal
+            chatViewPage.pageChatID = chatID
+            chatViewPage.pageAccID = DeltaHandler.getCurrentAccountId()
+
+            updateChatData()
+
+            // clean up from previous chat
+            messageAudio.stop()
+            messageQueryField.text = "" 
+
+            messageEnterField.text = ""
+
+            attachmentMode = false
+
+            attachAnimatedImagePreviewMode = false
+            attachImagePreviewMode = false
+            attachFilePreviewMode = false
+            attachAudioPreviewMode = false
+
+            if (isRecording) {
+                DeltaHandler.dismissAudioRecording()
             }
 
-            isContactRequest = DeltaHandler.chatIsContactRequest
-            leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
-            leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
+            currentlyQuotingMessage = false;
+
+            // set the draft, if present
+            if (DeltaHandler.chatmodel.hasDraft) {
+                messageEnterField.text = DeltaHandler.chatmodel.getDraftText()
+
+                if (DeltaHandler.chatmodel.draftHasQuote) {
+                    currentlyQuotingMessage = true;
+                    quotedMessageLabel.text = DeltaHandler.chatmodel.getDraftQuoteSummarytext()
+                    quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
+                }
+
+                DeltaHandler.chatmodel.checkDraftHasAttachment()
+            }
+
+            // now re-activate draft handling (pageChatID is sent to double-check
+            // whether the chatID is in sync with C++ side)
+            DeltaHandler.chatmodel.allowSettingDraftAgain(chatViewPage.pageChatID)
+
+            // jump to the unread message item
+            if (DeltaHandler.chatmodel.getUnreadMessageBarIndex() > 0) {
+                unreadJumpTimer.start()
+            }
+
+            unreadJumpTimer.start()
         }
 
         onJumpToMsg: {
@@ -292,11 +393,6 @@ Page {
                 currentlyQuotingMessage = true
                 quotedMessageLabel.text = DeltaHandler.chatmodel.getDraftQuoteSummarytext()
                 quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
-                // TODO: Currently, quotes are only possible for text messages, so
-                // when setting a quote, the possibility to attach something is
-                // removed. Maybe change it? This would probably mean that 
-                // message drafts will show attachments, too (similar as
-                // DC Desktop does)
                 attachmentMode = false
             } else {
                 currentlyQuotingMessage = false
@@ -347,61 +443,123 @@ Page {
             anchors.fill: parent
             color: theme.palette.normal.background
 
-            Label {
+            LomiriShape {
+                id: headerChatPic
+                height: parent.height - units.gu(1)
+                width: height
+
                 anchors {
+                    verticalCenter: parent.verticalCenter
                     left: parent.left
+                }
+
+                source: chatImagePath === "" ? undefined : chatImage
+
+                Image {
+                    id: chatImage
+                    visible: false
+                    source: StandardPaths.locate(StandardPaths.AppConfigLocation, chatImagePath)
+
+                }
+
+                Label {
+                    id: chatInitialLabel
+                    text: chatInitial
+                    font.pixelSize: headerChatPic.height * 0.6
+                    color: "white"
+                    visible: chatImagePath === ""
+                    anchors.centerIn: parent
+                }
+
+                color: chatColor
+
+                sourceFillMode: LomiriShape.PreserveAspectCrop
+            } // end LomiriShape id: headerChatPic
+
+            Label {
+                id: chatNameLabel
+                anchors {
+                    left: headerChatPic.right
+                    leftMargin: units.gu(1)
                     verticalCenter: parent.verticalCenter
                 }
                 text: chatname
+                width: parent.width - headerChatPic.width - units.gu(2) - (verifiedIcon.visible ? (verifiedIcon.width + units.gu(1)) : 0) - (ephemeralIcon.visible ? (ephemeralIcon.width + units.gu(1)) : 0)
+                elide: Text.ElideRight
                 fontSize: "large"
             }
 
+            Icon {
+                id: verifiedIcon
+                height: chatNameLabel.height * 0.7
+                width: height
+                anchors {
+                    left: headerChatPic.right
+                    leftMargin: units.gu(2) + chatNameLabel.contentWidth
+                    verticalCenter: parent.verticalCenter
+                }
+                source: "qrc:///assets/verified.svg"
+                visible: DeltaHandler.chatIsVerified()
+            }
+
             MouseArea {
+                // code needs to be above the MouseArea of ephemeralIcon for the latter to work
                 anchors.fill: parent
                 onClicked: {
-                    JSONRPC.client.getFullChatById(chatViewPage.accountID, chatViewPage.chatID).then((fullChat) => {
-                        if (fullChat.chatType === DeltaHandler.ChatTypeSingle && !fullChat.isSelfTalk) {
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": fullChat.contactIds[0] })
+                    if (fullChatJson.chatType === DeltaHandler.ChatTypeSingle && !fullChatJson.isSelfTalk) {
+                        extraStack.push(Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": fullChatJson.contactIds[0] })
 
-                        } else if (fullChat.chatType === DeltaHandler.ChatTypeGroup) {
-                            DeltaHandler.setMomentaryChatIdById(chatViewPage.chatID)
-                            DeltaHandler.momentaryChatStartEditGroup()
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false, "selfIsInGroup": DeltaHandler.momentaryChatSelfIsInGroup() })
-                            
-                        } else {
-                            console.log("Header clicked, info: Neither a group nor a single chat, no action defined")
-                        }
-                    })
+                    } else if (fullChatJson.chatType === DeltaHandler.ChatTypeGroup) {
+                        DeltaHandler.setMomentaryChatIdById(chatViewPage.pageChatID)
+                        DeltaHandler.momentaryChatStartEditGroup()
+                        extraStack.push(Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false, "selfIsInGroup": DeltaHandler.momentaryChatSelfIsInGroup() })
+                        
+                    } else {
+                        console.log("Header clicked, info: Neither a group nor a single chat, no action defined")
+                    }
                 }
             }
 
+            Rectangle {
+                height: parent.height
+                width: verifiedIcon.width
+                anchors {
+                    left: verifiedIcon.right
+                    leftMargin: units.gu(1)
+                    verticalCenter: parent.verticalCenter
+                }
+                color: theme.palette.normal.background
+
+                Icon {
+                    id: ephemeralIcon
+                    height: verifiedIcon.height
+                    width: height
+                    anchors {
+                        left: parent.left
+                        verticalCenter: parent.verticalCenter
+                    }
+                    name: "timer"
+                    color: root.darkmode ? "white" : "black"
+                    visible: DeltaHandler.getChatEphemeralTimer(-1) != 0
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        PopupUtils.open(Qt.resolvedUrl("EphemeralTimerSettings.qml"))
+                    }
+                }
+            }
         }
 
-        leadingActionBar.numberOfSlots: 3
         leadingActionBar.actions: [
-            Action {
-                id: leadingVerifiedAction
-                iconSource: Qt.resolvedUrl("../../assets/verified.svg")
-                text: i18n.tr("Verified Contact")
-                visible: DeltaHandler.chatIsVerified()
-            },
-
-            Action {
-                id: leadingEphemeralAction
-                iconName: "timer"
-                text: i18n.tr("Disappearing Messages")
-                visible: DeltaHandler.getChatEphemeralTimer(-1) != 0
-                onTriggered: {
-                    PopupUtils.open(Qt.resolvedUrl("EphemeralTimerSettings.qml"))
-                }
-            },
-
             Action {
                 iconName: "go-previous"
                 text: i18n.tr("Back")
                 onTriggered: {
                     layout.removePages(chatViewPage)
                 }
+                visible: !root.hasTwoColumns
             }
         ]
 
@@ -690,7 +848,7 @@ Page {
                 iconName: "mail-forward"
                 onTriggered: {
                     if (DeltaHandler.chatmodel.prepareForwarding(value)) {
-                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('ForwardMessage.qml'))
+                        extraStack.push(Qt.resolvedUrl('ForwardMessage.qml'))
                     }
                 }
             }
@@ -789,7 +947,7 @@ Page {
                     reactionsLoader.updateReactions()
                 }
 
-                width: parent.width
+                width: view.width
                 height: msgbox.height + (reactionsLoader.active ? (reactionsLoader.height - units.gu(0.2)) : 0) +  (imageLoader.active ? imageLoader.height : (animatedImageLoader.active ? animatedImageLoader.height : 0)) + (protectionIconLoader.active ? protectionIconLoader.height : 0)
                 divider.visible: false
 
@@ -838,7 +996,7 @@ Page {
 
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": model.contactID })
+                            onClicked: extraStack.push(Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": model.contactID })
                         }
                     } // end LomiriShape id: avatarShape
                 } // end Loader id: avatarLoader
@@ -863,7 +1021,7 @@ Page {
 
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": msgImage.source })
+                            onClicked: imageStack.push(Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": msgImage.source })
                         }
                     }
                 }
@@ -889,7 +1047,7 @@ Page {
 
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("ImageViewerAnimated.qml"), { "imageSource": msgAnimatedImage.source })
+                            onClicked: imageStack.push(Qt.resolvedUrl("ImageViewerAnimated.qml"), { "imageSource": msgAnimatedImage.source })
                         }
                     }
                 }
@@ -1348,10 +1506,8 @@ Page {
                                     onLinkActivated: {
                                         // DeltaHandler.chatmodel.downloadFullMessage(index)
                                         let msgId = DeltaHandler.chatmodel.indexToMessageId(index)
-                                        JSONRPC.client.getSelectedAccountId().then(accountId => // TODO get the selected account Id from somewhere else and cache it in a var
-                                            JSONRPC.client.downloadFullMessage(accountId, msgId)
-                                                .catch(error => console.log("msg dl request failed:", error.message)) // to try the error handling use an invalid accountId or messageId
-                                        )
+                                        JSONRPC.client.downloadFullMessage(pageAccID, msgId)
+                                            .catch(error => console.log("msg dl request failed:", error.message)) // to try the error handling use an invalid accountId or messageId
                                         
                                         linkColor = root.darkmode ? (model.messageSeen || isOther ? "#8080f7" : "#000055") : "#0000ff"
                                     }
@@ -1417,7 +1573,7 @@ Page {
                                     onClicked: {
                                         let urlpath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.chatmodel.getHtmlMessage(index))
                                         let msgsubject = DeltaHandler.chatmodel.getHtmlMsgSubject(index)
-                                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": ((protectionIsBroken || isContactRequest) && isOther)})
+                                        extraStack.push(Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": ((protectionIsBroken || isContactRequest) && isOther)})
                                     }
                                 }
 
@@ -1605,10 +1761,8 @@ Page {
                     function sendReaction(emojisToSend) {
 
                         let msgId = DeltaHandler.chatmodel.indexToMessageId(index)
-                        JSONRPC.client.getSelectedAccountId().then(accountId => // TODO get the selected account Id from somewhere else and cache it in a var
-                            JSONRPC.client.sendReaction(accountId, msgId, emojisToSend)
-                                .catch(error => console.log("send reaction failed:", error.message))
-                        )
+                        JSONRPC.client.sendReaction(pageAccID, msgId, emojisToSend)
+                            .catch(error => console.log("send reaction failed:", error.message))
                     }
 
                     sourceComponent: ListView {
@@ -2146,7 +2300,7 @@ Page {
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
 
-                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
+                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text, chatViewPage.pageAccID, chatViewPage.pageChatID)
 
                         // TODO: is the comment below still correct?
                         // clear() does not work as we are using the TextArea
@@ -2177,6 +2331,12 @@ Page {
                     } else {
                         DeltaHandler.closeOskViaDbus()
                     }
+                }
+            }
+
+            onDisplayTextChanged: {
+                if (enterFieldChangeUpdatesDraft) {
+                    DeltaHandler.chatmodel.setDraftText(displayText)
                 }
             }
         }
@@ -2229,7 +2389,7 @@ Page {
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
 
-                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
+                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text, chatViewPage.pageAccID, chatViewPage.pageChatID)
 
                         // TODO: is the comment below still correct?
                         // clear() does not work as we are using the TextArea
@@ -2293,7 +2453,7 @@ Page {
                             if (root.onUbuntuTouch) {
                                 DeltaHandler.newFileImportSignalHelper()
                                 DeltaHandler.fileImportSignalHelper.fileImported.connect(sendImageIconShape.attachImage)
-                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
                                 // See comments in CreateOrEditGroup.qml
                                 //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 
@@ -2367,7 +2527,7 @@ Page {
                                 DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
                                     DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
                                 } )
-                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
+                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
                                 // See comments in CreateOrEditGroup.qml
                                 //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
 
@@ -2445,7 +2605,7 @@ Page {
                                 DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
                                     DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
                                 } )
-                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
                                 // See comments in CreateOrEditGroup.qml
                                 //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
 

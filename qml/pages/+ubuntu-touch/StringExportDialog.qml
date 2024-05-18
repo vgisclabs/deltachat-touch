@@ -61,7 +61,7 @@ Page {
             stringSharePage.activeTransfer.items = [ resultComponent.createObject(parent,
                                                                        { "text": stringSharePage.stringToShare }) ];
             activeTransfer.state = ContentTransfer.Charged;
-            layout.removePages(stringSharePage)
+            pageStack.pop()
         }
     }
 
@@ -75,7 +75,7 @@ Page {
         }
         text: i18n.tr("Cancel")
         onClicked: {
-            layout.removePages(stringSharePage)
+            pageStack.pop()
         }
     }
 

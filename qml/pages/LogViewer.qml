@@ -100,7 +100,7 @@ Page {
 
                     // different code depending on platform
                     if (root.onUbuntuTouch) {
-                        layout.addPageToCurrentColumn(logViewerPage, Qt.resolvedUrl("FileExportDialog.qml"), {"url": fullpath, "conType": DeltaHandler.FileType})
+                        extraStack.push(Qt.resolvedUrl("FileExportDialog.qml"), {"url": fullpath, "conType": DeltaHandler.FileType})
                     } else {
                         // non-Ubuntu Touch
                         fileExpLoader.source = "FileExportDialog.qml"

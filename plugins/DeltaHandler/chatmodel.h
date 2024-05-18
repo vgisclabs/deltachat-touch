@@ -21,6 +21,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QHash>
 #include <string>
 #include <deque>
 #include "deltahandler.h"
@@ -83,9 +84,11 @@ public:
 
     Q_INVOKABLE QString getHtmlMsgSubject(int myindex);
 
-    Q_INVOKABLE QString getDraft();
+    Q_INVOKABLE QString getDraftText();
 
-    Q_INVOKABLE void setDraft(QString draftText);
+    Q_INVOKABLE void setDraftText(QString draftText);
+
+    void saveDraft();
 
     Q_INVOKABLE void setQuote(int myindex);
 
@@ -120,7 +123,7 @@ public:
 
     // invoked by clicking the "send" icon in a chat,
     // if a text has been entered into the TextArea
-    Q_INVOKABLE void sendMessage(QString messageText);
+    Q_INVOKABLE void sendMessage(QString messageText, int accID, int chatID);
 
     Q_PROPERTY(bool hasDraft READ hasDraft);
 
@@ -130,7 +133,7 @@ public:
     // presents a list of chats to forward messages to
     Q_PROPERTY(ChatlistModel* chatlistmodel READ chatlistmodel);
 
-    void configure(uint32_t chatID, dc_context_t* context, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool isContactRequest = false);
+    void configure(uint32_t chatID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool isContactRequest = false);
     
     bool chatIsContactRequest();
     bool hasDraft();
@@ -150,10 +153,14 @@ public:
     // checks whether a file is a gif
     Q_INVOKABLE bool isGif(QString fileToCheck) const;
 
+    // will be called by ChatView.qml after receiving and
+    // processing the newChatConfigured(uint32_t chatID) signal
+    Q_INVOKABLE void allowSettingDraftAgain(uint32_t chatID);
+
 public slots:
     void messageStatusChangedSlot(int msgID);
     void appIsActiveAgainActions();
-    void chatViewIsOpened(uint32_t accountID, uint32_t chatID);
+
     // unusedParam is only there so the signal from ChatView.qml
     // can be connected to both a slot in DeltaHandler (which
     // needs this parameter) and here (where the parameter
@@ -170,6 +177,7 @@ signals:
     void draftHasQuoteChanged();
     void draftHasAttachmentChanged();
     void chatDataChanged();
+    void newChatConfigured(uint32_t chatID);
     void searchCountUpdate(int current, int total);
 
     // if addCacheLocation is set, filepath has to be prepended
@@ -194,6 +202,7 @@ private:
     dc_context_t* currentMsgContext;
     uint32_t m_chatID;
     bool m_chatIsBeingViewed;
+    bool m_settingDraftTextAllowed;
     size_t currentMsgCount;
     std::vector<uint32_t> msgVector;
     bool m_isContactRequest;
@@ -249,6 +258,15 @@ private:
     // QuotedTextRole in data() will return the full quoted
     // text (otherwise, truncated text + " […]" is returned)
     std::vector<uint32_t> msgIdsWithExpandedQuote;
+
+    // key: <accID>_<chatID>, see m_accIdChatIdKey
+    // value: the draft text
+    QHash<QString, QString> m_draftTextHash;
+
+    // contains <accID>_<chatID> as string so it doesn't
+    // have to be generated each time m_draftTextHash is accessed
+    QString m_accIdChatIdKey;
+
 
     bool toggleQuoteVectorContainsId(const uint32_t tempID) const;
     void toggleQuoteVectorRemoveId(uint32_t tempID);

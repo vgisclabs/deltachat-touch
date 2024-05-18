@@ -46,7 +46,7 @@ public:
 
     // IsClosedRole is for checking whether the account is an encrypted one. It
     // doesn't say whether the account has already been opened or not.
-    enum { AddrRole, IsConfiguredRole, IsMutedRole, ProfilePicRole, UsernameRole, IsClosedRole, FreshMsgCountRole, ChatRequestCountRole };
+    enum { AddrRole, IsConfiguredRole, IsMutedRole, ProfilePicRole, UsernameRole, IsClosedRole, IsCurrentActiveRole, FreshMsgCountRole, ChatRequestCountRole, ColorRole };
 
     // TODO: reference to DeltaHandler really needed?
     void configure(dc_accounts_t* accMngr, DeltaHandler* dHandler);
@@ -106,6 +106,8 @@ private:
     void generateOrRefreshChatRequestEntries(uint32_t accID);
 
     int getNumberOfFreshMsgs(uint32_t tempAccID) const;
+
+    bool accountIsConfigured(uint32_t tempAccID) const;
 };
 
 #endif // ACCOUNTSMODEL_H

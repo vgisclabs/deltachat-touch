@@ -49,7 +49,7 @@ Dialog {
         }
         else if (progValue == 1000) {
             // TODO string not translated yet
-            dialog.text = "Success!\nAfter clicking Ok, it may take a while, please be patient."
+            dialog.text = i18n.tr("Done") //"Success!\nAfter clicking Ok, it may take a while, please be patient."
             progBar.visible = false
             okButton.visible = true
         }
@@ -62,7 +62,7 @@ Dialog {
         onClicked: {
             dialog.text = "Updating…"
             PopupUtils.close(dialog)
-            layout.removePages(layout.primaryPage)
+            extraStack.clear()
         }
         visible: false
     }

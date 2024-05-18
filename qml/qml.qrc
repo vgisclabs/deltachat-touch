@@ -7,9 +7,9 @@
         <file>pages/About.qml</file>
         <file>pages/AccountConfig.qml</file>
         <file>pages/AccountConfigPageSettings.qml</file>
+        <file>pages/AccountSwitcherDelegate.qml</file>
         <file>pages/AddAccount.qml</file>
-        <file>pages/AddAccountAsSecondDevice.qml</file>
-        <file>pages/AddAccountViaQrInvitationCode.qml</file>
+        <file>pages/AddAccountViaQr.qml</file>
         <file>pages/AddChat.qml</file>
         <file>pages/AddChatForContact.qml</file>
         <file>pages/AdvancedSettings.qml</file>
@@ -21,7 +21,6 @@
         <file>pages/ChatView.qml</file>
         <file>pages/ChatInfosActionsChatlist.qml</file>
         <file>pages/ChatInfosActionsChatview.qml</file>
-        <file>pages/ConfirmAccountDeletion.qml</file>
         <file>pages/ConfirmAddSecondDevice.qml</file>
         <file>pages/ConfirmAlwaysLoadRemoteContent.qml</file>
         <file>pages/ConfirmCancelSecondDevice.qml</file>

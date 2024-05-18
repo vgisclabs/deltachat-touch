@@ -36,9 +36,19 @@ MainView {
     automaticOrientation: true
     anchorToKeyboard: true
 
+//    FontLoader {
+//        id: emojifont
+//        name: "qrc:///assets/joypixels-android.ttf"
+//    }
+
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.4.1-pre07'
+    property string version: '1.4.1-pre08'
     property string oldVersion: "unknown"
+
+    // holds the page item representing the ChatView after it
+    // has been opened
+    property var chatViewItem
+    property bool chatViewIsOpen: false
 
     signal appStateNowActive()
     signal ioChanged()
@@ -52,7 +62,6 @@ MainView {
         //console.log("+++++++++++ in Main.qml: received jsonrpc response: ", response)
         JSONRPC.receiveResponse(response)
     }
-
 
     // Performs actions related to a version update
     // directly at beginning of onCompleted
@@ -230,9 +239,12 @@ MainView {
 
     function startupStep5() {
         if (!DeltaHandler.hasConfiguredAccount) {
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+            extraStack.push(Qt.resolvedUrl('pages/AccountConfig.qml'))
         } else {
             updateConnectivity()
+            if (hasTwoColumns) {
+                DeltaHandler.selectAndOpenLastChatId()
+            }
         }
 
         checkVersionUpdateLate()
@@ -297,7 +309,7 @@ MainView {
         target: bottomEdge
         onCollapseCompleted: {
             enabled = false
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+            extraStack.push(Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
         }
         enabled: false
     }
@@ -436,6 +448,8 @@ MainView {
         property alias alwaysLoadRemote: root.alwaysLoadRemoteContent
         property alias inactAccsNewMsgsSinceLastCheck: root.inactiveAccsNewMsgsSinceLastCheck
         property alias recentlyUsedEmojisNew: root.emojiRecentArray
+        property alias rootWidth: root.width
+        property alias rootHeight: root.height
     }
 
     width: units.gu(45)
@@ -484,14 +498,30 @@ MainView {
     
     Connections {
         target: DeltaHandler
-        onNewJsonrpcResponse:{
+        
+        onNewJsonrpcResponse: {
             receiveJsonrpcResponse(response)
+        }
+
+        onAccountChanged: {
+            // In two-column mode, the user can select a new account while
+            // the ChatView is open. Just call selectAndOpenLastChatId if
+            // we're in two-column mode.
+            //
+            // The second part of the condition (if we're not in two-column
+            // mode, but the chat view is open) can occur if the user opened
+            // the account switcher in two-column mode, then resized the window
+            // to be in one-column mode. If a chat view was open before, it
+            // will still be open, but hidden by the account switcher.
+            if (hasTwoColumns || (!hasTwoColumns && chatViewIsOpen)) {
+                DeltaHandler.selectAndOpenLastChatId()
+            }
         }
 
         onChatViewClosed: {
             root.chatOpenAlreadyClicked = false;
             if (gotoQrScanPage) {
-                layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+                extraStack.push(Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
             }
         }
 
@@ -506,17 +536,43 @@ MainView {
         }
 
         onOpenChatViewRequest: {
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'), { "accountID": accID, "chatID": chatID })
+            if (!chatViewIsOpen) {
+                chatViewItem = layout.addPageToNextColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'), { "pageAccID": accID, "pageChatID": chatID })
+                chatViewIsOpen = true
+            }
+        }
+
+        onCloseChatViewRequest: {
+            // maybe the chat view is not active, but it
+            // shouldn't be a problem to call removePages anyway
+            layout.removePages(layout.primaryPage)
         }
 
         onChatlistShowsArchivedOnly: {
             showArchiveCloseLine = showsArchived;
-            root.chatOpenAlreadyClicked = false
+            if (!root.hasTwoColumns) {
+                root.chatOpenAlreadyClicked = false
+            }
         }
 
         onErrorEvent: {
             errorShape.visible = true
             errorLabel.text = i18n.tr("Error: %1").arg(errorMessage)
+        }
+
+        onNewConfiguredAccount: {
+            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        }
+
+        onNewUnconfiguredAccount: {
+            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        }
+    }
+
+    Connections {
+        target: DeltaHandler.chatmodel
+        onExportMomentaryFileViaContentHub: {
+            extraStack.push(Qt.resolvedUrl('pages/FileExportDialog.qml'), { "url": StandardPaths.locate(StandardPaths.AppConfigLocation, fUrl), "conType": fType })
         }
     }
 
@@ -571,18 +627,66 @@ MainView {
         onInactiveFreshMsgsMayHaveChanged: {
             refreshOtherAccsIndicator()
         }
+
+        onDeletedAccount: {
+            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        }
+    }
+
+    property bool hasTwoColumns: width > units.gu(100)
+
+    onHasTwoColumnsChanged: {
+        if (hasTwoColumns) {
+            if (chatOpenAlreadyClicked) {
+                chatOpenAlreadyClicked = false
+            }
+        }
+    }
+
+    Rectangle {
+        id: accountSwitcherLeft
+        width: root.scaledFontSizeInPixels*1.5 + units.gu(5)
+        height: parent.height
+
+        anchors {
+            left: parent.left
+            top: parent.top
+        }
+
+        visible: root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        color:  root.darkmode ? "#505050" : "#a0a0a0" //theme.palette.normal.foreground
+
+        ListView {
+            id: switcherView
+            anchors.fill: parent
+
+            model: DeltaHandler.accountsmodel
+            delegate: Loader {
+                width: switcherView.width
+                height: width
+                property string sidebarColor: accountSwitcherLeft.color
+                source: Qt.resolvedUrl("pages/AccountSwitcherDelegate.qml")
+            }
+        }
     }
 
     AdaptivePageLayout {
         id: layout
-        anchors.fill: parent
+        //anchors.fill: parent
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            left: accountSwitcherLeft.visible ? accountSwitcherLeft.right : parent.left
+            right: parent.right
+        }
+
         layouts: [
             PageColumnsLayout {
-                when: width > units.gu(100)
+                when: root.hasTwoColumns
                 // column #0
                 PageColumn {
-                    minimumWidth: units.gu(45)
-                    preferredWidth: units.gu(70)
+                    minimumWidth: units.gu(40)
+                    preferredWidth: units.gu(50)
                     maximumWidth: units.gu(70)
                 }
                 // column #1
@@ -634,19 +738,29 @@ MainView {
 
                 //opacity: 0.5
             
-                property string currentUsername: DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
-                property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                property string currentUsername: DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? "" : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
+                property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? "" : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                //property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
 
                 Connections {
                     target: DeltaHandler
                     onAccountChanged: {
-                        headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
-                        headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? "" : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
+                        headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? "" : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        //headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        profilePicShape.color = DeltaHandler.getCurrentProfileColor()
                         bottomEdge.enabled = DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
                         bottomEdgeHint.visible = DeltaHandler.hasConfiguredAccount
                         updateConnectivity()
 
                         refreshOtherAccsIndicator()
+                    }
+
+                    onAccountDataChanged: {
+                        headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? "" : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
+                        headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? "" : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        //headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        profilePicShape.color = DeltaHandler.getCurrentProfileColor()
                     }
                 }
 
@@ -665,7 +779,7 @@ MainView {
                         id: headerMouse
                         anchors.fill: parent
                         onClicked: {
-                            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+                            extraStack.push(Qt.resolvedUrl('pages/AccountConfig.qml'))
                             root.inactiveAccsNewMsgsSinceLastCheck = false
                         }
                         enabled: !root.chatOpenAlreadyClicked
@@ -675,16 +789,36 @@ MainView {
                         id: profilePicShape
                         height: usernameLabel.contentHeight + units.gu(3)
                         width: height
+
                         anchors {
                             left: profilePicAndNameRect.left
                             leftMargin: units.gu(0.5)
                             top: profilePicAndNameRect.top
                             topMargin: units.gu(0.5)
                         }
-                        source: Image {
+
+                        color: DeltaHandler.getCurrentProfileColor()
+
+                        source: headerRect.currentProfilePic === "" ? undefined : ownProfileImage
+
+                        Image {
+                            id: ownProfileImage
+                            anchors.fill: parent
                             source: headerRect.currentProfilePic
+                            visible: false
                         }
+
+                        Label {
+                            id: ownInitialLabel
+                            visible: headerRect.currentProfilePic === ""
+                            text: headerRect.currentUsername === "" ? "#" : headerRect.currentUsername.charAt(0).toUpperCase()
+                            font.pixelSize: parent.height * 0.6
+                            color: "white"
+                            anchors.centerIn: parent
+                        }
+
                         sourceFillMode: LomiriShape.PreserveAspectCrop
+                        //aspect: LomiriShape.Flat
                     } // end of LomiriShape id:profilePicShape
                 
                     Label {
@@ -695,7 +829,7 @@ MainView {
                             bottom: parent.bottom
                             bottomMargin: units.gu(2)
                         }
-                        width: parent.width - profilePicShape.width - (hasNewMsgsInOtherAccs ? newMsgsInOtherAccsIndicator.width + units.gu(1) : 0) - units.gu(3)
+                        width: parent.width - profilePicShape.width - (newMsgsInOtherAccsIndicator.visible ? newMsgsInOtherAccsIndicator.width + units.gu(1) : 0) - units.gu(3)
                         elide: Text.ElideRight
                         text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
                         color: "#e7fcfd"
@@ -739,7 +873,7 @@ MainView {
                     }
                     color: root.otherAccsIndicatorBackgroundColor
                     //aspect: LomiriShape.Flat
-                    visible: hasNewMsgsInOtherAccs
+                    visible: hasNewMsgsInOtherAccs && !accountSwitcherLeft.visible
 
                     Label {
                         id: newMsgsInOtherAccsCountLabel
@@ -821,7 +955,7 @@ MainView {
             
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'))
+                        onClicked: extraStack.push(Qt.resolvedUrl('pages/QrShowScan.qml'))
                         enabled: !root.chatOpenAlreadyClicked
                     }
                 }
@@ -851,7 +985,7 @@ MainView {
                     }
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/SettingsPage.qml'))
+                        onClicked: extraStack.push(Qt.resolvedUrl('pages/SettingsPage.qml'))
                         enabled: !root.chatOpenAlreadyClicked
                     }
                 }
@@ -906,27 +1040,6 @@ MainView {
             } // end of Rectangle id:headerRect
             /* ======================= END HEADER =========================== */
 
-        //            // fallback header
-        //            header: PageHeader {
-        //                id: header
-        //
-        //                title: '%1 v%2'.arg(root.appName).arg(root.version)
-        //
-        //                trailingActionBar.actions: [
-        //                    Action {
-        //                        iconName: 'settings'
-        //                        text: i18n.tr('Settings')
-        //                        onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/SettingsPage.qml'))
-        //                    },
-        //
-        //                    Action {
-        //                        iconName: 'info'
-        //                        text: i18n.tr('About DeltaTouch')
-        //                        onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/About.qml'))
-        //                    }
-        //                ]
-        //            } PageHeader id:header
-                
             ListItem {
                 id: archivedChatsItem
                 width: parent.width
@@ -1109,7 +1222,9 @@ MainView {
                     divider.visible: true
                     onClicked: {
                         if (!root.chatOpenAlreadyClicked) {
-                            root.chatOpenAlreadyClicked = true
+                            if (!root.hasTwoColumns) {
+                                root.chatOpenAlreadyClicked = true
+                            }
                             DeltaHandler.selectChat(index)
                             DeltaHandler.openChat()
                         } 
@@ -1129,7 +1244,7 @@ MainView {
                         // need to explicitly set the height because otherwise,
                         // the height will increase when switching
                         // scaledFontSize from "medium" to "small" (why??)
-                        height: chatPicShape.height + units.gu(1) + units.gu(scaleLevel * 0.25)
+                        height: chatPicShape.height + units.gu(1) + units.gu(scaleLevel * 0.25) + ((!onUbuntuTouch && scaledFontSize === "x-large") ? units.gu(2) : 0)
 
                         LomiriShape {
                             id: chatPicShape
@@ -1148,7 +1263,7 @@ MainView {
                                 id: avatarInitialLabel
                                 visible: chatPicPath === ""
                                 text: avatarInitial
-                                fontSize: "x-large"
+                                font.pixelSize: parent.height * 0.6
                                 color: "white"
                                 anchors.centerIn: parent
                             }
@@ -1391,7 +1506,53 @@ MainView {
             }
         } // end of Page id: chatlistPage
     } // end of AdaptivePageLayout id: layout
+
+    Rectangle {
+        id: backgroundForImageStack
+        anchors.fill: imageStack
+        color: theme.palette.normal.background
+        visible: imageStack.depth !== 0
+    }
+
+    PageStack {
+        id: imageStack
+        anchors.fill: parent
+    }
+
+    Rectangle {
+        id: transparencyAroundPageStack
+        anchors.fill: parent
+        color: root.darkmode ? "white" : "black"
+        opacity: 0.8
+        visible: extraStack.depth !== 0    
+
+        MouseArea {
+            // to prevent clicks + scrolls reaching the AdaptivePageLayout below
+            anchors.fill: parent
+            onWheel: wheel.accepted = true
+        }
+    }
+
+    Rectangle {
+        id: backgroundForExtraStack
+        anchors.fill: extraStack
+        color: theme.palette.normal.background
+        visible: extraStack.depth !== 0    
+    }
     
+    PageStack {
+        // for everything except chatlist, chatview and images
+        id: extraStack
+        width: parent.width > units.gu(90) ? units.gu(80) : parent.width
+        height: parent.height
+        anchors {
+            fill: undefined
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            bottom: parent.bottom
+        }
+    }
+
     // lock the bottom edge hint for the first 10 seconds
     Timer {
         id: hintTimer

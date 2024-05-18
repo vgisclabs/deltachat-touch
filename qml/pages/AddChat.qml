@@ -118,7 +118,8 @@ Page {
             }
 
             onClicked: {
-                layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("AddChatForContact.qml"))
+                extraStack.push(Qt.resolvedUrl("AddChatForContact.qml"))
+                bottomEdge.collapse()
             }
         }
 
@@ -154,9 +155,9 @@ Page {
             }
 
             onClicked: {
-                bottomEdge.collapse()
                 DeltaHandler.startCreateGroup()
-                layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": true })
+                extraStack.push(Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": true })
+                bottomEdge.collapse()
             }
         }
     }
@@ -188,7 +189,8 @@ Page {
             onClicked: {
                 // check if the item is the top one labeled "Add Contact"
                 if (model.profilePic == "replace_by_addNew") {
-                    layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("AddChatForContact.qml"), { "address": enterNameOrEmailField.displayText })
+                    extraStack.push(Qt.resolvedUrl("AddChatForContact.qml"), { "address": enterNameOrEmailField.displayText })
+                    bottomEdge.collapse()
                 } else {
                     addChatPage.indexSelected(index)
                 }

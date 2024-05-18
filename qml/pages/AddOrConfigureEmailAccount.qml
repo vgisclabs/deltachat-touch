@@ -113,7 +113,7 @@ Page {
                     // it as the user is leaving the page without
                     // trying to configure it
                     DeltaHandler.deleteTemporaryAccount()
-                    layout.removePages(addEmailPage)
+                    extraStack.pop()
                 }
             }
         ]
@@ -180,8 +180,8 @@ Page {
                     
                     // now DeltaHandler.configureTempContext() needs to be called,
                     // will be done in the popup
-                    PopupUtils.open(configProgress)
-                    //layout.removePages(chatlistPage)
+                    let popup1 = PopupUtils.open(configProgress)
+                    popup1.success.connect(function() { extraStack.clear() })
                 }
             }
         ]

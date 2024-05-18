@@ -23,7 +23,7 @@
 #include <fstream>
 
 ChatModel::ChatModel(QObject* parent)
-    : QAbstractListModel(parent), currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
+    : QAbstractListModel(parent), currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
 { 
 };
 
@@ -778,6 +778,16 @@ bool ChatModel::isGif(QString fileToCheck) const
 }
 
 
+void ChatModel::allowSettingDraftAgain(uint32_t chatID)
+{
+    if (chatID == m_chatID) {
+        m_settingDraftTextAllowed = true;
+    } else {
+        qFatal("ChatModel::allowSettingDraftAgain(): ERROR: Chat ID passed as parameter does not match m_chatID, danger of sending messages to wrong chat, aborting.");
+    }
+}
+
+
 void ChatModel::setMomentaryMessage(int myindex)
 {
     m_MomentaryMsgId = msgVector[myindex];
@@ -853,8 +863,30 @@ QString ChatModel::getHtmlMsgSubject(int myindex)
 }
 
 
-void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool cIsContactRequest)
+void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool cIsContactRequest)
 {
+    if (m_chatIsBeingViewed) {
+        // check if the same chat has been clicked again, and
+        // don't do anything in that case
+        if (currentMsgContext && m_chatID == cID && aID == dc_get_id(currentMsgContext)) {
+            qDebug() << "ChatModel::configure(): called for already opened chat, returning";
+            return;
+        }
+
+        // If ChatView.qml is active, it will set it back
+        // to true again once it has updated its properties such
+        // as pageChatID. In the meantime, dont' allow setting the
+        // draft text as it would be set for the wrong chat ID
+        m_settingDraftTextAllowed = false;
+
+        // If the chat is already viewed, there might be a draft from the
+        // currently viewed (= now previous) chat. If the chat is not viewed,
+        // there should be no draft.
+        // Save the draft from the previous chat.
+        saveDraft();
+        m_draftTextHash.clear();
+    }
+
     m_dhandler = deltaHandler;
 
     beginResetModel();
@@ -871,7 +903,20 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
     m_isContactRequest = cIsContactRequest;
 
     m_chatID = cID;
-    currentMsgContext = context;
+
+    if (currentMsgContext) {
+        dc_context_unref(currentMsgContext);
+    }
+    currentMsgContext = dc_accounts_get_account(allAccs, aID);
+
+    // update m_accIdChatIdKey
+    QString tempQString;
+    tempQString.setNum(aID);
+    m_accIdChatIdKey = tempQString;
+    m_accIdChatIdKey.append("_");
+    tempQString.setNum(m_chatID);
+    m_accIdChatIdKey = tempQString;
+
 
     dc_array_t* msgArray = dc_get_chat_msgs(currentMsgContext, m_chatID, 0, 0);
     currentMsgCount = dc_array_get_cnt(msgArray);
@@ -950,9 +995,16 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
 
     dc_array_unref(msgArray);
 
-    bool connectSuccess = connect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
-    if (!connectSuccess) {
-        qDebug() << "Chatmodel::configure: Could not connect signal msgsChanged to slot newMessage";
+    // If in two-column mode, ChatModel::configure is called repeatedly without
+    // the connection below being reset. In one-column mode, the chat view is
+    // actually closed and the signal/slot connection is disconnected. This can
+    // be tracked via m_chatIsBeingViewed.
+    if (!m_chatIsBeingViewed) {
+        m_chatIsBeingViewed = true;
+        bool connectSuccess = connect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
+        if (!connectSuccess) {
+            qDebug() << "Chatmodel::configure: Could not connect signal msgsChanged to slot newMessage";
+        }
     }
 
     endResetModel();
@@ -966,6 +1018,13 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
     }
 
     currentMessageDraft = dc_get_draft(currentMsgContext, m_chatID);
+    if (currentMessageDraft) {
+        char* tempText = dc_msg_get_text(currentMessageDraft);
+        m_draftTextHash[m_accIdChatIdKey] = tempText;
+        dc_str_unref(tempText);
+    }
+    
+    emit newChatConfigured(m_chatID);
 }
 
 
@@ -1073,22 +1132,6 @@ void ChatModel::newMessage(int msgID)
 
     dc_array_unref(newMsgArray);
 
-    // mark new message as seen
-    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, msgID);
-    if (dc_msg_get_state(tempMsg) != DC_STATE_IN_SEEN && !(dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF)) {
-        const uint32_t tempMsgID = msgID;
-        // only mark seen + remove the notification if the app is not 
-        // in background
-        if (QGuiApplication::applicationState() == Qt::ApplicationActive) {
-            dc_markseen_msgs(currentMsgContext, &tempMsgID, 1);
-            emit markedAllMessagesSeen();
-        } else {
-            msgsToMarkSeenLater.push_back(tempMsgID);
-        }
-    }
-    dc_msg_unref(tempMsg);
-
-
     // The event DC_EVENT_MSGS_CHANGED, which eventually leads to the
     // execution of this method here, is also created if a partly
     // downloaded message has been fully downloaded.  Thus, data_changed
@@ -1103,6 +1146,26 @@ void ChatModel::newMessage(int msgID)
     } else {
         for (size_t i = 0; i < currentMsgCount ; ++i) {
             if (msgVector[i] == msgID) {
+                // mark new message as seen, but only if it is present in msgVector (it might
+                // not be if it was a message draft that has been deleted)
+                // It's not always a new message that is passed as parameter - take care to only mark new ones as seen
+                dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, msgID);
+                if (tempMsg) {
+                    if (dc_msg_get_state(tempMsg) != DC_STATE_IN_SEEN && !(dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF)) {
+                        const uint32_t tempMsgID = msgID;
+                        // only mark seen + remove the notification if the app is not 
+                        // in background
+                        if (QGuiApplication::applicationState() == Qt::ApplicationActive) {
+                            dc_markseen_msgs(currentMsgContext, &tempMsgID, 1);
+                            emit markedAllMessagesSeen();
+                        } else {
+                            msgsToMarkSeenLater.push_back(tempMsgID);
+                        }
+                    }
+                    dc_msg_unref(tempMsg);
+                }
+
+                // notify view
                 emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
 
                 // the message above might have to change its appearance (edge
@@ -1573,7 +1636,7 @@ QString ChatModel::copyToCache(QString filepath) const
 }
 
 
-QString ChatModel::getDraft()
+QString ChatModel::getDraftText()
 {
     dc_msg_t* tempMsg {nullptr};
     char* tempText {nullptr};
@@ -1592,8 +1655,25 @@ QString ChatModel::getDraft()
 }
 
 
-void ChatModel::setDraft(QString draftText)
+void ChatModel::setDraftText(QString draftText)
 {
+    if (!m_settingDraftTextAllowed) {
+        return;
+    }
+
+    m_draftTextHash[m_accIdChatIdKey] = draftText;
+    return;
+}
+
+
+
+void ChatModel::saveDraft() {
+    QString draftText {""};
+    // TODO: use m_accIdChatIdKey or build it up from m_chatID etc?
+    if (m_draftTextHash.contains(m_accIdChatIdKey)) {
+        draftText = m_draftTextHash[m_accIdChatIdKey];
+    }
+
     if (currentMessageDraft) {
         if ("" == draftText && !draftHasQuote() && !draftHasAttachment()) {
             dc_set_draft(currentMsgContext, m_chatID, NULL);
@@ -1616,6 +1696,9 @@ void ChatModel::setDraft(QString draftText)
         dc_msg_set_text(currentMessageDraft, draftText.toUtf8().constData());
         dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
     }
+
+    // TODO when do this?
+    //m_draftTextHash.clear();
 }
 
 
@@ -1632,6 +1715,7 @@ void ChatModel::setQuote(int myindex)
     tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
 
     dc_msg_set_quote(currentMessageDraft, tempMsg);
+    dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
     emit draftHasQuoteChanged();
 
     dc_msg_unref(tempMsg);
@@ -1642,21 +1726,20 @@ void ChatModel::unsetQuote()
 {
     if (draftHasQuote()) {
         dc_msg_set_quote(currentMessageDraft, NULL);
-        emit draftHasQuoteChanged();
-    } else {
-        // Although no quoted message could be found, it could be
-        // that the draft is actually a reply, but the message that
-        // is replied to is not there anymore. The draft would
-        // still contain the quoted_text, so we have to delete
-        // the draft in this case (it's sufficient to unref
-        // currentMessageDraft). No need to create a new
-        // message as this will be done when the sent icon
-        // is clicked or when the page is left and the draft
-        // saved. Also no need to overwrite the draft in the database.
-        qDebug() << "ChatModel::unsetQuote: There is no quoted message, unsetting the current draft to delete the quoted text";
-        if (currentMessageDraft && !draftHasAttachment()) {
+
+        QString draftText;
+        if (m_draftTextHash.contains(m_accIdChatIdKey)) {
+            draftText = m_draftTextHash[m_accIdChatIdKey];
+        }
+
+        // if the quote was the only thing in the draft,
+        // delete the draft
+        if ("" == draftText && !draftHasAttachment()) {
             dc_msg_unref(currentMessageDraft);
             currentMessageDraft = nullptr;
+            dc_set_draft(currentMsgContext, m_chatID, NULL);
+        } else {
+            dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
         }
         emit draftHasQuoteChanged();
     }
@@ -1682,7 +1765,9 @@ void ChatModel::setAttachment(QString filepath, int attachType)
     if (currentMessageDraft) {
         // delete the current message draft as it may have the 
         // wrong message type (TODO: can the type of an existing
-        // message be changed? Then we could avoid this)
+        // message be changed? Then we could avoid this => looks
+        // like this will come with the re-write of the composer
+        // in dc-core, but it's not there yet)
         //
         // Save the quote if it exists; will be re-added below
         tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
@@ -1690,7 +1775,6 @@ void ChatModel::setAttachment(QString filepath, int attachType)
         // Then delete the old currentMessageDraft
         dc_msg_unref(currentMessageDraft);
         currentMessageDraft = nullptr;
-
     } 
 
     int messageType; 
@@ -1762,6 +1846,7 @@ void ChatModel::setAttachment(QString filepath, int attachType)
     } 
 
     dc_msg_set_file(currentMessageDraft, filepath.toUtf8().constData(), NULL);
+    dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
 
     emitDraftHasAttachmentSignals(filepath, messageType);
 }
@@ -1857,30 +1942,37 @@ void ChatModel::emitDraftHasAttachmentSignals(QString filepath, int messageType)
 
 void ChatModel::unsetAttachment()
 {
+    // TODO don't get the text of the draft, but use m_draftTextHash?
     if (currentMessageDraft) {
-        // If there's no quote, the draft can be deleted. Any text
-        // in the draft will be set again when the ChatView is left.
-        // Need to pass NULL to dc_set_draft, otherwise
-        // the attachment would not be deleted if the chat is left
-        // with an empty messageEnterField (as then no new draft
-        // would be set and the core would still have the old one
-        // with the attachment)
-        if (!draftHasQuote()) {
-            dc_msg_unref(currentMessageDraft);
-            currentMessageDraft = nullptr;
-            dc_set_draft(currentMsgContext, m_chatID, NULL);
-        } else {
-            dc_msg_t* tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
+        QString tempQString {""};
+        char* tempText = dc_msg_get_text(currentMessageDraft);
+        if (tempText) {
+            tempQString = tempText;
+            dc_str_unref(tempText);
+        }
+
+        dc_msg_t* tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
+
+        dc_msg_unref(currentMessageDraft);
+        currentMessageDraft = nullptr;
+
+        if (tempQString != "" || tempQuote) {
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
+            dc_msg_set_text(currentMessageDraft, tempQString.toUtf8().constData());
 
             // need to check because draftHasQuote == true doesn't mean
             // that there's an actual quoted message (could be only 
-            // quoted text)
+            // quoted text, in that case the quote will be lost (TODO, but
+            // maybe that can only be solved once the core implements
+            // viewtype changes of drafts))
             if (tempQuote) {
-                dc_msg_unref(currentMessageDraft);
-                currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
                 dc_msg_set_quote(currentMessageDraft, tempQuote);
                 dc_msg_unref(tempQuote);
             }
+
+            dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
+        } else {
+            dc_set_draft(currentMsgContext, m_chatID, NULL);
         }
     }
 }
@@ -2091,8 +2183,16 @@ ChatlistModel* ChatModel::chatlistmodel()
 }
 
 
-void ChatModel::sendMessage(QString messageText)
+void ChatModel::sendMessage(QString messageText, int accID, int chatID)
 {
+    if (accID != dc_get_id(currentMsgContext)) {
+        qFatal("ChatModel::sendMessage(): accID passed to method does not match with the ID of currentMsgContext, aborting");
+    }
+
+    if (chatID != m_chatID) {
+        qFatal("ChatModel::sendMessage(): chatID passed to method does not match with m_chatID, aborting");
+    }
+
     bool needToNotifyAboutQuote = false;
 
     if (!currentMessageDraft) {
@@ -2186,18 +2286,14 @@ void ChatModel::appIsActiveAgainActions() {
 }
 
 
-void ChatModel::chatViewIsOpened(uint32_t accountID, uint32_t chatID)
-{
-    m_chatIsBeingViewed = true;
-}
-
-
 // unusedParam is only there so the signal from ChatView.qml
 // can be connected to both a slot in DeltaHandler (which
 // needs this parameter) and here (where the parameter
 // is not needed)
 void ChatModel::chatViewIsClosed(bool unusedParam)
 {
+    saveDraft();
+    m_draftTextHash.clear();
     m_chatIsBeingViewed = false;
     disconnect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
 }

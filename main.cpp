@@ -88,6 +88,42 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 
 int main(int argc, char *argv[])
 {
+    // On non-UT platforms, url scheme handling is done by calling a
+    // handling appplication with the url as parameter. For deltatouch,
+    // there are two possibilities:
+    // - The app is not running when the call happens: The url is then
+    //   handled in Main.qml, see at the end of startupStep5().
+    // - The app is already running. This can be checked by trying to
+    //   register the DBus service local.deltatouch. If this fails,
+    //   it means that another instance of the app is already running.
+    //   In this case, we call a DBus method of the service local.deltatouch
+    //   (see the constructor in DeltaHandler.cpp, and dbusUrlReceiver.h) with
+    //   the url as parameter.
+    //
+    // (On UT, this is not needed, see the QML Connection with UriHandler as
+    // target instead)
+    qDebug() << "Checking if another instance is already running...";
+    bool success = QDBusConnection::sessionBus().registerService("local.deltatouch");
+    if (success) {
+        qDebug() << "...no, continuing";
+        // unregister the service again; it will be registered in DeltaHandler,
+        // but only if the app is not running on UT
+        QDBusConnection::sessionBus().unregisterService("local.deltatouch");
+    } else {
+        qDebug() << "...yes, checking if arguments need to be sent...";
+        if (argc > 1) {
+            qDebug() << "...yes, sending arguments and quitting.";
+             QDBusConnection tempBus = QDBusConnection::connectToBus(QDBusConnection::SessionBus, "DeltaTouch");
+             QDBusMessage message = QDBusMessage::createMethodCall("local.deltatouch", "/deltatouch/urlreceiver", "local.deltatouch", "receiveUrl");
+             message << argv[1];
+             tempBus.send(message);
+        } else {
+            qDebug() << "...no, quitting.";
+        }
+        // now quit
+        exit(0);
+    }
+
     QtWebEngine::initialize();
 
     QGuiApplication *app = new QGuiApplication(argc, (char**)argv);
@@ -140,40 +176,6 @@ int main(int argc, char *argv[])
     //qRegisterMetaType<size_t>("size_t");
 
     qDebug() << "Starting app from main.cpp";
-
-    // On non-UT platforms, url scheme handling is done by calling a
-    // handling appplication with the url as parameter. For deltatouch,
-    // there are two possibilities:
-    // - The app is not running when the call happens: The url is then
-    //   handled in Main.qml, see at the end of startupStep5().
-    // - The app is already running. This can be checked by trying to
-    //   register the DBus service local.deltatouch. If this fails,
-    //   it means that another instance of the app is already running.
-    //   In this case, we call a DBus method of the service local.deltatouch
-    //   (see the constructor in DeltaHandler.cpp, and dbusUrlReceiver.h) with
-    //   the url as parameter.
-    //
-    // (On UT, this is not needed, see the QML Connection with UriHandler as
-    // target instead)
-    qDebug() << "Checking if another instance is already running...";
-    bool success = QDBusConnection::sessionBus().registerService("local.deltatouch");
-    if (success) {
-        qDebug() << "...no, continuing";
-        // unregister the service again; it will be registered in DeltaHandler,
-        // but only if the app is not running on UT
-        QDBusConnection::sessionBus().unregisterService("local.deltatouch");
-    } else {
-        qDebug() << "...yes, checking if arguments need to be sent...";
-        if (argc > 1) {
-             QDBusConnection tempBus = QDBusConnection::connectToBus(QDBusConnection::SessionBus, "DeltaTouch");
-             QDBusMessage message = QDBusMessage::createMethodCall("local.deltatouch", "/deltatouch/urlreceiver", "local.deltatouch", "receiveUrl");
-             message << argv[1];
-             tempBus.send(message);
-        }
-        // now quit
-        exit(0);
-    }
-
 
     QQuickView *view = new QQuickView();
 

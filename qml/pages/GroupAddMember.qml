@@ -35,7 +35,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     clearQuery()
@@ -48,7 +49,8 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     clearQuery()
@@ -181,7 +183,8 @@ Page {
                 Icon {
                     id: memberSelectedIcon
                     width: units.gu(3)
-                    name: model.isAlreadyMemberOfGroup ? "select" : (model.isToBeAddedToGroup ? "select" : "select-none")
+                    //name: model.isAlreadyMemberOfGroup ? "select" : (model.isToBeAddedToGroup ? "select" : "select-none")
+                    source: model.isAlreadyMemberOfGroup ? "qrc:///assets/suru-icons/select.svg" : (model.isToBeAddedToGroup ? "qrc:///assets/suru-icons/select.svg" : "qrc:///assets/suru-icons/select-none.svg")
                     opacity: model.isAlreadyMemberOfGroup ? 0.5 : 1
                     SlotsLayout.position: SlotsLayout.Trailing
                 }

@@ -1143,7 +1143,8 @@ MainView {
 
                     Icon {
                         id: connectivityIcon
-                        name: "sync"
+                        //name: "sync"
+                        source: "qrc:///assets/suru-icons/sync.svg"
                         width: connectivityShape.width * (0.9)
                         height: width
                         anchors{
@@ -1198,7 +1199,8 @@ MainView {
             
                     Icon {
                         id: searchIcon
-                        name: "find"
+                        //name: "find"
+                        source: "qrc:///assets/suru-icons/find.svg"
                         width: profilePicShape.width * (2/5)
                         height: width
                         anchors{
@@ -1235,7 +1237,8 @@ MainView {
             
                     Icon {
                         id: qrIcon
-                        name: "view-grid-symbolic"
+                        //name: "view-grid-symbolic"
+                        source: "qrc:///assets/suru-icons/view-grid-symbolic.svg"
                         width: profilePicShape.width * (2/5)
                         height: width
                         anchors{
@@ -1266,7 +1269,8 @@ MainView {
             
                     Icon {
                         id: settingsIcon
-                        name: "settings"
+                        //name: "settings"
+                        source: "qrc:///assets/suru-icons/settings.svg"
                         width: profilePicShape.width * (2/5)
                         height: width
                         anchors{
@@ -1350,7 +1354,8 @@ MainView {
                         SlotsLayout.position: SlotsLayout.Trailing
                         height: units.gu(3)
                         width: height
-                        name: "close"
+                        //name: "close"
+                        source: "qrc:///assets/suru-icons/close.svg"
 
                         MouseArea {
                             anchors.fill: closeArchiveListIcon
@@ -1364,7 +1369,8 @@ MainView {
             ListItemActions {
                 id: leadingChatAction
                 actions: Action {
-                    iconName: "delete"
+                    //iconName: "delete"
+                    iconSource: "qrc:///assets/suru-icons/delete.svg"
                     onTriggered: {
                         // the index is passed as parameter and can
                         // be accessed via 'value'
@@ -1378,7 +1384,8 @@ MainView {
                 id: trailingChatActions
                 actions: [
                     Action {
-                        iconName: "folder-symbolic"
+                        //iconName: "folder-symbolic"
+                        iconSource: "qrc:///assets/suru-icons/folder-symbolic.svg"
                         onTriggered: {
                             // the index is passed as parameter and can
                             // be accessed via 'value'
@@ -1387,14 +1394,16 @@ MainView {
                         }
                     },
                     Action {
-                        iconName: "pinned"
+                        //iconName: "pinned"
+                        iconSource: "qrc:///assets/suru-icons/pinned.svg"
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             DeltaHandler.pinUnpinMomentaryChat()
                         }
                     },
                     Action {
-                        iconName: "navigation-menu"
+                        //iconName: "navigation-menu"
+                        iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActionsChatlist.qml'))
@@ -1409,14 +1418,16 @@ MainView {
                 id: trailingChatActionsArchived
                 actions: [
                     Action {
-                        iconName: "folder-symbolic"
+                        //iconName: "folder-symbolic"
+                        iconSource: "qrc:///assets/suru-icons/folder-symbolic.svg"
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             DeltaHandler.unarchiveMomentaryChat()
                         }
                     },
                     Action {
-                        iconName: "navigation-menu"
+                        //iconName: "navigation-menu"
+                        iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActionsChatlist.qml'))
@@ -1596,7 +1607,8 @@ MainView {
                                     rightMargin: units.gu(0.5)
                                     top: dateAndMsgCount.top
                                 }
-                                name: "audio-speakers-muted-symbolic"
+                                //name: "audio-speakers-muted-symbolic"
+                                source: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
                                 color: root.darkmode ? "white" : "black"
                                 visible: chatlistEntry.isMuted
 
@@ -1610,7 +1622,8 @@ MainView {
                                     right: dateAndMsgCount.right
                                     top: dateAndMsgCount.top
                                 }
-                                name: "pinned"
+                                //name: "pinned"
+                                source: "qrc:///assets/suru-icons/pinned.svg"
                                 color: root.darkmode ? "white" : "black"
                                 visible: chatlistEntry.isPinned
 
@@ -1740,7 +1753,8 @@ MainView {
                             id: toTopIcon
                             width: parent.width - units.gu(1)
                             height: width
-                            name: "go-up"
+                            //name: "go-up"
+                            source: "qrc:///assets/suru-icons/go-up.svg"
                             anchors{
                                 horizontalCenter: parent.horizontalCenter
                                 verticalCenter: parent.verticalCenter
@@ -1791,7 +1805,8 @@ MainView {
                     id: bottomEdgeHint
                     status: isDesktopMode ? BottomEdgeHint.Locked : (showBottomEdgeHint ? BottomEdgeHint.Locked : BottomEdgeHint.Active)
                     text: bottomEdge.hint.status == BottomEdgeHint.Locked ? i18n.tr("New Chat") : ""
-                    iconName: "compose"
+                    //iconName: "compose"
+                    iconSource: "qrc:///assets/suru-icons/compose.svg"
                     onStatusChanged: if (status === BottomEdgeHint.Inactive) bottomEdge.hint.status = (showBottomEdgeHint ? BottomEdgeHint.Locked : BottomEdgeHint.Active)
                     visible: DeltaHandler.hasConfiguredAccount
                 }

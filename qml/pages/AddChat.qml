@@ -36,7 +36,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: 'go-down'
+                //iconName: 'go-down'
+                iconSource: "qrc:///assets/suru-icons/go-down.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     bottomEdge.collapse()
@@ -165,7 +166,8 @@ Page {
     ListItemActions {
         id: leadingContactsAction
         actions: Action {
-            iconName: "delete"
+            //iconName: "delete"
+            iconSource: "qrc:///assets/suru-icons/delete.svg"
             onTriggered: {
                 // the index is passed as parameter and can be accessed via 'value'
                 let nameAndAddress = DeltaHandler.contactsmodel.getNameNAddressByIndex(value);

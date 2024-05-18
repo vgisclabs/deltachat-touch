@@ -43,7 +43,8 @@ Page {
         // disable the "back" icon
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Close')
                 onTriggered: {
                     extraStack.pop()

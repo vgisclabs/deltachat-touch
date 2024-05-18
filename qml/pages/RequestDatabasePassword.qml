@@ -125,7 +125,8 @@ Dialog {
                     verticalCenter: showPwRect.verticalCenter
                     horizontalCenter: showPwRect.horizontalCenter
                 }
-                name: 'view-on'
+                //name: 'view-on'
+                source: "qrc:///assets/suru-icons/view-on.svg"
             }
 
             MouseArea {
@@ -134,12 +135,14 @@ Dialog {
                 onClicked: {
                     if (passwordField.echoMode == TextInput.Password) {
                         passwordField.echoMode = TextInput.Normal
-                        showPwIcon.name = 'view-off'
+                        //showPwIcon.name = 'view-off'
+                        showPwIcon.source = "qrc:///assets/suru-icons/view-off.svg"
 
                     }
                     else {
                         passwordField.echoMode = TextInput.Password
-                        showPwIcon.name = 'view-on'
+                        //showPwIcon.name = 'view-on'
+                        showPwIcon.source = "qrc:///assets/suru-icons/view-on.svg"
                     }
                 }
             }

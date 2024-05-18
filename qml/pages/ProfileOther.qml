@@ -48,7 +48,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     onClicked: extraStack.pop()
@@ -157,7 +158,8 @@ Page {
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
                 Icon {
-                    name: "edit"
+                    //name: "edit"
+                    source: "qrc:///assets/suru-icons/edit.svg"
                     height: units.gu(3.5)
                     width: height
                     anchors.centerIn: parent
@@ -223,7 +225,8 @@ Page {
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
                 Icon {
-                    name: "ok"
+                    //name: "ok"
+                    source: "qrc:///assets/suru-icons/ok.svg"
                     height: units.gu(3.5)
                     width: height
                     anchors.centerIn: parent
@@ -254,7 +257,8 @@ Page {
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
                 Icon {
-                    name: "close"
+                    //name: "close"
+                    source: "qrc:///assets/suru-icons/close.svg"
                     height: units.gu(3.5)
                     width: height
                     anchors.centerIn: parent
@@ -317,7 +321,8 @@ Page {
                     left: parent.left
                     leftMargin: units.gu(2)
                 }
-                name: "clock"
+                //name: "clock"
+                source: "qrc:///assets/suru-icons/clock.svg"
                 visible: !isDevice
             }
 

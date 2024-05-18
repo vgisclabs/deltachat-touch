@@ -51,7 +51,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: "close"
+                //iconName: "close"
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr("Close")
                 onTriggered: {
                     if (onExtraStack) {
@@ -86,7 +87,8 @@ Page {
 
         trailingActionBar.actions: [
             Action {
-                iconName: 'save-as'
+                //iconName: 'save-as'
+                iconSource: "qrc:///assets/suru-icons/save-as.svg"
                 text: i18n.tr("Save")
                 onTriggered: {
                     // different code depending on platform

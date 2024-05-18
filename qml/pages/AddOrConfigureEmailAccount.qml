@@ -105,7 +105,8 @@ Page {
         // has to explicitly choose cancel or ok.
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     // deleteTemporaryAccount() will check whether a
@@ -121,7 +122,8 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     // unsetting the focus of each field as per past experience,
@@ -321,7 +323,8 @@ Page {
                 Icon {
                     anchors.fill: parent
                     id: showPwIcon
-                    name: 'view-on'
+                    //name: 'view-on'
+                    source: "qrc:///assets/suru-icons/view-on.svg"
                 }
 
                 MouseArea {
@@ -330,12 +333,14 @@ Page {
                     onClicked: {
                         if (passwordField.echoMode == TextInput.Password) {
                             passwordField.echoMode = TextInput.Normal
-                            showPwIcon.name = 'view-off'
+                            //showPwIcon.name = 'view-off'
+                            showPwIcon.source = "qrc:///assets/suru-icons/view-off.svg"
 
                         }
                         else {
                             passwordField.echoMode = TextInput.Password
-                            showPwIcon.name = 'view-on'
+                            //showPwIcon.name = 'view-on'
+                            showPwIcon.source = "qrc:///assets/suru-icons/view-on.svg"
                         }
                     }
                 }
@@ -447,7 +452,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -466,7 +472,8 @@ Page {
                     top: showClassicMailsItem.bottom
                     topMargin: units.gu(3)
                 }
-                iconName: advancedOptionsVisible ? "go-down" : "go-next"
+                //iconName: advancedOptionsVisible ? "go-down" : "go-next"
+                iconSource: advancedOptionsVisible ? "qrc:///assets/suru-icons/go-down.svg" : "qrc:///assets/suru-icons/go-next.svg"
                 iconPosition: "left"
                 text: i18n.tr("Advanced")
                 onClicked: {
@@ -874,7 +881,8 @@ Page {
                         Icon {
                             anchors.fill: parent
                             id: showSocksPwIcon
-                            name: 'view-on'
+                            //name: 'view-on'
+                            source: "qrc:///assets/suru-icons/view-on.svg"
                         }
 
                         MouseArea {
@@ -883,12 +891,14 @@ Page {
                             onClicked: {
                                 if (socksPasswordField.echoMode == TextInput.Password) {
                                     socksPasswordField.echoMode = TextInput.Normal
-                                    showSocksPwIcon.name = 'view-off'
+                                    //showSocksPwIcon.name = 'view-off'
+                                    showSocksPwIcon.source = "qrc:///assets/suru-icons/view-off.svg"
 
                                 }
                                 else {
                                     socksPasswordField.echoMode = TextInput.Password
-                                    showSocksPwIcon.name = 'view-on'
+                                    //showSocksPwIcon.name = 'view-on'
+                                    showSocksPwIcon.source = "qrc:///assets/suru-icons/view-on.svg"
                                 }
                             }
                         } // end MouseArea id: showSocksPwMouse

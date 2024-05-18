@@ -37,13 +37,15 @@ Page {
 
 //        trailingActionBar.actions: [
 //            Action {
-//                iconName: 'settings'
+//                //iconName: 'settings'
+//                iconSource: "qrc:///assets/suru-icons/settings.svg"
 //                text: i18n.tr('Settings')
 //                onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('SettingsPage.qml'))
 //            },
 //
 //            Action {
-//                iconName: 'info'
+//                //iconName: 'info'
+//                iconSource: "qrc:///assets/suru-icons/info.svg"
 //                text: i18n.tr('About DeltaTouch')
 //                onTriggered: extraStack.push(Qt.resolvedUrl('About.qml'))
 //            }
@@ -115,7 +117,8 @@ Page {
                 title.text: name
 
                 Icon {
-                    name: "go-next"
+                    //name: "go-next"
+                    source: "qrc:///assets/suru-icons/go-next.svg"
                     SlotsLayout.position: SlotsLayout.Trailing;
                     width: units.gu(2)
                 }

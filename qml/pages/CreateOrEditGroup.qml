@@ -109,7 +109,8 @@ Page {
                 visible: DeltaHandler.tempGroupIsVerified()
             },
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     DeltaHandler.stopCreateOrEditGroup()
@@ -121,7 +122,8 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     groupNameField.focus = false
@@ -136,7 +138,8 @@ Page {
                 visible: selfIsInGroup
             },
             Action {
-                iconName: 'view-grid-symbolic'
+                //iconName: 'view-grid-symbolic'
+                iconSource: "qrc:///assets/suru-icons/view-grid-symbolic.svg"
                 text: i18n.tr("QR Invite Code")
                 onTriggered: {
                     extraStack.push(Qt.resolvedUrl("QrGroupInvite.qml"))
@@ -149,7 +152,8 @@ Page {
     ListItemActions {
         id: leadingMemberAction
         actions: Action {
-            iconName: "delete"
+            //iconName: "delete"
+            iconSource: "qrc:///assets/suru-icons/delete.svg"
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
@@ -224,7 +228,8 @@ Page {
 
         Icon {
             anchors.fill: parent
-            name: "edit"
+            //name: "edit"
+            source: "qrc:///assets/suru-icons/edit.svg"
         }
 
         MouseArea {
@@ -301,7 +306,8 @@ Page {
             }
 
             Icon {
-                name: "go-next"
+                //name: "go-next"
+                source: "qrc:///assets/suru-icons/go-next.svg"
                 SlotsLayout.position: SlotsLayout.Trailing;
                 width: units.gu(2)
             }

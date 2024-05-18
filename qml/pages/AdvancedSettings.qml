@@ -68,14 +68,16 @@ Page {
         //trailingActionBar.numberOfSlots: 2
 //        trailingActionBar.actions: [
 //            Action {
-//                iconName: 'help'
+//                //iconName: 'help'
+//                iconSource: "qrc:///assets/suru-icons/help.svg"
 //                text: i18n.tr('Help')
 //                onTriggered: {
 //                    layout.addPageToCurrentColumn(advancedSettingsPage, Qt.resolvedUrl('Help.qml'))
 //                }
 //            },
 //            Action {
-//                iconName: 'info'
+//                //iconName: 'info'
+//                iconSource: "qrc:///assets/suru-icons/info.svg"
 //                text: i18n.tr('About DeltaTouch')
 //                onTriggered: {
 //                    extraStack.push(Qt.resolvedUrl('About.qml'))
@@ -134,7 +136,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -380,7 +383,8 @@ Page {
                     title.text: i18n.tr("Export Secret Keys")
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -400,7 +404,8 @@ Page {
                     title.text: i18n.tr("Import Secret Keys")
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -421,7 +426,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }

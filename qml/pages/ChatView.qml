@@ -538,7 +538,8 @@ Page {
                         left: parent.left
                         verticalCenter: parent.verticalCenter
                     }
-                    name: "timer"
+                    //name: "timer"
+                    source: "qrc:///assets/suru-icons/timer.svg"
                     color: root.darkmode ? "white" : "black"
                     visible: DeltaHandler.getChatEphemeralTimer(-1) != 0
                 }
@@ -554,7 +555,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: "go-previous"
+                //iconName: "go-previous"
+                iconSource: "qrc:///assets/suru-icons/go-previous.svg"
                 text: i18n.tr("Back")
                 onTriggered: {
                     layout.removePages(chatViewPage)
@@ -565,7 +567,8 @@ Page {
 
         trailingActionBar.actions: [
             Action {
-                iconName: 'navigation-menu'
+                //iconName: 'navigation-menu'
+                iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                 // TODO: string not translated (is not shown
                 // on phone, but maybe in desktop mode?)
                 text: i18n.tr("More Actions")
@@ -581,7 +584,8 @@ Page {
             },
 
             Action {
-                iconName: 'find'
+                //iconName: 'find'
+                iconSource: "qrc:///assets/suru-icons/find.svg"
                 text: i18n.tr("Search")
                 onTriggered: {
                     if (searchRect.visible) {
@@ -656,7 +660,8 @@ Page {
     
             Icon {
                 id: skipToFirstIcon
-                name: "media-skip-backward"
+                //name: "media-skip-backward"
+                source: "qrc:///assets/suru-icons/media-skip-backward.svg"
                 width: units.gu(2.5)
                 anchors {
                     horizontalCenter: parent.horizontalCenter
@@ -688,7 +693,8 @@ Page {
     
             Icon {
                 id: prevMsgIcon
-                name: "media-playback-start-rtl"
+                //name: "media-playback-start-rtl"
+                source: "qrc:///assets/suru-icons/media-playback-start-rtl.svg"
                 width: units.gu(2.5)
                 anchors {
                     horizontalCenter: parent.horizontalCenter
@@ -732,7 +738,8 @@ Page {
     
             Icon {
                 id: nextMsgIcon
-                name: "media-playback-start"
+                //name: "media-playback-start"
+                source: "qrc:///assets/suru-icons/media-playback-start.svg"
                 width: units.gu(2.5)
                 anchors {
                     horizontalCenter: parent.horizontalCenter
@@ -764,7 +771,8 @@ Page {
     
             Icon {
                 id: skipToLastIcon
-                name: "media-skip-forward"
+                //name: "media-skip-forward"
+                source: "qrc:///assets/suru-icons/media-skip-forward.svg"
                 width: units.gu(2.5)
                 anchors {
                     horizontalCenter: parent.horizontalCenter
@@ -804,7 +812,8 @@ Page {
     ListItemActions {
         id: leadingMsgAction
         actions: Action {
-            iconName: "delete"
+            //iconName: "delete"
+            iconSource: "qrc:///assets/suru-icons/delete.svg"
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
@@ -818,7 +827,8 @@ Page {
         id: trailingInfoMsgActions
         actions: [
             Action {
-                iconName: "navigation-menu"
+                //iconName: "navigation-menu"
+                iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                 onTriggered: {
                     DeltaHandler.chatmodel.setMomentaryMessage(value)
                     PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'), chatViewPage, { "isInfoMsg": true })
@@ -831,13 +841,15 @@ Page {
         id: trailingMsgActions
         actions: [
             Action {
-                iconName: "mail-reply"
+                //iconName: "mail-reply"
+                iconSource: "qrc:///assets/suru-icons/mail-reply.svg"
                 onTriggered: {
                     DeltaHandler.chatmodel.setQuote(value)
                 }
             },
             Action {
-                iconName: "navigation-menu"
+                //iconName: "navigation-menu"
+                iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                 onTriggered: {
                     DeltaHandler.chatmodel.setMomentaryMessage(value)
                     let popup6 = PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'))
@@ -845,7 +857,8 @@ Page {
                 }
             },
             Action {
-                iconName: "mail-forward"
+                //iconName: "mail-forward"
+                iconSource: "qrc:///assets/suru-icons/mail-forward.svg"
                 onTriggered: {
                     if (DeltaHandler.chatmodel.prepareForwarding(value)) {
                         extraStack.push(Qt.resolvedUrl('ForwardMessage.qml'))
@@ -1379,7 +1392,8 @@ Page {
                                     Icon {
                                         width: parent.width - units.gu(1)
                                         anchors.centerIn: parent
-                                        name: "media-playback-start"
+                                        //name: "media-playback-start"
+                                        source: "qrc:///assets/suru-icons/media-playback-start.svg"
                                         color: textColor
                                     }
 
@@ -1442,7 +1456,8 @@ Page {
                                     Icon {
                                         width: parent.width - units.gu(1)
                                         anchors.centerIn: parent
-                                        name: "attachment"
+                                        //name: "attachment"
+                                        source: "qrc:///assets/suru-icons/attachment.svg"
                                         color: textColor
                                     }
 
@@ -1603,7 +1618,8 @@ Page {
                                         id: padlockSelf
                                         height: datelineIconSize
                                         width: height
-                                        name: "lock"
+                                        //name: "lock"
+                                        source: "qrc:///assets/suru-icons/lock.svg"
                                         color: textColor
                                     }
                                 }
@@ -1654,7 +1670,8 @@ Page {
                                         id: padlockOther
                                         height: datelineIconSize
                                         width: height
-                                        name: "lock"
+                                        //name: "lock"
+                                        source: "qrc:///assets/suru-icons/lock.svg"
                                         color: textColor
                                     }
                                 }
@@ -1844,7 +1861,8 @@ Page {
                 id: toBottomIcon
                 width: parent.width - units.gu(1)
                 height: width
-                name: "go-down"
+                //name: "go-down"
+                source: "qrc:///assets/suru-icons/go-down.svg"
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
@@ -2043,7 +2061,8 @@ Page {
                     id: cancelQuoteIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "close"
+                    //name: "close"
+                    source: "qrc:///assets/suru-icons/close.svg"
                     anchors {
                         horizontalCenter: parent.horizontalCenter
                         verticalCenter: parent.verticalCenter
@@ -2110,7 +2129,8 @@ Page {
                         left: parent.left
                         leftMargin: units.gu(1)
                     }
-                    name: "attachment"
+                    //name: "attachment"
+                    source: "qrc:///assets/suru-icons/attachment.svg"
                     visible: attachFilePreviewMode
                 }
 
@@ -2135,7 +2155,8 @@ Page {
                             verticalCenter: parent.verticalCenter
                             horizontalCenter: parent.horizontalCenter
                         }
-                        name: "media-playback-start"
+                        //name: "media-playback-start"
+                        source: "qrc:///assets/suru-icons/media-playback-start.svg"
 
                         MouseArea {
                             anchors.fill: parent
@@ -2219,7 +2240,8 @@ Page {
                     // obtained from its source (except for pics just
                     // taken by camera, but it's hard to check for this
                     // case)
-                    name: attachVoicePreviewMode ? "delete" : "close"
+                    //name: attachVoicePreviewMode ? "delete" : "close"
+                    source: attachVoicePreviewMode ? "qrc:///assets/suru-icons/delete.svg" : "qrc:///assets/suru-icons/close.svg"
                     anchors {
                         horizontalCenter: parent.horizontalCenter
                         verticalCenter: parent.verticalCenter
@@ -2264,7 +2286,8 @@ Page {
                 id: attachIcon
                 width: parent.width - units.gu(1)
                 height: width
-                name: attachmentMode ? "close" : "add"
+                //name: attachmentMode ? "close" : "add"
+                source: attachmentMode ? "qrc:///assets/suru-icons/close.svg" : "qrc:///assets/suru-icons/add.svg"
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
@@ -2357,7 +2380,8 @@ Page {
                 id: sendIcon
                 width: parent.width - units.gu(1)
                 height: width
-                name: (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) ? "audio-input-microphone-symbolic" : "send"
+                //name: (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) ? "audio-input-microphone-symbolic" : "send"
+                source: (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) ? "qrc:///assets/suru-icons/audio-input-microphone-symbolic.svg" : "qrc:///assets/suru-icons/send.svg"
                 anchors {
                     verticalCenter: parent.verticalCenter
                     horizontalCenter: parent.horizontalCenter
@@ -2442,7 +2466,8 @@ Page {
                     id: imageIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "stock_image"
+                    //name: "stock_image"
+                    source: "qrc:///assets/suru-icons/stock_image.svg"
                     anchors {
                         horizontalCenter: sendImageIconShape.horizontalCenter
                         verticalCenter: sendImageIconShape.verticalCenter
@@ -2514,7 +2539,8 @@ Page {
                     id: audioIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "stock_music"
+                    //name: "stock_music"
+                    source: "qrc:///assets/suru-icons/stock_music.svg"
                     anchors {
                         horizontalCenter: sendAudioIconShape.horizontalCenter
                         verticalCenter: sendAudioIconShape.verticalCenter
@@ -2592,7 +2618,8 @@ Page {
                     id: attachmentIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "attachment"
+                    //name: "attachment"
+                    source: "qrc:///assets/suru-icons/attachment.svg"
                     anchors {
                         horizontalCenter: sendFileIconShape.horizontalCenter
                         verticalCenter: sendFileIconShape.verticalCenter
@@ -2670,7 +2697,8 @@ Page {
                     id: voiceMessageIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "audio-input-microphone-symbolic"
+                    //name: "audio-input-microphone-symbolic"
+                    source: "qrc:///assets/suru-icons/audio-input-microphone-symbolic.svg"
                     anchors {
                         horizontalCenter: voiceMessageIconShape.horizontalCenter
                         verticalCenter: voiceMessageIconShape.verticalCenter
@@ -2728,7 +2756,8 @@ Page {
 
                     width: parent.width - units.gu(2)
                     height: width
-                    name: "media-record"
+                    //name: "media-record"
+                    source: "qrc:///assets/suru-icons/media-record.svg"
 
                     anchors {
                         top: parent.top
@@ -2758,7 +2787,8 @@ Page {
                 Icon {
                     width: parent.width - units.gu(2)
                     height: width
-                    name: "media-playback-stop"
+                    //name: "media-playback-stop"
+                    source: "qrc:///assets/suru-icons/media-playback-stop.svg"
 
                     anchors {
                         bottom: parent.bottom
@@ -2880,7 +2910,8 @@ Page {
                     leftMargin: units.gu(1)
                     verticalCenter: audioPlayerShape.verticalCenter
                 }
-                name: messageAudio.playbackState === Audio.PlayingState ? "media-playback-pause" : "media-playback-start"
+                //name: messageAudio.playbackState === Audio.PlayingState ? "media-playback-pause" : "media-playback-start"
+                source: messageAudio.playbackState === Audio.PlayingState ? "qrc:///assets/suru-icons/media-playback-pause.svg" : "qrc:///assets/suru-icons/media-playback-start.svg"
 
                 MouseArea {
                     anchors.fill: parent
@@ -2902,7 +2933,8 @@ Page {
                     leftMargin: units.gu(1)
                     verticalCenter: audioPlayerShape.verticalCenter
                 }
-                name: "media-playback-stop"
+                //name: "media-playback-stop"
+                source: "qrc:///assets/suru-icons/media-playback-stop.svg"
 
                 MouseArea {
                     anchors.fill: parent

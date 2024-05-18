@@ -85,13 +85,15 @@ Page {
             },
             
             Action {
-                iconName: "reload"
+                //iconName: "reload"
+                iconSource: "qrc:///assets/suru-icons/reload.svg"
                 text: i18n.tr("Help")
                 onTriggered: update()
             },
             
             Action {
-                iconName: "save-as"
+                //iconName: "save-as"
+                iconSource: "qrc:///assets/suru-icons/save-as.svg"
                 text: i18n.tr("Save Log")
                 onTriggered: {
                     let textToSave = logText.text

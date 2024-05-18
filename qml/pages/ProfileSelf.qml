@@ -76,7 +76,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     onClicked: extraStack.pop()
@@ -87,7 +88,8 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     usernameField.focus = false
@@ -169,7 +171,8 @@ Page {
 
                 Icon {
                     anchors.fill: parent
-                    name: "edit"
+                    //name: "edit"
+                    source: "qrc:///assets/suru-icons/edit.svg"
                 }
 
                 MouseArea {

@@ -380,7 +380,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: "close"
+                //iconName: "close"
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr("Close")
                 onTriggered: {
                     extraStack.pop()
@@ -394,14 +395,16 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
 //          //  Action {
-//          //      iconName: 'help'
+//          //      //iconName: 'help'
+//          //      iconSource: 'qrc:///assets/suru-icons/help.svg'
 //          //      text: i18n.tr('Help')
 //          //      onTriggered: {
 //          //          layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('Help.qml'))
 //          //      }
 //          //  },
             Action {
-                iconName: 'info'
+                //iconName: 'info'
+                iconSource: "qrc:///assets/suru-icons/info.svg"
                 text: i18n.tr('About DeltaTouch')
                 onTriggered: {
                     extraStack.push(Qt.resolvedUrl('About.qml'))
@@ -473,7 +476,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -519,7 +523,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -648,7 +653,8 @@ Page {
                     title.text: i18n.tr("Change Database Passphrase")
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -779,7 +785,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -838,7 +845,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -883,7 +891,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -935,7 +944,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -963,7 +973,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -983,7 +994,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -1008,7 +1020,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -1109,7 +1122,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -1137,7 +1151,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -1178,7 +1193,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -1219,7 +1235,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }

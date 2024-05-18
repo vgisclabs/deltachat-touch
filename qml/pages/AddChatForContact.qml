@@ -43,7 +43,8 @@ Page {
         // has to explicitly choose cancel or ok.
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     extraStack.pop()
@@ -54,7 +55,8 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     if (DeltaHandler.isValidAddr(emailField.displayText)) {
@@ -85,7 +87,8 @@ Page {
                 leftMargin: units.gu(2)
             }
 
-            iconName: "view-grid-symbolic"
+            //iconName: "view-grid-symbolic"
+            iconSource: "qrc:///assets/suru-icons/view-grid-symbolic.svg"
             text: i18n.tr("Scan QR Code")
             onClicked: {
                 // Very ugly hack, see Main.qml for details

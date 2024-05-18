@@ -484,7 +484,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: "close"
+                //iconName: "close"
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr("Close")
                 onTriggered: {
                     extraStack.pop()
@@ -497,7 +498,8 @@ Page {
 
         trailingActionBar.actions: [
             Action {
-                iconName: "contextual-menu"
+                //iconName: "contextual-menu"
+                iconSource: "qrc:///assets/suru-icons/contextual-menu.svg"
                 text: i18n.tr("More Options")
                 visible: !scanSectionActive
                 onTriggered: {
@@ -547,7 +549,8 @@ Page {
                 }
             },
             Action {
-                iconName: "share"
+                //iconName: "share"
+                iconSource: "qrc:///assets/suru-icons/share.svg"
                 text: i18n.tr("Share")
                 visible: !scanSectionActive
                 onTriggered: {

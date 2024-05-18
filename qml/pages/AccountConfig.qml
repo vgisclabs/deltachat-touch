@@ -166,7 +166,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: "go-previous"
+                //iconName: "go-previous"
+                iconSource: "qrc:///assets/suru-icons/go-previous.svg"
                 text: i18n.tr("Back")
                 onTriggered: {
                     extraStack.pop()
@@ -179,7 +180,8 @@ Page {
 
         trailingActionBar.actions: [
             Action {
-                iconName: 'settings'
+                //iconName: 'settings'
+                iconSource: "qrc:///assets/suru-icons/settings.svg"
                 text: i18n.tr('Settings')
                 onTriggered: {
                     // TODO
@@ -192,13 +194,15 @@ Page {
             },
 
             Action {
-                iconName: 'info'
+                //iconName: 'info'
+                iconSource: "qrc:///assets/suru-icons/info.svg"
                 text: i18n.tr('Info')
                 onTriggered: extraStack.push(Qt.resolvedUrl('About.qml'))
             },
 
             Action {
-                iconName: 'add'
+                //iconName: 'add'
+                iconSource: "qrc:///assets/suru-icons/add.svg"
                 text: i18n.tr('Add Account')
                 onTriggered: {
                     if (DeltaHandler.databaseIsEncryptedSetting() && !DeltaHandler.hasDatabasePassphrase()) {
@@ -287,7 +291,8 @@ Page {
     ListItemActions {
         id: leadingAccountAction
         actions: Action {
-            iconName: "delete"
+            //iconName: "delete"
+            iconSource: "qrc:///assets/suru-icons/delete.svg"
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
@@ -307,14 +312,16 @@ Page {
         id: trailingAccountAction
         actions: [
             Action {
-                iconName: "edit"
+                //iconName: "edit"
+                iconSource: "qrc:///assets/suru-icons/edit.svg"
                 onTriggered: {
                     DeltaHandler.accountsmodel.configureAccount(value)
                     extraStack.push(Qt.resolvedUrl('AddOrConfigureEmailAccount.qml'))
                 }
             },
             Action {
-                iconName: "info"
+                //iconName: "info"
+                iconSource: "qrc:///assets/suru-icons/info.svg"
                 onTriggered: {
                     let tempString = i18n.tr("Account ID: %1").arg(DeltaHandler.accountsmodel.getIdOfAccount(value)) + "\n\n" + i18n.tr("Info") + ":\n" + DeltaHandler.accountsmodel.getInfoOfAccount(value) + "\n\n" + i18n.tr("Error") + ":\n" + (DeltaHandler.accountsmodel.getLastErrorOfAccount(value) == "" ? i18n.tr("None") : DeltaHandler.accountsmodel.getLastErrorOfAccount(value))
                     PopupUtils.open(
@@ -325,7 +332,8 @@ Page {
                 }
             },
             Action {
-                iconName: "audio-speakers-muted-symbolic"
+                //iconName: "audio-speakers-muted-symbolic"
+                iconSource: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
                 onTriggered: {
                     let tempAccID = DeltaHandler.accountsmodel.getIdOfAccount(value)
                     DeltaHandler.accountsmodel.muteUnmuteAccountById(tempAccID)
@@ -425,7 +433,8 @@ Page {
                             right: parent.right
                             top: parent.top
                         }
-                        name: "lock"
+                        //name: "lock"
+                        source: "qrc:///assets/suru-icons/lock.svg"
                         visible: model.isClosed
                     }
 
@@ -439,7 +448,8 @@ Page {
                             rightMargin: dbEncryptedIcon.visible ? units.gu(1) : 0
                             top: parent.top
                         }
-                        name: "audio-speakers-muted-symbolic"
+                        //name: "audio-speakers-muted-symbolic"
+                        source: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
                         visible: isMuted
                     }
 

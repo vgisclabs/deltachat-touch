@@ -43,7 +43,8 @@ Page {
 
         trailingActionBar.actions: [
             Action {
-                iconName: "contextual-menu"
+                //iconName: "contextual-menu"
+                iconSource: "qrc:///assets/suru-icons/contextual-menu.svg"
                 text: i18n.tr("More Options")
                 onTriggered: {
                     // Popup contains a few buttons:
@@ -92,7 +93,8 @@ Page {
                 }
             },
             Action {
-                iconName: "share"
+                //iconName: "share"
+                iconSource: "qrc:///assets/suru-icons/share.svg"
                 text: i18n.tr("Share")
                 onTriggered: {
                     if (root.onUbuntuTouch) {

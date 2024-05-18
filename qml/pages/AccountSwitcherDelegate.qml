@@ -100,7 +100,8 @@ Rectangle {
             top: parent.top
             topMargin: units.gu(1.5)
         }
-        name: "audio-speakers-muted-symbolic"
+        //name: "audio-speakers-muted-symbolic"
+        source: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
         visible: model.isMuted
     }
 

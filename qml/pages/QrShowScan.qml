@@ -252,7 +252,19 @@ Page {
                 break;
             case DeltaHandler.DT_QR_ADDR:
                 console.log("qr state is DT_QR_ADDR")
-                // TODO (also TODO in deltahandler.cpp!)
+                popup = PopupUtils.open(
+                    Qt.resolvedUrl("QrConfirmPopup.qml"),
+                    null,
+                    { textOne: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) }
+                )
+                popup.confirmed.connect(function() {
+                    PopupUtils.close(popup)
+                    continueTimer.start()
+                })
+                popup.cancel.connect(function() {
+                    PopupUtils.close(popup)
+                    camera.startAndConfigure()
+                })
                 break;
             case DeltaHandler.DT_QR_TEXT:
                 console.log("qr state is DT_QR_TEXT")
@@ -433,21 +445,33 @@ Page {
         }
     }
 
-    function continueQrAccountCreation(wasSuccessful) {
-        if (wasSuccessful) {
-            // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
-            // the account should not persist if the configuration fails (or should it?)
-            PopupUtils.open(configProgress)
-        } else {
-            PopupUtils.open(errorPopup)
-            setTempContextNull()
+    function continueQrAccountCreation(wasSuccessful, calledDuringUrlHandling) {
+        // only act if signal was emitted as a result of an active scan of
+        // a QR code (i.e., not as a result of an URL passed as parameter
+        // to the app itself; see comments in deltahandler.h and Main.qml for the
+        // finishedSetConfigFromQr signal)
+        if (!calledDuringUrlHandling) {
+            if (wasSuccessful) {
+                // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
+                // the account should not persist if the configuration fails (or should it?)
+                PopupUtils.open(configProgress)
+            } else {
+                PopupUtils.open(errorPopup)
+                setTempContextNull()
+            }
         }
     }
 
-    function continueQrBackupImport() {
-        let popup2 = PopupUtils.open(progressQrBackupImport)
-        popup2.failed.connect(goBackToMain)
-        popup2.cancelled.connect(goBackToMain)
+    function continueQrBackupImport(calledDuringUrlHandling) {
+        // only act if signal was emitted as a result of an active scan of
+        // a QR code (i.e., not as a result of an URL passed as parameter
+        // to the app itself; see comments in deltahandler.h and Main.qml for the
+        // readyForQrBackupImport signal)
+        if (!calledDuringUrlHandling) {
+            let popup2 = PopupUtils.open(progressQrBackupImport)
+            popup2.failed.connect(goBackToMain)
+            popup2.cancelled.connect(goBackToMain)
+        }
     }
 
     function goBackToMain() {

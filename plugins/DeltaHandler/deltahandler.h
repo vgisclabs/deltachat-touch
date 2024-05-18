@@ -33,6 +33,7 @@
 #include "accountsmodel.h"
 #include "blockedcontactsmodel.h"
 #include "contactsmodel.h"
+#include "dbusUrlReceiver.h"
 #include "groupmembermodel.h"
 #include "emitterthread.h"
 #include "jsonrpcresponsethread.h"
@@ -62,6 +63,7 @@ class NotificationsFreedesktop;
 class NotificationsMissing;
 class WorkflowDbToEncrypted;
 class WorkflowDbToUnencrypted;
+class DbusUrlReceiver;
 
 class DeltaHandler : public QAbstractListModel {
     Q_OBJECT
@@ -230,7 +232,11 @@ public:
 
     Q_INVOKABLE void closeArchive();
 
-    Q_INVOKABLE void selectAccount(int myindex);
+    // Param calledInUrlHandlingProcess needed for handling of urls that
+    // trigger the question with which account they should be handled
+    // (e.g. openpgp4fpr) with, so the signal accountForUrlProcessingSelected is
+    // emitted even if the account is the already active one.
+    Q_INVOKABLE void selectAccount(uint32_t newAccID, bool calledInUrlHandlingProcess = false);
 
     Q_INVOKABLE void openOskViaDbus();
     Q_INVOKABLE void closeOskViaDbus();
@@ -440,8 +446,14 @@ public:
     Q_INVOKABLE QString getQrContactEmail();
     Q_INVOKABLE QString getQrTextOne();
     Q_INVOKABLE int evaluateQrCode(QString clipboardData);
-    Q_INVOKABLE void continueQrCodeAction();
-    Q_INVOKABLE void prepareQrBackupImport();
+
+    // Param calledAfterUrlReceived: Set to true if this function
+    // is called as part of the handling of an URL that was passed
+    // as parameter (in contrast to active scanning of a QR code).
+    // See also comment for finishedSetConfigFromQr.
+    Q_INVOKABLE void continueQrCodeAction(bool calledAfterUrlReceived = false);
+    // Param calledAfterUrlReceived: see comments for continueQrCodeAction
+    Q_INVOKABLE void prepareQrBackupImport(bool calledAfterUrlReceived);
     Q_INVOKABLE void startQrBackupImport();
     Q_INVOKABLE void cancelQrImport();
 
@@ -513,6 +525,7 @@ public:
     bool networkingIsStarted();
     bool chatIsContactRequest();
 
+    void processReceivedUrl(QString myUrl);
 
 signals:
     // TODO the models never change, they communicate
@@ -608,11 +621,28 @@ signals:
     /* ========================================================
      * ================ QR code related stuff =================
      * ======================================================== */
-    void finishedSetConfigFromQr(bool successful);
-    void readyForQrBackupImport();
+    // Param calledAfterUrlReceived is true if the QR/URL processing
+    // steps were started after an URL was passed as parameter, i.e.,
+    // not by scanning in the app, but by another programm that called
+    // the app with the URL as parameter. Has to be distinguished
+    // because both Main.qml and the pages with QR scanning function
+    // react to this signal. The slot in main should only do something
+    // if calledAfterUrlReceived is true, and the other pages only if
+    // it is false.
+    void finishedSetConfigFromQr(bool successful, bool calledAfterUrlReceived);
+
+    // For param calledAfterUrlReceived, see comment for finishedSetConfigFromQr
+    void readyForQrBackupImport(bool calledAfterUrlReceived);
 
     void qrDecoded(QString qrContent);
     void qrDecodingFailed(QString errorMessage);
+
+    // not really QR code, but related: URL handling
+    // urlReceived signals that an Url has been passed to the app
+    // (needed on non-UT platforms only)
+    void urlReceived(QString myUrl);
+
+    void accountForUrlProcessingSelected();
     /* ============ End QR code related stuff ================= */
 
     void errorEvent(QString errorMessage);
@@ -774,6 +804,7 @@ private:
 
     NotificationHelper* m_notificationHelper;
 
+    QObject dbusUrlReceiverObj;
     /**************************************
      *********   Private methods   ********
      **************************************/

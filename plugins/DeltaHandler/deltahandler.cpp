@@ -77,6 +77,16 @@ DeltaHandler::DeltaHandler(QObject* parent)
         qDebug() << "DeltaHandler::DeltaHandler(): Not running on Ubuntu Touch";
     }
 
+    // This is for receiving URLs acc. to the schemes entered as MimeTypes in the 
+    // desktop file on non-UT platforms
+    // TODO: check how to handle clickable desktop mode
+    if (!m_onUbuntuTouch) {
+        // need to attach the urlReceiver to a QObject
+        DbusUrlReceiver* urlReceiver = new DbusUrlReceiver(this, &dbusUrlReceiverObj);
+        QDBusConnection::sessionBus().registerService("local.deltatouch");
+        QDBusConnection::sessionBus().registerObject("/deltatouch/urlreceiver", &dbusUrlReceiverObj);
+    }
+
     // Set the initial id for jsonrpc requests to 1 billion, i.e. around half of the
     // max of an unsigned int (although the id in libdeltachat might
     // be unsigned). Reason is that jsonrpc.mjs as used in QML has its own
@@ -1552,19 +1562,15 @@ void DeltaHandler::closeArchive()
 }
 
 
-void DeltaHandler::selectAccount(int myindex)
+void DeltaHandler::selectAccount(uint32_t newAccID, bool calledInUrlHandlingProcess)
 {
-    dc_array_t* contextArray = dc_accounts_get_all(allAccounts);
-
-    if (myindex < 0 || myindex >= dc_array_get_cnt(contextArray)) {
-        qDebug() << "DeltaHandler::selectAccount: Error: index out of bounds";
-        return;
-    }
-
-    uint32_t newAccID = dc_array_get_id(contextArray, myindex);
-
     if (currentContext && newAccID == m_currentAccID) {
-        qDebug() << "DeltaHandler::selectAccount: Selected account already active, doing nothing.";
+        if (calledInUrlHandlingProcess) {
+            emit accountForUrlProcessingSelected();
+            qDebug() << "DeltaHandler::selectAccount: Selected account already active, not changing account, but emitting accountForUrlProcessingSelected signal.";
+        } else {
+            qDebug() << "DeltaHandler::selectAccount: Selected account already active, doing nothing.";
+        }
         return;
     }
 
@@ -1622,8 +1628,10 @@ void DeltaHandler::selectAccount(int myindex)
     endResetModel();
 
     emit accountChanged();
-    
-    dc_array_unref(contextArray);
+
+    if (calledInUrlHandlingProcess) {
+        emit accountForUrlProcessingSelected();
+    }
 
     m_notificationHelper->removeSummaryNotification(m_currentAccID);
 }
@@ -2473,7 +2481,7 @@ void DeltaHandler::prepareTempContextConfig()
 
         if (m_encryptedDatabase) {
             if (m_databasePassphrase == "") {
-                qDebug() << "DeltaHandler::prepareQrBackupImport(): ERROR: No passphrase for database encryption present, cannot create account.";
+                qDebug() << "DeltaHandler::prepareTempContextConfig(): ERROR: No passphrase for database encryption present, cannot create account.";
                 return;
             }
 
@@ -2955,7 +2963,7 @@ bool DeltaHandler::isBackupFile(QString filePath)
 
     if (m_encryptedDatabase) {
         if (m_databasePassphrase == "") {
-            qDebug() << "DeltaHandler::prepareQrBackupImport(): ERROR: Plaintext key for database encryption is not present, cannot create account.";
+            qDebug() << "DeltaHandler::isBackupFile(): ERROR: Plaintext key for database encryption is not present, cannot create account.";
             return false;
         }
 
@@ -3225,6 +3233,13 @@ bool DeltaHandler::isExistingChat(uint32_t chatID)
 bool DeltaHandler::chatIsContactRequest()
 {
     return m_chatmodel->chatIsContactRequest();
+}
+
+
+void DeltaHandler::processReceivedUrl(QString myUrl)
+{
+    qDebug() << "DeltaHandler::processReceivedUrl(): Received url: " << myUrl;
+    emit urlReceived(myUrl);
 }
 
 /* ========================================================
@@ -3925,8 +3940,10 @@ void DeltaHandler::prepareContactsmodelForGroupMemberAddition()
 }
 
 
-void DeltaHandler::continueQrCodeAction()
+void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
 {
+    uint32_t chatID {0};
+
     switch (m_qrTempState) {
         case DT_QR_ASK_VERIFYCONTACT:
             m_currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
@@ -3960,7 +3977,7 @@ void DeltaHandler::continueQrCodeAction()
         case DT_QR_ACCOUNT:
             prepareTempContextConfig();
             if (1 == dc_set_config_from_qr(tempContext, m_qrTempText.toUtf8().constData())) {
-                emit finishedSetConfigFromQr(true);
+                emit finishedSetConfigFromQr(true, calledAfterUrlReceived);
             } else {
                 // dc_set_config_from_qr() exited with an error
                 // TODO: what now? should the account that was created
@@ -3968,17 +3985,22 @@ void DeltaHandler::continueQrCodeAction()
                 // it will stay. See also the comment in QrShowScan.qml:
                 // If dc_set_config_from_qr() succeeds, but login fails, it's
                 // the same.
-                emit finishedSetConfigFromQr(false);
+                emit finishedSetConfigFromQr(false, calledAfterUrlReceived);
             }
             break;
         case DT_QR_BACKUP:
-            prepareQrBackupImport();
+            prepareQrBackupImport(calledAfterUrlReceived);
             break;
         case DT_QR_WEBRTC_INSTANCE:
             // TODO not implemented yet
             break;
         case DT_QR_ADDR:
-            // TODO
+            chatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
+            if (0 != chatID) {
+                chatCreationReceiver(chatID);
+            } else {
+            // TODO error: chat could not be created
+            }
             break;
         case DT_QR_TEXT:
             // nothing to do here
@@ -4004,7 +4026,7 @@ void DeltaHandler::continueQrCodeAction()
         case DT_QR_LOGIN:
             prepareTempContextConfig();
             if (1 == dc_set_config_from_qr(tempContext, m_qrTempText.toUtf8().constData())) {
-                emit finishedSetConfigFromQr(true);
+                emit finishedSetConfigFromQr(true, calledAfterUrlReceived);
             } else {
                 // dc_set_config_from_qr() exited with an error
                 // TODO: what now? should the account that was created
@@ -4012,7 +4034,7 @@ void DeltaHandler::continueQrCodeAction()
                 // it will stay. See also the comment in QrShowScan.qml:
                 // If dc_set_config_from_qr() succeeds, but login fails, it's
                 // the same.
-                emit finishedSetConfigFromQr(false);
+                emit finishedSetConfigFromQr(false, calledAfterUrlReceived);
             }
             break;
         default:
@@ -4195,7 +4217,7 @@ int DeltaHandler::evaluateQrCode(QString clipboardData)
 }
 
 
-void DeltaHandler::prepareQrBackupImport()
+void DeltaHandler::prepareQrBackupImport(bool calledAfterUrlReceived)
 {
     if (tempContext) {
         qDebug() << "DeltaHandler::prepareQrBackupImport: tempContext is unexpectedly set, will now be unref'd";
@@ -4232,7 +4254,7 @@ void DeltaHandler::prepareQrBackupImport()
         tempContext = dc_accounts_get_account(allAccounts, accID);
     }
     
-    emit readyForQrBackupImport();
+    emit readyForQrBackupImport(calledAfterUrlReceived);
 }
 
 

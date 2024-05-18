@@ -153,24 +153,36 @@ Page {
         }
     }
 
-    function continueQrAccountCreation(wasSuccessful) {
-        if (wasSuccessful) {
-            // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
-            // the account should not persist if the configuration fails (or should it?)
-            let popup3 = PopupUtils.open(configProgress)
-            popup3.success.connect(function() { extraStack.clear() })
-            popup3.failed.connect(function() { extraStack.pop() })
-        } else {
-            PopupUtils.open(errorPopup)
-            setTempContextNull()
+    function continueQrAccountCreation(wasSuccessful, calledDuringUrlHandling) {
+        // only act if signal was emitted as a result of an active scan of
+        // a QR code (i.e., not as a result of an URL passed as parameter
+        // to the app itself; see comments in deltahandler.h and Main.qml for the
+        // finishedSetConfigFromQr signal)
+        if (!calledDuringUrlHandling) {
+            if (wasSuccessful) {
+                // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
+                // the account should not persist if the configuration fails (or should it?)
+                let popup3 = PopupUtils.open(configProgress)
+                popup3.success.connect(function() { extraStack.clear() })
+                popup3.failed.connect(function() { extraStack.pop() })
+            } else {
+                PopupUtils.open(errorPopup)
+                setTempContextNull()
+            }
         }
     }
 
-    function continueQrBackupImport() {
-        let popup2 = PopupUtils.open(progressQrBackupImport)
-        popup2.failed.connect(function() { extraStack.pop() })
-        popup2.cancelled.connect(function() { extraStack.pop() })
-        popup2.success.connect(function() { extraStack.clear() })
+    function continueQrBackupImport(calledDuringUrlHandling) {
+        // only act if signal was emitted as a result of an active scan of
+        // a QR code (i.e., not as a result of an URL passed as parameter
+        // to the app itself; see comments in deltahandler.h and Main.qml for the
+        // readyForQrBackupImport signal)
+        if (!calledDuringUrlHandling) {
+            let popup2 = PopupUtils.open(progressQrBackupImport)
+            popup2.failed.connect(function() { extraStack.pop() })
+            popup2.cancelled.connect(function() { extraStack.pop() })
+            popup2.success.connect(function() { extraStack.clear() })
+        }
     }
 
     Loader {

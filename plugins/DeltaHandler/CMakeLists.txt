@@ -6,6 +6,7 @@ set(
     plugin.cpp
     emitterthread.cpp
     jsonrpcresponsethread.cpp
+    dbusUrlReceiver.cpp
     deltahandler.cpp
     chatmodel.cpp
     accountsmodel.cpp

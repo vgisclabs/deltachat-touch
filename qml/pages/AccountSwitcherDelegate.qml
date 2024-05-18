@@ -26,7 +26,7 @@ import DeltaHandler 1.0
 //import "../jsonrpc.mjs" as JSONRPC
 
 Rectangle {
-    id: switcherDelegReg
+    id: switcherDelegRect
 
     property int switcherMsgCount: model.freshMsgCount + (root.notifyContactRequests ? model.chatRequestCount : 0)
     property bool mouseHovers: false
@@ -133,14 +133,15 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        onEntered: switcherDelegReg.mouseHovers = true
-        onExited: switcherDelegReg.mouseHovers = false
+        onEntered: switcherDelegRect.mouseHovers = true
+        onExited: switcherDelegRect.mouseHovers = false
         onClicked: {
             if (model.isConfigured) {
-                DeltaHandler.selectAccount(index)
+                let accID = DeltaHandler.accountsmodel.getIdOfAccount(index)
+                DeltaHandler.selectAccount(accID)
             } else {
                 PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
-                switcherDelegReg,
+                switcherDelegRect,
                 { "title": i18n.tr("Error"), "text": i18n.tr("Account is not configured.") })      
             }
         }

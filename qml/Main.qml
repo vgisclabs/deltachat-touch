@@ -50,6 +50,12 @@ MainView {
     property var chatViewItem
     property bool chatViewIsOpen: false
 
+    // used for the content of the URL dispatcher
+    property string urlstring
+    // type of url as QR code state (see dc_check_qr()
+    // in https://c.delta.chat/classdc__context__t.html)
+    property int qrstate
+
     signal appStateNowActive()
     signal ioChanged()
 
@@ -268,7 +274,198 @@ MainView {
         if (Qt.application.state == Qt.ApplicationActive) {
             periodicTimer.start()
         }
+
+        
+        // check for and process arguments (arguments[0] is the application name)
+        if (Qt.application.arguments && Qt.application.arguments.length > 1) {
+            urlstring = Qt.application.arguments[1]
+            urlDispatcherStep1()
+        }
     }
+
+    
+    function urlDispatcherStep1() {
+        // handling of arguments/urls is based on the code for
+        // QR scanning, thus the names with "qr"
+        
+        // Determine the type of the argument/url
+        qrstate = DeltaHandler.evaluateQrCode(urlstring)
+
+        switch (qrstate) {
+            case DeltaHandler.DT_QR_ASK_VERIFYCONTACT:
+                console.log("qr state is DT_QR_ASK_VERIFYCONTACT")
+                if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1) {
+                    let popup12 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"),
+                        chatlistPage,
+                        { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) + "\n\n" + i18n.tr("Select account for chatting") })
+                    popup12.cancelled.connect(function() {
+                        // unset urlstring if the user cancelled the account selection
+                        urlstring = ""
+                    })
+                    popup12.selected.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        // rest of the action will be triggered in the popup
+                    })
+                    // If the user selected an account, don't call DeltaHandler.continueQrCodeAction()
+                    // here as switching to the chosen account may not have finished yet.
+                    // Instead, the signal accountForUrlProcessingSelected will be
+                    // emitted from C++ side in this case, triggering the respective action..
+                } else if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) == 1) {
+                    // only one configured account, go to step 2 directly
+                    let popup = PopupUtils.open(
+                        Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                        chatlistPage,
+                        { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) })
+                    popup.confirmed.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        DeltaHandler.continueQrCodeAction(true)
+                    })
+                    // unset urlstring if only one account
+                    urlstring = ""
+                } else {
+                    // no account configured, cannot perform this action
+                    console.log("Main.qml: urlDispatcherStep1(): No account configured, cannot process DT_QR_ASK_VERIFYCONTACT")
+                    urlstring = ""
+                }
+                break;
+                
+            case DeltaHandler.DT_QR_ADDR:
+                console.log("qr state is DT_QR_ADDR")
+                if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1) {
+                        let popup16 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"), chatlistPage, { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) + "\n\n" + i18n.tr("Select account for chatting") })
+                    popup16.cancelled.connect(function() {
+                        // unset urlstring if the user cancelled the account selection
+                        urlstring = ""
+                    })
+                    popup16.selected.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        // rest of the action will be triggered in the popup
+                    })
+                    // see above regarding not calling DeltaHandler.continueQrCodeAction()
+                } else if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) == 1) {
+                    // only one configured account
+                    let popup17 = PopupUtils.open(
+                        Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                        chatlistPage,
+                        { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) })
+                    popup17.confirmed.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        DeltaHandler.continueQrCodeAction(true)
+                    })
+                    // unset urlstring if only one account
+                    urlstring = ""
+                } else {
+                    // no account configured, cannot perform this action
+                    console.log("Main.qml: urlDispatcherStep1(): No account configured, cannot process DT_QR_ADDR")
+                    urlstring = ""
+                }
+                break;
+
+            case DeltaHandler.DT_QR_ASK_VERIFYGROUP:
+                console.log("qr state is DT_QR_ASK_VERIFYGROUP")
+                if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1) {
+                        let popup6 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"), chatlistPage, { "dialogText": i18n.tr("Do you want to join the group \"%1\"?").arg(DeltaHandler.getQrTextOne()) + "\n\n" + i18n.tr("Select account for joining") })
+                    popup6.cancelled.connect(function() {
+                        // unset urlstring if the user cancelled the account selection
+                        urlstring = ""
+                    })
+                    popup6.selected.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        // rest of the action will be triggered in the popup
+                    })
+                    // see above regarding not calling DeltaHandler.continueQrCodeAction()
+                } else if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) == 1) {
+                    // only one configured account
+                    let popup9 = PopupUtils.open(
+                        Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                        chatlistPage,
+                        { dialogText: i18n.tr("Do you want to join the group \"%1\"?").arg(DeltaHandler.getQrTextOne()) })
+                    popup9.confirmed.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        DeltaHandler.continueQrCodeAction(true)
+                    })
+                    // unset urlstring if only one account
+                    urlstring = ""
+                } else {
+                    // no account configured, cannot perform this action
+                    console.log("Main.qml: urlDispatcherStep1(): No account configured, cannot process DT_QR_ASK_VERIFYGROUP")
+                    urlstring = ""
+                }
+                break;
+
+            case DeltaHandler.DT_QR_ACCOUNT:
+                console.log("qr state is DT_QR_ACCOUNT")
+                let popup10 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                    chatlistPage,
+                    { dialogText: i18n.tr("Create new e-mail address on \"%1\" and log in there?").arg(DeltaHandler.getQrTextOne()) })
+                popup10.confirmed.connect(function() {
+                    // clearing the stacks will be done when handling the accountChanged signal
+                    DeltaHandler.continueQrCodeAction(true)
+                })
+                urlstring = ""
+                break;
+
+            case DeltaHandler.DT_QR_BACKUP:
+                console.log("qr state is DT_QR_BACKUP")
+                let popup11 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                    chatlistPage,
+                    { dialogText: i18n.tr("Copy the account from the other device to this device?"),
+                    dialogTitle: i18n.tr("Add as Second Device"),
+                    okButtonText: i18n.tr("Add Second Device") })
+                popup11.confirmed.connect(function() {
+                    // clearing the stacks will be done when handling the accountChanged signal
+                    DeltaHandler.continueQrCodeAction(true)
+                })
+                urlstring = ""
+                break;
+
+            case DeltaHandler.DT_QR_LOGIN:
+                console.log("qr state is DT_QR_LOGIN")
+                let popup13 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                    chatlistPage,
+                    { dialogText: i18n.tr("Log into \"%1\"?").arg(DeltaHandler.getQrTextOne()) })
+                popup13.confirmed.connect(function() {
+                    // clearing the stacks will be done when handling the accountChanged signal
+                    DeltaHandler.continueQrCodeAction(true)
+                })
+                urlstring = ""
+                break;
+
+            case DeltaHandler.DT_QR_ERROR:
+                console.log("qr state is DT_QR_ERROR")
+                let popup15 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ErrorMessage.qml"),
+                    chatlistPage,
+                    { text: i18n.tr("Error: %1").arg(DeltaHandler.getQrTextOne()),
+                      title: i18n.tr("Error") })
+                urlstring = ""
+                break;
+
+            case DeltaHandler.DT_UNKNOWN: // fallthrough
+            default:
+                // If this appears in the log, the url/argument may not even be something
+                // unknown to the core, but it's just none of the cases that
+                // we handle when passed as argument on startup or via URL dispatcher
+                console.log("Main.qml: Don't know how to handle argument \"", urlstring, "\", passed on start or via urlDispatcher, skipping it")
+                let popup14 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ErrorMessage.qml"),
+                    chatlistPage,
+                    { text: i18n.tr("Unknown"),
+                      title: i18n.tr("Error") })
+                urlstring = ""
+                break;
+        }
+    }
+
 
     function refreshOtherAccsIndicator() {
         let noOfInactiveMsgs = DeltaHandler.accountsmodel.noOfFreshMsgsInInactiveAccounts();
@@ -495,6 +692,17 @@ MainView {
             }
         }
     }
+
+    Connections {
+        target: UriHandler
+        onOpened: {
+            if (uris.length > 0) {
+                console.log("Main.qml: Received url from UriHandler: ", uris[0])
+                urlstring = uris[0]
+                urlDispatcherStep1()
+            }
+        }
+    }
     
     Connections {
         target: DeltaHandler
@@ -504,6 +712,12 @@ MainView {
         }
 
         onAccountChanged: {
+            // need to clear the page stacks in case the new account
+            // has been created after processing a url that was passed
+            // to the app while the app had pages on the stacks
+            extraStack.clear()
+            imageStack.clear()
+
             // In two-column mode, the user can select a new account while
             // the ChatView is open. Just call selectAndOpenLastChatId if
             // we're in two-column mode.
@@ -515,6 +729,55 @@ MainView {
             // will still be open, but hidden by the account switcher.
             if (hasTwoColumns || (!hasTwoColumns && chatViewIsOpen)) {
                 DeltaHandler.selectAndOpenLastChatId()
+            }
+        }
+
+
+        onUrlReceived: {
+            urlstring = myUrl
+            if (urlstring !== "") {
+                // raise() doesn't work, at least it doesn't in fluxbox
+                //myview.raise()
+                myview.requestActivate()
+                urlDispatcherStep1()
+            }
+        }
+
+        onAccountForUrlProcessingSelected: {
+            if (urlstring !== "") {
+                // Step 2 is only needed for situations that require the user to
+                // select an account to perform the action with. The user chosen account
+                // is set at this stage, perform the action connected to the url/argument.
+                //
+                // All user queries ("Do you want to do this?") should be performed
+                // in a previous step, nothing is queried here anymore.
+                
+                // Need to execute evaluateQrCode() again to make sure that the correct
+                // contact ID is set in case a switch of accounts has taken place
+                // between step1 and step2,  because in this case, the url/argument was
+                // evaluated with the old account/context, and the contact ID via the
+                // dc_lot_t as returned by dc_check_qr refers to a contact of the old
+                // context)
+                qrstate = DeltaHandler.evaluateQrCode(urlstring)
+                
+                // Clear urlstring, so it will not trigger any action (e.g., when
+                // switching to a different account) except for the one below. Its
+                // content is not needed anymore, any info is stored on C++ side
+                urlstring = ""
+
+                switch (qrstate) {
+                    // only cases that require account selection are listed here
+                    case DeltaHandler.DT_QR_ASK_VERIFYCONTACT: // fallthrough
+                    case DeltaHandler.DT_QR_ASK_VERIFYGROUP: // fallthrough
+                    case DeltaHandler.DT_QR_ADDR:
+                        DeltaHandler.continueQrCodeAction(true)
+                        break;
+                    default:
+                        console.log("Main.qml, onAccountForUrlProcessingSelected: Warning: switch reached default case, url type is not covered by this function")
+                        break;
+                }
+            } else {
+                console.log("Main.qml, onAccountForUrlProcessingSelected: Warning: urlstring is not set, cannot perform any action")
             }
         }
 
@@ -566,6 +829,35 @@ MainView {
 
         onNewUnconfiguredAccount: {
             accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        }
+        
+        onReadyForQrBackupImport: {
+            // see signal finishedSetConfigFromQr in deltahandler.h
+            if (calledAfterUrlReceived) {
+                PopupUtils.open(Qt.resolvedUrl("pages/ProgressBackupImport.qml"))
+            }
+        }
+
+        onFinishedSetConfigFromQr: {
+            // see signal finishedSetConfigFromQr in deltahandler.h
+            if (calledAfterUrlReceived) {
+                if (successful) {
+                    // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
+                    // the account should not persist if the configuration fails (or should it?)
+                    PopupUtils.open(
+                        Qt.resolvedUrl("pages/ProgressConfigAccount.qml"),
+                        chatlistPage,
+                        { "title": i18n.tr('Configuring...') }
+                    )
+                } else {
+                    PopupUtils.open(
+                        Qt.resolvedUrl("pages/errorMessage.qml"),
+                        chatlistPage,
+                        { "title": i18n.tr('Error') }
+                    )
+                    setTempContextNull()
+                }
+            }
         }
     }
 

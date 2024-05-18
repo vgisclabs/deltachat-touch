@@ -1,0 +1,18 @@
+[
+    {
+        "protocol": "https",
+        "domain-suffix": "i.delta.chat"
+    },
+    {
+        "protocol": "openpgp4fpr"
+    },
+    {
+        "protocol": "dclogin"
+    },
+    {
+        "protocol": "dcaccount"
+    },
+    {
+        "protocol": "mailto"
+    }
+]

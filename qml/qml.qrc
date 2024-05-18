@@ -76,6 +76,7 @@
         <file>pages/RequestDatabasePassword.qml</file>
         <file>pages/SettingsPage.qml</file>
         <file>pages/UnblockContactPopup.qml</file>
+        <file>pages/UrlDispatchAccountChooserPopup.qml</file>
         <file>pages/VerifiedPopup.qml</file>
     </qresource>
 </RCC>

@@ -350,7 +350,8 @@ Page {
             onClicked: {
                 if (model.isConfigured) {
                     extraStack.clear()
-                    DeltaHandler.selectAccount(index)
+                    let accID = DeltaHandler.accountsmodel.getIdOfAccount(index)
+                    DeltaHandler.selectAccount(accID)
                 }
                 else {
                     PopupUtils.open(errorMessage)

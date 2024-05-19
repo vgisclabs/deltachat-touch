@@ -19,10 +19,14 @@
 #include <fstream>
 #include "deltahandler.h"
 //#include <unistd.h> // for sleep
-#include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>
 #include <QDBusPendingReply>
+#include <QDBusReply>
 #include <QDBusError>
+
+#include "notificationsLomiriPostal.h"
+#include "notificationsFreedesktop.h"
+#include "notificationsMissing.h"
 
 namespace C {
 #include <libintl.h>
@@ -30,8 +34,59 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_currentAccID {0}, currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_qr {nullptr}, m_notifTagsToDeletePendingReply {false}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
+    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_fileImportSignalHelper {nullptr}, m_currentAccID {0}, m_currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_bus("DeltaTouch"), m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
 {
+    // Determine if the app is running on Ubuntu Touch,
+    // if it is in desktop mode and if the on-screen
+    // keyboard shall be summoned via
+    // dbus session bus call sm.puri.OSK0 /sm/puri/OSK0 sm.puri.OSK0 SetVisible b true
+    m_onUbuntuTouch = false;
+    m_isDesktopMode = false;
+    m_openOskViaDbus = false;
+
+
+    QProcessEnvironment procenv = QProcessEnvironment::systemEnvironment();
+    QStringList sysvarlist = procenv.keys();
+    for (int i = 0; i < sysvarlist.size(); ++i) {
+        if (sysvarlist.at(i) == "QT_FILE_SELECTORS") {
+            if (procenv.value("QT_FILE_SELECTORS") == "ubuntu-touch") {
+                m_onUbuntuTouch = true;
+            }
+        }
+
+        // 'clickable desktop' sets the env var CLICKABLE_DESKTOP_MODE.
+        // In this case, QT_FILE_SELECTORS is not set to "ubuntu-touch"
+        // , but m_onUbuntuTouch should still be true as desktop mode
+        // is to test code that will run on Ubuntu Touch.
+        if (sysvarlist.at(i) == "CLICKABLE_DESKTOP_MODE") {
+            m_onUbuntuTouch = true;
+            m_isDesktopMode = true;
+        }
+
+        if (sysvarlist.at(i) == "OPEN_OSK_VIA_DBUS") {
+            qDebug() << "DeltaHandler::DeltaHandler(): Found env var OPEN_OSK_VIA_DBUS, setting m_openOskViaDbus to true";
+            m_openOskViaDbus = true;
+        }
+    }
+
+    if (m_onUbuntuTouch && !m_isDesktopMode) {
+        qDebug() << "DeltaHandler::DeltaHandler(): Running on Ubuntu Touch " << QSysInfo::productVersion();
+    } else if (m_isDesktopMode) {
+        qDebug() << "DeltaHandler::DeltaHandler(): Running in clickable desktop mode";
+    } else {
+        qDebug() << "DeltaHandler::DeltaHandler(): Not running on Ubuntu Touch";
+    }
+
+    // This is for receiving URLs acc. to the schemes entered as MimeTypes in the 
+    // desktop file on non-UT platforms
+    // TODO: check how to handle clickable desktop mode
+    if (!m_onUbuntuTouch) {
+        // need to attach the urlReceiver to a QObject
+        DbusUrlReceiver* urlReceiver = new DbusUrlReceiver(this, &dbusUrlReceiverObj);
+        QDBusConnection::sessionBus().registerService("local.deltatouch");
+        QDBusConnection::sessionBus().registerObject("/deltatouch/urlreceiver", &dbusUrlReceiverObj);
+    }
+
     // Set the initial id for jsonrpc requests to 1 billion, i.e. around half of the
     // max of an unsigned int (although the id in libdeltachat might
     // be unsigned). Reason is that jsonrpc.mjs as used in QML has its own
@@ -56,13 +111,9 @@ DeltaHandler::DeltaHandler(QObject* parent)
         keysToImportDir.append("/keys_to_import");
 
         if (!QFile::exists(keysToImportDir)) {
-            qDebug() << "DeltaHandler::DeltaHandler(): Directory in cache for putting keys to import into not existing, creating it now";
             QDir keysdir;
             bool mkdirsuccess = keysdir.mkpath(keysToImportDir);
-            if (mkdirsuccess) {
-                qDebug() << "DeltaHandler::DeltaHandler(): Directory " << keysToImportDir << " successfully created";
-            }
-            else {
+            if (!mkdirsuccess) {
                 qFatal("DeltaHandler::DeltaHandler(): Error: Could not create directory ~/.cache/deltatouch.lotharketterer/keys_to_import");
             }
         }
@@ -89,14 +140,12 @@ DeltaHandler::DeltaHandler(QObject* parent)
     QString cachedir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
 
     if (!QFile::exists(cachedir)) {
-        qDebug() << "Cache directory not existing, creating it now";
         QDir tempdir;
         bool success = tempdir.mkpath(cachedir);
-        if (success) {
-            qDebug() << "Cache directory successfully created";
+        if (!success) {
+            qFatal("DeltaHandler::DeltaHandler(): Could not create Cache directory, exiting");
         }
         else {
-            qFatal("Could not create Cache directory, exiting");
         }
     }
 
@@ -111,19 +160,12 @@ DeltaHandler::DeltaHandler(QObject* parent)
     }
 
     if (m_encryptedDatabase) {
-        qDebug() << "Setting \"encrypted database\" is on";
+        qDebug() << "DeltaHandler::DeltaHandler(): Setting \"encrypted database\" is on";
     } else {
-        qDebug() << "Setting \"encrypted database\" is off";
+        qDebug() << "DeltaHandler::DeltaHandler(): Setting \"encrypted database\" is off";
     }
 
     m_chatmodel = new ChatModel();
-    // TODO: should be something like chatIsCurrentlyViewed or
-    // similar because the only time the variable is used is
-    // when a new message arrives. Actions to do upon arrival of
-    // a new message depends on whether the corresponding chat is
-    // currently shown to the user.
-    // Also, the page that shows the chat needs to set it to false
-    // when the page is destroyed.
     currentChatIsOpened = false;
 
     m_accountsmodel = new AccountsModel();
@@ -138,7 +180,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
     }
 
     configdir.append("/accounts/");  
-    qDebug() << "Config directory set to: " << configdir;
     // Qt documentation for QString:
     // [...] you can pass a QString to a function that takes a const char *
     // argument using the qPrintable() macro which returns the given QString
@@ -157,7 +198,72 @@ DeltaHandler::DeltaHandler(QObject* parent)
     // will be started later
     eventThread = new EmitterThread(allAccounts);
 
-    m_notificationGenerator = new NotificationGenerator(this, allAccounts, eventThread, m_accountsmodel);
+    m_bus = QDBusConnection::connectToBus(QDBusConnection::SessionBus, "DeltaTouch");
+
+    bool tempHasLomiriPostal {false};
+    bool tempHasFreedesktopNotifications {false};
+
+    // Don't use ListNames as org.freedesktop.Notifications is not
+    // always showing up in the response from ListNames,
+//    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", "ListNames");
+//    QDBusPendingReply<QStringList> reply = m_bus.call(message);
+//
+//    if (reply.isError()) {
+//        QDBusError myerror = reply.error();
+//        qDebug() << "DeltaHandler::DeltaHandler(): DBus error " << myerror.name() << ", message is: " << myerror.message();
+//    } else {
+//        QStringList dbusServiceList = reply.argumentAt<0>();
+//
+//        for (int i = 0; i < dbusServiceList.size(); ++i) {
+//            if (dbusServiceList[i] == "com.ubuntu.Postal") {
+//                tempHasLomiriPostal = true;
+//            } else if (dbusServiceList[i] == "org.freedesktop.Notifications") {
+//                tempHasFreedesktopNotifications = true;
+//            }
+//        }
+//    }
+    
+    // Try to call methods of the services directly and check
+    // if a reply is received
+    //
+    // Check org.freedesktop.Notifications
+    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "GetCapabilities");
+    QDBusReply<QStringList> reply = m_bus.call(message);
+
+    if (reply.isValid()) {
+        qDebug() << "DeltaHandler::DeltaHandler(): Received valid DBus reply from org.freedesktop.Notifications";
+        tempHasFreedesktopNotifications = true;
+    } else {
+        QDBusError myerror = reply.error();
+        qDebug() << "DeltaHandler::DeltaHandler(): DBus error when contacting org.freedesktop.Notifications: " << myerror.name() << ", message is: " << myerror.message();
+    }
+
+    // Check com.ubuntu.Postal
+    message = QDBusMessage::createMethodCall("com.ubuntu.Postal", "/com/ubuntu/Postal/deltatouch_2elotharketterer", "com.ubuntu.Postal", "ListPersistent");
+    QString appid("deltatouch.lotharketterer_deltatouch");
+    message << appid;
+    reply = m_bus.call(message);
+
+    if (reply.isValid()) {
+        qDebug() << "DeltaHandler::DeltaHandler(): Received valid DBus reply from com.ubuntu.Postal";
+        tempHasLomiriPostal = true;
+    } else {
+        QDBusError myerror = reply.error();
+        qDebug() << "DeltaHandler::DeltaHandler(): DBus error when contacting com.ubuntu.Postal: " << myerror.name() << ", message is: " << myerror.message();
+    }
+
+    // Prefer com.ubuntu.Postal (on Ubuntu Touch, the freedesktop notification service
+    // is present as well, but not really functional)
+    if (tempHasLomiriPostal) {
+        m_notificationHelper = new NotificationsLomiriPostal(this, allAccounts, eventThread, m_accountsmodel, &m_bus);
+        qDebug() << "DeltaHandler::DeltaHandler(): Using com.ubuntu.Postal DBus service for notifications";
+    } else if (tempHasFreedesktopNotifications) {
+        m_notificationHelper = new NotificationsFreedesktop(this, allAccounts, eventThread, m_accountsmodel, &m_bus);
+        qDebug() << "DeltaHandler::DeltaHandler(): Using org.freedesktop.Notifications DBus service for notifications";
+    } else {
+        m_notificationHelper = new NotificationsMissing(this, allAccounts, eventThread, m_accountsmodel);
+        qDebug() << "DeltaHandler::DeltaHandler(): Cannot use DBus for notifications, notifications are not available";
+    }
 
     m_jsonrpcInstance = dc_jsonrpc_init(allAccounts);
 
@@ -234,11 +340,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
     connectSuccess = connect(m_chatmodel, SIGNAL(markedAllMessagesSeen()), this, SLOT(resetCurrentChatMessageCount()));
     if (!connectSuccess) {
         qFatal("DeltaHandler::DeltaHandler: Could not connect signal markedAllMessagesSeen to slot resetCurrentChatMessageCount");
-    }
-
-    connectSuccess = connect(this, SIGNAL(openChatViewRequest(uint32_t, uint32_t)), m_chatmodel, SLOT(chatViewIsOpened(uint32_t, uint32_t)));
-    if (!connectSuccess) {
-        qFatal("DeltaHandler::DeltaHandler: Could not connect signal openChatViewRequest to slot chatViewIsOpened");
     }
 
     connectSuccess = connect(this, SIGNAL(messageDelivered(int)), m_chatmodel, SLOT(messageStatusChangedSlot(int)));
@@ -418,24 +519,24 @@ DeltaHandler::~DeltaHandler()
 
 bool DeltaHandler::isDesktopMode()
 {
-    // checks if the app is running in desktop mode, i.e.
-    // via 'clickable desktop'. Clickable sets the
-    // env var CLICKABLE_DESKTOP_MODE in that case.
-    QProcessEnvironment procenv = QProcessEnvironment::systemEnvironment();
-    QStringList sysvarlist = procenv.keys();
-    for (int i = 0; i < sysvarlist.size(); ++i) {
-        if (sysvarlist.at(i) == "CLICKABLE_DESKTOP_MODE") {
-            return true;
-        }
-    }
-    return false;
+    return m_isDesktopMode;
+}
+
+
+bool DeltaHandler::onUbuntuTouch()
+{
+    return m_onUbuntuTouch;
+}
+
+
+bool DeltaHandler::shouldOpenOskViaDbus()
+{
+    return m_openOskViaDbus;
 }
 
 
 void DeltaHandler::loadSelectedAccount()
 {
-    qDebug() << "entering DeltaHandler::loadSelectedAccount()";
-
     // Enabling verified 1:1 chats for all accounts. Done here
     // as all startup routines will end up calling this function.
     enableVerifiedOneOnOneForAllAccs();
@@ -456,7 +557,7 @@ void DeltaHandler::loadSelectedAccount()
         // may not be called if there's no configured context
         // in this dc_accounts_t
         m_currentAccID = dc_get_id(currentContext);
-        m_notificationGenerator->setCurrentAccId(m_currentAccID);
+        m_notificationHelper->setCurrentAccId(m_currentAccID);
 
         if (dc_is_configured(currentContext)) {
             m_hasConfiguredAccount = true;
@@ -497,9 +598,8 @@ void DeltaHandler::loadSelectedAccount()
     setCoreTranslations();
 
     endResetModel();
+    
     emit accountChanged();
-
-    qDebug() << "exiting DeltaHandler::loadSelectedAccount()";
 }
 
 
@@ -514,7 +614,7 @@ int DeltaHandler::getCurrentChatId() const
     if (!currentChatIsOpened) {
         return -1;
     } else {
-        return currentChatID;
+        return m_currentChatID;
     }
 }
 
@@ -565,7 +665,7 @@ void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
     // Device message for version 1.3.0;
     // remove/adapt for newer versions
     if (appVersion == "1.3.0" || appVersion == "1.3.1") {
-        QString tempQString = "What's new in 1.3.0?<br><br>• 1:1 chats guarantee end-to-end encryption for introduced contacts now<br>• these contacts and chats are marked with green checkmarks<br>• voice message recording starts immediately<br>• HTML mail view (\"Show Full Message…\")<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/xenial/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/xenial/CHANGELOG</a>";
+        QString tempQString = "What's new in 1.3.0?<br><br>• 1:1 chats guarantee end-to-end encryption for introduced contacts now<br>• these contacts and chats are marked with green checkmarks<br>• voice message recording starts immediately<br>• HTML mail view (\"Show Full Message…\")<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
 
         QString versionLabel = "1-3-0";
 
@@ -574,7 +674,7 @@ void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
 
     // Device message for version 1.3.1;
     if (appVersion == "1.3.1") {
-        QString tempQString = "What's new in 1.3.1?<br><br>• Fixed audio/file attachment preview<br>• Click on header in chat view opens profile of chat partner (1:1 chats) or group edit page<br>• Chat list shows status of outgoing messages<br>• Synchronize state of received messages across devices (needs support by mail server)<br>• New message count in account overview page<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/xenial/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/xenial/CHANGELOG</a>";
+        QString tempQString = "What's new in 1.3.1?<br><br>• App logs are redirected to file in cache to avoid sensitive data persisting in journald logs. Log file is deleted upon app closure.<br>• Log viewer page (via Advanced Settings)<br>• Fixed audio/file attachment preview<br>• Click on header in chat view opens profile of chat partner (1:1 chats) or group edit page<br>• Chat list shows status of outgoing messages<br>• Synchronize state of received messages across devices (needs support by mail server)<br>• New message count in account overview page<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
 
         QString versionLabel = "1-3-1";
 
@@ -583,13 +683,12 @@ void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
 
     // Device message for version 1.4.0;
     if (appVersion == "1.4.0") {
-        QString tempQString = "What's new in 1.4.0?<br><br>• Reactions! Long-press messages to react with an emoji.<br>• Many bugfixes and refactorings to enhance performance, improve UX and increase consistency with official clients.<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/xenial/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/xenial/CHANGELOG</a>";
+        QString tempQString = "What's new in 1.4.0?<br><br>• Reactions! Long-press messages to react with an emoji.<br>• Many bugfixes and refactorings to enhance performance, improve UX and increase consistency with official clients.<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
 
         QString versionLabel = "1-4-0";
 
         addDeviceMessageToAllContexts(tempQString, versionLabel);
     }
-
 }
 
 
@@ -1296,7 +1395,7 @@ void DeltaHandler::setMomentaryChatIdById(uint32_t myId)
 
 void DeltaHandler::selectChat(int myindex)
 {
-    currentChatID = m_chatlistVector[myindex];
+    m_currentChatID = m_chatlistVector[myindex];
 }
 
 
@@ -1309,7 +1408,7 @@ void DeltaHandler::openChat()
     }
 
 
-    if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+    if (m_currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
         // If the archive link has been clicked, reset
         // the model to show the archived chats only.
         m_showArchivedChats = true;
@@ -1330,23 +1429,34 @@ void DeltaHandler::openChat()
     } else {
         // If it's not the archive link, open the corresponding
         // chat.
-        dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+        dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
         bool contactRequest = dc_chat_is_contact_request(tempChat);
         dc_chat_unref(tempChat);
 
         std::vector<uint32_t> freshMessagesOfChat;
 
         for (size_t i = 0; i < freshMsgs.size(); ++i) {
-            if (freshMsgs[i][1] == currentChatID) {
+            if (freshMsgs[i][1] == m_currentChatID) {
                 freshMessagesOfChat.push_back(freshMsgs[i][0]);
             }
         }
 
-        m_chatmodel->configure(currentChatID, currentContext, this, freshMessagesOfChat, contactRequest);
+        // save the lastchatid directly when opening the chat
+        QString chatIdAsString {""};
+        chatIdAsString.setNum(m_currentChatID);
+        dc_set_config(currentContext, "ui.lastchatid", chatIdAsString.toUtf8().constData());
+
+        m_chatmodel->configure(m_currentChatID, dc_get_id(currentContext), allAccounts, this, freshMessagesOfChat, contactRequest);
         currentChatIsOpened = true;
 
-        emit openChatViewRequest(m_currentAccID, currentChatID);
+        emit openChatViewRequest(m_currentAccID, m_currentChatID);
     }
+}
+
+
+void DeltaHandler::setChatViewIsShown()
+{
+    currentChatIsOpened = true;
 }
 
 
@@ -1449,22 +1559,19 @@ void DeltaHandler::closeArchive()
     dc_chatlist_unref(tempChatlist);
 
     emit chatlistShowsArchivedOnly(m_showArchivedChats);
+    emit chatlistToBeginning();
 }
 
 
-void DeltaHandler::selectAccount(int myindex)
+void DeltaHandler::selectAccount(uint32_t newAccID, bool calledInUrlHandlingProcess)
 {
-    dc_array_t* contextArray = dc_accounts_get_all(allAccounts);
-
-    if (myindex < 0 || myindex >= dc_array_get_cnt(contextArray)) {
-        qDebug() << "DeltaHandler::selectAccount: Error: index out of bounds";
-        return;
-    }
-
-    uint32_t newAccID = dc_array_get_id(contextArray, myindex);
-
     if (currentContext && newAccID == m_currentAccID) {
-        qDebug() << "DeltaHandler::selectAccount: Selected account already active, doing nothing.";
+        if (calledInUrlHandlingProcess) {
+            emit accountForUrlProcessingSelected();
+            qDebug() << "DeltaHandler::selectAccount: Selected account already active, not changing account, but emitting accountForUrlProcessingSelected signal.";
+        } else {
+            qDebug() << "DeltaHandler::selectAccount: Selected account already active, doing nothing.";
+        }
         return;
     }
 
@@ -1519,15 +1626,15 @@ void DeltaHandler::selectAccount(int myindex)
         emit clearChatlistQueryRequest();
     }
 
-    currentChatIsOpened = false;
-
     endResetModel();
 
     emit accountChanged();
-    
-    dc_array_unref(contextArray);
 
-    m_notificationGenerator->removeSummaryNotification(m_currentAccID);
+    if (calledInUrlHandlingProcess) {
+        emit accountForUrlProcessingSelected();
+    }
+
+    m_notificationHelper->removeSummaryNotification(m_currentAccID);
 }
 
 
@@ -1538,7 +1645,7 @@ void DeltaHandler::messagesChanged(uint32_t accID, int chatID, int msgID)
 
         m_signalQueue_chatsDataChanged.push(chatID);
 
-        if (currentChatID == chatID && currentChatIsOpened) {
+        if (m_currentChatID == chatID && currentChatIsOpened) {
             m_signalQueue_msgs.push(msgID);
         }
     }
@@ -1823,13 +1930,14 @@ void DeltaHandler::processSignalQueue()
             }
         }
 
-        // call deleteActiveNotificationTags for all concerned account/chat combinations
+        // call removeActiveNotificationsOfChat for all concerned account/chat combinations
         for (size_t i = 0; i < structsToConsider.size(); ++i) {
             AccIdAndChatIdStruct tempStruct = structsToConsider[i];
-            // TODO: need to take care of the fact that when deleteActiveNotificationTags
-            // returns, the notification has NOT been deleted yet - the actual
-            // deletion will happen upon processing a signal triggered by DBus
-            deleteActiveNotificationTags(tempStruct.accID, tempStruct.chatID);
+            // TODO: need to take care of the fact that in case of Lomiri Postal,
+            // when removeActiveNotificationsOfChat returns, the notification has
+            // NOT been deleted yet - the actual deletion will happen upon
+            // processing a signal triggered by DBus
+            m_notificationHelper->removeActiveNotificationsOfChat(tempStruct.accID, tempStruct.chatID);
         }
     }
 
@@ -1876,7 +1984,7 @@ void DeltaHandler::messagesNoticed(uint32_t accID, int chatID)
 
 void DeltaHandler::chatDataModifiedReceived(uint32_t accID, int chatID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit chatDataChanged();
     }
 
@@ -1922,14 +2030,14 @@ void DeltaHandler::incomingMessage(uint32_t accID, int chatID, int msgID)
 
     messagesChanged(accID, chatID, msgID);
 
-    // notifications are handled via m_notificationGenerator which
+    // notifications are handled via m_notificationHelper which
     // is connected to the incoming message event as well
 }
 
 
 void DeltaHandler::messageReadByRecipient(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit messageRead(msgID);
     }
 
@@ -1947,7 +2055,7 @@ void DeltaHandler::messageReadByRecipient(uint32_t accID, int chatID, int msgID)
 
 void DeltaHandler::messageDeliveredToServer(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit messageDelivered(msgID);
     }
     
@@ -1965,7 +2073,7 @@ void DeltaHandler::messageDeliveredToServer(uint32_t accID, int chatID, int msgI
 
 void DeltaHandler::messageFailedSlot(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit messageFailed(msgID);
     }
 
@@ -1983,30 +2091,28 @@ void DeltaHandler::messageFailedSlot(uint32_t accID, int chatID, int msgID)
 
 void DeltaHandler::msgReactionsChanged(uint32_t accID, int chatID, int msgID)
 {
-    if (m_currentAccID == accID && currentChatID == chatID && currentChatIsOpened) {
+    if (m_currentAccID == accID && m_currentChatID == chatID && currentChatIsOpened) {
         emit messageReaction(msgID);
     }
-}
 
+    // update chatlist as reactions may change message preview
+    if (m_currentAccID == accID) {
+        m_signalQueue_refreshChatlist = true;
 
-QString DeltaHandler::chatName()
-{
-    if (currentChatIsOpened) {
-        dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
-        char* tempName = dc_chat_get_name(tempChat);
-        QString name = tempName;
-        dc_str_unref(tempName);
-        dc_chat_unref(tempChat);
-        return name;
+        m_signalQueue_chatsDataChanged.push(chatID);
     }
-    else return QString();
+
+    if (!m_signalQueueTimer->isActive()) {
+        processSignalQueue();
+        m_signalQueueTimer->start(queueTimerFreq);
+    }
 }
 
 
 bool DeltaHandler::chatIsVerified()
 {
     bool retval = false;
-    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
 
     if (1 == dc_chat_is_protected(tempChat)) {
         retval = true;
@@ -2064,6 +2170,33 @@ QString DeltaHandler::getCurrentProfilePic()
     else {
         retval = "";
     }
+    return retval;
+}
+
+
+QString DeltaHandler::getCurrentProfileColor()
+{
+    if (!m_hasConfiguredAccount) {
+        return "#000000";
+    }
+
+    // looks like the color of an account can only be obtained via jsonrpc
+    QString paramString;
+    paramString.setNum(m_currentAccID);
+
+    QString requestString = constructJsonrpcRequestString("get_account_info", paramString);
+    QByteArray jsonResponseByteArray = sendJsonrpcBlockingCall(requestString).toLocal8Bit();
+
+    QString retval;
+    QJsonObject jsonObj = QJsonDocument::fromJson(jsonResponseByteArray).object();
+
+    jsonObj = jsonObj.value("result").toObject();
+    if (jsonObj.value("kind").toString() == "Configured") {
+        retval = jsonObj.value("color").toString();
+    } else {
+        retval = "#000000";
+    }
+
     return retval;
 }
 
@@ -2134,7 +2267,7 @@ uint32_t DeltaHandler::getChatEphemeralTimer(int myindex)
     uint32_t tempChatID;
 
     if (myindex == -1) {
-        tempChatID = currentChatID;
+        tempChatID = m_currentChatID;
     } else {
         tempChatID = m_chatlistVector[myindex];
     }
@@ -2148,7 +2281,7 @@ void DeltaHandler::setChatEphemeralTimer(int myindex, uint32_t timer)
     uint32_t tempChatID;
 
     if (myindex == -1) {
-        tempChatID = currentChatID;
+        tempChatID = m_currentChatID;
     } else {
         tempChatID = m_chatlistVector[myindex];
     }
@@ -2169,6 +2302,11 @@ void DeltaHandler::deleteMomentaryChat()
     }
 
     dc_delete_chat(currentContext, m_momentaryChatId);
+
+    if (m_momentaryChatId == m_currentChatID) {
+        // If in two-column mode, the chat to be deleted may be the one currently visible.
+        emit closeChatViewRequest();
+    }
 }
 
 
@@ -2186,7 +2324,7 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
                 qDebug() << "DeltaHandler::setCurrentConfig: ERROR: Setting key " << key << " to \"\" was not successful.";
             }
  
-            emit accountChanged();
+            emit accountDataChanged();
             return;
         }
         else {
@@ -2229,9 +2367,9 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
         start_io();
     }
  
-    // TODO: emit only if profile pic or displayname changed?
-    emit accountChanged();
-//    emit updatedAccountConfig(dc_get_id(currentContext));
+    if ("addr" == key || "displayname" == key || "selfavatar" == key) {
+        emit accountDataChanged();
+    }
 }
 
 
@@ -2344,7 +2482,7 @@ void DeltaHandler::prepareTempContextConfig()
 
         if (m_encryptedDatabase) {
             if (m_databasePassphrase == "") {
-                qDebug() << "DeltaHandler::prepareQrBackupImport(): ERROR: No passphrase for database encryption present, cannot create account.";
+                qDebug() << "DeltaHandler::prepareTempContextConfig(): ERROR: No passphrase for database encryption present, cannot create account.";
                 return;
             }
 
@@ -2430,7 +2568,7 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
                 m_closedAccounts.push_back(dc_get_id(tempContext));
             }
         } else {
-            emit updatedAccountConfig(dc_get_id(tempContext));
+            emit accountIsConfiguredChanged(dc_get_id(tempContext));
         }
 
         // allow networking again, see configureTempContext()
@@ -2490,7 +2628,7 @@ void DeltaHandler::progressEvent(int perMill, QString errorMsg)
             // (for more details see same line above)
             m_configuringNewAccount = false;
         } else {
-            emit updatedAccountConfig(m_currentAccID);
+            emit accountIsConfiguredChanged(m_currentAccID);
             emit accountChanged();
         }
 
@@ -2596,7 +2734,7 @@ void DeltaHandler::chatCreationReceiver(uint32_t chatID)
      
     // NOT calling selectChat(int) as the parameter of
     // this method is the array index, not the chatID
-    currentChatID = chatID; 
+    m_currentChatID = chatID; 
     openChat();
 }
 
@@ -2604,7 +2742,7 @@ void DeltaHandler::chatCreationReceiver(uint32_t chatID)
 void DeltaHandler::appIsActiveAgainActions()
 {
     if (!currentChatIsOpened) {
-        m_notificationGenerator->removeSummaryNotification(m_currentAccID);
+        m_notificationHelper->removeSummaryNotification(m_currentAccID);
     }
 }
 
@@ -2638,7 +2776,7 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
         dc_context_unref(currentContext);
         currentContext = nullptr;
         m_currentAccID = 0;
-        m_notificationGenerator->setCurrentAccId(m_currentAccID);
+        m_notificationHelper->setCurrentAccId(m_currentAccID);
         m_chatlistVector.resize(0);
         if (m_hasConfiguredAccount) {
             m_hasConfiguredAccount = false;
@@ -2713,7 +2851,7 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
             currentContext = dc_accounts_get_account(allAccounts, accountToSwitchTo);
             // not calling contextSetupTasks() here as the context is not configured
             m_currentAccID = dc_get_id(currentContext);
-            m_notificationGenerator->setCurrentAccId(m_currentAccID);
+            m_notificationHelper->setCurrentAccId(m_currentAccID);
 
             // TODO restarting network in this case makes no sense
             if (restartNetwork) {
@@ -2826,7 +2964,7 @@ bool DeltaHandler::isBackupFile(QString filePath)
 
     if (m_encryptedDatabase) {
         if (m_databasePassphrase == "") {
-            qDebug() << "DeltaHandler::prepareQrBackupImport(): ERROR: Plaintext key for database encryption is not present, cannot create account.";
+            qDebug() << "DeltaHandler::isBackupFile(): ERROR: Plaintext key for database encryption is not present, cannot create account.";
             return false;
         }
 
@@ -2914,15 +3052,15 @@ void DeltaHandler::chatAccept()
     // need to check whether it's really a contact request
     // because dc_accept_chat is also used for protected
     // chats (to continue if the partner has not used its key)
-    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
     bool isContactRequest = dc_chat_is_contact_request(tempChat);
     dc_chat_unref(tempChat);
 
-    dc_accept_chat(currentContext, currentChatID);
+    dc_accept_chat(currentContext, m_currentChatID);
     m_chatmodel->acceptChat();
 
     if (isContactRequest) {
-        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+        emit chatIsNotContactRequestAnymore(m_currentAccID, m_currentChatID);
     }
 }
 
@@ -2931,14 +3069,14 @@ void DeltaHandler::chatDeleteContactRequest()
 {
     // probably not needed to check if it's really 
     // a contact request, but done anyway
-    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
     bool isContactRequest = dc_chat_is_contact_request(tempChat);
     dc_chat_unref(tempChat);
 
-    dc_delete_chat(currentContext, currentChatID);
+    dc_delete_chat(currentContext, m_currentChatID);
 
     if (isContactRequest) {
-        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+        emit chatIsNotContactRequestAnymore(m_currentAccID, m_currentChatID);
     }
 }
 
@@ -2947,14 +3085,14 @@ void DeltaHandler::chatBlockContactRequest()
 {
     // probably not needed to check if it's really 
     // a contact request, but done anyway
-    dc_chat_t* tempChat = dc_get_chat(currentContext, currentChatID);
+    dc_chat_t* tempChat = dc_get_chat(currentContext, m_currentChatID);
     bool isContactRequest = dc_chat_is_contact_request(tempChat);
     dc_chat_unref(tempChat);
 
-    dc_block_chat(currentContext, currentChatID);
+    dc_block_chat(currentContext, m_currentChatID);
 
     if (isContactRequest) {
-        emit chatIsNotContactRequestAnymore(m_currentAccID, currentChatID);
+        emit chatIsNotContactRequestAnymore(m_currentAccID, m_currentChatID);
     }
 }
 
@@ -2989,6 +3127,54 @@ void DeltaHandler::exportBackup()
 }
 
 
+QString DeltaHandler::saveBackupFile(QString destinationFolder)
+{
+    QString tempQString = destinationFolder;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        destinationFolder.remove(0, 7);
+    }
+
+    tempQString = destinationFolder;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        destinationFolder.remove(0, 4);
+    }
+
+    QString sourceFileName = m_tempExportPath.section('/', -1);
+
+    QString destinationFile = destinationFolder + "/" + sourceFileName;
+
+    unsigned int counter {1};
+
+    while (QFile::exists(destinationFile)) {
+        QString basename = sourceFileName;
+        QString suffix = basename.section('.', -1);
+        basename.remove(basename.length() - 4, 4);
+        QString tempNumber;
+        tempNumber.setNum(counter);
+        basename.append("_");
+        basename.append(tempNumber);
+        basename.append(".");
+        basename.append(suffix);
+        destinationFile = destinationFolder + "/" + basename;
+
+        ++counter;
+    }
+
+    QString sourceFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + m_tempExportPath);
+    bool success = QFile::copy(sourceFile, destinationFile);
+
+    if (success) {
+        return destinationFile;
+    } else {
+        qDebug() << "DeltaHandler::saveBackupFile(): ERROR: Could not save the backup to " << destinationFile;
+        // Do not emit errorEvent, but return empty string
+        // and let the GUI handle it
+        //emit errorEvent(C::gettext("Could not save the backup file"));
+        return "";
+    }
+}
+
+
 QString DeltaHandler::getUrlToExport()
 {
     return m_tempExportPath;
@@ -3009,6 +3195,15 @@ void DeltaHandler::removeTempExportFile()
         // would choose the same number and thus file name for each
         // backup file. To avoid this, a dummy file is created with the
         // same file name as the backup file that has just been removed.
+        //
+        // TODO: This only works if the app is not closed at some time
+        // because closing removes the cache dir.
+        //
+        // If the app is closed, the backup file in the cache will
+        // have the same name as a previously exported one, but 
+        // in the folder chosen by the user the file will then be
+        // named ....._1.tar
+
         QFile dummyFile(fileToRemove);
         if (!dummyFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
             qDebug() << "DeltaHandler::removeTempExportFile(): Could not open dummy file to represent the removed backup file";
@@ -3039,6 +3234,13 @@ bool DeltaHandler::isExistingChat(uint32_t chatID)
 bool DeltaHandler::chatIsContactRequest()
 {
     return m_chatmodel->chatIsContactRequest();
+}
+
+
+void DeltaHandler::processReceivedUrl(QString myUrl)
+{
+    qDebug() << "DeltaHandler::processReceivedUrl(): Received url: " << myUrl;
+    emit urlReceived(myUrl);
 }
 
 /* ========================================================
@@ -3367,10 +3569,10 @@ void DeltaHandler::startEditGroup(int myindex)
     creatingNewGroup = false;
 
     // will set up the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     if (-1 == myindex) {
-        m_tempGroupChatID = currentChatID;
+        m_tempGroupChatID = m_currentChatID;
     } else {
         m_tempGroupChatID = m_chatlistVector[myindex];
     }
@@ -3532,7 +3734,7 @@ QString DeltaHandler::getTempGroupQrLink()
     // remove the first occurrence of "#" by "&"
     qrstring.replace(qrstring.indexOf("#"), 1, "&");
 
-    QString retval = "http://i.delta.chat/#" + qrstring;
+    QString retval = "https://i.delta.chat/#" + qrstring;
     return retval;
 }
 
@@ -3739,22 +3941,24 @@ void DeltaHandler::prepareContactsmodelForGroupMemberAddition()
 }
 
 
-void DeltaHandler::continueQrCodeAction()
+void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
 {
+    uint32_t chatID {0};
+
     switch (m_qrTempState) {
         case DT_QR_ASK_VERIFYCONTACT:
-            currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
+            m_currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
             // dc_join_securejoin() returns 0 on error, so don't call
             // openChat() in this case
-            if (currentChatID != 0) {
+            if (m_currentChatID != 0) {
                 openChat();
             }
             break;
         case DT_QR_ASK_VERIFYGROUP:
-            currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
+            m_currentChatID = dc_join_securejoin(currentContext, m_qrTempText.toUtf8().constData());
             // dc_join_securejoin() returns 0 on error, so don't call
             // openChat() in this case
-            if (currentChatID != 0) {
+            if (m_currentChatID != 0) {
                 openChat();
             }
             break;
@@ -3762,7 +3966,7 @@ void DeltaHandler::continueQrCodeAction()
             // TODO: what to do here?
             // => nothing for the moment because no translated strings exist
             // for the action suggested in the documentation
-            //currentChatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
+            //m_currentChatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
             //openChat();
             break;
         case DT_QR_FPR_MISMATCH:
@@ -3774,7 +3978,7 @@ void DeltaHandler::continueQrCodeAction()
         case DT_QR_ACCOUNT:
             prepareTempContextConfig();
             if (1 == dc_set_config_from_qr(tempContext, m_qrTempText.toUtf8().constData())) {
-                emit finishedSetConfigFromQr(true);
+                emit finishedSetConfigFromQr(true, calledAfterUrlReceived);
             } else {
                 // dc_set_config_from_qr() exited with an error
                 // TODO: what now? should the account that was created
@@ -3782,17 +3986,22 @@ void DeltaHandler::continueQrCodeAction()
                 // it will stay. See also the comment in QrShowScan.qml:
                 // If dc_set_config_from_qr() succeeds, but login fails, it's
                 // the same.
-                emit finishedSetConfigFromQr(false);
+                emit finishedSetConfigFromQr(false, calledAfterUrlReceived);
             }
             break;
         case DT_QR_BACKUP:
-            prepareQrBackupImport();
+            prepareQrBackupImport(calledAfterUrlReceived);
             break;
         case DT_QR_WEBRTC_INSTANCE:
             // TODO not implemented yet
             break;
         case DT_QR_ADDR:
-            // TODO
+            chatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
+            if (0 != chatID) {
+                chatCreationReceiver(chatID);
+            } else {
+            // TODO error: chat could not be created
+            }
             break;
         case DT_QR_TEXT:
             // nothing to do here
@@ -3818,7 +4027,7 @@ void DeltaHandler::continueQrCodeAction()
         case DT_QR_LOGIN:
             prepareTempContextConfig();
             if (1 == dc_set_config_from_qr(tempContext, m_qrTempText.toUtf8().constData())) {
-                emit finishedSetConfigFromQr(true);
+                emit finishedSetConfigFromQr(true, calledAfterUrlReceived);
             } else {
                 // dc_set_config_from_qr() exited with an error
                 // TODO: what now? should the account that was created
@@ -3826,7 +4035,7 @@ void DeltaHandler::continueQrCodeAction()
                 // it will stay. See also the comment in QrShowScan.qml:
                 // If dc_set_config_from_qr() succeeds, but login fails, it's
                 // the same.
-                emit finishedSetConfigFromQr(false);
+                emit finishedSetConfigFromQr(false, calledAfterUrlReceived);
             }
             break;
         default:
@@ -3877,7 +4086,7 @@ QString DeltaHandler::getQrInviteLink()
     // remove the first occurrence of "#" by "&"
     qrstring.replace(qrstring.indexOf("#"), 1, "&");
 
-    QString retval = "http://i.delta.chat/#" + qrstring;
+    QString retval = "https://i.delta.chat/#" + qrstring;
     return retval;
 }
 
@@ -4009,7 +4218,7 @@ int DeltaHandler::evaluateQrCode(QString clipboardData)
 }
 
 
-void DeltaHandler::prepareQrBackupImport()
+void DeltaHandler::prepareQrBackupImport(bool calledAfterUrlReceived)
 {
     if (tempContext) {
         qDebug() << "DeltaHandler::prepareQrBackupImport: tempContext is unexpectedly set, will now be unref'd";
@@ -4046,7 +4255,7 @@ void DeltaHandler::prepareQrBackupImport()
         tempContext = dc_accounts_get_account(allAccounts, accID);
     }
     
-    emit readyForQrBackupImport();
+    emit readyForQrBackupImport(calledAfterUrlReceived);
 }
 
 
@@ -4322,9 +4531,9 @@ EmitterThread* DeltaHandler::emitterthread()
 }
 
 
-NotificationGenerator* DeltaHandler::notificationGenerator()
+NotificationHelper* DeltaHandler::notificationHelper()
 {
-    return m_notificationGenerator;
+    return m_notificationHelper;
 }
 
 
@@ -4354,7 +4563,7 @@ WorkflowDbToUnencrypted* DeltaHandler::workflowdbdecryption()
 void DeltaHandler::updateCurrentChatMessageCount()
 {
     for (size_t i = 0; i < m_chatlistVector.size(); ++i) {
-        if (m_chatlistVector[i] == currentChatID) {
+        if (m_chatlistVector[i] == m_currentChatID) {
             QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
         }
     }
@@ -4372,7 +4581,13 @@ void DeltaHandler::chatViewIsClosed(bool gotoQrScanPage)
 
     currentChatIsOpened = false;
     emit chatViewClosed(gotoQrScanPage);
-    m_notificationGenerator->removeSummaryNotification(m_currentAccID);
+    m_notificationHelper->removeSummaryNotification(m_currentAccID);
+}
+
+
+void DeltaHandler::emitFontSizeChangedSignal()
+{
+    emit fontSizeChanged();
 }
 
 
@@ -4440,10 +4655,10 @@ bool DeltaHandler::chatIsGroup(int myindex)
     uint32_t chatID {0};
 
     // will check for the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     if (-1 == myindex) {
-        chatID = currentChatID;
+        chatID = m_currentChatID;
     } else {
         chatID = m_chatlistVector[myindex];
     }
@@ -4479,10 +4694,10 @@ bool DeltaHandler::selfIsInGroup(int myindex)
     uint32_t chatID {0};
 
     // will check for the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     if (-1 == myindex) {
-        chatID = currentChatID;
+        chatID = m_currentChatID;
     } else {
         chatID = m_chatlistVector[myindex];
     }
@@ -4670,154 +4885,50 @@ void DeltaHandler::setCoreTranslations()
 }
 
 
-void DeltaHandler::removeNotification(QString tag)
+void DeltaHandler::openOskViaDbus()
 {
-    qDebug() << "DeltaHandler::removeNotification(): removing tag " << tag;
-
-    QDBusConnection bus = QDBusConnection::sessionBus();
-
-    QString appid("deltatouch.lotharketterer_deltatouch");
-    QString path;
-    QDBusMessage message;
-
-    if (QSysInfo::productVersion() == "16.04") {
-        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "ClearPersistent");
-    } else {
-        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "ClearPersistent");
-    }
-
-    message << appid << tag;
-    bus.send(message);
-//    QDBusPendingCall pcall = bus.asyncCall(message);
-//    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
-//    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(setCounterFinished(QDBusPendingCallWatcher*)));
-
+    // Wait for 50 millisecs with the execution of
+    // the DBus call to show the on-screen keyboard
+    // to make sure that the open call will be
+    // later than a potential close call (if the
+    // focus switched from one TextField to another
+    // one, the one that loses focus will call close,
+    // while the one that gains focus will call open
+    // => open has to come last)
+    QTimer::singleShot(50, this, SLOT(internalOpenOskViaDbus()));
 }
 
 
-void DeltaHandler::deleteActiveNotificationTags(uint32_t accID, int chatID)
+void DeltaHandler::internalOpenOskViaDbus()
 {
-    // fill m_notificationTagsToDelete with the current accID and chatID
-    QString accNumberString;
-    accNumberString.setNum(accID);
-
-    QString chatNumberString;
-    chatNumberString.setNum(chatID);
-
-    m_notificationTagsToDelete.push_back(QString(accNumberString + "_" + chatNumberString + "_"));
-
-    if (m_notifTagsToDeletePendingReply) {
-        // the DBus method ListPersistent has already
-        // been called, we're waiting for the response
-        return;
-    }
-
-    // Query com.[ubuntu|lomiri].Postal for the tags of the currently active
-    // notifications
-    QDBusConnection bus = QDBusConnection::sessionBus();
-
-    QString appid("deltatouch.lotharketterer_deltatouch");
-    QString path;
-    QDBusMessage message;
-
-    if (QSysInfo::productVersion() == "16.04") {
-        path = "/com/ubuntu/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.ubuntu.Postal", path, "com.ubuntu.Postal", "ListPersistent");
-    } else {
-        path = "/com/lomiri/Postal/deltatouch_2elotharketterer";
-        message = QDBusMessage::createMethodCall("com.lomiri.Postal", path, "com.lomiri.Postal", "ListPersistent");
-    }
-
-    message << appid;
-
-    QDBusPendingCall pcall = bus.asyncCall(message);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pcall, this);
-    // Actual removal will be done in the slot which receives
-    // the response to our call to Postal.
-    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(finishDeleteActiveNotificationTags(QDBusPendingCallWatcher*)));
+    qDebug() << "DeltaHandler::openOskViaDbus()";
+    bool param1 = true;
+    QDBusMessage message = QDBusMessage::createMethodCall("sm.puri.OSK0", "/sm/puri/OSK0", "sm.puri.OSK0", "SetVisible");
+    message << param1;
+    m_bus.send(message);
 }
 
 
-void DeltaHandler::finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* call)
+void DeltaHandler::closeOskViaDbus()
 {
-    // This method will remove active notifications if the corresponding
-    // message has been marked read on another device, in which case
-    // the event DC_EVENT_MSGS_NOTICED is received.
-    m_notifTagsToDeletePendingReply = false;
-    
-    // Make sure the type of QDBusPendingReply matches the signature of the
-    // expected DBus response. In this case, the signature is "as" (== array
-    // of strings, i.e. QStringList)
-    QDBusPendingReply<QStringList> reply = *call;
-
-    if (reply.isError()) {
-        QDBusError myerror = reply.error();
-        qDebug() << "DeltaHandler::finishDeleteActiveNotificationTags(): DBus error " << myerror.name() << ", message is: " << myerror.message();
-        // erase the vector to avoid it growing forever in case of constant DBus errors
-        m_notificationTagsToDelete.resize(0);
-
-    } else { // no error, got valid DBus reply
-        for (size_t j = 0; j < m_notificationTagsToDelete.size(); ++j) {
-            // the tags of the currently active notifications
-            QStringList taglist = reply.argumentAt<0>();
-
-            // Get the context of the account for which the DC_EVENT_MSGS_NOTICED event
-            // was received. Its ID is the first part of m_notificationTagsToDelete[j].
-            dc_context_t* tempCon {nullptr};
-
-            if (taglist.size() > 0) {
-                QString accIDString = m_notificationTagsToDelete[j];
-                // Removing everything starting from the first '_' gets accID as string
-                int indexFirstUnderscore = accIDString.indexOf('_');
-                accIDString.remove(indexFirstUnderscore, accIDString.size() - indexFirstUnderscore);
-                uint32_t tempAccID = accIDString.toUInt();
-                tempCon = dc_accounts_get_account(allAccounts, tempAccID);
-            }
-
-            for (int i = 0; i < taglist.size(); ++i) {
-                if (taglist.at(i).startsWith(m_notificationTagsToDelete[j])) {
-                    // Notification with the current tag belongs to the context and
-                    // chat in question. Now check if the corresponding message has
-                    // actually been read, and only remove its notification if yes.
-                    // To check this, we need the message ID in addition to the context.
-
-                    // Get the message ID of the current tag
-                    // Tags are <accID>_<chatID_<msgID>
-                    QStringList templist = taglist.at(i).split('_');
-                    uint32_t tempMsgID = templist.at(2).toUInt();
-
-                    dc_msg_t* tempMsg = dc_get_msg(tempCon, tempMsgID);
-
-                    // check if the message has been marked seen and remove, if yes
-                    if (dc_msg_get_state(tempMsg) == DC_STATE_IN_SEEN) {
-                        removeNotification(taglist.at(i));
-                    } 
-
-                    if (tempMsg) {
-                        dc_msg_unref(tempMsg);
-                    }
-                }
-            } // for
-
-            if (tempCon) {
-                dc_context_unref(tempCon);
-            }
-        }
-
-        // don't forget to empty the cache
-        m_notificationTagsToDelete.resize(0);
-
-    } // else { // no error, got valid DBus reply
-    call->deleteLater();
+    qDebug() << "DeltaHandler::close()";
+    bool param1 = false;
+    QDBusMessage message = QDBusMessage::createMethodCall("sm.puri.OSK0", "/sm/puri/OSK0", "sm.puri.OSK0", "SetVisible");
+    message << param1;
+    m_bus.send(message);
 }
 
 
 int DeltaHandler::getConnectivitySimple()
 {
-    int temp = dc_get_connectivity(currentContext);
-    return temp;
+    int retval {-1};
+
+    if (currentContext) {
+        retval = dc_get_connectivity(currentContext);
+    } 
+
+    // will return -1 if currentContext is nullptr
+    return retval;
 }
 
 
@@ -4835,6 +4946,32 @@ QString DeltaHandler::getConnectivityHtml()
 
     retval.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
     return retval;
+}
+
+
+QString DeltaHandler::saveLog(QString logtext, QString datetime)
+{
+    // Takes the content of the TextEdit containing the log
+    // as taken at datetime, puts it into a file in the cache
+    // dir and returns the filename.
+    QString snapshotname("/deltatouch-log-");
+    snapshotname.append(datetime);
+    snapshotname.append(".txt");
+    snapshotname.prepend(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+
+    QFile logSnapshot(snapshotname);
+    if (!logSnapshot.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        qDebug() << "DeltaHandler::saveLog(): Could not save current log excerpt to " << snapshotname;
+    } else {
+        QTextStream out(&logSnapshot);
+        out << logtext;
+        logSnapshot.flush();
+        logSnapshot.close();
+    }
+
+    // have to remove the trailing stuff
+    snapshotname.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+    return snapshotname;
 }
 
 
@@ -4858,7 +4995,7 @@ void DeltaHandler::contextSetupTasks()
     dc_chatlist_unref(tempChatlist);
 
     m_currentAccID = dc_get_id(currentContext);
-    m_notificationGenerator->setCurrentAccId(m_currentAccID);
+    m_notificationHelper->setCurrentAccId(m_currentAccID);
 
     m_contactsmodel->updateContext(currentContext);
 
@@ -4882,6 +5019,82 @@ void DeltaHandler::contextSetupTasks()
     }
 
     dc_array_unref(tempArray);
+}
+
+
+void DeltaHandler::selectAndOpenLastChatId()
+{
+    if (!currentContext) {
+        qFatal("DeltaHandler::lastChatId() called, but currentContext is NULL");
+    }
+
+    char* tempText = dc_get_config(currentContext, "ui.lastchatid"); 
+    QString tempQString {""};
+    if (tempText) {
+        tempQString = tempText;
+        dc_str_unref(tempText);
+    }
+
+    bool useDeviceTalk {false};
+    bool foundDeviceTalk {false};
+    uint32_t deviceTalkChatId {0};
+
+    bool foundLastChatId {false};
+    uint32_t lastChatId {0};
+
+    if (tempQString == "") {
+        // no ui.lastchatid, select the device talk
+        useDeviceTalk = true;
+    } else {
+        lastChatId = tempQString.toUInt();
+        // to be safe, don't just set m_currentChatID to this number,
+        // check if the chat exists below
+    }
+    
+    dc_chatlist_t* tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
+    size_t count = dc_chatlist_get_cnt(tempChatlist);
+
+    for (size_t i = 0; i < count; ++i) {
+        uint32_t tempId = dc_chatlist_get_chat_id(tempChatlist, i);
+
+        if (!useDeviceTalk) {
+            if (lastChatId == tempId) {
+                foundLastChatId = true;
+                break;
+            }
+        }
+
+        // need to check for device talk even if useDeviceTalk is false
+        // in case lastChatId is not found
+        if (!foundDeviceTalk) {
+            dc_chat_t* tempChat = dc_get_chat(currentContext, tempId);
+            if (tempChat) {
+                if (1 == dc_chat_is_device_talk(tempChat)) {
+                    deviceTalkChatId = tempId;
+                    foundDeviceTalk = true;
+
+                    if (useDeviceTalk) {
+                        dc_chat_unref(tempChat);
+                        break;
+                    }
+                }
+
+                dc_chat_unref(tempChat);
+            }
+        }
+    }
+
+    if (useDeviceTalk && foundDeviceTalk) {
+        m_currentChatID = deviceTalkChatId;
+        openChat();
+    } else if (!useDeviceTalk && foundLastChatId) {
+        m_currentChatID = lastChatId;
+        openChat();
+    } else {
+        emit closeChatViewRequest();
+    }
+
+    dc_chatlist_unref(tempChatlist);
 }
 
 
@@ -4921,22 +5134,24 @@ void DeltaHandler::updateChatlistQueryText(QString query)
 
         // if the query is empty, need to pass NULL instead of empty string
         if (m_query == "") {
-            if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+            if (m_showArchivedChats) {
                 tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
             } else {
                 tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
             }
         } else {
-            if (currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
-                tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
-            } else {
-                tempChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
-            }
+            // search does not work if DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT is set;
+            // also, the search returns both archived and non-archived chats anyway
+            tempChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
         }
 
         refreshChatlistVector(tempChatlist);
         dc_chatlist_unref(tempChatlist);
-        emit chatlistShowsArchivedOnly(m_showArchivedChats);
+        if (m_query == "") {
+            emit chatlistShowsArchivedOnly(m_showArchivedChats);
+        } else {
+            emit chatlistShowsArchivedOnly(false);
+        }
     }
 }
 
@@ -4948,17 +5163,17 @@ void DeltaHandler::resetCurrentChatMessageCount()
     size_t i = 0;
     size_t endpos = freshMsgs.size();
     while (i < endpos) {
-        if (freshMsgs[i][1] == currentChatID) {
+        if (freshMsgs[i][1] == m_currentChatID) {
             // assemble the tag of the message (see sendDetailedNotification())
             QString accNumberString;
             accNumberString.setNum(m_currentAccID);
 
             QString chatNumberString;
-            chatNumberString.setNum(currentChatID);
+            chatNumberString.setNum(m_currentChatID);
 
             QString msgNumberString;
             msgNumberString.setNum(freshMsgs[i][0]);
-            removeNotification(accNumberString + "_" + chatNumberString + "_" + msgNumberString);
+            m_notificationHelper->removeNotification(accNumberString + "_" + chatNumberString + "_" + msgNumberString);
 
             // remove the message from freshMsgs
             std::vector<std::array<uint32_t, 2>>::iterator it;
@@ -4983,9 +5198,9 @@ void DeltaHandler::resetCurrentChatMessageCount()
     // >> returned; these messages should not be notified and also badge counters
     // >> should not include these messages.
 
-    int freshMsgCount = dc_get_fresh_msg_cnt(currentContext, currentChatID);
+    int freshMsgCount = dc_get_fresh_msg_cnt(currentContext, m_currentChatID);
     if (freshMsgCount != 0) {
-        dc_array_t* tempArray = dc_get_chat_msgs(currentContext, currentChatID, 0, 0);
+        dc_array_t* tempArray = dc_get_chat_msgs(currentContext, m_currentChatID, 0, 0);
 
         // start with the newest message, stop the loop if the end of the array
         // has been reached OR if the number of unseen messages given by
@@ -5009,11 +5224,11 @@ void DeltaHandler::resetCurrentChatMessageCount()
                 accNumberString.setNum(m_currentAccID);
 
                 QString chatNumberString;
-                chatNumberString.setNum(currentChatID);
+                chatNumberString.setNum(m_currentChatID);
 
                 QString msgNumberString;
                 msgNumberString.setNum(tempMsgID);
-                removeNotification(accNumberString + "_" + chatNumberString + "_" + msgNumberString);
+                m_notificationHelper->removeNotification(accNumberString + "_" + chatNumberString + "_" + msgNumberString);
             }
             dc_msg_unref(tempMsg);
         }
@@ -5021,6 +5236,25 @@ void DeltaHandler::resetCurrentChatMessageCount()
     }
     // notify the view about changes in the model
     updateCurrentChatMessageCount();
+
+    // inform m_accountsmodel (needed for update of sidebar)
+    // m_signalQueue_accountsmodelInfo is for m_accountsmodel,
+    // make sure to avoid duplicate entries already here
+    bool found {false};
+    for (size_t i = 0; i < m_signalQueue_accountsmodelInfo.size(); ++i) {
+        if (m_currentAccID == m_signalQueue_accountsmodelInfo[i]) {
+            found = true;
+        }
+    }
+
+    if (!found) {
+        m_signalQueue_accountsmodelInfo.push_back(m_currentAccID);
+    }
+
+    if (!m_signalQueueTimer->isActive()) {
+        processSignalQueue();
+        m_signalQueueTimer->start(queueTimerFreq);
+    }
 }
 
 
@@ -5084,6 +5318,8 @@ void DeltaHandler::triggerProviderHintSignal(QString emailAddress)
         
         dc_provider_unref(tempProvider);
     }
+
+    
 }
 
 
@@ -5146,6 +5382,7 @@ QString DeltaHandler::copyToCache(QString fromFilePath)
 void DeltaHandler::shutdownTasks()
 {
     dc_accounts_stop_io(allAccounts);
+    m_chatmodel->saveDraft();
     QDir cachepath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     cachepath.removeRecursively();
 }
@@ -5334,4 +5571,38 @@ bool DeltaHandler::isQueueEmpty()
             && m_signalQueue_chatsNoticed.empty() \
             && m_signalQueue_msgs.empty() \
             && m_signalQueue_notificationsToRemove.empty());
+}
+
+
+void DeltaHandler::removeActiveNotificationsOfChat(uint32_t accID, int chatID)
+{
+    m_notificationHelper->removeActiveNotificationsOfChat(accID, chatID);
+}
+
+
+FileImportSignalHelper* DeltaHandler::fileImportSignalHelper()
+{
+    return m_fileImportSignalHelper;
+}
+
+
+void DeltaHandler::newFileImportSignalHelper()
+{
+    if (m_fileImportSignalHelper) {
+        qWarning() << "DeltaHandler::newFileImportSignalHelper(): m_fileImportSignalHelper is unexpectedly not NULL";
+        delete m_fileImportSignalHelper;
+    }
+
+    m_fileImportSignalHelper = new FileImportSignalHelper();
+}
+
+
+void DeltaHandler::deleteFileImportSignalHelper()
+{
+    if (m_fileImportSignalHelper) {
+        delete m_fileImportSignalHelper;
+        m_fileImportSignalHelper = nullptr;
+    } else {
+        qWarning() << "DeltaHandler::deleteFileImportSignalHelper(): m_fileImportSignalHelper is unexpectedly NULL";
+    }
 }

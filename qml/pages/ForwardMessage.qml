@@ -43,10 +43,11 @@ Page {
         // disable the "back" icon
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Close')
                 onTriggered: {
-                    layout.removePages(forwardMessagePage)
+                    extraStack.pop()
                     DeltaHandler.chatmodel.forwardingFinished()
                 }
             }
@@ -68,6 +69,16 @@ Page {
         onDisplayTextChanged: {
             forwardMessagePage.textHasChanged(displayText)
         }
+
+        onFocusChanged: {
+            if (root.oskViaDbus) {
+                if (focus) {
+                    DeltaHandler.openOskViaDbus()
+                } else {
+                    DeltaHandler.closeOskViaDbus()
+                }
+            }
+        }
         placeholderText: i18n.tr("Search")
     }
 
@@ -83,7 +94,7 @@ Page {
             onClicked: {
                 let chatID = DeltaHandler.chatmodel.chatlistmodel.getChatID(index)
                 DeltaHandler.chatmodel.forwardMessage(chatID)
-                layout.removePages(forwardMessagePage)
+                extraStack.pop()
                 DeltaHandler.chatmodel.forwardingFinished()
             }
 

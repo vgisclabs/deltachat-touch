@@ -39,9 +39,11 @@ Page {
     property int showClassicMailsCurrentSetting: DeltaHandler.getTempContextConfig("show_emails") == "" ? 2 : parseInt(DeltaHandler.getTempContextConfig("show_emails"))
     property string showClassicMailsCurrentSettingString: ""
 
+
     // Related to provider hint
     property string providerUrl
     property bool providerWorking
+
 
     function updateShowClassicMailsCurrentSetting()
     {
@@ -103,7 +105,8 @@ Page {
         // has to explicitly choose cancel or ok.
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     // deleteTemporaryAccount() will check whether a
@@ -111,7 +114,7 @@ Page {
                     // it as the user is leaving the page without
                     // trying to configure it
                     DeltaHandler.deleteTemporaryAccount()
-                    layout.removePages(addEmailPage)
+                    extraStack.pop()
                 }
             }
         ]
@@ -119,7 +122,8 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     // unsetting the focus of each field as per past experience,
@@ -178,8 +182,8 @@ Page {
                     
                     // now DeltaHandler.configureTempContext() needs to be called,
                     // will be done in the popup
-                    PopupUtils.open(configProgress)
-                    //layout.removePages(chatlistPage)
+                    let popup1 = PopupUtils.open(configProgress)
+                    popup1.success.connect(function() { extraStack.clear() })
                 }
             }
         ]
@@ -260,6 +264,14 @@ Page {
                     if (!focus && passwordField.text == "") {
                         addEmailPage.addressFieldHasChanged(displayText)
                     }
+
+                    if (root.oskViaDbus) {
+                        if (focus) {
+                            DeltaHandler.openOskViaDbus()
+                        } else {
+                            DeltaHandler.closeOskViaDbus()
+                        }
+                    }
                 }
             }
 
@@ -285,6 +297,16 @@ Page {
                 }
                 text: DeltaHandler.getTempContextConfig("mail_pw")
                 echoMode: TextInput.Password
+
+                onFocusChanged: {
+                    if (root.oskViaDbus) {
+                        if (focus) {
+                            DeltaHandler.openOskViaDbus()
+                        } else {
+                            DeltaHandler.closeOskViaDbus()
+                        }
+                    }
+                }
             }
 
             Rectangle {
@@ -301,7 +323,8 @@ Page {
                 Icon {
                     anchors.fill: parent
                     id: showPwIcon
-                    name: 'view-on'
+                    //name: 'view-on'
+                    source: "qrc:///assets/suru-icons/view-on.svg"
                 }
 
                 MouseArea {
@@ -310,12 +333,14 @@ Page {
                     onClicked: {
                         if (passwordField.echoMode == TextInput.Password) {
                             passwordField.echoMode = TextInput.Normal
-                            showPwIcon.name = 'view-off'
+                            //showPwIcon.name = 'view-off'
+                            showPwIcon.source = "qrc:///assets/suru-icons/view-off.svg"
 
                         }
                         else {
                             passwordField.echoMode = TextInput.Password
-                            showPwIcon.name = 'view-on'
+                            //showPwIcon.name = 'view-on'
+                            showPwIcon.source = "qrc:///assets/suru-icons/view-on.svg"
                         }
                     }
                 }
@@ -427,7 +452,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -446,7 +472,8 @@ Page {
                     top: showClassicMailsItem.bottom
                     topMargin: units.gu(3)
                 }
-                iconName: advancedOptionsVisible ? "go-down" : "go-next"
+                //iconName: advancedOptionsVisible ? "go-down" : "go-next"
+                iconSource: advancedOptionsVisible ? "qrc:///assets/suru-icons/go-down.svg" : "qrc:///assets/suru-icons/go-next.svg"
                 iconPosition: "left"
                 text: i18n.tr("Advanced")
                 onClicked: {
@@ -483,6 +510,16 @@ Page {
                     width: emailField.width
                     text: DeltaHandler.getTempContextConfig("mail_user")
                     placeholderText: i18n.tr("Default (same as above)")
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 Label {
@@ -495,6 +532,16 @@ Page {
                     width: emailField.width
                     text: DeltaHandler.getTempContextConfig("mail_server")
                     placeholderText: i18n.tr("Automatic")
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 Label {
@@ -508,6 +555,16 @@ Page {
                     text: DeltaHandler.getTempContextConfig("mail_port")
                     placeholderText: i18n.tr("Default (%1)").arg((imapSecSelector.selectedIndex == 0 || imapSecSelector.selectedIndex == 1 ? "993" : "143"))
                     validator: IntValidator {bottom: 0; top: 65535}
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 OptionSelector {
@@ -550,6 +607,16 @@ Page {
                     width: emailField.width
                     text: DeltaHandler.getTempContextConfig("send_user")
                     placeholderText: i18n.tr("Default (same as above)")
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 Label {
@@ -562,6 +629,16 @@ Page {
                     width: emailField.width
                     text: DeltaHandler.getTempContextConfig("send_pw")
                     placeholderText: i18n.tr("Default (same as above)")
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 Label {
@@ -574,6 +651,16 @@ Page {
                     width: emailField.width
                     text: DeltaHandler.getTempContextConfig("send_server")
                     placeholderText: i18n.tr("Automatic")
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 Label {
@@ -587,6 +674,16 @@ Page {
                     text: DeltaHandler.getTempContextConfig("send_port")
                     placeholderText: i18n.tr("Standard (%1)").arg(smtpSecSelector.selectedIndex == 0 || smtpSecSelector.selectedIndex == 1 ? "465" : (smtpSecSelector.selectedIndex == 2 ? "587" : "25"))
                     validator: IntValidator {bottom: 0; top: 65535}
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 OptionSelector {
@@ -680,6 +777,16 @@ Page {
                     text: DeltaHandler.getTempContextConfig("socks5_host")
                     placeholderText: i18n.tr("Standard (%1)").arg("localhost")
                     enabled: socksSwitch.checked
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 Label {
@@ -694,6 +801,16 @@ Page {
                     placeholderText: i18n.tr("Standard (%1)").arg("9150")
                     validator: IntValidator {bottom: 0; top: 65535}
                     enabled: socksSwitch.checked
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 Label {
@@ -706,6 +823,16 @@ Page {
                     width: emailField.width
                     text: DeltaHandler.getTempContextConfig("socks5_user")
                     enabled: socksSwitch.checked
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 Label {
@@ -729,6 +856,16 @@ Page {
                         text: DeltaHandler.getTempContextConfig("socks5_password")
                         echoMode: TextInput.Password
                         enabled: socksSwitch.checked
+
+                        onFocusChanged: {
+                            if (root.oskViaDbus) {
+                                if (focus) {
+                                    DeltaHandler.openOskViaDbus()
+                                } else {
+                                    DeltaHandler.closeOskViaDbus()
+                                }
+                            }
+                        }
                     }
 
                     Rectangle {
@@ -744,7 +881,8 @@ Page {
                         Icon {
                             anchors.fill: parent
                             id: showSocksPwIcon
-                            name: 'view-on'
+                            //name: 'view-on'
+                            source: "qrc:///assets/suru-icons/view-on.svg"
                         }
 
                         MouseArea {
@@ -753,12 +891,14 @@ Page {
                             onClicked: {
                                 if (socksPasswordField.echoMode == TextInput.Password) {
                                     socksPasswordField.echoMode = TextInput.Normal
-                                    showSocksPwIcon.name = 'view-off'
+                                    //showSocksPwIcon.name = 'view-off'
+                                    showSocksPwIcon.source = "qrc:///assets/suru-icons/view-off.svg"
 
                                 }
                                 else {
                                     socksPasswordField.echoMode = TextInput.Password
-                                    showSocksPwIcon.name = 'view-on'
+                                    //showSocksPwIcon.name = 'view-on'
+                                    showSocksPwIcon.source = "qrc:///assets/suru-icons/view-on.svg"
                                 }
                             }
                         } // end MouseArea id: showSocksPwMouse

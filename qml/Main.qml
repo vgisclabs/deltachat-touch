@@ -36,9 +36,25 @@ MainView {
     automaticOrientation: true
     anchorToKeyboard: true
 
+//    FontLoader {
+//        id: emojifont
+//        name: "qrc:///assets/joypixels-android.ttf"
+//    }
+
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.4.1-pre07'
+    property string version: '1.4.1-pre09'
     property string oldVersion: "unknown"
+
+    // holds the page item representing the ChatView after it
+    // has been opened
+    property var chatViewItem
+    property bool chatViewIsOpen: false
+
+    // used for the content of the URL dispatcher
+    property string urlstring
+    // type of url as QR code state (see dc_check_qr()
+    // in https://c.delta.chat/classdc__context__t.html)
+    property int qrstate
 
     signal appStateNowActive()
     signal ioChanged()
@@ -52,7 +68,6 @@ MainView {
         //console.log("+++++++++++ in Main.qml: received jsonrpc response: ", response)
         JSONRPC.receiveResponse(response)
     }
-
 
     // Performs actions related to a version update
     // directly at beginning of onCompleted
@@ -230,18 +245,21 @@ MainView {
 
     function startupStep5() {
         if (!DeltaHandler.hasConfiguredAccount) {
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+            extraStack.push(Qt.resolvedUrl('pages/AccountConfig.qml'))
         } else {
             updateConnectivity()
+            if (hasTwoColumns) {
+                DeltaHandler.selectAndOpenLastChatId()
+            }
         }
 
         checkVersionUpdateLate()
 
         refreshOtherAccsIndicator()
 
-        DeltaHandler.notificationGenerator.setEnablePushNotifications(sendPushNotifications)
-        DeltaHandler.notificationGenerator.setDetailedPushNotifications(detailedPushNotifications)
-        DeltaHandler.notificationGenerator.setNotifyContactRequests(notifyContactRequests)
+        DeltaHandler.notificationHelper.setEnablePushNotifications(sendPushNotifications)
+        DeltaHandler.notificationHelper.setDetailedPushNotifications(detailedPushNotifications)
+        DeltaHandler.notificationHelper.setNotifyContactRequests(notifyContactRequests)
 
         DeltaHandler.connectivityChangedForActiveAccount.connect(updateConnectivity)
         root.periodicTimerSignal.connect(DeltaHandler.periodicTimerActions)
@@ -256,7 +274,198 @@ MainView {
         if (Qt.application.state == Qt.ApplicationActive) {
             periodicTimer.start()
         }
+
+        
+        // check for and process arguments (arguments[0] is the application name)
+        if (Qt.application.arguments && Qt.application.arguments.length > 1) {
+            urlstring = Qt.application.arguments[1]
+            urlDispatcherStep1()
+        }
     }
+
+    
+    function urlDispatcherStep1() {
+        // handling of arguments/urls is based on the code for
+        // QR scanning, thus the names with "qr"
+        
+        // Determine the type of the argument/url
+        qrstate = DeltaHandler.evaluateQrCode(urlstring)
+
+        switch (qrstate) {
+            case DeltaHandler.DT_QR_ASK_VERIFYCONTACT:
+                console.log("qr state is DT_QR_ASK_VERIFYCONTACT")
+                if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1) {
+                    let popup12 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"),
+                        chatlistPage,
+                        { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) + "\n\n" + i18n.tr("Select account for chatting") })
+                    popup12.cancelled.connect(function() {
+                        // unset urlstring if the user cancelled the account selection
+                        urlstring = ""
+                    })
+                    popup12.selected.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        // rest of the action will be triggered in the popup
+                    })
+                    // If the user selected an account, don't call DeltaHandler.continueQrCodeAction()
+                    // here as switching to the chosen account may not have finished yet.
+                    // Instead, the signal accountForUrlProcessingSelected will be
+                    // emitted from C++ side in this case, triggering the respective action..
+                } else if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) == 1) {
+                    // only one configured account, go to step 2 directly
+                    let popup = PopupUtils.open(
+                        Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                        chatlistPage,
+                        { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) })
+                    popup.confirmed.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        DeltaHandler.continueQrCodeAction(true)
+                    })
+                    // unset urlstring if only one account
+                    urlstring = ""
+                } else {
+                    // no account configured, cannot perform this action
+                    console.log("Main.qml: urlDispatcherStep1(): No account configured, cannot process DT_QR_ASK_VERIFYCONTACT")
+                    urlstring = ""
+                }
+                break;
+                
+            case DeltaHandler.DT_QR_ADDR:
+                console.log("qr state is DT_QR_ADDR")
+                if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1) {
+                        let popup16 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"), chatlistPage, { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) + "\n\n" + i18n.tr("Select account for chatting") })
+                    popup16.cancelled.connect(function() {
+                        // unset urlstring if the user cancelled the account selection
+                        urlstring = ""
+                    })
+                    popup16.selected.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        // rest of the action will be triggered in the popup
+                    })
+                    // see above regarding not calling DeltaHandler.continueQrCodeAction()
+                } else if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) == 1) {
+                    // only one configured account
+                    let popup17 = PopupUtils.open(
+                        Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                        chatlistPage,
+                        { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) })
+                    popup17.confirmed.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        DeltaHandler.continueQrCodeAction(true)
+                    })
+                    // unset urlstring if only one account
+                    urlstring = ""
+                } else {
+                    // no account configured, cannot perform this action
+                    console.log("Main.qml: urlDispatcherStep1(): No account configured, cannot process DT_QR_ADDR")
+                    urlstring = ""
+                }
+                break;
+
+            case DeltaHandler.DT_QR_ASK_VERIFYGROUP:
+                console.log("qr state is DT_QR_ASK_VERIFYGROUP")
+                if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1) {
+                        let popup6 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"), chatlistPage, { "dialogText": i18n.tr("Do you want to join the group \"%1\"?").arg(DeltaHandler.getQrTextOne()) + "\n\n" + i18n.tr("Select account for joining") })
+                    popup6.cancelled.connect(function() {
+                        // unset urlstring if the user cancelled the account selection
+                        urlstring = ""
+                    })
+                    popup6.selected.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        // rest of the action will be triggered in the popup
+                    })
+                    // see above regarding not calling DeltaHandler.continueQrCodeAction()
+                } else if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) == 1) {
+                    // only one configured account
+                    let popup9 = PopupUtils.open(
+                        Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                        chatlistPage,
+                        { dialogText: i18n.tr("Do you want to join the group \"%1\"?").arg(DeltaHandler.getQrTextOne()) })
+                    popup9.confirmed.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        DeltaHandler.continueQrCodeAction(true)
+                    })
+                    // unset urlstring if only one account
+                    urlstring = ""
+                } else {
+                    // no account configured, cannot perform this action
+                    console.log("Main.qml: urlDispatcherStep1(): No account configured, cannot process DT_QR_ASK_VERIFYGROUP")
+                    urlstring = ""
+                }
+                break;
+
+            case DeltaHandler.DT_QR_ACCOUNT:
+                console.log("qr state is DT_QR_ACCOUNT")
+                let popup10 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                    chatlistPage,
+                    { dialogText: i18n.tr("Create new e-mail address on \"%1\" and log in there?").arg(DeltaHandler.getQrTextOne()) })
+                popup10.confirmed.connect(function() {
+                    // clearing the stacks will be done when handling the accountChanged signal
+                    DeltaHandler.continueQrCodeAction(true)
+                })
+                urlstring = ""
+                break;
+
+            case DeltaHandler.DT_QR_BACKUP:
+                console.log("qr state is DT_QR_BACKUP")
+                let popup11 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                    chatlistPage,
+                    { dialogText: i18n.tr("Copy the account from the other device to this device?"),
+                    dialogTitle: i18n.tr("Add as Second Device"),
+                    okButtonText: i18n.tr("Add Second Device") })
+                popup11.confirmed.connect(function() {
+                    // clearing the stacks will be done when handling the accountChanged signal
+                    DeltaHandler.continueQrCodeAction(true)
+                })
+                urlstring = ""
+                break;
+
+            case DeltaHandler.DT_QR_LOGIN:
+                console.log("qr state is DT_QR_LOGIN")
+                let popup13 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                    chatlistPage,
+                    { dialogText: i18n.tr("Log into \"%1\"?").arg(DeltaHandler.getQrTextOne()) })
+                popup13.confirmed.connect(function() {
+                    // clearing the stacks will be done when handling the accountChanged signal
+                    DeltaHandler.continueQrCodeAction(true)
+                })
+                urlstring = ""
+                break;
+
+            case DeltaHandler.DT_QR_ERROR:
+                console.log("qr state is DT_QR_ERROR")
+                let popup15 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ErrorMessage.qml"),
+                    chatlistPage,
+                    { text: i18n.tr("Error: %1").arg(DeltaHandler.getQrTextOne()),
+                      title: i18n.tr("Error") })
+                urlstring = ""
+                break;
+
+            case DeltaHandler.DT_UNKNOWN: // fallthrough
+            default:
+                // If this appears in the log, the url/argument may not even be something
+                // unknown to the core, but it's just none of the cases that
+                // we handle when passed as argument on startup or via URL dispatcher
+                console.log("Main.qml: Don't know how to handle argument \"", urlstring, "\", passed on start or via urlDispatcher, skipping it")
+                let popup14 = PopupUtils.open(
+                    Qt.resolvedUrl("pages/ErrorMessage.qml"),
+                    chatlistPage,
+                    { text: i18n.tr("Unknown"),
+                      title: i18n.tr("Error") })
+                urlstring = ""
+                break;
+        }
+    }
+
 
     function refreshOtherAccsIndicator() {
         let noOfInactiveMsgs = DeltaHandler.accountsmodel.noOfFreshMsgsInInactiveAccounts();
@@ -297,7 +506,7 @@ MainView {
         target: bottomEdge
         onCollapseCompleted: {
             enabled = false
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+            extraStack.push(Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
         }
         enabled: false
     }
@@ -350,6 +559,10 @@ MainView {
     // If the app is run in desktop mode, set this property to 'true' and the
     // check will be disabled."
     property bool isDesktopMode: false
+
+    property bool onUbuntuTouch: false
+
+    property bool oskViaDbus: false
 
     // Will connect to the network if true. Offline mode if
     // set to false. Connected to the "Sync all" switch
@@ -432,6 +645,8 @@ MainView {
         property alias alwaysLoadRemote: root.alwaysLoadRemoteContent
         property alias inactAccsNewMsgsSinceLastCheck: root.inactiveAccsNewMsgsSinceLastCheck
         property alias recentlyUsedEmojisNew: root.emojiRecentArray
+        property alias rootWidth: root.width
+        property alias rootHeight: root.height
     }
 
     width: units.gu(45)
@@ -440,7 +655,7 @@ MainView {
     function startStopIO() {
         if (DeltaHandler.networkingIsStarted) { // network is up, check if it needs to be stopped
             //if (Qt.application.state != Qt.ApplicationActive || !DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode) || !root.syncAll) {
-            if (!DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode) || !root.syncAll) {
+            if (!DeltaHandler.networkingIsAllowed || !DeltaHandler.hasConfiguredAccount || !(Connectivity.online || isDesktopMode || !onUbuntuTouch) || !root.syncAll) {
                 DeltaHandler.stop_io();
                 console.log('startStopIO(): network is currently up, calling stop_io()')
                 ioChanged();
@@ -451,7 +666,7 @@ MainView {
         }
         else { // network is down, check if it can be brought up
             //if (Qt.application.state == Qt.ApplicationActive && DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode) && root.syncAll) {
-            if (DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode) && root.syncAll) {
+            if (DeltaHandler.networkingIsAllowed && DeltaHandler.hasConfiguredAccount && (Connectivity.online || isDesktopMode || !onUbuntuTouch) && root.syncAll) {
                 DeltaHandler.start_io()
                 console.log('startStopIO(): network is currently down, calling start_io()')
                 ioChanged();
@@ -467,20 +682,109 @@ MainView {
         target: Connectivity
         onOnlineChanged: {
             startStopIO()
-            console.log('connectivity signal onlineChanged')
+            if (Connectivity.online) {
+                if (!onUbuntuTouch) {
+                    JSONRPC.maybeNetwork()
+                }
+                console.log('Main.qml: received Ubuntu Connectivity signal onlineChanged: Now online')
+            } else {
+                console.log('Main.qml: received Ubuntu Connectivity signal onlineChanged: Now offline')
+            }
+        }
+    }
+
+    Connections {
+        target: UriHandler
+        onOpened: {
+            if (uris.length > 0) {
+                console.log("Main.qml: Received url from UriHandler: ", uris[0])
+                urlstring = uris[0]
+                urlDispatcherStep1()
+            }
         }
     }
     
     Connections {
         target: DeltaHandler
-        onNewJsonrpcResponse:{
+        
+        onNewJsonrpcResponse: {
             receiveJsonrpcResponse(response)
+        }
+
+        onAccountChanged: {
+            // need to clear the page stacks in case the new account
+            // has been created after processing a url that was passed
+            // to the app while the app had pages on the stacks
+            extraStack.clear()
+            imageStack.clear()
+
+            // In two-column mode, the user can select a new account while
+            // the ChatView is open. Just call selectAndOpenLastChatId if
+            // we're in two-column mode.
+            //
+            // The second part of the condition (if we're not in two-column
+            // mode, but the chat view is open) can occur if the user opened
+            // the account switcher in two-column mode, then resized the window
+            // to be in one-column mode. If a chat view was open before, it
+            // will still be open, but hidden by the account switcher.
+            if (hasTwoColumns || (!hasTwoColumns && chatViewIsOpen)) {
+                DeltaHandler.selectAndOpenLastChatId()
+            }
+        }
+
+
+        onUrlReceived: {
+            urlstring = myUrl
+            if (urlstring !== "") {
+                // raise() doesn't work, at least it doesn't in fluxbox
+                //myview.raise()
+                myview.requestActivate()
+                urlDispatcherStep1()
+            }
+        }
+
+        onAccountForUrlProcessingSelected: {
+            if (urlstring !== "") {
+                // Step 2 is only needed for situations that require the user to
+                // select an account to perform the action with. The user chosen account
+                // is set at this stage, perform the action connected to the url/argument.
+                //
+                // All user queries ("Do you want to do this?") should be performed
+                // in a previous step, nothing is queried here anymore.
+                
+                // Need to execute evaluateQrCode() again to make sure that the correct
+                // contact ID is set in case a switch of accounts has taken place
+                // between step1 and step2,  because in this case, the url/argument was
+                // evaluated with the old account/context, and the contact ID via the
+                // dc_lot_t as returned by dc_check_qr refers to a contact of the old
+                // context)
+                qrstate = DeltaHandler.evaluateQrCode(urlstring)
+                
+                // Clear urlstring, so it will not trigger any action (e.g., when
+                // switching to a different account) except for the one below. Its
+                // content is not needed anymore, any info is stored on C++ side
+                urlstring = ""
+
+                switch (qrstate) {
+                    // only cases that require account selection are listed here
+                    case DeltaHandler.DT_QR_ASK_VERIFYCONTACT: // fallthrough
+                    case DeltaHandler.DT_QR_ASK_VERIFYGROUP: // fallthrough
+                    case DeltaHandler.DT_QR_ADDR:
+                        DeltaHandler.continueQrCodeAction(true)
+                        break;
+                    default:
+                        console.log("Main.qml, onAccountForUrlProcessingSelected: Warning: switch reached default case, url type is not covered by this function")
+                        break;
+                }
+            } else {
+                console.log("Main.qml, onAccountForUrlProcessingSelected: Warning: urlstring is not set, cannot perform any action")
+            }
         }
 
         onChatViewClosed: {
             root.chatOpenAlreadyClicked = false;
             if (gotoQrScanPage) {
-                layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
+                extraStack.push(Qt.resolvedUrl('pages/QrShowScan.qml'), { "goToScanDirectly": true })
             }
         }
 
@@ -495,22 +799,81 @@ MainView {
         }
 
         onOpenChatViewRequest: {
-            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'), { "accountID": accID, "chatID": chatID })
+            if (!chatViewIsOpen) {
+                chatViewItem = layout.addPageToNextColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'), { "pageAccID": accID, "pageChatID": chatID })
+                chatViewIsOpen = true
+            }
+        }
+
+        onCloseChatViewRequest: {
+            // maybe the chat view is not active, but it
+            // shouldn't be a problem to call removePages anyway
+            layout.removePages(layout.primaryPage)
         }
 
         onChatlistShowsArchivedOnly: {
             showArchiveCloseLine = showsArchived;
-            root.chatOpenAlreadyClicked = false
+            if (!root.hasTwoColumns) {
+                root.chatOpenAlreadyClicked = false
+            }
+        }
+
+        onChatlistToBeginning: {
+            view.positionViewAtBeginning()
         }
 
         onErrorEvent: {
             errorShape.visible = true
             errorLabel.text = i18n.tr("Error: %1").arg(errorMessage)
         }
+
+        onNewConfiguredAccount: {
+            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        }
+
+        onNewUnconfiguredAccount: {
+            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        }
+        
+        onReadyForQrBackupImport: {
+            // see signal finishedSetConfigFromQr in deltahandler.h
+            if (calledAfterUrlReceived) {
+                PopupUtils.open(Qt.resolvedUrl("pages/ProgressBackupImport.qml"))
+            }
+        }
+
+        onFinishedSetConfigFromQr: {
+            // see signal finishedSetConfigFromQr in deltahandler.h
+            if (calledAfterUrlReceived) {
+                if (successful) {
+                    // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
+                    // the account should not persist if the configuration fails (or should it?)
+                    PopupUtils.open(
+                        Qt.resolvedUrl("pages/ProgressConfigAccount.qml"),
+                        chatlistPage,
+                        { "title": i18n.tr('Configuring...') }
+                    )
+                } else {
+                    PopupUtils.open(
+                        Qt.resolvedUrl("pages/errorMessage.qml"),
+                        chatlistPage,
+                        { "title": i18n.tr('Error') }
+                    )
+                    setTempContextNull()
+                }
+            }
+        }
     }
 
     Connections {
-        target: DeltaHandler.notificationGenerator
+        target: DeltaHandler.chatmodel
+        onExportMomentaryFileViaContentHub: {
+            extraStack.push(Qt.resolvedUrl('pages/FileExportDialog.qml'), { "url": StandardPaths.locate(StandardPaths.AppConfigLocation, fUrl), "conType": fType })
+        }
+    }
+
+    Connections {
+        target: DeltaHandler.notificationHelper
         onNewMessageForInactiveAccount: {
             root.inactiveAccsNewMsgsSinceLastCheck = true
             refreshOtherAccsIndicator()
@@ -560,18 +923,66 @@ MainView {
         onInactiveFreshMsgsMayHaveChanged: {
             refreshOtherAccsIndicator()
         }
+
+        onDeletedAccount: {
+            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        }
+    }
+
+    property bool hasTwoColumns: width > units.gu(100)
+
+    onHasTwoColumnsChanged: {
+        if (hasTwoColumns) {
+            if (chatOpenAlreadyClicked) {
+                chatOpenAlreadyClicked = false
+            }
+        }
+    }
+
+    Rectangle {
+        id: accountSwitcherLeft
+        width: root.scaledFontSizeInPixels*1.5 + units.gu(5)
+        height: parent.height
+
+        anchors {
+            left: parent.left
+            top: parent.top
+        }
+
+        visible: root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        color:  root.darkmode ? "#505050" : "#a0a0a0" //theme.palette.normal.foreground
+
+        ListView {
+            id: switcherView
+            anchors.fill: parent
+
+            model: DeltaHandler.accountsmodel
+            delegate: Loader {
+                width: switcherView.width
+                height: width
+                property string sidebarColor: accountSwitcherLeft.color
+                source: Qt.resolvedUrl("pages/AccountSwitcherDelegate.qml")
+            }
+        }
     }
 
     AdaptivePageLayout {
         id: layout
-        anchors.fill: parent
+        //anchors.fill: parent
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            left: accountSwitcherLeft.visible ? accountSwitcherLeft.right : parent.left
+            right: parent.right
+        }
+
         layouts: [
             PageColumnsLayout {
-                when: width > units.gu(100)
+                when: root.hasTwoColumns
                 // column #0
                 PageColumn {
-                    minimumWidth: units.gu(45)
-                    preferredWidth: units.gu(70)
+                    minimumWidth: units.gu(40)
+                    preferredWidth: units.gu(50)
                     maximumWidth: units.gu(70)
                 }
                 // column #1
@@ -623,19 +1034,29 @@ MainView {
 
                 //opacity: 0.5
             
-                property string currentUsername: DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
-                property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                property string currentUsername: DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? "" : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
+                property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? "" : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                //property string currentProfilePic: DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
 
                 Connections {
                     target: DeltaHandler
                     onAccountChanged: {
-                        headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? i18n.tr("no username set") : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
-                        headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? "" : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
+                        headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? "" : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        //headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        profilePicShape.color = DeltaHandler.getCurrentProfileColor()
                         bottomEdge.enabled = DeltaHandler.hasConfiguredAccount && !root.chatOpenAlreadyClicked
                         bottomEdgeHint.visible = DeltaHandler.hasConfiguredAccount
                         updateConnectivity()
 
                         refreshOtherAccsIndicator()
+                    }
+
+                    onAccountDataChanged: {
+                        headerRect.currentUsername = DeltaHandler.hasConfiguredAccount ? (DeltaHandler.getCurrentUsername() == "" ? "" : DeltaHandler.getCurrentUsername()) : i18n.tr("No account configured")
+                        headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? "" : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        //headerRect.currentProfilePic = DeltaHandler.getCurrentProfilePic() == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                        profilePicShape.color = DeltaHandler.getCurrentProfileColor()
                     }
                 }
 
@@ -654,26 +1075,46 @@ MainView {
                         id: headerMouse
                         anchors.fill: parent
                         onClicked: {
-                            layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/AccountConfig.qml'))
+                            extraStack.push(Qt.resolvedUrl('pages/AccountConfig.qml'))
                             root.inactiveAccsNewMsgsSinceLastCheck = false
                         }
                         enabled: !root.chatOpenAlreadyClicked
                     }
-                
+
                     UbuntuShape {
                         id: profilePicShape
                         height: usernameLabel.contentHeight + units.gu(3)
                         width: height
+
                         anchors {
                             left: profilePicAndNameRect.left
                             leftMargin: units.gu(0.5)
                             top: profilePicAndNameRect.top
                             topMargin: units.gu(0.5)
                         }
-                        source: Image {
+
+                        color: DeltaHandler.getCurrentProfileColor()
+
+                        source: headerRect.currentProfilePic === "" ? undefined : ownProfileImage
+
+                        Image {
+                            id: ownProfileImage
+                            anchors.fill: parent
                             source: headerRect.currentProfilePic
+                            visible: false
                         }
+
+                        Label {
+                            id: ownInitialLabel
+                            visible: headerRect.currentProfilePic === ""
+                            text: headerRect.currentUsername === "" ? "#" : headerRect.currentUsername.charAt(0).toUpperCase()
+                            font.pixelSize: parent.height * 0.6
+                            color: "white"
+                            anchors.centerIn: parent
+                        }
+
                         sourceFillMode: UbuntuShape.PreserveAspectCrop
+                        //aspect: UbuntuShape.Flat
                     } // end of UbuntuShape id:profilePicShape
                 
                     Label {
@@ -684,14 +1125,14 @@ MainView {
                             bottom: parent.bottom
                             bottomMargin: units.gu(2)
                         }
-                        width: parent.width - profilePicShape.width - (hasNewMsgsInOtherAccs ? newMsgsInOtherAccsIndicator.width + units.gu(1) : 0) - units.gu(3)
+                        width: parent.width - profilePicShape.width - (newMsgsInOtherAccsIndicator.visible ? newMsgsInOtherAccsIndicator.width + units.gu(1) : 0) - units.gu(3)
                         elide: Text.ElideRight
                         text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
                         color: "#e7fcfd"
                         font.pixelSize: root.scaledFontSizeInPixels * 1.3
                     }
                 } // Rectangle id: profilePicAndNameRect
-            
+                
                 UbuntuShape {
                     id: connectivityShape
 
@@ -706,7 +1147,8 @@ MainView {
 
                     Icon {
                         id: connectivityIcon
-                        name: "sync"
+                        //name: "sync"
+                        source: "qrc:///assets/suru-icons/sync.svg"
                         width: connectivityShape.width * (0.9)
                         height: width
                         anchors{
@@ -728,7 +1170,7 @@ MainView {
                     }
                     color: root.otherAccsIndicatorBackgroundColor
                     //aspect: UbuntuShape.Flat
-                    visible: hasNewMsgsInOtherAccs
+                    visible: hasNewMsgsInOtherAccs && !accountSwitcherLeft.visible
 
                     Label {
                         id: newMsgsInOtherAccsCountLabel
@@ -761,7 +1203,8 @@ MainView {
             
                     Icon {
                         id: searchIcon
-                        name: "find"
+                        //name: "find"
+                        source: "qrc:///assets/suru-icons/find.svg"
                         width: profilePicShape.width * (2/5)
                         height: width
                         anchors{
@@ -798,7 +1241,8 @@ MainView {
             
                     Icon {
                         id: qrIcon
-                        name: "view-grid-symbolic"
+                        //name: "view-grid-symbolic"
+                        source: "qrc:///assets/suru-icons/view-grid-symbolic.svg"
                         width: profilePicShape.width * (2/5)
                         height: width
                         anchors{
@@ -810,7 +1254,7 @@ MainView {
             
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/QrShowScan.qml'))
+                        onClicked: extraStack.push(Qt.resolvedUrl('pages/QrShowScan.qml'))
                         enabled: !root.chatOpenAlreadyClicked
                     }
                 }
@@ -829,7 +1273,8 @@ MainView {
             
                     Icon {
                         id: settingsIcon
-                        name: "settings"
+                        //name: "settings"
+                        source: "qrc:///assets/suru-icons/settings.svg"
                         width: profilePicShape.width * (2/5)
                         height: width
                         anchors{
@@ -840,7 +1285,7 @@ MainView {
                     }
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/SettingsPage.qml'))
+                        onClicked: extraStack.push(Qt.resolvedUrl('pages/SettingsPage.qml'))
                         enabled: !root.chatOpenAlreadyClicked
                     }
                 }
@@ -871,6 +1316,16 @@ MainView {
                         }
                     }
                     visible: searchVisible && !chatOpenAlreadyClicked
+
+                    onFocusChanged: {
+                        if (root.oskViaDbus) {
+                            if (focus) {
+                                DeltaHandler.openOskViaDbus()
+                            } else {
+                                DeltaHandler.closeOskViaDbus()
+                            }
+                        }
+                    }
                 }
 
                 ListItem {
@@ -885,27 +1340,6 @@ MainView {
             } // end of Rectangle id:headerRect
             /* ======================= END HEADER =========================== */
 
-        //            // fallback header
-        //            header: PageHeader {
-        //                id: header
-        //
-        //                title: '%1 v%2'.arg(root.appName).arg(root.version)
-        //
-        //                trailingActionBar.actions: [
-        //                    Action {
-        //                        iconName: 'settings'
-        //                        text: i18n.tr('Settings')
-        //                        onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/SettingsPage.qml'))
-        //                    },
-        //
-        //                    Action {
-        //                        iconName: 'info'
-        //                        text: i18n.tr('About DeltaTouch')
-        //                        onTriggered: layout.addPageToCurrentColumn(layout.primaryPage, Qt.resolvedUrl('pages/About.qml'))
-        //                    }
-        //                ]
-        //            } PageHeader id:header
-                
             ListItem {
                 id: archivedChatsItem
                 width: parent.width
@@ -924,7 +1358,8 @@ MainView {
                         SlotsLayout.position: SlotsLayout.Trailing
                         height: units.gu(3)
                         width: height
-                        name: "close"
+                        //name: "close"
+                        source: "qrc:///assets/suru-icons/close.svg"
 
                         MouseArea {
                             anchors.fill: closeArchiveListIcon
@@ -938,7 +1373,8 @@ MainView {
             ListItemActions {
                 id: leadingChatAction
                 actions: Action {
-                    iconName: "delete"
+                    //iconName: "delete"
+                    iconSource: "qrc:///assets/suru-icons/delete.svg"
                     onTriggered: {
                         // the index is passed as parameter and can
                         // be accessed via 'value'
@@ -952,7 +1388,8 @@ MainView {
                 id: trailingChatActions
                 actions: [
                     Action {
-                        iconName: "folder-symbolic"
+                        //iconName: "folder-symbolic"
+                        iconSource: "qrc:///assets/suru-icons/folder-symbolic.svg"
                         onTriggered: {
                             // the index is passed as parameter and can
                             // be accessed via 'value'
@@ -961,14 +1398,16 @@ MainView {
                         }
                     },
                     Action {
-                        iconName: "pinned"
+                        //iconName: "pinned"
+                        iconSource: "qrc:///assets/suru-icons/pinned.svg"
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             DeltaHandler.pinUnpinMomentaryChat()
                         }
                     },
                     Action {
-                        iconName: "navigation-menu"
+                        //iconName: "navigation-menu"
+                        iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActionsChatlist.qml'))
@@ -983,14 +1422,16 @@ MainView {
                 id: trailingChatActionsArchived
                 actions: [
                     Action {
-                        iconName: "folder-symbolic"
+                        //iconName: "folder-symbolic"
+                        iconSource: "qrc:///assets/suru-icons/folder-symbolic.svg"
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             DeltaHandler.unarchiveMomentaryChat()
                         }
                     },
                     Action {
-                        iconName: "navigation-menu"
+                        //iconName: "navigation-menu"
+                        iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActionsChatlist.qml'))
@@ -1088,7 +1529,9 @@ MainView {
                     divider.visible: true
                     onClicked: {
                         if (!root.chatOpenAlreadyClicked) {
-                            root.chatOpenAlreadyClicked = true
+                            if (!root.hasTwoColumns) {
+                                root.chatOpenAlreadyClicked = true
+                            }
                             DeltaHandler.selectChat(index)
                             DeltaHandler.openChat()
                         } 
@@ -1108,7 +1551,7 @@ MainView {
                         // need to explicitly set the height because otherwise,
                         // the height will increase when switching
                         // scaledFontSize from "medium" to "small" (why??)
-                        height: chatPicShape.height + units.gu(1) + units.gu(scaleLevel * 0.25)
+                        height: chatPicShape.height + units.gu(1) + units.gu(scaleLevel * 0.25) + ((!onUbuntuTouch && scaledFontSize === "x-large") ? units.gu(2) : 0)
 
                         UbuntuShape {
                             id: chatPicShape
@@ -1127,7 +1570,7 @@ MainView {
                                 id: avatarInitialLabel
                                 visible: chatPicPath === ""
                                 text: avatarInitial
-                                fontSize: "x-large"
+                                font.pixelSize: parent.height * 0.6
                                 color: "white"
                                 anchors.centerIn: parent
                             }
@@ -1168,7 +1611,8 @@ MainView {
                                     rightMargin: units.gu(0.5)
                                     top: dateAndMsgCount.top
                                 }
-                                name: "audio-speakers-muted-symbolic"
+                                //name: "audio-speakers-muted-symbolic"
+                                source: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
                                 color: root.darkmode ? "white" : "black"
                                 visible: chatlistEntry.isMuted
 
@@ -1182,7 +1626,8 @@ MainView {
                                     right: dateAndMsgCount.right
                                     top: dateAndMsgCount.top
                                 }
-                                name: "pinned"
+                                //name: "pinned"
+                                source: "qrc:///assets/suru-icons/pinned.svg"
                                 color: root.darkmode ? "white" : "black"
                                 visible: chatlistEntry.isPinned
 
@@ -1312,7 +1757,8 @@ MainView {
                             id: toTopIcon
                             width: parent.width - units.gu(1)
                             height: width
-                            name: "go-up"
+                            //name: "go-up"
+                            source: "qrc:///assets/suru-icons/go-up.svg"
                             anchors{
                                 horizontalCenter: parent.horizontalCenter
                                 verticalCenter: parent.verticalCenter
@@ -1363,14 +1809,61 @@ MainView {
                     id: bottomEdgeHint
                     status: isDesktopMode ? BottomEdgeHint.Locked : (showBottomEdgeHint ? BottomEdgeHint.Locked : BottomEdgeHint.Active)
                     text: bottomEdge.hint.status == BottomEdgeHint.Locked ? i18n.tr("New Chat") : ""
-                    iconName: "compose"
+                    //iconName: "compose"
+                    iconSource: "qrc:///assets/suru-icons/compose.svg"
                     onStatusChanged: if (status === BottomEdgeHint.Inactive) bottomEdge.hint.status = (showBottomEdgeHint ? BottomEdgeHint.Locked : BottomEdgeHint.Active)
                     visible: DeltaHandler.hasConfiguredAccount
                 }
             }
         } // end of Page id: chatlistPage
     } // end of AdaptivePageLayout id: layout
+
+    Rectangle {
+        id: backgroundForImageStack
+        anchors.fill: imageStack
+        color: theme.palette.normal.background
+        visible: imageStack.depth !== 0
+    }
+
+    PageStack {
+        id: imageStack
+        anchors.fill: parent
+    }
+
+    Rectangle {
+        id: transparencyAroundPageStack
+        anchors.fill: parent
+        color: root.darkmode ? "white" : "black"
+        opacity: 0.8
+        visible: extraStack.depth !== 0    
+
+        MouseArea {
+            // to prevent clicks + scrolls reaching the AdaptivePageLayout below
+            anchors.fill: parent
+            onWheel: wheel.accepted = true
+        }
+    }
+
+    Rectangle {
+        id: backgroundForExtraStack
+        anchors.fill: extraStack
+        color: theme.palette.normal.background
+        visible: extraStack.depth !== 0    
+    }
     
+    PageStack {
+        // for everything except chatlist, chatview and images
+        id: extraStack
+        width: parent.width > units.gu(90) ? units.gu(80) : parent.width
+        height: parent.height
+        anchors {
+            fill: undefined
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            bottom: parent.bottom
+        }
+    }
+
     // lock the bottom edge hint for the first 10 seconds
     Timer {
         id: hintTimer
@@ -1398,13 +1891,21 @@ MainView {
         checkVersionUpdateEarly()
 
         isDesktopMode = DeltaHandler.isDesktopMode()
-        if (isDesktopMode) {
-            console.log("Main.qml: Running in desktop mode")
-        } else {
-            console.log("Main.qml: NOT running in desktop mode")
-        }
+        onUbuntuTouch = DeltaHandler.onUbuntuTouch()
+        oskViaDbus = DeltaHandler.shouldOpenOskViaDbus()
 
-        darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark") || (theme.name == "Lomiri.Components.Themes.SuruDark")
+        i18n.domain = "deltatouch.lotharketterer"
+        if (onUbuntuTouch) {
+            // on Ubuntu Touch, CMAKE_INSTALL_FULL_LOCALEDIR is "/./share/locale"
+            console.log("Main.qml: Calling i18n.bindtextdomain(\"deltatouch.lotharketterer\", ", "." + i18nDirectory)
+            i18n.bindtextdomain("deltatouch.lotharketterer", "." + i18nDirectory)
+        } else {
+            i18n.bindtextdomain("deltatouch.lotharketterer", i18nDirectory)
+            console.log("Main.qml: Calling i18n.bindtextdomain(\"deltatouch.lotharketterer\", ", i18nDirectory, ")")
+        }
+        console.log("Main.qml: i18n.language is ", i18n.language)
+
+        darkmode = (theme.name == "Ubuntu.Components.Themes.SuruDark")
         startupStep1()
 
         JSONRPC.setSendRequest((request) => DeltaHandler.sendJsonrpcRequest(request))
@@ -1450,6 +1951,7 @@ MainView {
             onClicked: errorShape.visible = false
         }
     }
+
 
 // PinchHandler currently taken out due to incompatibility with ListItem
 //

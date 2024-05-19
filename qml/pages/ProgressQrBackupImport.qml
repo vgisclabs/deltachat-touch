@@ -27,6 +27,7 @@ Dialog {
 
     signal failed()
     signal cancelled()
+    signal success()
 
     // TODO: set title according to the step, possible values are:
     // Preparing account…
@@ -87,7 +88,7 @@ Dialog {
         color: theme.palette.normal.positive
         onClicked: {
             PopupUtils.close(dialog)
-            layout.removePages(layout.primaryPage)
+            success()
         }
         visible: false
     }

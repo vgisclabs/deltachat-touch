@@ -17,7 +17,7 @@
  */
 
 import QtQuick 2.12
-import QtQuick.Shapes 1.12
+//import QtQuick.Shapes 1.12
 import Ubuntu.Components 1.3
 import Ubuntu.Components.Popups 1.3 
 //import QtQuick.Layouts 1.3
@@ -43,10 +43,11 @@ Page {
         // has to explicitly choose cancel or ok.
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
-                    layout.removePages(page)
+                    extraStack.pop()
                 }
             }
         ]
@@ -54,11 +55,12 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     if (DeltaHandler.isValidAddr(emailField.displayText)) {
-                        layout.removePages(page)
+                        extraStack.pop()
                         DeltaHandler.contactsmodel.startChatWithAddress(emailField.displayText, nameField.displayText)
                     } else {
                         PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
@@ -85,12 +87,13 @@ Page {
                 leftMargin: units.gu(2)
             }
 
-            iconName: "view-grid-symbolic"
+            //iconName: "view-grid-symbolic"
+            iconSource: "qrc:///assets/suru-icons/view-grid-symbolic.svg"
             text: i18n.tr("Scan QR Code")
             onClicked: {
                 // Very ugly hack, see Main.qml for details
                 root.openScanQrPageOnBottomEdgeCollapse()
-                layout.removePages(page)
+                extraStack.pop()
                 bottomEdge.collapse()
             }
         }
@@ -168,6 +171,16 @@ Page {
                 left: parent.left
                 leftMargin: units.gu(2)
             }
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
         }
 
         Item {
@@ -197,6 +210,16 @@ Page {
             anchors {
                 left: parent.left
                 leftMargin: units.gu(2)
+            }
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
             }
         }
     }

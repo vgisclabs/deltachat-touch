@@ -39,11 +39,28 @@ Page {
 
         // With 0 as parameter, a possible summary notification is removed that
         // was generated if notifs are configured to contain no detail.
-        DeltaHandler.notificationGenerator.removeSummaryNotification(0)
+        DeltaHandler.notificationHelper.removeSummaryNotification(0)
+
+        if (DeltaHandler.numberOfAccounts() === 0) {
+            // pushing AddAccount.qml to extraStack directly here
+            // doesn't work for some reason - looks like it will
+            // then be under accountConfigPage instead of above it
+            loadAddTimer.start()
+        }
+    }
+
+    Timer {
+        id: loadAddTimer
+        repeat: false
+        interval: 350
+        triggeredOnStart: false
+        onTriggered: {
+            loadAddAccountPage()
+        }
     }
 
     function loadAddAccountPage() {
-        layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))
+        extraStack.push(Qt.resolvedUrl('AddAccount.qml'))
     }
 
     /* ==========================================================
@@ -166,10 +183,11 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: "go-previous"
+                //iconName: "go-previous"
+                iconSource: "qrc:///assets/suru-icons/go-previous.svg"
                 text: i18n.tr("Back")
                 onTriggered: {
-                    layout.removePages(accountConfigPage)
+                    extraStack.pop()
                 }
                 // only allow leaving account configuration
                 // if there's a configured account
@@ -178,15 +196,9 @@ Page {
         ]
 
         trailingActionBar.actions: [
-//            Action {
-//                iconName: 'help'
-//                text: i18n.tr('Help')
-//                // TODO make help page for the Account config page
-//                onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
-//            },
-
             Action {
-                iconName: 'settings'
+                //iconName: 'settings'
+                iconSource: "qrc:///assets/suru-icons/settings.svg"
                 text: i18n.tr('Settings')
                 onTriggered: {
                     // TODO
@@ -199,20 +211,22 @@ Page {
             },
 
             Action {
-                iconName: 'info'
+                //iconName: 'info'
+                iconSource: "qrc:///assets/suru-icons/info.svg"
                 text: i18n.tr('Info')
-                onTriggered: layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('About.qml'))
+                onTriggered: extraStack.push(Qt.resolvedUrl('About.qml'))
             },
 
             Action {
-                iconName: 'add'
+                //iconName: 'add'
+                iconSource: "qrc:///assets/suru-icons/add.svg"
                 text: i18n.tr('Add Account')
                 onTriggered: {
                     if (DeltaHandler.databaseIsEncryptedSetting() && !DeltaHandler.hasDatabasePassphrase()) {
                         let popup = PopupUtils.open(Qt.resolvedUrl("RequestDatabasePassword.qml"), accountConfigPage)
                         popup.success.connect(loadAddAccountPage)
                     } else {
-                        layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddAccount.qml'))
+                        extraStack.push(Qt.resolvedUrl('AddAccount.qml'))
                     }
                 }
             }
@@ -294,15 +308,19 @@ Page {
     ListItemActions {
         id: leadingAccountAction
         actions: Action {
-            iconName: "delete"
+            //iconName: "delete"
+            iconSource: "qrc:///assets/suru-icons/delete.svg"
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
-                PopupUtils.open(
-                    Qt.resolvedUrl('ConfirmAccountDeletion.qml'),
-                    null,
-                    { 'accountArrayIndex': value, }
+                let popup1 = PopupUtils.open(
+                    Qt.resolvedUrl('ConfirmDialog.qml'),
+                    accountConfigPage,
+                    { "dialogTitle": i18n.tr("Delete Account"),
+                      "dialogText": i18n.tr('Are you sure you want to delete your account data?') + "\n" + i18n.tr('All account data of \"%1\" on this device will be deleted, including your end-to-end encryption setup, contacts, chats, messages and media. This action cannot be undone.').arg(DeltaHandler.accountsmodel.getAddressOfIndex(value)),
+                      "okButtonText": i18n.tr("Delete Account")}
                 )
+                popup1.confirmed.connect(function() { DeltaHandler.accountsmodel.deleteAccount(value) })
             }
         }
     }
@@ -311,14 +329,16 @@ Page {
         id: trailingAccountAction
         actions: [
             Action {
-                iconName: "edit"
+                //iconName: "edit"
+                iconSource: "qrc:///assets/suru-icons/edit.svg"
                 onTriggered: {
                     DeltaHandler.accountsmodel.configureAccount(value)
-                    layout.addPageToCurrentColumn(accountConfigPage, Qt.resolvedUrl('AddOrConfigureEmailAccount.qml'))
+                    extraStack.push(Qt.resolvedUrl('AddOrConfigureEmailAccount.qml'))
                 }
             },
             Action {
-                iconName: "info"
+                //iconName: "info"
+                iconSource: "qrc:///assets/suru-icons/info.svg"
                 onTriggered: {
                     let tempString = i18n.tr("Account ID: %1").arg(DeltaHandler.accountsmodel.getIdOfAccount(value)) + "\n\n" + i18n.tr("Info") + ":\n" + DeltaHandler.accountsmodel.getInfoOfAccount(value) + "\n\n" + i18n.tr("Error") + ":\n" + (DeltaHandler.accountsmodel.getLastErrorOfAccount(value) == "" ? i18n.tr("None") : DeltaHandler.accountsmodel.getLastErrorOfAccount(value))
                     PopupUtils.open(
@@ -329,7 +349,8 @@ Page {
                 }
             },
             Action {
-                iconName: "audio-speakers-muted-symbolic"
+                //iconName: "audio-speakers-muted-symbolic"
+                iconSource: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
                 onTriggered: {
                     let tempAccID = DeltaHandler.accountsmodel.getIdOfAccount(value)
                     DeltaHandler.accountsmodel.muteUnmuteAccountById(tempAccID)
@@ -353,8 +374,9 @@ Page {
 
             onClicked: {
                 if (model.isConfigured) {
-                    DeltaHandler.selectAccount(index)
-                    layout.removePages(primaryPage)
+                    extraStack.clear()
+                    let accID = DeltaHandler.accountsmodel.getIdOfAccount(index)
+                    DeltaHandler.selectAccount(accID)
                 }
                 else {
                     PopupUtils.open(errorMessage)
@@ -374,11 +396,26 @@ Page {
                     height: units.gu(5)
                     width: height
                     SlotsLayout.position: SlotsLayout.Leading
-                    source: Image {
+                    color: model.color
+
+                    source: (model.profilePic !== "" || !(model.isConfigured)) ? profPic : undefined
+                    
+                    Image {
                         id: profPic
                         anchors.fill: parent
                         source: model.profilePic == "" ? Qt.resolvedUrl('../../assets/image-icon3.svg') : StandardPaths.locate(StandardPaths.AppConfigLocation, model.profilePic)
+                        visible: false
                     }
+
+                    Label {
+                        id: profInitialLabel
+                        visible: !(model.profilePic !== "" || !(model.isConfigured))
+                        text: model.username === "" ? "#" : model.username.charAt(0).toUpperCase()
+                        font.pixelSize: parent.height * 0.6
+                        color: "white"
+                        anchors.centerIn: parent
+                    }
+
                     sourceFillMode: UbuntuShape.PreserveAspectCrop
                     aspect: UbuntuShape.Flat
                 } // end of UbuntuShape id:profilePicShape
@@ -395,7 +432,8 @@ Page {
                         font.bold: true
                         color: theme.palette.normal.negative 
                         anchors {
-                            right: parent.right
+                            right: mutedIcon.visible ? mutedIcon.left : (dbEncryptedIcon.visible ? dbEncryptedIcon.left : parent.right)
+                            rightMargin: (mutedIcon.visible || dbEncryptedIcon.visible) ? units.gu(1) : 0
                             verticalCenter: parent.verticalCenter
                         }
                         textSize: Label.XLarge
@@ -412,7 +450,8 @@ Page {
                             right: parent.right
                             top: parent.top
                         }
-                        name: "lock"
+                        //name: "lock"
+                        source: "qrc:///assets/suru-icons/lock.svg"
                         visible: model.isClosed
                     }
 
@@ -423,10 +462,11 @@ Page {
                         color: root.darkmode ? "white" : "black"
                         anchors {
                             right: dbEncryptedIcon.visible ? dbEncryptedIcon.left : parent.right
-                            rightMargin: units.gu(1)
+                            rightMargin: dbEncryptedIcon.visible ? units.gu(1) : 0
                             top: parent.top
                         }
-                        name: "audio-speakers-muted-symbolic"
+                        //name: "audio-speakers-muted-symbolic"
+                        source: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
                         visible: isMuted
                     }
 
@@ -474,7 +514,7 @@ Page {
 
                             backgroundColor: isMuted? (root.darkmode ? "#202020" : "#e0e0e0") : root.unreadMessageCounterColor
                             
-                            visible: freshMsgCount > 0 && model.isConfigured
+                            visible: freshMsgCount > 0
 
                             Label {
                                 id: newMsgCountLabel

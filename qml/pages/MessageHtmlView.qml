@@ -41,6 +41,20 @@ Page {
     header: PageHeader {
         id: header
         title: headerTitle
+
+        leadingActionBar.actions: [
+            Action {
+                //iconName: "close"
+                iconSource: "qrc:///assets/suru-icons/close.svg"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    extraStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
     }
 
     Component.onCompleted: {
@@ -126,7 +140,8 @@ Page {
                             horizontalCenter: parent.horizontalCenter
                         }
 
-                        name: "navigation-menu"
+                        //name: "navigation-menu"
+                        source: "qrc:///assets/suru-icons/navigation-menu.svg"
                     }
 
                     MouseArea {
@@ -231,7 +246,7 @@ Page {
             left: parent.left
             right: parent.right
         }
-        zoomFactor: 3.0
+        zoomFactor: root.onUbuntuTouch ? 3.0 : 1.0
         url: htmlPath
 
         // Comments in the next lines as per original DekkoWebView.qml:
@@ -266,7 +281,7 @@ Page {
         }
 
         onNavigationRequested: {
-            if ((request.url.toString()).startsWith("file:///home/phablet")) {
+            if ((request.url.toString()).startsWith(StandardPaths.locate(StandardPaths.CacheLocation)) || (request.url.toString()).startsWith(StandardPaths.locate(StandardPaths.AppConfigLocation))) {
                 request.action = WebEngineNavigationRequest.AcceptRequest // 0
             } else {
                 PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), htmlViewPage, {externalLink: request.url})

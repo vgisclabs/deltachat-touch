@@ -6,6 +6,7 @@ set(
     plugin.cpp
     emitterthread.cpp
     jsonrpcresponsethread.cpp
+    dbusUrlReceiver.cpp
     deltahandler.cpp
     chatmodel.cpp
     accountsmodel.cpp
@@ -13,9 +14,13 @@ set(
     contactsmodel.cpp
     chatlistmodel.cpp
     groupmembermodel.cpp
-    notificationGenerator.cpp
+    notificationHelper.cpp
+    notificationsLomiriPostal.cpp
+    notificationsFreedesktop.cpp
+    notificationsMissing.cpp
     workflowConvertDbToEncrypted.cpp
     workflowConvertDbToUnencrypted.cpp
+    fileImportSignalHelper.cpp
 )
 
 add_library(deltachat SHARED IMPORTED)

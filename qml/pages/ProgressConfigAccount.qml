@@ -25,8 +25,8 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
-    property bool calledFromQrInviteCode: false
-    property Page pageToRemove
+    signal success()
+    signal failed()
 
     ProgressBar {
         id: progBar
@@ -46,10 +46,10 @@ Dialog {
         if (progValue == 0) {
             dialog.text = errorMsg
             progBar.visible = false
-            backButton.visible = true
+            backAfterFailButton.visible = true
         }
         else if (progValue == 1000) {
-            dialog.text = "Success!"
+            dialog.text = i18n.tr("Done")
             progBar.visible = false
             okButton.visible = true
         }
@@ -61,20 +61,18 @@ Dialog {
         color: theme.palette.normal.positive
         onClicked: {
             PopupUtils.close(dialog)
-            layout.removePages(chatlistPage)
+            success()
         }
         visible: false
     }
 
     Button {
-        id: backButton
+        id: backAfterFailButton
         text: i18n.tr("Back")
         color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)
-            if (calledFromQrInviteCode) {
-                layout.removePages(pageToRemove)
-            }
+            failed()
         }
         visible: false
     }

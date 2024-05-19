@@ -23,7 +23,7 @@
 #include <fstream>
 
 ChatModel::ChatModel(QObject* parent)
-    : QAbstractListModel(parent), currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
+    : QAbstractListModel(parent), currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
 { 
 };
 
@@ -757,10 +757,16 @@ int ChatModel::getMessageCount()
 
 bool ChatModel::isGif(QString fileToCheck) const
 {
-    // the url handed over by the ContentHub starts with
-    // "file:///home....", so we have to remove the first 7
-    // characters
-    fileToCheck.remove(0, 7);
+    // fileToCheck might be prepended by "file://" or "qrc:", remove it
+    QString tempQString = fileToCheck;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        fileToCheck.remove(0, 7);
+    }
+
+    tempQString = fileToCheck;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        fileToCheck.remove(0, 4);
+    }
 
     QMimeDatabase mimedb;
     QMimeType mime = mimedb.mimeTypeForFile(fileToCheck);
@@ -768,6 +774,16 @@ bool ChatModel::isGif(QString fileToCheck) const
         return true;
     } else {
         return false;
+    }
+}
+
+
+void ChatModel::allowSettingDraftAgain(uint32_t chatID)
+{
+    if (chatID == m_chatID) {
+        m_settingDraftTextAllowed = true;
+    } else {
+        qFatal("ChatModel::allowSettingDraftAgain(): ERROR: Chat ID passed as parameter does not match m_chatID, danger of sending messages to wrong chat, aborting.");
     }
 }
 
@@ -847,8 +863,30 @@ QString ChatModel::getHtmlMsgSubject(int myindex)
 }
 
 
-void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool cIsContactRequest)
+void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool cIsContactRequest)
 {
+    if (m_chatIsBeingViewed) {
+        // check if the same chat has been clicked again, and
+        // don't do anything in that case
+        if (currentMsgContext && m_chatID == cID && aID == dc_get_id(currentMsgContext)) {
+            qDebug() << "ChatModel::configure(): called for already opened chat, returning";
+            return;
+        }
+
+        // If ChatView.qml is active, it will set it back
+        // to true again once it has updated its properties such
+        // as pageChatID. In the meantime, dont' allow setting the
+        // draft text as it would be set for the wrong chat ID
+        m_settingDraftTextAllowed = false;
+
+        // If the chat is already viewed, there might be a draft from the
+        // currently viewed (= now previous) chat. If the chat is not viewed,
+        // there should be no draft.
+        // Save the draft from the previous chat.
+        saveDraft();
+        m_draftTextHash.clear();
+    }
+
     m_dhandler = deltaHandler;
 
     beginResetModel();
@@ -865,7 +903,20 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
     m_isContactRequest = cIsContactRequest;
 
     m_chatID = cID;
-    currentMsgContext = context;
+
+    if (currentMsgContext) {
+        dc_context_unref(currentMsgContext);
+    }
+    currentMsgContext = dc_accounts_get_account(allAccs, aID);
+
+    // update m_accIdChatIdKey
+    QString tempQString;
+    tempQString.setNum(aID);
+    m_accIdChatIdKey = tempQString;
+    m_accIdChatIdKey.append("_");
+    tempQString.setNum(m_chatID);
+    m_accIdChatIdKey = tempQString;
+
 
     dc_array_t* msgArray = dc_get_chat_msgs(currentMsgContext, m_chatID, 0, 0);
     currentMsgCount = dc_array_get_cnt(msgArray);
@@ -926,7 +977,7 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
         emit markedAllMessagesSeen();
     } else {
         // it's a contact request, just delete possible notifications
-        m_dhandler->deleteActiveNotificationTags(m_dhandler->getCurrentAccountId(), m_chatID);
+        m_dhandler->removeActiveNotificationsOfChat(m_dhandler->getCurrentAccountId(), m_chatID);
     }
 
     // insert an info message "Unread messages" above the first unread message
@@ -944,9 +995,16 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
 
     dc_array_unref(msgArray);
 
-    bool connectSuccess = connect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
-    if (!connectSuccess) {
-        qDebug() << "Chatmodel::configure: Could not connect signal msgsChanged to slot newMessage";
+    // If in two-column mode, ChatModel::configure is called repeatedly without
+    // the connection below being reset. In one-column mode, the chat view is
+    // actually closed and the signal/slot connection is disconnected. This can
+    // be tracked via m_chatIsBeingViewed.
+    if (!m_chatIsBeingViewed) {
+        m_chatIsBeingViewed = true;
+        bool connectSuccess = connect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
+        if (!connectSuccess) {
+            qDebug() << "Chatmodel::configure: Could not connect signal msgsChanged to slot newMessage";
+        }
     }
 
     endResetModel();
@@ -960,6 +1018,13 @@ void ChatModel::configure(uint32_t cID, dc_context_t* context, DeltaHandler* del
     }
 
     currentMessageDraft = dc_get_draft(currentMsgContext, m_chatID);
+    if (currentMessageDraft) {
+        char* tempText = dc_msg_get_text(currentMessageDraft);
+        m_draftTextHash[m_accIdChatIdKey] = tempText;
+        dc_str_unref(tempText);
+    }
+    
+    emit newChatConfigured(m_chatID);
 }
 
 
@@ -1067,22 +1132,6 @@ void ChatModel::newMessage(int msgID)
 
     dc_array_unref(newMsgArray);
 
-    // mark new message as seen
-    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, msgID);
-    if (dc_msg_get_state(tempMsg) != DC_STATE_IN_SEEN && !(dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF)) {
-        const uint32_t tempMsgID = msgID;
-        // only mark seen + remove the notification if the app is not 
-        // in background
-        if (QGuiApplication::applicationState() == Qt::ApplicationActive) {
-            dc_markseen_msgs(currentMsgContext, &tempMsgID, 1);
-            emit markedAllMessagesSeen();
-        } else {
-            msgsToMarkSeenLater.push_back(tempMsgID);
-        }
-    }
-    dc_msg_unref(tempMsg);
-
-
     // The event DC_EVENT_MSGS_CHANGED, which eventually leads to the
     // execution of this method here, is also created if a partly
     // downloaded message has been fully downloaded.  Thus, data_changed
@@ -1097,8 +1146,28 @@ void ChatModel::newMessage(int msgID)
     } else {
         for (size_t i = 0; i < currentMsgCount ; ++i) {
             if (msgVector[i] == msgID) {
+                // mark new message as seen, but only if it is present in msgVector (it might
+                // not be if it was a message draft that has been deleted)
+                // It's not always a new message that is passed as parameter - take care to only mark new ones as seen
+                dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, msgID);
+                if (tempMsg) {
+                    if (dc_msg_get_state(tempMsg) != DC_STATE_IN_SEEN && !(dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF)) {
+                        const uint32_t tempMsgID = msgID;
+                        // only mark seen + remove the notification if the app is not 
+                        // in background
+                        if (QGuiApplication::applicationState() == Qt::ApplicationActive) {
+                            dc_markseen_msgs(currentMsgContext, &tempMsgID, 1);
+                            emit markedAllMessagesSeen();
+                        } else {
+                            msgsToMarkSeenLater.push_back(tempMsgID);
+                        }
+                    }
+                    dc_msg_unref(tempMsg);
+                }
+
+                // notify view
                 emit QAbstractItemModel::dataChanged(index(i, 0), index(i, 0));
-                
+
                 // the message above might have to change its appearance (edge
                 // of speech bubble, avatar)
                 if (i + 1 < currentMsgCount) {
@@ -1290,6 +1359,119 @@ QString ChatModel::getUrlToExport()
 }
 
 
+QString ChatModel::getMomentaryFilenameToExport()
+{
+    QString fileBasename = m_tempExportPath.section('/', -1);
+    return fileBasename;
+}
+
+
+QString ChatModel::exportFileToFolder(QString sourceFilePath, QString destinationFolder)
+{
+    QString sourceFileName = sourceFilePath.section('/', -1);
+
+    QString tempQString = sourceFilePath;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        sourceFilePath.remove(0, 7);
+    }
+
+    tempQString = sourceFilePath;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        sourceFilePath.remove(0, 4);
+    }
+
+    tempQString = destinationFolder;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        destinationFolder.remove(0, 7);
+    }
+
+    tempQString = destinationFolder;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        destinationFolder.remove(0, 4);
+    }
+
+    QString destinationFile = destinationFolder + "/" + sourceFileName;
+
+    int counter {1};
+
+    while (QFile::exists(destinationFile)) {
+        QString basename = sourceFileName;
+        QString suffix = basename.section('.', -1);
+        basename.remove(basename.length() - 4, 4);
+        QString tempNumber;
+        tempNumber.setNum(counter);
+        basename.append("_");
+        basename.append(tempNumber);
+        basename.append(".");
+        basename.append(suffix);
+        destinationFile = destinationFolder + "/" + basename;
+
+        ++counter;
+    }
+
+    qDebug() << "ChatModel::exportFileToFolder(): copying " << sourceFilePath << " to " << destinationFile;
+    bool success = QFile::copy(sourceFilePath, destinationFile);
+
+    // If the export was not successful, an empty string
+    // is returned. In case of success, the export path
+    // is returned.
+    if (success) {
+        return destinationFile;
+    } else {
+        return "";
+    }
+}
+
+
+QString ChatModel::exportMomentaryFileToFolder(QString destinationFolder)
+{
+    QString sourceFile = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+    sourceFile.append("/");
+    sourceFile.append(m_tempExportPath);
+
+    QString tempQString = destinationFolder;
+    if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+        destinationFolder.remove(0, 7);
+    }
+
+    tempQString = destinationFolder;
+    if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+        destinationFolder.remove(0, 4);
+    }
+
+    QString destinationFile = destinationFolder + "/" + getMomentaryFilenameToExport();
+
+    unsigned int counter {1};
+
+    while (QFile::exists(destinationFile)) {
+        QString basename = getMomentaryFilenameToExport();
+        QString suffix = basename.section('.', -1);
+        basename.remove(basename.length() - 4, 4);
+        QString tempNumber;
+        tempNumber.setNum(counter);
+        basename.append("_");
+        basename.append(tempNumber);
+        basename.append(".");
+        basename.append(suffix);
+        destinationFile = destinationFolder + "/" + basename;
+
+        ++counter;
+    }
+
+    qDebug() << "ChatModel::exportMomentaryFileToFolder(): copying " << sourceFile << " to " << destinationFile;
+    bool success = QFile::copy(sourceFile, destinationFile);
+
+    // If the export was not successful, an empty string
+    // is returned. In case of success, the export path
+    // is returned.
+    if (success) {
+        return destinationFile;
+    } else {
+        return "";
+    }
+}
+
+
 int ChatModel::getMomentaryViewType()
 {
     dc_msg_t* tempMsg;
@@ -1409,65 +1591,52 @@ QVariant ChatModel::callData(int myindex, QString role)
     }
 }
 
-QString ChatModel::copyToCache(QString fromFilePath) const
+
+QString ChatModel::copyToCache(QString filepath) const
 {
-    // Method copies the fromFilePath which is expected to be somewhere
-    // in StandardPaths::AppConfigLocation to
-    // <StandardPaths::CacheLocation>/blobs/
-    //
-    // This is needed for audio files because the QML Audio Type cannot
-    // play files in the AppConfigLocation (presumably due to an
-    // AppArmor restriction)
+    // Copies the file in filepath to the CacheLocation, preferably
+    // to a file with the same filename. Existing files are not
+    // overwritten. If needed, _<number> will be appended to the
+    // filename.
+    QString sourceFileName = filepath.section('/', -1);
 
-    QString fromFileBasename = fromFilePath;
-    QString slash = "/";
-    int lastIndexOfSlash = fromFileBasename.lastIndexOf(slash);
-    fromFileBasename.remove(0, lastIndexOfSlash + 1);
-    
-    // checking if the /blobs/ dir in the cache location exists,
-    // if not, create it
-    QString toFilePath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
-    toFilePath.append("/blobs/");
+    QString destinationFolder(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    destinationFolder.append("/");
 
-    if (!QFile::exists(toFilePath)) {
-        qDebug() << "ChatModel::copyToCache: Cache blobs directory not existing, creating it now";
-        QDir tempdir;
-        bool success = tempdir.mkpath(toFilePath);
-        if (success) {
-            qDebug() << "ChatModel::copyToCache: Cache blobs directory successfully created";
-        } else {
-            qDebug() << "ChatModel::copyToCache: ERROR: Could not create cache blobs directory";
-            return QString("");
-        }
+    QString destinationFile = destinationFolder;
+    destinationFile.append(sourceFileName);
+
+    unsigned int counter {1};
+
+    QString filenameInCache = sourceFileName;
+
+    while (QFile::exists(destinationFile)) {
+        QString basename = sourceFileName;
+        QString suffix = basename.section('.', -1);
+        basename.remove(basename.length() - 4, 4);
+        QString tempNumber;
+        tempNumber.setNum(counter);
+        basename.append("_");
+        basename.append(tempNumber);
+        basename.append(".");
+        basename.append(suffix);
+        filenameInCache = basename;
+        destinationFile = destinationFolder + basename;
+
+        ++counter;
     }
 
-    // complete toFilePath
-    toFilePath.append(fromFileBasename);
-
-    // if it exists, remove it first
-    if (QFile::exists(toFilePath)) {
-//        qDebug() << "ChatModel::copyToCache: trying to remove file " << toFilePath << " from Cache...";
-//        int success = remove(toFilePath.toUtf8().constData());
-        remove(toFilePath.toUtf8().constData());
-//        if (0 == success) {
-//            qDebug() << "ChatModel::copyToCache: ...success.";
-//        } else {
-//            qDebug() << "ChatModel::copyToCache: ...ERROR: failed!";
-//        }
+    bool success = QFile::copy(filepath, destinationFile);
+    if (success) {
+        return filenameInCache;
+    } else {
+        qDebug() << "ChatModel::copyToCache(): ERROR: copying " << filepath << " to " << destinationFile << " failed";
+        return "";
     }
-
-    QFile::copy(fromFilePath, toFilePath);
-
-    // shortening to blobs/<basename>
-    lastIndexOfSlash = toFilePath.lastIndexOf(slash);
-    lastIndexOfSlash = toFilePath.lastIndexOf(slash, -1 * (toFilePath.length() - (lastIndexOfSlash - 1)));
-    toFilePath.remove(0, lastIndexOfSlash + 1);
-
-    return toFilePath;
 }
 
 
-QString ChatModel::getDraft()
+QString ChatModel::getDraftText()
 {
     dc_msg_t* tempMsg {nullptr};
     char* tempText {nullptr};
@@ -1486,8 +1655,25 @@ QString ChatModel::getDraft()
 }
 
 
-void ChatModel::setDraft(QString draftText)
+void ChatModel::setDraftText(QString draftText)
 {
+    if (!m_settingDraftTextAllowed) {
+        return;
+    }
+
+    m_draftTextHash[m_accIdChatIdKey] = draftText;
+    return;
+}
+
+
+
+void ChatModel::saveDraft() {
+    QString draftText {""};
+    // TODO: use m_accIdChatIdKey or build it up from m_chatID etc?
+    if (m_draftTextHash.contains(m_accIdChatIdKey)) {
+        draftText = m_draftTextHash[m_accIdChatIdKey];
+    }
+
     if (currentMessageDraft) {
         if ("" == draftText && !draftHasQuote() && !draftHasAttachment()) {
             dc_set_draft(currentMsgContext, m_chatID, NULL);
@@ -1510,6 +1696,9 @@ void ChatModel::setDraft(QString draftText)
         dc_msg_set_text(currentMessageDraft, draftText.toUtf8().constData());
         dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
     }
+
+    // TODO when do this?
+    //m_draftTextHash.clear();
 }
 
 
@@ -1526,6 +1715,7 @@ void ChatModel::setQuote(int myindex)
     tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
 
     dc_msg_set_quote(currentMessageDraft, tempMsg);
+    dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
     emit draftHasQuoteChanged();
 
     dc_msg_unref(tempMsg);
@@ -1536,21 +1726,20 @@ void ChatModel::unsetQuote()
 {
     if (draftHasQuote()) {
         dc_msg_set_quote(currentMessageDraft, NULL);
-        emit draftHasQuoteChanged();
-    } else {
-        // Although no quoted message could be found, it could be
-        // that the draft is actually a reply, but the message that
-        // is replied to is not there anymore. The draft would
-        // still contain the quoted_text, so we have to delete
-        // the draft in this case (it's sufficient to unref
-        // currentMessageDraft). No need to create a new
-        // message as this will be done when the sent icon
-        // is clicked or when the page is left and the draft
-        // saved. Also no need to overwrite the draft in the database.
-        qDebug() << "ChatModel::unsetQuote: There is no quoted message, unsetting the current draft to delete the quoted text";
-        if (currentMessageDraft && !draftHasAttachment()) {
+
+        QString draftText;
+        if (m_draftTextHash.contains(m_accIdChatIdKey)) {
+            draftText = m_draftTextHash[m_accIdChatIdKey];
+        }
+
+        // if the quote was the only thing in the draft,
+        // delete the draft
+        if ("" == draftText && !draftHasAttachment()) {
             dc_msg_unref(currentMessageDraft);
             currentMessageDraft = nullptr;
+            dc_set_draft(currentMsgContext, m_chatID, NULL);
+        } else {
+            dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
         }
         emit draftHasQuoteChanged();
     }
@@ -1576,7 +1765,9 @@ void ChatModel::setAttachment(QString filepath, int attachType)
     if (currentMessageDraft) {
         // delete the current message draft as it may have the 
         // wrong message type (TODO: can the type of an existing
-        // message be changed? Then we could avoid this)
+        // message be changed? Then we could avoid this => looks
+        // like this will come with the re-write of the composer
+        // in dc-core, but it's not there yet)
         //
         // Save the quote if it exists; will be re-added below
         tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
@@ -1584,55 +1775,67 @@ void ChatModel::setAttachment(QString filepath, int attachType)
         // Then delete the old currentMessageDraft
         dc_msg_unref(currentMessageDraft);
         currentMessageDraft = nullptr;
-
     } 
 
+    int messageType; 
+    
     // Get a new draft message based on the passed attachment type. This
     // should be one of DeltaHandler::msgViewType; it's int in the method
     // signature because the compiler won't take it otherwise (seems to
     // only work in the class where the enum is declared)
     switch (attachType) {
         case DeltaHandler::MsgViewType::AudioType:
+            messageType = DC_MSG_AUDIO;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_AUDIO);
             break;
 
         case DeltaHandler::MsgViewType::FileType:
+            messageType = DC_MSG_FILE;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_FILE);
             break;
         
         case DeltaHandler::MsgViewType::GifType:
+            messageType = DC_MSG_GIF;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_GIF);
             break;
         
         case DeltaHandler::MsgViewType::ImageType:
+            messageType = DC_MSG_IMAGE;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_IMAGE);
             break;
         
         case DeltaHandler::MsgViewType::StickerType:
+            messageType = DC_MSG_STICKER;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_STICKER);
             break;
         
         case DeltaHandler::MsgViewType::TextType:
+            messageType = DC_MSG_TEXT;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
             break;
 
         case DeltaHandler::MsgViewType::VideoType:
+            messageType = DC_MSG_VIDEO;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VIDEO);
             break;
         
         case DeltaHandler::MsgViewType::VideochatInvitationType:
+            messageType = DC_MSG_VIDEOCHAT_INVITATION;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VIDEOCHAT_INVITATION);
             break;
         
         case DeltaHandler::MsgViewType::VoiceType:
+            messageType = DC_MSG_VOICE;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VOICE);
             break;
 
         case DeltaHandler::MsgViewType::WebXdcType:
+            messageType = DC_MSG_WEBXDC;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_WEBXDC);
             break;
 
         default:
+            messageType = DC_MSG_FILE;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_FILE);
             break;
     } 
@@ -1643,192 +1846,133 @@ void ChatModel::setAttachment(QString filepath, int attachType)
     } 
 
     dc_msg_set_file(currentMessageDraft, filepath.toUtf8().constData(), NULL);
+    dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
 
-    bool addCacheLocation;
-
-    QString originalPath = filepath;
-
-    if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))) {
-        filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
-        addCacheLocation = true;
-    } else if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation))) {
-        filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length() + 1);
-        addCacheLocation = false;
-    }
-
-    // create a string with the base filename, in case ChatView wants to show
-    // it in the preview area
-    QString filename = filepath;
-
-    if (filename.lastIndexOf("/") != -1) {
-        filename = filename.remove(0, filename.lastIndexOf("/") + 1);
-    }
-
-    // tell ChatView that an attachment has been added
-    switch (attachType) {
-
-        case DeltaHandler::MsgViewType::AudioType:
-            if (!addCacheLocation) {
-                filepath = copyToCache(originalPath);
-            }
-            emit previewAudioAttachment(filepath, filename);
-            break;
-        
-        case DeltaHandler::MsgViewType::VoiceType:
-            // should be in the cache for voice messages,
-            // but just to be sure
-            if (!addCacheLocation) {
-                filepath = copyToCache(originalPath);
-            }
-            emit previewVoiceAttachment(filepath, filename);
-            break;
-
-        case DeltaHandler::MsgViewType::FileType:
-            emit previewFileAttachment(filename);
-            break;
-        
-        case DeltaHandler::MsgViewType::GifType:
-            // fallthrough
-        
-        case DeltaHandler::MsgViewType::StickerType:
-            emit previewImageAttachment(filepath, addCacheLocation, true);
-            break;
-        
-        case DeltaHandler::MsgViewType::ImageType:
-            emit previewImageAttachment(filepath, addCacheLocation, false);
-            break;
-
-     //   case DeltaHandler::MsgViewType::TextType:
-     //       break;
-
-     //   case DeltaHandler::MsgViewType::VideoType:
-     //       break;
-     //   
-     //   case DeltaHandler::MsgViewType::VideochatInvitationType:
-     //       break;
-     //   
-     //   case DeltaHandler::MsgViewType::WebXdcType:
-     //       break;
-
-        default:
-            qDebug() << "ChatModel::setAttachment() reached default case in switch";
-            break;
-    }
+    emitDraftHasAttachmentSignals(filepath, messageType);
 }
 
 
-void ChatModel::emitDraftHasAttachmentSignals()
-{
+void ChatModel::checkDraftHasAttachment() {
     if (draftHasAttachment()) {
         // get the attachment path
         char* tempText = dc_msg_get_file(currentMessageDraft);
         QString filepath = tempText; 
         dc_str_unref(tempText);
 
-        // create a string with the base filename, in case ChatView wants to show
-        // it in the preview area
-        QString filename = filepath;
+        int messageType = dc_msg_get_viewtype(currentMessageDraft);
 
-        if (filename.lastIndexOf("/") != -1) {
-            filename = filename.remove(0, filename.lastIndexOf("/") + 1);
-        }
-       
-        // Prepare filepath for the signal to ChatView by removing the CacheLocation.
-        // Filepath could either point to .cache or to .config, we
-        // have to check and a) remove the correct string and b) tell
-        // the receiver what to add back (CacheLocation if addCacheLocation == true, AppConfigLocation
-        // otherwise)
-        bool addCacheLocation;
-        QString originalPath = filepath;
+        emitDraftHasAttachmentSignals(filepath, messageType);
+    }
+}
 
-        if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))) {
-            filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
-            addCacheLocation = true;
-        } else if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation))) {
-            filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).length() + 1);
-            addCacheLocation = false;
-        }
 
-        int tempMessageType = dc_msg_get_viewtype(currentMessageDraft);
-        switch (tempMessageType) {
+void ChatModel::emitDraftHasAttachmentSignals(QString filepath, int messageType)
+{
+    bool alreadyInCache {false};
 
-            case DC_MSG_AUDIO:
-                if (!addCacheLocation) {
-                    filepath = copyToCache(originalPath);
-                }
-                emit previewAudioAttachment(filepath, filename);
-                break;
-            
-            case DC_MSG_VOICE:
-                // should be in the cache for voice messages,
-                // but just to be sure
-                if (!addCacheLocation) {
-                    filepath = copyToCache(originalPath);
-                }
-                emit previewVoiceAttachment(filepath, filename);
-                break;
+    // create a string with the base filename, in case ChatView wants to show
+    // it in the preview area. Not guaranteed to be in cache.
+    QString filename = filepath;
 
-            case DC_MSG_FILE:
-                emit previewFileAttachment(filename);
-                break;
-            
-            case DC_MSG_GIF:
-                // fallthrough
-            case DC_MSG_STICKER:
-                emit previewImageAttachment(filepath, addCacheLocation, true);
-                break;
+    if (filename.lastIndexOf("/") != -1) {
+        filename = filename.remove(0, filename.lastIndexOf("/") + 1);
+    }
 
-            case DC_MSG_IMAGE:
-                emit previewImageAttachment(filepath, addCacheLocation, false);
-                break;
+    // The path to the file, guaranteed to be in the cache, without the
+    // leading CacheLocation. It's the filename itself if the file is in the
+    // top level cache dir, or the path in the cache dir ("exampleDir/examplefile.jpg")
+    QString filenameInCache;
 
-         //   case DeltaHandler::MsgViewType::TextType:
-         //       break;
+    if (filepath.startsWith(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))) {
+        filenameInCache = filepath;
+        filenameInCache.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+        alreadyInCache = true;
+    }
 
-         //   case DeltaHandler::MsgViewType::VideoType:
-         //       break;
-         //   
-         //   case DeltaHandler::MsgViewType::VideochatInvitationType:
-         //       break;
-         //   
+    // tell ChatView.qml that an attachment has been added
+    switch (messageType) {
 
-         //   case DeltaHandler::MsgViewType::WebXdcType:
-         //       break;
+        case DC_MSG_AUDIO:
+            if (!alreadyInCache) {
+                filenameInCache = copyToCache(filepath);
+            } // if the file is already in cache, filenameInCache has
+              // been set above
+            emit previewAudioAttachment(filenameInCache, filename);
+            break;
+        
+        case DC_MSG_VOICE:
+            // should be in the cache for voice messages,
+            // but just to be sure
+            if (!alreadyInCache) {
+                filenameInCache = copyToCache(filepath);
+            } 
+            emit previewVoiceAttachment(filenameInCache);
+            break;
 
-            default:
-                qDebug() << "DeltaHandler::emitDraftHasAttachmentSignals() reached default case in switch";
-                break;
-        }
+        case DC_MSG_FILE:
+            emit previewFileAttachment(filename);
+            break;
+        
+        case DC_MSG_GIF:
+            // fallthrough
+        
+        case DC_MSG_STICKER:
+            if (!alreadyInCache) {
+                filenameInCache = copyToCache(filepath);
+            } 
+            // second parameter states whether it's animated
+            emit previewImageAttachment(filenameInCache, true);
+            break;
+        
+        case DC_MSG_IMAGE:
+            if (!alreadyInCache) {
+                filenameInCache = copyToCache(filepath);
+            } 
+            emit previewImageAttachment(filenameInCache, false);
+            break;
+
+        // add more when implemented
+
+        default:
+            qDebug() << "ChatModel::emitDraftHasAttachmentSignals() reached default case in switch";
+            break;
     }
 }
 
 
 void ChatModel::unsetAttachment()
 {
+    // TODO don't get the text of the draft, but use m_draftTextHash?
     if (currentMessageDraft) {
-        // If there's no quote, the draft can be deleted. Any text
-        // in the draft will be set again when the ChatView is left.
-        // Need to pass NULL to dc_set_draft, otherwise
-        // the attachment would not be deleted if the chat is left
-        // with an empty messageEnterField (as then no new draft
-        // would be set and the core would still have the old one
-        // with the attachment)
-        if (!draftHasQuote()) {
-            dc_msg_unref(currentMessageDraft);
-            currentMessageDraft = nullptr;
-            dc_set_draft(currentMsgContext, m_chatID, NULL);
-        } else {
-            dc_msg_t* tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
+        QString tempQString {""};
+        char* tempText = dc_msg_get_text(currentMessageDraft);
+        if (tempText) {
+            tempQString = tempText;
+            dc_str_unref(tempText);
+        }
+
+        dc_msg_t* tempQuote = dc_msg_get_quoted_msg(currentMessageDraft);
+
+        dc_msg_unref(currentMessageDraft);
+        currentMessageDraft = nullptr;
+
+        if (tempQString != "" || tempQuote) {
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
+            dc_msg_set_text(currentMessageDraft, tempQString.toUtf8().constData());
 
             // need to check because draftHasQuote == true doesn't mean
             // that there's an actual quoted message (could be only 
-            // quoted text)
+            // quoted text, in that case the quote will be lost (TODO, but
+            // maybe that can only be solved once the core implements
+            // viewtype changes of drafts))
             if (tempQuote) {
-                dc_msg_unref(currentMessageDraft);
-                currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
                 dc_msg_set_quote(currentMessageDraft, tempQuote);
                 dc_msg_unref(tempQuote);
             }
+
+            dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
+        } else {
+            dc_set_draft(currentMsgContext, m_chatID, NULL);
         }
     }
 }
@@ -2039,8 +2183,16 @@ ChatlistModel* ChatModel::chatlistmodel()
 }
 
 
-void ChatModel::sendMessage(QString messageText)
+void ChatModel::sendMessage(QString messageText, int accID, int chatID)
 {
+    if (accID != dc_get_id(currentMsgContext)) {
+        qFatal("ChatModel::sendMessage(): accID passed to method does not match with the ID of currentMsgContext, aborting");
+    }
+
+    if (chatID != m_chatID) {
+        qFatal("ChatModel::sendMessage(): chatID passed to method does not match with m_chatID, aborting");
+    }
+
     bool needToNotifyAboutQuote = false;
 
     if (!currentMessageDraft) {
@@ -2134,18 +2286,14 @@ void ChatModel::appIsActiveAgainActions() {
 }
 
 
-void ChatModel::chatViewIsOpened(uint32_t accountID, uint32_t chatID)
-{
-    m_chatIsBeingViewed = true;
-}
-
-
 // unusedParam is only there so the signal from ChatView.qml
 // can be connected to both a slot in DeltaHandler (which
 // needs this parameter) and here (where the parameter
 // is not needed)
 void ChatModel::chatViewIsClosed(bool unusedParam)
 {
+    saveDraft();
+    m_draftTextHash.clear();
     m_chatIsBeingViewed = false;
     disconnect(m_dhandler, SIGNAL(msgsChanged(int)), this, SLOT(newMessage(int)));
 }

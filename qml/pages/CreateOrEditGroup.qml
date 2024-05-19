@@ -38,6 +38,21 @@ Page {
 
     signal prepareAddMembers()
 
+    Loader {
+        id: picImportLoader
+    }
+
+    Connections {
+        target: picImportLoader.item
+        onFileSelected: {
+            createGroupPage.setPic(urlOfFile)
+            picImportLoader.source = ""
+        }
+        onCancelled: {
+            picImportLoader.source = ""
+        }
+    }
+
     function updateChatPic(newPath) {
         if (newPath != "") {
             chatPicImage.source = StandardPaths.locate(StandardPaths.CacheLocation, newPath)
@@ -47,6 +62,23 @@ Page {
 
     function updateMemberCount(mcount) {
         memberCount = mcount
+    }
+
+    function setPic(imagePath) {
+        if (!root.onUbuntuTouch) {
+            let tempPath = DeltaHandler.copyToCache(imagePath)
+            DeltaHandler.setGroupPic(tempPath)
+        } else {
+            // the UT specific file import has already called copyToCache
+            DeltaHandler.setGroupPic(imagePath)
+        }
+    }
+
+    function openFileDialog() {
+        // only for non-UT
+        picImportLoader.source = "FileImportDialog.qml"
+        picImportLoader.item.setFileType(DeltaHandler.ImageType)
+        picImportLoader.item.open()
     }
 
     Component.onCompleted: {
@@ -77,11 +109,12 @@ Page {
                 visible: DeltaHandler.tempGroupIsVerified()
             },
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     DeltaHandler.stopCreateOrEditGroup()
-                    layout.removePages(createGroupPage)
+                    extraStack.pop()
                 }
             }
         ]
@@ -89,7 +122,8 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     groupNameField.focus = false
@@ -98,16 +132,17 @@ Page {
                     } else {
                         groupNameField.focus = false
                         DeltaHandler.finalizeGroupEdit(groupNameField.text, chatPicImage.source)
-                        layout.removePages(createGroupPage)
+                        extraStack.pop()
                     }
                 }
                 visible: selfIsInGroup
             },
             Action {
-                iconName: 'view-grid-symbolic'
+                //iconName: 'view-grid-symbolic'
+                iconSource: "qrc:///assets/suru-icons/view-grid-symbolic.svg"
                 text: i18n.tr("QR Invite Code")
                 onTriggered: {
-                    layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl("QrGroupInvite.qml"))
+                    extraStack.push(Qt.resolvedUrl("QrGroupInvite.qml"))
                 }
                 visible: selfIsInGroup && !createNewGroup
             }
@@ -117,7 +152,8 @@ Page {
     ListItemActions {
         id: leadingMemberAction
         actions: Action {
-            iconName: "delete"
+            //iconName: "delete"
+            iconSource: "qrc:///assets/suru-icons/delete.svg"
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
@@ -156,7 +192,10 @@ Page {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                // TODO: implement image view
+                if (chatPicImage.source != "") {
+                    // don't use imageStack as it is layered below extraStack
+                    extraStack.push(Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": chatPicImage.source, "enableDownloading": false, "onExtraStack": true })
+                }
             }
         }
     }
@@ -189,7 +228,8 @@ Page {
 
         Icon {
             anchors.fill: parent
-            name: "edit"
+            //name: "edit"
+            source: "qrc:///assets/suru-icons/edit.svg"
         }
 
         MouseArea {
@@ -227,6 +267,16 @@ Page {
         autoSize: true
         maximumLineCount: 3
         //text: DeltaHandler.getCurrentxxxxxxx
+
+        onFocusChanged: {
+            if (root.oskViaDbus) {
+                if (focus) {
+                    DeltaHandler.openOskViaDbus()
+                } else {
+                    DeltaHandler.closeOskViaDbus()
+                }
+            }
+        }
         enabled: selfIsInGroup
     }
 
@@ -256,14 +306,15 @@ Page {
             }
 
             Icon {
-                name: "go-next"
+                //name: "go-next"
+                source: "qrc:///assets/suru-icons/go-next.svg"
                 SlotsLayout.position: SlotsLayout.Trailing;
                 width: units.gu(2)
             }
         }
         onClicked: {
             prepareAddMembers()
-            layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl("GroupAddMember.qml"))
+            extraStack.push(Qt.resolvedUrl("GroupAddMember.qml"))
         }
         visible: selfIsInGroup
     }
@@ -378,7 +429,45 @@ Page {
                     }
                     onClicked: {
                         PopupUtils.close(popoverChatPicActions)
-                        layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('PickerChatPic.qml'))
+
+                        if (root.onUbuntuTouch) {
+                            // The strategy with incubation below did not work reliably.
+                            // When called for the first time after start of the app,
+                            // the method fileSelected of incubator.object could not be 
+                            // connected to createGroupPage.setPic. In these cases,
+                            // function(status) was called twice: The first time, the status
+                            // was not Component.Ready, the second time it was, but the method
+                            // fileSelected of incubator.object could not be connected to 
+                            // createGroupPage.setPic (failed silently). This also happened
+                            // if the incubator was not a local variable ("let incubator =..."),
+                            // but a property of createGroupPage.
+                            //
+                            // It was also not possible to pass the function that should be connected
+                            // to fileSelected in the JSON with the properties. So a workaround via
+                            // DeltaHandler is done, see the comments in fileImportSignalHelper.h.
+                            DeltaHandler.newFileImportSignalHelper()
+                            DeltaHandler.fileImportSignalHelper.fileImported.connect(createGroupPage.setPic)
+                            extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                            //let incubator = layout.addPageToCurrentColumn(createGroupPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                            //if (incubator.status != Component.Ready) {
+                            //    // have to wait for the object to be ready to connect to the signal,
+                            //    // see documentation on AdaptivePageLayout and
+                            //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                            //    incubator.onStatusChanged = function(status) {
+                            //        if (status == Component.Ready) {
+                            //            incubator.object.fileSelected.connect(createGroupPage.setPic)
+                            //        } else {
+                            //            // status is not Component.Ready
+                            //        }
+                            //    }
+                            //} else {
+                            //    // object was directly ready
+                            //    incubator.object.fileSelected.connect(createGroupPage.setPic)
+                            //}
+                        } else {
+                            createGroupPage.openFileDialog()
+                        }
                     }
                 }
 

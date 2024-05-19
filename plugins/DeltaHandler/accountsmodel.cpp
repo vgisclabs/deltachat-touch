@@ -20,8 +20,10 @@
 //#include <unistd.h> // for sleep
 
 AccountsModel::AccountsModel(QObject* parent)
-    : QAbstractListModel(parent), m_accountsManager {nullptr}, m_accountsArray {nullptr} { 
-};
+    : QAbstractListModel(parent), m_accountsManager {nullptr}, m_accountsArray {nullptr}
+{
+}
+
 
 AccountsModel::~AccountsModel()
 {
@@ -55,6 +57,8 @@ QHash<int, QByteArray> AccountsModel::roleNames() const
     // one. It doesn't say whether the account has already been opened
     // or not.
     roles[IsClosedRole] = "isClosed";
+    roles[IsCurrentActiveRole] = "isCurrentActiveAccount";
+    roles[ColorRole] = "color";
 
     return roles;
 }
@@ -83,6 +87,12 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
     bool tempBool;
     char* tempText {nullptr};
     size_t i;
+
+    // for jsonrpc
+    QString paramString;
+    QString requestString;
+    QByteArray jsonResponseByteArray;
+    QJsonObject jsonObj;
 
     switch(role) {
         case AccountsModel::AddrRole:
@@ -139,16 +149,47 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
             retval = tempBool;
             break;
 
+        case AccountsModel::IsCurrentActiveRole:
+            if (m_deltaHandler->getCurrentAccountId() == accID) {
+                retval = true;
+            } else {
+                retval = false;
+            }
+            break;
+
+        case AccountsModel::ColorRole:
+            // looks like the color of an account can only be obtained via jsonrpc
+            paramString.setNum(accID);
+
+            requestString = m_deltaHandler->constructJsonrpcRequestString("get_account_info", paramString);
+            jsonResponseByteArray = m_deltaHandler->sendJsonrpcBlockingCall(requestString).toLocal8Bit();
+
+            jsonObj = QJsonDocument::fromJson(jsonResponseByteArray).object();
+
+            jsonObj = jsonObj.value("result").toObject();
+            if (jsonObj.value("kind").toString() == "Configured") {
+                retval = jsonObj.value("color").toString();
+            } else {
+                retval = "#000000";
+            }
+            break;
+
         case AccountsModel::FreshMsgCountRole:
-            retval = getNumberOfFreshMsgs(accID);
+            if (dc_is_configured(tempContext)) {
+                retval = getNumberOfFreshMsgs(accID);
+            } else {
+                retval = 0;
+            }
             break;
 
         case AccountsModel::ChatRequestCountRole:
             retval = 0;
-            for (i = 0; i < m_chatRequests.size(); ++i) {
-                if (m_chatRequests[i].accID == accID) {
-                    retval = static_cast<int>(m_chatRequests[i].contactRequestChatIDs.size());
-                    break;
+            if (dc_is_configured(tempContext)) {
+                for (i = 0; i < m_chatRequests.size(); ++i) {
+                    if (m_chatRequests[i].accID == accID) {
+                        retval = static_cast<int>(m_chatRequests[i].contactRequestChatIDs.size());
+                        break;
+                    }
                 }
             }
             break;
@@ -205,22 +246,28 @@ void AccountsModel::configure(dc_accounts_t* accMngr, DeltaHandler* dHandler)
     // connections would be created.
     disconnect(m_deltaHandler, SIGNAL(newUnconfiguredAccount()), this, SLOT(newAccount()));
     disconnect(m_deltaHandler, SIGNAL(newConfiguredAccount()), this, SLOT(newAccount()));
-    disconnect(m_deltaHandler, SIGNAL(updatedAccountConfig(uint32_t)), this, SLOT(updatedAccount(uint32_t)));
+    disconnect(m_deltaHandler, SIGNAL(accountIsConfiguredChanged(uint32_t)), this, SLOT(updatedAccount(uint32_t)));
+    disconnect(m_deltaHandler, SIGNAL(accountChanged()), this, SLOT(reset()));
 
     bool connectSuccess = connect(m_deltaHandler, SIGNAL(newUnconfiguredAccount()), this, SLOT(newAccount()));
     if (!connectSuccess) {
-        qDebug() << "Chatmodel::configure: Could not connect signal newUnconfiguredAccount to slot newAccount";
+        qDebug() << "AccountsModel::configure(): Could not connect signal newUnconfiguredAccount to slot newAccount";
     }
 
     connectSuccess = connect(m_deltaHandler, SIGNAL(newConfiguredAccount()), this, SLOT(newAccount()));
     if (!connectSuccess) {
-        qDebug() << "Chatmodel::configure: Could not connect signal newConfiguredAccount to slot newAccount";
+        qDebug() << "AccountsModel::configure(): Could not connect signal newConfiguredAccount to slot newAccount";
     }
 
-    connectSuccess = connect(m_deltaHandler, SIGNAL(updatedAccountConfig(uint32_t)), this, SLOT(updatedAccount(uint32_t)));
+    connectSuccess = connect(m_deltaHandler, SIGNAL(accountIsConfiguredChanged(uint32_t)), this, SLOT(updatedAccount(uint32_t)));
     if (!connectSuccess) {
-        qDebug() << "Chatmodel::configure: Could not connect signal updatedAccountConfig to slot updatedAccount";
+        qDebug() << "AccountsModel::configure(): Could not connect signal accountIsConfiguredChanged to slot updatedAccount";
     }
+
+    connectSuccess = connect(m_deltaHandler, SIGNAL(accountChanged()), this, SLOT(reset()));
+    if (!connectSuccess) {
+        qDebug() << "AccountsModel::configure(): ERROR: Could not connect signal accountChanged of m_deltaHandler with slot reset";
+    }  
 
     emit inactiveFreshMsgsMayHaveChanged();
 }
@@ -438,7 +485,7 @@ int AccountsModel::noOfFreshMsgsInInactiveAccounts()
 
     for (size_t i = 0; i < dc_array_get_cnt(m_accountsArray); ++i) {
         uint32_t tempAccID = dc_array_get_id(m_accountsArray, i);
-        if (tempAccID != currentAccID && !accountIsMuted(tempAccID)) {
+        if (tempAccID != currentAccID && !accountIsMuted(tempAccID) && accountIsConfigured(tempAccID)) {
             retval += getNumberOfFreshMsgs(tempAccID);
         }
     }
@@ -468,18 +515,20 @@ int AccountsModel::deleteAccount(int myindex)
     qDebug() << "AccountsModel::deleteAccount: Deleting account with ID " << accID << "...";
     int success = dc_accounts_remove_account(m_accountsManager, accID);
 
-    if(success) {
-        emit deletedAccount(accID);
+    if (success) {
         qDebug() << "AccountsModel::deleteAccount: ...done.";
         dc_array_unref(m_accountsArray);
         m_accountsArray = dc_accounts_get_all(m_accountsManager);
-    }
-    else {
+    } else {
         qDebug() << "AccountsModel::deleteAccount: ...Error: Deleting account did not work.";
     }
 
     //endRemoveRows();
     endResetModel();
+
+    if (success) {
+        emit deletedAccount(accID);
+    }
 
     emit inactiveFreshMsgsMayHaveChanged();
 
@@ -521,6 +570,12 @@ void AccountsModel::generateOrRefreshChatRequestEntries(uint32_t accID)
 
     // create the entry
     std::vector<uint32_t> tempContactRequList;
+
+    // check if the account is configured; if not, add empty vector for this account
+    if (!accountIsConfigured(accID)) {
+        m_chatRequests.push_back({accID, tempContactRequList});
+        return;
+    }
 
     QString paramString = "";
 
@@ -682,4 +737,13 @@ void AccountsModel::muteUnmuteAccountById(uint32_t accID)
     }
 
     emit inactiveFreshMsgsMayHaveChanged();
+}
+
+
+bool AccountsModel::accountIsConfigured(uint32_t tempAccID) const
+{
+    dc_context_t* tempContext = dc_accounts_get_account(m_accountsManager, tempAccID);
+    bool retval = dc_is_configured(tempContext);
+    dc_context_unref(tempContext);
+    return retval;
 }

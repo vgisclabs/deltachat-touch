@@ -230,7 +230,7 @@ void EmitterThread::run()
 
                 case DC_EVENT_CHATLIST_CHANGED:
                     // TODO: emit and react to this event
-                    qInfo().nospace() << "Emitter: DC_EVENT_CHATLIST_CHANGED << " << ", account " << dc_event_get_account_id(event);
+                    qInfo().nospace() << "Emitter: DC_EVENT_CHATLIST_CHANGED" << ", account " << dc_event_get_account_id(event);
                     break;
 
                 case DC_EVENT_CHATLIST_ITEM_CHANGED:

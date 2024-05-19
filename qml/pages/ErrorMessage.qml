@@ -29,8 +29,8 @@ Dialog {
         text: 'OK'
         color: theme.palette.normal.negative
         onClicked: {
-            done()
             PopupUtils.close(dialog)
+            done()
         }
     }
 }

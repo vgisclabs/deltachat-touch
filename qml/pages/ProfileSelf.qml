@@ -30,14 +30,41 @@ import DeltaHandler 1.0
 Page {
     id: profilePage
 
+    Loader {
+        id: picImportLoader
+    }
+
+    Connections {
+        target: picImportLoader.item
+        onFileSelected: {
+            profilePage.setProfilePic(urlOfFile)
+            picImportLoader.source = ""
+        }
+        onCancelled: {
+            picImportLoader.source = ""
+        }
+    }
+
     function updateProfilePic(newPath) {
         profilePicImage.source = StandardPaths.locate(StandardPaths.CacheLocation, newPath)
+    }
+
+    function setProfilePic(imagePath) {
+        let tempPath = DeltaHandler.copyToCache(imagePath);
+        DeltaHandler.setProfileValue("selfavatar", tempPath)
+    }
+
+    function openFileDialog() {
+        // only for non-UT
+        picImportLoader.source = "FileImportDialog.qml"
+        picImportLoader.item.setFileType(DeltaHandler.ImageType)
+        picImportLoader.item.open()
     }
 
     Component.onCompleted: {
         // TODO: probably not needed as it is checked in SettingsPage.qml?
         if (!DeltaHandler.hasConfiguredAccount) {
-            layout.removePages(layout.primaryPage)
+            extraStack.pop()
         }
         DeltaHandler.startProfileEdit()
         DeltaHandler.newTempProfilePic.connect(updateProfilePic)
@@ -47,14 +74,13 @@ Page {
         id: profileHeader
         title: i18n.tr("Edit Profile")
 
-        // Switch off the back icon to avoid unclear situation. User
-        // has to explicitly choose cancel or ok.
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
-                    onClicked: layout.removePages(layout.primaryPage)
+                    onClicked: extraStack.pop()
                 }
             }
         ]
@@ -62,7 +88,8 @@ Page {
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
             Action {
-                iconName: 'ok'
+                //iconName: 'ok'
+                iconSource: "qrc:///assets/suru-icons/ok.svg"
                 text: i18n.tr('OK')
                 onTriggered: {
                     usernameField.focus = false
@@ -70,7 +97,7 @@ Page {
                     DeltaHandler.setProfileValue("displayname", usernameField.text)
                     DeltaHandler.setProfileValue("selfstatus", signatureField.text)
                     DeltaHandler.finalizeProfileEdit()
-                    layout.removePages(layout.primaryPage)
+                    extraStack.clear()
                 }
             }
         ]
@@ -144,7 +171,8 @@ Page {
 
                 Icon {
                     anchors.fill: parent
-                    name: "edit"
+                    //name: "edit"
+                    source: "qrc:///assets/suru-icons/edit.svg"
                 }
 
                 MouseArea {
@@ -166,6 +194,7 @@ Page {
                             top: parent.top
                             right: parent.right
                         }
+
                         ListItem {
                             height: layout1.height
                             // should be automatically be themed with something like
@@ -177,11 +206,35 @@ Page {
                                 id: layout1
                                 title.text: i18n.tr("Select Profile Image")
                             }
+                            
                             onClicked: {
                                 PopupUtils.close(popoverProfilePicActions)
-                                layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('PickerProfilePic.qml'))
+
+                                if (root.onUbuntuTouch) {
+                                    DeltaHandler.newFileImportSignalHelper()
+                                    DeltaHandler.fileImportSignalHelper.fileImported.connect(profilePage.setProfilePic)
+                                    extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                                    // See comments in CreateOrEditGroup.qml
+                                    //let incubator = layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                                    //if (incubator.status != Component.Ready) {
+                                    //    // have to wait for the object to be ready to connect to the signal,
+                                    //    // see documentation on AdaptivePageLayout and
+                                    //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                    //    incubator.onStatusChanged = function(status) {
+                                    //        if (status == Component.Ready) {
+                                    //            incubator.object.fileSelected.connect(profilePage.setProfilePic)
+                                    //        }
+                                    //    }
+                                    //} else {
+                                    //    // object was directly ready
+                                    //    incubator.object.fileSelected.connect(profilePage.setProfilePic)
+                                    //}
+                                } else {
+                                    profilePage.openFileDialog()
+                                }
                             }
-                        }
+                        } // ListItem
 
                         ListItem {
                             height: layout2.height
@@ -237,6 +290,16 @@ Page {
                         flickTimer.start()
                     }
                 }
+
+                onFocusChanged: {
+                    if (root.oskViaDbus) {
+                        if (focus) {
+                            DeltaHandler.openOskViaDbus()
+                        } else {
+                            DeltaHandler.closeOskViaDbus()
+                        }
+                    }
+                }
             }
 
             Label {
@@ -260,6 +323,16 @@ Page {
                     leftMargin: units.gu(2)
                 }
                 text: DeltaHandler.getCurrentSignature()
+
+                onFocusChanged: {
+                    if (root.oskViaDbus) {
+                        if (focus) {
+                            DeltaHandler.openOskViaDbus()
+                        } else {
+                            DeltaHandler.closeOskViaDbus()
+                        }
+                    }
+                }
             }
         } // Item id: flickContent
 

@@ -4,7 +4,7 @@ Messaging app for Ubuntu Touch (and now also Nix), powered by deltachat-core.
 
 ## Important notice to users of Ubuntu Touch focal and the Nix package
 
-This is the xenial branch which contains the version for Ubuntu Touch 16.04 (xenial). Please checkout the main branch for Ubuntu Touch 20.04 (focal) and the Nix package.
+This is the xenial branch which contains the version for Ubuntu Touch 16.04 (xenial). Please checkout the main branch for Ubuntu Touch 20.04 (focal), the Nix package and everything else.
 
 ## Building
 
@@ -83,3 +83,8 @@ by the Free Software Foundation.
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranties of MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+## Sponsors
+
+The project to bring [Webxdc](https://webxdc.org) to DeltaTouch is generously funded by the [NLnet foundation](https://nlnet.nl) through the [NGI0 Entrust fund](https://nlnet.nl/project/DeltaTouch/).

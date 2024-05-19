@@ -36,7 +36,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: 'go-down'
+                //iconName: 'go-down'
+                iconSource: "qrc:///assets/suru-icons/go-down.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     bottomEdge.collapse()
@@ -74,6 +75,16 @@ Page {
             onDisplayTextChanged: {
                 addChatPage.textHasChanged(displayText)
             }
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
         }
 
         ListItem {
@@ -108,7 +119,8 @@ Page {
             }
 
             onClicked: {
-                layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("AddChatForContact.qml"))
+                extraStack.push(Qt.resolvedUrl("AddChatForContact.qml"))
+                bottomEdge.collapse()
             }
         }
 
@@ -144,9 +156,9 @@ Page {
             }
 
             onClicked: {
-                bottomEdge.collapse()
                 DeltaHandler.startCreateGroup()
-                layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": true })
+                extraStack.push(Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": true })
+                bottomEdge.collapse()
             }
         }
     }
@@ -154,7 +166,8 @@ Page {
     ListItemActions {
         id: leadingContactsAction
         actions: Action {
-            iconName: "delete"
+            //iconName: "delete"
+            iconSource: "qrc:///assets/suru-icons/delete.svg"
             onTriggered: {
                 // the index is passed as parameter and can be accessed via 'value'
                 let nameAndAddress = DeltaHandler.contactsmodel.getNameNAddressByIndex(value);
@@ -178,7 +191,8 @@ Page {
             onClicked: {
                 // check if the item is the top one labeled "Add Contact"
                 if (model.profilePic == "replace_by_addNew") {
-                    layout.addPageToCurrentColumn(chatlistPage, Qt.resolvedUrl("AddChatForContact.qml"), { "address": enterNameOrEmailField.displayText })
+                    extraStack.push(Qt.resolvedUrl("AddChatForContact.qml"), { "address": enterNameOrEmailField.displayText })
+                    bottomEdge.collapse()
                 } else {
                     addChatPage.indexSelected(index)
                 }

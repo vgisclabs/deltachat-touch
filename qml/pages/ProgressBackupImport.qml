@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -32,9 +32,11 @@ Dialog {
         value: 0
     }
 
+    property string backupSource
+
     Component.onCompleted: {
         DeltaHandler.imexEventReceived.connect(updateProgress)
-        DeltaHandler.importBackupFromFile(backupPickerPage.source)
+        DeltaHandler.importBackupFromFile(backupSource)
     }
 
     function updateProgress(progValue) {
@@ -47,7 +49,7 @@ Dialog {
         }
         else if (progValue == 1000) {
             // TODO string not translated yet
-            dialog.text = "Success!\nAfter clicking Ok, it may take a while, please be patient."
+            dialog.text = i18n.tr("Done") //"Success!\nAfter clicking Ok, it may take a while, please be patient."
             progBar.visible = false
             okButton.visible = true
         }
@@ -60,7 +62,7 @@ Dialog {
         onClicked: {
             dialog.text = "Updating…"
             PopupUtils.close(dialog)
-            layout.removePages(layout.primaryPage)
+            extraStack.clear()
         }
         visible: false
     }
@@ -71,7 +73,6 @@ Dialog {
         color: theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(dialog)
-            layout.removePages(backupPickerPage)
         }
         visible: false
     }

@@ -121,7 +121,8 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                iconName: 'close'
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     let popup4 = PopupUtils.open(
@@ -420,7 +421,7 @@ Page {
         interval: 200
         repeat: false
         triggeredOnStart: false
-        onTriggered: layout.removePages(primaryPage)
+        onTriggered: extraStack.clear()
     }
 
     Timer {

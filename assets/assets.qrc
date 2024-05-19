@@ -10,6 +10,7 @@
         <file>external-link-black.svg</file>
         <file>image-icon3.svg</file>
         <file>logo.svg</file>
+        <file>media-skip-downwards.svg</file>
         <file>read_black.svg</file>
         <file>read_green.svg</file>
         <file>read_white.svg</file>
@@ -62,5 +63,50 @@
         <file>coreTranslations/vi.txt</file>
         <file>coreTranslations/zh_CN.txt</file>
         <file>coreTranslations/zh_TW.txt</file>
+        <file>suru-icons/add.svg</file>
+        <file>suru-icons/attachment.svg</file>
+        <file>suru-icons/audio-input-microphone-symbolic.svg</file>
+        <file>suru-icons/audio-speakers-muted-symbolic.svg</file>
+        <file>suru-icons/clock.svg</file>
+        <file>suru-icons/close.svg</file>
+        <file>suru-icons/compose.svg</file>
+        <file>suru-icons/contextual-menu.svg</file>
+        <file>suru-icons/delete.svg</file>
+        <file>suru-icons/edit.svg</file>
+        <file>suru-icons/find.svg</file>
+        <file>suru-icons/folder-symbolic.svg</file>
+        <file>suru-icons/go-down.svg</file>
+        <file>suru-icons/go-next.svg</file>
+        <file>suru-icons/go-previous.svg</file>
+        <file>suru-icons/go-up.svg</file>
+        <file>suru-icons/help.svg</file>
+        <file>suru-icons/info.svg</file>
+        <file>suru-icons/lock.svg</file>
+        <file>suru-icons/mail-forward.svg</file>
+        <file>suru-icons/mail-reply.svg</file>
+        <file>suru-icons/media-playback-pause.svg</file>
+        <file>suru-icons/media-playback-start-rtl.svg</file>
+        <file>suru-icons/media-playback-start.svg</file>
+        <file>suru-icons/media-playback-stop.svg</file>
+        <file>suru-icons/media-record.svg</file>
+        <file>suru-icons/media-skip-backward.svg</file>
+        <file>suru-icons/media-skip-forward.svg</file>
+        <file>suru-icons/navigation-menu.svg</file>
+        <file>suru-icons/ok.svg</file>
+        <file>suru-icons/pinned.svg</file>
+        <file>suru-icons/reload.svg</file>
+        <file>suru-icons/save-as.svg</file>
+        <file>suru-icons/select-none.svg</file>
+        <file>suru-icons/select.svg</file>
+        <file>suru-icons/send.svg</file>
+        <file>suru-icons/settings.svg</file>
+        <file>suru-icons/share.svg</file>
+        <file>suru-icons/stock_image.svg</file>
+        <file>suru-icons/stock_music.svg</file>
+        <file>suru-icons/sync.svg</file>
+        <file>suru-icons/timer.svg</file>
+        <file>suru-icons/view-grid-symbolic.svg</file>
+        <file>suru-icons/view-off.svg</file>
+        <file>suru-icons/view-on.svg</file>
     </qresource>
 </RCC>

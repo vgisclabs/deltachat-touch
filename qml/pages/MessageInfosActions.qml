@@ -27,6 +27,8 @@ Dialog {
 
     property bool isInfoMsg: false
 
+    signal startFileExport()
+
     Component.onCompleted: {
     }
 
@@ -49,21 +51,7 @@ Dialog {
         text: i18n.tr('Export Attachment')
         onClicked: {
             if (DeltaHandler.chatmodel.setUrlToExport()) {
-                switch (DeltaHandler.chatmodel.getMomentaryViewType()) {
-                    case DeltaHandler.GifType:
-                    case DeltaHandler.ImageType:
-                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerImageToExport.qml'))
-                        break;
-                        
-                    case DeltaHandler.AudioType:
-                    case DeltaHandler.VoiceType:
-                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerAudioToExport.qml'))
-                        break;
-
-                    default:
-                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToExport.qml'))
-                        break;
-                }
+                startFileExport()
             }
             PopupUtils.close(dialog)
         }

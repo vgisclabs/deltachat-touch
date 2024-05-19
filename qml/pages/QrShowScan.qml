@@ -27,7 +27,6 @@ import QtQuick 2.12
 import Ubuntu.Components 1.3
 import Ubuntu.Components.Popups 1.3
 import QtQuick.Layouts 1.3
-//import Ubuntu.Components.Popups 1.3
 //import Qt.labs.settings 1.0
 import Qt.labs.platform 1.1
 import QtMultimedia 5.12
@@ -48,7 +47,8 @@ Page {
     property bool goToScanDirectly: false
 
     Component.onDestruction: {
-        captureTimer.stop()
+        camera.stopAll()
+
         // emit this because a QR code to set up an account might
         // have been scanned, but the configuration was unsuccessful.
         // In this case, tempContext is set in C++, but needs to be
@@ -80,6 +80,10 @@ Page {
         onDeleteDecoder: DeltaHandler.deleteQrDecoder()
     }
 
+    function passQrImage(imagePath) {
+        DeltaHandler.loadQrImage(imagePath)
+    }
+
     function startQrProcessing(content) {
         camera.stopAll()
         qrActionSwitch(DeltaHandler.evaluateQrCode(content))
@@ -105,7 +109,8 @@ Page {
                 popup.confirmed.connect(function() {
                     PopupUtils.close(popup)
                     // TODO: Trying to close the page here by calling
-                    // layout.removePages(qrShowScanPage)
+                    // layout.removePages(qrShowScanPage) [EDIT: that was before the switch to pageStack,
+                    // maybe try if it works now?]
                     // always results in an error
                     // QQmlExpression: Attempted to evaluate an expression in an invalid context
                     // Same if DeltaHandler.continueQrCodeAction() emits a signal closeQrPage()
@@ -247,7 +252,19 @@ Page {
                 break;
             case DeltaHandler.DT_QR_ADDR:
                 console.log("qr state is DT_QR_ADDR")
-                // TODO (also TODO in deltahandler.cpp!)
+                popup = PopupUtils.open(
+                    Qt.resolvedUrl("QrConfirmPopup.qml"),
+                    null,
+                    { textOne: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) }
+                )
+                popup.confirmed.connect(function() {
+                    PopupUtils.close(popup)
+                    continueTimer.start()
+                })
+                popup.cancel.connect(function() {
+                    PopupUtils.close(popup)
+                    camera.startAndConfigure()
+                })
                 break;
             case DeltaHandler.DT_QR_TEXT:
                 console.log("qr state is DT_QR_TEXT")
@@ -428,34 +445,61 @@ Page {
         }
     }
 
-    function continueQrAccountCreation(wasSuccessful) {
-        if (wasSuccessful) {
-            // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
-            // the account should not persist if the configuration fails (or should it?)
-            PopupUtils.open(configProgress)
-        } else {
-            PopupUtils.open(errorPopup)
-            setTempContextNull()
+    function continueQrAccountCreation(wasSuccessful, calledDuringUrlHandling) {
+        // only act if signal was emitted as a result of an active scan of
+        // a QR code (i.e., not as a result of an URL passed as parameter
+        // to the app itself; see comments in deltahandler.h and Main.qml for the
+        // finishedSetConfigFromQr signal)
+        if (!calledDuringUrlHandling) {
+            if (wasSuccessful) {
+                // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
+                // the account should not persist if the configuration fails (or should it?)
+                PopupUtils.open(configProgress)
+            } else {
+                PopupUtils.open(errorPopup)
+                setTempContextNull()
+            }
         }
     }
 
-    function continueQrBackupImport() {
-        let popup2 = PopupUtils.open(progressQrBackupImport)
-        popup2.failed.connect(goBackToMain)
-        popup2.cancelled.connect(goBackToMain)
+    function continueQrBackupImport(calledDuringUrlHandling) {
+        // only act if signal was emitted as a result of an active scan of
+        // a QR code (i.e., not as a result of an URL passed as parameter
+        // to the app itself; see comments in deltahandler.h and Main.qml for the
+        // readyForQrBackupImport signal)
+        if (!calledDuringUrlHandling) {
+            let popup2 = PopupUtils.open(progressQrBackupImport)
+            popup2.failed.connect(goBackToMain)
+            popup2.cancelled.connect(goBackToMain)
+        }
     }
 
     function goBackToMain() {
-        layout.removePages(primaryPage)
+        extraStack.clear()
     }
 
     header: PageHeader {
         id: qrHeader
         title: i18n.tr("QR Invite Code")
 
+        leadingActionBar.actions: [
+            Action {
+                //iconName: "close"
+                iconSource: "qrc:///assets/suru-icons/close.svg"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    extraStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
+
         trailingActionBar.actions: [
             Action {
-                iconName: "contextual-menu"
+                //iconName: "contextual-menu"
+                iconSource: "qrc:///assets/suru-icons/contextual-menu.svg"
                 text: i18n.tr("More Options")
                 visible: !scanSectionActive
                 onTriggered: {
@@ -505,11 +549,16 @@ Page {
                 }
             },
             Action {
-                iconName: "share"
+                //iconName: "share"
+                iconSource: "qrc:///assets/suru-icons/share.svg"
                 text: i18n.tr("Share")
                 visible: !scanSectionActive
                 onTriggered: {
-                    layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getQrInviteLink() })
+                    if (root.onUbuntuTouch) {
+                        extraStack.push(Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getQrInviteLink() })
+                    } else {
+                        PopupUtils.open(Qt.resolvedUrl("QrSharePopup.qml"), qrShowScanPage, { "qrInviteLink": DeltaHandler.getQrInviteLink() })
+                    }
                 }
             }
         ]
@@ -601,16 +650,7 @@ Page {
 
             function stopAll() {
                 captureTimer.stop()
-                // // if stop() is called, the camera will take a VERY long
-                // // time to recover. If the user switches back to the 
-                // // section with the invite code and then back to the
-                // // scanning section, the videoOutput rectangle will stay
-                // // black and no code will be scanned for a long time.
-                // // Don't know why, sometimes putting the app in the background
-                // // shortly will fix it party. But in addition, focussing will not
-                // // work after starting the camera again. So just
-                // // don't stop().
-                // stop()
+                stop()
             }
         }
 
@@ -714,11 +754,53 @@ Page {
                 text: i18n.tr("Load QR Code as Image")
                 onClicked: {
                     camera.stopAll()
-                    layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl("PickerQrImageLoad.qml"))
+                    if (root.onUbuntuTouch) {
+                        // Ubuntu Touch
+                        DeltaHandler.newFileImportSignalHelper()
+                        DeltaHandler.fileImportSignalHelper.fileImported.connect(qrShowScanPage.passQrImage)
+                        extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                        // See comments in CreateOrEditGroup.qml
+                        //let incubator = layout.addPageToCurrentColumn(qrShowScanPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                        //if (incubator.status != Component.Ready) {
+                        //    // have to wait for the object to be ready to connect to the signal,
+                        //    // see documentation on AdaptivePageLayout and
+                        //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                        //    incubator.onStatusChanged = function(status) {
+                        //        if (status == Component.Ready) {
+                        //            incubator.object.fileSelected.connect(qrShowScanPage.passQrImage)
+                        //        }
+                        //    }
+                        //} else {
+                        //    // object was directly ready
+                        //    incubator.object.fileSelected.connect(qrShowScanPage.passQrImage)
+                        //}
+                    } else {
+                        // non-Ubuntu Touch
+                        picImportLoader.source = "FileImportDialog.qml"
+                        picImportLoader.item.setFileType(DeltaHandler.ImageType)
+                        picImportLoader.item.open()
+                    }
                 }
             }
         } // end Rectangle id: scanButtonRect
     } // end Rectangle id: qrScanRect
+
+    Loader {
+        id: picImportLoader
+    }
+
+    Connections {
+        target: picImportLoader.item
+        onFileSelected: {
+            let tempPath = DeltaHandler.copyToCache(urlOfFile);
+            qrShowScanPage.passQrImage(tempPath)
+            picImportLoader.source = ""
+        }
+        onCancelled: {
+            picImportLoader.source = ""
+        }
+    }
 
     Timer {
         id: continueTimer
@@ -726,7 +808,7 @@ Page {
         repeat: false
         triggeredOnStart: false
         onTriggered: {
-            layout.removePages(primaryPage)
+            extraStack.clear()
             DeltaHandler.continueQrCodeAction()
         }
     }
@@ -738,7 +820,7 @@ Page {
         repeat: false
         triggeredOnStart: false
         onTriggered: {
-            layout.removePages(primaryPage)
+            extraStack.clear()
         }
     }
 

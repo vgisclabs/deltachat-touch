@@ -72,7 +72,8 @@ Dialog {
         id: ephemeralDropdown
         text: "Test"
         iconPosition: "right"
-        iconName: "go-down"
+        //iconName: "go-down"
+        iconSource: "qrc:///assets/suru-icons/go-down.svg"
         onClicked: {
             PopupUtils.open(popoverComponentEphemeral, ephemeralDropdown)
 
@@ -112,11 +113,13 @@ Dialog {
             id: popoverEphemeral
 
             Component.onCompleted: {
-                ephemeralDropdown.iconName = "go-up"
+                //ephemeralDropdown.iconName = "go-up"
+                ephemeralDropdown.iconSource = "qrc:///assets/suru-icons/go-up.svg"
             }
 
             Component.onDestruction: {
-                ephemeralDropdown.iconName = "go-down"
+                //ephemeralDropdown.iconName = "go-down"
+                ephemeralDropdown.iconSource = "qrc:///assets/suru-icons/go-down.svg"
             }
 
             Column {

@@ -45,6 +45,17 @@ Page {
     header: PageHeader {
         id: profileHeader
         title: i18n.tr("View Profile")
+
+        leadingActionBar.actions: [
+            Action {
+                //iconName: 'close'
+                iconSource: "qrc:///assets/suru-icons/close.svg"
+                text: i18n.tr('Cancel')
+                onTriggered: {
+                    onClicked: extraStack.pop()
+                }
+            }
+        ]
     }
 
     Flickable {
@@ -91,7 +102,8 @@ Page {
                     anchors.fill: parent
                     onClicked: {
                         if (profileImagePath != "") {
-                            layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": avatarImage.source, "enableDownloading": false })
+                            // don't use imageStack as it is layered below extraStack
+                            extraStack.push(Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": avatarImage.source, "enableDownloading": false, "onExtraStack": true })
                         }
                     }
                 }
@@ -146,7 +158,8 @@ Page {
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
                 Icon {
-                    name: "edit"
+                    //name: "edit"
+                    source: "qrc:///assets/suru-icons/edit.svg"
                     height: units.gu(3.5)
                     width: height
                     anchors.centerIn: parent
@@ -187,6 +200,16 @@ Page {
                         flickTimer.start()
                     }
                 }
+
+                onFocusChanged: {
+                    if (root.oskViaDbus) {
+                        if (focus) {
+                            DeltaHandler.openOskViaDbus()
+                        } else {
+                            DeltaHandler.closeOskViaDbus()
+                        }
+                    }
+                }
             }
 
             UbuntuShape {
@@ -202,7 +225,8 @@ Page {
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
                 Icon {
-                    name: "ok"
+                    //name: "ok"
+                    source: "qrc:///assets/suru-icons/ok.svg"
                     height: units.gu(3.5)
                     width: height
                     anchors.centerIn: parent
@@ -233,7 +257,8 @@ Page {
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
                 Icon {
-                    name: "close"
+                    //name: "close"
+                    source: "qrc:///assets/suru-icons/close.svg"
                     height: units.gu(3.5)
                     width: height
                     anchors.centerIn: parent
@@ -296,7 +321,8 @@ Page {
                     left: parent.left
                     leftMargin: units.gu(2)
                 }
-                name: "clock"
+                //name: "clock"
+                source: "qrc:///assets/suru-icons/clock.svg"
                 visible: !isDevice
             }
 

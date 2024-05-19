@@ -6,14 +6,15 @@
     "hooks": {
         "deltatouch": {
             "apparmor": "deltatouch.apparmor",
-            "desktop":  "deltatouch.desktop"
+            "desktop":  "deltatouch.desktop",
+            "urls": "deltatouch.url-dispatcher"
         },
         "push": {
             "apparmor": "push-apparmor.json",
             "push-helper": "push.json"
         }
     },
-    "version": "1.4.1-pre07",
+    "version": "1.4.1-pre09",
     "maintainer": "Lothar Ketterer <deltatouch@mailbox.org>",
     "framework" : "@CLICK_FRAMEWORK@"
 }

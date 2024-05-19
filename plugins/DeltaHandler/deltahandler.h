@@ -23,6 +23,7 @@
 #include <QtGui>
 #include <QAudioRecorder>
 #include <QDBusPendingCallWatcher>
+#include <QtDBus/QDBusConnection>
 #include <string>
 #include <array>
 #include <vector>
@@ -32,12 +33,14 @@
 #include "accountsmodel.h"
 #include "blockedcontactsmodel.h"
 #include "contactsmodel.h"
+#include "dbusUrlReceiver.h"
 #include "groupmembermodel.h"
 #include "emitterthread.h"
 #include "jsonrpcresponsethread.h"
-#include "notificationGenerator.h"
+#include "notificationHelper.h"
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
+#include "fileImportSignalHelper.h"
 
 #include "deltachat.h"
 #include "quirc.h"
@@ -54,9 +57,13 @@ class JsonrpcResponseThread;
 class ContactsModel;
 class BlockedContactsModel;
 class GroupMemberModel;
-class NotificationGenerator;
+class NotificationHelper;
+class NotificationsLomiriPostal;
+class NotificationsFreedesktop;
+class NotificationsMissing;
 class WorkflowDbToEncrypted;
 class WorkflowDbToUnencrypted;
+class DbusUrlReceiver;
 
 class DeltaHandler : public QAbstractListModel {
     Q_OBJECT
@@ -106,6 +113,10 @@ public:
     Q_ENUM (DcChatType)
 
     Q_INVOKABLE bool isDesktopMode();
+    
+    Q_INVOKABLE bool onUbuntuTouch();
+
+    Q_INVOKABLE bool shouldOpenOskViaDbus();
 
     Q_INVOKABLE void loadSelectedAccount();
 
@@ -203,7 +214,11 @@ public:
     // on the chat overview page
     Q_INVOKABLE void selectChat(int myindex);
 
+    Q_INVOKABLE void selectAndOpenLastChatId();
+
     Q_INVOKABLE void openChat();
+
+    Q_INVOKABLE void setChatViewIsShown();
 
     Q_INVOKABLE void archiveMomentaryChat();
 
@@ -217,12 +232,16 @@ public:
 
     Q_INVOKABLE void closeArchive();
 
-    Q_INVOKABLE void selectAccount(int myindex);
+    // Param calledInUrlHandlingProcess needed for handling of urls that
+    // trigger the question with which account they should be handled
+    // (e.g. openpgp4fpr) with, so the signal accountForUrlProcessingSelected is
+    // emitted even if the account is the already active one.
+    Q_INVOKABLE void selectAccount(uint32_t newAccID, bool calledInUrlHandlingProcess = false);
 
-    void deleteActiveNotificationTags(uint32_t accID, int chatID);
+    Q_INVOKABLE void openOskViaDbus();
+    Q_INVOKABLE void closeOskViaDbus();
 
-    // Returns the name of the currently selected chat
-    Q_INVOKABLE QString chatName();
+    void removeActiveNotificationsOfChat(uint32_t accID, int chatID);
 
     // Returns whether the currently selected chat is verified/protected
     Q_INVOKABLE bool chatIsVerified();
@@ -245,6 +264,8 @@ public:
     // picture (for full path, StandardPaths.AppConfigLocation
     // needs to be prepended)
     Q_INVOKABLE QString getCurrentProfilePic();
+
+    Q_INVOKABLE QString getCurrentProfileColor();
 
     // TODO: replace all getCurrentXY() by this method (EXCEPT
     // the ones that return a path, see the data() method in chatmodel.cpp,
@@ -283,6 +304,8 @@ public:
 
     Q_INVOKABLE void exportBackup();
 
+    Q_INVOKABLE QString saveBackupFile(QString destinationFolder);
+
     Q_INVOKABLE QString getUrlToExport();
 
     // Mainly used to remove backup files right
@@ -298,7 +321,7 @@ public:
 
     // expects the index of the chat in the chatlist,
     // will check for the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     // TODO: other parameter than -1 is not used anymore, see momentaryChatIsGroup
     // => adapt?
@@ -326,10 +349,10 @@ public:
     Q_INVOKABLE QString prepareExportKeys();
     Q_INVOKABLE void startExportKeys(QString dirToExportTo);
 
-    Q_INVOKABLE void removeNotification(QString tag = "");
-
     Q_INVOKABLE int getConnectivitySimple();
     Q_INVOKABLE QString getConnectivityHtml();
+
+    Q_INVOKABLE QString saveLog(QString logtext, QString datetime);
 
     /* ========================================================
      * ===============Self Profile editing ====================
@@ -382,7 +405,7 @@ public:
     Q_INVOKABLE void startCreateGroup();
     
     // will set up the currently active chat
-    // (i.e., the one in currentChatID) if -1 is
+    // (i.e., the one in m_currentChatID) if -1 is
     // passed
     // TODO: combine with momentaryChatStartEditGroup() ?
     Q_INVOKABLE void startEditGroup(int myindex);
@@ -423,8 +446,14 @@ public:
     Q_INVOKABLE QString getQrContactEmail();
     Q_INVOKABLE QString getQrTextOne();
     Q_INVOKABLE int evaluateQrCode(QString clipboardData);
-    Q_INVOKABLE void continueQrCodeAction();
-    Q_INVOKABLE void prepareQrBackupImport();
+
+    // Param calledAfterUrlReceived: Set to true if this function
+    // is called as part of the handling of an URL that was passed
+    // as parameter (in contrast to active scanning of a QR code).
+    // See also comment for finishedSetConfigFromQr.
+    Q_INVOKABLE void continueQrCodeAction(bool calledAfterUrlReceived = false);
+    // Param calledAfterUrlReceived: see comments for continueQrCodeAction
+    Q_INVOKABLE void prepareQrBackupImport(bool calledAfterUrlReceived);
     Q_INVOKABLE void startQrBackupImport();
     Q_INVOKABLE void cancelQrImport();
 
@@ -447,6 +476,11 @@ public:
     // finalize() has to be called on ContentTransfer).
     Q_INVOKABLE QString copyToCache(QString fromFilePath);
 
+    Q_INVOKABLE void newFileImportSignalHelper();
+    Q_INVOKABLE void deleteFileImportSignalHelper();
+
+    Q_INVOKABLE void emitFontSizeChangedSignal();
+
     // Will be executed when the app is closed
     Q_INVOKABLE void shutdownTasks();
 
@@ -465,9 +499,10 @@ public:
     // dc_receive_backup() blocks, so the DeltaHandler singleton will not pass the progress events
     // until dc_receive_backup() returns, and at this point, everything has already happened
     Q_PROPERTY(EmitterThread* emitterthread READ emitterthread NOTIFY emitterthreadChanged);
-    Q_PROPERTY(NotificationGenerator* notificationGenerator READ notificationGenerator NOTIFY notificationGeneratorChanged);
+    Q_PROPERTY(NotificationHelper* notificationHelper READ notificationHelper NOTIFY notificationHelperChanged);
     Q_PROPERTY(WorkflowDbToEncrypted* workflowdbencryption READ workflowdbencryption NOTIFY workflowdbencryptionChanged());
     Q_PROPERTY(WorkflowDbToUnencrypted* workflowdbdecryption READ workflowdbdecryption NOTIFY workflowdbdecryptionChanged());
+    Q_PROPERTY(FileImportSignalHelper* fileImportSignalHelper READ fileImportSignalHelper NOTIFY fileImportSignalHelperChanged());
 
     ChatModel* chatmodel();
     AccountsModel* accountsmodel();
@@ -475,9 +510,10 @@ public:
     BlockedContactsModel* blockedcontactsmodel();
     GroupMemberModel* groupmembermodel();
     EmitterThread* emitterthread();
-    NotificationGenerator* notificationGenerator();
+    NotificationHelper* notificationHelper();
     WorkflowDbToEncrypted* workflowdbencryption();
     WorkflowDbToUnencrypted* workflowdbdecryption();
+    FileImportSignalHelper* fileImportSignalHelper();
 
     Q_PROPERTY(bool hasConfiguredAccount READ hasConfiguredAccount NOTIFY hasConfiguredAccountChanged);
     Q_PROPERTY(bool networkingIsAllowed READ networkingIsAllowed NOTIFY networkingIsAllowedChanged);
@@ -489,6 +525,7 @@ public:
     bool networkingIsStarted();
     bool chatIsContactRequest();
 
+    void processReceivedUrl(QString myUrl);
 
 signals:
     // TODO the models never change, they communicate
@@ -499,12 +536,16 @@ signals:
     void blockedcontactsmodelChanged();
     void groupmembermodelChanged();
     void emitterthreadChanged();
-    void notificationGeneratorChanged();
+    void notificationHelperChanged();
     void workflowdbencryptionChanged();
     void workflowdbdecryptionChanged();
+    void fileImportSignalHelperChanged();
 
     void chatlistShowsArchivedOnly(bool showsArchived);
+    void closeChatViewRequest();
+    void chatlistToBeginning();
 
+    void fontSizeChanged();
 
     void newJsonrpcResponse(QString response);
 
@@ -541,6 +582,7 @@ signals:
     void networkingIsAllowedChanged();
     void networkingIsStartedChanged();
     void accountChanged();
+    void accountDataChanged();
     void msgsChanged(int msgID);
     void messageRead(int msgID);
     void messageDelivered(int msgID);
@@ -550,7 +592,7 @@ signals:
     void imexEventReceived(int perMill);
     void newUnconfiguredAccount();
     void newConfiguredAccount();
-    void updatedAccountConfig(uint32_t);
+    void accountIsConfiguredChanged(uint32_t);
     void chatIsContactRequestChanged();
     void openChatViewRequest(uint32_t accID, uint32_t chatID);
     void chatViewClosed(bool gotoQrScanPage);
@@ -580,11 +622,28 @@ signals:
     /* ========================================================
      * ================ QR code related stuff =================
      * ======================================================== */
-    void finishedSetConfigFromQr(bool successful);
-    void readyForQrBackupImport();
+    // Param calledAfterUrlReceived is true if the QR/URL processing
+    // steps were started after an URL was passed as parameter, i.e.,
+    // not by scanning in the app, but by another programm that called
+    // the app with the URL as parameter. Has to be distinguished
+    // because both Main.qml and the pages with QR scanning function
+    // react to this signal. The slot in main should only do something
+    // if calledAfterUrlReceived is true, and the other pages only if
+    // it is false.
+    void finishedSetConfigFromQr(bool successful, bool calledAfterUrlReceived);
+
+    // For param calledAfterUrlReceived, see comment for finishedSetConfigFromQr
+    void readyForQrBackupImport(bool calledAfterUrlReceived);
 
     void qrDecoded(QString qrContent);
     void qrDecodingFailed(QString errorMessage);
+
+    // not really QR code, but related: URL handling
+    // urlReceived signals that an Url has been passed to the app
+    // (needed on non-UT platforms only)
+    void urlReceived(QString myUrl);
+
+    void accountForUrlProcessingSelected();
     /* ============ End QR code related stuff ================= */
 
     void errorEvent(QString errorMessage);
@@ -632,8 +691,8 @@ private slots:
     void resetPassphrase();
     void addClosedAccountToList(uint32_t accID);
     void connectivityUpdate(uint32_t accID);
-    void finishDeleteActiveNotificationTags(QDBusPendingCallWatcher* call);
     void processSignalQueueTimerTimeout();
+    void internalOpenOskViaDbus();
 
 
 private:
@@ -654,9 +713,10 @@ private:
     GroupMemberModel* m_groupmembermodel;
     WorkflowDbToEncrypted* m_workflowDbEncryption;
     WorkflowDbToUnencrypted* m_workflowDbDecryption;
+    FileImportSignalHelper* m_fileImportSignalHelper;
 
     uint32_t m_currentAccID;
-    uint32_t currentChatID;
+    uint32_t m_currentChatID;
 
     // Page with chat is opened, but the app
     // is not necessarily shown at the screen atm
@@ -699,6 +759,8 @@ private:
     // for searching the chatlist
     QString m_query;
 
+    QDBusConnection m_bus;
+
     // for scanning QR codes
     int m_qrTempState;
     uint32_t m_qrTempContactID;
@@ -706,13 +768,6 @@ private:
     QString m_qrTempLotTextOne;
 
     struct quirc* m_qr;
-
-    // used to store the beginning of tags that should
-    // maybe be removed, consists of <accID>_<chatID>_, will
-    // be set in deleteActiveNotificationTags and used
-    // in finishDeleteActiveNotificationTags
-    std::vector<QString> m_notificationTagsToDelete;
-    bool m_notifTagsToDeletePendingReply;
 
     // for recording of audio messages
     QAudioRecorder* m_audioRecorder;
@@ -744,8 +799,13 @@ private:
 
     static constexpr int queueTimerFreq = 1000;
 
-    NotificationGenerator* m_notificationGenerator;
+    bool m_onUbuntuTouch;
+    bool m_isDesktopMode;
+    bool m_openOskViaDbus;
 
+    NotificationHelper* m_notificationHelper;
+
+    QObject dbusUrlReceiverObj;
     /**************************************
      *********   Private methods   ********
      **************************************/

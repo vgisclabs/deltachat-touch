@@ -19,7 +19,7 @@
 import QtQuick 2.12
 import Ubuntu.Components 1.3
 import QtQuick.Layouts 1.3
-//import Ubuntu.Components.Popups 1.3
+import Ubuntu.Components.Popups 1.3
 //import Qt.labs.settings 1.0
 //import QtMultimedia 5.12
 //import QtQml.Models 2.12
@@ -29,32 +29,100 @@ import DeltaHandler 1.0
 Page {
     id: viewerPage
 
+    function showExportSuccess(exportedPath) {
+        // Only for non-Ubuntu Touch platforms
+        if (exportedPath === "") {
+            // error, file was not exported
+            PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
+            viewerPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("File could not be saved") , "title": i18n.tr("Error") })
+        } else {
+            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"),
+            viewerPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("Saved file ") + exportedPath })
+        }
+    }
+
     header: PageHeader {
         id: pageheader
         title: ""
 
+        leadingActionBar.actions: [
+            Action {
+                //iconName: "close"
+                iconSource: "qrc:///assets/suru-icons/close.svg"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    if (onExtraStack) {
+                        extraStack.pop()
+                    } else {
+                        imageStack.pop()
+                    }
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
+
+        Loader {
+            // Only for non-Ubuntu Touch platforms
+            id: fileExpLoader
+        }
+
+        Connections {
+            // Only for non-Ubuntu Touch platforms
+            target: fileExpLoader.item
+            onFolderSelected: {
+                let exportedPath = DeltaHandler.chatmodel.exportFileToFolder(image.source, urlOfFolder)
+                showExportSuccess(exportedPath)
+                fileExpLoader.source = ""
+            }
+            onCancelled: {
+                fileExpLoader.source = ""
+            }
+        }
+
         trailingActionBar.actions: [
             Action {
-                iconName: 'save-as'
+                //iconName: 'save-as'
+                iconSource: "qrc:///assets/suru-icons/save-as.svg"
                 text: i18n.tr("Save")
                 onTriggered: {
-                    layout.addPageToCurrentColumn(viewerPage, Qt.resolvedUrl("PickerImageToExport.qml"), {"url": image.source})
+                    // different code depending on platform
+                    if (root.onUbuntuTouch) {
+                        // Ubuntu Touch
+                        extraStack.push(Qt.resolvedUrl('FileExportDialog.qml'), { "url": image.source, "conType": DeltaHandler.ImageType })
+
+                    } else {
+                        // non-Ubuntu Touch
+                        fileExpLoader.source = "FileExportDialog.qml"
+
+                        // TODO: String not translated yet
+                        fileExpLoader.item.title = "Choose folder to save image"
+                        fileExpLoader.item.setFileType(DeltaHandler.ImageType)
+                        fileExpLoader.item.open()
+                    }
                 }
+
                 // for some reason, ContentHub doesn't work if the image viewer is
-                // called from ProfileOther.qml. Error message is:
+                // called from ProfileOther.qml. Error message in xenial is:
                 // file:///usr/lib/arm-linux-gnueabihf/qt5/qml/Ubuntu/Components/Popups/1.3/Dialog.qml:239:13:
                 // QML Column: Cannot specify top, bottom, verticalCenter, fill
                 // or centerIn anchors for items inside Column. Column will not
                 // function.
-                // Disable downloading of profile images until a solution has been found.
+                // Disable downloading of profile images (on Ubuntu Touch only) until a solution has been found.
                 // TODO: find solution
-                visible: enableDownloading
+                visible: enableDownloading || !root.onUbuntuTouch
             }
         ]
     }
 
     property string imageSource
     property bool enableDownloading: true
+    property bool onExtraStack: false
 
     Image {
         id: image

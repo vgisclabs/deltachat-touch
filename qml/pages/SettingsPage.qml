@@ -21,6 +21,7 @@ import Ubuntu.Components 1.3
 import QtQuick.Layouts 1.3
 import Ubuntu.Components.Popups 1.3
 import Qt.labs.settings 1.0
+import Qt.labs.platform 1.1
 import QtMultimedia 5.12
 import QtQml.Models 2.12
 
@@ -62,12 +63,73 @@ Page {
         }
     }
 
+    function backupExportFinished() {
+        DeltaHandler.removeTempExportFile()
+    }
+
     // Opens the file export dialog once the backup
     // file has been written to the cache.
     function startFileExport()
     {
-        layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('PickerBackupToExport.qml'))
+        // different code depending on platform
+        if (root.onUbuntuTouch) {
+            // Ubuntu Touch
+            // In contrast to to other file exports, the temporary
+            // backup file should be removed from the cache. Connect
+            // the success and cancelled signal from FileExportDialog
+            // to the function that removes the temp file.
+            let tempBackupPath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.getUrlToExport())
+            let popup8 = extraStack.push(Qt.resolvedUrl('FileExportDialog.qml'), { "url": tempBackupPath, "conType": DeltaHandler.FileType })
 
+            popup8.success.connect(settingsPage.backupExportFinished)
+            popup8.cancelled.connect(settingsPage.backupExportFinished)
+
+        } else {
+            // non-Ubuntu Touch
+            fileExpLoader.source = "FileExportDialog.qml"
+
+            // TODO: String not translated yet
+            fileExpLoader.item.title = "Choose folder to save backup"
+            fileExpLoader.item.setFileType(DeltaHandler.FileType)
+            fileExpLoader.item.open()
+        }
+    }
+
+    Loader {
+        // Only for non-Ubuntu Touch platforms
+        id: fileExpLoader
+    }
+
+    Connections {
+        // Only for non-Ubuntu Touch platforms
+        target: fileExpLoader.item
+        onFolderSelected: {
+            let exportedPath = DeltaHandler.saveBackupFile(urlOfFolder)
+            showExportSuccess(exportedPath)
+            fileExpLoader.source = ""
+            backupExportFinished()
+        }
+        onCancelled: {
+            fileExpLoader.source = ""
+            backupExportFinished()
+        }
+    }
+
+    function showExportSuccess(exportedPath) {
+        // Only for non-Ubuntu Touch platforms
+        if (exportedPath === "") {
+            // error, file was not exported
+            PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
+            settingsPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("File could not be saved") , "title": i18n.tr("Error") })
+        } else {
+            let popup10 = PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"),
+            settingsPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("Saved file ") + exportedPath })
+            popup10.done.connect(function() { extraStack.clear() })
+        }
     }
 
     // Updating the displayed setting for "Show Classic Emails",
@@ -316,20 +378,36 @@ Page {
         id: settingsHeader
         title: i18n.tr("Settings")
 
+        leadingActionBar.actions: [
+            Action {
+                //iconName: "close"
+                iconSource: "qrc:///assets/suru-icons/close.svg"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    extraStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
+
         //trailingActionBar.numberOfSlots: 2
         trailingActionBar.actions: [
 //          //  Action {
-//          //      iconName: 'help'
+//          //      //iconName: 'help'
+//          //      iconSource: 'qrc:///assets/suru-icons/help.svg'
 //          //      text: i18n.tr('Help')
 //          //      onTriggered: {
 //          //          layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('Help.qml'))
 //          //      }
 //          //  },
             Action {
-                iconName: 'info'
+                //iconName: 'info'
+                iconSource: "qrc:///assets/suru-icons/info.svg"
                 text: i18n.tr('About DeltaTouch')
                 onTriggered: {
-                            layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl('About.qml'))
+                    extraStack.push(Qt.resolvedUrl('About.qml'))
                 }
             }
         ]
@@ -398,14 +476,15 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AccountConfig.qml"))
+                    extraStack.push(Qt.resolvedUrl("AccountConfig.qml"))
                 }
             }
 
@@ -444,7 +523,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -573,7 +653,8 @@ Page {
                     title.text: i18n.tr("Change Database Passphrase")
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -625,8 +706,8 @@ Page {
                             // because checkedChanged is be emitted when setting the switch at
                             // initialization
                                 root.sendPushNotifications = sysNotifsEnabledSwitch.checked
-                                DeltaHandler.notificationGenerator.setEnablePushNotifications(root.sendPushNotifications)
-                                if (root.sendPushNotifications) {
+                                DeltaHandler.notificationHelper.setEnablePushNotifications(root.sendPushNotifications)
+                                if (root.sendPushNotifications && root.onUbuntuTouch) {
                                     PopupUtils.open(
                                         Qt.resolvedUrl('InfoPopup.qml'),
                                         null,
@@ -659,7 +740,7 @@ Page {
                         onCheckedChanged: {
                             if (sysNotifsDetailedSwitch.checked != root.detailedPushNotifications) {
                                 root.detailedPushNotifications = sysNotifsDetailedSwitch.checked
-                                DeltaHandler.notificationGenerator.setDetailedPushNotifications(root.detailedPushNotifications)
+                                DeltaHandler.notificationHelper.setDetailedPushNotifications(root.detailedPushNotifications)
                             }
                         }
                     }
@@ -686,7 +767,7 @@ Page {
                         onCheckedChanged: {
                             if (notifyContRequSwitch.checked != root.notifyContactRequests) {
                                 root.notifyContactRequests = notifyContRequSwitch.checked
-                                DeltaHandler.notificationGenerator.setNotifyContactRequests(root.notifyContactRequests)
+                                DeltaHandler.notificationHelper.setNotifyContactRequests(root.notifyContactRequests)
                                 root.refreshOtherAccsIndicator()
                             }
                         }
@@ -704,14 +785,15 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("About.qml"))
+                    extraStack.push(Qt.resolvedUrl("About.qml"))
                 }
             }
 
@@ -763,7 +845,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -808,14 +891,17 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("ProfileSelf.qml"))
+                    if (DeltaHandler.hasConfiguredAccount) {
+                        extraStack.push(Qt.resolvedUrl("ProfileSelf.qml"))
+                    }
                 }
             }
 
@@ -858,7 +944,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -886,7 +973,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -906,7 +994,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -916,7 +1005,7 @@ Page {
                     let popup2 = PopupUtils.open(Qt.resolvedUrl('ConfirmAddSecondDevice.qml'))
                     popup2.confirmed.connect(function() {
                         PopupUtils.close(popup2)
-                        layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AddSecondDevice.qml"))
+                        extraStack.push(Qt.resolvedUrl("AddSecondDevice.qml"))
                     })
                 }
             }
@@ -931,14 +1020,16 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
                 }
 
+                enabled: root.syncAll
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("Connectivity.qml"))
+                    extraStack.push(Qt.resolvedUrl("Connectivity.qml"))
                 }
             }
 
@@ -1031,7 +1122,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -1059,7 +1151,8 @@ Page {
                     }
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -1100,7 +1193,8 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
@@ -1141,14 +1235,15 @@ Page {
                     title.font.bold: true
 
                     Icon {
-                        name: "go-next"
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
                         SlotsLayout.position: SlotsLayout.Trailing;
                         width: units.gu(2)
                     }
                 }
 
                 onClicked: {
-                    layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("AdvancedSettings.qml"))
+                    extraStack.push(Qt.resolvedUrl("AdvancedSettings.qml"))
                 }
             }
 
@@ -1665,9 +1760,13 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 1
+                                // to adapt entry fields etc.
+                                DeltaHandler.emitFontSizeChangedSignal()
+
                                 // to adapt scaling of the connectivity dot
                                 root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
+                                extraStack.clear()
                             }
                         }
 
@@ -1681,8 +1780,10 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 2
+                                DeltaHandler.emitFontSizeChangedSignal()
                                 root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
+                                extraStack.clear()
                             }
                         }
 
@@ -1696,8 +1797,10 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 3
+                                DeltaHandler.emitFontSizeChangedSignal()
                                 root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
+                                extraStack.clear()
                             }
                         }
 
@@ -1711,8 +1814,10 @@ Page {
                             }
                             onClicked: {
                                 root.scaleLevel = 4
+                                DeltaHandler.emitFontSizeChangedSignal()
                                 root.updateConnectivity()
                                 PopupUtils.close(popoverTextZoom)
+                                extraStack.clear()
                             }
                         }
                     }
@@ -1724,7 +1829,7 @@ Page {
     Connections {
         target: DeltaHandler
         onBlockedcontactsmodelChanged: {
-            layout.addPageToCurrentColumn(settingsPage, Qt.resolvedUrl("BlockedContacts.qml"))
+            extraStack.push(Qt.resolvedUrl("BlockedContacts.qml"))
         }
 
         onConnectivityChangedForActiveAccount: {

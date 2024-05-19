@@ -7,9 +7,9 @@
         <file>pages/About.qml</file>
         <file>pages/AccountConfig.qml</file>
         <file>pages/AccountConfigPageSettings.qml</file>
+        <file>pages/AccountSwitcherDelegate.qml</file>
         <file>pages/AddAccount.qml</file>
-        <file>pages/AddAccountAsSecondDevice.qml</file>
-        <file>pages/AddAccountViaQrInvitationCode.qml</file>
+        <file>pages/AddAccountViaQr.qml</file>
         <file>pages/AddChat.qml</file>
         <file>pages/AddChatForContact.qml</file>
         <file>pages/AdvancedSettings.qml</file>
@@ -21,7 +21,6 @@
         <file>pages/ChatView.qml</file>
         <file>pages/ChatInfosActionsChatlist.qml</file>
         <file>pages/ChatInfosActionsChatview.qml</file>
-        <file>pages/ConfirmAccountDeletion.qml</file>
         <file>pages/ConfirmAddSecondDevice.qml</file>
         <file>pages/ConfirmAlwaysLoadRemoteContent.qml</file>
         <file>pages/ConfirmCancelSecondDevice.qml</file>
@@ -48,20 +47,14 @@
         <file>pages/ImageViewer.qml</file>
         <file>pages/ImageViewerAnimated.qml</file>
         <file>pages/InfoPopup.qml</file>
+        <file>pages/LogViewer.qml</file>
         <file>pages/MessageHtmlView.qml</file>
         <file>pages/MessageInfosActions.qml</file>
         <file>pages/NotImplemented.qml</file>
-        <file>pages/PickerProfilePic.qml</file>
-        <file>pages/PickerBackupFile.qml</file>
-        <file>pages/PickerAudioToExport.qml</file>
-        <file>pages/PickerAudioToSend.qml</file>
-        <file>pages/PickerBackupToExport.qml</file>
-        <file>pages/PickerChatPic.qml</file>
-        <file>pages/PickerFileToExport.qml</file>
-        <file>pages/PickerFileToSend.qml</file>
-        <file>pages/PickerImageToExport.qml</file>
-        <file>pages/PickerImageToSend.qml</file>
-        <file>pages/PickerQrImageLoad.qml</file>
+        <file>pages/FileImportDialog.qml</file>
+        <file>pages/+ubuntu-touch/FileImportDialog.qml</file>
+        <file>pages/FileExportDialog.qml</file>
+        <file>pages/+ubuntu-touch/FileExportDialog.qml</file>
         <file>pages/ProgressConfigAccount.qml</file>
         <file>pages/ProgressBackupImport.qml</file>
         <file>pages/ProgressBackupExport.qml</file>
@@ -74,7 +67,8 @@
         <file>pages/ProfileOther.qml</file>
         <file>pages/QrConfirmPopup.qml</file>
         <file>pages/QrMenuPopup.qml</file>
-        <file>pages/StringExportDialog.qml</file>
+        <file>pages/QrSharePopup.qml</file>
+        <file>pages/+ubuntu-touch/StringExportDialog.qml</file>
         <file>pages/QrGroupInvite.qml</file>
         <file>pages/QrShowScan.qml</file>
         <file>pages/ReactionsInfoPopup.qml</file>
@@ -82,6 +76,7 @@
         <file>pages/RequestDatabasePassword.qml</file>
         <file>pages/SettingsPage.qml</file>
         <file>pages/UnblockContactPopup.qml</file>
+        <file>pages/UrlDispatchAccountChooserPopup.qml</file>
         <file>pages/VerifiedPopup.qml</file>
     </qresource>
 </RCC>

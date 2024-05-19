@@ -41,6 +41,9 @@ Dialog {
 
     Component.onCompleted: {
         passwordField.focus = true
+        if (root.oskViaDbus) {
+            DeltaHandler.openOskViaDbus()
+        }
     }
 
     // TODO: String not translated yet!
@@ -96,6 +99,16 @@ Dialog {
             onAccepted: {
                 okButton.clicked()
             }
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (passwordField.focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
         }
 
         Rectangle {
@@ -112,7 +125,8 @@ Dialog {
                     verticalCenter: showPwRect.verticalCenter
                     horizontalCenter: showPwRect.horizontalCenter
                 }
-                name: 'view-on'
+                //name: 'view-on'
+                source: "qrc:///assets/suru-icons/view-on.svg"
             }
 
             MouseArea {
@@ -121,12 +135,14 @@ Dialog {
                 onClicked: {
                     if (passwordField.echoMode == TextInput.Password) {
                         passwordField.echoMode = TextInput.Normal
-                        showPwIcon.name = 'view-off'
+                        //showPwIcon.name = 'view-off'
+                        showPwIcon.source = "qrc:///assets/suru-icons/view-off.svg"
 
                     }
                     else {
                         passwordField.echoMode = TextInput.Password
-                        showPwIcon.name = 'view-on'
+                        //showPwIcon.name = 'view-on'
+                        showPwIcon.source = "qrc:///assets/suru-icons/view-on.svg"
                     }
                 }
             }

@@ -32,15 +32,22 @@ Page {
     id: chatViewPage
     anchors.fill: parent
 
-    property string chatname: DeltaHandler.chatName()
     property bool currentlyQuotingMessage: false
 
-    property int accountID
-    property int chatID
+    property int pageAccID
+    property int pageChatID
+
+    property var fullChatJson
+    property string chatname
+    property string chatImagePath
+    property string chatInitial
+    property string chatColor
 
     // determines whether the buttons to add attachments (== true) or
     // the text entry bar are visible (== false)
     property bool attachmentMode: false
+
+    property bool enterFieldChangeUpdatesDraft: true
 
     property bool attachAnimatedImagePreviewMode: false
     property bool attachImagePreviewMode: false
@@ -116,7 +123,88 @@ Page {
         layout.removePages(chatViewPage)
     }
 
+
+    Loader {
+        // Only for non-Ubuntu Touch platforms
+        id: momFileExpLoader
+    }
+
+
+    Connections {
+        // Only for non-Ubuntu Touch platforms
+        target: momFileExpLoader.item
+        onFolderSelected: {
+            let exportedPath = DeltaHandler.chatmodel.exportMomentaryFileToFolder(urlOfFolder)
+            showExportSuccess(exportedPath)
+            momFileExpLoader.source = ""
+        }
+        onCancelled: {
+            momFileExpLoader.source = ""
+        }
+    }
+
+
+    function showExportSuccess(exportedPath) {
+        // Only for non-Ubuntu Touch platforms
+        if (exportedPath === "") {
+            // error, file was not exported
+            PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"),
+            chatViewPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("File could not be saved") , "title": i18n.tr("Error") })
+        } else {
+            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"),
+            chatViewPage,
+            // TODO: string not translated yet
+            {"text": i18n.tr("Saved file ") + exportedPath })
+        }
+    }
+
+    
+    function exportMomentaryMessageFile() {
+        if (DeltaHandler.chatmodel.setUrlToExport()) {
+            let tempType
+
+            switch (DeltaHandler.chatmodel.getMomentaryViewType()) {
+                case DeltaHandler.GifType:
+                    // fallthrough; both ContentHub and FileDialog
+                    // don't differentiate between animated and non-animated
+                    // images when saving the file
+                case DeltaHandler.ImageType:
+                    tempType = DeltaHandler.ImageType
+                    break;
+                    
+                case DeltaHandler.AudioType:
+                case DeltaHandler.VoiceType:
+                    tempType = DeltaHandler.AudioType
+                    break;
+
+                default:
+                    tempType = DeltaHandler.FileType
+                    break;
+            }
+
+            // different code depending on platform
+            if (root.onUbuntuTouch) {
+                // Ubuntu Touch
+                extraStack.push(Qt.resolvedUrl('FileExportDialog.qml'), { "url": StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.chatmodel.getUrlToExport()), "conType": tempType })
+
+            } else {
+                // non-Ubuntu Touch
+                momFileExpLoader.source = "FileExportDialog.qml"
+
+                // TODO: String not translated yet
+                momFileExpLoader.item.title = "Choose folder to save " + DeltaHandler.chatmodel.getMomentaryFilenameToExport()
+                momFileExpLoader.item.setFileType(tempType)
+                momFileExpLoader.item.open()
+            }
+        }
+    }
+
+
     Component.onCompleted: {
+        DeltaHandler.setChatViewIsShown();
+
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatViewIsClosed)
         chatViewPage.leavingChatViewPage.connect(DeltaHandler.chatmodel.chatViewIsClosed)
 
@@ -124,11 +212,14 @@ Page {
         // it, when resizing, the font will have the size according to
         // scaledFontSize, but the item height will still correlate to
         // "medium".
+        // TODO take care of this in two-column mode
+        chatViewPage.enterFieldChangeUpdatesDraft = false
         messageEnterField.text = "b\nb"
         messageEnterField.text = ""
+        chatViewPage.enterFieldChangeUpdatesDraft = true
 
         if (DeltaHandler.chatmodel.hasDraft) {
-            messageEnterField.text = DeltaHandler.chatmodel.getDraft()
+            messageEnterField.text = DeltaHandler.chatmodel.getDraftText()
 
             if (DeltaHandler.chatmodel.draftHasQuote) {
                 currentlyQuotingMessage = true;
@@ -136,12 +227,33 @@ Page {
                 quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
             }
 
-            DeltaHandler.chatmodel.emitDraftHasAttachmentSignals()
+            DeltaHandler.chatmodel.checkDraftHasAttachment()
         }
 
         chatViewPage.messageQueryTextChanged.connect(DeltaHandler.chatmodel.updateQuery)
         DeltaHandler.chatmodel.searchCountUpdate.connect(updateSearchStatusLabel)
         chatViewPage.searchJumpRequest.connect(DeltaHandler.chatmodel.searchJumpSlot)
+
+        let requestString = DeltaHandler.constructJsonrpcRequestString("get_full_chat_by_id", "" + chatViewPage.pageAccID + ", " + chatViewPage.pageChatID)
+        let jsonresponse = JSON.parse(DeltaHandler.sendJsonrpcBlockingCall(requestString))
+        fullChatJson = jsonresponse.result
+
+        chatname = fullChatJson.name
+        chatColor = fullChatJson.color
+
+        if (fullChatJson.profileImage != null) {
+            let path = fullChatJson.profileImage
+            let lengthToSubtract = ("" + StandardPaths.writableLocation(StandardPaths.AppConfigLocation)).length - 6
+            chatImagePath = path.substring(lengthToSubtract)
+        } else {
+            chatImagePath = ""
+        }
+
+        if (fullChatJson.name === "") {
+            chatInitial = "#"
+        } else {
+            chatInitial = fullChatJson.name.charAt(0).toUpperCase()
+        }
     }
 
     Component.onDestruction: {
@@ -152,31 +264,64 @@ Page {
             DeltaHandler.dismissAudioRecording()
         }
 
-        DeltaHandler.chatmodel.setDraft(messageEnterField.text)
+        root.chatViewIsOpen = false
+
         // TODO is this signal needed? Could be used
         // to unref currentMessageDraft
         leavingChatViewPage(requestQrScanPage)
+    }
+
+    function updateChatData() {
+        let requestString = DeltaHandler.constructJsonrpcRequestString("get_full_chat_by_id", "" + chatViewPage.pageAccID + ", " + chatViewPage.pageChatID)
+        let jsonresponse = JSON.parse(DeltaHandler.sendJsonrpcBlockingCall(requestString))
+        fullChatJson = jsonresponse.result
+
+        chatname = fullChatJson.name
+        chatColor = fullChatJson.color
+
+        if (fullChatJson.profileImage != null) {
+            let path = fullChatJson.profileImage
+            let lengthToSubtract = ("" + StandardPaths.writableLocation(StandardPaths.AppConfigLocation)).length - 6
+            chatImagePath = path.substring(lengthToSubtract)
+        } else {
+            chatImagePath = ""
+        }
+
+        if (fullChatJson.name === "") {
+            chatInitial = "#"
+        } else {
+            chatInitial = fullChatJson.name.charAt(0).toUpperCase()
+        }
+
+        chatCanSend = DeltaHandler.chatmodel.chatCanSend()
+        protectionIsBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
+        if (!chatCanSend) {
+            if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
+                cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
+            } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
+                cannotSendLabel.text = i18n.tr("You must be in this group to post a message. To join, ask another member.")
+            } else {
+                cannotSendLabel.text = ""
+            }
+        }
+        isContactRequest = DeltaHandler.chatIsContactRequest
+        verifiedIcon.visible = DeltaHandler.chatIsVerified()
+        ephemeralIcon.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
     }
 
     Connections {
         target: DeltaHandler
         onChatDataChanged: {
             // CAVE: is emitted by both DeltaHandler and ChatModel
-            chatname = DeltaHandler.chatName()
-            chatCanSend = DeltaHandler.chatmodel.chatCanSend()
-            protectionIsBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
-            if (!chatCanSend) {
-                if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
-                    cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
-                } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
-                    cannotSendLabel.text = i18n.tr("You must be in this group to post a message. To join, ask another member.")
-                } else {
-                    cannotSendLabel.text = ""
-                }
-            }
-            isContactRequest = DeltaHandler.chatIsContactRequest
-            leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
-            leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
+            updateChatData()   
+        }
+
+        onFontSizeChanged: {
+            let tempentry = messageEnterField.text
+            chatViewPage.enterFieldChangeUpdatesDraft = false
+            messageEnterField.text = "b\nb"
+            messageEnterField.text = tempentry
+            chatViewPage.enterFieldChangeUpdatesDraft = true
         }
     }
 
@@ -185,23 +330,58 @@ Page {
 
         onChatDataChanged: {
             // CAVE: is emitted by both DeltaHandler and ChatModel
-            chatname = DeltaHandler.chatName()
-            chatCanSend = DeltaHandler.chatmodel.chatCanSend()
-            protectionIsBroken = DeltaHandler.chatmodel.chatIsProtectionBroken()
+            updateChatData()
+        }
 
-            if (!chatCanSend) {
-                if (DeltaHandler.chatmodel.chatIsDeviceTalk()) {
-                    cannotSendLabel.text = i18n.tr("This chat contains locally generated messages; writing is disabled.")
-                } else if (DeltaHandler.chatIsGroup(-1) && !DeltaHandler.chatmodel.selfIsInGroup()) {
-                    cannotSendLabel.text = i18n.tr("You must be in this group to post a message. To join, ask another member.")
-                } else {
-                    cannotSendLabel.text = ""
-                }
+        onNewChatConfigured: {
+            // chatID is from the newChatConfigured signal
+            chatViewPage.pageChatID = chatID
+            chatViewPage.pageAccID = DeltaHandler.getCurrentAccountId()
+
+            updateChatData()
+
+            // clean up from previous chat
+            messageAudio.stop()
+            messageQueryField.text = "" 
+
+            messageEnterField.text = ""
+
+            attachmentMode = false
+
+            attachAnimatedImagePreviewMode = false
+            attachImagePreviewMode = false
+            attachFilePreviewMode = false
+            attachAudioPreviewMode = false
+
+            if (isRecording) {
+                DeltaHandler.dismissAudioRecording()
             }
 
-            isContactRequest = DeltaHandler.chatIsContactRequest
-            leadingVerifiedAction.visible = DeltaHandler.chatIsVerified()
-            leadingEphemeralAction.visible = DeltaHandler.getChatEphemeralTimer(-1) != 0
+            currentlyQuotingMessage = false;
+
+            // set the draft, if present
+            if (DeltaHandler.chatmodel.hasDraft) {
+                messageEnterField.text = DeltaHandler.chatmodel.getDraftText()
+
+                if (DeltaHandler.chatmodel.draftHasQuote) {
+                    currentlyQuotingMessage = true;
+                    quotedMessageLabel.text = DeltaHandler.chatmodel.getDraftQuoteSummarytext()
+                    quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
+                }
+
+                DeltaHandler.chatmodel.checkDraftHasAttachment()
+            }
+
+            // now re-activate draft handling (pageChatID is sent to double-check
+            // whether the chatID is in sync with C++ side)
+            DeltaHandler.chatmodel.allowSettingDraftAgain(chatViewPage.pageChatID)
+
+            // jump to the unread message item
+            if (DeltaHandler.chatmodel.getUnreadMessageBarIndex() > 0) {
+                unreadJumpTimer.start()
+            }
+
+            unreadJumpTimer.start()
         }
 
         onJumpToMsg: {
@@ -213,11 +393,6 @@ Page {
                 currentlyQuotingMessage = true
                 quotedMessageLabel.text = DeltaHandler.chatmodel.getDraftQuoteSummarytext()
                 quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
-                // TODO: Currently, quotes are only possible for text messages, so
-                // when setting a quote, the possibility to attach something is
-                // removed. Maybe change it? This would probably mean that 
-                // message drafts will show attachments, too (similar as
-                // DC Desktop does)
                 attachmentMode = false
             } else {
                 currentlyQuotingMessage = false
@@ -225,12 +400,7 @@ Page {
         }
 
         onPreviewImageAttachment: {
-            let sourcePath
-            if (addCacheLocation) {
-                sourcePath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
-            } else {
-                sourcePath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.AppConfigLocation, filepath))
-            }
+            let sourcePath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepathInCache))
 
             if (isAnimated) {
                 attachPreviewAnimatedImage.source = sourcePath
@@ -250,7 +420,7 @@ Page {
         onPreviewAudioAttachment: {
             // Audio is guaranteed to always be located in the CacheLocation because
             // it won't play if it's in AppConfigLocation due to AppArmor
-            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepathInCache))
             attachAudioPreviewMode = true
             attachFilePreviewLabel.text = filename;
         }
@@ -259,7 +429,7 @@ Page {
         onPreviewVoiceAttachment: {
             // Audio is guaranteed to always be located in the CacheLocation because
             // it won't play if it's in AppConfigLocation due to AppArmor
-            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepath))
+            attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepathInCache))
             attachVoicePreviewMode = true
             attachFilePreviewLabel.text = i18n.tr("Voice Message")
         }
@@ -273,67 +443,132 @@ Page {
             anchors.fill: parent
             color: theme.palette.normal.background
 
-            Label {
+            UbuntuShape {
+                id: headerChatPic
+                height: parent.height - units.gu(1)
+                width: height
+
                 anchors {
+                    verticalCenter: parent.verticalCenter
                     left: parent.left
+                }
+
+                source: chatImagePath === "" ? undefined : chatImage
+
+                Image {
+                    id: chatImage
+                    visible: false
+                    source: StandardPaths.locate(StandardPaths.AppConfigLocation, chatImagePath)
+
+                }
+
+                Label {
+                    id: chatInitialLabel
+                    text: chatInitial
+                    font.pixelSize: headerChatPic.height * 0.6
+                    color: "white"
+                    visible: chatImagePath === ""
+                    anchors.centerIn: parent
+                }
+
+                color: chatColor
+
+                sourceFillMode: UbuntuShape.PreserveAspectCrop
+            } // end UbuntuShape id: headerChatPic
+
+            Label {
+                id: chatNameLabel
+                anchors {
+                    left: headerChatPic.right
+                    leftMargin: units.gu(1)
                     verticalCenter: parent.verticalCenter
                 }
                 text: chatname
+                width: parent.width - headerChatPic.width - units.gu(2) - (verifiedIcon.visible ? (verifiedIcon.width + units.gu(1)) : 0) - (ephemeralIcon.visible ? (ephemeralIcon.width + units.gu(1)) : 0)
+                elide: Text.ElideRight
                 fontSize: "large"
             }
 
+            Icon {
+                id: verifiedIcon
+                height: chatNameLabel.height * 0.7
+                width: height
+                anchors {
+                    left: headerChatPic.right
+                    leftMargin: units.gu(2) + chatNameLabel.contentWidth
+                    verticalCenter: parent.verticalCenter
+                }
+                source: "qrc:///assets/verified.svg"
+                visible: DeltaHandler.chatIsVerified()
+            }
+
             MouseArea {
+                // code needs to be above the MouseArea of ephemeralIcon for the latter to work
                 anchors.fill: parent
                 onClicked: {
-                    JSONRPC.client.getFullChatById(chatViewPage.accountID, chatViewPage.chatID).then((fullChat) => {
-                        if (fullChat.chatType === DeltaHandler.ChatTypeSingle && !fullChat.isSelfTalk) {
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": fullChat.contactIds[0] })
+                    if (fullChatJson.chatType === DeltaHandler.ChatTypeSingle && !fullChatJson.isSelfTalk) {
+                        extraStack.push(Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": fullChatJson.contactIds[0] })
 
-                        } else if (fullChat.chatType === DeltaHandler.ChatTypeGroup) {
-                            DeltaHandler.setMomentaryChatIdById(chatViewPage.chatID)
-                            DeltaHandler.momentaryChatStartEditGroup()
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false, "selfIsInGroup": DeltaHandler.momentaryChatSelfIsInGroup() })
-                            
-                        } else {
-                            console.log("Header clicked, info: Neither a group nor a single chat, no action defined")
-                        }
-                    })
+                    } else if (fullChatJson.chatType === DeltaHandler.ChatTypeGroup) {
+                        DeltaHandler.setMomentaryChatIdById(chatViewPage.pageChatID)
+                        DeltaHandler.momentaryChatStartEditGroup()
+                        extraStack.push(Qt.resolvedUrl("CreateOrEditGroup.qml"), { "createNewGroup": false, "selfIsInGroup": DeltaHandler.momentaryChatSelfIsInGroup() })
+                        
+                    } else {
+                        console.log("Header clicked, info: Neither a group nor a single chat, no action defined")
+                    }
                 }
             }
 
+            Rectangle {
+                height: parent.height
+                width: verifiedIcon.width
+                anchors {
+                    left: verifiedIcon.right
+                    leftMargin: units.gu(1)
+                    verticalCenter: parent.verticalCenter
+                }
+                color: theme.palette.normal.background
+
+                Icon {
+                    id: ephemeralIcon
+                    height: verifiedIcon.height
+                    width: height
+                    anchors {
+                        left: parent.left
+                        verticalCenter: parent.verticalCenter
+                    }
+                    //name: "timer"
+                    source: "qrc:///assets/suru-icons/timer.svg"
+                    color: root.darkmode ? "white" : "black"
+                    visible: DeltaHandler.getChatEphemeralTimer(-1) != 0
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        PopupUtils.open(Qt.resolvedUrl("EphemeralTimerSettings.qml"))
+                    }
+                }
+            }
         }
 
-        leadingActionBar.numberOfSlots: 3
         leadingActionBar.actions: [
             Action {
-                id: leadingVerifiedAction
-                iconSource: Qt.resolvedUrl("../../assets/verified.svg")
-                text: i18n.tr("Verified Contact")
-                visible: DeltaHandler.chatIsVerified()
-            },
-
-            Action {
-                id: leadingEphemeralAction
-                iconName: "timer"
-                text: i18n.tr("Disappearing Messages")
-                visible: DeltaHandler.getChatEphemeralTimer(-1) != 0
-                onTriggered: {
-                    PopupUtils.open(Qt.resolvedUrl("EphemeralTimerSettings.qml"))
-                }
-            },
-
-            Action {
-                iconName: "go-previous"
+                //iconName: "go-previous"
+                iconSource: "qrc:///assets/suru-icons/go-previous.svg"
                 text: i18n.tr("Back")
                 onTriggered: {
                     layout.removePages(chatViewPage)
                 }
+                visible: !root.hasTwoColumns
             }
         ]
 
         trailingActionBar.actions: [
             Action {
-                iconName: 'navigation-menu'
+                //iconName: 'navigation-menu'
+                iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                 // TODO: string not translated (is not shown
                 // on phone, but maybe in desktop mode?)
                 text: i18n.tr("More Actions")
@@ -349,7 +584,8 @@ Page {
             },
 
             Action {
-                iconName: 'find'
+                //iconName: 'find'
+                iconSource: "qrc:///assets/suru-icons/find.svg"
                 text: i18n.tr("Search")
                 onTriggered: {
                     if (searchRect.visible) {
@@ -397,6 +633,16 @@ Page {
                 messageQueryTextChanged(displayText)            }
             placeholderText: i18n.tr("Search")
             font.pixelSize: root.scaledFontSizeInPixels
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
         }
 
         Rectangle {
@@ -414,9 +660,10 @@ Page {
     
             Icon {
                 id: skipToFirstIcon
-                name: "media-skip-backward"
+                //name: "media-skip-backward"
+                source: "qrc:///assets/suru-icons/media-skip-backward.svg"
                 width: units.gu(2.5)
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -446,9 +693,10 @@ Page {
     
             Icon {
                 id: prevMsgIcon
-                name: "media-playback-start-rtl"
+                //name: "media-playback-start-rtl"
+                source: "qrc:///assets/suru-icons/media-playback-start-rtl.svg"
                 width: units.gu(2.5)
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -490,9 +738,10 @@ Page {
     
             Icon {
                 id: nextMsgIcon
-                name: "media-playback-start"
+                //name: "media-playback-start"
+                source: "qrc:///assets/suru-icons/media-playback-start.svg"
                 width: units.gu(2.5)
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -522,9 +771,10 @@ Page {
     
             Icon {
                 id: skipToLastIcon
-                name: "media-skip-forward"
+                //name: "media-skip-forward"
+                source: "qrc:///assets/suru-icons/media-skip-forward.svg"
                 width: units.gu(2.5)
-                anchors{
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -562,7 +812,8 @@ Page {
     ListItemActions {
         id: leadingMsgAction
         actions: Action {
-            iconName: "delete"
+            //iconName: "delete"
+            iconSource: "qrc:///assets/suru-icons/delete.svg"
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
@@ -576,7 +827,8 @@ Page {
         id: trailingInfoMsgActions
         actions: [
             Action {
-                iconName: "navigation-menu"
+                //iconName: "navigation-menu"
+                iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                 onTriggered: {
                     DeltaHandler.chatmodel.setMomentaryMessage(value)
                     PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'), chatViewPage, { "isInfoMsg": true })
@@ -589,23 +841,27 @@ Page {
         id: trailingMsgActions
         actions: [
             Action {
-                iconName: "mail-reply"
+                //iconName: "mail-reply"
+                iconSource: "qrc:///assets/suru-icons/mail-reply.svg"
                 onTriggered: {
                     DeltaHandler.chatmodel.setQuote(value)
                 }
             },
             Action {
-                iconName: "navigation-menu"
+                //iconName: "navigation-menu"
+                iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
                 onTriggered: {
                     DeltaHandler.chatmodel.setMomentaryMessage(value)
-                    PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'))
+                    let popup6 = PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'))
+                    popup6.startFileExport.connect(exportMomentaryMessageFile)
                 }
             },
             Action {
-                iconName: "mail-forward"
+                //iconName: "mail-forward"
+                iconSource: "qrc:///assets/suru-icons/mail-forward.svg"
                 onTriggered: {
                     if (DeltaHandler.chatmodel.prepareForwarding(value)) {
-                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('ForwardMessage.qml'))
+                        extraStack.push(Qt.resolvedUrl('ForwardMessage.qml'))
                     }
                 }
             }
@@ -704,7 +960,7 @@ Page {
                     reactionsLoader.updateReactions()
                 }
 
-                width: parent.width
+                width: view.width
                 height: msgbox.height + (reactionsLoader.active ? (reactionsLoader.height - units.gu(0.2)) : 0) +  (imageLoader.active ? imageLoader.height : (animatedImageLoader.active ? animatedImageLoader.height : 0)) + (protectionIconLoader.active ? protectionIconLoader.height : 0)
                 divider.visible: false
 
@@ -753,7 +1009,7 @@ Page {
 
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": model.contactID })
+                            onClicked: extraStack.push(Qt.resolvedUrl("../pages/ProfileOther.qml"), { "contactID": model.contactID })
                         }
                     } // end UbuntuShape id: avatarShape
                 } // end Loader id: avatarLoader
@@ -778,7 +1034,7 @@ Page {
 
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": msgImage.source })
+                            onClicked: imageStack.push(Qt.resolvedUrl("ImageViewer.qml"), { "imageSource": msgImage.source })
                         }
                     }
                 }
@@ -804,7 +1060,7 @@ Page {
 
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl("ImageViewerAnimated.qml"), { "imageSource": msgAnimatedImage.source })
+                            onClicked: imageStack.push(Qt.resolvedUrl("ImageViewerAnimated.qml"), { "imageSource": msgAnimatedImage.source })
                         }
                     }
                 }
@@ -857,7 +1113,7 @@ Page {
                         }
                     }
                 }
-            
+                
                 UbuntuShape {
                     id: msgbox
 
@@ -1136,7 +1392,8 @@ Page {
                                     Icon {
                                         width: parent.width - units.gu(1)
                                         anchors.centerIn: parent
-                                        name: "media-playback-start"
+                                        //name: "media-playback-start"
+                                        source: "qrc:///assets/suru-icons/media-playback-start.svg"
                                         color: textColor
                                     }
 
@@ -1199,7 +1456,8 @@ Page {
                                     Icon {
                                         width: parent.width - units.gu(1)
                                         anchors.centerIn: parent
-                                        name: "attachment"
+                                        //name: "attachment"
+                                        source: "qrc:///assets/suru-icons/attachment.svg"
                                         color: textColor
                                     }
 
@@ -1207,9 +1465,7 @@ Page {
                                         anchors.fill: parent
                                         onClicked: {
                                             DeltaHandler.chatmodel.setMomentaryMessage(index)
-                                            if (DeltaHandler.chatmodel.setUrlToExport()) {
-                                                layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToExport.qml'))
-                                            }
+                                            exportMomentaryMessageFile()
                                         }
                                     }
                                 }
@@ -1265,10 +1521,8 @@ Page {
                                     onLinkActivated: {
                                         // DeltaHandler.chatmodel.downloadFullMessage(index)
                                         let msgId = DeltaHandler.chatmodel.indexToMessageId(index)
-                                        JSONRPC.client.getSelectedAccountId().then(accountId => // TODO get the selected account Id from somewhere else and cache it in a var
-                                            JSONRPC.client.downloadFullMessage(accountId, msgId)
-                                                .catch(error => console.log("msg dl request failed:", error.message)) // to try the error handling use an invalid accountId or messageId
-                                        )
+                                        JSONRPC.client.downloadFullMessage(pageAccID, msgId)
+                                            .catch(error => console.log("msg dl request failed:", error.message)) // to try the error handling use an invalid accountId or messageId
                                         
                                         linkColor = root.darkmode ? (model.messageSeen || isOther ? "#8080f7" : "#000055") : "#0000ff"
                                     }
@@ -1334,7 +1588,7 @@ Page {
                                     onClicked: {
                                         let urlpath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.chatmodel.getHtmlMessage(index))
                                         let msgsubject = DeltaHandler.chatmodel.getHtmlMsgSubject(index)
-                                        layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": ((protectionIsBroken || isContactRequest) && isOther)})
+                                        extraStack.push(Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": ((protectionIsBroken || isContactRequest) && isOther)})
                                     }
                                 }
 
@@ -1364,7 +1618,8 @@ Page {
                                         id: padlockSelf
                                         height: datelineIconSize
                                         width: height
-                                        name: "lock"
+                                        //name: "lock"
+                                        source: "qrc:///assets/suru-icons/lock.svg"
                                         color: textColor
                                     }
                                 }
@@ -1415,7 +1670,8 @@ Page {
                                         id: padlockOther
                                         height: datelineIconSize
                                         width: height
-                                        name: "lock"
+                                        //name: "lock"
+                                        source: "qrc:///assets/suru-icons/lock.svg"
                                         color: textColor
                                     }
                                 }
@@ -1522,10 +1778,8 @@ Page {
                     function sendReaction(emojisToSend) {
 
                         let msgId = DeltaHandler.chatmodel.indexToMessageId(index)
-                        JSONRPC.client.getSelectedAccountId().then(accountId => // TODO get the selected account Id from somewhere else and cache it in a var
-                            JSONRPC.client.sendReaction(accountId, msgId, emojisToSend)
-                                .catch(error => console.log("send reaction failed:", error.message))
-                        )
+                        JSONRPC.client.sendReaction(pageAccID, msgId, emojisToSend)
+                            .catch(error => console.log("send reaction failed:", error.message))
                     }
 
                     sourceComponent: ListView {
@@ -1607,8 +1861,9 @@ Page {
                 id: toBottomIcon
                 width: parent.width - units.gu(1)
                 height: width
-                name: "go-down"
-                anchors{
+                //name: "go-down"
+                source: "qrc:///assets/suru-icons/go-down.svg"
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -1629,7 +1884,7 @@ Page {
         height: cannotSendLabel.contentHeight + units.gu(2)
         width: parent.width
         color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: view.bottom
@@ -1665,7 +1920,7 @@ Page {
         height: protectionBrokenLabel.contentHeight + 2* acceptBrokenProtectionButton.height + units.gu(8)
         width: parent.width
         color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: view.bottom
@@ -1729,7 +1984,7 @@ Page {
         height: messageEnterField.height + (quotedMessageBox.visible ? quotedMessageBox.height + units.gu(1) : 0) + (attachmentPreviewRect.visible ? attachmentPreviewRect.height + units.gu(1) : 0) 
         width: parent.width
         color: theme.palette.normal.background
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: view.bottom
@@ -1806,8 +2061,9 @@ Page {
                     id: cancelQuoteIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "close"
-                    anchors{
+                    //name: "close"
+                    source: "qrc:///assets/suru-icons/close.svg"
+                    anchors {
                         horizontalCenter: parent.horizontalCenter
                         verticalCenter: parent.verticalCenter
                     }
@@ -1873,7 +2129,8 @@ Page {
                         left: parent.left
                         leftMargin: units.gu(1)
                     }
-                    name: "attachment"
+                    //name: "attachment"
+                    source: "qrc:///assets/suru-icons/attachment.svg"
                     visible: attachFilePreviewMode
                 }
 
@@ -1898,7 +2155,8 @@ Page {
                             verticalCenter: parent.verticalCenter
                             horizontalCenter: parent.horizontalCenter
                         }
-                        name: "media-playback-start"
+                        //name: "media-playback-start"
+                        source: "qrc:///assets/suru-icons/media-playback-start.svg"
 
                         MouseArea {
                             anchors.fill: parent
@@ -1982,14 +2240,16 @@ Page {
                     // obtained from its source (except for pics just
                     // taken by camera, but it's hard to check for this
                     // case)
-                    name: attachVoicePreviewMode ? "delete" : "close"
-                    anchors{
+                    //name: attachVoicePreviewMode ? "delete" : "close"
+                    source: attachVoicePreviewMode ? "qrc:///assets/suru-icons/delete.svg" : "qrc:///assets/suru-icons/close.svg"
+                    anchors {
                         horizontalCenter: parent.horizontalCenter
                         verticalCenter: parent.verticalCenter
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
+                            messageAudio.stop()
                             if (attachVoicePreviewMode) {
                                 // actual deletion is done by the popup
                                 PopupUtils.open(popoverComponentConfirmDeletion, cancelAttachmentShape)
@@ -2015,7 +2275,7 @@ Page {
             height: width
             color: theme.palette.normal.overlay
 
-            anchors{
+            anchors {
                 left: parent.left
                 leftMargin: units.gu(0.5)
                 verticalCenter: messageEnterField.verticalCenter
@@ -2026,8 +2286,9 @@ Page {
                 id: attachIcon
                 width: parent.width - units.gu(1)
                 height: width
-                name: attachmentMode ? "close" : "add"
-                anchors{
+                //name: attachmentMode ? "close" : "add"
+                source: attachmentMode ? "qrc:///assets/suru-icons/close.svg" : "qrc:///assets/suru-icons/add.svg"
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -2062,7 +2323,7 @@ Page {
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
 
-                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
+                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text, chatViewPage.pageAccID, chatViewPage.pageChatID)
 
                         // TODO: is the comment below still correct?
                         // clear() does not work as we are using the TextArea
@@ -2085,6 +2346,22 @@ Page {
             maximumLineCount: 5
             font.pixelSize: root.scaledFontSizeInPixels
             visible: !attachmentMode
+
+            onFocusChanged: {
+                if (root.oskViaDbus) {
+                    if (focus) {
+                        DeltaHandler.openOskViaDbus()
+                    } else {
+                        DeltaHandler.closeOskViaDbus()
+                    }
+                }
+            }
+
+            onDisplayTextChanged: {
+                if (enterFieldChangeUpdatesDraft) {
+                    DeltaHandler.chatmodel.setDraftText(displayText)
+                }
+            }
         }
 
         UbuntuShape {
@@ -2092,7 +2369,7 @@ Page {
             width: units.gu(4)
             height: width
             color: theme.palette.normal.overlay
-            anchors{
+            anchors {
                 right: parent.right
                 rightMargin: units.gu(0.5)
                 verticalCenter: messageEnterField.verticalCenter
@@ -2103,8 +2380,9 @@ Page {
                 id: sendIcon
                 width: parent.width - units.gu(1)
                 height: width
-                name: (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) ? "audio-input-microphone-symbolic" : "send"
-                anchors{
+                //name: (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) ? "audio-input-microphone-symbolic" : "send"
+                source: (messageEnterField.displayText == "" && !attachmentPreviewRect.visible) ? "qrc:///assets/suru-icons/audio-input-microphone-symbolic.svg" : "qrc:///assets/suru-icons/send.svg"
+                anchors {
                     verticalCenter: parent.verticalCenter
                     horizontalCenter: parent.horizontalCenter
                 }
@@ -2135,7 +2413,7 @@ Page {
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
 
-                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text)
+                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text, chatViewPage.pageAccID, chatViewPage.pageChatID)
 
                         // TODO: is the comment below still correct?
                         // clear() does not work as we are using the TextArea
@@ -2165,44 +2443,93 @@ Page {
 
             visible: attachmentMode
 
-            UbuntuShape{
+            UbuntuShape {
                 id: sendImageIconShape
                 width: units.gu(4)
                 height: width
                 color: theme.palette.normal.overlay
 
-                anchors{
+                anchors {
                     right: filetypeToSendCage.right
                     verticalCenter: parent.verticalCenter
+                }
+
+                function attachImage(imagePath) {
+                    if (DeltaHandler.chatmodel.isGif(imagePath)) {
+                        DeltaHandler.chatmodel.setAttachment(imagePath, DeltaHandler.GifType)
+                    } else {
+                        DeltaHandler.chatmodel.setAttachment(imagePath, DeltaHandler.ImageType)
+                    }
                 }
 
                 Icon {
                     id: imageIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "stock_image"
-                    anchors{
+                    //name: "stock_image"
+                    source: "qrc:///assets/suru-icons/stock_image.svg"
+                    anchors {
                         horizontalCenter: sendImageIconShape.horizontalCenter
                         verticalCenter: sendImageIconShape.verticalCenter
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerImageToSend.qml'))
+                            if (root.onUbuntuTouch) {
+                                DeltaHandler.newFileImportSignalHelper()
+                                DeltaHandler.fileImportSignalHelper.fileImported.connect(sendImageIconShape.attachImage)
+                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                                // See comments in CreateOrEditGroup.qml
+                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                                //if (incubator.status != Component.Ready) {
+                                //    // have to wait for the object to be ready to connect to the signal,
+                                //    // see documentation on AdaptivePageLayout and
+                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                //    incubator.onStatusChanged = function(status) {
+                                //        if (status == Component.Ready) {
+                                //            incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
+                                //        }
+                                //    }
+                                //} else {
+                                //    // object was directly ready
+                                //    incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
+                                //}
+                            } else {
+                                picImportLoader.source = "FileImportDialog.qml"
+                                picImportLoader.item.setFileType(DeltaHandler.ImageType)
+                                picImportLoader.item.open()
+                            }
+
                             attachmentMode = false
                         }
                         enabled: true
                     }
+
+                    Loader {
+                        id: picImportLoader
+                    }
+
+                    Connections {
+                        target: picImportLoader.item
+                        onFileSelected: {
+                            sendImageIconShape.attachImage(urlOfFile)
+                            picImportLoader.source = ""
+                        }
+                        onCancelled: {
+                            picImportLoader.source = ""
+                        }
+                    }
                 }
             } // end UbuntuShape id: sendImageIconShape
 
-            UbuntuShape{
+            UbuntuShape {
                 id: sendAudioIconShape
                 width: units.gu(4)
                 height: width
                 color: theme.palette.normal.overlay
 
-                anchors{
+                anchors {
                     right: sendImageIconShape.left
                     rightMargin: units.gu(2)
                     verticalCenter: parent.verticalCenter
@@ -2212,20 +2539,67 @@ Page {
                     id: audioIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "stock_music"
-                    anchors{
+                    //name: "stock_music"
+                    source: "qrc:///assets/suru-icons/stock_music.svg"
+                    anchors {
                         horizontalCenter: sendAudioIconShape.horizontalCenter
                         verticalCenter: sendAudioIconShape.verticalCenter
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerAudioToSend.qml'))
+                            if (root.onUbuntuTouch) {
+                                DeltaHandler.newFileImportSignalHelper()
+                                DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
+                                    DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
+                                } )
+                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
+                                // See comments in CreateOrEditGroup.qml
+                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
+
+                                //if (incubator.status != Component.Ready) {
+                                //    // have to wait for the object to be ready to connect to the signal,
+                                //    // see documentation on AdaptivePageLayout and
+                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                //    incubator.onStatusChanged = function(status) {
+                                //        if (status == Component.Ready) {
+                                //            incubator.object.fileSelected.connect(function(fileUrl) {
+                                //                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
+                                //            } )
+                                //        }
+                                //    }
+                                //} else {
+                                //    // object was directly ready
+                                //    incubator.object.fileSelected.connect(function(fileUrl) {
+                                //        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
+                                //    } )
+                                //}
+                            } else {
+                                audioImportLoader.source = "FileImportDialog.qml"
+                                audioImportLoader.item.setFileType(DeltaHandler.AudioType)
+                                audioImportLoader.item.open()
+                            }
+
                             attachmentMode = false
                         }
                         enabled: true
+                    } // MouseArea
+
+                    Loader {
+                        id: audioImportLoader
                     }
-                }
+
+                    Connections {
+                        target: audioImportLoader.item
+                        onFileSelected: {
+                            DeltaHandler.chatmodel.setAttachment(urlOfFile, DeltaHandler.AudioType)
+                            audioImportLoader.source = ""
+                        }
+                        onCancelled: {
+                            audioImportLoader.source = ""
+                        }
+                    }
+                } // Icon id: audioIcon
             } // end UbuntuShape id: sendAudioIconShape
 
             UbuntuShape {
@@ -2234,7 +2608,7 @@ Page {
                 height: width
                 color: theme.palette.normal.overlay
 
-                anchors{
+                anchors {
                     right: sendAudioIconShape.left
                     rightMargin: units.gu(2)
                     verticalCenter: parent.verticalCenter
@@ -2244,20 +2618,67 @@ Page {
                     id: attachmentIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "attachment"
-                    anchors{
+                    //name: "attachment"
+                    source: "qrc:///assets/suru-icons/attachment.svg"
+                    anchors {
                         horizontalCenter: sendFileIconShape.horizontalCenter
                         verticalCenter: sendFileIconShape.verticalCenter
                     }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('PickerFileToSend.qml'))
+                            if (root.onUbuntuTouch) {
+                                DeltaHandler.newFileImportSignalHelper()
+                                DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
+                                    DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
+                                } )
+                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                                // See comments in CreateOrEditGroup.qml
+                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+
+                                //if (incubator.status != Component.Ready) {
+                                //    // have to wait for the object to be ready to connect to the signal,
+                                //    // see documentation on AdaptivePageLayout and
+                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                                //    incubator.onStatusChanged = function(status) {
+                                //        if (status == Component.Ready) {
+                                //            incubator.object.fileSelected.connect(function(fileUrl) {
+                                //                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
+                                //            } )
+                                //        }
+                                //    }
+                                //} else {
+                                //    // object was directly ready
+                                //    incubator.object.fileSelected.connect(function(fileUrl) {
+                                //        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
+                                //    } )
+                                //}
+                            } else {
+                                fileImportLoader.source = "FileImportDialog.qml"
+                                fileImportLoader.item.setFileType(DeltaHandler.FileType)
+                                fileImportLoader.item.open()
+                            }
+
                             attachmentMode = false
                         }
                         enabled: true
                     }
-                }
+
+                    Loader {
+                        id: fileImportLoader
+                    }
+
+                    Connections {
+                        target: fileImportLoader.item
+                        onFileSelected: {
+                            DeltaHandler.chatmodel.setAttachment(urlOfFile, DeltaHandler.FileType)
+                            fileImportLoader.source = ""
+                        }
+                        onCancelled: {
+                            fileImportLoader.source = ""
+                        }
+                    }
+                } // Icon id: attachmentIcon
             } // end UbuntuShape id: sendFileIconShape
 
             UbuntuShape {
@@ -2266,7 +2687,7 @@ Page {
                 height: width
                 color: theme.palette.normal.overlay
 
-                anchors{
+                anchors {
                     right: sendFileIconShape.left
                     rightMargin: units.gu(2)
                     verticalCenter: parent.verticalCenter
@@ -2276,8 +2697,9 @@ Page {
                     id: voiceMessageIcon
                     width: parent.width - units.gu(1)
                     height: width
-                    name: "audio-input-microphone-symbolic"
-                    anchors{
+                    //name: "audio-input-microphone-symbolic"
+                    source: "qrc:///assets/suru-icons/audio-input-microphone-symbolic.svg"
+                    anchors {
                         horizontalCenter: voiceMessageIconShape.horizontalCenter
                         verticalCenter: voiceMessageIconShape.verticalCenter
                     }
@@ -2334,7 +2756,8 @@ Page {
 
                     width: parent.width - units.gu(2)
                     height: width
-                    name: "media-record"
+                    //name: "media-record"
+                    source: "qrc:///assets/suru-icons/media-record.svg"
 
                     anchors {
                         top: parent.top
@@ -2364,7 +2787,8 @@ Page {
                 Icon {
                     width: parent.width - units.gu(2)
                     height: width
-                    name: "media-playback-stop"
+                    //name: "media-playback-stop"
+                    source: "qrc:///assets/suru-icons/media-playback-stop.svg"
 
                     anchors {
                         bottom: parent.bottom
@@ -2391,7 +2815,7 @@ Page {
         height: 3* acceptRequestButton.height + units.gu(8)
         width: parent.width
         color: theme.palette.normal.background
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: view.bottom
@@ -2486,7 +2910,8 @@ Page {
                     leftMargin: units.gu(1)
                     verticalCenter: audioPlayerShape.verticalCenter
                 }
-                name: messageAudio.playbackState === Audio.PlayingState ? "media-playback-pause" : "media-playback-start"
+                //name: messageAudio.playbackState === Audio.PlayingState ? "media-playback-pause" : "media-playback-start"
+                source: messageAudio.playbackState === Audio.PlayingState ? "qrc:///assets/suru-icons/media-playback-pause.svg" : "qrc:///assets/suru-icons/media-playback-start.svg"
 
                 MouseArea {
                     anchors.fill: parent
@@ -2508,7 +2933,8 @@ Page {
                     leftMargin: units.gu(1)
                     verticalCenter: audioPlayerShape.verticalCenter
                 }
-                name: "media-playback-stop"
+                //name: "media-playback-stop"
+                source: "qrc:///assets/suru-icons/media-playback-stop.svg"
 
                 MouseArea {
                     anchors.fill: parent

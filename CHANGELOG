@@ -1,12 +1,23 @@
 x.x.x xxxx-xx-xx
+UI: Convergence (huge refactoring)
+UI: Show avatar (or color + initial) in chat header
+UI: Adapt initials according to font size
+UI: Viewer page for avatar images
 UI: Allow to mute accounts
 UI: Show counter for new messages in other accounts
 UI: Remove setting for notification aggregation.
 UI: Allow removal of contacts via list of contacts when creating a new chat
-Other: Limit detailed notifications to 9 per account, use summary if beyond.
+Bugfix: Set new message count of unconfigured account to zero
+Bugfix: Search in chatlist could lead to only archived chats being showed
+Bugfix: Position of chatlist was not at top after closing archive
+Other: Rebase xenial branch on main
+Other: Handle URLs passed to the app
+Other: Limit detailed notifications to 9 per account, use summary if beyond
 Other: Move notification code into separate class
+Other: Enable notifications via org.freedesktop.Notification DBus service
 Other: Use deltachat-core-rust v1.137.3
 Other: Patch for building deltachat-core-rust no longer needed
+
 
 1.4.0 2024-03-06
 UI: Reactions (send and display)
@@ -28,13 +39,17 @@ Bugfix: Under certain circumstances, a popup regarding account en- or decryption
 Other: Use deltachat-core-rust v1.136.1
 Other: Refactoring for app to be more responsive when receiving a lot of messages
 Other: Don't restart IO when switching accounts
+Other: Build lib deltachat-core-rust out of tree
+Other: Add file im/export via FileDialog for non-Ubuntu Touch platforms
 
 1.3.1 2023-12-16
 UI: Click on header in chat view opens chat partner's profile (1:1 chats) or group edit page
 UI: Show new message count in accounts overview
 UI: Show state of outgoing message in chatlist (pending, sent or read)
+UI: Add log viewer page
 Bugfix: Corrected file/audio attachment preview area
 Bugfix: Remove delay in loading of translations
+Other: Redirect logs to file in app cache dir (deleted upon app closure)
 Other: Synchronize state of received messages across devices (works only if mail server supports CONDSTORE)
 Other: Use deltachat-core-rust v1.132.1
 Internal: Add infrastructure for deltachat-core-rust jsonrpc calls
@@ -65,7 +80,7 @@ Bugfix: Settings item "Only fetch from DeltaChat folder" did not act correctly
 Feature: Connectivity information
 UI: Image viewer: Double tap will alternate between scaling image to fit screen and original size; removed pre-scaling of small images
 UI: Better highlighting of contact requests
-Other: Improve readability of logging output; add missing events to log; add timestamps to log
+Other: Improve readability of logging output; add missing events to log
 
 1.1.0 2023-07-24
 Feature: Clear chat
@@ -76,6 +91,7 @@ UI: Adapt link colors for better contrast
 UI: Show information if provider needs special settings
 UI: Truncate long quoted texts; click toggles expand/collapse if jump to quoted msg is not possible
 Bugfix: Correctly format links after newline
+Bugfix: (focal only) Correct About page to state focal instead of xenial
 Bugfix: Use correct color for quoted text in all cases
 Bugfix: Keep aspect ratio in image viewer for small images, too
 Bugfix: Adapt decorations of message bubbles if new message is received

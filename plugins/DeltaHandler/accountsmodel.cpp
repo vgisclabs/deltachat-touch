@@ -515,18 +515,20 @@ int AccountsModel::deleteAccount(int myindex)
     qDebug() << "AccountsModel::deleteAccount: Deleting account with ID " << accID << "...";
     int success = dc_accounts_remove_account(m_accountsManager, accID);
 
-    if(success) {
-        emit deletedAccount(accID);
+    if (success) {
         qDebug() << "AccountsModel::deleteAccount: ...done.";
         dc_array_unref(m_accountsArray);
         m_accountsArray = dc_accounts_get_all(m_accountsManager);
-    }
-    else {
+    } else {
         qDebug() << "AccountsModel::deleteAccount: ...Error: Deleting account did not work.";
     }
 
     //endRemoveRows();
     endResetModel();
+
+    if (success) {
+        emit deletedAccount(accID);
+    }
 
     emit inactiveFreshMsgsMayHaveChanged();
 

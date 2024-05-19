@@ -315,7 +315,7 @@ Page {
                 // be accessed via 'value'
                 let popup1 = PopupUtils.open(
                     Qt.resolvedUrl('ConfirmDialog.qml'),
-                    null,
+                    accountConfigPage,
                     { "dialogTitle": i18n.tr("Delete Account"),
                       "dialogText": i18n.tr('Are you sure you want to delete your account data?') + "\n" + i18n.tr('All account data of \"%1\" on this device will be deleted, including your end-to-end encryption setup, contacts, chats, messages and media. This action cannot be undone.').arg(DeltaHandler.accountsmodel.getAddressOfIndex(value)),
                       "okButtonText": i18n.tr("Delete Account")}

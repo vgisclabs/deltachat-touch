@@ -5133,22 +5133,24 @@ void DeltaHandler::updateChatlistQueryText(QString query)
 
         // if the query is empty, need to pass NULL instead of empty string
         if (m_query == "") {
-            if (m_currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
+            if (m_showArchivedChats) {
                 tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, NULL, 0);
             } else {
                 tempChatlist = dc_get_chatlist(currentContext, 0, NULL, 0);
             }
         } else {
-            if (m_currentChatID == DC_CHAT_ID_ARCHIVED_LINK) {
-                tempChatlist = dc_get_chatlist(currentContext, DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT, m_query.toUtf8().constData(), 0);
-            } else {
-                tempChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
-            }
+            // search does not work if DC_GCL_ARCHIVED_ONLY | DC_GCL_ADD_ALLDONE_HINT is set;
+            // also, the search returns both archived and non-archived chats anyway
+            tempChatlist = dc_get_chatlist(currentContext, 0, m_query.toUtf8().constData(), 0);
         }
 
         refreshChatlistVector(tempChatlist);
         dc_chatlist_unref(tempChatlist);
-        emit chatlistShowsArchivedOnly(m_showArchivedChats);
+        if (m_query == "") {
+            emit chatlistShowsArchivedOnly(m_showArchivedChats);
+        } else {
+            emit chatlistShowsArchivedOnly(false);
+        }
     }
 }
 

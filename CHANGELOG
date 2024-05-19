@@ -8,6 +8,7 @@ UI: Show counter for new messages in other accounts
 UI: Remove setting for notification aggregation.
 UI: Allow removal of contacts via list of contacts when creating a new chat
 Bugfix: Set new message count of unconfigured account to zero
+Bugfix: Search in chatlist could lead to only archived chats being showed
 Other: Handle URLs passed to the app
 Other: Limit detailed notifications to 9 per account, use summary if beyond
 Other: Move notification code into separate class

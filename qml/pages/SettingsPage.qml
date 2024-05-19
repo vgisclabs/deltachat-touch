@@ -535,6 +535,31 @@ Page {
             }
 
             ListItem {
+                height: enterKeySendsLayout.height + (divider.visible ? divider.height : 0)
+                width: settingsPage.width
+                divider.visible: true
+
+                ListItemLayout {
+                    id: enterKeySendsLayout
+                    title.text: i18n.tr("Enter Key Sends")
+                    title.font.bold: true
+                    summary.text: i18n.tr("Pressing the Enter key will send text messages")
+                    summary.wrapMode: Text.WordWrap
+
+                    Switch {
+                        id: enterKeySendsSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.enterKeySends
+                        onCheckedChanged: {
+                            if (enterKeySendsSwitch.checked != root.enterKeySends) {
+                                root.enterKeySends = enterKeySendsSwitch.checked
+                            }
+                        }
+                    }
+                }
+            }
+
+            ListItem {
                 height: expSettings.height + (divider.visible ? divider.height : 0)
                 width: settingsPage.width
 

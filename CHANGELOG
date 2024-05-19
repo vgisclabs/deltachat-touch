@@ -7,6 +7,7 @@ UI: Allow to mute accounts
 UI: Show counter for new messages in other accounts
 UI: Remove setting for notification aggregation.
 UI: Allow removal of contacts via list of contacts when creating a new chat
+UI: Option to send via Enter key; Ctrl-Enter always sends
 Bugfix: Set new message count of unconfigured account to zero
 Bugfix: Search in chatlist could lead to only archived chats being showed
 Bugfix: Position of chatlist was not at top after closing archive

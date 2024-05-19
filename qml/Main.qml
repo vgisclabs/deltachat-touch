@@ -574,6 +574,8 @@ MainView {
 
     property int voiceMessageQuality: DeltaHandler.BalancedRecordingQuality
 
+    property bool enterKeySends: false
+
     property bool sendPushNotifications: false
     property bool detailedPushNotifications: true
     property bool aggregatePushNotifications: false
@@ -635,6 +637,7 @@ MainView {
         id: settings
         property alias synca: root.syncAll
         property alias voiceMessQual: root.voiceMessageQuality
+        property alias rootEnterKeySends: root.enterKeySends
         property alias sendPushNotif: root.sendPushNotifications
         property alias detailedPushNotif: root.detailedPushNotifications
         property alias aggregatePushNotif: root.aggregatePushNotifications

@@ -123,7 +123,7 @@ public:
 
     // invoked by clicking the "send" icon in a chat,
     // if a text has been entered into the TextArea
-    Q_INVOKABLE void sendMessage(QString messageText, int accID, int chatID);
+    Q_INVOKABLE void sendMessage(QString messageText, int accID, int chatID, bool sentViaEnterKey = false);
 
     Q_PROPERTY(bool hasDraft READ hasDraft);
 

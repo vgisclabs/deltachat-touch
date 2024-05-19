@@ -28,6 +28,10 @@ Dialog {
     property bool experimentalEnabled
     property bool showContactRequests
 
+    // in case the page opening the popup doesn't want the popup
+    // to ask for the showContactRequests setting
+    property bool showExperimentalSettingOnly: false
+
     Rectangle {
         width: dialog.contentWidth
         height: experimentalSettingsLabel.contentHeight + units.gu(1)
@@ -71,6 +75,8 @@ Dialog {
             anchors.right: parent.right
             checked: showContactRequests
         }
+
+        visible: !showExperimentalSettingOnly
     }
 
     Button {
@@ -80,9 +86,11 @@ Dialog {
         onClicked: {
             root.showAccountsExperimentalSettings = experimentalSettingsSwitch.checked
             
-            root.notifyContactRequests = contactRequestsSwitch.checked
-            DeltaHandler.notificationHelper.setNotifyContactRequests(contactRequestsSwitch.checked)
-            root.refreshOtherAccsIndicator()
+            if (!showExperimentalSettingOnly) {
+                root.notifyContactRequests = contactRequestsSwitch.checked
+                DeltaHandler.notificationHelper.setNotifyContactRequests(contactRequestsSwitch.checked)
+                root.refreshOtherAccsIndicator()
+            }
             
             PopupUtils.close(dialog)
         }

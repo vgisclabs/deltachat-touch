@@ -40,6 +40,23 @@ Page {
         // With 0 as parameter, a possible summary notification is removed that
         // was generated if notifs are configured to contain no detail.
         DeltaHandler.notificationHelper.removeSummaryNotification(0)
+
+        if (DeltaHandler.numberOfAccounts() === 0) {
+            // pushing AddAccount.qml to extraStack directly here
+            // doesn't work for some reason - looks like it will
+            // then be under accountConfigPage instead of above it
+            loadAddTimer.start()
+        }
+    }
+
+    Timer {
+        id: loadAddTimer
+        repeat: false
+        interval: 350
+        triggeredOnStart: false
+        onTriggered: {
+            loadAddAccountPage()
+        }
     }
 
     function loadAddAccountPage() {

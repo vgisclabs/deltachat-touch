@@ -543,6 +543,7 @@ signals:
 
     void chatlistShowsArchivedOnly(bool showsArchived);
     void closeChatViewRequest();
+    void chatlistToBeginning();
 
     void fontSizeChanged();
 

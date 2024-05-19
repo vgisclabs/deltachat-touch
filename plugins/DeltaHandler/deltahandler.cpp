@@ -1559,6 +1559,7 @@ void DeltaHandler::closeArchive()
     dc_chatlist_unref(tempChatlist);
 
     emit chatlistShowsArchivedOnly(m_showArchivedChats);
+    emit chatlistToBeginning();
 }
 
 

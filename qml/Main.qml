@@ -818,6 +818,10 @@ MainView {
             }
         }
 
+        onChatlistToBeginning: {
+            view.positionViewAtBeginning()
+        }
+
         onErrorEvent: {
             errorShape.visible = true
             errorLabel.text = i18n.tr("Error: %1").arg(errorMessage)

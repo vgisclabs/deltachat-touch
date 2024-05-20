@@ -1176,7 +1176,11 @@ int DeltaHandler::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     // return our data count
-    return static_cast<int>(m_chatlistVector.size());
+    if (!m_hasConfiguredAccount) {
+        return 0;
+    } else {
+        return static_cast<int>(m_chatlistVector.size());
+    }
 }
 
 
@@ -2782,8 +2786,7 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
             m_hasConfiguredAccount = false;
             emit hasConfiguredAccountChanged();
         }
-    }
-    else { // more accounts than one are present
+    } else { // more accounts than one are present
         if (tempContext) {
             qDebug() << "DeltaHandler::unselectAccount: tempContext was set, will now be unref'd.";
             dc_context_unref(tempContext);
@@ -2838,8 +2841,7 @@ void DeltaHandler::unselectAccount(uint32_t accIDtoUnselect)
                 start_io();
             }
 
-        }
-        else {
+        } else {
             qDebug() << "DeltaHandler::unselectAccount: No configured account available. Choosing unconfigured account " << accountToSwitchTo << "as new selected account.";
             // If no configured account was found, tempContext is already unref'd
             dc_context_unref(currentContext);
@@ -5024,8 +5026,9 @@ void DeltaHandler::contextSetupTasks()
 
 void DeltaHandler::selectAndOpenLastChatId()
 {
-    if (!currentContext) {
-        qFatal("DeltaHandler::lastChatId() called, but currentContext is NULL");
+    if (!m_hasConfiguredAccount || !currentContext) {
+        qDebug("DeltaHandler::selectAndOpenLastChatId(): No configured account or currentContext == NULL, returning");
+        return;
     }
 
     char* tempText = dc_get_config(currentContext, "ui.lastchatid"); 

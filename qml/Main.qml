@@ -794,6 +794,17 @@ MainView {
         onHasConfiguredAccountChanged: {
             startStopIO()
             console.log('DeltaHandler signal hasConfiguredAccountChanged')
+            if (!DeltaHandler.hasConfiguredAccount) {
+                // maybe the chat view is not active, but it
+                // shouldn't be a problem to call removePages anyway
+                layout.removePages(layout.primaryPage)
+                // when the signal hasConfiguredAccountChanged is sent, the
+                // account is only prepared for removal, but not actually removed
+                // yet, so numberOfAccounts() would be wrong. The signal deletedAccount
+                // is sent once the account has been actually deleted, push
+                // AccountConfig when the deletedAccount signal is received.
+                //extraStack.push(Qt.resolvedUrl('pages/AccountConfig.qml'))
+            }
         }
 
         onNetworkingIsAllowedChanged: {
@@ -929,6 +940,9 @@ MainView {
 
         onDeletedAccount: {
             accountSwitcherLeft.visible = root.enoughPlaceForSidebar && DeltaHandler.numberOfAccounts() > 1
+            if (!DeltaHandler.hasConfiguredAccount) {
+                extraStack.push(Qt.resolvedUrl('pages/AccountConfig.qml'))
+            }
         }
     }
 

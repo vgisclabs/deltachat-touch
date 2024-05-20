@@ -831,11 +831,11 @@ MainView {
         }
 
         onNewConfiguredAccount: {
-            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+            accountSwitcherLeft.visible = root.enoughPlaceForSidebar && DeltaHandler.numberOfAccounts() > 1
         }
 
         onNewUnconfiguredAccount: {
-            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+            accountSwitcherLeft.visible = root.enoughPlaceForSidebar && DeltaHandler.numberOfAccounts() > 1
         }
         
         onReadyForQrBackupImport: {
@@ -928,11 +928,12 @@ MainView {
         }
 
         onDeletedAccount: {
-            accountSwitcherLeft.visible = root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+            accountSwitcherLeft.visible = root.enoughPlaceForSidebar && DeltaHandler.numberOfAccounts() > 1
         }
     }
 
-    property bool hasTwoColumns: width > units.gu(100)
+    property bool hasTwoColumns: width > units.gu(90)
+    property bool enoughPlaceForSidebar: width > units.gu(120)
 
     onHasTwoColumnsChanged: {
         if (hasTwoColumns) {
@@ -952,7 +953,7 @@ MainView {
             top: parent.top
         }
 
-        visible: root.hasTwoColumns && DeltaHandler.numberOfAccounts() > 1
+        visible: root.enoughPlaceForSidebar && (DeltaHandler.numberOfAccounts() > 1)
         color:  root.darkmode ? "#505050" : "#a0a0a0" //theme.palette.normal.foreground
 
         ListView {
@@ -984,7 +985,7 @@ MainView {
                 when: root.hasTwoColumns
                 // column #0
                 PageColumn {
-                    minimumWidth: units.gu(40)
+                    minimumWidth: units.gu(30)
                     preferredWidth: units.gu(50)
                     maximumWidth: units.gu(70)
                 }

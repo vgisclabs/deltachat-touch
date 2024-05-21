@@ -2183,7 +2183,7 @@ ChatlistModel* ChatModel::chatlistmodel()
 }
 
 
-void ChatModel::sendMessage(QString messageText, int accID, int chatID, bool sentViaEnterKey)
+void ChatModel::sendMessage(QString messageText, int accID, int chatID, int cursorPosition)
 {
     if (accID != dc_get_id(currentMsgContext)) {
         qFatal("ChatModel::sendMessage(): accID passed to method does not match with the ID of currentMsgContext, aborting");
@@ -2194,9 +2194,10 @@ void ChatModel::sendMessage(QString messageText, int accID, int chatID, bool sen
     }
 
     // If the message has been sent with the Enter key (or Ctrl-Enter), the
-    // extra Return will be present in messageText. Remove it.
-    if (sentViaEnterKey && messageText.length() > 0 && messageText[messageText.length() - 1] == QChar::LineFeed) {
-        messageText.resize(messageText.length() - 1);
+    // extra Return will be present in messageText, and cursorPosition is != 0.
+    // Remove the extra Return.
+    if (cursorPosition > 0 && cursorPosition <= messageText.length() && messageText[cursorPosition - 1] == QChar::LineFeed) {
+        messageText.remove(cursorPosition - 1, 1);
     }
 
     bool needToNotifyAboutQuote = false;

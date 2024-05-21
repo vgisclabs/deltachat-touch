@@ -2307,17 +2307,10 @@ Page {
             width: parent.width - attachIconShape.width - sendIconShape.width - units.gu(2)
 
             Keys.onPressed: {
-                // TODO for some reason, the Return makes it to text of the TextArea even
-                // though event.accepted is set to true. The '\n' is removed from the
-                // text on the C++ side, but this can only be done reliably if it is
-                // at the end of the text. Until a way to prevent the Return to make
-                // it to the text has been found, only accept Return as send key if
-                // the cursor is at the end of the text.
-                if ((event.key == Qt.Key_Return) && ((event.modifiers & Qt.ControlModifier) || root.enterKeySends) && cursorPosition === displayText.length) {
+                if ((event.key == Qt.Key_Return) && ((event.modifiers & Qt.ControlModifier) || root.enterKeySends)) {
                     event.accepted = true
 
-                    // similar to the MouseArea in sendIconShape below
-                    if (messageEnterField.displayText != "" && messageEnterField.displayText != "\n" && !attachmentPreviewRect.visible && !isRecording) {
+                    if (((messageEnterField.displayText != "" && messageEnterField.displayText != "\n") || attachmentPreviewRect.visible) && !isRecording) {
                         // Without removing the focus from the TextArea,
                         // the text passed to DeltaHandler.sendMessage
                         // may be incomplete
@@ -2329,7 +2322,10 @@ Page {
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
 
-                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text, chatViewPage.pageAccID, chatViewPage.pageChatID, true)
+                        // TODO for some reason, the Return makes it to text of the TextArea even
+                        // though event.accepted is set to true. The '\n' is removed from the
+                        // text on the C++ side; for this, cursorPosition has to be known.
+                        DeltaHandler.chatmodel.sendMessage(messageEnterField.text, chatViewPage.pageAccID, chatViewPage.pageChatID, cursorPosition)
 
                         // TODO: is the comment below still correct?
                         // clear() does not work as we are using the TextArea

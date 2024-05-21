@@ -52,18 +52,14 @@ DeltaHandler::DeltaHandler(QObject* parent)
             if (procenv.value("QT_FILE_SELECTORS") == "ubuntu-touch") {
                 m_onUbuntuTouch = true;
             }
-        }
-
-        // 'clickable desktop' sets the env var CLICKABLE_DESKTOP_MODE.
-        // In this case, QT_FILE_SELECTORS is not set to "ubuntu-touch"
-        // , but m_onUbuntuTouch should still be true as desktop mode
-        // is to test code that will run on Ubuntu Touch.
-        if (sysvarlist.at(i) == "CLICKABLE_DESKTOP_MODE") {
+        } else if (sysvarlist.at(i) == "CLICKABLE_DESKTOP_MODE") {
+            // 'clickable desktop' sets the env var CLICKABLE_DESKTOP_MODE.
+            // In this case, QT_FILE_SELECTORS is not set to "ubuntu-touch"
+            // , but m_onUbuntuTouch should still be true as desktop mode
+            // is to test code that will run on Ubuntu Touch.
             m_onUbuntuTouch = true;
             m_isDesktopMode = true;
-        }
-
-        if (sysvarlist.at(i) == "OPEN_OSK_VIA_DBUS") {
+        } else if (sysvarlist.at(i) == "OPEN_OSK_VIA_DBUS") {
             qDebug() << "DeltaHandler::DeltaHandler(): Found env var OPEN_OSK_VIA_DBUS, setting m_openOskViaDbus to true";
             m_openOskViaDbus = true;
         }

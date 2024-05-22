@@ -108,7 +108,7 @@ Dialog {
 
     Button {
         id: showEncryptionInfoButton
-        text: i18n.tr("Show Encryption Info")
+        text: i18n.tr("Encryption Info")
         onClicked: {
             let tempString = DeltaHandler.getMomentaryChatEncInfo()
             let popup4 = PopupUtils.open(

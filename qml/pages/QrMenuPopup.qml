@@ -29,7 +29,7 @@ Dialog {
 
     Button {
         id: deactivateButton
-        text: i18n.tr("Deactivate QR code")
+        text: i18n.tr("Deactivate QR Code")
         color: theme.palette.normal.negative
 
         onClicked: {

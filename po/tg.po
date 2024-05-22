@@ -14,7 +14,7 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: zh_CN\n"
+"Language: tg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: ../plugins/DeltaHandler/contactsmodel.cpp:83 ../qml/pages/AddChat.qml:98
 #: ../qml/pages/AddChatForContact.qml:40
 msgid "New Contact"
-msgstr "新建联系人"
+msgstr ""
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:652
 #: ../plugins/DeltaHandler/deltahandler.cpp:4329 ../qml/Main.qml:449
@@ -39,7 +39,7 @@ msgstr "新建联系人"
 #: ../qml/pages/SettingsPage.qml:125
 #: ../qml/pages/SwitcherSidebarDelegate.qml:144
 msgid "Error"
-msgstr "错误"
+msgstr ""
 
 #: ../plugins/DeltaHandler/deltahandler.cpp:3216
 msgid ""
@@ -50,12 +50,12 @@ msgstr ""
 #: ../plugins/DeltaHandler/deltahandler.cpp:4408
 #: ../plugins/DeltaHandler/deltahandler.cpp:4431
 msgid "QR code could not be decoded"
-msgstr "二维码无法被解码"
+msgstr ""
 
 #: ../plugins/DeltaHandler/notificationsFreedesktop.cpp:307
 #: ../plugins/DeltaHandler/notificationsLomiriPostal.cpp:375
 msgid "New message"
-msgstr "新消息"
+msgstr ""
 
 #: ../plugins/DeltaHandler/notificationsFreedesktop.cpp:308
 #: ../plugins/DeltaHandler/notificationsLomiriPostal.cpp:376
@@ -65,7 +65,7 @@ msgstr ""
 #: ../plugins/DeltaHandler/notificationsFreedesktop.cpp:310
 #: ../plugins/DeltaHandler/notificationsLomiriPostal.cpp:378
 msgid "New messages"
-msgstr "新消息"
+msgstr ""
 
 #: ../plugins/DeltaHandler/notificationsFreedesktop.cpp:311
 #: ../plugins/DeltaHandler/notificationsLomiriPostal.cpp:379
@@ -92,7 +92,7 @@ msgstr ""
 #: ../qml/Main.qml:353 ../qml/pages/QrShowScan.qml:107
 #: ../qml/pages/QrShowScan.qml:258
 msgid "Chat with %1?"
-msgstr "与 %1 聊天？"
+msgstr ""
 
 #: ../qml/Main.qml:300 ../qml/Main.qml:337
 msgid "Select account for chatting"
@@ -100,7 +100,7 @@ msgstr ""
 
 #: ../qml/Main.qml:371 ../qml/Main.qml:387 ../qml/pages/QrShowScan.qml:138
 msgid "Do you want to join the group \"%1\"?"
-msgstr "您要加入群组“%1”吗？"
+msgstr ""
 
 #: ../qml/Main.qml:371
 msgid "Select account for joining"
@@ -109,33 +109,33 @@ msgstr ""
 #: ../qml/Main.qml:407 ../qml/pages/AddAccountViaQr.qml:110
 #: ../qml/pages/QrShowScan.qml:205
 msgid "Create new e-mail address on \"%1\" and log in there?"
-msgstr "在“%1”创建新的电子邮件地址并登录？"
+msgstr ""
 
 #: ../qml/Main.qml:420 ../qml/pages/AddAccountViaQr.qml:94
 #: ../qml/pages/QrShowScan.qml:223
 msgid "Copy the account from the other device to this device?"
-msgstr "将账户从其他设备复制到此设备吗？"
+msgstr ""
 
 #: ../qml/Main.qml:421 ../qml/pages/AddAccount.qml:137
 #: ../qml/pages/AddAccountViaQr.qml:95 ../qml/pages/QrShowScan.qml:224
 msgid "Add as Second Device"
-msgstr "添加为第二台设备"
+msgstr ""
 
 #: ../qml/Main.qml:422 ../qml/pages/AddSecondDevice.qml:120
 #: ../qml/pages/ConfirmAddSecondDevice.qml:28
 #: ../qml/pages/SettingsPage.qml:1018
 msgid "Add Second Device"
-msgstr "添加第二台设备"
+msgstr ""
 
 #: ../qml/Main.qml:435 ../qml/pages/AddAccountViaQr.qml:123
 #: ../qml/pages/QrShowScan.qml:398
 msgid "Log into \"%1\"?"
-msgstr "登录 \"%1\"吗？"
+msgstr ""
 
 #: ../qml/Main.qml:448 ../qml/Main.qml:841 ../qml/Main.qml:1930
 #: ../qml/pages/AddAccountViaQr.qml:136 ../qml/pages/QrShowScan.qml:313
 msgid "Error: %1"
-msgstr "错误：%1"
+msgstr ""
 
 #: ../qml/Main.qml:462 ../qml/pages/AddChat.qml:205
 #: ../qml/pages/BlockedContacts.qml:63 ../qml/pages/BlockedContacts.qml:69
@@ -143,7 +143,7 @@ msgstr "错误：%1"
 #: ../qml/pages/GroupAddMember.qml:138 ../qml/pages/QrShowScan.qml:416
 #: ../qml/pages/QrShowScan.qml:433
 msgid "Unknown"
-msgstr "未知"
+msgstr ""
 
 #: ../qml/Main.qml:868 ../qml/pages/AddAccountViaQr.qml:384
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:916
@@ -163,29 +163,29 @@ msgstr ""
 #: ../qml/Main.qml:1322 ../qml/pages/ChatView.qml:589
 #: ../qml/pages/ChatView.qml:634 ../qml/pages/ForwardMessage.qml:82
 msgid "Search"
-msgstr "搜索"
+msgstr ""
 
 #: ../qml/Main.qml:1364 ../qml/Main.qml:1556
 msgid "Archived Chats"
-msgstr "已归档聊天"
+msgstr ""
 
 #: ../qml/Main.qml:1699 ../qml/pages/AccountConfig.qml:493
 msgid "Request"
-msgstr "请求"
+msgstr ""
 
 #: ../qml/Main.qml:1796
 msgid "Loading…"
-msgstr "加载中…"
+msgstr ""
 
 #: ../qml/Main.qml:1822 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
-msgstr "新建聊天"
+msgstr ""
 
 #: ../qml/pages/+ubuntu-touch/FileExportDialog.qml:42
 #: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:37
 #: ../qml/pages/+ubuntu-touch/StringExportDialog.qml:41
 msgid "Select"
-msgstr "选择"
+msgstr "Интихоб"
 
 #: ../qml/pages/+ubuntu-touch/FileExportDialog.qml:93
 #: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:99
@@ -217,7 +217,7 @@ msgstr "选择"
 #: ../qml/pages/UnblockContactPopup.qml:41
 #: ../qml/pages/UrlDispatchAccountChooserPopup.qml:111
 msgid "Cancel"
-msgstr "取消"
+msgstr "Бекор"
 
 #: ../qml/pages/About.qml:28 ../qml/pages/AddAccount.qml:99
 #: ../qml/pages/SettingsPage.qml:408 ../qml/pages/SettingsPage.qml:809
@@ -261,20 +261,20 @@ msgstr ""
 #: ../qml/pages/ProgressDatabaseEncryption.qml:94
 #: ../qml/pages/ProgressQrBackupImport.qml:100
 msgid "Back"
-msgstr "返回"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:202 ../qml/pages/AddAccount.qml:84
 #: ../qml/pages/SettingsPage.qml:379
 msgid "Settings"
-msgstr "设置"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:216 ../qml/pages/AccountConfig.qml:343
 msgid "Info"
-msgstr "信息"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:223 ../qml/pages/AddAccount.qml:64
 msgid "Add Account"
-msgstr "添加账户"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:254 ../qml/pages/AddAccount.qml:167
 msgid "Encrypted database (experimental)"
@@ -296,18 +296,18 @@ msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:319 ../qml/pages/AccountConfig.qml:321
 msgid "Delete Account"
-msgstr "删除账户"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:320
 msgid ""
 "All account data of \"%1\" on this device will be deleted, including your "
 "end-to-end encryption setup, contacts, chats, messages and media. This "
 "action cannot be undone."
-msgstr "此设备上“%1”的所有帐户数据都将被删除，包括您的端到端加密设置、联系人、聊天、消息及媒体。 此操作无法撤消。"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:320
 msgid "Are you sure you want to delete your account data?"
-msgstr "您确定要删除您的账户数据吗？"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:343
 msgid "Account ID: %1"
@@ -315,17 +315,17 @@ msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:343
 msgid "None"
-msgstr "无"
+msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:560
 #: ../qml/pages/SwitcherSidebarDelegate.qml:144
 msgid "Account is not configured."
-msgstr "账户未配置。"
+msgstr ""
 
 #: ../qml/pages/AccountConfigPageSettings.qml:46
 #: ../qml/pages/SettingsPage.qml:568
 msgid "Experimental Features"
-msgstr "实验性功能"
+msgstr ""
 
 #: ../qml/pages/AccountConfigPageSettings.qml:69
 #: ../qml/pages/SettingsPage.qml:785
@@ -350,19 +350,19 @@ msgstr ""
 #: ../qml/pages/RequestDatabasePassword.qml:209
 #: ../qml/pages/VerifiedPopup.qml:35
 msgid "OK"
-msgstr "确定"
+msgstr "Хуб"
 
 #: ../qml/pages/AddAccount.qml:136
 msgid "Log into your E-Mail Account"
-msgstr "登录您的电子邮件账户"
+msgstr ""
 
 #: ../qml/pages/AddAccount.qml:138 ../qml/pages/AddAccount.qml:279
 msgid "Restore from Backup"
-msgstr "从备份恢复"
+msgstr ""
 
 #: ../qml/pages/AddAccount.qml:139
 msgid "Scan Invitation Code"
-msgstr "扫描邀请码"
+msgstr ""
 
 #: ../qml/pages/AddAccount.qml:288
 msgid "The selected file is not a valid backup file."
@@ -370,37 +370,37 @@ msgstr ""
 
 #: ../qml/pages/AddAccountViaQr.qml:147
 msgid "The scanned QR code cannot be used to set up a new account."
-msgstr "无法使用扫描到的二维码建立新账户。"
+msgstr ""
 
 #: ../qml/pages/AddAccountViaQr.qml:206 ../qml/pages/AddChatForContact.qml:92
 #: ../qml/pages/QrShowScan.qml:590 ../qml/pages/VerifiedPopup.qml:43
 msgid "Scan QR Code"
-msgstr "扫描二维码"
+msgstr ""
 
 #: ../qml/pages/AddAccountViaQr.qml:304 ../qml/pages/QrShowScan.qml:713
 msgid "Hold your camera over the QR code."
-msgstr "将摄像头对准二维码。"
+msgstr ""
 
 #: ../qml/pages/AddAccountViaQr.qml:317 ../qml/pages/QrGroupInvite.qml:48
 #: ../qml/pages/QrShowScan.qml:503 ../qml/pages/QrShowScan.qml:726
 msgid "More Options"
-msgstr "更多选项"
+msgstr ""
 
 #: ../qml/pages/AddAccountViaQr.qml:329 ../qml/pages/QrShowScan.qml:738
 msgid "Paste from Clipboard"
-msgstr "从剪贴板粘贴"
+msgstr ""
 
 #: ../qml/pages/AddAccountViaQr.qml:345 ../qml/pages/QrShowScan.qml:754
 msgid "Load QR Code as Image"
-msgstr "从图像加载二维码"
+msgstr ""
 
 #: ../qml/pages/AddChat.qml:69 ../qml/pages/GroupAddMember.qml:80
 msgid "Enter name or e-mail address"
-msgstr "输入名称或电子邮件地址"
+msgstr ""
 
 #: ../qml/pages/AddChat.qml:135 ../qml/pages/CreateOrEditGroup.qml:36
 msgid "New Group"
-msgstr "新建群组"
+msgstr ""
 
 #: ../qml/pages/AddChat.qml:176
 msgid ""
@@ -408,99 +408,99 @@ msgid ""
 "\n"
 "Contacts with ongoing chats or from the system address book cannot be "
 "deleted permanently."
-msgstr "删除联系人 %1?\n\n仍有在进行中的聊天的联系人和在系统通讯录中的联系人无法被永久删除。"
+msgstr ""
 
 #: ../qml/pages/AddChatForContact.qml:68
 msgid "Please enter a valid e-mail address"
-msgstr "请输入有效的电子邮件地址"
+msgstr ""
 
 #: ../qml/pages/AddChatForContact.qml:129
 msgid "or"
-msgstr "或"
+msgstr "ё"
 
 #: ../qml/pages/AddChatForContact.qml:158
 msgid "Name"
-msgstr "名称"
+msgstr ""
 
 #: ../qml/pages/AddChatForContact.qml:198
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:225
 msgid "E-Mail Address"
-msgstr "电子邮件地址"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:52
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:940
 #: ../qml/pages/SettingsPage.qml:141 ../qml/pages/SettingsPage.qml:1295
 msgid "No, chats only"
-msgstr "不显示，仅聊天"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:55
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:954
 #: ../qml/pages/SettingsPage.qml:144 ../qml/pages/SettingsPage.qml:1309
 msgid "For accepted contacts"
-msgstr "已接受的联系人"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:58
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:968
 #: ../qml/pages/SettingsPage.qml:147 ../qml/pages/SettingsPage.qml:158
 #: ../qml/pages/SettingsPage.qml:1323 ../qml/pages/SettingsPage.qml:1351
 msgid "All"
-msgstr "全部"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:102
 msgid "Log In"
-msgstr "登录"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:212
 msgid "Log in with an existing e-mail account"
-msgstr "使用现有电子邮件帐户登录"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:286
 msgid "Password"
-msgstr "密码"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:385
 #: ../qml/pages/ChatView.qml:1972
 msgid "More Info"
-msgstr "更多信息"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:407
 msgid "There are no Delta Chat servers, your data stays on your device."
-msgstr "不存在 Delta Chat 服务器，您的数据保留于您的设备！"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:420
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
-msgstr "对于已知的电子邮件提供商，附加设置会被自动设置。有时 IMAP 需要在网页版设置里启用。 请咨询您的电子邮件提供商或朋友来寻求帮助。"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:444
 #: ../qml/pages/SettingsPage.qml:961
 msgid "Show Classic E-Mails"
-msgstr "显示传统电子邮件"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:478
 #: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:1259
 msgid "Advanced"
-msgstr "高级"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:499
 msgid "Inbox"
-msgstr "收件箱"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:505
 msgid "IMAP Login Name"
-msgstr "IMAP 登录名"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:512
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:609
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:631
 msgid "Default (same as above)"
-msgstr "默认值（与上面相同）"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:527
 msgid "IMAP Server"
-msgstr "IMAP 服务器"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:534
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:574
@@ -508,19 +508,19 @@ msgstr "IMAP 服务器"
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:693
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:710
 msgid "Automatic"
-msgstr "自动"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:549
 msgid "IMAP Port"
-msgstr "IMAP 端口"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:556
 msgid "Default (%1)"
-msgstr "默认值（%1）"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:572
 msgid "IMAP Security"
-msgstr "IMAP 安全类型"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:577
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:696
@@ -530,27 +530,27 @@ msgstr "IMAP 安全类型"
 #: ../qml/pages/EphemeralTimerSettings.qml:137
 #: ../qml/pages/EphemeralTimerSettings.qml:141
 msgid "Off"
-msgstr "关"
+msgstr "Хомӯш"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:596
 msgid "Outbox"
-msgstr "发件箱"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:602
 msgid "SMTP Login Name"
-msgstr "SMTP 登录名"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:624
 msgid "SMTP Password"
-msgstr "SMTP 密码"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:646
 msgid "SMTP Server"
-msgstr "SMTP 服务器"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:668
 msgid "SMTP Port"
-msgstr "SMTP 端口"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:675
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:778
@@ -560,101 +560,101 @@ msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:691
 msgid "SMTP Security"
-msgstr "SMTP 安全类型"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:708
 msgid "Certificate Checks"
-msgstr "证书检查"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:711
 msgid "Strict"
-msgstr "严格"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:712
 msgid "Accept invalid certificates"
-msgstr "接受无效的证书"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:747
 msgid "Use SOCKS5"
-msgstr "使用 SOCKS5 代理"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:766
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
-msgstr "SOCKS5 支持目前还处于试验阶段。请自行承担使用风险。如果您在电子邮件字段中输入一个地址，会有不流经 SOCKS5 隧道的 DNS 查找流量。"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:771
 msgid "SOCKS5 Host"
-msgstr "SOCKS5 主机"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:794
 msgid "SOCKS5 Port"
-msgstr "SOCKS5 端口"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:818
 msgid "SOCKS5 User"
-msgstr "SOCKS5 用户名"
+msgstr ""
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:840
 msgid "SOCKS5 Password"
-msgstr "SOCKS5 密码"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:105
 msgid "ℹ️ Account transferred to your second device."
-msgstr "ℹ️ 账户已传输到你的第二台设备。"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:131
 msgid "This will invalidate the QR code copied to clipboard."
-msgstr "这会让复制到剪贴板的二维码失效。"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:155
 msgid "One moment…"
-msgstr "稍等片刻…"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:180
 #: ../qml/pages/ProgressQrBackupImport.qml:39
 msgid "Transferring…"
-msgstr "传输中…"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:266
 msgid "(experimental, version 1.36 required)"
-msgstr "（实验性，需要 1.36 版本）"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:266
 msgid "Install Delta Chat on your other device (https://get.delta.chat)"
-msgstr "在你的其他设备上安装 Delta Chat (https://get.delta.chat)"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:307
 msgid "Make sure both devices are on the same Wi-Fi or network"
-msgstr "让两台设备连接相同的 Wi-Fi 或网络"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:348
 msgid ""
 "Start Delta Chat, tap “Add as Second Device” and scan the code shown here"
-msgstr "启动 Delta Chat 应用，点击“添加为第二台设备”并扫描显示的二维码"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:358
 msgid "Troubleshooting"
-msgstr "故障排除"
+msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:69
 #: ../qml/pages/QrMenuPopup.qml:43 ../qml/pages/QrSharePopup.qml:57
 msgid "Copy to Clipboard"
-msgstr "复制到剪贴板"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:467
 msgid "Worse quality, small size"
-msgstr "体积小，但质量更差"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:453
 msgid "Balanced"
-msgstr "平衡"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:439
 msgid "High"
-msgstr "高"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:127
 msgid "Voice Message Quality"
@@ -662,75 +662,75 @@ msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:164
 msgid "Autocrypt"
-msgstr "Autocrypt"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:177
 msgid "Prefer End-To-End Encryption"
-msgstr "优先使用端到端加密"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:214
 msgid "IMAP Folder Handling"
-msgstr "IMAP 文件夹处理"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:228
 msgid "Watch Sent Folder"
-msgstr "监视已发送文件夹"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:261
 msgid "Send Copy to Self"
-msgstr "给自己发送副本"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:262
 msgid "Required when using this account on multiple devices."
-msgstr "在多台设备上使用此账户时，这是必需的。"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:296
 msgid "Move automatically to DeltaChat Folder"
-msgstr "自动移动至 DeltaChat 文件夹"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:297
 msgid "Chat conversations are moved to avoid cluttering the Inbox"
-msgstr "移动聊天对话以免弄乱收件箱"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:330
 msgid "Only Fetch from DeltaChat Folder"
-msgstr "只从 DeltaChat 文件夹获取"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:331
 msgid ""
 "Ignore other folders. Requires your server to move chat messages to the "
 "DeltaChat folder."
-msgstr "忽略其他文件夹。需要你的服务器将聊天消息移动到 DeltaChat 文件夹。"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:369
 msgid "Manage Keys"
-msgstr "管理密钥"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:383
 msgid "Export Secret Keys"
-msgstr "导出密钥"
+msgstr ""
 
 #: ../qml/pages/AdvancedSettings.qml:404 ../qml/pages/ProgressKeysImport.qml:59
 msgid "Import Secret Keys"
-msgstr "导入密钥"
+msgstr ""
 
 #: ../qml/pages/BlockContactPopup.qml:28
 msgid "Block this contact? You will no longer receive messages from them."
-msgstr "屏蔽此联系人？您将不再收到此联系人的消息。"
+msgstr ""
 
 #: ../qml/pages/BlockContactPopup.qml:37
 #: ../qml/pages/ChatInfosActionsChatlist.qml:63
 #: ../qml/pages/ChatInfosActionsChatview.qml:77
 msgid "Block Contact"
-msgstr "屏蔽联系人"
+msgstr ""
 
 #: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:869
 msgid "Blocked Contacts"
-msgstr "已屏蔽的联系人"
+msgstr ""
 
 #: ../qml/pages/BlockedContacts.qml:46
 msgid "Blocked contacts will appear here."
-msgstr "被您屏蔽的联系人将显示于此。"
+msgstr ""
 
 #: ../qml/pages/ChangeDatabasePassword.qml:45
 #: ../qml/pages/ChangeDatabasePassword.qml:189
@@ -763,64 +763,64 @@ msgstr ""
 #: ../qml/pages/ChatInfosActionsChatlist.qml:49
 #: ../qml/pages/ChatInfosActionsChatview.qml:63
 msgid "Mute Notifications"
-msgstr "通知静音"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:49
 #: ../qml/pages/ChatInfosActionsChatview.qml:63
 msgid "Unmute"
-msgstr "取消静音"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:72
 #: ../qml/pages/ChatInfosActionsChatview.qml:86
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
-msgstr "编辑群组"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:84
 #: ../qml/pages/ChatInfosActionsChatview.qml:98
 #: ../qml/pages/ConfirmLeaveGroup.qml:36
 msgid "Leave Group"
-msgstr "离开群组"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:97
 #: ../qml/pages/ChatInfosActionsChatview.qml:111
 msgid "Encryption Info"
-msgstr "加密信息"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:150
 #: ../qml/pages/ChatInfosActionsChatview.qml:177
 msgid "Mute for 1 hour"
-msgstr "静音 1 小时"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:164
 #: ../qml/pages/ChatInfosActionsChatview.qml:191
 msgid "Mute for 2 hours"
-msgstr "静音 2 小时"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:178
 #: ../qml/pages/ChatInfosActionsChatview.qml:205
 msgid "Mute for 1 day"
-msgstr "静音 1 天"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:192
 #: ../qml/pages/ChatInfosActionsChatview.qml:219
 msgid "Mute for 7 days"
-msgstr "静音 7 天"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatlist.qml:206
 #: ../qml/pages/ChatInfosActionsChatview.qml:233
 msgid "Mute forever"
-msgstr "永久静音"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatview.qml:51
 #: ../qml/pages/EphemeralTimerSettings.qml:27
 msgid "Disappearing Messages"
-msgstr "消息定时销毁"
+msgstr ""
 
 #: ../qml/pages/ChatInfosActionsChatview.qml:128
 #: ../qml/pages/ConfirmClearChat.qml:42 ../qml/pages/ConfirmClearChat.qml:51
 msgid "Clear Chat"
-msgstr "清空聊天记录"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:154 ../qml/pages/ImageViewer.qml:39
 #: ../qml/pages/ImageViewerAnimated.qml:39 ../qml/pages/SettingsPage.qml:125
@@ -834,16 +834,16 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:300 ../qml/pages/ChatView.qml:1906
 msgid "This chat contains locally generated messages; writing is disabled."
-msgstr "此聊天用于本地生成的消息。您不能在这里编写消息。"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:302 ../qml/pages/ChatView.qml:1908
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
-msgstr "您必须在此群组之中才能发送消息。要加入，请询问其他成员。"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:434 ../qml/pages/ChatView.qml:1415
 msgid "Voice Message"
-msgstr "语音消息"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:574
 msgid "More Actions"
@@ -851,19 +851,19 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:1305
 msgid "Forwarded Message"
-msgstr "转发的消息"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:1508
 msgid "Download"
-msgstr "下载"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:1510
 msgid "Download failed"
-msgstr "下载失败"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:1512
 msgid "Downloading…"
-msgstr "下载中…"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:1551
 msgid "Unread Messages"
@@ -871,42 +871,42 @@ msgstr ""
 
 #: ../qml/pages/ChatView.qml:1582
 msgid "Show Full Message…"
-msgstr "显示完整消息… "
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:1942
 msgid "%1 sent a message from another device."
-msgstr "%1 从另一台设备发送了消息"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:2836
 msgid "Accept"
-msgstr "接受"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:2853 ../qml/pages/ChatView.qml:3006
 #: ../qml/pages/ConfirmMemberDeletion.qml:35
 #: ../qml/pages/ConfirmMemberDeletion.qml:45
 msgid "Delete"
-msgstr "删除"
+msgstr ""
 
 #: ../qml/pages/ChatView.qml:2869
 msgid "Block"
-msgstr "屏蔽"
+msgstr ""
 
 #: ../qml/pages/ConfirmAddSecondDevice.qml:29
 msgid ""
 "This creates a QR code that the second device can scan to copy the account."
-msgstr "这会创建供第二台设备扫描、用于复制此账户的二维码。"
+msgstr ""
 
 #: ../qml/pages/ConfirmAddSecondDevice.qml:32
 #: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:45
 #: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:46
 #: ../qml/pages/ConfirmEncryptDatabase.qml:46
 msgid "Continue"
-msgstr "继续"
+msgstr ""
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:31
 #: ../qml/pages/MessageHtmlView.qml:189
 msgid "Always Load Remote Images"
-msgstr "始终加载远程图像"
+msgstr ""
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:36
 msgid ""
@@ -916,35 +916,35 @@ msgid ""
 "cached images may appear.\n"
 "\n"
 "Load remote images?"
-msgstr "远程图像可以被用于追踪您。\n\n该设置可能还会加载字体以及其他内容。禁用状态下，您仍可能会看到嵌入的图像和缓存中的图像。\n\n要加载远程图像吗？"
+msgstr ""
 
 #: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
 #: ../qml/pages/MessageHtmlView.qml:111
 msgid "Load Remote Images"
-msgstr "加载远程图像"
+msgstr ""
 
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:28
 msgid "Abort setting up second device?"
-msgstr "中止第二台设备的设置吗？"
+msgstr ""
 
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:31
 #: ../qml/pages/ProgressKeysExport.qml:57
 msgid "Yes"
-msgstr "是"
+msgstr "Бале"
 
 #: ../qml/pages/ConfirmCancelSecondDevice.qml:40
 msgid "No"
-msgstr "否"
+msgstr "Не"
 
 #: ../qml/pages/ConfirmChatDeletion.qml:34
 #: ../qml/pages/ConfirmChatDeletion.qml:44
 msgid "Delete Chat"
-msgstr "删除聊天"
+msgstr ""
 
 #: ../qml/pages/ConfirmChatDeletion.qml:38
 #: ../qml/pages/ConfirmMsgDeletion.qml:39
 msgid "Are you sure you want to delete \"%1\"?"
-msgstr "您确定要删除“%1”吗？"
+msgstr ""
 
 #: ../qml/pages/ConfirmClearChat.qml:36
 msgid "Delete %1 message here and on the server?"
@@ -971,7 +971,7 @@ msgstr ""
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
 #: ../qml/pages/SettingsPage.qml:1139
 msgid "Delete Messages from Device"
-msgstr "从设备删除消息"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:40
 msgid ""
@@ -983,17 +983,17 @@ msgid ""
 "• Messages will be deleted whether they were seen or not\n"
 "\n"
 "• \"Saved messages\" will be skipped from local deletion"
-msgstr "您是否要立即删除 %1 条消息，并在之后于消息收到 %2 删除它们？\n\n• 这包括所有媒体文件\n\n• 无论消息是否被浏览过，它们都将被删除\n\n• 在本地删除中，“保存的消息”将被跳过"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:62
 #: ../qml/pages/ConfirmDeleteFromServer.qml:62
 msgid "I understand, delete all these messages"
-msgstr "我了解，将这些消息全部删除"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
 #: ../qml/pages/SettingsPage.qml:1168
 msgid "Delete Messages from Server"
-msgstr "从服务器删除消息"
+msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:40
 msgid ""
@@ -1006,7 +1006,7 @@ msgid ""
 "\n"
 "⚠️ Do not use this function if you are using other e-mail clients besides "
 "Delta Chat"
-msgstr "您是否要立即删除 %1 条消息，并在之后于消息收到 %2 删除它们？\n\n⚠️ 这包括服务器所有文件夹中的电子邮件、媒体和“保存的消息”\n\n⚠️ 如果您想在服务器上保留数据，请不要使用此功能\n\n⚠️ 如果您正在使用 Delta Chat 之外的电子邮件客户端，请不要使用此功能"
+msgstr ""
 
 #: ../qml/pages/ConfirmEncryptDatabase.qml:35
 msgid "Really encrypt the database?"
@@ -1039,24 +1039,24 @@ msgstr ""
 
 #: ../qml/pages/ConfirmLeaveGroup.qml:32
 msgid "Are you sure you want to leave this group?"
-msgstr "您确定要离开此群组吗？"
+msgstr ""
 
 #: ../qml/pages/ConfirmMemberDeletion.qml:39
 msgid "Remove %1 from group?"
-msgstr "将 %1 从群组中移除？"
+msgstr ""
 
 #: ../qml/pages/ConfirmMsgDeletion.qml:35
 #: ../qml/pages/ConfirmMsgDeletion.qml:45
 msgid "Delete Message"
-msgstr "删除消息"
+msgstr ""
 
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:30
 msgid "Do you want to open this link?"
-msgstr "您要打开此链接吗？"
+msgstr ""
 
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:45
 msgid "Copy Link"
-msgstr "复制链接"
+msgstr ""
 
 #: ../qml/pages/ConfirmStopEncryptingDatabase.qml:35
 msgid "Really disable database encryption?"
@@ -1068,7 +1068,7 @@ msgstr ""
 
 #: ../qml/pages/Connectivity.qml:31 ../qml/pages/SettingsPage.qml:1044
 msgid "Connectivity"
-msgstr "连接状态"
+msgstr ""
 
 #: ../qml/pages/CreateDatabasePassword.qml:44
 #: ../qml/pages/CreateDatabasePassword.qml:168
@@ -1085,11 +1085,11 @@ msgstr ""
 #: ../qml/pages/QrSharePopup.qml:28 ../qml/pages/QrShowScan.qml:483
 #: ../qml/pages/QrShowScan.qml:578
 msgid "QR Invite Code"
-msgstr "邀请二维码"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:251
 msgid "Group Name"
-msgstr "群组名称"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:285
 msgid "%1 member"
@@ -1101,19 +1101,19 @@ msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:303 ../qml/pages/GroupAddMember.qml:34
 msgid "Add Members"
-msgstr "添加成员"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:404
 msgid "Please enter a name for the group."
-msgstr "请为群组输入一个名称。"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:428
 msgid "Change Group Image"
-msgstr "更改群组图像"
+msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:479
 msgid "Remove Group Image"
-msgstr "移除群组图像"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:41
 #: ../qml/pages/EphemeralTimerSettings.qml:151
@@ -1122,7 +1122,7 @@ msgstr "移除群组图像"
 #: ../qml/pages/SettingsPage.qml:231 ../qml/pages/SettingsPage.qml:1619
 #: ../qml/pages/SettingsPage.qml:1625
 msgid "After 30 seconds"
-msgstr "30 秒后"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:165
@@ -1130,7 +1130,7 @@ msgstr "30 秒后"
 #: ../qml/pages/SettingsPage.qml:235 ../qml/pages/SettingsPage.qml:1640
 #: ../qml/pages/SettingsPage.qml:1646
 msgid "After 1 minute"
-msgstr "1 分钟后"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:49
 #: ../qml/pages/EphemeralTimerSettings.qml:179
@@ -1139,7 +1139,7 @@ msgstr "1 分钟后"
 #: ../qml/pages/SettingsPage.qml:1464 ../qml/pages/SettingsPage.qml:1470
 #: ../qml/pages/SettingsPage.qml:1661 ../qml/pages/SettingsPage.qml:1667
 msgid "After 1 hour"
-msgstr "1 小时后"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:53
 #: ../qml/pages/EphemeralTimerSettings.qml:193
@@ -1148,7 +1148,7 @@ msgstr "1 小时后"
 #: ../qml/pages/SettingsPage.qml:1485 ../qml/pages/SettingsPage.qml:1491
 #: ../qml/pages/SettingsPage.qml:1682 ../qml/pages/SettingsPage.qml:1688
 msgid "After 1 day"
-msgstr "1 天后"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:57
 #: ../qml/pages/EphemeralTimerSettings.qml:207
@@ -1157,7 +1157,7 @@ msgstr "1 天后"
 #: ../qml/pages/SettingsPage.qml:1506 ../qml/pages/SettingsPage.qml:1512
 #: ../qml/pages/SettingsPage.qml:1703 ../qml/pages/SettingsPage.qml:1709
 msgid "After 1 week"
-msgstr "1 周后"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:221
@@ -1165,7 +1165,7 @@ msgstr "1 周后"
 #: ../qml/pages/SettingsPage.qml:1527 ../qml/pages/SettingsPage.qml:1533
 #: ../qml/pages/SettingsPage.qml:1724 ../qml/pages/SettingsPage.qml:1730
 msgid "After 4 weeks"
-msgstr "4 周后"
+msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:65
 msgid "After %1 seconds"
@@ -1175,37 +1175,37 @@ msgstr ""
 msgid ""
 "Applies to all members of this chat if they use Delta Chat; they can still "
 "copy, save, and forward messages or use other e-mail clients."
-msgstr "对本聊天内使用 Delta Chat 的成员有效；不过，这些成员还是能够保存、复制和转发消息，以及使用其他的电子邮件客户端。"
+msgstr ""
 
 #: ../qml/pages/FileImportDialog.qml:33
 msgid "Add Attachment"
-msgstr "添加附件"
+msgstr ""
 
 #: ../qml/pages/ForwardMessage.qml:41
 msgid "Forward to…"
-msgstr "转发给…"
+msgstr ""
 
 #: ../qml/pages/ForwardMessage.qml:48 ../qml/pages/ImageViewer.qml:56
 #: ../qml/pages/ImageViewerAnimated.qml:56 ../qml/pages/MessageHtmlView.qml:49
 #: ../qml/pages/QrShowScan.qml:489 ../qml/pages/SettingsPage.qml:385
 msgid "Close"
-msgstr "关闭"
+msgstr ""
 
 #: ../qml/pages/ImageViewer.qml:92 ../qml/pages/ImageViewerAnimated.qml:88
 msgid "Save"
-msgstr "保存"
+msgstr ""
 
 #: ../qml/pages/MessageInfosActions.qml:37
 msgid "Copy Text"
-msgstr "复制文本"
+msgstr ""
 
 #: ../qml/pages/MessageInfosActions.qml:51
 msgid "Export Attachment"
-msgstr "导出附件"
+msgstr ""
 
 #: ../qml/pages/MessageInfosActions.qml:63
 msgid "Message Details"
-msgstr "消息详情"
+msgstr ""
 
 #: ../qml/pages/NotImplemented.qml:27
 msgid "Not Implemented Yet"
@@ -1217,51 +1217,51 @@ msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen at %1"
-msgstr "最后见到时间：%1"
+msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen: Unknown"
-msgstr "最后见到时间：未知"
+msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:47
 msgid "View Profile"
-msgstr "查看概要"
+msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:280
 msgid "Locally generated messages"
-msgstr "本地生成的消息"
+msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:310
 msgid "Introduced by %1"
-msgstr "验证人 %1"
+msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:310
 msgid "Introduced by me"
-msgstr "由您验证"
+msgstr ""
 
 #: ../qml/pages/ProfileOther.qml:349 ../qml/pages/ProfileSelf.qml:313
 msgid "Signature Text"
-msgstr "签名档"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:75 ../qml/pages/SettingsPage.qml:915
 msgid "Edit Profile"
-msgstr "编辑个人资料"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:124
 msgid "Profile"
-msgstr "概要"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:207
 msgid "Select Profile Image"
-msgstr "选择个人资料图片"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:244
 msgid "Delete Profile Image"
-msgstr "删除个人资料图片"
+msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:264
 msgid "Your Name"
-msgstr "您的名称"
+msgstr ""
 
 #: ../qml/pages/ProgressBackupExport.qml:36
 msgid ""
@@ -1271,11 +1271,11 @@ msgid ""
 "The backup will contain all messages, contacts and chats and your end-to-end "
 "Autocrypt setup. Keep the backup file in a safe place or delete it as soon "
 "as possible."
-msgstr "备份可帮助您在此设备或另一台设备上设置全新安装的本应用。\n\n备份将包含所有消息、联系人、聊天以及端到端的 Autocrypt 设置。请将备份文件保存在安全的地方，或尽快将其删除。"
+msgstr ""
 
 #: ../qml/pages/ProgressBackupExport.qml:50
 msgid "Start Backup"
-msgstr "开始备份"
+msgstr ""
 
 #: ../qml/pages/ProgressBackupImport.qml:46
 msgid "Failed"
@@ -1285,7 +1285,7 @@ msgstr ""
 #: ../qml/pages/ProgressConfigAccount.qml:52
 #: ../qml/pages/ProgressQrBackupImport.qml:64
 msgid "Done"
-msgstr "已完成"
+msgstr ""
 
 #: ../qml/pages/ProgressDatabaseDecryption.qml:46
 #: ../qml/pages/ProgressDatabaseDecryption.qml:70
@@ -1314,11 +1314,11 @@ msgstr ""
 
 #: ../qml/pages/ProgressKeysExport.qml:40
 msgid "Export secret keys to \"%1\"?"
-msgstr "导出密钥到“%1”？"
+msgstr ""
 
 #: ../qml/pages/ProgressKeysExport.qml:49
 msgid "Secret keys written successfully to \"%1\"."
-msgstr "密钥已成功写入至\"%1\"。"
+msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
@@ -1328,7 +1328,7 @@ msgid ""
 "\n"
 "• The last imported key will be used as the new default key unless it has "
 "the word \"legacy\" in its filename."
-msgstr "从“%1”导入密钥？\n\n• 现有密钥不会被删除。\n\n• 除非最后导入的密钥文件名中带有单词\"legacy\"，否则它将会被用作新的默认密钥。"
+msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:41
 msgid ""
@@ -1340,7 +1340,7 @@ msgstr ""
 
 #: ../qml/pages/ProgressKeysImport.qml:51
 msgid "Secret keys imported from \"%1\"."
-msgstr "密钥已从\"%1\"导入。"
+msgstr ""
 
 #: ../qml/pages/QrConfirmPopup.qml:81
 msgid "Open Url in Browser"
@@ -1351,21 +1351,21 @@ msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
-msgstr "其他人可以扫描此二维码加入群组 “%1”。\n\n您可以在此处停用二维码并通过再次扫描来重新激活它。"
+msgstr ""
 
 #: ../qml/pages/QrGroupInvite.qml:68 ../qml/pages/QrMenuPopup.qml:32
 #: ../qml/pages/QrShowScan.qml:331 ../qml/pages/QrShowScan.qml:348
 #: ../qml/pages/QrShowScan.qml:524
 msgid "Deactivate QR Code"
-msgstr "停用二维码"
+msgstr ""
 
 #: ../qml/pages/QrGroupInvite.qml:98 ../qml/pages/QrShowScan.qml:554
 msgid "Share"
-msgstr "分享"
+msgstr ""
 
 #: ../qml/pages/QrMenuPopup.qml:52 ../qml/pages/QrSharePopup.qml:50
 msgid "Copied QR url to clipboard"
-msgstr "已复制二维码链接到剪贴板"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:154
 msgid "The fingerprint of %1 is valid!"
@@ -1373,11 +1373,11 @@ msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:155 ../qml/pages/QrShowScan.qml:189
 msgid "Fingerprint"
-msgstr "指纹"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:171
 msgid "The scanned fingerprint does not match the last seen for %1."
-msgstr "扫描到的指纹与上次见到的 %1 的指纹不匹配。"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:188
 msgid ""
@@ -1385,55 +1385,55 @@ msgid ""
 "\n"
 "For an out-of-band-verification, please establish an encrypted connection to "
 "the recipient first."
-msgstr "此二维码包含指纹但没有电子邮件地址。\n\n对于带外验证，请先与接收者建立加密连接。"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:274
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
-msgstr "已扫描到的二维码文本：\n\n%1"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:275 ../qml/pages/QrShowScan.qml:294
 #: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:434
 msgid "QR Code"
-msgstr "二维码"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:293
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
-msgstr "已扫描到的二维码 URL：\n\n%1"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:330 ../qml/pages/QrShowScan.qml:523
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
-msgstr "其他人可以扫描此二维码与您联系。\n\n您可以在此处停用二维码并通过再次扫描来重新激活它。"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:364
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
-msgstr "其他人可扫描此二维码以与您联系。\n\n此设备上的二维码未激活。"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:365 ../qml/pages/QrShowScan.qml:382
 msgid "Activate QR Code"
-msgstr "激活二维码"
+msgstr ""
 
 #: ../qml/pages/QrShowScan.qml:381
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
 "The QR code is not active on this device."
-msgstr "其他人可扫描此二维码加入群组“%1”。\n\n此设备上的二维码未激活。"
+msgstr ""
 
 #: ../qml/pages/ReactionsInfoPopup.qml:31
 msgid "Reactions"
-msgstr "回应"
+msgstr ""
 
 #: ../qml/pages/ReactionsSelectionPopover.qml:141
 msgid "Selected: "
@@ -1445,44 +1445,44 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:54
 msgid "Not connected"
-msgstr "未连接"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:56
 msgid "Connecting…"
-msgstr "连接中…"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:58
 msgid "Updating…"
-msgstr "更新中…"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:60
 msgid "Connected"
-msgstr "已连接"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:162 ../qml/pages/SettingsPage.qml:175
 #: ../qml/pages/SettingsPage.qml:179 ../qml/pages/SettingsPage.qml:1365
 #: ../qml/pages/SettingsPage.qml:1407 ../qml/pages/SettingsPage.qml:1421
 msgid "Up to %1"
-msgstr "%1 以下"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:166 ../qml/pages/SettingsPage.qml:1379
 msgid "Up to %1, most worse quality images"
-msgstr "%1 以下，最差的图像质量"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:171 ../qml/pages/SettingsPage.qml:1393
 msgid "Up to %1, most balanced quality images"
-msgstr "%1 以下，均衡的图像质量"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:191 ../qml/pages/SettingsPage.qml:223
 #: ../qml/pages/SettingsPage.qml:1450 ../qml/pages/SettingsPage.qml:1584
 msgid "Never"
-msgstr "从不"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:211 ../qml/pages/SettingsPage.qml:255
 #: ../qml/pages/SettingsPage.qml:1548 ../qml/pages/SettingsPage.qml:1554
 #: ../qml/pages/SettingsPage.qml:1745 ../qml/pages/SettingsPage.qml:1751
 msgid "After 1 year"
-msgstr "1 年后"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:215 ../qml/pages/SettingsPage.qml:259
 msgid "?"
@@ -1491,7 +1491,7 @@ msgstr ""
 #: ../qml/pages/SettingsPage.qml:227 ../qml/pages/SettingsPage.qml:1598
 #: ../qml/pages/SettingsPage.qml:1604
 msgid "At once"
-msgstr "立刻"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:438
 msgid "All Accounts"
@@ -1499,35 +1499,35 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:451
 msgid "Sync All"
-msgstr "同步所有"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:498
 msgid "Message Font Size"
-msgstr "消息字体大小"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:507 ../qml/pages/SettingsPage.qml:1783
 msgid "Small"
-msgstr "小"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:510 ../qml/pages/SettingsPage.qml:1803
 msgid "Normal"
-msgstr "正常"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:513 ../qml/pages/SettingsPage.qml:1820
 msgid "Large"
-msgstr "大"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:516 ../qml/pages/SettingsPage.qml:1837
 msgid "Extra large"
-msgstr "特大"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:544
 msgid "Enter Key Sends"
-msgstr "回车键发送"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:546
 msgid "Pressing the Enter key will send text messages"
-msgstr "按回车键发送文本消息"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:600
 msgid "Database Encryption"
@@ -1543,11 +1543,11 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:707 ../qml/pages/SettingsPage.qml:720
 msgid "Notifications"
-msgstr "通知"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:721
 msgid "Enable system notifications for new messages"
-msgstr "为新消息启用系统通知"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:739
 msgid ""
@@ -1557,11 +1557,11 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:756
 msgid "Show message content in notification"
-msgstr "在通知中显示消息内容"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:757
 msgid "Shows sender and first words of the message in notifications"
-msgstr "在通知中显示发送者和消息开头部分"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:783
 msgid "Contact requests"
@@ -1573,36 +1573,36 @@ msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:947
 msgid "Chats"
-msgstr "聊天"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:990
 msgid "Auto-Download Messages"
-msgstr "自动下载消息"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:1075
 msgid "Privacy"
-msgstr "隐私"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:1087
 msgid "Read Receipts"
-msgstr "已读回执"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:1125
 msgid "Delete Old Messages"
-msgstr "删除旧消息"
+msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:1217 ../qml/pages/SettingsPage.qml:1875
 msgid "Export Backup"
-msgstr "导出备份"
+msgstr ""
 
 #: ../qml/pages/UnblockContactPopup.qml:36
 msgid ""
 "Unblock this contact? You will then be able to receive messages from them."
-msgstr "取消屏蔽此联系人？您将再次能收到此联系人的消息。"
+msgstr ""
 
 #: ../qml/pages/UnblockContactPopup.qml:47
 msgid "Unblock Contact"
-msgstr "取消屏蔽联系人"
+msgstr ""
 
 #: ../qml/pages/UrlDispatchAccountChooserPopup.qml:36
 msgid "Select Account"
@@ -1615,7 +1615,7 @@ msgid ""
 "\n"
 "You may meet them in person and scan their QR code again to reestablish "
 "guaranteed end-to-end encryption."
-msgstr "无法再确保端到端加密，可能的原因是 %1 重新安装了 Delta Chat 或从其他设备发送了一则消息。\n\n你可以和联系人线下见面并再次扫描联系人的二维码重新建立端到端加密的通信。"
+msgstr ""
 
 #: ../qml/pages/VerifiedPopup.qml:32
 msgid ""
@@ -1624,9 +1624,9 @@ msgid ""
 "\n"
 "End-to-end encryption keeps messages private between you and your chat "
 "partners. Not even your email provider can read them."
-msgstr "现在此聊天中的所有消息保证都是端到端加密的。\n\n端到端加密使消息保持私密状态，只有你和你的聊天伙伴知道内容。即便是你的电子邮件服务提供商也无法读取它们。"
+msgstr ""
 
 #: ../qml/pages/VerifiedPopup.qml:52
 msgid "Learn More"
-msgstr "了解更多"
+msgstr ""
 

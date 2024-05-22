@@ -8,6 +8,12 @@
 
 class DeltaHandler;
 
+// On non-UT platforms, an instance of this class will be registered
+// as DBus object /deltatouch/urlreceiver of the below listed interface.
+// If a different program sends an URL to the app, a second instance of the app
+// will be opened with the URL as parameter. This second instance checks
+// whether another instance is already running (see main.cpp). If yes,
+// it will send the parameter to this object of the first instance via DBus.
 class DbusUrlReceiver : QDBusAbstractAdaptor
 {
     Q_OBJECT

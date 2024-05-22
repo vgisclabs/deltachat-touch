@@ -842,11 +842,11 @@ MainView {
         }
 
         onNewConfiguredAccount: {
-            accountSwitcherLeft.visible = root.enoughPlaceForSidebar && DeltaHandler.numberOfAccounts() > 1
+            accSwitcherSidebar.visible = root.showAccSwitchSidebar && DeltaHandler.numberOfAccounts() > 1
         }
 
         onNewUnconfiguredAccount: {
-            accountSwitcherLeft.visible = root.enoughPlaceForSidebar && DeltaHandler.numberOfAccounts() > 1
+            accSwitcherSidebar.visible = root.showAccSwitchSidebar && DeltaHandler.numberOfAccounts() > 1
         }
         
         onReadyForQrBackupImport: {
@@ -876,13 +876,6 @@ MainView {
                     setTempContextNull()
                 }
             }
-        }
-    }
-
-    Connections {
-        target: DeltaHandler.chatmodel
-        onExportMomentaryFileViaContentHub: {
-            extraStack.push(Qt.resolvedUrl('pages/FileExportDialog.qml'), { "url": StandardPaths.locate(StandardPaths.AppConfigLocation, fUrl), "conType": fType })
         }
     }
 
@@ -939,7 +932,7 @@ MainView {
         }
 
         onDeletedAccount: {
-            accountSwitcherLeft.visible = root.enoughPlaceForSidebar && DeltaHandler.numberOfAccounts() > 1
+            accSwitcherSidebar.visible = root.showAccSwitchSidebar && DeltaHandler.numberOfAccounts() > 1
             if (!DeltaHandler.hasConfiguredAccount) {
                 extraStack.push(Qt.resolvedUrl('pages/AccountConfig.qml'))
             }
@@ -947,7 +940,7 @@ MainView {
     }
 
     property bool hasTwoColumns: width > units.gu(90)
-    property bool enoughPlaceForSidebar: width > units.gu(120)
+    property bool showAccSwitchSidebar: width > units.gu(120)
 
     onHasTwoColumnsChanged: {
         if (hasTwoColumns) {
@@ -958,7 +951,7 @@ MainView {
     }
 
     Rectangle {
-        id: accountSwitcherLeft
+        id: accSwitcherSidebar
         width: root.scaledFontSizeInPixels*1.5 + units.gu(5)
         height: parent.height
 
@@ -967,19 +960,19 @@ MainView {
             top: parent.top
         }
 
-        visible: root.enoughPlaceForSidebar && (DeltaHandler.numberOfAccounts() > 1)
+        visible: root.showAccSwitchSidebar && (DeltaHandler.numberOfAccounts() > 1)
         color:  root.darkmode ? "#505050" : "#a0a0a0" //theme.palette.normal.foreground
 
         ListView {
-            id: switcherView
+            id: switcherSidebarView
             anchors.fill: parent
 
             model: DeltaHandler.accountsmodel
             delegate: Loader {
-                width: switcherView.width
+                width: switcherSidebarView.width
                 height: width
-                property string sidebarColor: accountSwitcherLeft.color
-                source: Qt.resolvedUrl("pages/AccountSwitcherDelegate.qml")
+                property string sidebarColor: accSwitcherSidebar.color
+                source: Qt.resolvedUrl("pages/SwitcherSidebarDelegate.qml")
             }
         }
     }
@@ -990,7 +983,7 @@ MainView {
         anchors {
             top: parent.top
             bottom: parent.bottom
-            left: accountSwitcherLeft.visible ? accountSwitcherLeft.right : parent.left
+            left: accSwitcherSidebar.visible ? accSwitcherSidebar.right : parent.left
             right: parent.right
         }
 
@@ -1188,7 +1181,7 @@ MainView {
                     }
                     color: root.otherAccsIndicatorBackgroundColor
                     //aspect: LomiriShape.Flat
-                    visible: hasNewMsgsInOtherAccs && !accountSwitcherLeft.visible
+                    visible: hasNewMsgsInOtherAccs && !accSwitcherSidebar.visible
 
                     Label {
                         id: newMsgsInOtherAccsCountLabel

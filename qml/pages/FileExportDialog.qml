@@ -26,7 +26,7 @@ import DeltaHandler 1.0
 // File is not available on Ubuntu Touch (except via
 // "clickable desktop") due to QQmlFileSelector, which
 // will choose the file with the same name in the subdir
-// +ubuntu--touch
+// +ubuntu-touch
 
 FileDialog {
     id: fileExportDialog

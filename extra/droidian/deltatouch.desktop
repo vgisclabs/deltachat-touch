@@ -4,7 +4,7 @@ Name=DeltaTouch
 
 Comment=Messaging app based on deltachat-core-rust
 
-Exec= env QT_QPA_PLATFORMTHEME=qt5ct OPEN_OSK_VIA_DBUS=1 QML2_IMPORT_PATH=/home/droidian/bin/deltatouch/lib/aarch64-linux-gnu LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/droidian/bin/deltatouch/lib/aarch64-linux-gnu /home/droidian/bin/deltatouch/deltatouch 
+Exec= env OPEN_OSK_VIA_DBUS=1 QML2_IMPORT_PATH=/home/droidian/bin/deltatouch/lib/aarch64-linux-gnu LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/droidian/bin/deltatouch/lib/aarch64-linux-gnu /home/droidian/bin/deltatouch/deltatouch 
 Icon=/home/droidian/bin/deltatouch/assets/logo.svg
 Terminal=false
 Type=Application

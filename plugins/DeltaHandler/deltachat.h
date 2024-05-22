@@ -362,8 +362,12 @@ uint32_t        dc_get_id                    (dc_context_t* context);
  *     Must be freed using dc_event_emitter_unref() after usage.
  *
  * Note: Use only one event emitter per context.
- * Having more than one event emitter running at the same time on the same context
- * will result in events being randomly delivered to one of the emitters.
+ * The result of having multiple event emitters is unspecified.
+ * Currently events are broadcasted to all existing event emitters,
+ * but previous versions delivered events to only one event emitter
+ * and this behavior may change again in the future.
+ * Events emitted before creation of event emitter
+ * may or may not be available to event emitter.
  */
 dc_event_emitter_t* dc_get_event_emitter(dc_context_t* context);
 
@@ -513,6 +517,7 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  *                    0=Nothing else happens when the key changes.
  *                    1=After the key changed, `dc_chat_can_send()` returns false and `dc_chat_is_protection_broken()` returns true
  *                    until `dc_accept_chat()` is called.
+ * - `is_chatmail` = 1 if the the server is a chatmail server, 0 otherwise.
  * - `ui.*`         = All keys prefixed by `ui.` can be used by the user-interfaces for system-specific purposes.
  *                    The prefix should be followed by the system and maybe subsystem,
  *                    e.g. `ui.desktop.foo`, `ui.desktop.linux.bar`, `ui.android.foo`, `ui.dc40.bar`, `ui.bot.simplebot.baz`.
@@ -1177,6 +1182,65 @@ int dc_send_webxdc_status_update (dc_context_t* context, uint32_t msg_id, const 
  *        If there are no updates, an empty JSON-array is returned.
  */
 char* dc_get_webxdc_status_updates (dc_context_t* context, uint32_t msg_id, uint32_t serial);
+
+
+/**
+ * Set Webxdc file as integration.
+ * see dc_init_webxdc_integration() for more details about Webxdc integrations.
+ *
+ * @warning This is an experimental API which may change in the future
+ *
+ * @memberof dc_context_t
+ * @param context The context object.
+ * @param file The .xdc file to use as Webxdc integration.
+ */
+void             dc_set_webxdc_integration (dc_context_t* context, const char* file);
+
+
+/**
+ * Init a Webxdc integration.
+ *
+ * A Webxdc integration is
+ * a Webxdc showing a map, getting locations via setUpdateListener(), setting POIs via sendUpdate();
+ * core takes eg. care of feeding locations to the Webxdc or sending the data out.
+ *
+ * @warning This is an experimental API, esp. support of integration types (eg. image editor, tools) is left out for simplicity
+ *
+ * Currently, Webxdc integrations are .xdc files shipped together with the main app.
+ * Before dc_init_webxdc_integration() can be called,
+ * UI has to call dc_set_webxdc_integration() to define a .xdc file to be used as integration.
+ *
+ * dc_init_webxdc_integration() returns a Webxdc message ID that
+ * UI can open and use mostly as usual.
+ *
+ * Concrete behaviour and status updates depend on the integration, driven by UI needs.
+ *
+ * There is no need to de-initialize the integration,
+ * however, unless documented otherwise,
+ * the integration is valid only as long as not re-initialized
+ * In other words, UI must not have a Webxdc with the same integration open twice.
+ *
+ * Example:
+ *
+ * ~~~
+ * // Define a .xdc file to be used as maps integration
+ * dc_set_webxdc_integration(context, path_to_maps_xdc);
+ *
+ * // Integrate the map to a chat, the map will show locations for this chat then:
+ * uint32_t webxdc_instance = dc_init_webxdc_integration(context, any_chat_id);
+ *
+ * // Or use the Webxdc as a global map, showing locations of all chats:
+ * uint32_t webxdc_instance = dc_init_webxdc_integration(context, 0);
+ * ~~~
+ *
+ * @memberof dc_context_t
+ * @param context The context object.
+ * @param chat_id The chat to get the integration for.
+ * @return ID of the message that refers to the Webxdc instance.
+ *     UI can open a Webxdc as usual with this instance.
+ */
+uint32_t        dc_init_webxdc_integration    (dc_context_t* context, uint32_t chat_id);
+
 
 /**
  * Save a draft for a chat in the database.
@@ -2545,7 +2609,7 @@ dc_lot_t*       dc_check_qr                  (dc_context_t* context, const char*
  *     the Verified-Group-Invite protocol is offered in the QR code;
  *     works for protected groups as well as for normal groups.
  *     If set to 0, the Setup-Contact protocol is offered in the QR code.
- *     See https://securejoin.readthedocs.io/en/latest/new.html
+ *     See https://securejoin.delta.chat/
  *     for details about both protocols.
  * @return The text that should go to the QR code,
  *     On errors, an empty QR code is returned, NULL is never returned.
@@ -2581,8 +2645,7 @@ char*           dc_get_securejoin_qr_svg         (dc_context_t* context, uint32_
  *
  * Subsequent calls of dc_join_securejoin() will abort previous, unfinished handshakes.
  *
- * See https://securejoin.readthedocs.io/en/latest/new.html
- * for details about both protocols.
+ * See https://securejoin.delta.chat/ for details about both protocols.
  *
  * @memberof dc_context_t
  * @param context The context object.
@@ -4044,6 +4107,19 @@ char*           dc_msg_get_file               (const dc_msg_t* msg);
 
 
 /**
+ * Save file copy at the user-provided path.
+ *
+ * Fails if file already exists at the provided path.
+ *
+ * @memberof dc_msg_t
+ * @param msg The message object.
+ * @param path Destination file path with filename and extension.
+ * @return 0 on failure, 1 on success.
+ */
+int             dc_msg_save_file              (const dc_msg_t* msg, const char* path);
+
+
+/**
  * Get an original attachment filename, with extension but without the path. To get the full path,
  * use dc_msg_get_file().
  *
@@ -4107,7 +4183,6 @@ char*             dc_msg_get_webxdc_blob      (const dc_msg_t* msg, const char* 
  *   true if the Webxdc should get full internet access, including Webrtc.
  *   currently, this is only true for encrypted Webxdc's in the self chat
  *   that have requested internet access in the manifest.
- *   this is useful for development and maybe for internal integrations at some point.
  *
  * @memberof dc_msg_t
  * @param msg The webxdc instance.
@@ -4316,9 +4391,9 @@ int             dc_msg_has_deviating_timestamp(const dc_msg_t* msg);
 
 
 /**
- * Check if a message has a location bound to it.
- * These messages are also returned by dc_get_locations()
- * and the UI may decide to display a special icon beside such messages,
+ * Check if a message has a POI location bound to it.
+ * These locations are also returned by dc_get_locations()
+ * The UI may decide to display a special icon beside such messages.
  *
  * @memberof dc_msg_t
  * @param msg The message object.
@@ -5405,6 +5480,11 @@ int64_t         dc_lot_get_timestamp     (const dc_lot_t* lot);
  */
 #define DC_MSG_WEBXDC    80
 
+/**
+ * Message containing shared contacts represented as a vCard (virtual contact file)
+ * with email addresses and possibly other fields.
+ */
+#define DC_MSG_VCARD     90
 
 /**
  * @}
@@ -7252,6 +7332,19 @@ void dc_event_unref(dc_event_t* event);
 ///
 /// Used in summaries.
 #define DC_STR_REACTED_BY 177
+
+/// "Establishing guaranteed end-to-end encryption, please wait…"
+///
+/// Used as info message.
+#define DC_STR_SECUREJOIN_WAIT 190
+
+/// "Could not yet establish guaranteed end-to-end encryption, but you may already send a message."
+///
+/// Used as info message.
+#define DC_STR_SECUREJOIN_WAIT_TIMEOUT 191
+
+/// "Contact"
+#define DC_STR_CONTACT 200
 
 /**
  * @}

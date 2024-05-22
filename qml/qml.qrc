@@ -7,7 +7,7 @@
         <file>pages/About.qml</file>
         <file>pages/AccountConfig.qml</file>
         <file>pages/AccountConfigPageSettings.qml</file>
-        <file>pages/AccountSwitcherDelegate.qml</file>
+        <file>pages/SwitcherSidebarDelegate.qml</file>
         <file>pages/AddAccount.qml</file>
         <file>pages/AddAccountViaQr.qml</file>
         <file>pages/AddChat.qml</file>

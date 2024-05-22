@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -63,7 +63,7 @@ Page {
                     top: versionLabel.bottom
                     margins: units.gu(1)
                 }
-                text: '© 2023 Lothar Ketterer'
+                text: '© 2023, 2024 Lothar Ketterer'
             }
             
             Label {

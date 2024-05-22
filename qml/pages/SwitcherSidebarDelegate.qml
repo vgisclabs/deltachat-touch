@@ -23,15 +23,13 @@ import Ubuntu.Components.Popups 1.3
 
 import DeltaHandler 1.0
 
-//import "../jsonrpc.mjs" as JSONRPC
-
 Rectangle {
     id: switcherDelegRect
 
     property int switcherMsgCount: model.freshMsgCount + (root.notifyContactRequests ? model.chatRequestCount : 0)
     property bool mouseHovers: false
 
-    color: ((mouseHovers && model.isConfigured) || model.isCurrentActiveAccount) ? (root.darkmode ? "#a0a0a0" : "#f0f0f0") : sidebarColor // model.isCurrentActiveAccount ? theme.palette.normal.foreground : accountSwitcherLeft.color
+    color: ((mouseHovers && model.isConfigured) || model.isCurrentActiveAccount) ? (root.darkmode ? "#a0a0a0" : "#f0f0f0") : sidebarColor
 
     UbuntuShape {
         id: switcherProfilePic

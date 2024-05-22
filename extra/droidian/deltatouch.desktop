@@ -9,4 +9,5 @@ Icon=/home/droidian/bin/deltatouch/assets/logo.svg
 Terminal=false
 Type=Application
 Categories=Mobile
+MimeType=application/x-webxdc;x-scheme-handler/openpgp4fpr;x-scheme-handler/dcaccount;x-scheme-handler/dclogin;x-scheme-handler/mailto;
 X-GNOME-UsesNotifications=true

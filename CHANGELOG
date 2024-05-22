@@ -1,22 +1,42 @@
 x.x.x xxxx-xx-xx
-UI: Convergence (huge refactoring)
+UI: Convergence: Two columns on phone in landscape, plus account switcher sidebar in desktop mode
 UI: Show avatar (or color + initial) in chat header
-UI: Adapt initials according to font size
+UI: Clicking on chat header leads to profile page of contact
+UI: Adapt avatar initials according to font size
+UI: Adapt number of displayed reactions to message width
+UI: All emojis supported by UT are available for reactions
 UI: Viewer page for avatar images
 UI: Allow to mute accounts
 UI: Show counter for new messages in other accounts
-UI: Remove setting for notification aggregation.
+UI: Remove setting for notification aggregation
 UI: Allow removal of contacts via list of contacts when creating a new chat
 UI: Option to send via Enter key; Ctrl-Enter always sends
+UI: Go directly to "add account" page if there's no account yet
+UI: "Add account" page has option for encrypted db setting if there's no account yet
+UI: Images now have a minimum size
+UI: Possibility to deactivate invite codes
+UI: Overhaul group creation page
+UI: Create i.delta.chat invite links
+UI: Use ContentHub for invite sharing on UT
+UI: Use new welcome message
 Bugfix: Set new message count of unconfigured account to zero
 Bugfix: Search in chatlist could lead to only archived chats being showed
 Bugfix: Position of chatlist was not at top after closing archive
-Other: Handle URLs passed to the app
+Bugfix: Correct zoom of html message view on non-UT platforms
+Bugfix: Correct zoom of connectivity page on non-UT platforms
+Bugfix: Selecting backup file did not work under some circumstances
+Bugfix: Correctly stop camera after QR code scanning
+Other: Handle URLs (https://i.delta.chat, openpgp4fpr, dclogin, dcaccount, mailto) passed to the app
 Other: Limit detailed notifications to 9 per account, use summary if beyond
 Other: Move notification code into separate class
 Other: Enable notifications via org.freedesktop.Notification DBus service
-Other: Use deltachat-core-rust v1.137.3
+Other: Use deltachat-core-rust v1.139.4
 Other: Patch for building deltachat-core-rust no longer needed
+Other: Ship icons with app to avoid setup problems on Nix
+Other: Sanitize file extensions for gifs and stickers
+Other: Update translations
+Other: If OPEN_OSK_VIA_DBUS is set, on-screen keyboard is auto-requested when needed in Phosh
+Other: Xenial version is backported version of main branch (had diverged too far to support it)
 
 
 1.4.0 2024-03-06

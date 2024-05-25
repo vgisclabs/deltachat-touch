@@ -474,6 +474,7 @@ Page {
                 color: chatColor
 
                 sourceFillMode: UbuntuShape.PreserveAspectCrop
+                aspect: UbuntuShape.Flat
             } // end UbuntuShape id: headerChatPic
 
             Label {

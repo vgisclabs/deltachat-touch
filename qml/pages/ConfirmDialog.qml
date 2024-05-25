@@ -32,6 +32,7 @@ Dialog {
     property string dialogText
     property string okButtonText: i18n.tr("OK")
     property string cancelButtonText: i18n.tr("Cancel")
+    property bool confirmButtonPositive: false
 
     title: dialogTitle
 
@@ -40,7 +41,7 @@ Dialog {
     Button {
         id: okButton
         text: okButtonText
-        color: theme.palette.normal.negative
+        color: confirmButtonPositive ? theme.palette.normal.positive : theme.palette.normal.negative
         onClicked: {
             PopupUtils.close(confirmDialog)
             confirmed()

@@ -68,7 +68,7 @@ Dialog {
 
     Timer {
         id: closeTimer
-        interval: 2000
+        interval: 1000
         repeat: false
         triggeredOnStart: false
         onTriggered: PopupUtils.close(dialog)

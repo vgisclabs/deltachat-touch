@@ -42,7 +42,7 @@ MainView {
 //    }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.4.1-pre11'
+    property string version: '1.4.1-pre12'
     property string oldVersion: "unknown"
 
     // holds the page item representing the ChatView after it
@@ -404,7 +404,7 @@ MainView {
                 let popup10 = PopupUtils.open(
                     Qt.resolvedUrl("pages/ConfirmDialog.qml"),
                     chatlistPage,
-                    { dialogText: i18n.tr("Create new e-mail address on \"%1\" and log in there?").arg(DeltaHandler.getQrTextOne()) })
+                    { dialogText: i18n.tr("Create new e-mail address on \"%1\" and log in there?").arg(DeltaHandler.getQrTextOne()), confirmButtonPositive: true })
                 popup10.confirmed.connect(function() {
                     // clearing the stacks will be done when handling the accountChanged signal
                     DeltaHandler.continueQrCodeAction(true)
@@ -1125,7 +1125,7 @@ MainView {
                         }
 
                         sourceFillMode: LomiriShape.PreserveAspectCrop
-                        //aspect: LomiriShape.Flat
+                        aspect: LomiriShape.Flat
                     } // end of LomiriShape id:profilePicShape
                 
                     Label {
@@ -1587,8 +1587,8 @@ MainView {
                             }
 
                             color: chatlistEntry.color
-
                             sourceFillMode: LomiriShape.PreserveAspectCrop
+                            aspect: LomiriShape.Flat
                         }
 
                         Rectangle {

@@ -472,8 +472,8 @@ Page {
                 }
 
                 color: chatColor
-
                 sourceFillMode: LomiriShape.PreserveAspectCrop
+                aspect: LomiriShape.Flat
             } // end LomiriShape id: headerChatPic
 
             Label {

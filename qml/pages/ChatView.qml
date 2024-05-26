@@ -815,6 +815,7 @@ Page {
         actions: Action {
             //iconName: "delete"
             iconSource: "qrc:///assets/suru-icons/delete.svg"
+            text: i18n.tr("Delete")
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
@@ -830,6 +831,7 @@ Page {
             Action {
                 //iconName: "navigation-menu"
                 iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
+                text: i18n.tr("More Options")
                 onTriggered: {
                     DeltaHandler.chatmodel.setMomentaryMessage(value)
                     PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'), chatViewPage, { "isInfoMsg": true })
@@ -844,6 +846,7 @@ Page {
             Action {
                 //iconName: "mail-reply"
                 iconSource: "qrc:///assets/suru-icons/mail-reply.svg"
+                text: i18n.tr("Reply")
                 onTriggered: {
                     DeltaHandler.chatmodel.setQuote(value)
                 }
@@ -851,6 +854,7 @@ Page {
             Action {
                 //iconName: "navigation-menu"
                 iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
+                text: i18n.tr("More Options")
                 onTriggered: {
                     DeltaHandler.chatmodel.setMomentaryMessage(value)
                     let popup6 = PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'))
@@ -860,6 +864,7 @@ Page {
             Action {
                 //iconName: "mail-forward"
                 iconSource: "qrc:///assets/suru-icons/mail-forward.svg"
+                text: i18n.tr("Forward")
                 onTriggered: {
                     if (DeltaHandler.chatmodel.prepareForwarding(value)) {
                         extraStack.push(Qt.resolvedUrl('ForwardMessage.qml'))

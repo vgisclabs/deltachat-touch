@@ -1386,6 +1386,7 @@ MainView {
                 actions: Action {
                     //iconName: "delete"
                     iconSource: "qrc:///assets/suru-icons/delete.svg"
+                    text: i18n.tr("Delete")
                     onTriggered: {
                         // the index is passed as parameter and can
                         // be accessed via 'value'
@@ -1401,16 +1402,31 @@ MainView {
                     Action {
                         //iconName: "folder-symbolic"
                         iconSource: "qrc:///assets/suru-icons/folder-symbolic.svg"
+                        text: i18n.tr("Archive")
                         onTriggered: {
                             // the index is passed as parameter and can
                             // be accessed via 'value'
                             DeltaHandler.setMomentaryChatIdByIndex(value)
-                            DeltaHandler.archiveMomentaryChat()
+
+                            // TODO: In desktop mode, when right-clicking and choosing "Archive",
+                            // the action is performed and the popover with the ListItemActions
+                            // seems to vanish (as it should), it is actually still present in an
+                            // invisible way, and (almost) no clicks have any effect except for
+                            // clicks in the area of the invisible popover, which will trigger
+                            // the actions as if the popover was still there.
+                            // Temporary solution is to give the popover some time to close itself
+                            // before the actual action is performed.
+                            archiveMomentaryTimer.start()
                         }
                     },
                     Action {
                         //iconName: "pinned"
                         iconSource: "qrc:///assets/suru-icons/pinned.svg"
+                        // TODO: Text should be "Unpin" if chat is already pinned. However,
+                        // "value" (or "index") cannot be used here the same way as in
+                        // onTriggered. Maybe the only way to solve this is to manually
+                        // create the context menu instead of using the automatic one.
+                        text: i18n.tr("Pin")
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             DeltaHandler.pinUnpinMomentaryChat()
@@ -1419,6 +1435,7 @@ MainView {
                     Action {
                         //iconName: "navigation-menu"
                         iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
+                        text: i18n.tr("More Options")
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActionsChatlist.qml'))
@@ -1435,14 +1452,17 @@ MainView {
                     Action {
                         //iconName: "folder-symbolic"
                         iconSource: "qrc:///assets/suru-icons/folder-symbolic.svg"
+                        text: i18n.tr("Unarchive")
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
-                            DeltaHandler.unarchiveMomentaryChat()
+                            // TODO: same as for archiveMomentaryTimer
+                            unarchiveMomentaryTimer.start()
                         }
                     },
                     Action {
                         //iconName: "navigation-menu"
                         iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
+                        text: i18n.tr("More Options")
                         onTriggered: {
                             DeltaHandler.setMomentaryChatIdByIndex(value)
                             PopupUtils.open(Qt.resolvedUrl('pages/ChatInfosActionsChatlist.qml'))
@@ -1834,6 +1854,13 @@ MainView {
         anchors.fill: imageStack
         color: theme.palette.normal.background
         visible: imageStack.depth !== 0
+
+        MouseArea {
+            // to prevent clicks + scrolls reaching the AdaptivePageLayout below
+            anchors.fill: parent
+            onWheel: wheel.accepted = true
+            acceptedButtons: Qt.AllButtons
+        }
     }
 
     PageStack {
@@ -1852,6 +1879,7 @@ MainView {
             // to prevent clicks + scrolls reaching the AdaptivePageLayout below
             anchors.fill: parent
             onWheel: wheel.accepted = true
+            acceptedButtons: Qt.AllButtons
         }
     }
 
@@ -1882,6 +1910,28 @@ MainView {
         repeat: false
         triggeredOnStart: false
         onTriggered: showBottomEdgeHint = false
+    }
+
+    // see ListItemActions above
+    Timer {
+        id: archiveMomentaryTimer
+        interval: 500
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            DeltaHandler.archiveMomentaryChat()
+        }
+    }
+
+    // see ListItemActions above
+    Timer {
+        id: unarchiveMomentaryTimer
+        interval: 500
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            DeltaHandler.unarchiveMomentaryChat()
+        }
     }
 
     // Update the list of chats every 5 minutes. Reason is

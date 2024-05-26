@@ -310,6 +310,7 @@ Page {
         actions: Action {
             //iconName: "delete"
             iconSource: "qrc:///assets/suru-icons/delete.svg"
+            text: i18n.tr("Delete")
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
@@ -331,6 +332,7 @@ Page {
             Action {
                 //iconName: "edit"
                 iconSource: "qrc:///assets/suru-icons/edit.svg"
+                text: i18n.tr("Edit Profile")
                 onTriggered: {
                     DeltaHandler.accountsmodel.configureAccount(value)
                     extraStack.push(Qt.resolvedUrl('AddOrConfigureEmailAccount.qml'))
@@ -339,6 +341,7 @@ Page {
             Action {
                 //iconName: "info"
                 iconSource: "qrc:///assets/suru-icons/info.svg"
+                text: i18n.tr("Info")
                 onTriggered: {
                     let tempString = i18n.tr("Account ID: %1").arg(DeltaHandler.accountsmodel.getIdOfAccount(value)) + "\n\n" + i18n.tr("Info") + ":\n" + DeltaHandler.accountsmodel.getInfoOfAccount(value) + "\n\n" + i18n.tr("Error") + ":\n" + (DeltaHandler.accountsmodel.getLastErrorOfAccount(value) == "" ? i18n.tr("None") : DeltaHandler.accountsmodel.getLastErrorOfAccount(value))
                     PopupUtils.open(
@@ -351,6 +354,11 @@ Page {
             Action {
                 //iconName: "audio-speakers-muted-symbolic"
                 iconSource: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
+                // TODO: Text should be "Unmute" if chat is already muted. However,
+                // "value" (or "index") cannot be used here the same way as in
+                // onTriggered. Maybe the only way to solve this is to manually
+                // create the context menu instead of using the automatic one.
+                text: i18n.tr("Mute")
                 onTriggered: {
                     let tempAccID = DeltaHandler.accountsmodel.getIdOfAccount(value)
                     DeltaHandler.accountsmodel.muteUnmuteAccountById(tempAccID)

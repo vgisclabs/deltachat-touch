@@ -168,6 +168,7 @@ Page {
         actions: Action {
             //iconName: "delete"
             iconSource: "qrc:///assets/suru-icons/delete.svg"
+            text: i18n.tr("Delete")
             onTriggered: {
                 // the index is passed as parameter and can be accessed via 'value'
                 let nameAndAddress = DeltaHandler.contactsmodel.getNameNAddressByIndex(value);

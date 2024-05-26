@@ -154,6 +154,7 @@ Page {
         actions: Action {
             //iconName: "delete"
             iconSource: "qrc:///assets/suru-icons/delete.svg"
+            text: i18n.tr("Remove")
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'

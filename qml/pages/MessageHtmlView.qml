@@ -246,7 +246,11 @@ Page {
             left: parent.left
             right: parent.right
         }
-        zoomFactor: root.onUbuntuTouch ? 3.0 : 1.0
+        // For some reason, UT needs the zoom set to 3 to
+        // reach around normal (= medium) font size.
+        // TODO simplify the additional zoom according to
+        // the scale level
+        zoomFactor: (root.onUbuntuTouch ? 3.0 : 1.0) + (((root.scaleLevel - 2) < 0 ? 0 : (root.scaleLevel - 2)) / (root.onUbuntuTouch ? 1 : 2))
         url: htmlPath
 
         // Comments in the next lines as per original DekkoWebView.qml:

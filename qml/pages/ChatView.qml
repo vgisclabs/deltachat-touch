@@ -1585,6 +1585,7 @@ Page {
                                         }
                                     width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
                                     text: i18n.tr("Show Full Message…")
+                                    fontSize: root.scaledFontSize
                                     color: msgLabel.linkColor
                                 }
                             

@@ -915,7 +915,7 @@ void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, De
     m_accIdChatIdKey = tempQString;
     m_accIdChatIdKey.append("_");
     tempQString.setNum(m_chatID);
-    m_accIdChatIdKey = tempQString;
+    m_accIdChatIdKey.append(tempQString);
 
 
     dc_array_t* msgArray = dc_get_chat_msgs(currentMsgContext, m_chatID, 0, 0);

@@ -285,7 +285,7 @@ Page {
         }
 
         onNavigationRequested: {
-            if ((request.url.toString()).startsWith(StandardPaths.locate(StandardPaths.CacheLocation)) || (request.url.toString()).startsWith(StandardPaths.locate(StandardPaths.AppConfigLocation))) {
+            if ((request.url.toString()).startsWith(StandardPaths.writableLocation(StandardPaths.CacheLocation)) || (request.url.toString()).startsWith(StandardPaths.writableLocation(StandardPaths.AppConfigLocation))) {
                 request.action = WebEngineNavigationRequest.AcceptRequest // 0
             } else {
                 PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), htmlViewPage, {externalLink: request.url})

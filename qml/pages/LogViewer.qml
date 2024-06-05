@@ -77,6 +77,20 @@ Page {
             }
         }
 
+        leadingActionBar.actions: [
+            Action {
+                //iconName: "go-previous"
+                iconSource: "qrc:///assets/suru-icons/go-previous.svg"
+                text: i18n.tr("Back")
+                onTriggered: {
+                    extraStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
+
         trailingActionBar.actions: [
             Action {
                 iconSource: "../assets/media-skip-downwards.svg"

@@ -41,6 +41,20 @@ Page {
         id: qrHeader
         title: i18n.tr("QR Invite Code")
 
+        leadingActionBar.actions: [
+            Action {
+                //iconName: "go-previous"
+                iconSource: "qrc:///assets/suru-icons/go-previous.svg"
+                text: i18n.tr("Back")
+                onTriggered: {
+                    extraStack.pop()
+                }
+                // only allow leaving account configuration
+                // if there's a configured account
+                visible: DeltaHandler.hasConfiguredAccount
+            }
+        ]
+
         trailingActionBar.actions: [
             Action {
                 //iconName: "contextual-menu"

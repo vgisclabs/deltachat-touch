@@ -685,6 +685,20 @@ void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
 
         addDeviceMessageToAllContexts(tempQString, versionLabel);
     }
+
+    if (appVersion == "1.5.0") {
+        QString tempQString;
+        if (m_onUbuntuTouch) {
+            // TODO: mention option for sending with Enter?
+            tempQString = "What's new in 1.5.0?<br><br>• Counter for unread messages in accounts other than the active one<br>• Convergence: App automatically switches to multi-column mode depending on its width<br>• Option to send with Enter; Ctrl-Enter always sends<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
+        } else {
+            tempQString = "What's new in 1.5.0?<br><br>• Counter for unread messages in accounts other than the active one<br>• Convergence: App automatically switches to multi-column mode depending on its width<br>• Freedesktop notifications (requires app to be running in background)<br>• Option to send with Enter; Ctrl-Enter always sends<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
+        }
+
+        QString versionLabel = "1-5-0";
+
+        addDeviceMessageToAllContexts(tempQString, versionLabel);
+    }
 }
 
 

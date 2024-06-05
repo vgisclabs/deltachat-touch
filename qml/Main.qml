@@ -42,7 +42,7 @@ MainView {
 //    }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.4.1-pre12'
+    property string version: '1.5.0'
     property string oldVersion: "unknown"
 
     // holds the page item representing the ChatView after it

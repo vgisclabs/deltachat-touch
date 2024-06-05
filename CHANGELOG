@@ -1,4 +1,4 @@
-x.x.x xxxx-xx-xx
+1.5.0 2024-06-05
 UI: Convergence: Two columns on phone in landscape, plus account switcher sidebar in desktop mode
 UI: Show avatar (or color + initial) in chat header
 UI: Clicking on chat header leads to profile page of contact
@@ -7,7 +7,7 @@ UI: Adapt number of displayed reactions to message width
 UI: All emojis supported by UT are available for reactions
 UI: Viewer page for avatar images
 UI: Allow to mute accounts
-UI: Show counter for new messages in other accounts
+UI: Counter for unread messages in other accounts
 UI: Remove setting for notification aggregation
 UI: Allow removal of contacts via list of contacts when creating a new chat
 UI: Option to send via Enter key; Ctrl-Enter always sends
@@ -30,7 +30,7 @@ Other: Handle URLs (https://i.delta.chat, openpgp4fpr, dclogin, dcaccount, mailt
 Other: Limit detailed notifications to 9 per account, use summary if beyond
 Other: Move notification code into separate class
 Other: Enable notifications via org.freedesktop.Notification DBus service
-Other: Use deltachat-core-rust v1.139.4
+Other: Use deltachat-core-rust v1.139.6
 Other: Patch for building deltachat-core-rust no longer needed
 Other: Ship icons with app to avoid setup problems on Nix
 Other: Sanitize file extensions for gifs and stickers

@@ -1,3 +1,6 @@
+1.5.1 2024-06-05
+Bugfix: Add leading action to pages that did not have it before (for non-UT platforms)
+
 1.5.0 2024-06-05
 UI: Convergence: Two columns on phone in landscape, plus account switcher sidebar in desktop mode
 UI: Show avatar (or color + initial) in chat header

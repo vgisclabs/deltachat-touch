@@ -145,7 +145,7 @@ public:
 
     // Parameter is the version for which the message applies,
     // not the message text itself
-    Q_INVOKABLE void addDeviceMessageForVersion(QString appVersion);
+    Q_INVOKABLE void addDeviceMessageForVersion(QString appVersion, QString oldVersion);
 
     Q_INVOKABLE QString timeToString(uint64_t unixSeconds, bool divideByThousand = false);
 

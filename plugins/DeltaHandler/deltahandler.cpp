@@ -656,7 +656,7 @@ QString DeltaHandler::getErrorFromJsonrpcResponse(QString jsonrpcResponse)
 }
 
 
-void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
+void DeltaHandler::addDeviceMessageForVersion(QString appVersion, QString oldVersion)
 {
     // Device message for version 1.3.0;
     // remove/adapt for newer versions
@@ -686,7 +686,7 @@ void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
         addDeviceMessageToAllContexts(tempQString, versionLabel);
     }
 
-    if (appVersion == "1.5.0") {
+    if (appVersion == "1.5.0" || appVersion == "1.5.1") {
         QString tempQString;
         if (m_onUbuntuTouch) {
             // TODO: mention option for sending with Enter?

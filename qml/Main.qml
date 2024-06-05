@@ -111,7 +111,7 @@ MainView {
             // add device message for the current version.
             // The version string has to be passed, the actual
             // message is defined in the called function in C++.
-            DeltaHandler.addDeviceMessageForVersion(version)
+            DeltaHandler.addDeviceMessageForVersion(version, oldVersion)
 
             // Save the new version to the settings
             oldVersion = version

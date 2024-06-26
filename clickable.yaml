@@ -2,7 +2,7 @@ clickable_minimum_required: 7.1.2
 builder: cmake
 kill: deltatouch
 framework: "ubuntu-sdk-20.04"
-prebuild: mkdir -p plugins/DeltaHandler && cp ../deltachat-core-rust/install/lib/libdeltachat.so plugins/DeltaHandler && cp ../quirc/libquirc.so.1.2 plugins/DeltaHandler
+prebuild: mkdir -p plugins/DeltaHandler && cp ../deltachat-core-rust/install/lib/libdeltachat.so plugins/DeltaHandler && cp ../quirc/libquirc.so.1.2 plugins/DeltaHandler && mkdir -p plugins/WebxdcEngineProfile && cp ../deltachat-core-rust/install/lib/libdeltachat.so plugins/WebxdcEngineProfile
 libraries:
   deltachat-core-rust:
     builder: cmake

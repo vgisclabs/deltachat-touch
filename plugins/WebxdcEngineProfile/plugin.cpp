@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -16,17 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DTWEBENGINEPROFILE_PLUGIN_H
-#define DTWEBENGINEPROFILE_PLUGIN_H
-#include <QQmlExtensionPlugin>
+#include <QtQml>
+#include <QtQml/QQmlContext>
 
-class DTWebEngineProfilePlugin : public QQmlExtensionPlugin
+#include "plugin.h"
+#include "webxdcEngineProfile.h"
+
+void WebxdcEngineProfilePlugin::registerTypes(const char *uri)
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
-
-public:
-    void registerTypes(const char *uri);
-};
-
-#endif
+    // @uri WebxdcEngineProfile
+    qmlRegisterType<WebxdcEngineProfile>(uri, 1, 0, "WebxdcEngineProfile");
+}

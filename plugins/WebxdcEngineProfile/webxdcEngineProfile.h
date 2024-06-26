@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -16,18 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DELTAHANDLER_PLUGIN_H
-#define DELTAHANDLER_PLUGIN_H
-#include <QQmlExtensionPlugin>
+#ifndef WEBXDCENGINEPROFILE_H
+#define WEBXDCENGINEPROFILE_H
 
-class DeltaHandlerPlugin : public QQmlExtensionPlugin
+#include "webxdcRequestInterceptor.h"
+#include "webxdcSchemeHandler.h"
+
+#include "deltachat.h"
+
+#include <QQuickWebEngineProfile>
+
+class WebxdcEngineProfile : public QQuickWebEngineProfile
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
 
 public:
-    void registerTypes(const char *uri);
-    void initializeEngine(QQmlEngine *engine, const char *uri);
+    explicit WebxdcEngineProfile(QObject *parent = Q_NULLPTR);
+    ~WebxdcEngineProfile();
+
+signals:
+    void finishedConfiguringInstance();
+
+public slots:
+    void configureNewInstance(QString id, dc_msg_t* msg);
+
+private:
+    WebxdcRequestInterceptor m_urlRequestInterceptor;
+    WebxdcSchemeHandler m_webxdcSchemehandler;
 };
 
-#endif
+#endif //WEBXDCENGINEPROFILE_H

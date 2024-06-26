@@ -76,7 +76,7 @@ public:
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
     // a module in Qt (yet?).
-    enum MsgViewType { AudioType, FileType, GifType, ImageType, StickerType, TextType, VideoType, VideochatInvitationType, VoiceType, WebXdcType, UnknownType };
+    enum MsgViewType { AudioType, FileType, GifType, ImageType, StickerType, TextType, VideoType, VideochatInvitationType, VoiceType, WebxdcType, UnknownType };
     Q_ENUM(MsgViewType)
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
@@ -545,7 +545,7 @@ signals:
     void workflowdbencryptionChanged();
     void workflowdbdecryptionChanged();
     void fileImportSignalHelperChanged();
-
+    
     void chatlistShowsArchivedOnly(bool showsArchived);
     void closeChatViewRequest();
     void chatlistToBeginning();

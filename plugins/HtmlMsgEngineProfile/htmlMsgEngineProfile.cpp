@@ -24,8 +24,8 @@
  * modified by (C) 2023 Lothar Ketterer
  */
 
-#include "DTWebEngineProfile.h"
-#include "DTWebEngineUrlRequestInterceptor.h"
+#include "htmlMsgEngineProfile.h"
+#include "htmlMsgRequestInterceptor.h"
 #include <QQmlEngine>
 #include <QtQml>
 #include <QDebug>
@@ -34,13 +34,13 @@
 #include <QCoreApplication>
 #include <QStandardPaths>
 
-DTWebEngineProfile::DTWebEngineProfile(QQuickWebEngineProfile *parent) : QQuickWebEngineProfile(parent)
+HtmlMsgEngineProfile::HtmlMsgEngineProfile(QObject *parent) : QQuickWebEngineProfile(parent)
 {
     this->setUrlRequestInterceptor(&this->urlRequestInterceptor);
     connect(&this->urlRequestInterceptor, SIGNAL(interceptedRemoteRequest(bool)), this, SLOT(onInterceptedRemoteRequest(bool)));
 }
 
-void DTWebEngineProfile::onInterceptedRemoteRequest(bool wasBlocked)
+void HtmlMsgEngineProfile::onInterceptedRemoteRequest(bool wasBlocked)
 {
     if (wasBlocked)
     {
@@ -48,12 +48,12 @@ void DTWebEngineProfile::onInterceptedRemoteRequest(bool wasBlocked)
     }
 }
 
-void DTWebEngineProfile::setRemoteContentAllowed(bool allowed)
+void HtmlMsgEngineProfile::setRemoteContentAllowed(bool allowed)
 {
     this->urlRequestInterceptor.setBlockRemoteResources(!allowed);
 }
 
-bool DTWebEngineProfile::isRemoteContentAllowed() const
+bool HtmlMsgEngineProfile::isRemoteContentAllowed() const
 {
     return !this->urlRequestInterceptor.areRemoteResourcesBlocked();
 }

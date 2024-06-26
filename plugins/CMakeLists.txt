@@ -1,2 +1,3 @@
 add_subdirectory(DeltaHandler)
-add_subdirectory(DTWebEngineProfile)
+add_subdirectory(HtmlMsgEngineProfile)
+add_subdirectory(WebxdcEngineProfile)

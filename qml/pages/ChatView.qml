@@ -1392,6 +1392,8 @@ Page {
                             active: msgViewType === DeltaHandler.WebxdcType
                             sourceComponent: Column {
 
+                                spacing: units.gu(0.25)
+
                                 LomiriShape {
                                     width: root.scaledFontSizeInPixels * 10
                                     height: width
@@ -1421,27 +1423,44 @@ Page {
                                     visible: text !== ""
                                 }
 
-                                Button {
-                                    id: webxdcStartButton
-                                    text: i18n.tr("Start…")
-                                    font.pixelSize: root.scaledFontSizeInPixels
-                                    onClicked: {
-                                        if (root.webxdcTestingEnabled) {
-                                            DeltaHandler.chatmodel.setWebxdcInstance(index)
-                                            let tempUsername = DeltaHandler.getCurrentUsername()
-                                            let tempEmailAddr = DeltaHandler.getCurrentEmail()
-                                            if (tempUsername == "") {
-                                                tempUsername = tempEmailAddr
+                                Rectangle {
+                                    height: startWebxdcLabel.height + units.gu(1)
+                                    width: startWebxdcLabel.contentWidth
+                                    color: msgbox.color
+
+                                    Label {
+                                        id: startWebxdcLabel
+                                            anchors {
+                                                bottom: parent.bottom
+                                                bottomMargin: units.gu(0.5)
                                             }
-                                            extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
-                                                "headerTitle": webxdcInfo.name,
-                                                "username": tempUsername,
-                                                "useraddress": tempEmailAddr }
-                                            )
-                                        } else {
-                                            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc is not implemented yet, sorry" })
+                                        width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
+                                        text: i18n.tr("Start…")
+                                        fontSize: root.scaledFontSize
+                                        color: msgLabel.linkColor
+                                    }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            if (root.webxdcTestingEnabled) {
+                                                DeltaHandler.chatmodel.setWebxdcInstance(index)
+                                                let tempUsername = DeltaHandler.getCurrentUsername()
+                                                let tempEmailAddr = DeltaHandler.getCurrentEmail()
+                                                if (tempUsername == "") {
+                                                    tempUsername = tempEmailAddr
+                                                }
+                                                extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
+                                                    "headerTitle": webxdcInfo.name,
+                                                    "username": tempUsername,
+                                                    "useraddress": tempEmailAddr }
+                                                )
+                                            } else {
+                                                PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc is not implemented yet, sorry" })
+                                            }
                                         }
                                     }
+
                                 }
                             }
                         }

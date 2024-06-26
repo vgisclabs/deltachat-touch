@@ -1,16 +1,34 @@
 # DeltaTouch
 
-Messaging app for Ubuntu Touch (and now also Nix), powered by deltachat-core. 
+Messaging app powered by deltachat-core. Originally for Ubuntu Touch, it is now also available on Nix (and more, see wiki).
 
-## Important notice to users of Ubuntu Touch focal and the Nix package
 
-This is the xenial branch which contains the version for Ubuntu Touch 16.04 (xenial). Please checkout the main branch for Ubuntu Touch 20.04 (focal), the Nix package and everything else.
+## Branches
 
-## Building
+* main: Ubuntu Touch 20.04 (focal), Nix, Droidian, Mobian and general development. In other words, everything **except** Ubuntu Touch 16.04 (xenial). Contributions should be based on main.
+* xenial: Ubuntu Touch 16.04 (xenial).
+* Other branches are for development of specific features that are not ready for usage yet.
+
+
+## Infos regarding the Nix package
+
+
+Difference(s) to the Ubuntu Touch version:
+
+* File im- and export is managed via QML FileDialog instead of the Ubuntu Touch specific ContentHub.
+
+Currently, some things are broken in the Nix package:
+
+* Recording voice messages may fail due to missing codec
+* Playing audio files may not work
+* Camera does not work
+* Most emojis are not displayed
+
+## Building for Ubuntu Touch 20.04 (focal)
 
 ### General
 
-The standard tool to build Ubuntu Touch apps is clickable. For this, either docker or podman need to be installed. Then the python package `clickable-ut` (**not** `clickable`) can be installed via pip. For more instructions regarding the installation of clickable, see <https://clickable-ut.dev> and <https://ubports.gitlab.io/marketing/education/ub-clickable-1/trainingpart1module1.html>.
+The standard tool to build Ubuntu Touch apps is clickable. For this, either docker or podman need to be installed. Then the python package `clickable-ut` (**not** 'clickable') can be installed via pip. For more instructions regarding the installation of clickable, see <https://clickable-ut.dev> and <https://ubports.gitlab.io/marketing/education/ub-clickable-1/trainingpart1module1.html>.
 
 Clone this repo:
 
@@ -27,21 +45,20 @@ cd deltatouch
 git submodule update --init --recursive
 ```
 
-Build libdeltachat.so for your architecture (`arm64` in this example, could also be `armhf`, or `amd64` if you want to use `clickable desktop`). This will take some time:
+Build libdeltachat.so for your architecture (arm64 in this example, could also be `armhf`, or `amd64` if you want to use `clickable desktop`). This will take some time:
 
 ```
-clickable build --libs deltachat-core-rust --arch arm64
+clickable build --lib deltachat-core-rust --arch arm64
 ```
-
 
 ### Buidling libquirc.so.1.2
 
 Activating/updating the quirc submodule should have already been done by running `git submodule update --init --recursive` for libdeltachat.so above.
 
-Build libquirc.so.1.2 for your architecture (`arm64` in this example, could also be `armhf`, or `amd64` if you want to use `clickable desktop`):
+Build libquirc.so.1.2 for your architecture (arm64 in this example, could also be `armhf` or `amd64` if you want to use `clickable desktop`):
 
 ```
-clickable build --libs quirc --arch arm64
+clickable build --lib quirc --arch arm64
 ```
 
 
@@ -57,7 +74,7 @@ This will give you a .click file in build/aarch64-linux-gnu/app or build/arm-lin
 
 ### Test it on your PC
 
-With some restrictions, it's possible to run the app on a standard desktop computer. Prerequisite is that libdeltachat.so and libquirc.so.1.2 have been built for the architecture `amd64`. Then enter:
+With some restrictions, it's possible to run the app on a standard desktop computer. Prerequisite is that libdeltachat.so and libquirc.so.1.2 have been built for the architecture amd64. Then enter:
 
 ```
 clickable desktop
@@ -75,7 +92,7 @@ Limitations to `clickable desktop` are:
 
 ## License
 
-Copyright (C) 2023, 2024 Lothar Ketterer
+Copyright (C) 2023, 2024  Lothar Ketterer
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License version 3, as published
 by the Free Software Foundation.
@@ -83,7 +100,6 @@ by the Free Software Foundation.
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranties of MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 ## Sponsors
 

@@ -24,16 +24,16 @@
  * modified by (C) 2023 Lothar Ketterer
  */
 
-#include "DTWebEngineUrlRequestInterceptor.h"
+#include "htmlMsgRequestInterceptor.h"
 #include <QWebEngineUrlRequestInfo>
 //#include <QDebug>
 
-DTWebEngineUrlRequestInterceptor::DTWebEngineUrlRequestInterceptor(QWebEngineUrlRequestInterceptor *parent) : QWebEngineUrlRequestInterceptor(parent)
+HtmlMsgRequestInterceptor::HtmlMsgRequestInterceptor(QObject *parent) : QWebEngineUrlRequestInterceptor(parent)
 {
     this->remoteResourcesAreBlocked = true;
 }
 
-void DTWebEngineUrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
+void HtmlMsgRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
 {
     auto requestUrl = info.requestUrl();
 
@@ -48,20 +48,20 @@ void DTWebEngineUrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo
         emit interceptedRemoteRequest(doBlock);
 
         //if (doBlock) {
-        //    //qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Blocked a request to " << info.requestUrl();
-        //    qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Blocked a request.";
+        //    //qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Blocked a request to " << info.requestUrl();
+        //    qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Blocked a request.";
         //} else if (info.resourceType() != QWebEngineUrlRequestInfo::ResourceTypeMainFrame) {
-        //    //qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Did NOT block a request to " << info.requestUrl();
-        //    qDebug() << "DTWebEngineUrlRequestInterceptor::interceptedRemoteRequest: Did NOT block a request.";
+        //    //qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Did NOT block a request to " << info.requestUrl();
+        //    qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Did NOT block a request.";
         //}
 }
 
-void DTWebEngineUrlRequestInterceptor::setBlockRemoteResources(bool doBlock)
+void HtmlMsgRequestInterceptor::setBlockRemoteResources(bool doBlock)
 {
     this->remoteResourcesAreBlocked = doBlock;
 }
 
-bool DTWebEngineUrlRequestInterceptor::areRemoteResourcesBlocked() const
+bool HtmlMsgRequestInterceptor::areRemoteResourcesBlocked() const
 {
     return this->remoteResourcesAreBlocked;
 }

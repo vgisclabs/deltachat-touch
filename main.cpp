@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,14 @@
 #include <QTextStream>
 #include <QQuickView>
 #include <QtWebEngine>
+#include <QWebEngineUrlScheme>
 #include <iostream>
 #include <cstdio>
+
+// to be able to use dc_msg_t* in signals/slots; for that, a call to qRegisterMetaType
+// is necessary as well, done below in main()
+struct dc_msg_t;
+Q_DECLARE_OPAQUE_POINTER(dc_msg_t*);
 
 // QtMessageHandler, a typedef for a pointer to a function with the following signature:
 //
@@ -134,6 +140,17 @@ int main(int argc, char *argv[])
         }
     }
 
+    
+    QWebEngineUrlScheme webxscheme("webxdcfilerequest");
+
+    // TODO: is this correct?
+    webxscheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
+
+    // TODO: is this correct?
+    webxscheme.setFlags(QWebEngineUrlScheme::LocalAccessAllowed);
+    QWebEngineUrlScheme::registerScheme(webxscheme);
+
+    // TODO maybe initialize before registering the scheme?
     QtWebEngine::initialize();
 
     QGuiApplication *app = new QGuiApplication(argc, (char**)argv);
@@ -183,6 +200,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<uint32_t>("uint32_t");
     qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<uint64_t>("uint64_t");
+    qRegisterMetaType<dc_msg_t*>("dc_msg_t*");
     //qRegisterMetaType<size_t>("size_t");
 
     qDebug() << "Starting app from main.cpp";

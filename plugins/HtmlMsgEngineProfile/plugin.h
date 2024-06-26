@@ -16,18 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DELTAHANDLER_PLUGIN_H
-#define DELTAHANDLER_PLUGIN_H
+#ifndef HTMLMSGENGINEPROFILE_PLUGIN_H
+#define HTMLMSGENGINEPROFILE_PLUGIN_H
 #include <QQmlExtensionPlugin>
 
-class DeltaHandlerPlugin : public QQmlExtensionPlugin
+class HtmlMsgEngineProfilePlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
+    Q_PLUGIN_METADATA(IID "local.deltatouch.htmlmsgengineprofile")
 
 public:
     void registerTypes(const char *uri);
-    void initializeEngine(QQmlEngine *engine, const char *uri);
 };
 
-#endif
+#endif // HTMLMSGENGINEPROFILE_PLUGIN_H

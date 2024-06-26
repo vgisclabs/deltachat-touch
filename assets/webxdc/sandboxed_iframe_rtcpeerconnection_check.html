@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<!--
+ * Copyright (C) 2022 Delta Chat contributors.
+ *
+ * This file is part of the app "DeltaTouch".
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * deltatouch is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * This file was taken in June 2024 from
+ * https://github.com/deltachat/deltachat-android/blob/221595cb127c6102aee515057b98c881d3555b22/src/main/res/raw/sandboxed_iframe_rtcpeerconnection_check.html
+ * licensed under GLPv3 by Delta Chat contributors
+ * -->
+
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+window.addEventListener("message", e => {
+  // Currently this never happens because we don't load other scripts that could `postMessage`
+  // until all checks have passed, but let's play it safe.
+  if (
+    event.origin !== location.origin
+    || event.source !== parent
+  ) {
+    return;
+  }
+
+  if (event.data === "performCheck") {
+    let rtcpcCreationFailed = false;
+    try {
+      new RTCPeerConnection();
+    } catch (e) {
+      rtcpcCreationFailed = true;
+    }
+
+    parent.postMessage({ msgType: "result", rtcpcCreationFailed }, location.origin);
+  }
+});
+
+parent.postMessage({ msgType: "ready" }, location.origin);
+</script>
+</head>
+<body>
+</body>
+</html>

@@ -19,13 +19,17 @@
 #ifndef CHATMODEL_H
 #define CHATMODEL_H
 
+#include <QQuickView>
 #include <QtCore>
 #include <QtGui>
 #include <QHash>
+
 #include <string>
 #include <deque>
+
 #include "deltahandler.h"
 #include "chatlistmodel.h"
+#include "webxdcImageProvider.h"
 #include "deltachat.h"
 
 class DeltaHandler;
@@ -38,7 +42,12 @@ public:
     ~ChatModel();
 
     // TODO remove MessageSeenRole
-    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsProtectionInfoRole, ProtectionInfoTypeRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, QuoteAvatarColorRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, FilenameRole, AudioFilePathRole, ImageWidthRole, ImageHeightRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole, HasHtmlRole, ReactionsRole };
+    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsProtectionInfoRole, ProtectionInfoTypeRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, QuoteAvatarColorRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, FilenameRole, AudioFilePathRole, ImageWidthRole, ImageHeightRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole, HasHtmlRole, ReactionsRole, WebxdcInfoRole, WebxdcImageRole };
+
+    // Main objective for setQQuickView is to set the image provider (m_webxdcImgProvider)
+    // for obtaining the icons of webxdc apps. This method should be called once,
+    // namely in onCompleted in Main.qml.
+    Q_INVOKABLE void setQQuickView(QQuickView* view);
 
     Q_INVOKABLE void setMomentaryMessage(int myindex);
 
@@ -119,6 +128,22 @@ public:
 
     Q_INVOKABLE int indexToMessageId(int myindex);
 
+    Q_INVOKABLE void setWebxdcInstance(int myindex);
+
+    Q_INVOKABLE void sendWebxdcInstanceData();
+
+    Q_INVOKABLE void sendWebxdcUpdate(QString update, QString description);
+
+    Q_INVOKABLE QString getWebxdcUpdate(int last_serial);
+    
+    Q_INVOKABLE QString getWebxdcId();
+
+    Q_INVOKABLE QString getWebxdcJs(QString scriptname);
+    
+    Q_INVOKABLE void checkAndJumpToWebxdcParent(int myindex);
+
+//    Q_INVOKABLE QString getWebxdcIndex();
+
     Q_INVOKABLE void downloadFullMessage(int myindex);
 
     // invoked by clicking the "send" icon in a chat,
@@ -176,6 +201,8 @@ public slots:
     void updateQuery(QString query);
     void searchJumpSlot(int posType);
 
+    void webxdcUpdateReceiver(uint32_t accID, int msgID);
+
 signals:
     void markedAllMessagesSeen();
     void jumpToMsg(int myindex);
@@ -195,6 +222,9 @@ signals:
     void previewImageAttachment(QString filepathInCache, bool isAnimated);
     void previewFileAttachment(QString filename);
     void previewVoiceAttachment(QString filepathInCache);
+
+    void newWebxdcInstanceData(QString id, dc_msg_t* instance);
+    void updateCurrentWebxdc();
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -277,6 +307,10 @@ private:
     void toggleQuoteVectorRemoveId(uint32_t tempID);
 
     void emitDraftHasAttachmentSignals(QString filepath, int messageType);
+
+    QQuickView* m_view;
+    WebxdcImageProvider* m_webxdcImgProvider;
+    uint32_t m_webxdcInstanceMsgId;
 };
 
 

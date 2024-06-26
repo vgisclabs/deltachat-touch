@@ -1,28 +1,28 @@
 # DeltaTouch
 
-Messaging app for Ubuntu Touch (and now also Nix), powered by deltachat-core. 
+Messaging app powered by deltachat-core. Originally for Ubuntu Touch, it is now also available on Nix (and more, see wiki).
 
-This is the main branch which contains the version for Ubuntu Touch 20.04 (focal) and Nix. The branch nixpkg, which was previously used for the Nix package, has been merged into main. Please do not base on nixpkg anymore.
 
-## Important notice to xenial (16.04) users
+## Branches
 
-This is the main branch which contains the focal version. It will **not** work on xenial. Please checkout the xenial branch if you want to build for xenial.
+* main: Ubuntu Touch 20.04 (focal), Nix, Droidian, Mobian and general development. In other words, everything **except** Ubuntu Touch 16.04 (xenial). Contributions should be based on main.
+* xenial: Ubuntu Touch 16.04 (xenial).
+* Other branches are for development of specific features that are not ready for usage yet.
+
 
 ## Infos regarding the Nix package
 
 
-Originally targeted for Ubuntu Touch, work is in progress for a Nix package. Difference(s) to the Ubuntu Touch version:
+Difference(s) to the Ubuntu Touch version:
 
 * File im- and export is managed via QML FileDialog instead of the Ubuntu Touch specific ContentHub.
 
 Currently, some things are broken in the Nix package:
 
-* Recording voice messages fails due to missing codec
-* Playing audio files does not work
+* Recording voice messages may fail due to missing codec
+* Playing audio files may not work
 * Camera does not work
-* No notifications
-* GUI is not adapted to non-phone screens (i.e., no convergence yet)
-* Most emoji are not displayed
+* Most emojis are not displayed
 
 ## Building for Ubuntu Touch 20.04 (focal)
 
@@ -48,7 +48,7 @@ git submodule update --init --recursive
 Build libdeltachat.so for your architecture (arm64 in this example, could also be `armhf`, or `amd64` if you want to use `clickable desktop`). This will take some time:
 
 ```
-clickable build --libs deltachat-core-rust --arch arm64
+clickable build --lib deltachat-core-rust --arch arm64
 ```
 
 ### Buidling libquirc.so.1.2
@@ -58,7 +58,7 @@ Activating/updating the quirc submodule should have already been done by running
 Build libquirc.so.1.2 for your architecture (arm64 in this example, could also be `armhf` or `amd64` if you want to use `clickable desktop`):
 
 ```
-clickable build --libs quirc --arch arm64
+clickable build --lib quirc --arch arm64
 ```
 
 

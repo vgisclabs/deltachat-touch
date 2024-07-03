@@ -128,6 +128,7 @@ public:
 
     Q_INVOKABLE int indexToMessageId(int myindex);
 
+    // With myindex == -1, currentMessageDraft is used as Webxdc instance
     Q_INVOKABLE void setWebxdcInstance(int myindex);
 
     Q_INVOKABLE void sendWebxdcInstanceData();
@@ -222,6 +223,7 @@ signals:
     void previewImageAttachment(QString filepathInCache, bool isAnimated);
     void previewFileAttachment(QString filename);
     void previewVoiceAttachment(QString filepathInCache);
+    void previewWebxdcAttachment(QString webxdcIconPath, QString webxdcPreviewInfoJson);
 
     void newWebxdcInstanceData(QString id, dc_msg_t* instance);
     void updateCurrentWebxdc();

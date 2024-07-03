@@ -54,6 +54,7 @@ Page {
     property bool attachFilePreviewMode: false
     property bool attachAudioPreviewMode: false
     property bool attachVoicePreviewMode: false
+    property bool attachWebxdcPreviewMode: false
     property string attachAudioPath
     property bool isRecording: false
 
@@ -352,6 +353,7 @@ Page {
             attachImagePreviewMode = false
             attachFilePreviewMode = false
             attachAudioPreviewMode = false
+            attachWebxdcPreviewMode = false
 
             if (isRecording) {
                 DeltaHandler.dismissAudioRecording()
@@ -423,6 +425,14 @@ Page {
             attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepathInCache))
             attachAudioPreviewMode = true
             attachFilePreviewLabel.text = filename;
+        }
+
+        onPreviewWebxdcAttachment: {
+            attachWebxdcPreviewMode = true
+            webxdcPreviewImage.source = webxdcIconPath
+
+            let webxdcPreviewInfo = JSON.parse(webxdcPreviewInfoJson)
+            webxdcPreviewNameLabel.text = webxdcPreviewInfo.name
         }
 
         // onPreviewVoiceAttachment is NOT emitted by deltahandler
@@ -2182,6 +2192,8 @@ Page {
                     tempHeight = attachPreviewAnimatedImage.height
                 } else if (attachImagePreviewMode) {
                     tempHeight = attachPreviewAnimatedImage.height
+                } else if (attachWebxdcPreviewMode) {
+                    tempHeight = attachPreviewWebxdcRect.height
                 } else if (attachFilePreviewLabel.contentHeight > cancelAttachmentShape.height) {
                     tempHeight = attachFilePreviewLabel.contentHeight
                 } else {
@@ -2201,7 +2213,7 @@ Page {
                 left: parent.left
             }
 
-            visible: attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode
+            visible: attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode || attachWebxdcPreviewMode
 
             Rectangle {
                 id: attachVerticalCenterHelperRect
@@ -2314,6 +2326,98 @@ Page {
                 fillMode: Image.PreserveAspectFit
             }
 
+            Rectangle {
+                id: attachPreviewWebxdcRect
+
+                width: chatViewPage.width
+                height: webxdcPreviewColumn.height
+
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                }
+
+                color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                visible: attachWebxdcPreviewMode
+
+                Column {
+                    id: webxdcPreviewColumn
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    spacing: units.gu(0.25)
+
+                    LomiriShape {
+                        id: prevWebxdcIcon
+                        width: root.scaledFontSizeInPixels * 10
+                        height: width
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        backgroundColor: parent.color
+                        sourceFillMode: LomiriShape.PreserveAspectFit
+
+                        source: Image {
+                            id: webxdcPreviewImage
+                        }
+                    }
+                
+                    Label {
+                        id: webxdcPreviewNameLabel
+                        anchors.left: prevWebxdcIcon.left
+                        width: prevWebxdcIcon.width
+                        elide: Text.ElideRight
+                        text: "you shouldn't see me"
+                        color: textColor
+                        fontSize: root.scaledFontSize
+                        font.bold: true
+                    }
+
+                    Rectangle {
+                        height: startWebxdcPreviewLabel.height + units.gu(1)
+                        width: prevWebxdcIcon.width
+                        anchors.left: prevWebxdcIcon.left
+                        color: attachPreviewWebxdcRect.color
+
+                        Label {
+                            id: startWebxdcPreviewLabel
+                                anchors {
+                                    bottom: parent.bottom
+                                    bottomMargin: units.gu(0.5)
+                                }
+                            width: parent.width
+                            text: i18n.tr("Tap to Open")
+                            fontSize: root.scaledFontSize
+                        }
+                    }
+
+                    Rectangle {
+                        id: spacer
+                        height: units.gu(1)
+                        width: units.gu(1)
+                        color: attachPreviewWebxdcRect.color
+                    }
+                }
+                    
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (root.webxdcTestingEnabled) {
+                            DeltaHandler.chatmodel.setWebxdcInstance(-1)
+                            let tempUsername = DeltaHandler.getCurrentUsername()
+                            let tempEmailAddr = DeltaHandler.getCurrentEmail()
+                            if (tempUsername == "") {
+                                tempUsername = tempEmailAddr
+                            }
+                            extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
+                                "headerTitle": webxdcPreviewNameLabel.text,
+                                "username": tempUsername,
+                                "useraddress": tempEmailAddr }
+                            )
+                        } else {
+                            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc is not implemented yet, sorry" })
+                        }
+                    }
+                }
+            }
+
             LomiriShape {
                 id: cancelAttachmentShape
                 width: units.gu(4)
@@ -2357,6 +2461,7 @@ Page {
                                 attachImagePreviewMode = false
                                 attachFilePreviewMode = false
                                 attachAudioPreviewMode = false
+                                attachWebxdcPreviewMode = false
                             }
                         }
                     }
@@ -2375,7 +2480,7 @@ Page {
                 leftMargin: units.gu(0.5)
                 verticalCenter: messageEnterField.verticalCenter
             }
-            enabled: !(attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode)
+            enabled: !(attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode || attachWebxdcPreviewMode)
 
             Icon {
                 id: attachIcon
@@ -2402,6 +2507,8 @@ Page {
             width: parent.width - attachIconShape.width - sendIconShape.width - units.gu(2)
 
             Keys.onPressed: {
+                // Send with Ctrl-Enter (always) and with Enter (only if
+                // option to send with Enter is set)
                 if ((event.key == Qt.Key_Return) && ((event.modifiers & Qt.ControlModifier) || root.enterKeySends)) {
                     event.accepted = true
 
@@ -2416,6 +2523,7 @@ Page {
                         attachFilePreviewMode = false
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
+                        attachWebxdcPreviewMode = false
 
                         // TODO for some reason, the Return makes it to text of the TextArea even
                         // though event.accepted is set to true. The '\n' is removed from the
@@ -2509,6 +2617,7 @@ Page {
                         attachFilePreviewMode = false
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
+                        attachWebxdcPreviewMode = false
 
                         DeltaHandler.chatmodel.sendMessage(messageEnterField.text, chatViewPage.pageAccID, chatViewPage.pageChatID)
 
@@ -3117,6 +3226,7 @@ Page {
                             attachImagePreviewMode = false
                             attachFilePreviewMode = false
                             attachAudioPreviewMode = false
+                            attachWebxdcPreviewMode = false
                         }
 
                         PopupUtils.close(popoverConfirmDeletion)

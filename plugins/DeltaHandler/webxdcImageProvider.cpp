@@ -65,12 +65,15 @@ QString WebxdcImageProvider::getImageId(uint32_t accId, const uint32_t chatId, u
 
 QString WebxdcImageProvider::addImage(QString imageId, dc_msg_t* msg)
 {
-    QByteArray byteArray = dc_msg_get_webxdc_info(msg);
+    char* tempText = dc_msg_get_webxdc_info(msg);
+    QByteArray byteArray = tempText;
+    dc_str_unref(tempText);
+
     // assign the app icon file name to tempQString
     QString tempQString = QJsonDocument::fromJson(byteArray).object().value("icon").toString();
 
     size_t tempSizeT;
-    char* tempText = dc_msg_get_webxdc_blob(msg, tempQString.toUtf8().constData(), &tempSizeT);
+    tempText = dc_msg_get_webxdc_blob(msg, tempQString.toUtf8().constData(), &tempSizeT);
     if (tempText) {
         QImage tempQImage;
         tempQImage.loadFromData(reinterpret_cast<uchar*>(tempText), tempSizeT, "PNG");

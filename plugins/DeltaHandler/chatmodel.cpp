@@ -1799,6 +1799,12 @@ void ChatModel::setAttachment(QString filepath, int attachType)
         filepath.remove(0, 4);
     }
 
+    if (filepath.endsWith(".xdc")) {
+        // re-write attachType if the file is a Webxdc app
+        // TODO: Check for suffix sufficient?
+        attachType = DeltaHandler::MsgViewType::WebxdcType;
+    }
+
     dc_msg_t* tempQuote {nullptr};
 
     if (currentMessageDraft) {
@@ -1928,6 +1934,10 @@ void ChatModel::emitDraftHasAttachmentSignals(QString filepath, int messageType)
         alreadyInCache = true;
     }
 
+    QString tempQString1 {""};
+    QString tempQString2 {""};
+    char* tempText;
+
     // tell ChatView.qml that an attachment has been added
     switch (messageType) {
 
@@ -1970,6 +1980,27 @@ void ChatModel::emitDraftHasAttachmentSignals(QString filepath, int messageType)
             emit previewImageAttachment(filenameInCache, false);
             break;
 
+        case DC_MSG_WEBXDC:
+            if (!alreadyInCache) {
+                filenameInCache = copyToCache(filepath);
+            } 
+
+            // the icon of the Webxdc app
+            tempQString1 = "image://webxdcImageProvider/";
+            tempQString1.append(m_webxdcImgProvider->getImageId(dc_get_id(currentMsgContext), m_chatID, dc_msg_get_id(currentMessageDraft), currentMessageDraft));
+
+            // the info JSON of the Webxdc app
+            tempText = dc_msg_get_webxdc_info(currentMessageDraft);
+            if (tempText) {
+                tempQString2 = tempText;
+                dc_str_unref(tempText);
+            } else {
+                // TODO: how to handle this situation?
+            }
+            
+            emit previewWebxdcAttachment(tempQString1, tempQString2);
+            break;
+        
         // add more when implemented
 
         default:
@@ -2212,7 +2243,16 @@ int ChatModel::indexToMessageId(int myindex)
 
 void ChatModel::setWebxdcInstance(int myindex)
 {
-    m_webxdcInstanceMsgId = msgVector[myindex];
+    if (-1 == myindex) {
+        if (currentMessageDraft) {
+            m_webxdcInstanceMsgId = dc_msg_get_id(currentMessageDraft);
+        } else {
+            qDebug() << "ChatModel::setWebxdcInstance(): Error: called with -1 as param, but currentMessageDraft is null";
+            m_webxdcInstanceMsgId = 0;
+        }
+    } else {
+        m_webxdcInstanceMsgId = msgVector[myindex];
+    }
 }
 
 

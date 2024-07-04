@@ -66,6 +66,8 @@ Page {
 
     property bool requestQrScanPage: false
 
+    property int highlightedIndex: -1
+
     signal leavingChatViewPage(bool qrScanPageRequested)
 
     signal messageQueryTextChanged(string query)
@@ -73,6 +75,7 @@ Page {
 
     function messageJump(jumpIndex) {
         view.positionViewAtIndex(jumpIndex, ListView.End)
+        highlightedIndex = jumpIndex
 
     }
 
@@ -961,6 +964,29 @@ Page {
                 property var reactions: model.reactions
                 property var webxdcInfo: (msgViewType === DeltaHandler.WebxdcType) ? JSON.parse(model.webxdcInfo) : null
 
+                property bool isHighlighted: index === chatViewPage.highlightedIndex
+
+                onIsHighlightedChanged: {
+                    if (isHighlighted) {
+                        colorAnim.start()
+                    }
+                }
+
+                ColorAnimation {
+                    id: colorAnim
+
+                    target: message
+                    property: "color"
+
+                    from: root.unreadMessageBarColor
+                    to: message.color
+                    duration: 1400
+                    easing.type: Easing.InQuart
+
+                    onFinished: {
+                        chatViewPage.highlightedIndex = -1
+                    }
+                }
 
                 onPressAndHold: {
                     if (!isInfo && !isUnreadMsgsBar && chatCanSend) {
@@ -1932,7 +1958,7 @@ Page {
                         }
                     } // ListView id: reactionsView
                 } // end Loader id: reactionsLoader
-            } // end ListItem id: delegateListItem
+            } // end ListItem id: message
 
         verticalLayoutDirection: ListView.BottomToTop
         spacing: units.gu(1)
@@ -2351,7 +2377,7 @@ Page {
                         width: root.scaledFontSizeInPixels * 10
                         height: width
                         anchors.horizontalCenter: parent.horizontalCenter
-                        backgroundColor: parent.color
+                        backgroundColor: attachPreviewWebxdcRect.color
                         sourceFillMode: LomiriShape.PreserveAspectFit
 
                         source: Image {
@@ -2364,8 +2390,6 @@ Page {
                         anchors.left: prevWebxdcIcon.left
                         width: prevWebxdcIcon.width
                         elide: Text.ElideRight
-                        text: "you shouldn't see me"
-                        color: textColor
                         fontSize: root.scaledFontSize
                         font.bold: true
                     }

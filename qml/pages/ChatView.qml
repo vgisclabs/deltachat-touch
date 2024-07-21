@@ -1492,11 +1492,10 @@ Page {
                                                     "useraddress": tempEmailAddr }
                                                 )
                                             } else {
-                                                PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc is not implemented yet, sorry" })
+                                                PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc support is currently experimental. Go to Advanced Settings to enable it." })
                                             }
                                         }
                                     }
-
                                 }
                             }
                         }

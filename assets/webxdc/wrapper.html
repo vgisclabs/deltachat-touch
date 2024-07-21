@@ -67,7 +67,7 @@
     <iframe
       id="test-isolated-sandbox-context"
       sandbox="allow-scripts"
-      src="webxdcfilerequest:23581asab8123hasd71jksdf1237as"
+      src="webxdcfilerequest://localhost/23581asab8123hasd71jksdf1237as"
       style="display: none"
     ></iframe>
 
@@ -161,7 +161,7 @@
           } else {
             loadingDiv.innerHTML = "";
             iframe.style.display = 'block';
-            iframe.src = "file:///index.html";
+            iframe.src = "webxdcfilerequest://localhost/index.html";
           }
         }
 

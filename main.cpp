@@ -141,16 +141,12 @@ int main(int argc, char *argv[])
     }
 
     
-    QWebEngineUrlScheme webxscheme("webxdcfilerequest");
+    QWebEngineUrlScheme webxdcscheme("webxdcfilerequest");
+    webxdcscheme.setSyntax(QWebEngineUrlScheme::Syntax::Host);
+    webxdcscheme.setDefaultPort(QWebEngineUrlScheme::PortUnspecified);
+    webxdcscheme.setFlags(QWebEngineUrlScheme::LocalAccessAllowed);
+    QWebEngineUrlScheme::registerScheme(webxdcscheme);
 
-    // TODO: is this correct?
-    webxscheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
-
-    // TODO: is this correct?
-    webxscheme.setFlags(QWebEngineUrlScheme::LocalAccessAllowed);
-    QWebEngineUrlScheme::registerScheme(webxscheme);
-
-    // TODO maybe initialize before registering the scheme?
     QtWebEngine::initialize();
 
     QGuiApplication *app = new QGuiApplication(argc, (char**)argv);

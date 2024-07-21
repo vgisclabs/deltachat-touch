@@ -40,9 +40,9 @@ WebxdcSchemeHandler::~WebxdcSchemeHandler()
 void WebxdcSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
 {
     qDebug() << "WebxdcSchemeHandler::requestStarted(): request received:" << request->requestUrl();
+    qDebug() << "WebxdcSchemeHandler::requestStarted(): initiator is:" << request->initiator();
 
-    QString fileToRequest = request->requestUrl().toString();
-    fileToRequest.remove(0, 18);
+    QString fileToRequest = request->requestUrl().path();
 
     if (!m_webxdcInstance) {
         qDebug() << "WebxdcSchemeHandler::requestStarted(): m_webxdcInstance is not set, calling request->fail";
@@ -55,14 +55,14 @@ void WebxdcSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
         connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
         request->reply("application/javascript", tempfile);
 
-    } else if (fileToRequest == "12369813asd18935zas123123a") {
+    } else if (fileToRequest == "/12369813asd18935zas123123a") {
         // wrapper.html will be requested by WebxdcPage.qml via the webxdcfilerequest scheme
         // and this identifier
         QFile* tempfile = new QFile(":/assets/webxdc/wrapper.html");
         connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
         request->reply("text/html", tempfile);
 
-    } else if (fileToRequest == "23581asab8123hasd71jksdf1237as") {
+    } else if (fileToRequest == "/23581asab8123hasd71jksdf1237as") {
         // sandboxed_iframe_rtcpeerconnection_check.html will be requested by
         // wrapper.html via the webxdcfilerequest scheme and this identifier
         QFile* tempfile = new QFile(":/assets/webxdc/sandboxed_iframe_rtcpeerconnection_check.html");
@@ -89,6 +89,7 @@ void WebxdcSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
             QMimeType mimetype = mimedb.mimeTypeForFile(pureFilename, QMimeDatabase::MatchExtension);
 
             request->reply(mimetype.name().toUtf8(), tempbuffer);
+
         } else {
             qDebug() << "WebxdcSchemeHandler::requestStarted(): ERROR: dc_msg_get_webxdc_blob() returned NULL for " << fileToRequest;
             request->fail(QWebEngineUrlRequestJob::UrlNotFound);

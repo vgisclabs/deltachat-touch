@@ -29,15 +29,20 @@ WebxdcRequestInterceptor::WebxdcRequestInterceptor(QObject *parent) : QWebEngine
 
 void WebxdcRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
 {
-    QString requestUrl = info.requestUrl().toString();
-    qDebug() << "WebxdcRequestInterceptor::interceptRequest: Received a request for " << requestUrl;
-    if (requestUrl.startsWith("file:///")) {
-        requestUrl.replace(0, 7, "webxdcfilerequest:");
-        info.redirect(QUrl(requestUrl));
+    QUrl currentRequestUrl = info.requestUrl();
+    qDebug() << "WebxdcRequestInterceptor::interceptRequest(): Received a request for " << currentRequestUrl << ", scheme is: " << currentRequestUrl.scheme();
+    if (currentRequestUrl.scheme() == "file" || currentRequestUrl.isRelative()) {
+        // This code should never be needed because the request to index.html
+        // (in wrapper.html) is already with the scheme webxdcfilerequest, and thus
+        // all following requests have this scheme as well, but just to be on the safe side
+        qDebug() << "WebxdcRequestInterceptor::interceptRequest(): setting scheme to webxdcfilerequest";
+        currentRequestUrl.setScheme("webxdcfilerequest");
+        info.redirect(currentRequestUrl);
         info.block(false);
-    } else if (requestUrl.startsWith("webxdcfilerequest:")) {
+    } else if (currentRequestUrl.scheme() == "webxdcfilerequest") {
         info.block(false);
     } else {
+        qDebug() << "WebxdcRequestInterceptor::interceptRequest(): BLOCKED " << currentRequestUrl;
         info.block(true);
     }
 }

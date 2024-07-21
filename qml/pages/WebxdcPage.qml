@@ -60,7 +60,7 @@ Page {
         DeltaHandler.chatmodel.updateCurrentWebxdc.connect(webxdcUpdate)
         
         // WebxdcSchemeHandler will return qrc:///assets/webxdc/wrapper.html for this url
-        webxdcengineprofile.finishedConfiguringInstance.connect(function() {webview.url = "webxdcfilerequest:12369813asd18935zas123123a"})
+        webxdcengineprofile.finishedConfiguringInstance.connect(function() {webview.url = "webxdcfilerequest://localhost/12369813asd18935zas123123a"})
 
         DeltaHandler.chatmodel.sendWebxdcInstanceData()
     }

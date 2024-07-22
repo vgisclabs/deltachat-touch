@@ -1441,22 +1441,52 @@ Page {
                                     }
                                 }
 
-                                Label {
-                                    id: webxdcNameLabel
-                                    text: webxdcInfo.name
-                                    wrapMode: Text.Wrap
-                                    color: textColor
-                                    fontSize: root.scaledFontSize
-                                    font.bold: true
+                                Rectangle {
+                                    height: webxdcNameLabel.height
+                                    width: webxdcNameLabel.contentWidth
+                                    color: msgbox.color
+
+                                    Label {
+                                        id: webxdcNameLabel
+                                        width: chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(10)
+                                        text: webxdcInfo.name
+                                        elide: Text.ElideRight
+                                        color: textColor
+                                        fontSize: root.scaledFontSize
+                                        font.bold: true
+                                    }
                                 }
 
-                                Label {
-                                    id: webxdcSummaryLabel
-                                    text: webxdcInfo.summary
-                                    wrapMode: Text.Wrap
-                                    color: textColor
-                                    fontSize: root.scaledFontSizeSmaller
-                                    visible: text !== ""
+                                Rectangle {
+                                    height: webxdcDocumentLabel.height
+                                    width: webxdcDocumentLabel.contentWidth
+                                    color: msgbox.color
+                                    visible: webxdcDocumentLabel.text !== ""
+
+                                    Label {
+                                        id: webxdcDocumentLabel
+                                        width: webxdcNameLabel.width
+                                        text: webxdcInfo.document
+                                        elide: Text.ElideRight
+                                        color: textColor
+                                        fontSize: root.scaledFontSizeSmaller
+                                    }
+                                }
+
+                                Rectangle {
+                                    height: webxdcSummaryLabel.height
+                                    width: webxdcSummaryLabel.contentWidth
+                                    color: msgbox.color
+                                    visible: webxdcSummaryLabel.text !== ""
+
+                                    Label {
+                                        id: webxdcSummaryLabel
+                                        width: webxdcNameLabel.width
+                                        text: webxdcInfo.summary
+                                        elide: Text.ElideRight
+                                        color: textColor
+                                        fontSize: root.scaledFontSizeSmaller
+                                    }
                                 }
 
                                 Rectangle {
@@ -1470,8 +1500,9 @@ Page {
                                                 bottom: parent.bottom
                                                 bottomMargin: units.gu(0.5)
                                             }
-                                        width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
+                                        width: webxdcNameLabel.width
                                         text: i18n.tr("Start…")
+                                        elide: Text.ElideRight
                                         fontSize: root.scaledFontSize
                                         color: msgLabel.linkColor
                                     }

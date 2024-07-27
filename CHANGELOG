@@ -1,3 +1,7 @@
+1.5.2 xxxx-xx-xx
+Bugfix: Prevent accidental clearance of draft on shutdown
+Other: Set body text of mailto: urls as draft message
+
 1.5.1 2024-06-05
 Bugfix: Add leading action to pages that did not have it before (for non-UT platforms)
 

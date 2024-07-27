@@ -133,7 +133,12 @@ public:
     // presents a list of chats to forward messages to
     Q_PROPERTY(ChatlistModel* chatlistmodel READ chatlistmodel);
 
-    void configure(uint32_t chatID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool isContactRequest = false);
+    // _messageBody is a draft text for the chat. It will be set in case
+    // the chat ID has been opened via a mailto: url that contained body
+    // text. Otherwise, it will be an empty string.
+    // In the current implementation, if _messageBody is set, any other
+    // draft message of this chat will be overriden and consequently, lost.
+    void configure(uint32_t chatID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, QString _messageBody, bool isContactRequest = false);
     
     bool chatIsContactRequest();
     bool hasDraft();

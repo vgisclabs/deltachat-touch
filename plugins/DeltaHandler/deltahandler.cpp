@@ -1413,7 +1413,7 @@ void DeltaHandler::selectChat(int myindex)
 }
 
 
-void DeltaHandler::openChat()
+void DeltaHandler::openChat(QString _messageBody)
 {
     // stop the queue timer and process the queue
     if (m_signalQueueTimer->isActive()) {
@@ -1460,7 +1460,7 @@ void DeltaHandler::openChat()
         chatIdAsString.setNum(m_currentChatID);
         dc_set_config(currentContext, "ui.lastchatid", chatIdAsString.toUtf8().constData());
 
-        m_chatmodel->configure(m_currentChatID, dc_get_id(currentContext), allAccounts, this, freshMessagesOfChat, contactRequest);
+        m_chatmodel->configure(m_currentChatID, dc_get_id(currentContext), allAccounts, this, freshMessagesOfChat, _messageBody, contactRequest);
         currentChatIsOpened = true;
 
         emit openChatViewRequest(m_currentAccID, m_currentChatID);
@@ -2738,7 +2738,7 @@ void DeltaHandler::imexFileReceiver(QString filepath)
 }
 
 
-void DeltaHandler::chatCreationReceiver(uint32_t chatID)
+void DeltaHandler::chatCreationReceiver(uint32_t chatID, QString _messageBody)
 {
     // Resetting model, re-loading the chatlist not
     // needed because the emitter emits the signal
@@ -2749,7 +2749,7 @@ void DeltaHandler::chatCreationReceiver(uint32_t chatID)
     // NOT calling selectChat(int) as the parameter of
     // this method is the array index, not the chatID
     m_currentChatID = chatID; 
-    openChat();
+    openChat(_messageBody);
 }
 
 
@@ -4010,7 +4010,7 @@ void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
         case DT_QR_ADDR:
             chatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
             if (0 != chatID) {
-                chatCreationReceiver(chatID);
+                chatCreationReceiver(chatID, m_qrTempLotTextOne);
             } else {
             // TODO error: chat could not be created
             }
@@ -4215,6 +4215,8 @@ int DeltaHandler::evaluateQrCode(QString clipboardData)
     if (tempText) {
         m_qrTempLotTextOne = tempText;
         dc_str_unref(tempText);
+    } else {
+        m_qrTempLotTextOne = "";
     }
 
     m_qrTempContactID = dc_lot_get_id(tempLot);

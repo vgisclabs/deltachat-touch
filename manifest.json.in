@@ -14,7 +14,7 @@
             "push-helper": "push.json"
         }
     },
-    "version": "1.5.2-pre01-webxdc05",
+    "version": "1.5.2-pre01-webxdc06",
     "maintainer": "Lothar Ketterer <deltatouch@mailbox.org>",
     "framework" : "ubuntu-sdk-20.04"
 }

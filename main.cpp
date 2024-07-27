@@ -147,6 +147,11 @@ int main(int argc, char *argv[])
     webxdcscheme.setFlags(QWebEngineUrlScheme::LocalAccessAllowed);
     QWebEngineUrlScheme::registerScheme(webxdcscheme);
 
+    QWebEngineUrlScheme pgpfprscheme("openpgp4fpr");
+    pgpfprscheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
+    pgpfprscheme.setFlags(QWebEngineUrlScheme::LocalAccessAllowed);
+    QWebEngineUrlScheme::registerScheme(pgpfprscheme);
+
     QtWebEngine::initialize();
 
     QGuiApplication *app = new QGuiApplication(argc, (char**)argv);

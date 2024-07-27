@@ -50,50 +50,66 @@ void WebxdcSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
         return;
     }
 
-    if (fileToRequest == "/webxdc.js") {
-        QFile* tempfile = new QFile(":/assets/webxdc/webxdc.js");
-        connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
-        request->reply("application/javascript", tempfile);
+    QString reqScheme = request->requestUrl().scheme();
 
-    } else if (fileToRequest == "/12369813asd18935zas123123a") {
-        // wrapper.html will be requested by WebxdcPage.qml via the webxdcfilerequest scheme
-        // and this identifier
-        QFile* tempfile = new QFile(":/assets/webxdc/wrapper.html");
-        connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
-        request->reply("text/html", tempfile);
+    if (reqScheme == "mailto" || reqScheme == "openpgp4fpr") {
+        // In order to avoid the Webxdc app to show an error or an empty page,
+        // the request has to fail with type "aborted".
+        // The url itself will be presented to the user via a popup. If the
+        // user wants to continue with it, WebxdcPage.qml will be removed from
+        // the stack and the mailto/openpgp4fpr action will be continued.
+        QString tempurl = request->requestUrl().toString();
+        request->fail(QWebEngineUrlRequestJob::RequestAborted);
+        emit urlReceivedFromWebxdc(tempurl);
 
-    } else if (fileToRequest == "/23581asab8123hasd71jksdf1237as") {
-        // sandboxed_iframe_rtcpeerconnection_check.html will be requested by
-        // wrapper.html via the webxdcfilerequest scheme and this identifier
-        QFile* tempfile = new QFile(":/assets/webxdc/sandboxed_iframe_rtcpeerconnection_check.html");
-        connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
-        request->reply("text/html", tempfile);
+    } else if (reqScheme == "webxdcfilerequest") {
+        if (fileToRequest == "/webxdc.js") {
+            QFile* tempfile = new QFile(":/assets/webxdc/webxdc.js");
+            connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
+            request->reply("application/javascript", tempfile);
 
-    } else {
-        size_t buffersize;
-        char* buffercontent;
+        } else if (fileToRequest == "/12369813asd18935zas123123a") {
+            // wrapper.html will be requested by WebxdcPage.qml via the webxdcfilerequest scheme
+            // and this identifier
+            QFile* tempfile = new QFile(":/assets/webxdc/wrapper.html");
+            connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
+            request->reply("text/html", tempfile);
 
-        buffercontent = dc_msg_get_webxdc_blob(m_webxdcInstance, fileToRequest.toUtf8().constData(), &buffersize);
-
-        if (buffercontent) {
-            QBuffer* tempbuffer = new QBuffer();
-            tempbuffer->open(QBuffer::ReadWrite);
-            tempbuffer->write(buffercontent, buffersize);
-            tempbuffer->close();
-            dc_str_unref(buffercontent);
-            connect(request, &QObject::destroyed, tempbuffer, &QObject::deleteLater);
-
-            QString pureFilename = fileToRequest;
-            pureFilename.remove(0, pureFilename.lastIndexOf("/") + 1);
-            QMimeDatabase mimedb;
-            QMimeType mimetype = mimedb.mimeTypeForFile(pureFilename, QMimeDatabase::MatchExtension);
-
-            request->reply(mimetype.name().toUtf8(), tempbuffer);
+        } else if (fileToRequest == "/23581asab8123hasd71jksdf1237as") {
+            // sandboxed_iframe_rtcpeerconnection_check.html will be requested by
+            // wrapper.html via the webxdcfilerequest scheme and this identifier
+            QFile* tempfile = new QFile(":/assets/webxdc/sandboxed_iframe_rtcpeerconnection_check.html");
+            connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
+            request->reply("text/html", tempfile);
 
         } else {
-            qDebug() << "WebxdcSchemeHandler::requestStarted(): ERROR: dc_msg_get_webxdc_blob() returned NULL for " << fileToRequest;
-            request->fail(QWebEngineUrlRequestJob::UrlNotFound);
+            size_t buffersize;
+            char* buffercontent;
+
+            buffercontent = dc_msg_get_webxdc_blob(m_webxdcInstance, fileToRequest.toUtf8().constData(), &buffersize);
+
+            if (buffercontent) {
+                QBuffer* tempbuffer = new QBuffer();
+                tempbuffer->open(QBuffer::ReadWrite);
+                tempbuffer->write(buffercontent, buffersize);
+                tempbuffer->close();
+                dc_str_unref(buffercontent);
+                connect(request, &QObject::destroyed, tempbuffer, &QObject::deleteLater);
+
+                QString pureFilename = fileToRequest;
+                pureFilename.remove(0, pureFilename.lastIndexOf("/") + 1);
+                QMimeDatabase mimedb;
+                QMimeType mimetype = mimedb.mimeTypeForFile(pureFilename, QMimeDatabase::MatchExtension);
+
+                request->reply(mimetype.name().toUtf8(), tempbuffer);
+
+            } else {
+                qDebug() << "WebxdcSchemeHandler::requestStarted(): ERROR: dc_msg_get_webxdc_blob() returned NULL for " << fileToRequest;
+                request->fail(QWebEngineUrlRequestJob::UrlNotFound);
+            }
         }
+    } else {
+        qWarning() << "WebxdcSchemeHandler::requestStarted(): Received request for unexpected scheme" << reqScheme;
     }
 }
 

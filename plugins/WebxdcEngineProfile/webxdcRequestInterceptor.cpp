@@ -31,6 +31,7 @@ void WebxdcRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
 {
     QUrl currentRequestUrl = info.requestUrl();
     qDebug() << "WebxdcRequestInterceptor::interceptRequest(): Received a request for " << currentRequestUrl << ", scheme is: " << currentRequestUrl.scheme();
+
     if (currentRequestUrl.scheme() == "file" || currentRequestUrl.isRelative()) {
         // This code should never be needed because the request to index.html
         // (in wrapper.html) is already with the scheme webxdcfilerequest, and thus
@@ -39,7 +40,7 @@ void WebxdcRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
         currentRequestUrl.setScheme("webxdcfilerequest");
         info.redirect(currentRequestUrl);
         info.block(false);
-    } else if (currentRequestUrl.scheme() == "webxdcfilerequest") {
+    } else if (currentRequestUrl.scheme() == "webxdcfilerequest" || currentRequestUrl.scheme() == "openpgp4fpr" || currentRequestUrl.scheme() == "mailto") {
         info.block(false);
     } else {
         qDebug() << "WebxdcRequestInterceptor::interceptRequest(): BLOCKED " << currentRequestUrl;

@@ -33,6 +33,9 @@ public:
     void requestStarted(QWebEngineUrlRequestJob *request);
     void setWebxdcInstance(dc_msg_t* msg);
 
+signals:
+    void urlReceivedFromWebxdc(QString url);
+
 private:
     dc_msg_t* m_webxdcInstance;
 };

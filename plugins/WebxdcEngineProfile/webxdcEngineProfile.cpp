@@ -28,11 +28,15 @@ WebxdcEngineProfile::WebxdcEngineProfile(QObject *parent) : QQuickWebEngineProfi
 
     this->setUrlRequestInterceptor(&this->m_urlRequestInterceptor);
     this->installUrlSchemeHandler("webxdcfilerequest", &this->m_webxdcSchemehandler);
+    this->installUrlSchemeHandler("openpgp4fpr", &this->m_webxdcSchemehandler);
+    this->installUrlSchemeHandler("mailto", &this->m_webxdcSchemehandler);
+    connect(&m_webxdcSchemehandler, SIGNAL(urlReceivedFromWebxdc(QString)), this, SLOT(forwardUrl(QString)));
 }
 
 
 WebxdcEngineProfile::~WebxdcEngineProfile()
 {
+    disconnect(&m_webxdcSchemehandler, SIGNAL(urlReceivedFromWebxdc(QString)), this, SLOT(forwardUrl(QString)));
 }
 
 
@@ -51,4 +55,10 @@ void WebxdcEngineProfile::configureNewInstance(QString id, dc_msg_t* msg)
     }
 
     emit finishedConfiguringInstance();
+}
+
+
+void WebxdcEngineProfile::forwardUrl(QString url)
+{
+    emit urlReceived(url);
 }

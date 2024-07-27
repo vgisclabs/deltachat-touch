@@ -25,6 +25,7 @@
 #include "deltachat.h"
 
 #include <QQuickWebEngineProfile>
+#include <QString>
 
 class WebxdcEngineProfile : public QQuickWebEngineProfile
 {
@@ -36,6 +37,7 @@ public:
 
 signals:
     void finishedConfiguringInstance();
+    void urlReceived(QString urlFromWebxdc);
 
 public slots:
     void configureNewInstance(QString id, dc_msg_t* msg);
@@ -43,6 +45,9 @@ public slots:
 private:
     WebxdcRequestInterceptor m_urlRequestInterceptor;
     WebxdcSchemeHandler m_webxdcSchemehandler;
+
+private slots:
+    void forwardUrl(QString url);
 };
 
 #endif //WEBXDCENGINEPROFILE_H

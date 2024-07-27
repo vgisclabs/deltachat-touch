@@ -27,6 +27,7 @@ import Lomiri.Components 1.3
 import QtWebEngine 1.8
 import QtWebChannel 1.0
 import Qt.labs.platform 1.1
+import Lomiri.Components.Popups 1.3
 
 import DeltaHandler 1.0
 import WebxdcEngineProfile 1.0
@@ -61,6 +62,7 @@ Page {
         
         // WebxdcSchemeHandler will return qrc:///assets/webxdc/wrapper.html for this url
         webxdcengineprofile.finishedConfiguringInstance.connect(function() {webview.url = "webxdcfilerequest://localhost/12369813asd18935zas123123a"})
+        webxdcengineprofile.urlReceived.connect(receiveUrlFromWebxdc)
 
         DeltaHandler.chatmodel.sendWebxdcInstanceData()
     }
@@ -79,6 +81,72 @@ Page {
 
     function webxdcUpdate() {
         webview.runJavaScript("window.__webxdcUpdate()")
+    }
+
+    function receiveUrlFromWebxdc(urlFromApp) {
+        // handling of arguments/urls is based on the code for
+        // QR scanning, thus the names with "qr"
+        
+        // Determine the type of the url. In this case,
+        // we already know it's either mailto or openpgp4fpr,
+        // but evaluateQrCode() still has to be called to set
+        // some things on C++ side. Also, it will check for
+        // erors in the url.
+        let qrtype = DeltaHandler.evaluateQrCode(urlFromApp)
+
+        switch (qrtype) {
+            case DeltaHandler.DT_QR_ASK_VERIFYCONTACT: // fallthrough
+            case DeltaHandler.DT_QR_ADDR:
+                console.log("webxdcPage.receiveUrlFromWebxdc(): qr state is DT_QR_ASK_VERIFYCONTACT or DT_QR_ADDR")
+
+                let popup = PopupUtils.open(
+                    Qt.resolvedUrl('ConfirmDialog.qml'),
+                    webxdcPage,
+                    { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()),
+                      "confirmButtonPositive": true })       
+                popup.confirmed.connect(function() {
+                    extraStack.clear()
+                    DeltaHandler.continueQrCodeAction(true)
+                })
+                break;
+                
+            case DeltaHandler.DT_QR_ASK_VERIFYGROUP:
+                console.log("webxdcPage.receiveUrlFromWebxdc(): qr state is DT_QR_ASK_VERIFYGROUP")
+                let popup9 = PopupUtils.open(
+                    Qt.resolvedUrl("ConfirmDialog.qml"),
+                    webxdcPage,
+                    { dialogText: i18n.tr("Do you want to join the group \"%1\"?").arg(DeltaHandler.getQrTextOne()),
+                      "confirmButtonPositive": true  })
+                popup9.confirmed.connect(function() {
+                    extraStack.clear()
+                    DeltaHandler.continueQrCodeAction(true)
+                })
+                break;
+
+            case DeltaHandler.DT_QR_ERROR:
+                console.log("webxdcPage.receiveUrlFromWebxdc(): qr state is DT_QR_ERROR")
+                let popup15 = PopupUtils.open(
+                    Qt.resolvedUrl("ErrorMessage.qml"),
+                    webxdcPage,
+                    { text: i18n.tr("Error: %1").arg(DeltaHandler.getQrTextOne()),
+                      title: i18n.tr("Error") })
+                break;
+
+            case DeltaHandler.DT_UNKNOWN: // fallthrough
+            default:
+                // If this appears in the log, the url/argument may not be something
+                // unknown to the core, but it's just none of the cases that
+                // we handle here (although at the moment, only mailto: and openpgp4fpr:
+                // should come through from a Webxdc app, so this code should never be
+                // reached as errors should be handled via DT_QR_ERROR above)
+                console.log("webxdcPage.receiveUrlFromWebxdc(): Don't know how to handle argument \"", urlFromApp, "\", passed from Webxdc app, not doing anything")
+                let popup14 = PopupUtils.open(
+                    Qt.resolvedUrl("ErrorMessage.qml"),
+                    webxdcPage,
+                    { text: i18n.tr("Unknown"),
+                      title: i18n.tr("Error") })
+                break;
+        }
     }
 
     QtObject {

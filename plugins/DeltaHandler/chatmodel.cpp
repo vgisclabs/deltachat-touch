@@ -863,7 +863,7 @@ QString ChatModel::getHtmlMsgSubject(int myindex)
 }
 
 
-void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, bool cIsContactRequest)
+void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, QString _messageBody, bool cIsContactRequest)
 {
     if (m_chatIsBeingViewed) {
         // check if the same chat has been clicked again, and
@@ -1017,7 +1017,16 @@ void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, De
         dc_msg_unref(currentMessageDraft);
     }
 
-    currentMessageDraft = dc_get_draft(currentMsgContext, m_chatID);
+    if (_messageBody != "") {
+        // TODO: check if there's already a draft for this chat, save it
+        // somehow and load it after sending the message with _messageBody?
+        currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
+        dc_msg_set_text(currentMessageDraft, _messageBody.toUtf8().constData());
+        dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
+    } else {
+        currentMessageDraft = dc_get_draft(currentMsgContext, m_chatID);
+    }
+
     if (currentMessageDraft) {
         char* tempText = dc_msg_get_text(currentMessageDraft);
         m_draftTextHash[m_accIdChatIdKey] = tempText;

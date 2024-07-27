@@ -216,7 +216,12 @@ public:
 
     Q_INVOKABLE void selectAndOpenLastChatId();
 
-    Q_INVOKABLE void openChat();
+    // _messageBody is a draft text for the chat. It will be set in case
+    // the chat ID has been set via a mailto: url that contained body
+    // text. Otherwise, it will be an empty string.
+    // In the current implementation, if _messageBody is set, any other
+    // draft message of this chat will be overriden and consequently, lost.
+    Q_INVOKABLE void openChat(QString _messageBody = "");
 
     Q_INVOKABLE void setChatViewIsShown();
 
@@ -684,7 +689,13 @@ private slots:
     void imexBackupExportProgressReceiver(int perMill);
     void imexBackupProviderProgressReceiver(int perMill);
     void imexFileReceiver(QString filepath);
-    void chatCreationReceiver(uint32_t chatID);
+
+    // _messageBody is a draft text for the chat. It will be set in case
+    // the chat ID has been set via a mailto: url that contained body
+    // text. Otherwise, it will be an empty string.
+    // In the current implementation, if _messageBody is set, any other
+    // draft message of this chat will be overriden and consequently, lost.
+    void chatCreationReceiver(uint32_t chatID, QString _messageBody = "");
     void updateCurrentChatMessageCount();
     void resetCurrentChatMessageCount();
     void removeClosedAccountFromList(uint32_t accID);

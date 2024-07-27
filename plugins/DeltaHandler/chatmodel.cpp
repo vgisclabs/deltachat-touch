@@ -1668,6 +1668,10 @@ void ChatModel::setDraftText(QString draftText)
 
 
 void ChatModel::saveDraft() {
+    if (!m_chatIsBeingViewed) {
+        return;
+    }
+
     QString draftText {""};
     // TODO: use m_accIdChatIdKey or build it up from m_chatID etc?
     if (m_draftTextHash.contains(m_accIdChatIdKey)) {

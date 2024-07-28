@@ -1,0 +1,100 @@
+## Document Header
+SPDXVersion: SPDX-2.1
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: deltatouch-SBOM
+# TODO: add URI to DocumentNamespace
+DocumentNamespace: TODO
+Creator: Person: Lothar Ketterer
+Created: 2024-07-28T08:48:38Z
+CreatorComment: <text></text>
+## Packages
+## 2.4 Primary Component (described by the SBOM)
+PackageName: DeltaTouch
+SPDXID: SPDXRef-02a43989-ce7d-f1bd-019b-12ed58f2284d
+PackageComment: <text>PURL is pkg:supplier/Lothar%20Ketterer/DeltaTouch@1.5.2-pre01  </text>
+ExternalRef: PACKAGE-MANAGER purl pkg:supplier/Lothar%20Ketterer/DeltaTouch@1.5.2-pre01
+PackageVersion: 1.5.2-pre01
+PackageSupplier: Person: Lothar Ketterer
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-02a43989-ce7d-f1bd-019b-12ed58f2284d
+Relationship: SPDXRef-02a43989-ce7d-f1bd-019b-12ed58f2284d CONTAINS NONE
+PackageDownloadLocation: NOASSERTION
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+## 2.4 All-Levels Components
+##
+PackageName: deltachat-core-rust
+SPDXID: SPDXRef-8227f7ef-8885-fe49-6818-7479192b3548
+PackageComment:  <text>PURL is pkg:supplier/Delta%20Chat%20contributors/deltachat-core-rust@v1.139.6  </text>
+ExternalRef: PACKAGE-MANAGER purl pkg:supplier/Delta%20Chat%20contributors/deltachat-core-rust@v1.139.6	
+PackageVersion: v1.139.6
+PackageSupplier: Organization: Delta Chat contributors
+Relationship: SPDXRef-4523a29c-8972-9746-c2b0-c08b6331fdbb CONTAINS SPDXRef-8227f7ef-8885-fe49-6818-7479192b3548
+Relationship: SPDXRef-8227f7ef-8885-fe49-6818-7479192b3548 CONTAINS NOASSERTION	
+PackageDownloadLocation: NOASSERTION
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+## 2.4 All-Levels Components
+##
+PackageName: Quirc
+SPDXID: SPDXRef-60153c66-f297-851a-93bc-aa02cfee2cdb
+PackageComment:  <text>PURL is pkg:supplier/Daniel%20Beer/Quirc@1.2  </text>
+ExternalRef: PACKAGE-MANAGER purl pkg:supplier/Daniel%20Beer/Quirc@1.2	
+PackageVersion: 1.2
+PackageSupplier: Person: Daniel Beer
+Relationship: SPDXRef-4523a29c-8972-9746-c2b0-c08b6331fdbb CONTAINS SPDXRef-60153c66-f297-851a-93bc-aa02cfee2cdb
+Relationship: SPDXRef-60153c66-f297-851a-93bc-aa02cfee2cdb CONTAINS NOASSERTION	
+PackageDownloadLocation: NOASSERTION
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+## 2.4 All-Levels Components
+##
+PackageName: Lomiri UI Toolkit
+SPDXID: SPDXRef-8918cb61-128f-b70a-5afd-2822cabeaece
+PackageComment:  <text>PURL is pkg:supplier/UBports/Lomiri%20UI%20Toolkit@1.3.5011+0~20240104163658.121+ubports20.04~1.gbpd09e76  </text>
+ExternalRef: PACKAGE-MANAGER purl pkg:supplier/UBports/Lomiri%20UI%20Toolkit@1.3.5011+0~20240104163658.121+ubports20.04~1.gbpd09e76	
+PackageVersion: 1.3.5011+0~20240104163658.121+ubports20.04~1.gbpd09e76
+PackageSupplier: Organization: UBports
+Relationship: SPDXRef-4523a29c-8972-9746-c2b0-c08b6331fdbb CONTAINS SPDXRef-8918cb61-128f-b70a-5afd-2822cabeaece
+Relationship: SPDXRef-8918cb61-128f-b70a-5afd-2822cabeaece CONTAINS NOASSERTION	
+PackageDownloadLocation: NOASSERTION
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+## 2.4 All-Levels Components
+##
+PackageName: Qt
+SPDXID: SPDXRef-3b68da09-e8b4-c2c2-7daa-a76f96bc2201
+PackageComment:  <text>PURL is pkg:supplier/The%20Qt%20Company/Qt@5.12  </text>
+ExternalRef: PACKAGE-MANAGER purl pkg:supplier/The%20Qt%20Company/Qt@5.12	
+PackageVersion: 5.12
+PackageSupplier: Organization: The Qt Company
+Relationship: SPDXRef-4523a29c-8972-9746-c2b0-c08b6331fdbb CONTAINS SPDXRef-3b68da09-e8b4-c2c2-7daa-a76f96bc2201
+Relationship: SPDXRef-3b68da09-e8b4-c2c2-7daa-a76f96bc2201 CONTAINS NOASSERTION	
+PackageDownloadLocation: NOASSERTION
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+## 2.4 All-Levels Components
+##
+PackageName: Lomiri Indicator Network
+SPDXID: SPDXRef-4a68b94a-0162-109d-f5d9-e261e3d06e58
+PackageComment:  <text>PURL is pkg:supplier/UBports/Lomiri%20Indicator%20Network@1.0.2+0~20240214163042.119+ubports20.04~1.gbpa9929b  </text>
+ExternalRef: PACKAGE-MANAGER purl pkg:supplier/UBports/Lomiri%20Indicator%20Network@1.0.2+0~20240214163042.119+ubports20.04~1.gbpa9929b	
+PackageVersion: 1.0.2+0~20240214163042.119+ubports20.04~1.gbpa9929b
+PackageSupplier: Organization: UBports
+Relationship: SPDXRef-4523a29c-8972-9746-c2b0-c08b6331fdbb CONTAINS SPDXRef-4a68b94a-0162-109d-f5d9-e261e3d06e58
+Relationship: SPDXRef-4a68b94a-0162-109d-f5d9-e261e3d06e58 CONTAINS NOASSERTION	
+PackageDownloadLocation: NOASSERTION
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION

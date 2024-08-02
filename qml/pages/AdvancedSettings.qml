@@ -226,7 +226,7 @@ Page {
                                         Qt.resolvedUrl('ConfirmDialog.qml'),
                                         advancedSettingsPage,
                                         { "dialogTitle": i18n.tr("Enable Webxdc support?"),
-                                          "dialogText": i18n.tr("Webxdc support is currently experimental, use on your own risk. Some functions such as file im- or export are not yet available."),
+                                          "dialogText": i18n.tr("Webxdc support is currently experimental.\n\nSome functions such as file import or sending files to other chats (needed for, e.g., the Webxdc Store app) are not implemented yet.\n\nDownload apps from webxdc.org and add them to chats as file attachments."),
                                           "okButtonText": i18n.tr("Enable Webxdc")}
                                     )       
                                     popup.confirmed.connect(function() { root.webxdcTestingEnabled = true })

@@ -1426,6 +1426,25 @@ Page {
                         Loader {
                             id: webxdcLoader
                             active: msgViewType === DeltaHandler.WebxdcType
+
+                            function webxdcClicked() {
+                                if (root.webxdcTestingEnabled) {
+                                    DeltaHandler.chatmodel.setWebxdcInstance(index)
+                                    let tempUsername = DeltaHandler.getCurrentUsername()
+                                    let tempEmailAddr = DeltaHandler.getCurrentEmail()
+                                    if (tempUsername == "") {
+                                        tempUsername = tempEmailAddr
+                                    }
+                                    extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
+                                        "headerTitle": webxdcInfo.name,
+                                        "username": tempUsername,
+                                        "useraddress": tempEmailAddr }
+                                    )
+                                } else {
+                                    PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc support is currently experimental. Go to Advanced Settings to enable it." })
+                                }
+                            }
+
                             sourceComponent: Column {
 
                                 spacing: units.gu(0.25)
@@ -1438,6 +1457,11 @@ Page {
 
                                     source: Image {
                                         source: model.webxdcImage
+                                    }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
                                     }
                                 }
 
@@ -1455,6 +1479,11 @@ Page {
                                         fontSize: root.scaledFontSize
                                         font.bold: true
                                     }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
+                                    }
                                 }
 
                                 Rectangle {
@@ -1471,6 +1500,11 @@ Page {
                                         color: textColor
                                         fontSize: root.scaledFontSizeSmaller
                                     }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
+                                    }
                                 }
 
                                 Rectangle {
@@ -1486,6 +1520,11 @@ Page {
                                         elide: Text.ElideRight
                                         color: textColor
                                         fontSize: root.scaledFontSizeSmaller
+                                    }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
                                     }
                                 }
 
@@ -1509,23 +1548,7 @@ Page {
                                 
                                     MouseArea {
                                         anchors.fill: parent
-                                        onClicked: {
-                                            if (root.webxdcTestingEnabled) {
-                                                DeltaHandler.chatmodel.setWebxdcInstance(index)
-                                                let tempUsername = DeltaHandler.getCurrentUsername()
-                                                let tempEmailAddr = DeltaHandler.getCurrentEmail()
-                                                if (tempUsername == "") {
-                                                    tempUsername = tempEmailAddr
-                                                }
-                                                extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
-                                                    "headerTitle": webxdcInfo.name,
-                                                    "username": tempUsername,
-                                                    "useraddress": tempEmailAddr }
-                                                )
-                                            } else {
-                                                PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc support is currently experimental. Go to Advanced Settings to enable it." })
-                                            }
-                                        }
+                                        onClicked: webxdcClicked()
                                     }
                                 }
                             }

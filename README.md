@@ -2,6 +2,7 @@
 
 Messaging app powered by deltachat-core. Originally for Ubuntu Touch, it is now also available on Nix (and more, see wiki).
 
+<img alt="Screenshot Chat List" src="extra/images/chatlist.png" width="374" /> <img alt="Screenshot Chat View" src="extra/images/chatview.png" width="374" />
 
 ## Branches
 

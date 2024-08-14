@@ -497,6 +497,9 @@ Page {
                     verticalCenter: parent.verticalCenter
                 }
                 text: chatname
+
+                // needed for right-to-left text such as Arabic
+                horizontalAlignment: Text.AlignLeft
                 width: parent.width - headerChatPic.width - units.gu(2) - (verifiedIcon.visible ? (verifiedIcon.width + units.gu(1)) : 0) - (ephemeralIcon.visible ? (ephemeralIcon.width + units.gu(1)) : 0)
                 elide: Text.ElideRight
                 fontSize: "large"
@@ -1740,6 +1743,10 @@ Page {
                                 // width and hide the text/link part that's off
                                 // the screen
                                 wrapMode: Text.Wrap 
+
+                                // needed for right-to-left text such as Arabic
+                                horizontalAlignment: Text.AlignLeft
+
                                 onLinkActivated: Qt.openUrlExternally(link)
                                 visible: isUnreadMsgsBar || (msgtext != "" && isDownloaded)
                                 fontSize: root.scaledFontSize
@@ -1829,6 +1836,9 @@ Page {
                                             // size of padlockOther
                                             width: chatViewPage.width - avatarLoader.width - msgDate.width - datelineIconSize - units.gu(7)
                                             text: model.username
+
+                                            // needed for right-to-left text such as Arabic
+                                            horizontalAlignment: Text.AlignLeft
                                             elide: Text.ElideRight
                                             fontSize: root.scaledFontSizeSmaller
                                             font.bold: true

@@ -397,6 +397,9 @@ Page {
             ListItemLayout {
                 id: accountsListItemLayout
                 title.text: model.username == '' ? '[' + i18n.tr('no username set') + ']' : model.username
+
+                // needed for right-to-left text such as Arabic
+                title.horizontalAlignment: Text.AlignLeft
                 subtitle.text: model.address
 
                 LomiriShape {

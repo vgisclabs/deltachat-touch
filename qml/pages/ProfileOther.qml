@@ -138,6 +138,9 @@ Page {
                     leftMargin: units.gu(2)
                 }
                 text: username 
+
+                // needed for right-to-left text such as Arabic
+                horizontalAlignment: Text.AlignLeft
                 width: profilePage.width - editButtonShape.width - units.gu(6)
                 //font.bold: true
                 wrapMode: Text.Wrap

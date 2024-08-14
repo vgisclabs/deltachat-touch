@@ -42,7 +42,7 @@ MainView {
 //    }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.5.2-pre01-webxdc07'
+    property string version: '1.5.2-pre02'
     property string oldVersion: "unknown"
 
     // holds the page item representing the ChatView after it
@@ -1144,6 +1144,9 @@ MainView {
                         width: parent.width - profilePicShape.width - (newMsgsInOtherAccsIndicator.visible ? newMsgsInOtherAccsIndicator.width + units.gu(1) : 0) - units.gu(3)
                         elide: Text.ElideRight
                         text: headerRect.currentUsername == '' ? i18n.tr('no username set') : headerRect.currentUsername
+
+                        // needed for right-to-left text such as Arabic
+                        horizontalAlignment: Text.AlignLeft
                         color: "#e7fcfd"
                         font.pixelSize: root.scaledFontSizeInPixels * 1.3
                     }
@@ -1579,9 +1582,13 @@ MainView {
                     ListItemLayout {
                         id: chatlistLayout
                         title.text: isArchiveLink ? i18n.tr("Archived Chats") : chatlistEntry.name
+
+                        // needed for right-to-left text such as Arabic
+                        title.horizontalAlignment: Text.AlignLeft
                         title.font.bold: true
                         title.font.pixelSize: scaledFontSizeInPixels
                         subtitle.text: isArchiveLink ? null : ((chatlistEntry.summaryText1 === "" ? "" : chatlistEntry.summaryText1 + ": ") + chatlistEntry.summaryText2)
+                        subtitle.horizontalAlignment: Text.AlignLeft
                         subtitle.font.pixelSize: scaledFontSizeInPixelsSmaller
 
                         // need to explicitly set the height because otherwise,

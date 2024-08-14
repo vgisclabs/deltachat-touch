@@ -42,7 +42,7 @@ MainView {
 //    }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.5.2-pre01'
+    property string version: '1.5.2-pre01-webxdc07'
     property string oldVersion: "unknown"
 
     // holds the page item representing the ChatView after it
@@ -244,6 +244,8 @@ MainView {
     }
 
     function startupStep5() {
+        DeltaHandler.chatmodel.setQQuickView(myview);
+
         if (!DeltaHandler.hasConfiguredAccount) {
             extraStack.push(Qt.resolvedUrl('pages/AccountConfig.qml'))
         } else {
@@ -633,6 +635,8 @@ MainView {
     // save time when creating the popup
     property var emojiRecentArray: ["🙂", "😂", "😄", "😅", "😬", "😞", "☹️", "🙁", "😳", "😢", "👍", "👎", "💪", "👀", "🤦", "🤷", "🤞", "🙈", "🍀", "❤️", "💓", "💯", "🚀", "🎉"]
 
+    property bool webxdcTestingEnabled: false
+
     Settings {
         id: settings
         property alias synca: root.syncAll
@@ -650,6 +654,7 @@ MainView {
         property alias recentlyUsedEmojisNew: root.emojiRecentArray
         property alias rootWidth: root.width
         property alias rootHeight: root.height
+        property alias webxdcTesting: root.webxdcTestingEnabled
     }
 
     width: units.gu(45)

@@ -48,6 +48,7 @@ class EmitterThread : public QThread {
             void errorEvent(QString errorMessage);
             void chatDataModified(uint32_t accID, int chatID);
             void connectivityChanged(uint32_t accID);
+            void webxdcStatusUpdate(uint32_t accID, int msgID);
 
     private:
         dc_accounts_t* accounts;

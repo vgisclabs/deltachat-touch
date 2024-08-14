@@ -219,6 +219,7 @@ void EmitterThread::run()
 
                 case DC_EVENT_WEBXDC_STATUS_UPDATE:
                     qInfo().nospace() << "Emitter: DC_EVENT_WEBXDC_STATUS_UPDATE" << ", account " << dc_event_get_account_id(event);
+                    emit  webxdcStatusUpdate(dc_event_get_account_id(event), dc_event_get_data1_int(event));
                     // has parameters, but at least one of them (data2) must
                     // not be queried to avoid "races in the status replication".
                     break;

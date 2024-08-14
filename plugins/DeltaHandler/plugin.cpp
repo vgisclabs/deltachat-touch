@@ -21,9 +21,16 @@
 
 #include "plugin.h"
 #include "deltahandler.h"
+#include "webxdcImageProvider.h"
 
 void DeltaHandlerPlugin::registerTypes(const char *uri)
 {
     //@uri DeltaHandler
     qmlRegisterSingletonType<DeltaHandler>(uri, 1, 0, "DeltaHandler", [](QQmlEngine*, QJSEngine*) -> QObject* { return new DeltaHandler; });
+}
+
+
+void DeltaHandlerPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+{
+    engine->addImageProvider(QLatin1String("webxdcImageProvider"), new WebxdcImageProvider);
 }

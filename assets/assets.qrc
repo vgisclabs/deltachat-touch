@@ -108,5 +108,9 @@
         <file>suru-icons/view-grid-symbolic.svg</file>
         <file>suru-icons/view-off.svg</file>
         <file>suru-icons/view-on.svg</file>
+        <file>webxdc/cppside.js</file>
+        <file>webxdc/sandboxed_iframe_rtcpeerconnection_check.html</file>
+        <file>webxdc/webxdc.js</file>
+        <file>webxdc/wrapper.html</file>
     </qresource>
 </RCC>

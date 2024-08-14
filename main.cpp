@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,10 @@
 #include <QString>
 #include <QFile>
 #include <QQuickView>
+#include <QtWebEngine>
+#include <QWebEngineUrlScheme>
 #include <iostream>
 #include <QtWebEngine>
-
 
 int main(int argc, char *argv[])
 {
@@ -77,6 +78,18 @@ int main(int argc, char *argv[])
         }
     }
 
+    
+    QWebEngineUrlScheme webxdcscheme("webxdcfilerequest");
+    webxdcscheme.setSyntax(QWebEngineUrlScheme::Syntax::Host);
+    webxdcscheme.setDefaultPort(QWebEngineUrlScheme::PortUnspecified);
+    webxdcscheme.setFlags(QWebEngineUrlScheme::LocalAccessAllowed);
+    QWebEngineUrlScheme::registerScheme(webxdcscheme);
+
+    QWebEngineUrlScheme pgpfprscheme("openpgp4fpr");
+    pgpfprscheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
+    pgpfprscheme.setFlags(QWebEngineUrlScheme::LocalAccessAllowed);
+    QWebEngineUrlScheme::registerScheme(pgpfprscheme);
+
     QtWebEngine::initialize();
 
     QGuiApplication *app = new QGuiApplication(argc, (char**)argv);
@@ -98,6 +111,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<uint32_t>("uint32_t");
     qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<uint64_t>("uint64_t");
+    qRegisterMetaType<dc_msg_t*>("dc_msg_t*");
     //qRegisterMetaType<size_t>("size_t");
 
     qDebug() << "Starting app from main.cpp";

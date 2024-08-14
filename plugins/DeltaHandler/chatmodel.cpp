@@ -17,13 +17,14 @@
  */
 
 #include "chatmodel.h"
+
 #include <stdio.h> // for remove()
 //#include <unistd.h> // for sleep
 #include <limits> // for invalidating data_row
 #include <fstream>
 
 ChatModel::ChatModel(QObject* parent)
-    : QAbstractListModel(parent), currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}
+    : QAbstractListModel(parent), m_dhandler {nullptr}, currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}, m_webxdcImgProvider {nullptr}
 { 
 };
 
@@ -45,6 +46,14 @@ ChatModel::~ChatModel()
         dc_array_unref(currentSearchMsgArray);
     }
 }
+
+
+void ChatModel::setQQuickView(QQuickView* view)
+{
+    m_view = view;
+    m_webxdcImgProvider = static_cast<WebxdcImageProvider*>(m_view->engine()->imageProvider("webxdcImageProvider"));
+}
+
 
 int ChatModel::rowCount(const QModelIndex &parent) const
 {
@@ -91,6 +100,8 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[ContactIdRole] = "contactID";
     roles[HasHtmlRole] = "hasHtml";
     roles[ReactionsRole] = "reactions";
+    roles[WebxdcInfoRole] = "webxdcInfo";
+    roles[WebxdcImageRole] = "webxdcImage";
 
     return roles;
 }
@@ -160,7 +171,6 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
     QString tempQString2;
     
     QVariant retval;
-
 
     switch(role) {
         case ChatModel::IsSelfRole:
@@ -447,7 +457,7 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                     break;
 
                 case DC_MSG_WEBXDC:
-                    retval = QVariant(DeltaHandler::MsgViewType::WebXdcType);
+                    retval = QVariant(DeltaHandler::MsgViewType::WebxdcType);
                     break;
 
                 default:
@@ -707,6 +717,18 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
             retval = jsonObj;
             break;
 
+        case ChatModel::WebxdcInfoRole:
+            tempText = dc_msg_get_webxdc_info(tempMsg);
+            tempQString = tempText;
+            retval = tempQString;
+            break;
+
+        case ChatModel::WebxdcImageRole:
+            tempQString = "image://webxdcImageProvider/";
+            tempQString.append(m_webxdcImgProvider->getImageId(dc_get_id(currentMsgContext), m_chatID, tempMsgID, tempMsg));
+            retval = tempQString;
+            break;
+
         default:
             retval = QVariant();
             qDebug() << "ChatModel::data switch reached default";
@@ -891,6 +913,10 @@ void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, De
 
     beginResetModel();
 
+    if (m_webxdcImgProvider) {
+        m_webxdcImgProvider->clearImageCache();
+    }
+    
     msgIdsWithExpandedQuote.clear();
 
     // invalidate the cached data_tempMsg (see ChatModel::data())
@@ -1526,7 +1552,7 @@ int ChatModel::getMomentaryViewType()
             break;
 
         case DC_MSG_WEBXDC:
-            retval = DeltaHandler::MsgViewType::WebXdcType;
+            retval = DeltaHandler::MsgViewType::WebxdcType;
             break;
 
         default:
@@ -1773,6 +1799,12 @@ void ChatModel::setAttachment(QString filepath, int attachType)
         filepath.remove(0, 4);
     }
 
+    if (filepath.endsWith(".xdc")) {
+        // re-write attachType if the file is a Webxdc app
+        // TODO: Check for suffix sufficient?
+        attachType = DeltaHandler::MsgViewType::WebxdcType;
+    }
+
     dc_msg_t* tempQuote {nullptr};
 
     if (currentMessageDraft) {
@@ -1842,7 +1874,7 @@ void ChatModel::setAttachment(QString filepath, int attachType)
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VOICE);
             break;
 
-        case DeltaHandler::MsgViewType::WebXdcType:
+        case DeltaHandler::MsgViewType::WebxdcType:
             messageType = DC_MSG_WEBXDC;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_WEBXDC);
             break;
@@ -1902,6 +1934,10 @@ void ChatModel::emitDraftHasAttachmentSignals(QString filepath, int messageType)
         alreadyInCache = true;
     }
 
+    QString tempQString1 {""};
+    QString tempQString2 {""};
+    char* tempText;
+
     // tell ChatView.qml that an attachment has been added
     switch (messageType) {
 
@@ -1944,6 +1980,27 @@ void ChatModel::emitDraftHasAttachmentSignals(QString filepath, int messageType)
             emit previewImageAttachment(filenameInCache, false);
             break;
 
+        case DC_MSG_WEBXDC:
+            if (!alreadyInCache) {
+                filenameInCache = copyToCache(filepath);
+            } 
+
+            // the icon of the Webxdc app
+            tempQString1 = "image://webxdcImageProvider/";
+            tempQString1.append(m_webxdcImgProvider->getImageId(dc_get_id(currentMsgContext), m_chatID, dc_msg_get_id(currentMessageDraft), currentMessageDraft));
+
+            // the info JSON of the Webxdc app
+            tempText = dc_msg_get_webxdc_info(currentMessageDraft);
+            if (tempText) {
+                tempQString2 = tempText;
+                dc_str_unref(tempText);
+            } else {
+                // TODO: how to handle this situation?
+            }
+            
+            emit previewWebxdcAttachment(tempQString1, tempQString2);
+            break;
+        
         // add more when implemented
 
         default:
@@ -2182,6 +2239,155 @@ int ChatModel::indexToMessageId(int myindex)
 {
     return msgVector[myindex];
 }
+
+
+void ChatModel::setWebxdcInstance(int myindex)
+{
+    if (-1 == myindex) {
+        if (currentMessageDraft) {
+            m_webxdcInstanceMsgId = dc_msg_get_id(currentMessageDraft);
+        } else {
+            qDebug() << "ChatModel::setWebxdcInstance(): Error: called with -1 as param, but currentMessageDraft is null";
+            m_webxdcInstanceMsgId = 0;
+        }
+    } else {
+        m_webxdcInstanceMsgId = msgVector[myindex];
+    }
+}
+
+
+void ChatModel::sendWebxdcInstanceData()
+{
+    // update the dc_msg_t* used in the scheme handler and the
+    // id used for the storage name in the engine profile (both
+    // updated via WebxdcEngineProfile::configureNewInstance()
+    dc_msg_t* tempmsg = dc_get_msg(currentMsgContext, m_webxdcInstanceMsgId);
+    if (tempmsg) {
+        // assemble the id
+        QString id = m_accIdChatIdKey;
+        id.append("_");
+        QString tempQString;
+        tempQString.setNum(m_webxdcInstanceMsgId);
+        id.append(tempQString);
+
+        emit newWebxdcInstanceData(id, tempmsg);
+    } else {
+        qDebug() << "ChatModel::setWebxdcInstance(): ERROR: tempmsg is null";
+        // TODO show error?
+    }
+}
+
+
+void ChatModel::sendWebxdcUpdate(QString update, QString description)
+{
+    // TODO check return value?
+    int success = dc_send_webxdc_status_update(currentMsgContext, m_webxdcInstanceMsgId, update.toUtf8().constData(), description.toUtf8().constData());
+    if (!success) {
+        qDebug() << "ChatModel::sendWebxdcUpdate(): ERROR: dc_send_webxdc_status_update() failed";
+    }
+}
+
+
+QString ChatModel::getWebxdcUpdate(int last_serial)
+{
+    char* tempText = dc_get_webxdc_status_updates(currentMsgContext, m_webxdcInstanceMsgId, last_serial);
+    QString retval;
+    if (tempText) {
+        retval = tempText;
+        dc_str_unref(tempText);
+    } else {
+        retval = "";
+    }
+
+    return retval;
+}
+
+
+QString ChatModel::getWebxdcId()
+{
+    QString id = m_accIdChatIdKey;
+    id.append("_");
+    QString tempQString;
+    tempQString.setNum(m_webxdcInstanceMsgId);
+    id.append(tempQString);
+
+    return id;
+}
+
+
+QString ChatModel::getWebxdcJs(QString scriptname)
+{
+    if (scriptname == "qwebchannel.js") {
+        scriptname.prepend(":/qtwebchannel/");
+    } else {
+        scriptname.prepend(":/assets/webxdc/");
+    }
+    QFile jsfile(scriptname);
+
+    if (!jsfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "ChatModel::getWebxdcJs(): Could not open " << scriptname;
+        scriptname.prepend("console.log(\"ChatModel::getWebxdcJs() could not get the script ");
+        scriptname.append("\")");
+        return scriptname;
+    }
+
+    QTextStream in(&jsfile);
+    QString retval = in.readAll();
+    // not sure if this is needed
+    in.flush();
+    jsfile.close();
+    return retval;
+}
+
+
+void ChatModel::webxdcUpdateReceiver(uint32_t accID, int msgID)
+{
+    if (m_dhandler && m_dhandler->getCurrentAccountId() == accID && msgID == m_webxdcInstanceMsgId) {
+        emit updateCurrentWebxdc();
+    } 
+}
+
+
+void ChatModel::checkAndJumpToWebxdcParent(int myindex)
+{
+    uint32_t msgID = msgVector[myindex];
+    dc_msg_t* tempmsg = dc_get_msg(currentMsgContext, msgID);
+
+    if (tempmsg) {
+        // if a message has a parent, the parent could be a quote, or,
+        // if it's an info message, the parent could be a webxdc
+        // message.
+        dc_msg_t* parentmsg = dc_msg_get_parent(tempmsg);
+
+        // NULL if no parent
+        if (parentmsg) {
+            // In this method, only Webxdc parents are considered
+            if (dc_msg_get_viewtype(parentmsg) == DC_MSG_WEBXDC) {
+                uint32_t parentID = dc_msg_get_id(parentmsg);
+
+                // should be size_t, but the jump signal has an int
+                // parameter anyway
+                int parentIndex {-1};
+
+                for (size_t i = 0; i < msgVector.size(); ++i) {
+                    if (msgVector[i] == parentID) {
+                        parentIndex = static_cast<int>(i);
+                        break;
+                    }
+                }
+
+                if (parentIndex > 0) {
+                    emit jumpToMsg(parentIndex);
+                }
+            }
+
+            dc_msg_unref(parentmsg);
+        }
+
+        dc_msg_unref(tempmsg);
+    }
+}
+
 
 void ChatModel::downloadFullMessage(int myindex)
 {

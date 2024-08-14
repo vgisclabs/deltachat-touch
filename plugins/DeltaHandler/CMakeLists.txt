@@ -21,6 +21,7 @@ set(
     workflowConvertDbToEncrypted.cpp
     workflowConvertDbToUnencrypted.cpp
     fileImportSignalHelper.cpp
+    webxdcImageProvider.cpp
 )
 
 add_library(deltachat SHARED IMPORTED)
@@ -44,7 +45,8 @@ find_package(Qt5 COMPONENTS Qml REQUIRED)
 find_package(Qt5 COMPONENTS Quick REQUIRED)
 find_package(Qt5 COMPONENTS DBus REQUIRED)
 find_package(Qt5 COMPONENTS Multimedia REQUIRED)
-target_link_libraries(${PLUGIN} Qt5::Qml Qt5::Quick Qt5::DBus Qt5::Multimedia deltachat quirc)
+find_package(Qt5WebEngine REQUIRED)
+target_link_libraries(${PLUGIN} Qt5::Qml Qt5::Quick Qt5::DBus Qt5::Multimedia Qt5::WebEngine deltachat quirc)
 
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH

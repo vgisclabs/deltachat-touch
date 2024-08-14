@@ -77,5 +77,6 @@
         <file>pages/UnblockContactPopup.qml</file>
         <file>pages/UrlDispatchAccountChooserPopup.qml</file>
         <file>pages/VerifiedPopup.qml</file>
+        <file>pages/WebxdcPage.qml</file>
     </qresource>
 </RCC>

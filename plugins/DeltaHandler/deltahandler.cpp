@@ -358,6 +358,11 @@ DeltaHandler::DeltaHandler(QObject* parent)
         qFatal("DeltaHandler::DeltaHandler: Could not connect signal messageReaction to slot messageStatusChangedSlot");
     }
 
+    connectSuccess = connect(eventThread, SIGNAL(webxdcStatusUpdate(uint32_t, int)), m_chatmodel, SLOT(webxdcUpdateReceiver(uint32_t, int)));
+    if (!connectSuccess) {
+        qFatal("DeltaHandler::DeltaHandler: Could not connect signal messageReaction to slot messageStatusChangedSlot");
+    }
+
     connectSuccess = connect(m_accountsmodel, SIGNAL(deletedAccount(uint32_t)), this, SLOT(removeClosedAccountFromList(uint32_t)));
     if (!connectSuccess) {
         qFatal("DeltaHandler::DeltaHandler: Could not connect signal deletedAccount of m_accountsmodel to slot removeClosedAccountFromList");

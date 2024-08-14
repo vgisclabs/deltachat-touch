@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -16,14 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtQml>
-#include <QtQml/QQmlContext>
+#ifndef WEBXDCSCHEMEHANDLER_H
+#define WEBXDCSCHEMEHANDLER_H
 
-#include "plugin.h"
-#include "DTWebEngineProfile.h"
+#include <QWebEngineUrlSchemeHandler>
 
-void DTWebEngineProfilePlugin::registerTypes(const char *uri)
+#include "deltachat.h"
+
+class WebxdcSchemeHandler : public QWebEngineUrlSchemeHandler
 {
-    // @uri DTWebEngineProfile
-    qmlRegisterType<DTWebEngineProfile>(uri, 1, 0, "DTWebEngineProfile");
-}
+
+    Q_OBJECT
+public:
+    explicit WebxdcSchemeHandler(QObject *parent = Q_NULLPTR);
+    ~WebxdcSchemeHandler();
+    void requestStarted(QWebEngineUrlRequestJob *request);
+    void setWebxdcInstance(dc_msg_t* msg);
+
+signals:
+    void urlReceivedFromWebxdc(QString url);
+
+private:
+    dc_msg_t* m_webxdcInstance;
+};
+
+#endif //WEBXDCSCHEMEHANDLER_H

@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * 
  * Much of the code in this file was taken from 
  * Dekko2, commit 17338101bf1dcdd9ce1aad59b7d9d2ab429ecb7f
@@ -24,36 +24,31 @@
  * modified by (C) 2023 Lothar Ketterer
  */
 
-#ifndef DTWEBENGINEPROFILE_H
-#define DTWEBENGINEPROFILE_H
+#ifndef HTMLMSGREQUESTINTERCEPTOR_H
+#define HTMLMSGREQUESTINTERCEPTOR_H
 
-#include "DTWebEngineUrlRequestInterceptor.h"
 #include <QString>
 #include <QUrl>
-#include <QQuickWebEngineProfile>
+#include <QWebEngineUrlRequestInterceptor>
 
-class DTWebEngineProfile : public QQuickWebEngineProfile
+class HtmlMsgRequestInterceptor : public QWebEngineUrlRequestInterceptor
 {
-    Q_OBJECT
-    Q_PROPERTY(bool remoteContentAllowed READ isRemoteContentAllowed WRITE setRemoteContentAllowed NOTIFY remoteContentAllowedChanged)
 
+    Q_OBJECT
 public:
-    explicit DTWebEngineProfile(QQuickWebEngineProfile *parent = Q_NULLPTR);
-    ~DTWebEngineProfile() {
+    void interceptRequest(QWebEngineUrlRequestInfo &info);
+    explicit HtmlMsgRequestInterceptor(QObject *parent = Q_NULLPTR);
+    ~HtmlMsgRequestInterceptor() {
     }
 
-    Q_INVOKABLE void setRemoteContentAllowed(bool allowed);
-    Q_INVOKABLE bool isRemoteContentAllowed() const;
+    void setBlockRemoteResources(bool doBlock);
+    bool areRemoteResourcesBlocked() const;
 
 signals:
-    void remoteContentBlocked();
-    void remoteContentAllowedChanged();
-
-public slots:
-    void onInterceptedRemoteRequest(bool wasBlocked);
+    void interceptedRemoteRequest(bool wasBlocked);
 
 private:
-    DTWebEngineUrlRequestInterceptor urlRequestInterceptor;
+    bool remoteResourcesAreBlocked;
 };
 
-#endif
+#endif // HTMLMSGREQUESTINTERCEPTOR_H

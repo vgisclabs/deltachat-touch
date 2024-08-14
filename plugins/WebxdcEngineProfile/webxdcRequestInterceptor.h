@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -16,18 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DELTAHANDLER_PLUGIN_H
-#define DELTAHANDLER_PLUGIN_H
-#include <QQmlExtensionPlugin>
+#ifndef WEBXDCREQUESTINTERCEPTOR_H
+#define WEBXDCREQUESTINTERCEPTOR_H
 
-class DeltaHandlerPlugin : public QQmlExtensionPlugin
+#include <QWebEngineUrlRequestInterceptor>
+#include <QWebEngineUrlRequestInfo>
+
+class WebxdcRequestInterceptor : public QWebEngineUrlRequestInterceptor
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
 
+    Q_OBJECT
 public:
-    void registerTypes(const char *uri);
-    void initializeEngine(QQmlEngine *engine, const char *uri);
+    explicit WebxdcRequestInterceptor(QObject *parent = Q_NULLPTR);
+    ~WebxdcRequestInterceptor() = default;
+    void interceptRequest(QWebEngineUrlRequestInfo &info);
 };
 
-#endif
+#endif //WEBXDCREQUESTINTERCEPTOR_H

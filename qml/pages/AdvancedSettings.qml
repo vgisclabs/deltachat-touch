@@ -117,6 +117,24 @@ Page {
 //                color: theme.palette.normal.background
 //            }
 
+            Rectangle {
+                id: allAccountsSeparator
+                height: profileSpecificSeparatorLabel.contentHeight + units.gu(4)
+                width: parent.width
+                Label {
+                    id: allAccountsSeparatorLabel
+                    anchors {
+                        top: allAccountsSeparator.top
+                        topMargin: units.gu(3)
+                        horizontalCenter: allAccountsSeparator.horizontalCenter
+                    }
+                    text: i18n.tr("All Accounts")
+                    //font.bold: true
+                    fontSize: "large"
+                }
+                color: theme.palette.normal.background
+            }
+
             ListItem {
                 id: voiceMessageQualityItem
                 height: voiceMessageQualityLayout.height + (divider.visible ? divider.height : 0)
@@ -145,6 +163,83 @@ Page {
                 onClicked: {
                     PopupUtils.open(popoverComponentVoiceMessageQuality, voiceMessageQualityItem)
                 }
+            }
+
+            ListItem {
+                height: logviewerLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: logviewerLayout
+                    title.text: i18n.tr("View Log")
+                    title.font.bold: true
+
+                    Icon {
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    extraStack.push(Qt.resolvedUrl("LogViewer.qml"))
+                }
+            }
+
+            ListItem {
+                id: webxdcTesting
+                height: webxdcTestingLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: webxdcTestingLayout
+                    title.text: i18n.tr("Enable Webxdc support")
+                    title.font.bold: true
+                    summary.wrapMode: Text.WordWrap
+
+
+                    Switch {
+                        id: webxdcTestingSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: root.webxdcTestingEnabled
+                        onCheckedChanged: {
+                            if (webxdcTestingSwitch.checked !== root.webxdcTestingEnabled) {
+                                if (root.webxdcTestingEnabled) {
+                                    root.webxdcTestingEnabled = false
+                                } else {
+                                    let popup = PopupUtils.open(
+                                        Qt.resolvedUrl('ConfirmDialog.qml'),
+                                        advancedSettingsPage,
+                                        { "dialogTitle": i18n.tr("Enable Webxdc support?"),
+                                          "dialogText": i18n.tr("Webxdc support is currently experimental.\n\nSome functions such as file import or sending files to other chats (needed for, e.g., the Webxdc Store app) are not implemented yet.\n\nDownload apps from webxdc.org and add them to chats as file attachments."),
+                                          "okButtonText": i18n.tr("Enable Webxdc")}
+                                    )       
+                                    popup.confirmed.connect(function() { root.webxdcTestingEnabled = true })
+                                    popup.cancelled.connect(function() { webxdcTestingSwitch.checked = false })
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                id: profileSpecificSeparator
+                height: profileSpecificSeparatorLabel.contentHeight + units.gu(4)
+                width: parent.width
+                Label {
+                    id: profileSpecificSeparatorLabel
+                    anchors {
+                        top: profileSpecificSeparator.top
+                        topMargin: units.gu(3)
+                        horizontalCenter: profileSpecificSeparator.horizontalCenter
+                    }
+                    text: i18n.tr("Current Account")
+                    //font.bold: true
+                    fontSize: "large"
+                }
+                color: theme.palette.normal.background
             }
 
             Rectangle {

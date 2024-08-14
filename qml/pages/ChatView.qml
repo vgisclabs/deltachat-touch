@@ -54,6 +54,7 @@ Page {
     property bool attachFilePreviewMode: false
     property bool attachAudioPreviewMode: false
     property bool attachVoicePreviewMode: false
+    property bool attachWebxdcPreviewMode: false
     property string attachAudioPath
     property bool isRecording: false
 
@@ -65,6 +66,8 @@ Page {
 
     property bool requestQrScanPage: false
 
+    property int highlightedIndex: -1
+
     signal leavingChatViewPage(bool qrScanPageRequested)
 
     signal messageQueryTextChanged(string query)
@@ -72,6 +75,7 @@ Page {
 
     function messageJump(jumpIndex) {
         view.positionViewAtIndex(jumpIndex, ListView.End)
+        highlightedIndex = jumpIndex
 
     }
 
@@ -352,6 +356,7 @@ Page {
             attachImagePreviewMode = false
             attachFilePreviewMode = false
             attachAudioPreviewMode = false
+            attachWebxdcPreviewMode = false
 
             if (isRecording) {
                 DeltaHandler.dismissAudioRecording()
@@ -423,6 +428,14 @@ Page {
             attachAudioPath = Qt.resolvedUrl(StandardPaths.locate(StandardPaths.CacheLocation, filepathInCache))
             attachAudioPreviewMode = true
             attachFilePreviewLabel.text = filename;
+        }
+
+        onPreviewWebxdcAttachment: {
+            attachWebxdcPreviewMode = true
+            webxdcPreviewImage.source = webxdcIconPath
+
+            let webxdcPreviewInfo = JSON.parse(webxdcPreviewInfoJson)
+            webxdcPreviewNameLabel.text = webxdcPreviewInfo.name
         }
 
         // onPreviewVoiceAttachment is NOT emitted by deltahandler
@@ -918,6 +931,7 @@ Page {
                         case DeltaHandler.VoiceType:
                         case DeltaHandler.VideoType:
                         case DeltaHandler.FileType:
+                        case DeltaHandler.WebxdcType:
                             return false;
                             break;
 
@@ -949,6 +963,31 @@ Page {
                     }
                 }
                 property var reactions: model.reactions
+                property var webxdcInfo: (msgViewType === DeltaHandler.WebxdcType) ? JSON.parse(model.webxdcInfo) : null
+
+                property bool isHighlighted: index === chatViewPage.highlightedIndex
+
+                onIsHighlightedChanged: {
+                    if (isHighlighted) {
+                        colorAnim.start()
+                    }
+                }
+
+                ColorAnimation {
+                    id: colorAnim
+
+                    target: message
+                    property: "color"
+
+                    from: root.unreadMessageBarColor
+                    to: message.color
+                    duration: 1400
+                    easing.type: Easing.InQuart
+
+                    onFinished: {
+                        chatViewPage.highlightedIndex = -1
+                    }
+                }
 
                 onPressAndHold: {
                     if (!isInfo && !isUnreadMsgsBar && chatCanSend) {
@@ -1245,25 +1284,30 @@ Page {
                     }
 
                     MouseArea {
-                        // Is only enabled if the message is an info message
-                        // about protection status changes (enabled/disabled).
-                        // In this case, the message bubble (and the icon above, see
-                        // protectionIconLoader) should be clickable.
+                        // For info messages. If the message concerns protection
+                        // status changes (enabled/disabled), clicks on the message
+                        // bubble (and the icon above, see protectionIconLoader)
+                        // opens an info popup.
+                        // If it is not about protection status, C++ side will check
+                        // whether it has a parent message of type webxdc. If yes,
+                        // a jump to the parent is triggered in C++.
                         anchors.fill: parent
-                        enabled: isProtectionInfoMsg
+                        enabled: isInfoMsg
                         onClicked: {
                             // TODO implement local help
-                            if (DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) {
+                            if (isProtectionInfoMsg && DeltaHandler.InfoProtectionEnabled === model.protectionInfoType) {
                                 let popup2 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": true })
                                 popup2.learnMore.connect(function() {
                                     Qt.openUrlExternally("https://delta.chat/en/help#e2eeguarantee")
                                 })
-                            } else {
+                            } else if (isProtectionInfoMsg) {
                                 let popup3 = PopupUtils.open(Qt.resolvedUrl('VerifiedPopup.qml'), chatViewPage, { "protectionEnabled": false , "chatuser": chatname })
                                 popup3.scanQr.connect(closeAndStartQr)
                                 popup3.learnMore.connect(function() {
                                     Qt.openUrlExternally("https://delta.chat/en/help#nocryptanymore")
                                 })
+                            } else {
+                                DeltaHandler.chatmodel.checkAndJumpToWebxdcParent(index)
                             }
                         }
                     }
@@ -1280,16 +1324,18 @@ Page {
                             let g = unknownTypeLoader.width
                             let h = toDownloadLoader.width
                             let i = htmlLoader.width
+                            let j = webxdcLoader.width
 
                             let m = a > b ? a : b
                             let n = c > d ? c : d
                             let o = e > f ? e : f
                             let p = g > h ? g : h
+                            let q = i > j ? i : j
 
-                            let q = o > i ? o : i
+                            let r = o > p ? o : p
 
                             let x = m > n ? m : n
-                            let y = q > p ? q : p
+                            let y = q > r ? q : r
 
                             return x > y ? x : y
                         }
@@ -1373,6 +1419,137 @@ Page {
                                         fontSize: root.scaledFontSizeSmaller
                                         font.bold: true
                                         color: quoteRectangle.color
+                                    }
+                                }
+                            }
+                        }
+
+                        Loader {
+                            id: webxdcLoader
+                            active: msgViewType === DeltaHandler.WebxdcType
+
+                            function webxdcClicked() {
+                                if (root.webxdcTestingEnabled) {
+                                    DeltaHandler.chatmodel.setWebxdcInstance(index)
+                                    let tempUsername = DeltaHandler.getCurrentUsername()
+                                    let tempEmailAddr = DeltaHandler.getCurrentEmail()
+                                    if (tempUsername == "") {
+                                        tempUsername = tempEmailAddr
+                                    }
+                                    extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
+                                        "headerTitle": webxdcInfo.name,
+                                        "username": tempUsername,
+                                        "useraddress": tempEmailAddr }
+                                    )
+                                } else {
+                                    PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc support is currently experimental. Go to Advanced Settings to enable it." })
+                                }
+                            }
+
+                            sourceComponent: Column {
+
+                                spacing: units.gu(0.25)
+
+                                UbuntuShape {
+                                    width: root.scaledFontSizeInPixels * 10
+                                    height: width
+                                    backgroundColor: msgbox.backgroundColor
+                                    sourceFillMode: UbuntuShape.PreserveAspectFit
+
+                                    source: Image {
+                                        source: model.webxdcImage
+                                    }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
+                                    }
+                                }
+
+                                Rectangle {
+                                    height: webxdcNameLabel.height
+                                    width: webxdcNameLabel.contentWidth
+                                    color: msgbox.color
+
+                                    Label {
+                                        id: webxdcNameLabel
+                                        width: chatViewPage.width - (isOther ? avatarLoader.width : 0) - units.gu(10)
+                                        text: webxdcInfo.name
+                                        elide: Text.ElideRight
+                                        color: textColor
+                                        fontSize: root.scaledFontSize
+                                        font.bold: true
+                                    }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
+                                    }
+                                }
+
+                                Rectangle {
+                                    height: webxdcDocumentLabel.height
+                                    width: webxdcDocumentLabel.contentWidth
+                                    color: msgbox.color
+                                    visible: webxdcDocumentLabel.text !== ""
+
+                                    Label {
+                                        id: webxdcDocumentLabel
+                                        width: webxdcNameLabel.width
+                                        text: webxdcInfo.document
+                                        elide: Text.ElideRight
+                                        color: textColor
+                                        fontSize: root.scaledFontSizeSmaller
+                                    }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
+                                    }
+                                }
+
+                                Rectangle {
+                                    height: webxdcSummaryLabel.height
+                                    width: webxdcSummaryLabel.contentWidth
+                                    color: msgbox.color
+                                    visible: webxdcSummaryLabel.text !== ""
+
+                                    Label {
+                                        id: webxdcSummaryLabel
+                                        width: webxdcNameLabel.width
+                                        text: webxdcInfo.summary
+                                        elide: Text.ElideRight
+                                        color: textColor
+                                        fontSize: root.scaledFontSizeSmaller
+                                    }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
+                                    }
+                                }
+
+                                Rectangle {
+                                    height: startWebxdcLabel.height + units.gu(1)
+                                    width: startWebxdcLabel.contentWidth
+                                    color: msgbox.color
+
+                                    Label {
+                                        id: startWebxdcLabel
+                                            anchors {
+                                                bottom: parent.bottom
+                                                bottomMargin: units.gu(0.5)
+                                            }
+                                        width: webxdcNameLabel.width
+                                        text: i18n.tr("Start…")
+                                        elide: Text.ElideRight
+                                        fontSize: root.scaledFontSize
+                                        color: msgLabel.linkColor
+                                    }
+                                
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: webxdcClicked()
                                     }
                                 }
                             }
@@ -1594,6 +1771,7 @@ Page {
                                     anchors.fill: parent
                                     onClicked: {
                                         let urlpath = StandardPaths.locate(StandardPaths.CacheLocation, DeltaHandler.chatmodel.getHtmlMessage(index))
+
                                         let msgsubject = DeltaHandler.chatmodel.getHtmlMsgSubject(index)
                                         extraStack.push(Qt.resolvedUrl('MessageHtmlView.qml'), {"htmlPath": urlpath, "headerTitle": msgsubject, "overrideAndBlockAlwaysLoadRemote": ((protectionIsBroken || isContactRequest) && isOther)})
                                     }
@@ -1834,7 +2012,7 @@ Page {
                         }
                     } // ListView id: reactionsView
                 } // end Loader id: reactionsLoader
-            } // end ListItem id: delegateListItem
+            } // end ListItem id: message
 
         verticalLayoutDirection: ListView.BottomToTop
         spacing: units.gu(1)
@@ -2094,6 +2272,8 @@ Page {
                     tempHeight = attachPreviewAnimatedImage.height
                 } else if (attachImagePreviewMode) {
                     tempHeight = attachPreviewAnimatedImage.height
+                } else if (attachWebxdcPreviewMode) {
+                    tempHeight = attachPreviewWebxdcRect.height
                 } else if (attachFilePreviewLabel.contentHeight > cancelAttachmentShape.height) {
                     tempHeight = attachFilePreviewLabel.contentHeight
                 } else {
@@ -2113,7 +2293,7 @@ Page {
                 left: parent.left
             }
 
-            visible: attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode
+            visible: attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode || attachWebxdcPreviewMode
 
             Rectangle {
                 id: attachVerticalCenterHelperRect
@@ -2226,6 +2406,96 @@ Page {
                 fillMode: Image.PreserveAspectFit
             }
 
+            Rectangle {
+                id: attachPreviewWebxdcRect
+
+                width: chatViewPage.width
+                height: webxdcPreviewColumn.height
+
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                }
+
+                color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                visible: attachWebxdcPreviewMode
+
+                Column {
+                    id: webxdcPreviewColumn
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    spacing: units.gu(0.25)
+
+                    UbuntuShape {
+                        id: prevWebxdcIcon
+                        width: root.scaledFontSizeInPixels * 10
+                        height: width
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        backgroundColor: attachPreviewWebxdcRect.color
+                        sourceFillMode: UbuntuShape.PreserveAspectFit
+
+                        source: Image {
+                            id: webxdcPreviewImage
+                        }
+                    }
+                
+                    Label {
+                        id: webxdcPreviewNameLabel
+                        anchors.left: prevWebxdcIcon.left
+                        width: prevWebxdcIcon.width
+                        elide: Text.ElideRight
+                        fontSize: root.scaledFontSize
+                        font.bold: true
+                    }
+
+                    Rectangle {
+                        height: startWebxdcPreviewLabel.height + units.gu(1)
+                        width: prevWebxdcIcon.width
+                        anchors.left: prevWebxdcIcon.left
+                        color: attachPreviewWebxdcRect.color
+
+                        Label {
+                            id: startWebxdcPreviewLabel
+                                anchors {
+                                    bottom: parent.bottom
+                                    bottomMargin: units.gu(0.5)
+                                }
+                            width: parent.width
+                            text: i18n.tr("Tap to Open")
+                            fontSize: root.scaledFontSize
+                        }
+                    }
+
+                    Rectangle {
+                        id: spacer
+                        height: units.gu(1)
+                        width: units.gu(1)
+                        color: attachPreviewWebxdcRect.color
+                    }
+                }
+                    
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (root.webxdcTestingEnabled) {
+                            DeltaHandler.chatmodel.setWebxdcInstance(-1)
+                            let tempUsername = DeltaHandler.getCurrentUsername()
+                            let tempEmailAddr = DeltaHandler.getCurrentEmail()
+                            if (tempUsername == "") {
+                                tempUsername = tempEmailAddr
+                            }
+                            extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
+                                "headerTitle": webxdcPreviewNameLabel.text,
+                                "username": tempUsername,
+                                "useraddress": tempEmailAddr }
+                            )
+                        } else {
+                            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc is not implemented yet, sorry" })
+                        }
+                    }
+                }
+            }
+
             UbuntuShape {
                 id: cancelAttachmentShape
                 width: units.gu(4)
@@ -2269,6 +2539,7 @@ Page {
                                 attachImagePreviewMode = false
                                 attachFilePreviewMode = false
                                 attachAudioPreviewMode = false
+                                attachWebxdcPreviewMode = false
                             }
                         }
                     }
@@ -2287,7 +2558,7 @@ Page {
                 leftMargin: units.gu(0.5)
                 verticalCenter: messageEnterField.verticalCenter
             }
-            enabled: !(attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode)
+            enabled: !(attachAnimatedImagePreviewMode || attachImagePreviewMode || attachFilePreviewMode || attachAudioPreviewMode || attachVoicePreviewMode || attachWebxdcPreviewMode)
 
             Icon {
                 id: attachIcon
@@ -2314,6 +2585,8 @@ Page {
             width: parent.width - attachIconShape.width - sendIconShape.width - units.gu(2)
 
             Keys.onPressed: {
+                // Send with Ctrl-Enter (always) and with Enter (only if
+                // option to send with Enter is set)
                 if ((event.key == Qt.Key_Return) && ((event.modifiers & Qt.ControlModifier) || root.enterKeySends)) {
                     event.accepted = true
 
@@ -2328,6 +2601,7 @@ Page {
                         attachFilePreviewMode = false
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
+                        attachWebxdcPreviewMode = false
 
                         // TODO for some reason, the Return makes it to text of the TextArea even
                         // though event.accepted is set to true. The '\n' is removed from the
@@ -2421,6 +2695,7 @@ Page {
                         attachFilePreviewMode = false
                         attachAudioPreviewMode = false
                         attachVoicePreviewMode = false
+                        attachWebxdcPreviewMode = false
 
                         DeltaHandler.chatmodel.sendMessage(messageEnterField.text, chatViewPage.pageAccID, chatViewPage.pageChatID)
 
@@ -3029,6 +3304,7 @@ Page {
                             attachImagePreviewMode = false
                             attachFilePreviewMode = false
                             attachAudioPreviewMode = false
+                            attachWebxdcPreviewMode = false
                         }
 
                         PopupUtils.close(popoverConfirmDeletion)

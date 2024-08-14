@@ -24,7 +24,7 @@ import QtWebEngine 1.8
 import Qt.labs.platform 1.1
 
 import DeltaHandler 1.0
-import DTWebEngineProfile 1.0
+import HtmlMsgEngineProfile 1.0
 
 Page {
     id: htmlViewPage
@@ -270,7 +270,7 @@ Page {
             defaultTextEncoding: "UTF-8"
         }
 
-        profile: DTWebEngineProfile {
+        profile: HtmlMsgEngineProfile {
             id: webengineprofile
 
             persistentCookiesPolicy: WebEngineProfile.NoPersistentCookies

@@ -87,7 +87,8 @@ Page {
 
     function qrActionSwitch(qrstate) {
         switch (qrstate) {
-            case DeltaHandler.DT_QR_BACKUP:
+            case DeltaHandler.DT_QR_BACKUP: // fallthrough
+            case DeltaHandler.DT_QR_BACKUP2:
                 let popup4 = PopupUtils.open(
                     Qt.resolvedUrl("ConfirmDialog.qml"),
                     null,

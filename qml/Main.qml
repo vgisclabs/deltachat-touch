@@ -42,7 +42,7 @@ MainView {
 //    }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.5.2-pre02'
+    property string version: '1.5.2-pre03'
     property string oldVersion: "unknown"
 
     // holds the page item representing the ChatView after it
@@ -414,8 +414,9 @@ MainView {
                 urlstring = ""
                 break;
 
-            case DeltaHandler.DT_QR_BACKUP:
-                console.log("qr state is DT_QR_BACKUP")
+            case DeltaHandler.DT_QR_BACKUP: // fallthrough
+            case DeltaHandler.DT_QR_BACKUP2:
+                console.log("qr state is DT_QR_BACKUP or DT_QR_BACKUP2")
                 let popup11 = PopupUtils.open(
                     Qt.resolvedUrl("pages/ConfirmDialog.qml"),
                     chatlistPage,

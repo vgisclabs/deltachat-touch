@@ -215,8 +215,9 @@ Page {
                     camera.startAndConfigure()
                 })
                 break;
-            case DeltaHandler.DT_QR_BACKUP:
-                console.log("qr state is DT_QR_BACKUP")
+            case DeltaHandler.DT_QR_BACKUP: // fallthrough
+            case DeltaHandler.DT_QR_BACKUP2:
+                console.log("qr state is DT_QR_BACKUP or DT_QR_BACKUP2")
                 popup = PopupUtils.open(
                     Qt.resolvedUrl("QrConfirmPopup.qml"),
                     null,

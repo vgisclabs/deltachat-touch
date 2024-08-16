@@ -205,6 +205,17 @@ Page {
     header: PageHeader {
         id: qrHeader
         title: i18n.tr("Scan QR Code")
+
+        leadingActionBar.actions: [
+            Action {
+                //iconName: "go-previous"
+                iconSource: "qrc:///assets/suru-icons/go-previous.svg"
+                text: i18n.tr("Back")
+                onTriggered: {
+                    extraStack.pop()
+                }
+            }
+        ]
     }
 
     Rectangle {

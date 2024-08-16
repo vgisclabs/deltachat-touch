@@ -2916,7 +2916,7 @@ void DeltaHandler::stop_io()
         m_networkingIsStarted = false;
     }
     else {
-        qDebug() << "DeltaHandler::stop_io(): ERROR: stop_io() called, but m_networkingIsStarted is false";
+        qDebug() << "DeltaHandler::stop_io(): stop_io() called, but m_networkingIsStarted is false, not doing anything";
     }
 }
 
@@ -4006,7 +4006,8 @@ void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
                 emit finishedSetConfigFromQr(false, calledAfterUrlReceived);
             }
             break;
-        case DT_QR_BACKUP:
+        case DT_QR_BACKUP: // fallthrough
+        case DT_QR_BACKUP2:
             prepareQrBackupImport(calledAfterUrlReceived);
             break;
         case DT_QR_WEBRTC_INSTANCE:
@@ -4182,6 +4183,9 @@ int DeltaHandler::evaluateQrCode(QString clipboardData)
         case DC_QR_BACKUP:
             m_qrTempState = QrState::DT_QR_BACKUP;
             break;
+        case DC_QR_BACKUP2:
+            m_qrTempState = QrState::DT_QR_BACKUP2;
+            break;
         case DC_QR_WEBRTC_INSTANCE:
             m_qrTempState = QrState::DT_QR_WEBRTC_INSTANCE;
             break;
@@ -4302,12 +4306,12 @@ void DeltaHandler::startQrBackupImport()
     paramString.setNum(dc_get_id(tempContext));
 
     paramString.append(", \"");
-
-    paramString.append(m_qrTempText.toUtf8().constData());
-
+    // need to escape '"' for sending it as json parameter
+    QString qrContentEscaped = m_qrTempText;
+    qrContentEscaped.replace("\"", "\\\"");
+    paramString.append(qrContentEscaped);
     paramString.append("\"");
 
-    // then the complete request
     QString requestString = constructJsonrpcRequestString("get_backup", paramString);
 
     sendJsonrpcRequest(requestString);
@@ -4404,21 +4408,20 @@ void DeltaHandler::evaluateQrImage(QImage image, bool emitFailureSignal)
         /* Decoding stage */
         err = quirc_decode(&code, &data);
         if (err) {
-            printf("DeltaHandler::evaluateQrImage: DECODE FAILED: %s\n", quirc_strerror(err));
+            qDebug() << "DeltaHandler::evaluateQrImage: DECODE FAILED: " << quirc_strerror(err);
             if (emitFailureSignal) {
                 emit qrDecodingFailed(QString("Decode failed: ") + quirc_strerror(err));
             }
         }
         else {
-            printf("DeltaHandler::evaluateQrImage: Data: %s\n", data.payload);
             QString tempQString{""};
             // adding it char by char as I couldn't figure out how to
             // pass data.payload as argument to a QString constructor
-            // as it is not const. Embarassing, I know. If you know how
-            // this should be done, please let me know.
+            // as it is not const
             for (int k = 0; k < data.payload_len; ++k) {
                 tempQString += data.payload[k];
             }
+            qDebug() << "DeltaHandler::evaluateQrImage: Data: " << tempQString;
             emit qrDecoded(tempQString);
         }
     }

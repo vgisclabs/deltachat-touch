@@ -409,7 +409,7 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  * - `socks5_user` = SOCKS5 proxy username
  * - `socks5_password` = SOCKS5 proxy password
  * - `imap_certificate_checks` = how to check IMAP certificates, one of the @ref DC_CERTCK flags, defaults to #DC_CERTCK_AUTO (0)
- * - `smtp_certificate_checks` = how to check SMTP certificates, one of the @ref DC_CERTCK flags, defaults to #DC_CERTCK_AUTO (0)
+ * - `smtp_certificate_checks` = deprecated option, should be set to the same value as `imap_certificate_checks` but ignored by the new core
  * - `displayname`  = Own name to use when sending messages. MUAs are allowed to spread this way e.g. using CC, defaults to empty
  * - `selfstatus`   = Own status to display, e.g. in e-mail footers, defaults to empty
  * - `selfavatar`   = File containing avatar. Will immediately be copied to the 
@@ -420,7 +420,8 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  *                    and also recoded to a reasonable size.
  * - `e2ee_enabled` = 0=no end-to-end-encryption, 1=prefer end-to-end-encryption (default)
  * - `mdns_enabled` = 0=do not send or request read receipts,
- *                    1=send and request read receipts (default)
+ *                    1=send and request read receipts
+ *                    default=send and request read receipts, only send but not reuqest if `bot` is set
  * - `bcc_self`     = 0=do not send a copy of outgoing messages to self (default),
  *                    1=send a copy of outgoing messages to self.
  *                    Sending messages to self is needed for a proper multi-account setup,
@@ -481,8 +482,9 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  * - `bot`          = Set to "1" if this is a bot.
  *                    Prevents adding the "Device messages" and "Saved messages" chats,
  *                    adds Auto-Submitted header to outgoing messages,
- *                    accepts contact requests automatically (calling dc_accept_chat() is not needed for bots)
- *                    and does not cut large incoming text messages.
+ *                    accepts contact requests automatically (calling dc_accept_chat() is not needed),
+ *                    does not cut large incoming text messages,
+ *                    handles existing messages the same way as new ones if `fetch_existing_msgs=1`.
  * - `last_msg_id` = database ID of the last message processed by the bot.
  *                   This ID and IDs below it are guaranteed not to be returned
  *                   by dc_get_next_msgs() and dc_wait_next_msgs().
@@ -493,8 +495,8 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  *                   For most bots calling `dc_markseen_msgs()` is the
  *                   recommended way to update this value
  *                   even for self-sent messages.
- * - `fetch_existing_msgs` = 1=fetch most recent existing messages on configure (default),
- *                    0=do not fetch existing messages on configure.
+ * - `fetch_existing_msgs` = 0=do not fetch existing messages on configure (default),
+ *                    1=fetch most recent existing messages on configure.
  *                    In both cases, existing recipients are added to the contact database.
  * - `disable_idle` = 1=disable IMAP IDLE even if the server supports it,
  *                    0=use IMAP IDLE if the server supports it.
@@ -518,11 +520,19 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  *                    1=After the key changed, `dc_chat_can_send()` returns false and `dc_chat_is_protection_broken()` returns true
  *                    until `dc_accept_chat()` is called.
  * - `is_chatmail` = 1 if the the server is a chatmail server, 0 otherwise.
+ * - `is_muted`     = Whether a context is muted by the user.
+ *                    Muted contexts should not sound, vibrate or show notifications.
+ *                    In contrast to `dc_set_chat_mute_duration()`,
+ *                    fresh message and badge counters are not changed by this setting,
+ *                    but should be tuned down where appropriate.
  * - `ui.*`         = All keys prefixed by `ui.` can be used by the user-interfaces for system-specific purposes.
  *                    The prefix should be followed by the system and maybe subsystem,
  *                    e.g. `ui.desktop.foo`, `ui.desktop.linux.bar`, `ui.android.foo`, `ui.dc40.bar`, `ui.bot.simplebot.baz`.
  *                    These keys go to backups and allow easy per-account settings when using @ref dc_accounts_t,
  *                    however, are not handled by the core otherwise.
+ * - `webxdc_realtime_enabled` = Whether the realtime APIs should be enabled.
+ *                               0 = WebXDC realtime API is disabled and behaves as noop (default).
+ *                               1 = WebXDC realtime API is enabled.
  *
  * If you want to retrieve a value, use dc_get_config().
  *
@@ -2495,6 +2505,7 @@ void            dc_stop_ongoing_process      (dc_context_t* context);
 #define         DC_QR_FPR_WITHOUT_ADDR       230 // test1=formatted fingerprint
 #define         DC_QR_ACCOUNT                250 // text1=domain
 #define         DC_QR_BACKUP                 251
+#define         DC_QR_BACKUP2                252
 #define         DC_QR_WEBRTC_INSTANCE        260 // text1=domain, text2=instance pattern
 #define         DC_QR_ADDR                   320 // id=contact
 #define         DC_QR_TEXT                   330 // text1=text
@@ -2541,6 +2552,7 @@ void            dc_stop_ongoing_process      (dc_context_t* context);
  *   if so, call dc_set_config_from_qr() and then dc_configure().
  *
  * - DC_QR_BACKUP:
+ * - DC_QR_BACKUP2:
  *   ask the user if they want to set up a new device.
  *   If so, pass the qr-code to dc_receive_backup().
  *
@@ -6639,12 +6651,16 @@ void dc_event_unref(dc_event_t* event);
 /// "Message opened"
 ///
 /// Used in subjects of outgoing read receipts.
+///
+/// @deprecated Deprecated 2024-07-26
 #define DC_STR_READRCPT                   31
 
 /// "The message '%1$s' you sent was displayed on the screen of the recipient."
 ///
 /// Used as message text of outgoing read receipts.
 /// - %1$s will be replaced by the subject of the displayed message
+///
+/// @deprecated Deprecated 2024-06-23
 #define DC_STR_READRCPT_MAILBODY          32
 
 /// @deprecated Deprecated, this string is no longer needed.
@@ -7363,7 +7379,7 @@ void dc_event_unref(dc_event_t* event);
 /// Used as info message.
 #define DC_STR_SECUREJOIN_WAIT_TIMEOUT 191
 
-/// "Contact"
+/// "Contact". Deprecated, currently unused.
 #define DC_STR_CONTACT 200
 
 /**

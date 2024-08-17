@@ -1430,21 +1430,26 @@ Page {
                             id: webxdcLoader
                             active: msgViewType === DeltaHandler.WebxdcType
 
+                            function startWebxdc() {
+                                DeltaHandler.chatmodel.setWebxdcInstance(index)
+                                let tempUsername = DeltaHandler.getCurrentUsername()
+                                let tempEmailAddr = DeltaHandler.getCurrentEmail()
+                                if (tempUsername == "") {
+                                    tempUsername = tempEmailAddr
+                                }
+                                extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
+                                    "headerTitle": webxdcInfo.name,
+                                    "username": tempUsername,
+                                    "useraddress": tempEmailAddr }
+                                )
+                            }
+
                             function webxdcClicked() {
                                 if (root.webxdcTestingEnabled) {
-                                    DeltaHandler.chatmodel.setWebxdcInstance(index)
-                                    let tempUsername = DeltaHandler.getCurrentUsername()
-                                    let tempEmailAddr = DeltaHandler.getCurrentEmail()
-                                    if (tempUsername == "") {
-                                        tempUsername = tempEmailAddr
-                                    }
-                                    extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
-                                        "headerTitle": webxdcInfo.name,
-                                        "username": tempUsername,
-                                        "useraddress": tempEmailAddr }
-                                    )
+                                    startWebxdc()
                                 } else {
-                                    PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc support is currently experimental. Go to Advanced Settings to enable it." })
+                                    let popup7 = PopupUtils.open(Qt.resolvedUrl("TempWebxdcPopup.qml"), chatViewPage)
+                                    popup7.done.connect(startWebxdc)
                                 }
                             }
 
@@ -2485,21 +2490,27 @@ Page {
                     
                 MouseArea {
                     anchors.fill: parent
+
+                    function startDraftWebxdc() {
+                        DeltaHandler.chatmodel.setWebxdcInstance(-1)
+                        let tempUsername = DeltaHandler.getCurrentUsername()
+                        let tempEmailAddr = DeltaHandler.getCurrentEmail()
+                        if (tempUsername == "") {
+                            tempUsername = tempEmailAddr
+                        }
+                        extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
+                            "headerTitle": webxdcPreviewNameLabel.text,
+                            "username": tempUsername,
+                            "useraddress": tempEmailAddr }
+                        )
+                    }
+
                     onClicked: {
                         if (root.webxdcTestingEnabled) {
-                            DeltaHandler.chatmodel.setWebxdcInstance(-1)
-                            let tempUsername = DeltaHandler.getCurrentUsername()
-                            let tempEmailAddr = DeltaHandler.getCurrentEmail()
-                            if (tempUsername == "") {
-                                tempUsername = tempEmailAddr
-                            }
-                            extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
-                                "headerTitle": webxdcPreviewNameLabel.text,
-                                "username": tempUsername,
-                                "useraddress": tempEmailAddr }
-                            )
+                            startDraftWebxdc()
                         } else {
-                            PopupUtils.open(Qt.resolvedUrl("InfoPopup.qml"), chatViewPage, { "text": "Webxdc is not implemented yet, sorry" })
+                            let popup8 = PopupUtils.open(Qt.resolvedUrl("TempWebxdcPopup.qml"), chatViewPage)
+                            popup8.done.connect(startDraftWebxdc)
                         }
                     }
                 }

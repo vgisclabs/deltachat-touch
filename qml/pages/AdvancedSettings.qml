@@ -187,43 +187,6 @@ Page {
                 }
             }
 
-            ListItem {
-                id: webxdcTesting
-                height: webxdcTestingLayout.height + (divider.visible ? divider.height : 0)
-                width: advancedSettingsPage.width
-
-                ListItemLayout {
-                    id: webxdcTestingLayout
-                    title.text: i18n.tr("Enable Webxdc support")
-                    title.font.bold: true
-                    summary.wrapMode: Text.WordWrap
-
-
-                    Switch {
-                        id: webxdcTestingSwitch
-                        SlotsLayout.position: SlotsLayout.Trailing
-                        checked: root.webxdcTestingEnabled
-                        onCheckedChanged: {
-                            if (webxdcTestingSwitch.checked !== root.webxdcTestingEnabled) {
-                                if (root.webxdcTestingEnabled) {
-                                    root.webxdcTestingEnabled = false
-                                } else {
-                                    let popup = PopupUtils.open(
-                                        Qt.resolvedUrl('ConfirmDialog.qml'),
-                                        advancedSettingsPage,
-                                        { "dialogTitle": i18n.tr("Enable Webxdc support?"),
-                                          "dialogText": i18n.tr("Webxdc support is currently experimental.\n\nSome functions such as file import or sending files to other chats (needed for, e.g., the Webxdc Store app) are not implemented yet.\n\nDownload apps from webxdc.org and add them to chats as file attachments."),
-                                          "okButtonText": i18n.tr("Enable Webxdc")}
-                                    )       
-                                    popup.confirmed.connect(function() { root.webxdcTestingEnabled = true })
-                                    popup.cancelled.connect(function() { webxdcTestingSwitch.checked = false })
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
             Rectangle {
                 id: profileSpecificSeparator
                 height: profileSpecificSeparatorLabel.contentHeight + units.gu(4)

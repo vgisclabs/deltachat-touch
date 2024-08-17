@@ -27,6 +27,12 @@
 #include <iostream>
 #include <QtWebEngine>
 
+// to be able to use dc_msg_t* in signals/slots; for that, a call to qRegisterMetaType
+// is necessary as well, done below in main()
+struct dc_msg_t;
+Q_DECLARE_OPAQUE_POINTER(dc_msg_t*);
+
+
 int main(int argc, char *argv[])
 {
     QProcessEnvironment procenv = QProcessEnvironment::systemEnvironment();

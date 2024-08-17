@@ -23,11 +23,11 @@
  */
 
 import QtQuick 2.12
-import Lomiri.Components 1.3
+import Ubuntu.Components 1.3
 import QtWebEngine 1.8
 import QtWebChannel 1.0
 import Qt.labs.platform 1.1
-import Lomiri.Components.Popups 1.3
+import Ubuntu.Components.Popups 1.3
 
 import DeltaHandler 1.0
 import WebxdcEngineProfile 1.0

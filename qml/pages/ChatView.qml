@@ -1615,16 +1615,20 @@ Page {
                             id: unknownTypeLoader
                             active: unhandledType && !isUnreadMsgsBar
 
-                            sourceComponent: Label {
-                                id: summaryLabel
-                                width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
-                                text: model.summarytext
-                                wrapMode: Text.Wrap
-                                color: textColor //model.isSearchResult ? "black" : model.messageSeen ? root.selfMessageSeenTextColor : root.selfMessageSentTextColor
-                                font.italic: true
-                                fontSize: root.scaledFontSize
-                            }
+                            sourceComponent: Row {
+                                width: summaryLabel.contentWidth
 
+                                Label {
+                                    id: summaryLabel
+                                    width: isOther ? chatViewPage.width - avatarLoader.width - units.gu(5) : chatViewPage.width - units.gu(5)
+                                    text: model.summarytext
+                                    wrapMode: Text.Wrap
+                                    horizontalAlignment: Text.AlignLeft
+                                    color: textColor
+                                    font.italic: true
+                                    fontSize: root.scaledFontSize
+                                }
+                            }
                         }
 
                         Loader {

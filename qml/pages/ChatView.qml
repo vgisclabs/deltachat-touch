@@ -837,7 +837,7 @@ Page {
                 DeltaHandler.chatmodel.setMomentaryMessage(value)
                 let popup9 = PopupUtils.open(Qt.resolvedUrl('ConfirmDialog.qml'), chatViewPage, {
                     //'dialogTitle': i18n.tr("Delete Message"),
-                    'dialogText': i18n.tr("Delete %1 message here and on the server?").arg("1"),
+                    'dialogText': DeltaHandler.chatmodel.chatIsDeviceTalk() ? i18n.tr("Delete %1 message?").arg("1") : i18n.tr("Delete %1 message here and on the server?").arg("1"),
                     'okButtonText': i18n.tr("Delete")
                 })
                 popup9.confirmed.connect(function() { DeltaHandler.chatmodel.deleteMomentaryMessage() })

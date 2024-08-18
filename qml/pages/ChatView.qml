@@ -835,7 +835,13 @@ Page {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
                 DeltaHandler.chatmodel.setMomentaryMessage(value)
-                PopupUtils.open(Qt.resolvedUrl('ConfirmMsgDeletion.qml'))
+                let popup9 = PopupUtils.open(Qt.resolvedUrl('ConfirmDialog.qml'), chatViewPage, {
+                    //'dialogTitle': i18n.tr("Delete Message"),
+                    'dialogText': i18n.tr("Delete %1 message here and on the server?").arg("1"),
+                    'okButtonText': i18n.tr("Delete")
+                })
+                popup9.confirmed.connect(function() { DeltaHandler.chatmodel.deleteMomentaryMessage() })
+            
             }
         }
     }

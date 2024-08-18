@@ -34,7 +34,6 @@
         <file>pages/ConfirmEncryptDatabase.qml</file>
         <file>pages/ConfirmLeaveGroup.qml</file>
         <file>pages/ConfirmMemberDeletion.qml</file>
-        <file>pages/ConfirmMsgDeletion.qml</file>
         <file>pages/ConfirmOpenExternalUrl.qml</file>
         <file>pages/ConfirmStopEncryptingDatabase.qml</file>
         <file>pages/Connectivity.qml</file>

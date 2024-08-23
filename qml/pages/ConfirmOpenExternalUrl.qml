@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -32,7 +32,7 @@ Dialog {
 
     Button {
         id: okButton
-        text: i18n.tr("OK")
+        text: i18n.tr("Open")
         color: theme.palette.normal.negative
         onClicked: {
             Qt.openUrlExternally(externalLink)

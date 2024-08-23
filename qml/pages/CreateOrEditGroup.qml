@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  Lothar Ketterer
+ * Copyright (C) 2022 - 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -158,11 +158,15 @@ Page {
             onTriggered: {
                 // the index is passed as parameter and can
                 // be accessed via 'value'
-                PopupUtils.open(
-                    Qt.resolvedUrl('ConfirmMemberDeletion.qml'),
-                    null,
-                    { 'memberVectorIndex': value, }
-                )
+                let popup1 = PopupUtils.open(
+                    Qt.resolvedUrl('ConfirmDialog.qml'),
+                    createGroupPage,
+                    { "dialogText": i18n.tr("Remove %1 from group?").arg(DeltaHandler.groupmembermodel.getNameNAddrOfIndex(value)),
+                      "okButtonText": i18n.tr("Delete"),
+                })
+                popup1.confirmed.connect(function() {
+                    DeltaHandler.groupmembermodel.deleteMember(value)
+                })
             }
         }
     }

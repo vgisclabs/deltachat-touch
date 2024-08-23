@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023, 2024  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -185,11 +185,24 @@ Page {
                                 if (checked) {
                                     // this popup will inform that db encryption is experimental, blobs are
                                     // not encrypted, nobody can help if pw is lost etc.
-                                    let popup4 = PopupUtils.open(Qt.resolvedUrl("ConfirmEncryptDatabase.qml"), addAccountPage)
+                                    let popup4 = PopupUtils.open(
+                                        Qt.resolvedUrl('ConfirmDialog.qml'),
+                                        addAccountPage,
+                                        { "dialogTitle": i18n.tr("Really encrypt the database?"),
+                                          "dialogText": DeltaHandler.numberOfAccounts() > 0 ?  i18n.tr("• Database encryption is experimental, use at your own risk. BACKUP YOUR ACCOUNTS OR ADD A SECOND DEVICE FIRST.\n\n• It will only cover text messages and username/password of your accounts. Pictures, voice messages, files etc. will remain unencrypted.\n\n• If the phassphrase is lost, your data will be lost as well.\n\n• You will have to enter the phassphrase upon each startup of the app.") : i18n.tr("• Database encryption is experimental, use at your own risk.\n\n• It will only cover text messages and username/password of your accounts. Pictures, voice messages, files etc. will remain unencrypted.\n\n• If the phassphrase is lost, your data will be lost as well.\n\n• You will have to enter the phassphrase upon each startup of the app."),
+                                          "okButtonText": i18n.tr("Continue"),
+                                    })
+
                                     popup4.confirmed.connect(encryptDatabaseStage1)
                                     popup4.cancelled.connect(uncheckEncryptDatabaseSwitch)
                                 } else {
-                                    let popup5 = PopupUtils.open(Qt.resolvedUrl("ConfirmStopEncryptingDatabase.qml"), addAccountPage)
+                                    let popup5 = PopupUtils.open(
+                                        Qt.resolvedUrl('ConfirmDialog.qml'),
+                                        addAccountPage,
+                                        { "dialogText": i18n.tr("Really disable database encryption?"),
+                                          "okButtonText": i18n.tr("Disable encryption"),
+                                    })
+
                                     popup5.confirmed.connect(decryptDatabaseStage1)
                                     popup5.cancelled.connect(recheckEncryptDatabaseSwitch)
                                 }

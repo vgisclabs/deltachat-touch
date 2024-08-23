@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -76,7 +76,17 @@ Dialog {
         id: blockContactButton
         text: i18n.tr("Block Contact")
         onClicked: {
-            PopupUtils.open(Qt.resolvedUrl("BlockContactPopup.qml"))
+            let popup6 = PopupUtils.open(
+                Qt.resolvedUrl('ConfirmDialog.qml'),
+                dialog,
+                { "dialogTitle": DeltaHandler.getMomentaryChatName(),
+                  "dialogText": i18n.tr("Block this contact? You will no longer receive messages from them."),
+                  "okButtonText": i18n.tr("Block Contact"),
+            })
+            popup6.confirmed.connect(function() {
+                DeltaHandler.momentaryChatBlockContact()
+                PopupUtils.close(dialog)
+            })
         }
         visible: !isGroup && !(isDeviceTalk || isSelfTalk)
     }
@@ -97,10 +107,17 @@ Dialog {
         id: leaveGroupButton
         text: i18n.tr("Leave Group")
         onClicked: {
-            let popup3 = PopupUtils.open(Qt.resolvedUrl("ConfirmLeaveGroup.qml"))
-            popup3.done.connect(function() {
+            let popup3 = PopupUtils.open(
+                Qt.resolvedUrl('ConfirmDialog.qml'),
+                dialog,
+                { "dialogTitle": DeltaHandler.getMomentaryChatName(),
+                  "dialogText": i18n.tr("Are you sure you want to leave this group?"),
+                  "okButtonText": i18n.tr("Leave Group"),
+            })
+            popup3.confirmed.connect(function() {
+                DeltaHandler.momentaryChatLeaveGroup()
                 PopupUtils.close(dialog)
-                })
+            })
         }
         visible: isGroup
         enabled: selfInGroup
@@ -127,11 +144,18 @@ Dialog {
         id: clearChatButton
         text: i18n.tr("Clear Chat")
         onClicked: {
-            let popup5 = PopupUtils.open(Qt.resolvedUrl("ConfirmClearChat.qml"))
-            popup5.finished.connect(function() {
+            let numberOfMsgs = DeltaHandler.chatmodel.getMessageCount()
+            let popup5 = PopupUtils.open(
+                Qt.resolvedUrl('ConfirmDialog.qml'),
+                dialog,
+                { "dialogTitle": i18n.tr("Clear Chat"),
+                  "dialogText": 1 == numberOfMsgs ? (DeltaHandler.chatmodel.chatIsDeviceTalk() ? i18n.tr("Delete %1 message?").arg(numberOfMsgs) : i18n.tr("Delete %1 message here and on the server?").arg(numberOfMsgs)) : (DeltaHandler.chatmodel.chatIsDeviceTalk() ? i18n.tr("Delete %1 messages?").arg(numberOfMsgs) : i18n.tr("Delete %1 messages here and on the server?").arg(numberOfMsgs)),
+                  "okButtonText": i18n.tr("Clear Chat"),
+            })
+            popup5.confirmed.connect(function() {
+                DeltaHandler.chatmodel.deleteAllMessagesInCurrentChat()
                 PopupUtils.close(dialog)
             })
-
         }
         visible: 0 != DeltaHandler.chatmodel.getMessageCount()
     }

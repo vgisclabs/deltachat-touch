@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  Lothar Ketterer
+ * Copyright (C) 2022 - 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -47,8 +47,7 @@ Page {
 
     // Will be set to true when the QR code is copied to the clipboard.
     // If true and the user clicks to exit the page, an additional
-    // remark will be shown in the confirmatory popup, see the
-    // call to open ConfirmCancelSecondDevice.qml below.
+    // remark will be shown in the confirmatory popup, see below
     property bool copiedToClipboard: false
 
     Component.onDestruction: {
@@ -126,12 +125,18 @@ Page {
                 text: i18n.tr('Cancel')
                 onTriggered: {
                     let popup4 = PopupUtils.open(
-                        Qt.resolvedUrl("ConfirmCancelSecondDevice.qml"),
-                        null,
-                        { "text": copiedToClipboard ? i18n.tr("This will invalidate the QR code copied to clipboard.") : ""}
-                    )
+                        Qt.resolvedUrl('ConfirmDialog.qml'),
+                        addSecondDevicePage,
+                        { "dialogTitle": i18n.tr("Abort setting up second device?"),
+                          "dialogText": copiedToClipboard ? i18n.tr("This will invalidate the QR code copied to clipboard.") : "",
+                          "okButtonText": i18n.tr("Yes"),
+                          "cancelButtonText": i18n.tr("No"),
+                    })
                     popup4.confirmed.connect(function() {
                         DeltaHandler.cancelBackupProvider()
+                        let tempcontent = Clipboard.newData()
+                        tempcontent = ""
+                        Clipboard.push(tempcontent)
                         goBackTimer.start()
                     })
                 }

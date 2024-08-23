@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -161,11 +161,11 @@ void GroupMemberModel::deleteMember(int myindex)
 }
 
 
-QString GroupMemberModel::getNameOfIndex(int myindex)
+QString GroupMemberModel::getNameNAddrOfIndex(int myindex)
 {
     QString tempQString;
     dc_contact_t* tempContact = dc_get_contact(m_context, m_membervector[myindex]);
-    char* tempText = dc_contact_get_addr(tempContact);
+    char* tempText = dc_contact_get_name_n_addr(tempContact);
     tempQString = tempText;
 
     dc_str_unref(tempText);

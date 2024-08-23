@@ -1400,7 +1400,17 @@ MainView {
                         // the index is passed as parameter and can
                         // be accessed via 'value'
                         DeltaHandler.setMomentaryChatIdByIndex(value)
-                        PopupUtils.open(Qt.resolvedUrl('pages/ConfirmChatDeletion.qml'))
+
+                        let popup7 = PopupUtils.open(
+                            Qt.resolvedUrl('pages/ConfirmDialog.qml'),
+                            chatlistPage,
+                            { "dialogTitle": i18n.tr("Delete Chat"),
+                              "dialogText": i18n.tr('Are you sure you want to delete \"%1\"?').arg(DeltaHandler.getMomentaryChatName()),
+                              "okButtonText": i18n.tr("Delete Chat"),
+                        })
+                        popup7.confirmed.connect(function() {
+                            DeltaHandler.deleteMomentaryChat()
+                        })
                     }
                 }
             }

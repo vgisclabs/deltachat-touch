@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -62,7 +62,17 @@ Dialog {
         id: blockContactButton
         text: i18n.tr("Block Contact")
         onClicked: {
-            PopupUtils.open(Qt.resolvedUrl("BlockContactPopup.qml"))
+            let popup6 = PopupUtils.open(
+                Qt.resolvedUrl('ConfirmDialog.qml'),
+                dialog,
+                { "dialogTitle": DeltaHandler.getMomentaryChatName(),
+                  "dialogText": i18n.tr("Block this contact? You will no longer receive messages from them."),
+                  "okButtonText": i18n.tr("Block Contact"),
+            })
+            popup6.confirmed.connect(function() {
+                DeltaHandler.momentaryChatBlockContact()
+                PopupUtils.close(dialog)
+            })
         }
         visible: !isGroup && !(isDeviceTalk || isSelfTalk)
     }
@@ -83,8 +93,15 @@ Dialog {
         id: leaveGroupButton
         text: i18n.tr("Leave Group")
         onClicked: {
-            let popup1 = PopupUtils.open(Qt.resolvedUrl("ConfirmLeaveGroup.qml"))
-            popup1.done.connect(function() {
+            let popup1 = PopupUtils.open(
+                Qt.resolvedUrl('ConfirmDialog.qml'),
+                dialog,
+                { "dialogTitle": DeltaHandler.getMomentaryChatName(),
+                  "dialogText": i18n.tr("Are you sure you want to leave this group?"),
+                  "okButtonText": i18n.tr("Leave Group"),
+            })
+            popup1.confirmed.connect(function() {
+                DeltaHandler.momentaryChatLeaveGroup()
                 PopupUtils.close(dialog)
             })
         }

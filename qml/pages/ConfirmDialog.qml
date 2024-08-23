@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -29,14 +29,20 @@ Dialog {
     signal cancelled()
 
     property string dialogTitle
-    property string dialogText
+    property string dialogText: ""
     property string okButtonText: i18n.tr("OK")
     property string cancelButtonText: i18n.tr("Cancel")
     property bool confirmButtonPositive: false
 
     title: dialogTitle
 
-    text: dialogText
+    Label {
+        text: dialogText
+        horizontalAlignment: Text.AlignLeft
+        wrapMode: Text.WordWrap
+        fontSize: root.scaledFontSize
+        visible: text !== ""
+    }
 
     Button {
         id: okButton

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -48,6 +48,12 @@ Page {
         ]
     }
 
+    signal unblockContact(int index)
+
+    Component.onCompleted: {
+        blockedContactsPage.unblockContact.connect(DeltaHandler.blockedcontactsmodel.unblockContact)
+    }
+
     Label {
         id: infoOnZeroBlockedContacts
         width: blockedContactsPage.width - units.gu(6)
@@ -71,11 +77,17 @@ Page {
             divider.visible: true
 
             onClicked: {
-                PopupUtils.open(
-                    Qt.resolvedUrl("UnblockContactPopup.qml"),
-                    null,
-                    { indexToUnblock: index, nameToUnblock: model.displayname == '' ? i18n.tr('Unknown') : model.displayname }
-                )
+                let popup1 = PopupUtils.open(
+                    Qt.resolvedUrl('ConfirmDialog.qml'),
+                    blockedContactsPage,
+                    { "dialogTitle": model.displayname == '' ? model.address : model.displayname,
+                      "dialogText": i18n.tr("Unblock this contact? You will then be able to receive messages from them."),
+                      "okButtonText": i18n.tr("Unblock Contact"),
+                      "confirmButtonPositive": true
+                })
+                popup1.confirmed.connect(function() {
+                    blockedContactsPage.unblockContact(index)
+                })
             }
 
             ListItemLayout {

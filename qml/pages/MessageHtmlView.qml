@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -209,7 +209,13 @@ Page {
                         // in Component.onCompleted
                         if (checked != root.alwaysLoadRemoteContent) {
                             if (checked) {
-                                let popup1 = PopupUtils.open(Qt.resolvedUrl("ConfirmAlwaysLoadRemoteContent.qml"))
+                                let popup1 = PopupUtils.open(
+                                    Qt.resolvedUrl('ConfirmDialog.qml'),
+                                    htmlViewPage,
+                                    { "dialogTitle": i18n.tr("Always Load Remote Images"),
+                                      "dialogText": i18n.tr('Remote images can track you.\n\nThis setting also may load fonts and other content. If disabled, embedded or cached images may appear.\n\nLoad remote images?'),
+                                      "okButtonText": i18n.tr("Load Remote Images") })
+
                                 popup1.confirmed.connect(function() {
                                     root.alwaysLoadRemoteContent = true
                                     if (!loadRemoteButtonPressed) {

@@ -28,6 +28,8 @@
 #include "notificationsFreedesktop.h"
 #include "notificationsMissing.h"
 
+#include <thread>
+
 namespace C {
 #include <libintl.h>
 }
@@ -5287,6 +5289,16 @@ void DeltaHandler::resetCurrentChatMessageCount()
 }
 
 
+void DeltaHandler::getProviderHintSignal(QString emailAddress)
+{
+    // Use a separate thread to avoid the app being blocked because the call
+    // to dc_provider_new_from_email_with_dns might take a long time to return
+    std::thread getHintThread(&DeltaHandler::triggerProviderHintSignal, this, emailAddress);
+    getHintThread.detach();
+
+}
+
+
 void DeltaHandler::triggerProviderHintSignal(QString emailAddress)
 {
     if (0 == dc_may_be_valid_addr(emailAddress.toUtf8().constData())) {
@@ -5294,8 +5306,8 @@ void DeltaHandler::triggerProviderHintSignal(QString emailAddress)
         // Need to emit the signal with an empty string if it is not a
         // valid email address because the provider hint may already be
         // shown and needs to be unset now.
-        emit providerHint(QString(""));
-        emit providerInfoUrl(QString(""));
+        emit providerHint(QString(""), emailAddress);
+        emit providerInfoUrl(QString(""), emailAddress);
         return;
     }
 
@@ -5307,48 +5319,52 @@ void DeltaHandler::triggerProviderHintSignal(QString emailAddress)
         return;
     }
 
-    dc_provider_t* tempProvider = dc_provider_new_from_email(tempContext, emailAddress.toUtf8().constData());
+    // use a separate context because otherwise there's a risk of
+    // a segfault when the user leaves the page (causing tempContext
+    // to be unreferenced) while this thread is still running
+    uint32_t tempThreadAcc = dc_accounts_add_account(allAccounts);
+    dc_context_t* threadTempContext = dc_accounts_get_account(allAccounts, tempThreadAcc);
 
-    if (!tempProvider) {
-        tempProvider = dc_provider_new_from_email_with_dns(tempContext, emailAddress.toUtf8().constData());
-
-    }
+    dc_provider_t* tempProvider = dc_provider_new_from_email_with_dns(threadTempContext, emailAddress.toUtf8().constData());
 
     if (!tempProvider) {
         // no provider info available
-        emit providerHint(QString(""));
-        emit providerInfoUrl(QString(""));
+        emit providerHint(QString(""), emailAddress);
+        emit providerInfoUrl(QString(""), emailAddress);
+        dc_context_unref(threadTempContext);
+        dc_accounts_remove_account(allAccounts, tempThreadAcc);
         return;
     } else {
         // provider info is available
         if (DC_PROVIDER_STATUS_OK == dc_provider_get_status(tempProvider)) {
-            emit providerHint(QString(""));
-            emit providerInfoUrl(QString(""));
-            emit providerStatus(true);
+            emit providerHint(QString(""), emailAddress);
+            emit providerInfoUrl(QString(""), emailAddress);
+            emit providerStatus(true, emailAddress);
         } else {
             // Status is either DC_PROVIDER_STATUS_PREPARATION or
             // DC_PROVIDER_STATUS_BROKEN, the hint needs to be sent
             // in both cases. The info URL is sent, too. UI will take
             // care of an empty URL string.
             char* tempText = dc_provider_get_before_login_hint(tempProvider);
-            emit providerHint(QString(tempText));
+            emit providerHint(QString(tempText), emailAddress);
             dc_str_unref(tempText);
 
             tempText = dc_provider_get_overview_page(tempProvider);
-            emit providerInfoUrl(QString(tempText));
+            emit providerInfoUrl(QString(tempText), emailAddress);
             dc_str_unref(tempText);
 
             if (DC_PROVIDER_STATUS_PREPARATION == dc_provider_get_status(tempProvider)) {
-                emit providerStatus(true);
+                emit providerStatus(true, emailAddress);
             } else {
-                emit providerStatus(false);
+                emit providerStatus(false, emailAddress);
             }
         }
         
         dc_provider_unref(tempProvider);
     }
 
-    
+    dc_context_unref(threadTempContext);
+    dc_accounts_remove_account(allAccounts, tempThreadAcc);
 }
 
 

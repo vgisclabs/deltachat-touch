@@ -46,6 +46,9 @@ Page {
     property string providerUrl
     property bool providerWorking
 
+    function restartHintTimer() {
+        hintTimer.restart()
+    }
 
     function updateShowClassicMailsCurrentSetting()
     {
@@ -72,16 +75,30 @@ Page {
     Connections {
         target: DeltaHandler
 
+        // "address" is a parameter of the three signals below
+        // and contains the original string that was passed to
+        // getProviderHintSignal(). The code to check for
+        // provider hints etc. is run in a separate thread and
+        // might take quite a while. In the meantime, the user
+        // might have changed the entry for the email address,
+        // so the hint/url/status might not apply to the current
+        // situation anymore => check address against the displayText
         onProviderHint: {
-            providerHintLabel.text = provHint
+            if (emailField.displayText == address) {
+                providerHintLabel.text = provHint
+            }
         }
 
         onProviderInfoUrl: {
-            providerUrl = provUrl
+            if (emailField.displayText == address) {
+                providerUrl = provUrl
+            }
         }
 
         onProviderStatus: {
-            providerWorking = working
+            if (emailField.displayText == address) {
+                providerWorking = working
+            }
         }
     }
 
@@ -97,7 +114,7 @@ Page {
         addressFieldLocked = DeltaHandler.prepareTempContextConfig()
 
         updateShowClassicMailsCurrentSetting()
-        addEmailPage.addressFieldHasChanged.connect(DeltaHandler.triggerProviderHintSignal)
+        addEmailPage.addressFieldHasChanged.connect(DeltaHandler.getProviderHintSignal)
     }
 
     Component.onDestruction: {
@@ -267,14 +284,21 @@ Page {
                     // the password field contains text, otherwise check upon
                     // focus loss.
                     if (passwordField.text != "") {
-                        addEmailPage.addressFieldHasChanged(displayText)
+                        // Reset the hint label text so providerHintRect is
+                        // invisible in case it had been visible before. Will
+                        // be set again for the new displayText if there's a
+                        // provider hint by the call to restartHintTimer()
+                        providerHintLabel.text = ""
+                        restartHintTimer()
                     }
                 }
 
                 onFocusChanged: {
                     // see above
                     if (!focus && passwordField.text == "") {
-                        addEmailPage.addressFieldHasChanged(displayText)
+                        // see above
+                        providerHintLabel.text = ""
+                        restartHintTimer()
                     }
 
                     if (root.oskViaDbus) {
@@ -986,6 +1010,18 @@ Page {
                     }
                 }
             }
+        }
+    }
+
+    Timer {
+        // Debounce, i.e. don't ask for a provider hint if
+        // the user is still typing
+        id: hintTimer
+        interval: 500
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            addEmailPage.addressFieldHasChanged(emailField.displayText)
         }
     }
 } // end of Page id: addEmailPage

@@ -279,7 +279,8 @@ public:
 
     Q_INVOKABLE void setCurrentConfig(QString key, QString newValue);
 
-    Q_INVOKABLE void prepareTempContextConfig();
+    // returns whether tempContext is already configured
+    Q_INVOKABLE bool prepareTempContextConfig();
 
     Q_INVOKABLE void configureTempContext();
 

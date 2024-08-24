@@ -2481,7 +2481,7 @@ void DeltaHandler::deleteTemporaryAccount()
 }
 
 
-void DeltaHandler::prepareTempContextConfig()
+bool DeltaHandler::prepareTempContextConfig()
 {
     // If tempContext is already set, either an existing account has
     // been selected for changing the configuration or the user
@@ -2502,14 +2502,14 @@ void DeltaHandler::prepareTempContextConfig()
         if (m_encryptedDatabase) {
             if (m_databasePassphrase == "") {
                 qDebug() << "DeltaHandler::prepareTempContextConfig(): ERROR: No passphrase for database encryption present, cannot create account.";
-                return;
+                return false;
             }
 
             accID = dc_accounts_add_closed_account(allAccounts);
             if (0 == accID) {
                 qDebug() << "DeltaHandler::prepareTempContextConfig: Could not create new account.";
                 // TODO: emit signal for failure?
-                return;
+                return false;
             }
             tempContext = dc_accounts_get_account(allAccounts, accID);
             dc_context_open(tempContext, m_databasePassphrase.toUtf8().constData());
@@ -2519,7 +2519,7 @@ void DeltaHandler::prepareTempContextConfig()
             if (0 == accID) {
                 qDebug() << "DeltaHandler::prepareTempContextConfig: Could not create new account.";
                 // TODO: emit signal for failure?
-                return;
+                return false;
             }
             tempContext = dc_accounts_get_account(allAccounts, accID);
         }
@@ -2530,6 +2530,12 @@ void DeltaHandler::prepareTempContextConfig()
         m_configuringNewAccount = true;
     } else {
         m_configuringNewAccount = false;
+    }
+
+    if (!tempContext) {
+        return false;
+    } else {
+        return dc_is_configured(tempContext);
     }
 }
 

@@ -33,6 +33,8 @@ Page {
     signal leavingAddEmailPage()
     signal addressFieldHasChanged(string emailAddress)
 
+    property bool addressFieldLocked;
+
     property bool advancedOptionsVisible: false;
     property bool advancedOptionsOpened: false;
 
@@ -84,7 +86,15 @@ Page {
     }
 
     Component.onCompleted: {
-        DeltaHandler.prepareTempContextConfig()
+        // The email address field should only be editable if
+        // a new account is created or an account is edited
+        // that is not configured yet so the user cannot change
+        // the email address of a configured account. See the
+        // "Don’t change mail accounts. Really." part here:
+        // https://binblog.de/2024/06/15/deltachat-first-dos-first-donts/
+        // TODO: Once AEAP is fully working, this will most
+        // likely have to be changed
+        addressFieldLocked = DeltaHandler.prepareTempContextConfig()
 
         updateShowClassicMailsCurrentSetting()
         addEmailPage.addressFieldHasChanged.connect(DeltaHandler.triggerProviderHintSignal)
@@ -236,6 +246,8 @@ Page {
                 }
                 text: DeltaHandler.getTempContextConfig("addr")
                 // TODO: add RegExpValidator?
+                
+                readOnly: addressFieldLocked
 
                 onDisplayTextChanged: {
                     // When an email address has been entered, it should be

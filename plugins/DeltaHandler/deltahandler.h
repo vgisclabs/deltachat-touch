@@ -573,8 +573,10 @@ signals:
     // Informs about provider specific prerequisites
     // when setting up a new account via login with
     // email address + password
-    void providerHint(QString provHint);
-    void providerInfoUrl(QString provUrl);
+    // Parameter "address" is the mail address for which the
+    // hint or the Url is valid
+    void providerHint(QString provHint, QString address);
+    void providerInfoUrl(QString provUrl, QString address);
 
     // working == true: The provider can be used with DC (but may require
     // preparations as indicated via providerHint).
@@ -582,7 +584,9 @@ signals:
     // via providerHint)
     // The status "OK" as listed on providers.delta.chat is signalled
     // indirectly via providerStatus(true) and providerHint("").
-    void providerStatus(bool working);
+    // Parameter "address" is the mail address for which the
+    // status is valid
+    void providerStatus(bool working, QString address);
 
     void hasConfiguredAccountChanged();
     void networkingIsAllowedChanged();
@@ -669,7 +673,7 @@ public slots:
 
     void updateChatlistQueryText(QString query);
 
-    void triggerProviderHintSignal(QString emailAddress);
+    void getProviderHintSignal(QString emailAddress);
 
     void receiveJsonrcpResponse(QString response);
 
@@ -838,6 +842,8 @@ private:
     // adapts the internal chatlist to tempChatlist via
     // beginResetModel() / endResetModel()
     void resetChatlistVector(dc_chatlist_t* tempChatlist);
+
+    void triggerProviderHintSignal(QString emailAddress);
 };
 
 #endif // DELTAHANDLER_H

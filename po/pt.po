@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-22 20:24+0000\n"
+"POT-Creation-Date: 2024-08-25 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,31 +24,32 @@ msgstr ""
 msgid "New Contact"
 msgstr "Novo contacto"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:652
-#: ../plugins/DeltaHandler/deltahandler.cpp:4329 ../qml/Main.qml:449
-#: ../qml/Main.qml:463 ../qml/Main.qml:874 ../qml/pages/AccountConfig.qml:343
-#: ../qml/pages/AccountConfig.qml:557 ../qml/pages/AddAccount.qml:286
-#: ../qml/pages/AddAccountViaQr.qml:392 ../qml/pages/AddSecondDevice.qml:82
-#: ../qml/pages/AddSecondDevice.qml:95
-#: ../qml/pages/ChangeDatabasePassword.qml:154 ../qml/pages/ChatView.qml:154
+#: ../plugins/DeltaHandler/deltahandler.cpp:659
+#: ../plugins/DeltaHandler/deltahandler.cpp:4362 ../qml/Main.qml:452
+#: ../qml/Main.qml:466 ../qml/Main.qml:880 ../qml/pages/AccountConfig.qml:371
+#: ../qml/pages/AccountConfig.qml:593 ../qml/pages/AddAccount.qml:299
+#: ../qml/pages/AddAccountViaQr.qml:404 ../qml/pages/AddSecondDevice.qml:81
+#: ../qml/pages/AddSecondDevice.qml:94
+#: ../qml/pages/ChangeDatabasePassword.qml:154 ../qml/pages/ChatView.qml:158
 #: ../qml/pages/ImageViewer.qml:39 ../qml/pages/ImageViewerAnimated.qml:39
 #: ../qml/pages/LogViewer.qml:49 ../qml/pages/ProgressQrBackupImport.qml:57
-#: ../qml/pages/QrGroupInvite.qml:146 ../qml/pages/QrShowScan.qml:172
-#: ../qml/pages/QrShowScan.qml:314 ../qml/pages/QrShowScan.qml:857
+#: ../qml/pages/QrGroupInvite.qml:160 ../qml/pages/QrShowScan.qml:172
+#: ../qml/pages/QrShowScan.qml:315 ../qml/pages/QrShowScan.qml:858
 #: ../qml/pages/RequestDatabasePassword.qml:55
 #: ../qml/pages/SettingsPage.qml:125
-#: ../qml/pages/SwitcherSidebarDelegate.qml:144
+#: ../qml/pages/SwitcherSidebarDelegate.qml:144 ../qml/pages/WebxdcPage.qml:132
+#: ../qml/pages/WebxdcPage.qml:147
 msgid "Error"
 msgstr "Erro"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3216
+#: ../plugins/DeltaHandler/deltahandler.cpp:3243
 msgid ""
 "Failed to remove the temporary copy of the backup export in the cache "
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:4408
-#: ../plugins/DeltaHandler/deltahandler.cpp:4431
+#: ../plugins/DeltaHandler/deltahandler.cpp:4440
+#: ../plugins/DeltaHandler/deltahandler.cpp:4463
 msgid "QR code could not be decoded"
 msgstr ""
 
@@ -88,96 +89,131 @@ msgid ""
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:300 ../qml/Main.qml:319 ../qml/Main.qml:337
-#: ../qml/Main.qml:353 ../qml/pages/QrShowScan.qml:107
-#: ../qml/pages/QrShowScan.qml:258
+#: ../qml/Main.qml:302 ../qml/Main.qml:321 ../qml/Main.qml:339
+#: ../qml/Main.qml:355 ../qml/pages/QrShowScan.qml:107
+#: ../qml/pages/QrShowScan.qml:259 ../qml/pages/WebxdcPage.qml:105
 msgid "Chat with %1?"
 msgstr "Conversar com %1?"
 
-#: ../qml/Main.qml:300 ../qml/Main.qml:337
+#: ../qml/Main.qml:302 ../qml/Main.qml:339
 msgid "Select account for chatting"
 msgstr ""
 
-#: ../qml/Main.qml:371 ../qml/Main.qml:387 ../qml/pages/QrShowScan.qml:138
+#: ../qml/Main.qml:373 ../qml/Main.qml:389 ../qml/pages/QrShowScan.qml:138
+#: ../qml/pages/WebxdcPage.qml:118
 msgid "Do you want to join the group \"%1\"?"
 msgstr "Quer se juntar-se ao grupo \"%1\"?"
 
-#: ../qml/Main.qml:371
+#: ../qml/Main.qml:373
 msgid "Select account for joining"
 msgstr ""
 
-#: ../qml/Main.qml:407 ../qml/pages/AddAccountViaQr.qml:110
+#: ../qml/Main.qml:409 ../qml/pages/AddAccountViaQr.qml:111
 #: ../qml/pages/QrShowScan.qml:205
 msgid "Create new e-mail address on \"%1\" and log in there?"
 msgstr ""
 
-#: ../qml/Main.qml:420 ../qml/pages/AddAccountViaQr.qml:94
-#: ../qml/pages/QrShowScan.qml:223
+#: ../qml/Main.qml:423 ../qml/pages/AddAccountViaQr.qml:95
+#: ../qml/pages/QrShowScan.qml:224
 msgid "Copy the account from the other device to this device?"
 msgstr ""
 
-#: ../qml/Main.qml:421 ../qml/pages/AddAccount.qml:137
-#: ../qml/pages/AddAccountViaQr.qml:95 ../qml/pages/QrShowScan.qml:224
+#: ../qml/Main.qml:424 ../qml/pages/AddAccount.qml:137
+#: ../qml/pages/AddAccountViaQr.qml:96 ../qml/pages/QrShowScan.qml:225
 msgid "Add as Second Device"
 msgstr ""
 
-#: ../qml/Main.qml:422 ../qml/pages/AddSecondDevice.qml:120
-#: ../qml/pages/ConfirmAddSecondDevice.qml:28
-#: ../qml/pages/SettingsPage.qml:1018
+#: ../qml/Main.qml:425 ../qml/pages/AddSecondDevice.qml:119
+#: ../qml/pages/SettingsPage.qml:1043 ../qml/pages/SettingsPage.qml:1058
 msgid "Add Second Device"
 msgstr ""
 
-#: ../qml/Main.qml:435 ../qml/pages/AddAccountViaQr.qml:123
-#: ../qml/pages/QrShowScan.qml:398
+#: ../qml/Main.qml:438 ../qml/pages/AddAccountViaQr.qml:124
+#: ../qml/pages/QrShowScan.qml:399
 msgid "Log into \"%1\"?"
 msgstr ""
 
-#: ../qml/Main.qml:448 ../qml/Main.qml:841 ../qml/Main.qml:1930
-#: ../qml/pages/AddAccountViaQr.qml:136 ../qml/pages/QrShowScan.qml:313
+#: ../qml/Main.qml:451 ../qml/Main.qml:847 ../qml/Main.qml:2003
+#: ../qml/pages/AddAccountViaQr.qml:137 ../qml/pages/QrShowScan.qml:314
+#: ../qml/pages/WebxdcPage.qml:131
 msgid "Error: %1"
 msgstr "Erro: %1"
 
-#: ../qml/Main.qml:462 ../qml/pages/AddChat.qml:205
-#: ../qml/pages/BlockedContacts.qml:63 ../qml/pages/BlockedContacts.qml:69
-#: ../qml/pages/ChatView.qml:1360 ../qml/pages/CreateOrEditGroup.qml:351
-#: ../qml/pages/GroupAddMember.qml:138 ../qml/pages/QrShowScan.qml:416
-#: ../qml/pages/QrShowScan.qml:433
+#: ../qml/Main.qml:465 ../qml/pages/AddChat.qml:206
+#: ../qml/pages/BlockedContacts.qml:95 ../qml/pages/ChatView.qml:1420
+#: ../qml/pages/CreateOrEditGroup.qml:356 ../qml/pages/GroupAddMember.qml:138
+#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:434
+#: ../qml/pages/WebxdcPage.qml:146
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: ../qml/Main.qml:868 ../qml/pages/AddAccountViaQr.qml:384
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:916
-#: ../qml/pages/QrShowScan.qml:849
+#: ../qml/Main.qml:874 ../qml/pages/AddAccountViaQr.qml:396
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:952
+#: ../qml/pages/QrShowScan.qml:850
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/Main.qml:1048 ../qml/Main.qml:1055 ../qml/Main.qml:1067
+#: ../qml/Main.qml:1054 ../qml/Main.qml:1061 ../qml/Main.qml:1073
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:1141 ../qml/pages/AccountConfig.qml:391
+#: ../qml/Main.qml:1147 ../qml/pages/AccountConfig.qml:424
 #: ../qml/pages/UrlDispatchAccountChooserPopup.qml:74
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:1322 ../qml/pages/ChatView.qml:589
-#: ../qml/pages/ChatView.qml:634 ../qml/pages/ForwardMessage.qml:82
+#: ../qml/Main.qml:1331 ../qml/pages/ChatView.qml:605
+#: ../qml/pages/ChatView.qml:650 ../qml/pages/ForwardMessage.qml:82
 msgid "Search"
 msgstr "Pesquisar"
 
-#: ../qml/Main.qml:1364 ../qml/Main.qml:1556
+#: ../qml/Main.qml:1373 ../qml/Main.qml:1595
 msgid "Archived Chats"
 msgstr "chats arquivadas"
 
-#: ../qml/Main.qml:1699 ../qml/pages/AccountConfig.qml:493
+#: ../qml/Main.qml:1398 ../qml/pages/AccountConfig.qml:338
+#: ../qml/pages/AddChat.qml:171 ../qml/pages/ChatView.qml:833
+#: ../qml/pages/ChatView.qml:841 ../qml/pages/ChatView.qml:3165
+#: ../qml/pages/ChatView.qml:3318 ../qml/pages/CreateOrEditGroup.qml:165
+msgid "Delete"
+msgstr "Apagar"
+
+#: ../qml/Main.qml:1407 ../qml/Main.qml:1409
+msgid "Delete Chat"
+msgstr "Apagar convesa"
+
+#: ../qml/Main.qml:1408
+msgid "Are you sure you want to delete \"%1\"?"
+msgstr ""
+
+#: ../qml/Main.qml:1424
+msgid "Archive"
+msgstr ""
+
+#: ../qml/Main.qml:1448
+msgid "Pin"
+msgstr ""
+
+#: ../qml/Main.qml:1457 ../qml/Main.qml:1484
+#: ../qml/pages/AddAccountViaQr.qml:329 ../qml/pages/ChatView.qml:855
+#: ../qml/pages/ChatView.qml:878 ../qml/pages/QrGroupInvite.qml:62
+#: ../qml/pages/QrShowScan.qml:504 ../qml/pages/QrShowScan.qml:727
+msgid "More Options"
+msgstr ""
+
+#: ../qml/Main.qml:1474
+msgid "Unarchive"
+msgstr ""
+
+#: ../qml/Main.qml:1742 ../qml/pages/AccountConfig.qml:529
 msgid "Request"
 msgstr ""
 
-#: ../qml/Main.qml:1796
+#: ../qml/Main.qml:1839
 msgid "Loading…"
 msgstr ""
 
-#: ../qml/Main.qml:1822 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:1865 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "Nova chat"
 
@@ -191,22 +227,12 @@ msgstr ""
 #: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:99
 #: ../qml/pages/+ubuntu-touch/StringExportDialog.qml:76
 #: ../qml/pages/AddChat.qml:41 ../qml/pages/AddChatForContact.qml:48
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:110
-#: ../qml/pages/AddSecondDevice.qml:126 ../qml/pages/BlockContactPopup.qml:31
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:137
+#: ../qml/pages/AddSecondDevice.qml:125
 #: ../qml/pages/ChangeDatabasePassword.qml:169
-#: ../qml/pages/ConfirmAddSecondDevice.qml:40
-#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:51
-#: ../qml/pages/ConfirmChatDeletion.qml:54 ../qml/pages/ConfirmClearChat.qml:62
-#: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:55
-#: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:56
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:80
 #: ../qml/pages/ConfirmDeleteFromServer.qml:80
-#: ../qml/pages/ConfirmDialog.qml:34 ../qml/pages/ConfirmEncryptDatabase.qml:56
-#: ../qml/pages/ConfirmLeaveGroup.qml:47
-#: ../qml/pages/ConfirmMemberDeletion.qml:55
-#: ../qml/pages/ConfirmMsgDeletion.qml:55
-#: ../qml/pages/ConfirmOpenExternalUrl.qml:56
-#: ../qml/pages/ConfirmStopEncryptingDatabase.qml:49
+#: ../qml/pages/ConfirmDialog.qml:34 ../qml/pages/ConfirmOpenExternalUrl.qml:56
 #: ../qml/pages/CreateDatabasePassword.qml:147
 #: ../qml/pages/CreateOrEditGroup.qml:114 ../qml/pages/GroupAddMember.qml:40
 #: ../qml/pages/ProfileOther.qml:53 ../qml/pages/ProfileSelf.qml:81
@@ -214,132 +240,208 @@ msgstr ""
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
 #: ../qml/pages/QrMenuPopup.qml:64 ../qml/pages/QrSharePopup.qml:63
 #: ../qml/pages/ReactionsSelectionPopover.qml:352
-#: ../qml/pages/UnblockContactPopup.qml:41
 #: ../qml/pages/UrlDispatchAccountChooserPopup.qml:111
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: ../qml/pages/About.qml:28 ../qml/pages/AddAccount.qml:99
-#: ../qml/pages/SettingsPage.qml:408 ../qml/pages/SettingsPage.qml:809
+#: ../qml/pages/SettingsPage.qml:420 ../qml/pages/SettingsPage.qml:834
 msgid "About DeltaTouch"
 msgstr ""
 
-#: ../qml/pages/About.qml:76
+#: ../qml/pages/About.qml:34 ../qml/pages/AccountConfig.qml:200
+#: ../qml/pages/AddAccount.qml:70 ../qml/pages/AddAccountViaQr.qml:213
+#: ../qml/pages/AdvancedSettings.qml:72 ../qml/pages/BlockedContacts.qml:40
+#: ../qml/pages/ChatView.qml:576 ../qml/pages/Connectivity.qml:37
+#: ../qml/pages/LogViewer.qml:84 ../qml/pages/ProgressBackupImport.qml:72
+#: ../qml/pages/ProgressConfigAccount.qml:71
+#: ../qml/pages/ProgressDatabaseDecryption.qml:96
+#: ../qml/pages/ProgressDatabaseEncryption.qml:94
+#: ../qml/pages/ProgressQrBackupImport.qml:100
+#: ../qml/pages/QrGroupInvite.qml:48
+msgid "Back"
+msgstr ""
+
+#: ../qml/pages/About.qml:90
 msgid "License:"
 msgstr ""
 
-#: ../qml/pages/About.qml:88
+#: ../qml/pages/About.qml:102
 msgid "Source code:"
 msgstr ""
 
-#: ../qml/pages/About.qml:109
+#: ../qml/pages/About.qml:123
 msgid "Report bugs here:"
 msgstr ""
 
-#: ../qml/pages/About.qml:132
+#: ../qml/pages/About.qml:146
 msgid ""
 "Support via classic email or DeltaChat compatible app (without reply "
 "guarantee and without any warranty):"
 msgstr ""
 
-#: ../qml/pages/About.qml:142
+#: ../qml/pages/About.qml:156
 msgid "deltatouch@mailbox.org"
 msgstr ""
 
-#: ../qml/pages/About.qml:154
+#: ../qml/pages/About.qml:168
 msgid "This app is powered by deltachat-core-rust "
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:182 ../qml/pages/SettingsPage.qml:475
+#: ../qml/pages/AccountConfig.qml:95 ../qml/pages/SettingsPage.qml:293
+msgid ""
+"The existing account(s) will now be encrypted. This will take some time. "
+"Make sure that the app stays in foreground, and prevent the screen from "
+"locking."
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:96 ../qml/pages/AccountConfig.qml:156
+#: ../qml/pages/AccountConfig.qml:309 ../qml/pages/AddAccount.qml:193
+#: ../qml/pages/SettingsPage.qml:294 ../qml/pages/SettingsPage.qml:354
+#: ../qml/pages/SettingsPage.qml:671 ../qml/pages/SettingsPage.qml:1060
+msgid "Continue"
+msgstr "Continuar"
+
+#: ../qml/pages/AccountConfig.qml:155 ../qml/pages/SettingsPage.qml:353
+msgid ""
+"The existing account(s) will now be decrypted. This will take some time. "
+"Make sure that the app stays in foreground, and prevent the screen from "
+"locking."
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:194 ../qml/pages/SettingsPage.qml:487
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:188 ../qml/pages/AddAccount.qml:70
-#: ../qml/pages/ChatView.qml:560 ../qml/pages/ProgressBackupImport.qml:72
-#: ../qml/pages/ProgressConfigAccount.qml:71
-#: ../qml/pages/ProgressDatabaseDecryption.qml:96
-#: ../qml/pages/ProgressDatabaseEncryption.qml:94
-#: ../qml/pages/ProgressQrBackupImport.qml:100
-msgid "Back"
-msgstr ""
-
-#: ../qml/pages/AccountConfig.qml:202 ../qml/pages/AddAccount.qml:84
-#: ../qml/pages/SettingsPage.qml:379
+#: ../qml/pages/AccountConfig.qml:214 ../qml/pages/AddAccount.qml:84
+#: ../qml/pages/SettingsPage.qml:391
 msgid "Settings"
 msgstr "Definições"
 
-#: ../qml/pages/AccountConfig.qml:216 ../qml/pages/AccountConfig.qml:343
+#: ../qml/pages/AccountConfig.qml:228 ../qml/pages/AccountConfig.qml:369
+#: ../qml/pages/AccountConfig.qml:371
 msgid "Info"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:223 ../qml/pages/AddAccount.qml:64
+#: ../qml/pages/AccountConfig.qml:235 ../qml/pages/AddAccount.qml:64
 msgid "Add Account"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:254 ../qml/pages/AddAccount.qml:167
+#: ../qml/pages/AccountConfig.qml:266 ../qml/pages/AddAccount.qml:167
 msgid "Encrypted database (experimental)"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:272 ../qml/pages/SettingsPage.qml:634
+#: ../qml/pages/AccountConfig.qml:284 ../qml/pages/SettingsPage.qml:646
 msgid ""
 "One unconfigured account exists. Unconfigured accounts cannot be converted. "
 "Please configure all unconfigured accounts or remove them prior to changes "
 "to this setting."
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:281 ../qml/pages/SettingsPage.qml:643
+#: ../qml/pages/AccountConfig.qml:293 ../qml/pages/SettingsPage.qml:655
 msgid ""
 " unconfigured accounts exist. Unconfigured accounts cannot be converted. "
 "Please configure all unconfigured accounts or remove them prior to changes "
 "to this setting."
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:319 ../qml/pages/AccountConfig.qml:321
+#: ../qml/pages/AccountConfig.qml:307 ../qml/pages/AddAccount.qml:191
+#: ../qml/pages/SettingsPage.qml:669
+msgid "Really encrypt the database?"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:308 ../qml/pages/AddAccount.qml:192
+#: ../qml/pages/SettingsPage.qml:670
+msgid ""
+"• Database encryption is experimental, use at your own risk.\n"
+"\n"
+"• It will only cover text messages and username/password of your accounts. "
+"Pictures, voice messages, files etc. will remain unencrypted.\n"
+"\n"
+"• If the phassphrase is lost, your data will be lost as well.\n"
+"\n"
+"• You will have to enter the phassphrase upon each startup of the app."
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:308 ../qml/pages/AddAccount.qml:192
+#: ../qml/pages/SettingsPage.qml:670
+msgid ""
+"• Database encryption is experimental, use at your own risk. BACKUP YOUR "
+"ACCOUNTS OR ADD A SECOND DEVICE FIRST.\n"
+"\n"
+"• It will only cover text messages and username/password of your accounts. "
+"Pictures, voice messages, files etc. will remain unencrypted.\n"
+"\n"
+"• If the phassphrase is lost, your data will be lost as well.\n"
+"\n"
+"• You will have to enter the phassphrase upon each startup of the app."
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:318 ../qml/pages/AddAccount.qml:202
+#: ../qml/pages/SettingsPage.qml:680
+msgid "Really disable database encryption?"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:319 ../qml/pages/AddAccount.qml:203
+#: ../qml/pages/SettingsPage.qml:681
+msgid "Disable encryption"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:345 ../qml/pages/AccountConfig.qml:347
 msgid "Delete Account"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:320
+#: ../qml/pages/AccountConfig.qml:346
 msgid ""
 "All account data of \"%1\" on this device will be deleted, including your "
 "end-to-end encryption setup, contacts, chats, messages and media. This "
 "action cannot be undone."
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:320
+#: ../qml/pages/AccountConfig.qml:346
 msgid "Are you sure you want to delete your account data?"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:343
+#: ../qml/pages/AccountConfig.qml:360 ../qml/pages/ProfileSelf.qml:75
+#: ../qml/pages/SettingsPage.qml:940
+msgid "Edit Profile"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:371
 msgid "Account ID: %1"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:343
+#: ../qml/pages/AccountConfig.qml:371
 msgid "None"
 msgstr "Nenhum"
 
-#: ../qml/pages/AccountConfig.qml:560
+#: ../qml/pages/AccountConfig.qml:386
+msgid "Mute"
+msgstr ""
+
+#: ../qml/pages/AccountConfig.qml:596
 #: ../qml/pages/SwitcherSidebarDelegate.qml:144
 msgid "Account is not configured."
 msgstr ""
 
 #: ../qml/pages/AccountConfigPageSettings.qml:46
-#: ../qml/pages/SettingsPage.qml:568
+#: ../qml/pages/SettingsPage.qml:580
 msgid "Experimental Features"
 msgstr ""
 
 #: ../qml/pages/AccountConfigPageSettings.qml:69
-#: ../qml/pages/SettingsPage.qml:785
+#: ../qml/pages/SettingsPage.qml:810
 msgid "Include contact requests in counters and notifications"
 msgstr ""
 
 #: ../qml/pages/AccountConfigPageSettings.qml:84
 #: ../qml/pages/AddChatForContact.qml:60
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:127
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:154
 #: ../qml/pages/ChangeDatabasePassword.qml:110
-#: ../qml/pages/ChangeDatabasePassword.qml:185 ../qml/pages/ChatView.qml:1955
+#: ../qml/pages/ChangeDatabasePassword.qml:185 ../qml/pages/ChatView.qml:2164
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:69
 #: ../qml/pages/ConfirmDeleteFromServer.qml:69
-#: ../qml/pages/ConfirmDialog.qml:33 ../qml/pages/ConfirmOpenExternalUrl.qml:35
+#: ../qml/pages/ConfirmDialog.qml:33
 #: ../qml/pages/CreateDatabasePassword.qml:109
 #: ../qml/pages/CreateDatabasePassword.qml:165
 #: ../qml/pages/CreateOrEditGroup.qml:127 ../qml/pages/GroupAddMember.qml:54
@@ -356,7 +458,7 @@ msgstr "OK"
 msgid "Log into your E-Mail Account"
 msgstr "Login no seu servidor"
 
-#: ../qml/pages/AddAccount.qml:138 ../qml/pages/AddAccount.qml:279
+#: ../qml/pages/AddAccount.qml:138 ../qml/pages/AddAccount.qml:292
 msgid "Restore from Backup"
 msgstr "Importar backup"
 
@@ -364,33 +466,28 @@ msgstr "Importar backup"
 msgid "Scan Invitation Code"
 msgstr ""
 
-#: ../qml/pages/AddAccount.qml:288
+#: ../qml/pages/AddAccount.qml:301
 msgid "The selected file is not a valid backup file."
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQr.qml:147
+#: ../qml/pages/AddAccountViaQr.qml:148
 msgid "The scanned QR code cannot be used to set up a new account."
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQr.qml:206 ../qml/pages/AddChatForContact.qml:92
-#: ../qml/pages/QrShowScan.qml:590 ../qml/pages/VerifiedPopup.qml:43
+#: ../qml/pages/AddAccountViaQr.qml:207 ../qml/pages/AddChatForContact.qml:92
+#: ../qml/pages/QrShowScan.qml:591 ../qml/pages/VerifiedPopup.qml:43
 msgid "Scan QR Code"
 msgstr "Fazer scan do código QR"
 
-#: ../qml/pages/AddAccountViaQr.qml:304 ../qml/pages/QrShowScan.qml:713
+#: ../qml/pages/AddAccountViaQr.qml:316 ../qml/pages/QrShowScan.qml:714
 msgid "Hold your camera over the QR code."
-msgstr "Coloque sua câmera sobre o código QR"
-
-#: ../qml/pages/AddAccountViaQr.qml:317 ../qml/pages/QrGroupInvite.qml:48
-#: ../qml/pages/QrShowScan.qml:503 ../qml/pages/QrShowScan.qml:726
-msgid "More Options"
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQr.qml:329 ../qml/pages/QrShowScan.qml:738
+#: ../qml/pages/AddAccountViaQr.qml:341 ../qml/pages/QrShowScan.qml:739
 msgid "Paste from Clipboard"
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQr.qml:345 ../qml/pages/QrShowScan.qml:754
+#: ../qml/pages/AddAccountViaQr.qml:357 ../qml/pages/QrShowScan.qml:755
 msgid "Load QR Code as Image"
 msgstr ""
 
@@ -402,7 +499,7 @@ msgstr "Digite o nome ou endereço de e-mail"
 msgid "New Group"
 msgstr "Novo grupo"
 
-#: ../qml/pages/AddChat.qml:176
+#: ../qml/pages/AddChat.qml:177
 msgid ""
 "Delete contact %1?\n"
 "\n"
@@ -423,318 +520,337 @@ msgid "Name"
 msgstr "Nome"
 
 #: ../qml/pages/AddChatForContact.qml:198
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:225
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:252
 msgid "E-Mail Address"
 msgstr "Endereço de email"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:52
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:940
-#: ../qml/pages/SettingsPage.qml:141 ../qml/pages/SettingsPage.qml:1295
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:57
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:976
+#: ../qml/pages/SettingsPage.qml:141 ../qml/pages/SettingsPage.qml:1327
 msgid "No, chats only"
 msgstr "Não, apenas conversas"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:55
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:954
-#: ../qml/pages/SettingsPage.qml:144 ../qml/pages/SettingsPage.qml:1309
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:60
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:990
+#: ../qml/pages/SettingsPage.qml:144 ../qml/pages/SettingsPage.qml:1341
 msgid "For accepted contacts"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:58
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:968
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:63
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:1004
 #: ../qml/pages/SettingsPage.qml:147 ../qml/pages/SettingsPage.qml:158
-#: ../qml/pages/SettingsPage.qml:1323 ../qml/pages/SettingsPage.qml:1351
+#: ../qml/pages/SettingsPage.qml:1355 ../qml/pages/SettingsPage.qml:1383
 msgid "All"
 msgstr "Tudo"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:102
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:129
 msgid "Log In"
 msgstr "Login"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:212
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:239
 msgid "Log in with an existing e-mail account"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:286
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:322
 msgid "Password"
 msgstr "Palavra-chave"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:385
-#: ../qml/pages/ChatView.qml:1972
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:421
+#: ../qml/pages/ChatView.qml:2181
 msgid "More Info"
 msgstr "Informação adicional"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:407
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:443
 msgid "There are no Delta Chat servers, your data stays on your device."
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:420
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:456
 msgid ""
 "For known e-mail providers additional settings are set up automatically. "
 "Sometimes IMAP needs to be enabled in the web settings. Consult your e-mail "
 "provider or friends for help."
 msgstr "Para os provedores de e-mail conhecidos as configurações adicionais são configuradas automaticamente. Por vezes, o IMAP precisa estar activado no frontend da web. Consulte seu provedor de e-mail ou amigos para obter ajuda."
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:444
-#: ../qml/pages/SettingsPage.qml:961
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:480
+#: ../qml/pages/SettingsPage.qml:986
 msgid "Show Classic E-Mails"
 msgstr "Exibir e-mails comuns"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:478
-#: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:1259
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:514
+#: ../qml/pages/AdvancedSettings.qml:66 ../qml/pages/SettingsPage.qml:1291
 msgid "Advanced"
 msgstr "Avançado"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:499
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:535
 msgid "Inbox"
 msgstr "Caixa de entrada"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:505
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:541
 msgid "IMAP Login Name"
 msgstr "IMAP nome de login "
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:512
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:609
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:631
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:548
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:645
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:667
 msgid "Default (same as above)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:527
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:563
 msgid "IMAP Server"
 msgstr "IMAP servidor"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:534
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:574
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:653
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:693
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:710
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:570
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:610
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:689
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:729
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:746
 msgid "Automatic"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:549
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:585
 msgid "IMAP Port"
 msgstr "IMAP porto"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:556
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:592
 msgid "Default (%1)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:572
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:608
 msgid "IMAP Security"
 msgstr "IMAP Segurança"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:577
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:696
-#: ../qml/pages/ChatInfosActionsChatlist.qml:136
-#: ../qml/pages/ChatInfosActionsChatview.qml:163
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:613
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:732
+#: ../qml/pages/ChatInfosActionsChatlist.qml:153
+#: ../qml/pages/ChatInfosActionsChatview.qml:187
 #: ../qml/pages/EphemeralTimerSettings.qml:37
 #: ../qml/pages/EphemeralTimerSettings.qml:137
 #: ../qml/pages/EphemeralTimerSettings.qml:141
 msgid "Off"
 msgstr "Desligado"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:596
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:632
 msgid "Outbox"
 msgstr "Caixa de saída"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:602
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:638
 msgid "SMTP Login Name"
 msgstr "SMTP nomde de login"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:624
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:660
 msgid "SMTP Password"
 msgstr "SMTP palavra-chave"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:646
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:682
 msgid "SMTP Server"
 msgstr "SMTP servidor"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:668
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:704
 msgid "SMTP Port"
 msgstr "SMTP porto"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:675
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:778
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:801
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:711
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:814
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:837
 msgid "Standard (%1)"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:691
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:727
 msgid "SMTP Security"
 msgstr "SMTP segurança"
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:708
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:744
 msgid "Certificate Checks"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:711
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:747
 msgid "Strict"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:712
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:748
 msgid "Accept invalid certificates"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:747
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:783
 msgid "Use SOCKS5"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:766
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:802
 msgid ""
 "SOCKS5 support is currently experimental. Please use at your own risk. If "
 "you type in an address in the e-mail field, there will be DNS lookup that "
 "won't get tunneled through SOCKS5."
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:771
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:807
 msgid "SOCKS5 Host"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:794
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:830
 msgid "SOCKS5 Port"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:818
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:854
 msgid "SOCKS5 User"
 msgstr ""
 
-#: ../qml/pages/AddOrConfigureEmailAccount.qml:840
+#: ../qml/pages/AddOrConfigureEmailAccount.qml:876
 msgid "SOCKS5 Password"
 msgstr ""
 
-#: ../qml/pages/AddSecondDevice.qml:105
+#: ../qml/pages/AddSecondDevice.qml:104
 msgid "ℹ️ Account transferred to your second device."
+msgstr ""
+
+#: ../qml/pages/AddSecondDevice.qml:130
+msgid "Abort setting up second device?"
 msgstr ""
 
 #: ../qml/pages/AddSecondDevice.qml:131
 msgid "This will invalidate the QR code copied to clipboard."
 msgstr ""
 
-#: ../qml/pages/AddSecondDevice.qml:155
+#: ../qml/pages/AddSecondDevice.qml:132 ../qml/pages/ProgressKeysExport.qml:57
+msgid "Yes"
+msgstr "Sim"
+
+#: ../qml/pages/AddSecondDevice.qml:133
+msgid "No"
+msgstr "Não"
+
+#: ../qml/pages/AddSecondDevice.qml:160
 msgid "One moment…"
 msgstr "Um momento..."
 
-#: ../qml/pages/AddSecondDevice.qml:180
+#: ../qml/pages/AddSecondDevice.qml:185
 #: ../qml/pages/ProgressQrBackupImport.qml:39
 msgid "Transferring…"
 msgstr ""
 
-#: ../qml/pages/AddSecondDevice.qml:266
+#: ../qml/pages/AddSecondDevice.qml:271
 msgid "(experimental, version 1.36 required)"
 msgstr ""
 
-#: ../qml/pages/AddSecondDevice.qml:266
+#: ../qml/pages/AddSecondDevice.qml:271
 msgid "Install Delta Chat on your other device (https://get.delta.chat)"
 msgstr ""
 
-#: ../qml/pages/AddSecondDevice.qml:307
+#: ../qml/pages/AddSecondDevice.qml:312
 msgid "Make sure both devices are on the same Wi-Fi or network"
 msgstr ""
 
-#: ../qml/pages/AddSecondDevice.qml:348
+#: ../qml/pages/AddSecondDevice.qml:353
 msgid ""
 "Start Delta Chat, tap “Add as Second Device” and scan the code shown here"
 msgstr ""
 
-#: ../qml/pages/AddSecondDevice.qml:358
+#: ../qml/pages/AddSecondDevice.qml:363
 msgid "Troubleshooting"
 msgstr ""
 
-#: ../qml/pages/AddSecondDevice.qml:406 ../qml/pages/QrConfirmPopup.qml:69
+#: ../qml/pages/AddSecondDevice.qml:411 ../qml/pages/QrConfirmPopup.qml:69
 #: ../qml/pages/QrMenuPopup.qml:43 ../qml/pages/QrSharePopup.qml:57
 msgid "Copy to Clipboard"
 msgstr "Copiar para área de transferência"
 
-#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:490
+#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:539
 msgid "Worse quality, small size"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:476
+#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:525
 msgid "Balanced"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:462
+#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:511
 msgid "High"
 msgstr "Elevada"
 
-#: ../qml/pages/AdvancedSettings.qml:127
+#: ../qml/pages/AdvancedSettings.qml:145 ../qml/pages/SettingsPage.qml:450
+msgid "All Accounts"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:159
 msgid "Voice Message Quality"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:164
+#: ../qml/pages/AdvancedSettings.qml:188
+msgid "View Log"
+msgstr "Ver o log"
+
+#: ../qml/pages/AdvancedSettings.qml:215 ../qml/pages/SettingsPage.qml:861
+msgid "Current Account"
+msgstr ""
+
+#: ../qml/pages/AdvancedSettings.qml:236
 msgid "Autocrypt"
 msgstr "Encriptação automática"
 
-#: ../qml/pages/AdvancedSettings.qml:177
+#: ../qml/pages/AdvancedSettings.qml:249
 msgid "Prefer End-To-End Encryption"
 msgstr "Preferir encriptação ponta a ponta"
 
-#: ../qml/pages/AdvancedSettings.qml:214
+#: ../qml/pages/AdvancedSettings.qml:286
 msgid "IMAP Folder Handling"
 msgstr "Manipulação da pasta do IMAP"
 
-#: ../qml/pages/AdvancedSettings.qml:228
+#: ../qml/pages/AdvancedSettings.qml:300
 msgid "Watch Sent Folder"
 msgstr "Ver a pasta de enviados"
 
-#: ../qml/pages/AdvancedSettings.qml:261
+#: ../qml/pages/AdvancedSettings.qml:333
 msgid "Send Copy to Self"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:262
+#: ../qml/pages/AdvancedSettings.qml:334
 msgid "Required when using this account on multiple devices."
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:296
+#: ../qml/pages/AdvancedSettings.qml:368
 msgid "Move automatically to DeltaChat Folder"
 msgstr "Mover pasta automaticamente para o Delta Chat"
 
-#: ../qml/pages/AdvancedSettings.qml:297
+#: ../qml/pages/AdvancedSettings.qml:369
 msgid "Chat conversations are moved to avoid cluttering the Inbox"
 msgstr "As chats de chat são movidas para evitar atravancar da pasta Inbox"
 
-#: ../qml/pages/AdvancedSettings.qml:330
+#: ../qml/pages/AdvancedSettings.qml:402
 msgid "Only Fetch from DeltaChat Folder"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:331
+#: ../qml/pages/AdvancedSettings.qml:403
 msgid ""
 "Ignore other folders. Requires your server to move chat messages to the "
 "DeltaChat folder."
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:369
+#: ../qml/pages/AdvancedSettings.qml:441
 msgid "Manage Keys"
 msgstr "Gerir teclas"
 
-#: ../qml/pages/AdvancedSettings.qml:383
+#: ../qml/pages/AdvancedSettings.qml:455
 msgid "Export Secret Keys"
 msgstr "Exportar chave secreta"
 
-#: ../qml/pages/AdvancedSettings.qml:404 ../qml/pages/ProgressKeysImport.qml:59
+#: ../qml/pages/AdvancedSettings.qml:476 ../qml/pages/ProgressKeysImport.qml:59
 msgid "Import Secret Keys"
 msgstr "Importar chave secreta"
 
-#: ../qml/pages/AdvancedSettings.qml:425
-msgid "View Log"
-msgstr "Ver o log"
-
-#: ../qml/pages/BlockContactPopup.qml:28
-msgid "Block this contact? You will no longer receive messages from them."
-msgstr "Bloquear este contacto? Não receberá mais mensagens deste contacto."
-
-#: ../qml/pages/BlockContactPopup.qml:37
-#: ../qml/pages/ChatInfosActionsChatlist.qml:63
-#: ../qml/pages/ChatInfosActionsChatview.qml:77
-msgid "Block Contact"
-msgstr "Bloquear contacto"
-
-#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:869
+#: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:894
 msgid "Blocked Contacts"
 msgstr "Bloquear contactos"
 
-#: ../qml/pages/BlockedContacts.qml:46
+#: ../qml/pages/BlockedContacts.qml:66
 msgid "Blocked contacts will appear here."
 msgstr ""
+
+#: ../qml/pages/BlockedContacts.qml:84
+msgid ""
+"Unblock this contact? You will then be able to receive messages from them."
+msgstr "Desbloquear esse contacto? Poderá mais uma vez receber mensagens deste contacto."
+
+#: ../qml/pages/BlockedContacts.qml:85
+msgid "Unblock Contact"
+msgstr "Desbloquear contacto"
 
 #: ../qml/pages/ChangeDatabasePassword.qml:45
 #: ../qml/pages/ChangeDatabasePassword.qml:189
@@ -774,45 +890,63 @@ msgstr "Silenciar notificações"
 msgid "Unmute"
 msgstr "Falar"
 
-#: ../qml/pages/ChatInfosActionsChatlist.qml:72
-#: ../qml/pages/ChatInfosActionsChatview.qml:86
+#: ../qml/pages/ChatInfosActionsChatlist.qml:63
+#: ../qml/pages/ChatInfosActionsChatlist.qml:70
+#: ../qml/pages/ChatInfosActionsChatview.qml:77
+#: ../qml/pages/ChatInfosActionsChatview.qml:84
+msgid "Block Contact"
+msgstr "Bloquear contacto"
+
+#: ../qml/pages/ChatInfosActionsChatlist.qml:69
+#: ../qml/pages/ChatInfosActionsChatview.qml:83
+msgid "Block this contact? You will no longer receive messages from them."
+msgstr "Bloquear este contacto? Não receberá mais mensagens deste contacto."
+
+#: ../qml/pages/ChatInfosActionsChatlist.qml:82
+#: ../qml/pages/ChatInfosActionsChatview.qml:96
 #: ../qml/pages/CreateOrEditGroup.qml:37
 msgid "Edit Group"
 msgstr "Editar grupo"
 
-#: ../qml/pages/ChatInfosActionsChatlist.qml:84
-#: ../qml/pages/ChatInfosActionsChatview.qml:98
-#: ../qml/pages/ConfirmLeaveGroup.qml:36
+#: ../qml/pages/ChatInfosActionsChatlist.qml:94
+#: ../qml/pages/ChatInfosActionsChatlist.qml:101
+#: ../qml/pages/ChatInfosActionsChatview.qml:108
+#: ../qml/pages/ChatInfosActionsChatview.qml:115
 msgid "Leave Group"
 msgstr "Deixar grupo"
 
-#: ../qml/pages/ChatInfosActionsChatlist.qml:97
-#: ../qml/pages/ChatInfosActionsChatview.qml:111
+#: ../qml/pages/ChatInfosActionsChatlist.qml:100
+#: ../qml/pages/ChatInfosActionsChatview.qml:114
+msgid "Are you sure you want to leave this group?"
+msgstr "Tem certeza que deseja deixar este grupo?"
+
+#: ../qml/pages/ChatInfosActionsChatlist.qml:114
+#: ../qml/pages/ChatInfosActionsChatview.qml:128
 msgid "Encryption Info"
 msgstr "Informação sobre encriptação"
 
-#: ../qml/pages/ChatInfosActionsChatlist.qml:150
-#: ../qml/pages/ChatInfosActionsChatview.qml:177
+#: ../qml/pages/ChatInfosActionsChatlist.qml:167
+#: ../qml/pages/ChatInfosActionsChatview.qml:201
 msgid "Mute for 1 hour"
 msgstr "Calado por 1 hora"
 
-#: ../qml/pages/ChatInfosActionsChatlist.qml:164
-#: ../qml/pages/ChatInfosActionsChatview.qml:191
+#: ../qml/pages/ChatInfosActionsChatlist.qml:181
+#: ../qml/pages/ChatInfosActionsChatview.qml:215
 msgid "Mute for 2 hours"
 msgstr "Calado por 2 horas"
 
-#: ../qml/pages/ChatInfosActionsChatlist.qml:178
-#: ../qml/pages/ChatInfosActionsChatview.qml:205
+#: ../qml/pages/ChatInfosActionsChatlist.qml:195
+#: ../qml/pages/ChatInfosActionsChatview.qml:229
 msgid "Mute for 1 day"
 msgstr "Calado por 1 dia"
 
-#: ../qml/pages/ChatInfosActionsChatlist.qml:192
-#: ../qml/pages/ChatInfosActionsChatview.qml:219
+#: ../qml/pages/ChatInfosActionsChatlist.qml:209
+#: ../qml/pages/ChatInfosActionsChatview.qml:243
 msgid "Mute for 7 days"
 msgstr "Calado por 7 dias"
 
-#: ../qml/pages/ChatInfosActionsChatlist.qml:206
-#: ../qml/pages/ChatInfosActionsChatview.qml:233
+#: ../qml/pages/ChatInfosActionsChatlist.qml:223
+#: ../qml/pages/ChatInfosActionsChatview.qml:257
 msgid "Mute forever"
 msgstr ""
 
@@ -821,161 +955,111 @@ msgstr ""
 msgid "Disappearing Messages"
 msgstr "Destruição de mensagens"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:128
-#: ../qml/pages/ConfirmClearChat.qml:42 ../qml/pages/ConfirmClearChat.qml:51
+#: ../qml/pages/ChatInfosActionsChatview.qml:145
+#: ../qml/pages/ChatInfosActionsChatview.qml:151
+#: ../qml/pages/ChatInfosActionsChatview.qml:153
 msgid "Clear Chat"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:154 ../qml/pages/ImageViewer.qml:39
+#: ../qml/pages/ChatInfosActionsChatview.qml:152 ../qml/pages/ChatView.qml:840
+msgid "Delete %1 message here and on the server?"
+msgstr "Apagar %1 mensagens aqui e no servidor?"
+
+#: ../qml/pages/ChatInfosActionsChatview.qml:152 ../qml/pages/ChatView.qml:840
+msgid "Delete %1 message?"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActionsChatview.qml:152
+msgid "Delete %1 messages here and on the server?"
+msgstr ""
+
+#: ../qml/pages/ChatInfosActionsChatview.qml:152
+msgid "Delete %1 messages?"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:158 ../qml/pages/ImageViewer.qml:39
 #: ../qml/pages/ImageViewerAnimated.qml:39 ../qml/pages/LogViewer.qml:49
 #: ../qml/pages/SettingsPage.qml:125
 msgid "File could not be saved"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:159 ../qml/pages/ImageViewer.qml:44
+#: ../qml/pages/ChatView.qml:163 ../qml/pages/ImageViewer.qml:44
 #: ../qml/pages/ImageViewerAnimated.qml:44 ../qml/pages/LogViewer.qml:54
 #: ../qml/pages/SettingsPage.qml:130
 msgid "Saved file "
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:300 ../qml/pages/ChatView.qml:1906
+#: ../qml/pages/ChatView.qml:304 ../qml/pages/ChatView.qml:2115
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:302 ../qml/pages/ChatView.qml:1908
+#: ../qml/pages/ChatView.qml:306 ../qml/pages/ChatView.qml:2117
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:434 ../qml/pages/ChatView.qml:1415
+#: ../qml/pages/ChatView.qml:447 ../qml/pages/ChatView.qml:1611
 msgid "Voice Message"
 msgstr "Mensagem de voz"
 
-#: ../qml/pages/ChatView.qml:574
+#: ../qml/pages/ChatView.qml:590
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1305
+#: ../qml/pages/ChatView.qml:870
+msgid "Reply"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:888
+msgid "Forward"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1365
 msgid "Forwarded Message"
 msgstr "Reencaminhada"
 
-#: ../qml/pages/ChatView.qml:1508
+#: ../qml/pages/ChatView.qml:1557
+msgid "Start…"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:1708
 msgid "Download"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1510
+#: ../qml/pages/ChatView.qml:1710
 msgid "Download failed"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1512
+#: ../qml/pages/ChatView.qml:1712
 msgid "Downloading…"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1551
+#: ../qml/pages/ChatView.qml:1751
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1582
+#: ../qml/pages/ChatView.qml:1786
 msgid "Show Full Message…"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1942
+#: ../qml/pages/ChatView.qml:2151
 msgid "%1 sent a message from another device."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:2836
+#: ../qml/pages/ChatView.qml:2488
+msgid "Tap to Open"
+msgstr ""
+
+#: ../qml/pages/ChatView.qml:3148
 msgid "Accept"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:2853 ../qml/pages/ChatView.qml:3006
-#: ../qml/pages/ConfirmMemberDeletion.qml:35
-#: ../qml/pages/ConfirmMemberDeletion.qml:45
-msgid "Delete"
-msgstr "Apagar"
-
-#: ../qml/pages/ChatView.qml:2869
+#: ../qml/pages/ChatView.qml:3181
 msgid "Block"
 msgstr ""
 
-#: ../qml/pages/ConfirmAddSecondDevice.qml:29
-msgid ""
-"This creates a QR code that the second device can scan to copy the account."
-msgstr ""
-
-#: ../qml/pages/ConfirmAddSecondDevice.qml:32
-#: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:45
-#: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:46
-#: ../qml/pages/ConfirmEncryptDatabase.qml:46
-msgid "Continue"
-msgstr "Continuar"
-
-#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:31
-#: ../qml/pages/MessageHtmlView.qml:189
-msgid "Always Load Remote Images"
-msgstr ""
-
-#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:36
-msgid ""
-"Remote images can track you.\n"
-"\n"
-"This setting also may load fonts and other content. If disabled, embedded or "
-"cached images may appear.\n"
-"\n"
-"Load remote images?"
-msgstr ""
-
-#: ../qml/pages/ConfirmAlwaysLoadRemoteContent.qml:41
-#: ../qml/pages/MessageHtmlView.qml:111
-msgid "Load Remote Images"
-msgstr ""
-
-#: ../qml/pages/ConfirmCancelSecondDevice.qml:28
-msgid "Abort setting up second device?"
-msgstr ""
-
-#: ../qml/pages/ConfirmCancelSecondDevice.qml:31
-#: ../qml/pages/ProgressKeysExport.qml:57
-msgid "Yes"
-msgstr "Sim"
-
-#: ../qml/pages/ConfirmCancelSecondDevice.qml:40
-msgid "No"
-msgstr "Não"
-
-#: ../qml/pages/ConfirmChatDeletion.qml:34
-#: ../qml/pages/ConfirmChatDeletion.qml:44
-msgid "Delete Chat"
-msgstr "Apagar convesa"
-
-#: ../qml/pages/ConfirmChatDeletion.qml:38
-#: ../qml/pages/ConfirmMsgDeletion.qml:39
-msgid "Are you sure you want to delete \"%1\"?"
-msgstr ""
-
-#: ../qml/pages/ConfirmClearChat.qml:36
-msgid "Delete %1 message here and on the server?"
-msgstr "Apagar %1 mensagens aqui e no servidor?"
-
-#: ../qml/pages/ConfirmClearChat.qml:38
-msgid "Delete %1 messages here and on the server?"
-msgstr ""
-
-#: ../qml/pages/ConfirmDatabaseConversionToEncrypted.qml:39
-msgid ""
-"The existing account(s) will now be encrypted. This will take some time. "
-"Make sure that the app stays in foreground, and prevent the screen from "
-"locking."
-msgstr ""
-
-#: ../qml/pages/ConfirmDatabaseConversionToUnencrypted.qml:39
-msgid ""
-"The existing account(s) will now be decrypted. This will take some time. "
-"Make sure that the app stays in foreground, and prevent the screen from "
-"locking."
-msgstr ""
-
 #: ../qml/pages/ConfirmDeleteFromDevice.qml:36
-#: ../qml/pages/SettingsPage.qml:1139
+#: ../qml/pages/SettingsPage.qml:1171
 msgid "Delete Messages from Device"
 msgstr ""
 
@@ -997,7 +1081,7 @@ msgid "I understand, delete all these messages"
 msgstr ""
 
 #: ../qml/pages/ConfirmDeleteFromServer.qml:36
-#: ../qml/pages/SettingsPage.qml:1168
+#: ../qml/pages/SettingsPage.qml:1200
 msgid "Delete Messages from Server"
 msgstr ""
 
@@ -1014,65 +1098,19 @@ msgid ""
 "Delta Chat"
 msgstr ""
 
-#: ../qml/pages/ConfirmEncryptDatabase.qml:35
-msgid "Really encrypt the database?"
-msgstr ""
-
-#: ../qml/pages/ConfirmEncryptDatabase.qml:40
-msgid ""
-"• Database encryption is experimental, use at your own risk.\n"
-"\n"
-"• It will only cover text messages and username/password of mail accounts. "
-"Pictures, voice messages, files etc. will remain unencrypted.\n"
-"\n"
-"• If the phassphrase is lost, your data will be lost as well.\n"
-"\n"
-"• You will have to enter the phassphrase upon each startup of the app."
-msgstr ""
-
-#: ../qml/pages/ConfirmEncryptDatabase.qml:40
-msgid ""
-"• Database encryption is experimental, use at your own risk. Backup your "
-"accounts or add a second device first.\n"
-"\n"
-"• It will only cover text messages and username/password of mail accounts. "
-"Pictures, voice messages, files etc. will remain unencrypted.\n"
-"\n"
-"• If the phassphrase is lost, your data will be lost as well.\n"
-"\n"
-"• You will have to enter the phassphrase upon each startup of the app."
-msgstr ""
-
-#: ../qml/pages/ConfirmLeaveGroup.qml:32
-msgid "Are you sure you want to leave this group?"
-msgstr "Tem certeza que deseja deixar este grupo?"
-
-#: ../qml/pages/ConfirmMemberDeletion.qml:39
-msgid "Remove %1 from group?"
-msgstr ""
-
-#: ../qml/pages/ConfirmMsgDeletion.qml:35
-#: ../qml/pages/ConfirmMsgDeletion.qml:45
-msgid "Delete Message"
-msgstr "Apagar mensagem"
-
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:30
 msgid "Do you want to open this link?"
 msgstr ""
+
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:35
+msgid "Open"
+msgstr "Abrir"
 
 #: ../qml/pages/ConfirmOpenExternalUrl.qml:45
 msgid "Copy Link"
 msgstr ""
 
-#: ../qml/pages/ConfirmStopEncryptingDatabase.qml:35
-msgid "Really disable database encryption?"
-msgstr ""
-
-#: ../qml/pages/ConfirmStopEncryptingDatabase.qml:39
-msgid "Disable encryption"
-msgstr ""
-
-#: ../qml/pages/Connectivity.qml:31 ../qml/pages/SettingsPage.qml:1044
+#: ../qml/pages/Connectivity.qml:31 ../qml/pages/SettingsPage.qml:1076
 msgid "Connectivity"
 msgstr ""
 
@@ -1088,36 +1126,44 @@ msgid "Re-Enter Password"
 msgstr ""
 
 #: ../qml/pages/CreateOrEditGroup.qml:143 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrSharePopup.qml:28 ../qml/pages/QrShowScan.qml:483
-#: ../qml/pages/QrShowScan.qml:578
+#: ../qml/pages/QrSharePopup.qml:28 ../qml/pages/QrShowScan.qml:484
+#: ../qml/pages/QrShowScan.qml:579
 msgid "QR Invite Code"
 msgstr "Código de convite do QR"
 
-#: ../qml/pages/CreateOrEditGroup.qml:251
+#: ../qml/pages/CreateOrEditGroup.qml:157
+msgid "Remove"
+msgstr "Apagar"
+
+#: ../qml/pages/CreateOrEditGroup.qml:164
+msgid "Remove %1 from group?"
+msgstr ""
+
+#: ../qml/pages/CreateOrEditGroup.qml:256
 msgid "Group Name"
 msgstr "Nome do grupo"
 
-#: ../qml/pages/CreateOrEditGroup.qml:285
+#: ../qml/pages/CreateOrEditGroup.qml:290
 msgid "%1 member"
 msgstr "%1 membro"
 
-#: ../qml/pages/CreateOrEditGroup.qml:286
+#: ../qml/pages/CreateOrEditGroup.qml:291
 msgid "%1 members"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:303 ../qml/pages/GroupAddMember.qml:34
+#: ../qml/pages/CreateOrEditGroup.qml:308 ../qml/pages/GroupAddMember.qml:34
 msgid "Add Members"
 msgstr "Adicionar membros"
 
-#: ../qml/pages/CreateOrEditGroup.qml:404
+#: ../qml/pages/CreateOrEditGroup.qml:409
 msgid "Please enter a name for the group."
 msgstr "Por favor, introduza um nome para o grupo."
 
-#: ../qml/pages/CreateOrEditGroup.qml:428
+#: ../qml/pages/CreateOrEditGroup.qml:433
 msgid "Change Group Image"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:479
+#: ../qml/pages/CreateOrEditGroup.qml:484
 msgid "Remove Group Image"
 msgstr ""
 
@@ -1125,16 +1171,16 @@ msgstr ""
 #: ../qml/pages/EphemeralTimerSettings.qml:151
 #: ../qml/pages/EphemeralTimerSettings.qml:155
 #: ../qml/pages/EphemeralTimerSettings.qml:225
-#: ../qml/pages/SettingsPage.qml:231 ../qml/pages/SettingsPage.qml:1619
-#: ../qml/pages/SettingsPage.qml:1625
+#: ../qml/pages/SettingsPage.qml:231 ../qml/pages/SettingsPage.qml:1651
+#: ../qml/pages/SettingsPage.qml:1657
 msgid "After 30 seconds"
 msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:165
 #: ../qml/pages/EphemeralTimerSettings.qml:169
-#: ../qml/pages/SettingsPage.qml:235 ../qml/pages/SettingsPage.qml:1640
-#: ../qml/pages/SettingsPage.qml:1646
+#: ../qml/pages/SettingsPage.qml:235 ../qml/pages/SettingsPage.qml:1672
+#: ../qml/pages/SettingsPage.qml:1678
 msgid "After 1 minute"
 msgstr ""
 
@@ -1142,8 +1188,8 @@ msgstr ""
 #: ../qml/pages/EphemeralTimerSettings.qml:179
 #: ../qml/pages/EphemeralTimerSettings.qml:183
 #: ../qml/pages/SettingsPage.qml:195 ../qml/pages/SettingsPage.qml:239
-#: ../qml/pages/SettingsPage.qml:1464 ../qml/pages/SettingsPage.qml:1470
-#: ../qml/pages/SettingsPage.qml:1661 ../qml/pages/SettingsPage.qml:1667
+#: ../qml/pages/SettingsPage.qml:1496 ../qml/pages/SettingsPage.qml:1502
+#: ../qml/pages/SettingsPage.qml:1693 ../qml/pages/SettingsPage.qml:1699
 msgid "After 1 hour"
 msgstr ""
 
@@ -1151,8 +1197,8 @@ msgstr ""
 #: ../qml/pages/EphemeralTimerSettings.qml:193
 #: ../qml/pages/EphemeralTimerSettings.qml:197
 #: ../qml/pages/SettingsPage.qml:199 ../qml/pages/SettingsPage.qml:243
-#: ../qml/pages/SettingsPage.qml:1485 ../qml/pages/SettingsPage.qml:1491
-#: ../qml/pages/SettingsPage.qml:1682 ../qml/pages/SettingsPage.qml:1688
+#: ../qml/pages/SettingsPage.qml:1517 ../qml/pages/SettingsPage.qml:1523
+#: ../qml/pages/SettingsPage.qml:1714 ../qml/pages/SettingsPage.qml:1720
 msgid "After 1 day"
 msgstr ""
 
@@ -1160,16 +1206,16 @@ msgstr ""
 #: ../qml/pages/EphemeralTimerSettings.qml:207
 #: ../qml/pages/EphemeralTimerSettings.qml:211
 #: ../qml/pages/SettingsPage.qml:203 ../qml/pages/SettingsPage.qml:247
-#: ../qml/pages/SettingsPage.qml:1506 ../qml/pages/SettingsPage.qml:1512
-#: ../qml/pages/SettingsPage.qml:1703 ../qml/pages/SettingsPage.qml:1709
+#: ../qml/pages/SettingsPage.qml:1538 ../qml/pages/SettingsPage.qml:1544
+#: ../qml/pages/SettingsPage.qml:1735 ../qml/pages/SettingsPage.qml:1741
 msgid "After 1 week"
 msgstr ""
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:221
 #: ../qml/pages/SettingsPage.qml:207 ../qml/pages/SettingsPage.qml:251
-#: ../qml/pages/SettingsPage.qml:1527 ../qml/pages/SettingsPage.qml:1533
-#: ../qml/pages/SettingsPage.qml:1724 ../qml/pages/SettingsPage.qml:1730
+#: ../qml/pages/SettingsPage.qml:1559 ../qml/pages/SettingsPage.qml:1565
+#: ../qml/pages/SettingsPage.qml:1756 ../qml/pages/SettingsPage.qml:1762
 msgid "After 4 weeks"
 msgstr ""
 
@@ -1193,7 +1239,8 @@ msgstr "Reencaminhar ..."
 
 #: ../qml/pages/ForwardMessage.qml:48 ../qml/pages/ImageViewer.qml:56
 #: ../qml/pages/ImageViewerAnimated.qml:56 ../qml/pages/MessageHtmlView.qml:49
-#: ../qml/pages/QrShowScan.qml:489 ../qml/pages/SettingsPage.qml:385
+#: ../qml/pages/QrShowScan.qml:490 ../qml/pages/SettingsPage.qml:397
+#: ../qml/pages/WebxdcPage.qml:50
 msgid "Close"
 msgstr ""
 
@@ -1205,16 +1252,34 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: ../qml/pages/LogViewer.qml:83
+#: ../qml/pages/LogViewer.qml:97
 msgid "Scroll to the Bottom"
 msgstr "Ir para o fim"
 
-#: ../qml/pages/LogViewer.qml:90
+#: ../qml/pages/LogViewer.qml:104
 msgid "Help"
 msgstr "Ajuda"
 
-#: ../qml/pages/LogViewer.qml:97
+#: ../qml/pages/LogViewer.qml:111
 msgid "Save Log"
+msgstr ""
+
+#: ../qml/pages/MessageHtmlView.qml:111 ../qml/pages/MessageHtmlView.qml:217
+msgid "Load Remote Images"
+msgstr ""
+
+#: ../qml/pages/MessageHtmlView.qml:189 ../qml/pages/MessageHtmlView.qml:215
+msgid "Always Load Remote Images"
+msgstr ""
+
+#: ../qml/pages/MessageHtmlView.qml:216
+msgid ""
+"Remote images can track you.\n"
+"\n"
+"This setting also may load fonts and other content. If disabled, embedded or "
+"cached images may appear.\n"
+"\n"
+"Load remote images?"
 msgstr ""
 
 #: ../qml/pages/MessageInfosActions.qml:37
@@ -1229,14 +1294,6 @@ msgstr "Exportar anexo"
 msgid "Message Details"
 msgstr "Detalhe da mensagem"
 
-#: ../qml/pages/NotImplemented.qml:27
-msgid "Not Implemented Yet"
-msgstr ""
-
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:241
-msgid "Sorry, not implemented yet :-("
-msgstr ""
-
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen at %1"
 msgstr ""
@@ -1249,24 +1306,20 @@ msgstr ""
 msgid "View Profile"
 msgstr "Ver perfil"
 
-#: ../qml/pages/ProfileOther.qml:280
+#: ../qml/pages/ProfileOther.qml:283
 msgid "Locally generated messages"
 msgstr ""
 
-#: ../qml/pages/ProfileOther.qml:310
+#: ../qml/pages/ProfileOther.qml:313
 msgid "Introduced by %1"
 msgstr ""
 
-#: ../qml/pages/ProfileOther.qml:310
+#: ../qml/pages/ProfileOther.qml:313
 msgid "Introduced by me"
 msgstr ""
 
-#: ../qml/pages/ProfileOther.qml:349 ../qml/pages/ProfileSelf.qml:313
+#: ../qml/pages/ProfileOther.qml:352 ../qml/pages/ProfileSelf.qml:313
 msgid "Signature Text"
-msgstr "Informação do estado"
-
-#: ../qml/pages/ProfileSelf.qml:75 ../qml/pages/SettingsPage.qml:915
-msgid "Edit Profile"
 msgstr ""
 
 #: ../qml/pages/ProfileSelf.qml:124
@@ -1368,20 +1421,20 @@ msgstr "Chaves secretas importadas de \"%1\"."
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrGroupInvite.qml:67 ../qml/pages/QrShowScan.qml:347
+#: ../qml/pages/QrGroupInvite.qml:81 ../qml/pages/QrShowScan.qml:348
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr ""
 
-#: ../qml/pages/QrGroupInvite.qml:68 ../qml/pages/QrMenuPopup.qml:32
-#: ../qml/pages/QrShowScan.qml:331 ../qml/pages/QrShowScan.qml:348
-#: ../qml/pages/QrShowScan.qml:524
+#: ../qml/pages/QrGroupInvite.qml:82 ../qml/pages/QrMenuPopup.qml:32
+#: ../qml/pages/QrShowScan.qml:332 ../qml/pages/QrShowScan.qml:349
+#: ../qml/pages/QrShowScan.qml:525
 msgid "Deactivate QR Code"
 msgstr ""
 
-#: ../qml/pages/QrGroupInvite.qml:98 ../qml/pages/QrShowScan.qml:554
+#: ../qml/pages/QrGroupInvite.qml:112 ../qml/pages/QrShowScan.qml:555
 msgid "Share"
 msgstr "Partilhar"
 
@@ -1409,44 +1462,48 @@ msgid ""
 "the recipient first."
 msgstr "Este código QR contém uma impressão digital, mas nenhum endereço de e-mail. \n\nPara uma verificação fora da banda, estabeleça primeiro uma encriptada criptografada com o destinatário."
 
-#: ../qml/pages/QrShowScan.qml:274
+#: ../qml/pages/QrShowScan.qml:242
+msgid "Sorry, not implemented yet :-("
+msgstr ""
+
+#: ../qml/pages/QrShowScan.qml:275
 msgid ""
 "Scanned QR code text:\n"
 "\n"
 "%1"
 msgstr "Texto de código QR digitalizado: \n\n%1"
 
-#: ../qml/pages/QrShowScan.qml:275 ../qml/pages/QrShowScan.qml:294
-#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:434
+#: ../qml/pages/QrShowScan.qml:276 ../qml/pages/QrShowScan.qml:295
+#: ../qml/pages/QrShowScan.qml:418 ../qml/pages/QrShowScan.qml:435
 msgid "QR Code"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:293
+#: ../qml/pages/QrShowScan.qml:294
 msgid ""
 "Scanned QR code URL:\n"
 "\n"
 "%1"
 msgstr "URL do código QR digitalizado: \n\n%1"
 
-#: ../qml/pages/QrShowScan.qml:330 ../qml/pages/QrShowScan.qml:523
+#: ../qml/pages/QrShowScan.qml:331 ../qml/pages/QrShowScan.qml:524
 msgid ""
 "This QR code can be scanned by others to contact you.\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:364
+#: ../qml/pages/QrShowScan.qml:365
 msgid ""
 "This QR code could be scanned by others to contact you.\n"
 "\n"
 "The QR code is not active on this device."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:365 ../qml/pages/QrShowScan.qml:382
+#: ../qml/pages/QrShowScan.qml:366 ../qml/pages/QrShowScan.qml:383
 msgid "Activate QR Code"
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:381
+#: ../qml/pages/QrShowScan.qml:382
 msgid ""
 "This QR code could be scanned by others to join the group \"%1\".\n"
 "\n"
@@ -1482,27 +1539,27 @@ msgid "Connected"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:162 ../qml/pages/SettingsPage.qml:175
-#: ../qml/pages/SettingsPage.qml:179 ../qml/pages/SettingsPage.qml:1365
-#: ../qml/pages/SettingsPage.qml:1407 ../qml/pages/SettingsPage.qml:1421
+#: ../qml/pages/SettingsPage.qml:179 ../qml/pages/SettingsPage.qml:1397
+#: ../qml/pages/SettingsPage.qml:1439 ../qml/pages/SettingsPage.qml:1453
 msgid "Up to %1"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:166 ../qml/pages/SettingsPage.qml:1379
+#: ../qml/pages/SettingsPage.qml:166 ../qml/pages/SettingsPage.qml:1411
 msgid "Up to %1, most worse quality images"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:171 ../qml/pages/SettingsPage.qml:1393
+#: ../qml/pages/SettingsPage.qml:171 ../qml/pages/SettingsPage.qml:1425
 msgid "Up to %1, most balanced quality images"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:191 ../qml/pages/SettingsPage.qml:223
-#: ../qml/pages/SettingsPage.qml:1450 ../qml/pages/SettingsPage.qml:1584
+#: ../qml/pages/SettingsPage.qml:1482 ../qml/pages/SettingsPage.qml:1616
 msgid "Never"
 msgstr "Nunca"
 
 #: ../qml/pages/SettingsPage.qml:211 ../qml/pages/SettingsPage.qml:255
-#: ../qml/pages/SettingsPage.qml:1548 ../qml/pages/SettingsPage.qml:1554
-#: ../qml/pages/SettingsPage.qml:1745 ../qml/pages/SettingsPage.qml:1751
+#: ../qml/pages/SettingsPage.qml:1580 ../qml/pages/SettingsPage.qml:1586
+#: ../qml/pages/SettingsPage.qml:1777 ../qml/pages/SettingsPage.qml:1783
 msgid "After 1 year"
 msgstr ""
 
@@ -1510,121 +1567,123 @@ msgstr ""
 msgid "?"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:227 ../qml/pages/SettingsPage.qml:1598
-#: ../qml/pages/SettingsPage.qml:1604
+#: ../qml/pages/SettingsPage.qml:227 ../qml/pages/SettingsPage.qml:1630
+#: ../qml/pages/SettingsPage.qml:1636
 msgid "At once"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:438
-msgid "All Accounts"
-msgstr ""
-
-#: ../qml/pages/SettingsPage.qml:451
+#: ../qml/pages/SettingsPage.qml:463
 msgid "Sync All"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:498
+#: ../qml/pages/SettingsPage.qml:510
 msgid "Message Font Size"
 msgstr "Tamanho do texto das mensagens"
 
-#: ../qml/pages/SettingsPage.qml:507 ../qml/pages/SettingsPage.qml:1783
+#: ../qml/pages/SettingsPage.qml:519 ../qml/pages/SettingsPage.qml:1815
 msgid "Small"
 msgstr "Pequeno"
 
-#: ../qml/pages/SettingsPage.qml:510 ../qml/pages/SettingsPage.qml:1803
+#: ../qml/pages/SettingsPage.qml:522 ../qml/pages/SettingsPage.qml:1835
 msgid "Normal"
 msgstr "Normal"
 
-#: ../qml/pages/SettingsPage.qml:513 ../qml/pages/SettingsPage.qml:1820
+#: ../qml/pages/SettingsPage.qml:525 ../qml/pages/SettingsPage.qml:1852
 msgid "Large"
 msgstr "Grande"
 
-#: ../qml/pages/SettingsPage.qml:516 ../qml/pages/SettingsPage.qml:1837
+#: ../qml/pages/SettingsPage.qml:528 ../qml/pages/SettingsPage.qml:1869
 msgid "Extra large"
 msgstr "Extra grande"
 
-#: ../qml/pages/SettingsPage.qml:544
+#: ../qml/pages/SettingsPage.qml:556
 msgid "Enter Key Sends"
 msgstr "Tecla ENTER para enviar"
 
-#: ../qml/pages/SettingsPage.qml:546
+#: ../qml/pages/SettingsPage.qml:558
 msgid "Pressing the Enter key will send text messages"
 msgstr "Pressionar a tecla ENTER enviará mensagens de texto"
 
-#: ../qml/pages/SettingsPage.qml:600
+#: ../qml/pages/SettingsPage.qml:612
 msgid "Database Encryption"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:617
+#: ../qml/pages/SettingsPage.qml:629
 msgid "Encrypted Database (experimental)"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:678
+#: ../qml/pages/SettingsPage.qml:703
 msgid "Change Database Passphrase"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:707 ../qml/pages/SettingsPage.qml:720
+#: ../qml/pages/SettingsPage.qml:732 ../qml/pages/SettingsPage.qml:745
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../qml/pages/SettingsPage.qml:721
+#: ../qml/pages/SettingsPage.qml:746
 msgid "Enable system notifications for new messages"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:739
+#: ../qml/pages/SettingsPage.qml:764
 msgid ""
 "To receive system notifications, background suspension must be disabled for "
 "the app and the app must be running."
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:756
+#: ../qml/pages/SettingsPage.qml:781
 msgid "Show message content in notification"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:757
+#: ../qml/pages/SettingsPage.qml:782
 msgid "Shows sender and first words of the message in notifications"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:783
+#: ../qml/pages/SettingsPage.qml:808
 msgid "Contact requests"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:836
-msgid "Current Account"
-msgstr ""
-
-#: ../qml/pages/SettingsPage.qml:947
+#: ../qml/pages/SettingsPage.qml:972
 msgid "Chats"
 msgstr "chats"
 
-#: ../qml/pages/SettingsPage.qml:990
+#: ../qml/pages/SettingsPage.qml:1015
 msgid "Auto-Download Messages"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:1075
+#: ../qml/pages/SettingsPage.qml:1059
+msgid ""
+"This creates a QR code that the second device can scan to copy the account."
+msgstr ""
+
+#: ../qml/pages/SettingsPage.qml:1107
 msgid "Privacy"
 msgstr "Privacidade"
 
-#: ../qml/pages/SettingsPage.qml:1087
+#: ../qml/pages/SettingsPage.qml:1119
 msgid "Read Receipts"
 msgstr "Ler recibos"
 
-#: ../qml/pages/SettingsPage.qml:1125
+#: ../qml/pages/SettingsPage.qml:1157
 msgid "Delete Old Messages"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:1217 ../qml/pages/SettingsPage.qml:1875
+#: ../qml/pages/SettingsPage.qml:1249 ../qml/pages/SettingsPage.qml:1907
 msgid "Export Backup"
 msgstr "Exportar o backup"
 
-#: ../qml/pages/UnblockContactPopup.qml:36
+#: ../qml/pages/TempWebxdcPopup.qml:31
 msgid ""
-"Unblock this contact? You will then be able to receive messages from them."
-msgstr "Desbloquear esse contacto? Poderá mais uma vez receber mensagens deste contacto."
+"Webxdc support is not complete yet.\n"
+"\n"
+"Some functions such as realtime channels, file import or sending files to "
+"other chats (needed for, e.g., the Webxdc Store app) will not work.\n"
+"\n"
+"Download apps from webxdc.org and add them to chats as file attachments."
+msgstr ""
 
-#: ../qml/pages/UnblockContactPopup.qml:47
-msgid "Unblock Contact"
-msgstr "Desbloquear contacto"
+#: ../qml/pages/TempWebxdcPopup.qml:45
+msgid "Do not show again"
+msgstr ""
 
 #: ../qml/pages/UrlDispatchAccountChooserPopup.qml:36
 msgid "Select Account"

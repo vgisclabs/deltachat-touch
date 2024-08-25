@@ -225,7 +225,7 @@ Page {
             leftMargin: units.gu(1)
         }
         contentHeight: flickContent.childrenRect.height
-        boundsBehavior: Flickable.OvershootBounds
+        clip: true
         visible: false
 
         Column {
@@ -376,13 +376,13 @@ Page {
 
     Image {
         id: qrImage
-        width: (!landscape ? parent.width : parent.height - header.height) - units.gu(2)
+        width: landscape ? parent.width / 2 : (parent.height - header.height) / 1.75
         height: width
         anchors {
             top: header.bottom
             topMargin: units.gu(1)
-            left: parent.left
-            leftMargin: units.gu(1)
+            left: landscape ? parent.left : undefined
+            horizontalCenter: landscape ? undefined : parent.horizontalCenter
         }
         fillMode: Image.PreserveAspectFit
 

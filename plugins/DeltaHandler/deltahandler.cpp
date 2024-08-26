@@ -663,7 +663,7 @@ QString DeltaHandler::getErrorFromJsonrpcResponse(QString jsonrpcResponse)
 }
 
 
-void DeltaHandler::addDeviceMessageForVersion(QString appVersion)
+void DeltaHandler::addDeviceMessageForVersion(QString appVersion, QString oldVersion)
 {
     // Device message for version 1.3.0;
     // remove/adapt for newer versions

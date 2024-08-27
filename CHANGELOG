@@ -1,6 +1,17 @@
-1.5.2 xxxx-xx-xx
+1.6.0 2024-08-27
+UI: Delete message dialog: Inform about deletion on server (except for device messages)
+UI: Do not allow changing own email address after successful account creation
 Bugfix: Prevent accidental clearance of draft on shutdown
-Other: Set body text of mailto: urls as draft message
+Bugfix: Correctly display right-to-left languages
+Bugfix: Correct layout of messages of unknown type
+Bugfix: Remove cause for temporary freezes in page for account creation
+Bugfix: Correct layout of page showing QR code for second device setup
+Bugfix: Add back button to "Scan QR" page (for non-UT platforms)
+Other: Basic Webxdc support
+Other: Use deltachat-core-rust v1.142.10
+Other: Support new backup2 format for second device setup
+Other: Set body text of "mailto:" urls as draft message
+Other: Update translations
 
 1.5.1 2024-06-05
 Bugfix: Add leading action to pages that did not have it before (for non-UT platforms)

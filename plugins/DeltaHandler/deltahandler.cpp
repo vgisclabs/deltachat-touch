@@ -665,44 +665,12 @@ QString DeltaHandler::getErrorFromJsonrpcResponse(QString jsonrpcResponse)
 
 void DeltaHandler::addDeviceMessageForVersion(QString appVersion, QString oldVersion)
 {
-    // Device message for version 1.3.0;
+    // Device message for version 1.6.0;
     // remove/adapt for newer versions
-    if (appVersion == "1.3.0" || appVersion == "1.3.1") {
-        QString tempQString = "What's new in 1.3.0?<br><br>• 1:1 chats guarantee end-to-end encryption for introduced contacts now<br>• these contacts and chats are marked with green checkmarks<br>• voice message recording starts immediately<br>• HTML mail view (\"Show Full Message…\")<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
+    if (appVersion == "1.6.0") {
+        QString tempQString = "What's new in 1.6.0?<br><br>• Basic Webxdc support! Download apps from <a href=\"https://webxdc.org/apps/\">https://webxdc.org/apps/</a> and add them as file attachments to chats (the Webxdc Store app via xstore@testrun.org does not work yet). See the <a href=\"https://codeberg.org/lk108/deltatouch/wiki/Status-of-Webxdc-support\">wiki</a> for more info.<br>• Bugfixes, minor UI improvements and internal updates.<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
 
-        QString versionLabel = "1-3-0";
-
-        addDeviceMessageToAllContexts(tempQString, versionLabel);
-    }
-
-    // Device message for version 1.3.1;
-    if (appVersion == "1.3.1") {
-        QString tempQString = "What's new in 1.3.1?<br><br>• App logs are redirected to file in cache to avoid sensitive data persisting in journald logs. Log file is deleted upon app closure.<br>• Log viewer page (via Advanced Settings)<br>• Fixed audio/file attachment preview<br>• Click on header in chat view opens profile of chat partner (1:1 chats) or group edit page<br>• Chat list shows status of outgoing messages<br>• Synchronize state of received messages across devices (needs support by mail server)<br>• New message count in account overview page<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
-
-        QString versionLabel = "1-3-1";
-
-        addDeviceMessageToAllContexts(tempQString, versionLabel);
-    }
-
-    // Device message for version 1.4.0;
-    if (appVersion == "1.4.0") {
-        QString tempQString = "What's new in 1.4.0?<br><br>• Reactions! Long-press messages to react with an emoji.<br>• Many bugfixes and refactorings to enhance performance, improve UX and increase consistency with official clients.<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
-
-        QString versionLabel = "1-4-0";
-
-        addDeviceMessageToAllContexts(tempQString, versionLabel);
-    }
-
-    if (appVersion == "1.5.0" || appVersion == "1.5.1") {
-        QString tempQString;
-        if (m_onUbuntuTouch) {
-            // TODO: mention option for sending with Enter?
-            tempQString = "What's new in 1.5.0?<br><br>• Counter for unread messages in accounts other than the active one<br>• Convergence: App automatically switches to multi-column mode depending on its width<br>• Option to send with Enter; Ctrl-Enter always sends<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
-        } else {
-            tempQString = "What's new in 1.5.0?<br><br>• Counter for unread messages in accounts other than the active one<br>• Convergence: App automatically switches to multi-column mode depending on its width<br>• Freedesktop notifications (requires app to be running in background)<br>• Option to send with Enter; Ctrl-Enter always sends<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
-        }
-
-        QString versionLabel = "1-5-0";
+        QString versionLabel = "1-6-0";
 
         addDeviceMessageToAllContexts(tempQString, versionLabel);
     }

@@ -185,7 +185,7 @@ Page {
             left: parent.left
             right: parent.right
         }
-        zoomFactor: root.onUbuntuTouch ? 3.0 : 1.0
+        zoomFactor: root.onUbuntuTouch && !root.isDesktopMode ? 3.0 : 1.0
 
         userScripts: [
             WebEngineScript {

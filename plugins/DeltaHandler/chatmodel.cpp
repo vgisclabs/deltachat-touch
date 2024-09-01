@@ -1799,7 +1799,7 @@ void ChatModel::setAttachment(QString filepath, int attachType)
         filepath.remove(0, 4);
     }
 
-    if (filepath.endsWith(".xdc")) {
+    if (DeltaHandler::MsgViewType::FileType == attachType && filepath.endsWith(".xdc")) {
         // re-write attachType if the file is a Webxdc app
         // TODO: Check for suffix sufficient?
         attachType = DeltaHandler::MsgViewType::WebxdcType;

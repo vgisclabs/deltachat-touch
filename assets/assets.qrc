@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/assets">
         <file>addNew.svg</file>
+        <file>attachment-white.svg</file>
+        <file>audio-input-microphone-symbolic-white.svg</file>
         <file>background_bright.svg</file>
         <file>background_dark.svg</file>
         <file>circled_x_red.svg</file>
@@ -17,6 +19,8 @@
         <file>sent_black.svg</file>
         <file>sent_green.svg</file>
         <file>sent_white.svg</file>
+        <file>stock_image-white.svg</file>
+        <file>stock_music-white.svg</file>
         <file>verified.svg</file>
         <file>verified_broken.svg</file>
         <file>coreTranslations/ar.txt</file>

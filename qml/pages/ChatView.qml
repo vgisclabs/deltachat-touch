@@ -43,10 +43,6 @@ Page {
     property string chatInitial
     property string chatColor
 
-    // determines whether the buttons to add attachments (== true) or
-    // the text entry bar are visible (== false)
-    property bool attachmentMode: false
-
     property bool enterFieldChangeUpdatesDraft: true
 
     property bool attachAnimatedImagePreviewMode: false
@@ -350,8 +346,6 @@ Page {
 
             messageEnterField.text = ""
 
-            attachmentMode = false
-
             attachAnimatedImagePreviewMode = false
             attachImagePreviewMode = false
             attachFilePreviewMode = false
@@ -398,7 +392,6 @@ Page {
                 currentlyQuotingMessage = true
                 quotedMessageLabel.text = DeltaHandler.chatmodel.getDraftQuoteSummarytext()
                 quotedUser.text = DeltaHandler.chatmodel.getDraftQuoteUsername()
-                attachmentMode = false
             } else {
                 currentlyQuotingMessage = false
             }
@@ -2594,18 +2587,82 @@ Page {
                 id: attachIcon
                 width: parent.width - units.gu(1)
                 height: width
-                //name: attachmentMode ? "close" : "add"
-                source: attachmentMode ? "qrc:///assets/suru-icons/close.svg" : "qrc:///assets/suru-icons/add.svg"
+                //name: "add"
+                source: "qrc:///assets/suru-icons/add.svg"
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
+            }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        attachmentMode = !attachmentMode
+            Loader {
+                id: attachmentLoader
+                property var msgType
+            }
+
+            Connections {
+                target: attachmentLoader.item
+                onFileSelected: {
+                    attachIconShape.adaptMsgTypeIfGif(urlOfFile)
+                    DeltaHandler.chatmodel.setAttachment(urlOfFile, attachmentLoader.msgType)
+                    attachmentLoader.source = ""
+                }
+                onCancelled: {
+                    attachmentLoader.source = ""
+                }
+            }
+
+            function adaptMsgTypeIfGif(imageUrl) {
+                if (attachmentLoader.msgType === DeltaHandler.ImageType) {
+                    if (DeltaHandler.chatmodel.isGif(imageUrl)) {
+                        attachmentLoader.msgType = DeltaHandler.GifType
+                    } else {
+                        attachmentLoader.msgType = DeltaHandler.ImageType
                     }
+                }
+            }
+
+            function addAttachment() {
+                if (root.onUbuntuTouch) {
+                    DeltaHandler.newFileImportSignalHelper()
+                    DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
+                        attachIconShape.adaptMsgTypeIfGif(fileUrl)
+                        DeltaHandler.chatmodel.setAttachment(fileUrl, attachmentLoader.msgType)
+                    } )
+                    extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": attachmentLoader.msgType })
+                } else {
+                    attachmentLoader.source = "FileImportDialog.qml"
+                    attachmentLoader.item.setFileType(attachmentLoader.msgType)
+                    attachmentLoader.item.open()
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    let popup10 = PopupUtils.open(Qt.resolvedUrl('AttachmentPopup.qml'), chatViewPage)
+
+                    popup10.addVoiceMessage.connect(function() { 
+                        messageAudio.stop()
+                        let a = DeltaHandler.startAudioRecording(root.voiceMessageQuality)
+                        recordingShapeLoader.active = true
+                        isRecording = true
+                    })
+
+                    popup10.addFile.connect(function() { 
+                        attachmentLoader.msgType = DeltaHandler.FileType
+                        attachIconShape.addAttachment()
+                    })
+
+                    popup10.addAudio.connect(function() { 
+                        attachmentLoader.msgType = DeltaHandler.AudioType
+                        attachIconShape.addAttachment()
+                    })
+
+                    popup10.addImage.connect(function() { 
+                        attachmentLoader.msgType = DeltaHandler.ImageType
+                        attachIconShape.addAttachment()
+                    })
                 }
             }
         } // end LomiriShape id: attachIconShape
@@ -2658,7 +2715,6 @@ Page {
             autoSize: true
             maximumLineCount: 5
             font.pixelSize: root.scaledFontSizeInPixels
-            visible: !attachmentMode
 
             onFocusChanged: {
                 if (root.oskViaDbus) {
@@ -2687,7 +2743,6 @@ Page {
                 rightMargin: units.gu(0.5)
                 verticalCenter: messageEnterField.verticalCenter
             }
-            visible: !attachmentMode
 
             Icon {
                 id: sendIcon
@@ -2708,7 +2763,6 @@ Page {
                         // currently showing the microphone icon => start voice message
                         // recording
                         messageAudio.stop()
-                        attachmentMode = false
                         isRecording = true
                         let a = DeltaHandler.startAudioRecording(root.voiceMessageQuality)
                         recordingShapeLoader.active = true
@@ -2740,298 +2794,6 @@ Page {
                 }
             }
         } // end LomiriShape id: sendIconShape
-
-
-        Rectangle {
-            id: filetypeToSendCage
-            height: messageEnterField.height
-            width: (sendImageIconShape.width + units.gu(2))*3
-            anchors {
-                right: messageCreatorBox.right
-                rightMargin: units.gu(1)
-                top: quotedMessageBox.visible ? quotedMessageBox.bottom : parent.top
-                topMargin: quotedMessageBox.visible ? units.gu(1) : 0
-            }
-
-            color: theme.palette.normal.background
-
-            visible: attachmentMode
-
-            LomiriShape {
-                id: sendImageIconShape
-                width: units.gu(4)
-                height: width
-                color: theme.palette.normal.overlay
-
-                anchors {
-                    right: filetypeToSendCage.right
-                    verticalCenter: parent.verticalCenter
-                }
-
-                function attachImage(imagePath) {
-                    if (DeltaHandler.chatmodel.isGif(imagePath)) {
-                        DeltaHandler.chatmodel.setAttachment(imagePath, DeltaHandler.GifType)
-                    } else {
-                        DeltaHandler.chatmodel.setAttachment(imagePath, DeltaHandler.ImageType)
-                    }
-                }
-
-                Icon {
-                    id: imageIcon
-                    width: parent.width - units.gu(1)
-                    height: width
-                    //name: "stock_image"
-                    source: "qrc:///assets/suru-icons/stock_image.svg"
-                    anchors {
-                        horizontalCenter: sendImageIconShape.horizontalCenter
-                        verticalCenter: sendImageIconShape.verticalCenter
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            if (root.onUbuntuTouch) {
-                                DeltaHandler.newFileImportSignalHelper()
-                                DeltaHandler.fileImportSignalHelper.fileImported.connect(sendImageIconShape.attachImage)
-                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
-                                // See comments in CreateOrEditGroup.qml
-                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
-
-                                //if (incubator.status != Component.Ready) {
-                                //    // have to wait for the object to be ready to connect to the signal,
-                                //    // see documentation on AdaptivePageLayout and
-                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                                //    incubator.onStatusChanged = function(status) {
-                                //        if (status == Component.Ready) {
-                                //            incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
-                                //        }
-                                //    }
-                                //} else {
-                                //    // object was directly ready
-                                //    incubator.object.fileSelected.connect(sendImageIconShape.attachImage)
-                                //}
-                            } else {
-                                picImportLoader.source = "FileImportDialog.qml"
-                                picImportLoader.item.setFileType(DeltaHandler.ImageType)
-                                picImportLoader.item.open()
-                            }
-
-                            attachmentMode = false
-                        }
-                        enabled: true
-                    }
-
-                    Loader {
-                        id: picImportLoader
-                    }
-
-                    Connections {
-                        target: picImportLoader.item
-                        onFileSelected: {
-                            sendImageIconShape.attachImage(urlOfFile)
-                            picImportLoader.source = ""
-                        }
-                        onCancelled: {
-                            picImportLoader.source = ""
-                        }
-                    }
-                }
-            } // end LomiriShape id: sendImageIconShape
-
-            LomiriShape {
-                id: sendAudioIconShape
-                width: units.gu(4)
-                height: width
-                color: theme.palette.normal.overlay
-
-                anchors {
-                    right: sendImageIconShape.left
-                    rightMargin: units.gu(2)
-                    verticalCenter: parent.verticalCenter
-                }
-
-                Icon {
-                    id: audioIcon
-                    width: parent.width - units.gu(1)
-                    height: width
-                    //name: "stock_music"
-                    source: "qrc:///assets/suru-icons/stock_music.svg"
-                    anchors {
-                        horizontalCenter: sendAudioIconShape.horizontalCenter
-                        verticalCenter: sendAudioIconShape.verticalCenter
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            if (root.onUbuntuTouch) {
-                                DeltaHandler.newFileImportSignalHelper()
-                                DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
-                                    DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
-                                } )
-                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
-                                // See comments in CreateOrEditGroup.qml
-                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.AudioType })
-
-                                //if (incubator.status != Component.Ready) {
-                                //    // have to wait for the object to be ready to connect to the signal,
-                                //    // see documentation on AdaptivePageLayout and
-                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                                //    incubator.onStatusChanged = function(status) {
-                                //        if (status == Component.Ready) {
-                                //            incubator.object.fileSelected.connect(function(fileUrl) {
-                                //                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
-                                //            } )
-                                //        }
-                                //    }
-                                //} else {
-                                //    // object was directly ready
-                                //    incubator.object.fileSelected.connect(function(fileUrl) {
-                                //        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.AudioType)
-                                //    } )
-                                //}
-                            } else {
-                                audioImportLoader.source = "FileImportDialog.qml"
-                                audioImportLoader.item.setFileType(DeltaHandler.AudioType)
-                                audioImportLoader.item.open()
-                            }
-
-                            attachmentMode = false
-                        }
-                        enabled: true
-                    } // MouseArea
-
-                    Loader {
-                        id: audioImportLoader
-                    }
-
-                    Connections {
-                        target: audioImportLoader.item
-                        onFileSelected: {
-                            DeltaHandler.chatmodel.setAttachment(urlOfFile, DeltaHandler.AudioType)
-                            audioImportLoader.source = ""
-                        }
-                        onCancelled: {
-                            audioImportLoader.source = ""
-                        }
-                    }
-                } // Icon id: audioIcon
-            } // end LomiriShape id: sendAudioIconShape
-
-            LomiriShape {
-                id: sendFileIconShape
-                width: units.gu(4)
-                height: width
-                color: theme.palette.normal.overlay
-
-                anchors {
-                    right: sendAudioIconShape.left
-                    rightMargin: units.gu(2)
-                    verticalCenter: parent.verticalCenter
-                }
-
-                Icon {
-                    id: attachmentIcon
-                    width: parent.width - units.gu(1)
-                    height: width
-                    //name: "attachment"
-                    source: "qrc:///assets/suru-icons/attachment.svg"
-                    anchors {
-                        horizontalCenter: sendFileIconShape.horizontalCenter
-                        verticalCenter: sendFileIconShape.verticalCenter
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            if (root.onUbuntuTouch) {
-                                DeltaHandler.newFileImportSignalHelper()
-                                DeltaHandler.fileImportSignalHelper.fileImported.connect(function(fileUrl) {
-                                    DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
-                                } )
-                                extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
-                                // See comments in CreateOrEditGroup.qml
-                                //let incubator = layout.addPageToCurrentColumn(chatViewPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
-
-                                //if (incubator.status != Component.Ready) {
-                                //    // have to wait for the object to be ready to connect to the signal,
-                                //    // see documentation on AdaptivePageLayout and
-                                //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                                //    incubator.onStatusChanged = function(status) {
-                                //        if (status == Component.Ready) {
-                                //            incubator.object.fileSelected.connect(function(fileUrl) {
-                                //                DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
-                                //            } )
-                                //        }
-                                //    }
-                                //} else {
-                                //    // object was directly ready
-                                //    incubator.object.fileSelected.connect(function(fileUrl) {
-                                //        DeltaHandler.chatmodel.setAttachment(fileUrl, DeltaHandler.FileType)
-                                //    } )
-                                //}
-                            } else {
-                                fileImportLoader.source = "FileImportDialog.qml"
-                                fileImportLoader.item.setFileType(DeltaHandler.FileType)
-                                fileImportLoader.item.open()
-                            }
-
-                            attachmentMode = false
-                        }
-                        enabled: true
-                    }
-
-                    Loader {
-                        id: fileImportLoader
-                    }
-
-                    Connections {
-                        target: fileImportLoader.item
-                        onFileSelected: {
-                            DeltaHandler.chatmodel.setAttachment(urlOfFile, DeltaHandler.FileType)
-                            fileImportLoader.source = ""
-                        }
-                        onCancelled: {
-                            fileImportLoader.source = ""
-                        }
-                    }
-                } // Icon id: attachmentIcon
-            } // end LomiriShape id: sendFileIconShape
-
-            LomiriShape {
-                id: voiceMessageIconShape
-                width: units.gu(4)
-                height: width
-                color: theme.palette.normal.overlay
-
-                anchors {
-                    right: sendFileIconShape.left
-                    rightMargin: units.gu(2)
-                    verticalCenter: parent.verticalCenter
-                }
-
-                Icon{
-                    id: voiceMessageIcon
-                    width: parent.width - units.gu(1)
-                    height: width
-                    //name: "audio-input-microphone-symbolic"
-                    source: "qrc:///assets/suru-icons/audio-input-microphone-symbolic.svg"
-                    anchors {
-                        horizontalCenter: voiceMessageIconShape.horizontalCenter
-                        verticalCenter: voiceMessageIconShape.verticalCenter
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            messageAudio.stop()
-                            attachmentMode = false
-                            let a = DeltaHandler.startAudioRecording(root.voiceMessageQuality)
-                            recordingShapeLoader.active = true
-                            isRecording = true
-                        }
-                        enabled: true
-                    }
-                }
-            } // end LomiriShape id: voiceMessageIconShape
-        } // end Rectangle id: filetypeToSendCage
-        
 
         Loader {
             id: recordingShapeLoader

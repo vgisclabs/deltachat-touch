@@ -15,6 +15,7 @@
         <file>pages/AdvancedSettings.qml</file>
         <file>pages/AddOrConfigureEmailAccount.qml</file>
         <file>pages/AddSecondDevice.qml</file>
+        <file>pages/AttachmentPopup.qml</file>
         <file>pages/BlockedContacts.qml</file>
         <file>pages/ChangeDatabasePassword.qml</file>
         <file>pages/ChatView.qml</file>

@@ -76,7 +76,7 @@ public:
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
     // a module in Qt (yet?).
-    enum MsgViewType { AudioType, FileType, GifType, ImageType, StickerType, TextType, VideoType, VideochatInvitationType, VoiceType, WebxdcType, UnknownType };
+    enum MsgViewType { AudioType, FileType, GifType, ImageType, StickerType, TextType, VcardType, VideoType, VideochatInvitationType, VoiceType, WebxdcType, UnknownType };
     Q_ENUM(MsgViewType)
 
     // TODO: belongs to ChatModel, but ChatModel isn't registered as
@@ -213,6 +213,7 @@ public:
     // invoked by a tap/click on a list item representing a chat
     // on the chat overview page
     Q_INVOKABLE void selectChat(int myindex);
+    void selectChatByChatId(uint32_t _chatId);
 
     Q_INVOKABLE void selectAndOpenLastChatId();
 

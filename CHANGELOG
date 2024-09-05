@@ -1,3 +1,7 @@
+1.7.x xxxx-xx-xx
+UI: Add attachments via popup dialog
+Other: Vcard support
+
 1.6.0 2024-08-27
 UI: Delete message dialog: Inform about deletion on server (except for device messages)
 UI: Do not allow changing own email address after successful account creation

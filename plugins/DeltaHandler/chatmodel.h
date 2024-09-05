@@ -33,16 +33,17 @@
 #include "deltachat.h"
 
 class DeltaHandler;
+class WebxdcImageProvider;
 
 class ChatModel : public QAbstractListModel {
     Q_OBJECT
 
 public:
-    explicit ChatModel(QObject *parent = 0);
+    explicit ChatModel(DeltaHandler* dhandler, QObject *parent = 0);
     ~ChatModel();
 
     // TODO remove MessageSeenRole
-    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsProtectionInfoRole, ProtectionInfoTypeRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, QuoteAvatarColorRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, FilenameRole, AudioFilePathRole, ImageWidthRole, ImageHeightRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole, HasHtmlRole, ReactionsRole, WebxdcInfoRole, WebxdcImageRole };
+    enum { IsUnreadMsgsBarRole, IsForwardedRole, IsInfoRole, IsProtectionInfoRole, ProtectionInfoTypeRole, IsDownloadedRole, DownloadStateRole, IsSelfRole, MessageSeenRole, MessageStateRole, QuotedTextRole, QuoteIsSelfRole, QuoteUserRole, QuoteAvatarColorRole, DurationRole, MessageInfoRole, TypeRole, TextRole, ProfilePicRole, IsSameSenderAsNextRole, PadlockRole, DateRole, UsernameRole, SummaryTextRole, FilePathRole, FilenameRole, AudioFilePathRole, ImageWidthRole, ImageHeightRole, AvatarColorRole, AvatarInitialRole, IsSearchResultRole, ContactIdRole, HasHtmlRole, ReactionsRole, VcardRole, WebxdcInfoRole, WebxdcImageRole };
 
     // Main objective for setQQuickView is to set the image provider (m_webxdcImgProvider)
     // for obtaining the icons of webxdc apps. This method should be called once,
@@ -68,6 +69,8 @@ public:
     Q_INVOKABLE QString exportFileToFolder(QString sourceFilePath, QString destinationFolder);
 
     Q_INVOKABLE QString getMomentaryInfo();
+
+    Q_INVOKABLE void addVcardByIndexAndStartChat(int myindex);
 
     Q_INVOKABLE uint32_t getCurrentChatId();
 
@@ -106,6 +109,8 @@ public:
     // int attachType should be DeltaHandler::MsgViewType attachType, but this
     // only works if the method is used in the DeltaHandler class itself
     Q_INVOKABLE void setAttachment(QString filepath, int attachType);
+
+    Q_INVOKABLE void setVcardAttachment(uint32_t contactId);
 
     // called upon entering ChatView to create the attachment preview
     Q_INVOKABLE void checkDraftHasAttachment();
@@ -164,7 +169,7 @@ public:
     // text. Otherwise, it will be an empty string.
     // In the current implementation, if _messageBody is set, any other
     // draft message of this chat will be overriden and consequently, lost.
-    void configure(uint32_t chatID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, QString _messageBody, bool isContactRequest = false);
+    void configure(uint32_t chatID, uint32_t aID, dc_accounts_t* allAccs, std::vector<uint32_t> unreadMsgs, QString _messageBody, bool isContactRequest = false);
     
     bool chatIsContactRequest();
     bool hasDraft();
@@ -223,6 +228,7 @@ signals:
     void previewImageAttachment(QString filepathInCache, bool isAnimated);
     void previewFileAttachment(QString filename);
     void previewVoiceAttachment(QString filepathInCache);
+    void previewVcardAttachment(QString address, QString displayname, QString contactcolor, QString imageaddress);
     void previewWebxdcAttachment(QString webxdcIconPath, QString webxdcPreviewInfoJson);
 
     void newWebxdcInstanceData(QString id, dc_msg_t* instance);

@@ -1424,13 +1424,13 @@ Page {
                                 id: vcardRow
                                 spacing: units.gu(1)
 
-                                LomiriShape {
+                                UbuntuShape {
                                     id: contactImageShape
                                     height: contactColumn.height
                                     width: height
 
                                     backgroundColor: vcardObj.color
-                                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                                    sourceFillMode: UbuntuShape.PreserveAspectCrop
 
                                     source: contactPic.status !== Image.Null && contactPic.status !== Image.Error ? contactPic : undefined
 
@@ -2514,12 +2514,12 @@ Page {
                                     verticalCenter: parent.verticalCenter
                                 }
 
-                                LomiriShape {
+                                UbuntuShape {
                                     id: vcardPrevShape
                                     height: vcardPrevColumn.height
                                     width: height
 
-                                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                                    sourceFillMode: UbuntuShape.PreserveAspectCrop
 
                                     source: vcardPrevPic.status !== Image.Null && vcardPrevPic.status !== Image.Error ? vcardPrevPic : undefined
 

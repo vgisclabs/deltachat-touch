@@ -61,6 +61,7 @@
         <file>pages/ReactionsInfoPopup.qml</file>
         <file>pages/ReactionsSelectionPopover.qml</file>
         <file>pages/RequestDatabasePassword.qml</file>
+        <file>pages/SelectContactForVcard.qml</file>
         <file>pages/SettingsPage.qml</file>
         <file>pages/TempWebxdcPopup.qml</file>
         <file>pages/UrlDispatchAccountChooserPopup.qml</file>

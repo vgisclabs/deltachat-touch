@@ -49,8 +49,10 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const;
 
     Q_INVOKABLE void setVerifiedOnly(bool verifOnly);
+    Q_INVOKABLE void setIncludeAddContactItem(bool includeItem);
     Q_INVOKABLE QString getNameNAddressByIndex(int myindex);
     Q_INVOKABLE void deleteContactByIndex(int myindex);
+    Q_INVOKABLE uint32_t getContactIdByIndex(int myindex);
 
     void updateContext(dc_context_t* cContext);
 
@@ -88,6 +90,7 @@ private:
     int m_offset;
 
     bool m_verifiedOnly;
+    bool m_includeAddContactItem;
 
     QString m_query;
 

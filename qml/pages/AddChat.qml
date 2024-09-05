@@ -267,6 +267,7 @@ Page {
     }
 
     Component.onCompleted: {
+        DeltaHandler.contactsmodel.setIncludeAddContactItem(true);
         addChatPage.textHasChanged.connect(DeltaHandler.contactsmodel.updateQuery)
         addChatPage.indexSelected.connect(DeltaHandler.contactsmodel.startChatWithIndex)
 

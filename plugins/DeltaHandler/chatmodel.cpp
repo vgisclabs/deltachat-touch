@@ -23,10 +23,11 @@
 #include <limits> // for invalidating data_row
 #include <fstream>
 
-ChatModel::ChatModel(QObject* parent)
-    : QAbstractListModel(parent), m_dhandler {nullptr}, currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}, m_webxdcImgProvider {nullptr}
+ChatModel::ChatModel(DeltaHandler* dhandler, QObject* parent)
+    : QAbstractListModel(parent), m_dhandler {dhandler}, currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}, m_webxdcImgProvider {nullptr}
 { 
 };
+
 
 ChatModel::~ChatModel()
 {
@@ -100,6 +101,7 @@ QHash<int, QByteArray> ChatModel::roleNames() const
     roles[ContactIdRole] = "contactID";
     roles[HasHtmlRole] = "hasHtml";
     roles[ReactionsRole] = "reactions";
+    roles[VcardRole] = "vcard";
     roles[WebxdcInfoRole] = "webxdcInfo";
     roles[WebxdcImageRole] = "webxdcImage";
 
@@ -151,6 +153,7 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
     QByteArray byteArray;
     QJsonDocument jsonDoc;
     QJsonObject jsonObj;
+    QJsonArray jsonArray;
 
     char* tempText {nullptr};
     dc_contact_t* tempContact {nullptr};
@@ -443,6 +446,10 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                 case DC_MSG_TEXT:
                     retval = QVariant(DeltaHandler::MsgViewType::TextType);
                     break;
+                
+                case DC_MSG_VCARD:
+                    retval = QVariant(DeltaHandler::MsgViewType::VcardType);
+                    break;
 
                 case DC_MSG_VIDEO:
                     retval = QVariant(DeltaHandler::MsgViewType::VideoType);
@@ -451,7 +458,7 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
                 case DC_MSG_VIDEOCHAT_INVITATION:
                     retval = QVariant(DeltaHandler::MsgViewType::VideochatInvitationType);
                     break;
-                
+
                 case DC_MSG_VOICE:
                     retval = QVariant(DeltaHandler::MsgViewType::VoiceType);
                     break;
@@ -717,6 +724,67 @@ QVariant ChatModel::data(const QModelIndex &index, int role) const
             retval = jsonObj;
             break;
 
+        case ChatModel::VcardRole:
+            tempText = dc_msg_get_file(tempMsg);
+            tempQString = "\"";
+            tempQString.append(tempText);
+            tempQString.append("\"");
+            // If there's no file, tempText will be an empty string (not NULL!).
+            if (tempQString == "\"\"") {
+                qDebug() << "ChatModel::data(): in VcardRole: Error: dc_msg_get_file() returned empty string";
+                // create our own error message json in the style of dc-jsonrpc
+                jsonObj = QJsonDocument::fromJson("{\"error\":{\"message\":\"no file attached to message\"}}").object();
+            } else {
+                // get the Vcard in parsed form to retrieve name, addr + color of contact
+                tempQString = m_dhandler->constructJsonrpcRequestString("parse_vcard", tempQString);
+                byteArray = m_dhandler->sendJsonrpcBlockingCall(tempQString).toLocal8Bit();
+                jsonDoc = QJsonDocument::fromJson(byteArray);
+
+                jsonObj = jsonDoc.object();
+                if (jsonObj.contains("error")) {
+                    jsonObj = jsonObj.value("error").toObject();
+                    qDebug() << "ChatModel::data(): Error parsing vcard: " << jsonObj.value("message").toString();
+                } else {
+                    // "result" is an array in this case, e.g.
+                    //{"id":1000000131,"jsonrpc":"2.0","result":[{"addr":"...",...}]}
+                    if (jsonObj.value("result").isArray()) {
+                        jsonArray = jsonObj.value("result").toArray();
+                        if (jsonArray.count() > 0) {
+                            if (jsonArray.at(0).isObject()) {
+                                jsonObj = jsonArray.at(0).toObject();
+
+                                if (jsonObj.contains("profileImage") && !jsonObj.value("profileImage").isNull()) {
+                                    tempQString = jsonObj.value("profileImage").toString();
+                                    // the image in the vcard is base64 encoded, decode it
+                                    byteArray = QByteArray::fromBase64(tempQString.toLocal8Bit());
+                                } else {
+                                    byteArray.clear();
+                                }
+
+                                tempQString = "image://webxdcImageProvider/";
+                                tempQString.append(m_webxdcImgProvider->getImageId(dc_get_id(currentMsgContext), m_chatID, dc_msg_get_id(tempMsg), byteArray));
+
+                                // for passing the json object to the view/delegate in QML, the
+                                // actual image data is replaced by the path to the imageprovider
+                                jsonObj.insert("profileImage", tempQString);
+                            } else {
+                                qDebug() << "ChatModel::data(): in VcardRole: Error: first element in array of result of jsonrpc call is not an object";
+                                jsonObj = QJsonDocument::fromJson("{\"error\":{\"message\":\"first element in array of result of jsonrpc call is not an object\"}}").object();
+                            }
+                        } else {
+                            qDebug() << "ChatModel::data(): in VcardRole: Error: result of jsonrpc call is an empty array";
+                            jsonObj = QJsonDocument::fromJson("{\"error\":{\"message\":\"result of jsonrpc call is an empty array\"}}").object();
+                        }
+                    } else {
+                        qDebug() << "ChatModel::data(): in VcardRole: Error: result of jsonrpc call is not an array";
+                        jsonObj = QJsonDocument::fromJson("{\"error\":{\"message\":\"result of jsonrpc call is not an array\"}}").object();
+                    }
+                }
+            }
+
+            retval = jsonObj;
+            break;
+
         case ChatModel::WebxdcInfoRole:
             tempText = dc_msg_get_webxdc_info(tempMsg);
             tempQString = tempText;
@@ -885,7 +953,7 @@ QString ChatModel::getHtmlMsgSubject(int myindex)
 }
 
 
-void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, DeltaHandler* deltaHandler, std::vector<uint32_t> unreadMsgs, QString _messageBody, bool cIsContactRequest)
+void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, std::vector<uint32_t> unreadMsgs, QString _messageBody, bool cIsContactRequest)
 {
     if (m_chatIsBeingViewed) {
         // check if the same chat has been clicked again, and
@@ -908,8 +976,6 @@ void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, De
         saveDraft();
         m_draftTextHash.clear();
     }
-
-    m_dhandler = deltaHandler;
 
     beginResetModel();
 
@@ -1582,6 +1648,80 @@ QString ChatModel::getMomentaryInfo()
 }
 
 
+void ChatModel::addVcardByIndexAndStartChat(int myindex)
+{
+    uint32_t tempMsgID = msgVector[myindex];
+    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, tempMsgID);
+
+    char* tempText;
+    QString tempQString;
+
+    if (tempMsg) {
+
+        if (dc_msg_get_viewtype(tempMsg) != DC_MSG_VCARD) {
+            qDebug() << "ChatModel::addVcardByIndexAndStartChat(): ERROR: Message with ID " << tempMsgID << " is not of type DC_MSG_VCARD";
+            dc_msg_unref(tempMsg);
+            return;
+        }
+
+        tempText = dc_msg_get_file(tempMsg);
+        tempQString = tempText;
+        dc_str_unref(tempText);
+
+        if (tempQString == "") {
+            qDebug() << "ChatModel::addVcardByIndexAndStartChat(): ERROR: No file attached to message with ID " << tempMsgID;
+            dc_msg_unref(tempMsg);
+            return;
+        }
+
+        dc_msg_unref(tempMsg);
+    } else {
+        qDebug() << "ChatModel::addVcardByIndexAndStartChat(): ERROR: Could not get message with ID " << tempMsgID;
+        return;
+    }
+    
+    QString paramString;
+    paramString.setNum(dc_get_id(currentMsgContext));
+    paramString.append(", \"");
+    paramString.append(tempQString);
+    paramString.append("\"");
+    QString tempQString2 = m_dhandler->constructJsonrpcRequestString("import_vcard", paramString);
+    QByteArray byteArray = m_dhandler->sendJsonrpcBlockingCall(tempQString2).toLocal8Bit();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(byteArray);
+
+    // bei success: {"id":1000000125,"jsonrpc":"2.0","result":[17]}
+    // bei error: zB {"error":{"code":-32602,"message":"This method takes an array of 2 arguments"},"id":1000000125,"jsonrpc":"2.0"}
+    QJsonObject jsonObj = jsonDoc.object();
+    if (jsonObj.contains("error")) {
+        jsonObj = jsonObj.value("error").toObject();
+        qDebug() << "ChatModel::addVcardByIndexAndStartChat(): Error importing vcard: " << jsonObj.value("message").toString();
+        return;
+    }
+
+    if (jsonObj.value("result").isArray()) {
+        QJsonArray jsonArray = jsonObj.value("result").toArray();
+        if (jsonArray.count() > 0) {
+            if (jsonArray.at(0).isDouble()) {
+                int tempContactId  = jsonArray.at(0).toInt();
+                uint32_t tempChatId = dc_create_chat_by_contact_id(currentMsgContext, tempContactId);
+                if (0 == tempChatId) {
+                    qDebug() << "ChatModel::addVcardByIndexAndStartChat(): ERROR creating chat for contact ID " << tempContactId;
+                } else {
+                    m_dhandler->selectChatByChatId(tempChatId);
+                    m_dhandler->openChat();
+                }
+            } else {
+                qDebug() << "ChatModel::addVcardByIndexAndStartChat(): ERROR: Jsonrpc did not contain a number in the array";
+            }
+        } else {
+            qDebug() << "ChatModel::addVcardByIndexAndStartChat(): ERROR: Jsonrpc returned an empty array instead of a contact ID";
+        }
+    } else {
+        qDebug() << "ChatModel::addVcardByIndexAndStartChat(): ERROR: result of jsonrpc call is not an array";
+    }
+}
+
+
 uint32_t ChatModel::getCurrentChatId()
 {
     return m_chatID;
@@ -1859,6 +1999,11 @@ void ChatModel::setAttachment(QString filepath, int attachType)
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
             break;
 
+        case DeltaHandler::MsgViewType::VcardType:
+            messageType = DC_MSG_VCARD;
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VCARD);
+            break;
+        
         case DeltaHandler::MsgViewType::VideoType:
             messageType = DC_MSG_VIDEO;
             currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VIDEO);
@@ -1894,6 +2039,46 @@ void ChatModel::setAttachment(QString filepath, int attachType)
     dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
 
     emitDraftHasAttachmentSignals(filepath, messageType);
+}
+
+
+void ChatModel::setVcardAttachment(uint32_t contactId)
+{
+    if (0 == contactId) {
+        return;
+    }
+
+    QString tempString{""};
+    QString paramString{""};
+
+    paramString.setNum(dc_get_id(currentMsgContext));
+    paramString.append(", [");
+
+    tempString.setNum(contactId);
+
+    paramString.append(tempString);
+    paramString.append("]");
+
+    tempString = m_dhandler->constructJsonrpcRequestString("make_vcard", paramString);
+
+    QByteArray byteArray = m_dhandler->sendJsonrpcBlockingCall(tempString).toLocal8Bit();
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(byteArray);
+    QJsonObject jsonObj = jsonDoc.object();
+
+    // create the vcard as file in the cache
+    QString tempFilename = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/vcard.vcf";
+    if (QFile::exists(tempFilename)) {
+        QFile::remove(tempFilename);
+    }
+    std::ofstream outfile(tempFilename.toStdString());
+
+    // the result directly contains the vcard as string
+    outfile << jsonObj.value("result").toString().toStdString();
+
+    outfile.close();
+
+    setAttachment(tempFilename, DeltaHandler::MsgViewType::VcardType);
 }
 
 
@@ -1936,7 +2121,14 @@ void ChatModel::emitDraftHasAttachmentSignals(QString filepath, int messageType)
 
     QString tempQString1 {""};
     QString tempQString2 {""};
+    QString tempQString3 {""};
+    QString tempQString4 {""};
     char* tempText;
+
+    QByteArray byteArray;
+    QJsonDocument jsonDoc;
+    QJsonObject jsonObj;
+    QJsonArray jsonArray;
 
     // tell ChatView.qml that an attachment has been added
     switch (messageType) {
@@ -1980,11 +2172,55 @@ void ChatModel::emitDraftHasAttachmentSignals(QString filepath, int messageType)
             emit previewImageAttachment(filenameInCache, false);
             break;
 
-        case DC_MSG_WEBXDC:
-            if (!alreadyInCache) {
-                filenameInCache = copyToCache(filepath);
-            } 
+        case DC_MSG_VCARD:
+            // get the Vcard in parsed form to retrieve name, addr + color of contact
+            tempQString1 = "\"" + filepath + "\"";
+            tempQString2 = m_dhandler->constructJsonrpcRequestString("parse_vcard", tempQString1);
+            byteArray = m_dhandler->sendJsonrpcBlockingCall(tempQString2).toLocal8Bit();
+            jsonDoc = QJsonDocument::fromJson(byteArray);
+            jsonObj = jsonDoc.object();
 
+            if (jsonObj.contains("error")) {
+                jsonObj = jsonObj.value("error").toObject();
+                qDebug() << "ChatModel::emitDraftHasAttachmentSignals(): Error importing vcard: " << jsonObj.value("message").toString();
+            } else {
+                // "result" is an array in this case:
+                //{"id":1000000131,"jsonrpc":"2.0","result":[{"addr":"...",...}]}
+                if (jsonObj.value("result").isArray()) {
+                    jsonArray = jsonObj.value("result").toArray();
+                    if (jsonArray.count() > 0) {
+                        if (jsonArray.at(0).isObject()) {
+                            jsonObj = jsonArray.at(0).toObject();
+
+                            tempQString4 = "image://webxdcImageProvider/";
+
+                            if (jsonObj.contains("profileImage") && !jsonObj.value("profileImage").isNull()) {
+                                tempQString1 = jsonObj.value("profileImage").toString();
+                                // the image in the vcard is base64 encoded, decode it
+                                byteArray = QByteArray::fromBase64(tempQString1.toLocal8Bit());
+                            } else {
+                                byteArray.clear();
+                            }
+                            tempQString4.append(m_webxdcImgProvider->getImageId(dc_get_id(currentMsgContext), m_chatID, dc_msg_get_id(currentMessageDraft), byteArray));
+
+                            tempQString1 = jsonObj.value("addr").toString();
+                            tempQString2 = jsonObj.value("displayName").toString();
+                            tempQString3 = jsonObj.value("color").toString();
+
+                            emit previewVcardAttachment(tempQString1, tempQString2, tempQString3, tempQString4);
+                        } else {
+                            qDebug() << "ChatModel::emitDraftHasAttachmentSignals(): ERROR reading vcard at " << filepath << ": index 0 in array is not an object";
+                        }
+                    } else {
+                        qDebug() << "ChatModel::emitDraftHasAttachmentSignals(): ERROR reading vcard at " << filepath << ": empty array returned by jsonrpc call";
+                    }
+                } else {
+                    qDebug() << "ChatModel::emitDraftHasAttachmentSignals(): ERROR reading vcard at " << filepath << ": no array returned by jsonrpc call";
+                }
+            }
+            break;
+
+        case DC_MSG_WEBXDC:
             // the icon of the Webxdc app
             tempQString1 = "image://webxdcImageProvider/";
             tempQString1.append(m_webxdcImgProvider->getImageId(dc_get_id(currentMsgContext), m_chatID, dc_msg_get_id(currentMessageDraft), currentMessageDraft));

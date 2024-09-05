@@ -38,22 +38,27 @@ QImage WebxdcImageProvider::requestImage(const QString &id, QSize *size, const Q
 }
 
 
+QString WebxdcImageProvider::createKeystring(uint32_t accId, const uint32_t chatId, uint32_t msgId)
+{
+    QString retval;
+    QString tempQString;
+
+    retval.setNum(accId);
+    retval.append("_");
+    tempQString.setNum(chatId);
+    retval.append(tempQString);
+    retval.append("_");
+    tempQString.setNum(msgId);
+    retval.append(tempQString);
+
+    return retval;
+}
+
+
+// used by msgs of type DC_MSG_WEBXDC
 QString WebxdcImageProvider::getImageId(uint32_t accId, const uint32_t chatId, uint32_t msgId, dc_msg_t* msg)
 {
-    QString keystring;
-
-    QString tempQString;
-    tempQString.setNum(accId);
-
-    keystring = tempQString;
-    keystring.append("_");
-
-    tempQString.setNum(chatId);
-    keystring.append(tempQString);
-    keystring.append("_");
-
-    tempQString.setNum(msgId);
-    keystring.append(tempQString);
+    QString keystring = createKeystring(accId, chatId, msgId);
 
     if (m_imageCache.contains(keystring)) {
         return keystring;
@@ -63,29 +68,61 @@ QString WebxdcImageProvider::getImageId(uint32_t accId, const uint32_t chatId, u
 }
 
 
+// used by msgs of type DC_MSG_VCARD
+QString WebxdcImageProvider::getImageId(uint32_t accId, const uint32_t chatId, uint32_t msgId, QByteArray& imagedata)
+{
+    QString keystring = createKeystring(accId, chatId, msgId);
+
+    if (m_imageCache.contains(keystring)) {
+        return keystring;
+    } else {
+        QImage tempQImage;
+        tempQImage.loadFromData(imagedata);
+        m_imageCache[keystring] = tempQImage;
+        return keystring;
+    }
+}
+
+
+// used by msgs of type DC_MSG_WEBXDC
 QString WebxdcImageProvider::addImage(QString imageId, dc_msg_t* msg)
 {
-    char* tempText = dc_msg_get_webxdc_info(msg);
-    QByteArray byteArray = tempText;
-    dc_str_unref(tempText);
+    int messageType = dc_msg_get_viewtype(msg);
 
-    // assign the app icon file name to tempQString
-    QString tempQString = QJsonDocument::fromJson(byteArray).object().value("icon").toString();
-
+    char* tempText{nullptr};
+    QByteArray byteArray;
+    QString tempQString;
     size_t tempSizeT;
-    tempText = dc_msg_get_webxdc_blob(msg, tempQString.toUtf8().constData(), &tempSizeT);
-    if (tempText) {
-        QImage tempQImage;
-        tempQImage.loadFromData(reinterpret_cast<uchar*>(tempText), tempSizeT, "PNG");
-        m_imageCache[imageId] = tempQImage;
+    QImage tempQImage;
 
-        dc_str_unref(tempText);
-        return imageId;
-    } else {
-        // TODO: if tempText is NULL, maybe provide a standard image?
-        return imageId;
+    switch(messageType) {
+        case DC_MSG_WEBXDC:
+            tempText = dc_msg_get_webxdc_info(msg);
+            byteArray = tempText;
+            dc_str_unref(tempText);
+
+            // assign the app icon file name to tempQString
+            tempQString = QJsonDocument::fromJson(byteArray).object().value("icon").toString();
+
+            tempText = dc_msg_get_webxdc_blob(msg, tempQString.toUtf8().constData(), &tempSizeT);
+            if (tempText) {
+                tempQImage.loadFromData(reinterpret_cast<uchar*>(tempText), tempSizeT, "PNG");
+                m_imageCache[imageId] = tempQImage;
+
+                dc_str_unref(tempText);
+            }
+            break;
+        case DC_MSG_VCARD:
+
+            break;
+
+        default:
+            // set an empty image
+            m_imageCache[imageId] = QImage();
+            break;
     }
 
+    return imageId;
 }
 
 

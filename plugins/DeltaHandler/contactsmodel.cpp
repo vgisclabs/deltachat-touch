@@ -24,7 +24,7 @@ namespace C {
 }
 
 ContactsModel::ContactsModel(QObject* parent)
-    : QAbstractListModel(parent), m_context {nullptr}, m_offset {0}, m_verifiedOnly {false}, m_query {""}
+    : QAbstractListModel(parent), m_context {nullptr}, m_offset {0}, m_verifiedOnly {false}, m_includeAddContactItem {true}, m_query {""}
 { 
     m_newMembers.resize(0);
 };
@@ -246,6 +246,25 @@ void ContactsModel::setVerifiedOnly(bool verifOnly)
 }
 
 
+void ContactsModel::setIncludeAddContactItem(bool includeItem)
+{
+    if (includeItem == m_includeAddContactItem) {
+        return;
+    }
+
+    m_includeAddContactItem = includeItem;
+
+    if (m_context) {
+        beginResetModel();
+
+        // update of m_contactsVector is done via updateContext
+        updateContext(m_context);
+
+        endResetModel();
+    }
+}
+
+
 QString ContactsModel::getNameNAddressByIndex(int myindex)
 {
     uint32_t tempContactID = m_contactsVector[myindex - m_offset];
@@ -263,6 +282,12 @@ void ContactsModel::deleteContactByIndex(int myindex)
 {
     uint32_t tempContactID = m_contactsVector[myindex - m_offset];
     dc_delete_contact(m_context, tempContactID);
+}
+
+
+uint32_t ContactsModel::getContactIdByIndex(int myindex)
+{
+    return m_contactsVector[myindex - m_offset];
 }
 
 
@@ -507,7 +532,7 @@ void ContactsModel::updateContactsArray()
         }
         dc_array_unref(contactsArray);
 
-        if (m_verifiedOnly) {
+        if (m_verifiedOnly || !m_includeAddContactItem) {
             m_offset = 0;
         } else {
             m_offset = 1;

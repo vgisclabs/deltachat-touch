@@ -71,6 +71,15 @@ Dialog {
     }
 
     Button {
+        text: i18n.tr("Contact")
+        iconSource: "qrc:///assets/contact-white.svg"
+        onClicked: {
+            PopupUtils.close(dialog)
+            addContact()
+        }
+    }
+
+    Button {
         text: i18n.tr("Cancel")
         color: theme.palette.normal.focus
         onClicked: {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2024  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -17,8 +17,8 @@
  */
 
 import QtQuick 2.12
-import Ubuntu.Components 1.3
-//import Ubuntu.Components.Popups 1.3 // for the popover component
+import Lomiri.Components 1.3
+//import Lomiri.Components.Popups 1.3 // for the popover component
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 //import Qt.labs.settings 1.0
@@ -27,11 +27,11 @@ import Qt.labs.platform 1.1
 import DeltaHandler 1.0
 
 Page {
-    id: addMemberToGroupPage
+    id: selectContactPage
     anchors.fill: parent
     header: PageHeader {
         id: addMemberToGroupHeader
-        title: i18n.tr('Add Members')
+        title: i18n.tr('Select')
 
         leadingActionBar.actions: [
             Action {
@@ -39,32 +39,13 @@ Page {
                 iconSource: "qrc:///assets/suru-icons/close.svg"
                 text: i18n.tr('Cancel')
                 onTriggered: {
-                    clearQuery()
-                    leavingAddMemberToGroupPage(false)
-                    extraStack.pop()
-                }
-            }
-        ]
-
-        //trailingActionBar.numberOfSlots: 2
-        trailingActionBar.actions: [
-            Action {
-                //iconName: 'ok'
-                iconSource: "qrc:///assets/suru-icons/ok.svg"
-                text: i18n.tr('OK')
-                onTriggered: {
-                    clearQuery()
-                    leavingAddMemberToGroupPage(true)
                     extraStack.pop()
                 }
             }
         ]
     }
 
-    signal textHasChanged(string query)
-    signal addToGroup(int myindex)
-    signal removeFromGroup(int myindex)
-    signal leavingAddMemberToGroupPage(bool actionRequested)
+    signal searchTextHasChanged(string query)
     
     function clearQuery() {
         enterNameOrEmailField.text = ""
@@ -99,7 +80,7 @@ Page {
         // will appear.
         inputMethodHints: Qt.ImhNoPredictiveText
         onDisplayTextChanged: {
-            addMemberToGroupPage.textHasChanged(displayText)
+            selectContactPage.searchTextHasChanged(displayText)
         }
 
         onFocusChanged: {
@@ -122,15 +103,9 @@ Page {
             divider.visible: true
 
             onClicked: {
-                if (!model.isAlreadyMemberOfGroup) {
-                //let isSelected = model.isToBeAddedToGroup
-                //addMemberToGroupPage.indexSelected(index, isSelected)
-                    if (model.isToBeAddedToGroup) {
-                        removeFromGroup(index)
-                    } else {
-                        addToGroup(index)
-                    }
-                }
+                let contact = DeltaHandler.contactsmodel.getContactIdByIndex(index)
+                DeltaHandler.chatmodel.setVcardAttachment(contact)
+                extraStack.pop()
             }
 
             ListItemLayout {
@@ -138,7 +113,7 @@ Page {
                 title.text: model.displayname == '' ? i18n.tr('Unknown') : model.displayname
                 subtitle.text: model.address
 
-                UbuntuShape {
+                LomiriShape {
                     id: profPicShape
                     height: units.gu(5)
                     width: height
@@ -147,13 +122,7 @@ Page {
 
                     Image {
                         id: profPic
-                        source: { 
-                            if (model.profilePic == "replace_by_addNew") {
-                                return Qt.resolvedUrl('../../assets/addNew.svg')
-                            } else {
-                                return StandardPaths.locate(StandardPaths.AppConfigLocation, model.profilePic)
-                            }
-                        }
+                        source: StandardPaths.locate(StandardPaths.AppConfigLocation, model.profilePic)
                         visible: false
                     }
 
@@ -167,25 +136,16 @@ Page {
                     }
 
                     color: model.avatarColor
-                    sourceFillMode: UbuntuShape.PreserveAspectCrop
-                    aspect: UbuntuShape.Flat
-                } // end of UbuntuShape id: profPicShape
+                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                    aspect: LomiriShape.Flat
+                } // end of LomiriShape id: profPicShape
 
                 Image {
                     id: verifiedSymbol
                     source: Qt.resolvedUrl('../../assets/verified.svg')
                     visible: model.isVerified
-                    height: memberSelectedIcon.height
+                    height: units.gu(3)
                     width: height
-                    SlotsLayout.position: SlotsLayout.Trailing
-                }
-
-                Icon {
-                    id: memberSelectedIcon
-                    width: units.gu(3)
-                    //name: model.isAlreadyMemberOfGroup ? "select" : (model.isToBeAddedToGroup ? "select" : "select-none")
-                    source: model.isAlreadyMemberOfGroup ? "qrc:///assets/suru-icons/select.svg" : (model.isToBeAddedToGroup ? "qrc:///assets/suru-icons/select.svg" : "qrc:///assets/suru-icons/select-none.svg")
-                    opacity: model.isAlreadyMemberOfGroup ? 0.5 : 1
                     SlotsLayout.position: SlotsLayout.Trailing
                 }
             } // ListItemLayout id: contactsListItemLayout
@@ -196,11 +156,11 @@ Page {
         id: view
         clip: true 
         //height: accountConfigPage.height - header.height
-        width: addMemberToGroupPage.width
+        width: selectContactPage.width
         anchors {
             top: enterNameOrEmailField.bottom
             topMargin: units.gu(1)
-            bottom: addMemberToGroupPage.bottom
+            bottom: selectContactPage.bottom
         }
         model: DeltaHandler.contactsmodel
         delegate: contactsDelegate
@@ -208,11 +168,12 @@ Page {
     }
 
     Component.onCompleted: {
-        DeltaHandler.contactsmodel.setIncludeAddContactItem(true);
-        addMemberToGroupPage.textHasChanged.connect(DeltaHandler.contactsmodel.updateQuery)
-        addMemberToGroupPage.addToGroup.connect(DeltaHandler.contactsmodel.addIndexToMemberlist)
-        addMemberToGroupPage.removeFromGroup.connect(DeltaHandler.contactsmodel.removeIndexFromMemberlist)
-        DeltaHandler.contactsmodel.queryDone.connect(addMemberToGroupPage.clearQuery)
-        addMemberToGroupPage.leavingAddMemberToGroupPage.connect(DeltaHandler.contactsmodel.finalizeMemberChanges)
+        DeltaHandler.contactsmodel.setIncludeAddContactItem(false);
+        selectContactPage.searchTextHasChanged.connect(DeltaHandler.contactsmodel.updateQuery)
     }
-} // end Page id: addMemberToGroupPage
+
+    Component.onDestruction: {
+        clearQuery()
+        DeltaHandler.contactsmodel.setIncludeAddContactItem(true);
+    }
+} // end Page id: aboutPage

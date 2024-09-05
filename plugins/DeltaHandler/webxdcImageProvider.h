@@ -45,7 +45,16 @@ class WebxdcImageProvider : public QQuickImageProvider
         QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;       
 
         // Returns the imageId as string for the Webxdc app passed via msg.
+        //
+        // Overloaded.
         QString getImageId(uint32_t accId, const uint32_t chatId, uint32_t msgId, dc_msg_t* msg);
+ 
+        // Returns the imageId as string for the image data passed in the QByteArray
+        // (used by vcards). CAVE image data in vcards is base64 encoded, the parameter
+        // imagedata for this function must already be decoded.
+        //
+        // Overloaded.
+        QString getImageId(uint32_t accId, const uint32_t chatId, uint32_t msgId, QByteArray& imagedata);
 
         void clearImageCache();
 
@@ -58,6 +67,9 @@ class WebxdcImageProvider : public QQuickImageProvider
         // Will add the icon of a Webxdc app to m_imageCache if it doesn't exist
         // in there already.
         QString addImage(QString imageId, dc_msg_t* msg);
+
+        // private methods
+        QString createKeystring(uint32_t accId, const uint32_t chatId, uint32_t msgId);
 };
 
 #endif // WEBXDCIMAGEPROVIDER_H

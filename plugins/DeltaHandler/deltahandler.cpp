@@ -163,7 +163,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
         qDebug() << "DeltaHandler::DeltaHandler(): Setting \"encrypted database\" is off";
     }
 
-    m_chatmodel = new ChatModel();
+    m_chatmodel = new ChatModel(this);
     currentChatIsOpened = false;
 
     m_accountsmodel = new AccountsModel();
@@ -1388,6 +1388,12 @@ void DeltaHandler::selectChat(int myindex)
 }
 
 
+void DeltaHandler::selectChatByChatId(uint32_t _chatId)
+{
+    m_currentChatID = _chatId;
+}
+
+
 void DeltaHandler::openChat(QString _messageBody)
 {
     // stop the queue timer and process the queue
@@ -1435,7 +1441,7 @@ void DeltaHandler::openChat(QString _messageBody)
         chatIdAsString.setNum(m_currentChatID);
         dc_set_config(currentContext, "ui.lastchatid", chatIdAsString.toUtf8().constData());
 
-        m_chatmodel->configure(m_currentChatID, dc_get_id(currentContext), allAccounts, this, freshMessagesOfChat, _messageBody, contactRequest);
+        m_chatmodel->configure(m_currentChatID, dc_get_id(currentContext), allAccounts, freshMessagesOfChat, _messageBody, contactRequest);
         currentChatIsOpened = true;
 
         emit openChatViewRequest(m_currentAccID, m_currentChatID);

@@ -26,19 +26,28 @@ import Qt.labs.platform 1.1
 import DeltaHandler 1.0
 
 Page {
-    id: forwardMessagePage
+    id: selectChatPage
     anchors.fill: parent
 
     signal textHasChanged(string query)
+    signal chatSelected(int chatId)
+
+    property string titleText
 
     Component.onCompleted: {
-        forwardMessagePage.textHasChanged.connect(DeltaHandler.chatmodel.chatlistmodel.updateQuery)
+        DeltaHandler.chatmodel.newChatlistmodel()
+        selectChatPage.textHasChanged.connect(DeltaHandler.chatmodel.chatlistmodel.updateQuery)
+        view.model = DeltaHandler.chatmodel.chatlistmodel
+    }
+
+    Component.onDestruction: {
+        DeltaHandler.chatmodel.deleteChatlistmodel()
     }
 
     header: PageHeader {
         id: header
 
-        title: i18n.tr("Forward to…")
+        title: titleText
 
         // disable the "back" icon
         leadingActionBar.actions: [
@@ -48,7 +57,6 @@ Page {
                 text: i18n.tr('Close')
                 onTriggered: {
                     extraStack.pop()
-                    DeltaHandler.chatmodel.forwardingFinished()
                 }
             }
         ]
@@ -67,7 +75,7 @@ Page {
             topMargin: units.gu(1)
         }
         onDisplayTextChanged: {
-            forwardMessagePage.textHasChanged(displayText)
+            selectChatPage.textHasChanged(displayText)
         }
 
         onFocusChanged: {
@@ -93,9 +101,8 @@ Page {
             divider.visible: true
             onClicked: {
                 let chatID = DeltaHandler.chatmodel.chatlistmodel.getChatID(index)
-                DeltaHandler.chatmodel.forwardMessage(chatID)
+                chatSelected(chatID)
                 extraStack.pop()
-                DeltaHandler.chatmodel.forwardingFinished()
             }
 
 
@@ -164,7 +171,6 @@ Page {
         }
         width: parent.width
         height: chatlistPage.height - header.height
-        model: DeltaHandler.chatmodel.chatlistmodel
         delegate: delegateListItem
     }
-} // end of Page id: forwardMessagePage
+} // end of Page id: selectChatPage

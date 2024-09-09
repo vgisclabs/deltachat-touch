@@ -30,7 +30,6 @@
         <file>pages/CreateDatabasePassword.qml</file>
         <file>pages/EphemeralTimerSettings.qml</file>
         <file>pages/ErrorMessage.qml</file>
-        <file>pages/ForwardMessage.qml</file>
         <file>pages/GroupAddMember.qml</file>
         <file>pages/ImageViewer.qml</file>
         <file>pages/ImageViewerAnimated.qml</file>
@@ -61,6 +60,7 @@
         <file>pages/ReactionsInfoPopup.qml</file>
         <file>pages/ReactionsSelectionPopover.qml</file>
         <file>pages/RequestDatabasePassword.qml</file>
+        <file>pages/SelectChatForAction.qml</file>
         <file>pages/SelectContactForVcard.qml</file>
         <file>pages/SettingsPage.qml</file>
         <file>pages/TempWebxdcPopup.qml</file>

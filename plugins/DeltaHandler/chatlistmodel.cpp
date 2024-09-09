@@ -220,8 +220,8 @@ uint32_t ChatlistModel::getChatID(int myindex)
         qDebug() << "ChatlistModel::getChatID: ERROR: chatlist is not set";
         return 0;
     }
-
 }
+
 
 void ChatlistModel::updateQuery(QString query) {
     // need to check if something has changed and exit, if not.

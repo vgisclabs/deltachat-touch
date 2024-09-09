@@ -210,10 +210,10 @@ public:
     Q_INVOKABLE void setMomentaryChatIdByIndex(int myindex);
     Q_INVOKABLE void setMomentaryChatIdById(uint32_t myId);
 
-    // invoked by a tap/click on a list item representing a chat
-    // on the chat overview page
-    Q_INVOKABLE void selectChat(int myindex);
-    void selectChatByChatId(uint32_t _chatId);
+    // Select a chat for opening. CAVE Won't open the selected chat; for that,
+    // openChat() has to be called
+    Q_INVOKABLE void selectChatByIndex(int myindex);
+    Q_INVOKABLE void selectChatByChatId(uint32_t _chatId);
 
     Q_INVOKABLE void selectAndOpenLastChatId();
 
@@ -237,6 +237,8 @@ public:
     Q_INVOKABLE void momentaryChatSetMuteDuration(int64_t secondsToMute);
 
     Q_INVOKABLE void closeArchive();
+
+    Q_INVOKABLE QString getChatNameById(uint32_t chatId);
 
     // Param calledInUrlHandlingProcess needed for handling of urls that
     // trigger the question with which account they should be handled

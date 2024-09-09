@@ -1382,7 +1382,7 @@ void DeltaHandler::setMomentaryChatIdById(uint32_t myId)
 }
 
 
-void DeltaHandler::selectChat(int myindex)
+void DeltaHandler::selectChatByIndex(int myindex)
 {
     m_currentChatID = m_chatlistVector[myindex];
 }
@@ -1555,6 +1555,23 @@ void DeltaHandler::closeArchive()
 
     emit chatlistShowsArchivedOnly(m_showArchivedChats);
     emit chatlistToBeginning();
+}
+
+
+QString DeltaHandler::getChatNameById(uint32_t chatId)
+{
+    QString tempQString{""};
+    char* tempText = dc_chat_get_info_json(currentContext, chatId);
+
+    if (tempText) {
+        QByteArray byteArray(tempText);
+        dc_str_unref(tempText);
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(byteArray);
+        QJsonObject jsonObj = jsonDoc.object();
+        tempQString = jsonObj.value("name").toString();
+    } 
+
+    return tempQString;
 }
 
 
@@ -2733,7 +2750,7 @@ void DeltaHandler::chatCreationReceiver(uint32_t chatID, QString _messageBody)
     // The slot will take care of adding the new
     // chat to the chatlist.
      
-    // NOT calling selectChat(int) as the parameter of
+    // NOT calling selectChatByIndex(int) as the parameter of
     // this method is the array index, not the chatID
     m_currentChatID = chatID; 
     openChat(_messageBody);

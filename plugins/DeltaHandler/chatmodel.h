@@ -125,12 +125,14 @@ public:
 
     Q_INVOKABLE void initiateQuotedMsgJump(int myindex);
 
-    Q_INVOKABLE bool prepareForwarding(int myindex);
+    Q_INVOKABLE void newChatlistmodel();
 
-    Q_INVOKABLE void forwardingFinished();
+    Q_INVOKABLE void deleteChatlistmodel();
 
-    Q_INVOKABLE void forwardMessage(uint32_t chatIdToForwardTo);
+    Q_INVOKABLE void forwardMessage(uint32_t chatIdToForwardTo, uint32_t msgId);
 
+    // Returns the message ID. If myindex corresponds to the
+    // unread message bar, -1 is returned.
     Q_INVOKABLE int indexToMessageId(int myindex);
 
     // With myindex == -1, currentMessageDraft is used as Webxdc instance
@@ -249,6 +251,8 @@ private:
     size_t currentMsgCount;
     std::vector<uint32_t> msgVector;
     bool m_isContactRequest;
+
+    // -1 if there's currently no unread message bar
     int m_unreadMessageBarIndex;
     uint32_t m_firstUnreadMessageID;
     bool m_hasUnreadMessages;
@@ -256,9 +260,11 @@ private:
     QString m_tempExportPath;
     dc_msg_t* currentMessageDraft;
 
-    // for forwarding of messages
+    // for selection of a chat for some other action (forwarding,
+    // Webxdc's sendToChat, ...)
+    // Needs to be generated via newChatlistmodel() prior to using it, 
+    // and must be deleted after usage via deleteChatlistmodel().
     ChatlistModel* m_chatlistmodel;
-    uint32_t messageIdToForward;
 
     // for storing msgIDs that are to be marked
     // seen later. Used when new messages arrive while

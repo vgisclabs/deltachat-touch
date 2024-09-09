@@ -892,9 +892,25 @@ Page {
                 iconSource: "qrc:///assets/suru-icons/mail-forward.svg"
                 text: i18n.tr("Forward")
                 onTriggered: {
-                    if (DeltaHandler.chatmodel.prepareForwarding(value)) {
-                        extraStack.push(Qt.resolvedUrl('ForwardMessage.qml'))
+                    let msgId = DeltaHandler.chatmodel.indexToMessageId(value)
+                    if (msgId === -1) {
+                        return
                     }
+
+                    let tempPage1 = extraStack.push(Qt.resolvedUrl('SelectChatForAction.qml'), { "titleText": i18n.tr("Forward to…") })
+                    tempPage1.chatSelected.connect(function(chatId) {
+
+                        let chatName = DeltaHandler.getChatNameById(chatId)
+                        let popup12 = PopupUtils.open(Qt.resolvedUrl('ConfirmDialog.qml'), chatViewPage, {
+                            'dialogText': i18n.tr("Forward messages to %1?").arg(chatName),
+                            "confirmButtonPositive": true
+                        })
+                        popup12.confirmed.connect(function() {
+                            DeltaHandler.chatmodel.forwardMessage(chatId, msgId)
+                            DeltaHandler.selectChatByChatId(chatId)
+                            DeltaHandler.openChat()
+                        }) 
+                    })
                 }
             }
         ]

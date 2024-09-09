@@ -24,7 +24,7 @@
 #include <fstream>
 
 ChatModel::ChatModel(DeltaHandler* dhandler, QObject* parent)
-    : QAbstractListModel(parent), m_dhandler {dhandler}, currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, messageIdToForward {0}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}, m_webxdcImgProvider {nullptr}
+    : QAbstractListModel(parent), m_dhandler {dhandler}, currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}, m_webxdcImgProvider {nullptr}
 { 
 };
 
@@ -2427,22 +2427,8 @@ void ChatModel::toggleQuoteVectorRemoveId(uint32_t tempID)
 }
 
 
-bool ChatModel::prepareForwarding(int myindex)
+void ChatModel::newChatlistmodel()
 {
-    qDebug() << "ChatModel::prepareForwarding: preparing to forward the message with index: " << myindex;
-
-    if (myindex < 0 || myindex >= currentMsgCount) {
-        return false;
-    }
-
-    // don't try to get the msg from DC if it's
-    // the Unread Message bar
-    if (myindex != m_unreadMessageBarIndex) {
-        messageIdToForward = msgVector[myindex];
-    } else {
-        return false;
-    }
-
     if (m_chatlistmodel) {
         delete m_chatlistmodel;
         m_chatlistmodel = nullptr;
@@ -2450,12 +2436,10 @@ bool ChatModel::prepareForwarding(int myindex)
 
     m_chatlistmodel = new ChatlistModel();
     m_chatlistmodel->configure(currentMsgContext, DC_GCL_FOR_FORWARDING | DC_GCL_NO_SPECIALS);
-
-    return true;
 }
 
 
-void ChatModel::forwardingFinished()
+void ChatModel::deleteChatlistmodel()
 {
     if (m_chatlistmodel) {
         delete m_chatlistmodel;
@@ -2464,16 +2448,20 @@ void ChatModel::forwardingFinished()
 }
 
 
-void ChatModel::forwardMessage(uint32_t chatIdToForwardTo)
+void ChatModel::forwardMessage(uint32_t chatIdToForwardTo, uint32_t msgId)
 {
-    qDebug() << "ChatModel::forwardMessage(): Forwarding message ID " << messageIdToForward << " to chat ID " << chatIdToForwardTo;
-    dc_forward_msgs(currentMsgContext, &messageIdToForward, 1, chatIdToForwardTo);
+    qDebug() << "ChatModel::forwardMessage(): Forwarding message ID " << msgId << " to chat ID " << chatIdToForwardTo;
+    dc_forward_msgs(currentMsgContext, &msgId, 1, chatIdToForwardTo);
 }
 
 
 int ChatModel::indexToMessageId(int myindex)
 {
-    return msgVector[myindex];
+    if (-1 != m_unreadMessageBarIndex && myindex == m_unreadMessageBarIndex) {
+        return -1;
+    } else {
+        return msgVector[myindex];
+    }
 }
 
 

@@ -1582,7 +1582,7 @@ MainView {
                             if (!root.hasTwoColumns) {
                                 root.chatOpenAlreadyClicked = true
                             }
-                            DeltaHandler.selectChat(index)
+                            DeltaHandler.selectChatByIndex(index)
                             DeltaHandler.openChat()
                         } 
                     }

@@ -23,6 +23,8 @@
 #include <limits> // for invalidating data_row
 #include <fstream>
 
+#include <QMediaPlayer>
+
 ChatModel::ChatModel(DeltaHandler* dhandler, QObject* parent)
     : QAbstractListModel(parent), m_dhandler {dhandler}, currentMsgContext {nullptr}, m_chatID {0}, m_chatIsBeingViewed {false}, m_settingDraftTextAllowed {true}, currentMsgCount {0}, currentMessageDraft {nullptr}, m_chatlistmodel {nullptr}, data_row {std::numeric_limits<int>::max()}, data_tempMsg {nullptr}, m_query {""}, oldSearchMsgArray {nullptr}, currentSearchMsgArray {nullptr}, m_webxdcImgProvider {nullptr}
 { 
@@ -953,12 +955,12 @@ QString ChatModel::getHtmlMsgSubject(int myindex)
 }
 
 
-void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, std::vector<uint32_t> unreadMsgs, QString _messageBody, bool cIsContactRequest)
+void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, std::vector<uint32_t> unreadMsgs, QString _messageBody, QString _filepathToAttach, bool cIsContactRequest)
 {
     if (m_chatIsBeingViewed) {
-        // check if the same chat has been clicked again, and
-        // don't do anything in that case
-        if (currentMsgContext && m_chatID == cID && aID == dc_get_id(currentMsgContext)) {
+        // check if the same chat has been clicked again, and don't do anything
+        // in that case except if a new draft should be set
+        if (currentMsgContext && m_chatID == cID && aID == dc_get_id(currentMsgContext) && _messageBody == "" && _filepathToAttach == "") {
             qDebug() << "ChatModel::configure(): called for already opened chat, returning";
             return;
         }
@@ -1109,12 +1111,75 @@ void ChatModel::configure(uint32_t cID, uint32_t aID, dc_accounts_t* allAccs, st
         dc_msg_unref(currentMessageDraft);
     }
 
-    if (_messageBody != "") {
+    // Check if a new draft has to be set for the chat, this
+    // is the case if one or both of _messageBody and _filepathToAttach
+    // are set
+    if (_messageBody != "" || _filepathToAttach != "") {
         // TODO: check if there's already a draft for this chat, save it
         // somehow and load it after sending the message with _messageBody?
-        currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
-        dc_msg_set_text(currentMessageDraft, _messageBody.toUtf8().constData());
-        dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
+        if (_filepathToAttach == "") {
+            // set a new draft with text, but no file
+            currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
+            dc_msg_set_text(currentMessageDraft, _messageBody.toUtf8().constData());
+            dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
+
+        } else {
+            // set a new draft with a file as given in _filepathToAttach, and possibly text
+            tempQString = _filepathToAttach;
+            if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+                _filepathToAttach.remove(0, 7);
+            }
+
+            tempQString = _filepathToAttach;
+            if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+                _filepathToAttach.remove(0, 4);
+            }
+
+            // check for the type of the file, and set the message type accordingly
+            // .xdc and .vcf are detected via file extension
+            if (_filepathToAttach.endsWith(".xdc")) {
+                currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_WEBXDC);
+            } else if (_filepathToAttach.endsWith(".vcf")) {
+                currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_VCARD);
+            } else {
+                // Check if it is an image. Maybe this could be done via mime as
+                // the check for audio below, but it seems more reliable with QImage.
+                // Test for image before testing for audio as this check is currently
+                // mostly relevant for Webxdc (sendToChat()), and images are
+                // more likely to be send from there.
+                QImage testimage(_filepathToAttach);
+                if (!testimage.isNull()) {
+                    // it's an image!
+                    if (isGif(_filepathToAttach)) {
+                        currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_GIF);
+                    } else {
+                        currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_IMAGE);
+                    }
+                } else {
+                    // Not an image, now check for audio. Can't be done as easy as for
+                    // images because QMediaPlayer  will return immediately after
+                    // setMedia(QUrl::fromLocalFile(_filepathToAttach)), and the file
+                    // will not have been loaded to the player yet, so we would have
+                    // to wait for mediaStatusChanged() or such.
+                    // Too complicated for now, so do it via mime type.
+                    QMimeDatabase mimedb;
+                    QMimeType mime = mimedb.mimeTypeForFile(_filepathToAttach);
+                    if (mime.name().contains("audio", Qt::CaseInsensitive)) {
+                        currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_AUDIO);
+                    } else {
+                        // it's none of WEBXDC, VCARD, GIF, IMAGE, AUDIO, so use FILE
+                        // TODO once a delegate + attachment preview has been added for
+                        // DC_MSG_VIDEO, check for video here as well.
+                        currentMessageDraft = dc_msg_new(currentMsgContext, DC_MSG_FILE);
+                    }
+                }
+            }
+
+            dc_msg_set_file(currentMessageDraft, _filepathToAttach.toUtf8().constData(), NULL);
+            // Set the text just in case, it's no problem if _messageBody is empty
+            dc_msg_set_text(currentMessageDraft, _messageBody.toUtf8().constData());
+            dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
+        }
     } else {
         currentMessageDraft = dc_get_draft(currentMsgContext, m_chatID);
     }
@@ -2524,6 +2589,39 @@ QString ChatModel::getWebxdcUpdate(int last_serial)
     }
 
     return retval;
+}
+
+
+void ChatModel::sendToChat(uint32_t _chatId, QString _data)
+{
+    QString tempMsgText {""};
+    QString tempFilename {""};
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(_data.toLocal8Bit());
+    QJsonObject jsonObj = jsonDoc.object();
+
+    if (jsonObj.contains("text")) {
+        tempMsgText = jsonObj.value("text").toString();
+    }
+
+    if (jsonObj.contains("name")) {
+        tempFilename = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" + jsonObj.value("name").toString();
+        if (QFile::exists(tempFilename)) {
+            QFile::remove(tempFilename);
+        }
+        std::ofstream outfile(tempFilename.toStdString());
+
+        QByteArray filedata = QByteArray::fromBase64(jsonObj.value("base64").toString().toLocal8Bit());
+        outfile << filedata.toStdString();
+    }
+
+    if (tempMsgText == "" && tempFilename == "") {
+        qDebug() << "ChatModel::sendToChat(): ERROR: Parameter _data had neither text nor a file";
+        return;
+    }
+
+    m_dhandler->selectChatByChatId(_chatId);
+    m_dhandler->openChat(tempMsgText, tempFilename);
 }
 
 

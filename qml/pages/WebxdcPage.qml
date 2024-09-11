@@ -165,10 +165,48 @@ Page {
             return DeltaHandler.chatmodel.getWebxdcUpdate(last_serial)
         }
 
-        function sendToChat(data) {
-            // TODO
-            console.log("cppside.sendToChat() called, but not implemented yet");
-            return "cppside: sendToChat() not implemented yet";
+        function sendToChat(_data) {
+            // _data is a JSON constructed by sendToChat() in webxdc.js, and it can have
+            // text, or a base64 encoded file, or both.
+            // - "text" contains the text, if present
+            // - "base64" and "name" contains file data and name, if present
+            let data = JSON.parse(_data)
+
+            let selectPageTitle
+            // in newer JS, Object.hasOwn(...) may be better, but it's not available
+            // in Qt 5, so Object.prototype.hasOwnProperty.call(...) has to be used
+            //if (Object.hasOwn(data, "file")) {
+            if (Object.prototype.hasOwnProperty.call(data, "name")) {
+                // if "name" is present in _data, it contains a file, so we ask
+                // where to send this file
+                selectPageTitle = i18n.tr("Send %1 to…").arg(data.name)
+            } else {
+                // "name" is not present, _data contains only text
+                selectPageTitle = i18n.tr("Send Message to…")
+            }
+
+            let tempPage1 = extraStack.push(Qt.resolvedUrl('SelectChatForAction.qml'), { "titleText": selectPageTitle })
+            tempPage1.chatSelected.connect(function(chatId) {
+                if (DeltaHandler.chatIdHasDraft(chatId)) {
+                    let popup3 = PopupUtils.open(
+                        Qt.resolvedUrl('ConfirmDialog.qml'),
+                        webxdcPage,
+                        { "dialogText": i18n.tr("%1 already has a draft message, do you want to replace it?").arg(DeltaHandler.getChatNameById(chatId)),
+                        "okButtonText": i18n.tr("Replace Draft")
+                    })
+                    popup3.confirmed.connect(function() {
+                        extraStack.pop()
+                        DeltaHandler.chatmodel.sendToChat(chatId, _data)
+                    }) // no further action if user cancels. TODO: Somehow get an error msg to
+                       // Webxdc?
+                } else {
+                    extraStack.pop()
+                    DeltaHandler.chatmodel.sendToChat(chatId, _data)
+                }
+            })
+            tempPage1.cancelled.connect(function(chatId) {
+                return "sendToChat(): cancelled by user"
+            })
         }
     }
 

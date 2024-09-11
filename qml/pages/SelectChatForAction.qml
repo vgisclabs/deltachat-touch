@@ -31,6 +31,7 @@ Page {
 
     signal textHasChanged(string query)
     signal chatSelected(int chatId)
+    signal cancelled()
 
     property string titleText
 
@@ -57,6 +58,7 @@ Page {
                 text: i18n.tr('Close')
                 onTriggered: {
                     extraStack.pop()
+                    cancelled()
                 }
             }
         ]
@@ -101,8 +103,8 @@ Page {
             divider.visible: true
             onClicked: {
                 let chatID = DeltaHandler.chatmodel.chatlistmodel.getChatID(index)
-                chatSelected(chatID)
                 extraStack.pop()
+                chatSelected(chatID)
             }
 
 

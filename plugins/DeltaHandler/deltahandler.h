@@ -222,7 +222,7 @@ public:
     // text. Otherwise, it will be an empty string.
     // In the current implementation, if _messageBody is set, any other
     // draft message of this chat will be overriden and consequently, lost.
-    Q_INVOKABLE void openChat(QString _messageBody = "");
+    Q_INVOKABLE void openChat(QString _messageBody = "", QString _filepathToAttach = "");
 
     Q_INVOKABLE void setChatViewIsShown();
 
@@ -239,6 +239,7 @@ public:
     Q_INVOKABLE void closeArchive();
 
     Q_INVOKABLE QString getChatNameById(uint32_t chatId);
+    Q_INVOKABLE bool chatIdHasDraft(uint32_t chatId);
 
     // Param calledInUrlHandlingProcess needed for handling of urls that
     // trigger the question with which account they should be handled

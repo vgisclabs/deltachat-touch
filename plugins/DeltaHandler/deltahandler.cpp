@@ -1394,7 +1394,7 @@ void DeltaHandler::selectChatByChatId(uint32_t _chatId)
 }
 
 
-void DeltaHandler::openChat(QString _messageBody)
+void DeltaHandler::openChat(QString _messageBody, QString _filepathToAttach)
 {
     // stop the queue timer and process the queue
     if (m_signalQueueTimer->isActive()) {
@@ -1441,7 +1441,7 @@ void DeltaHandler::openChat(QString _messageBody)
         chatIdAsString.setNum(m_currentChatID);
         dc_set_config(currentContext, "ui.lastchatid", chatIdAsString.toUtf8().constData());
 
-        m_chatmodel->configure(m_currentChatID, dc_get_id(currentContext), allAccounts, freshMessagesOfChat, _messageBody, contactRequest);
+        m_chatmodel->configure(m_currentChatID, dc_get_id(currentContext), allAccounts, freshMessagesOfChat, _messageBody, _filepathToAttach, contactRequest);
         currentChatIsOpened = true;
 
         emit openChatViewRequest(m_currentAccID, m_currentChatID);
@@ -1572,6 +1572,20 @@ QString DeltaHandler::getChatNameById(uint32_t chatId)
     } 
 
     return tempQString;
+}
+
+
+bool DeltaHandler::chatIdHasDraft(uint32_t chatId)
+{
+    bool retval;
+    dc_msg_t* tempdraft = dc_get_draft(currentContext, chatId);
+    if (tempdraft) {
+        retval = true;
+        dc_msg_unref(tempdraft);
+    } else {
+        retval = false;
+    }
+    return retval;
 }
 
 

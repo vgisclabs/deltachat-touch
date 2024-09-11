@@ -143,6 +143,8 @@ public:
     Q_INVOKABLE void sendWebxdcUpdate(QString update, QString description);
 
     Q_INVOKABLE QString getWebxdcUpdate(int last_serial);
+
+    Q_INVOKABLE void sendToChat(uint32_t _chatId, QString _data);
     
     Q_INVOKABLE QString getWebxdcId();
 
@@ -171,7 +173,7 @@ public:
     // text. Otherwise, it will be an empty string.
     // In the current implementation, if _messageBody is set, any other
     // draft message of this chat will be overriden and consequently, lost.
-    void configure(uint32_t chatID, uint32_t aID, dc_accounts_t* allAccs, std::vector<uint32_t> unreadMsgs, QString _messageBody, bool isContactRequest = false);
+    void configure(uint32_t chatID, uint32_t aID, dc_accounts_t* allAccs, std::vector<uint32_t> unreadMsgs, QString _messageBody, QString _filepathToAttach, bool isContactRequest = false);
     
     bool chatIsContactRequest();
     bool hasDraft();

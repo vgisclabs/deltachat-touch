@@ -1466,6 +1466,24 @@ Page {
                 id: popoverComponentDeleteFromDevice
                 Popover {
                     id: popoverDeleteFromDevice
+
+                    function confirmDeleteFromDevice(secondsAsString, timetext) {
+                        let popup = PopupUtils.open(
+                            Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
+                            null,
+                            { "deleteAfterXSeconds": secondsAsString, "deleteAfterXTime": timetext}
+                        )
+                        popup.confirmed.connect(function() {
+                            PopupUtils.close(popup)
+                            PopupUtils.close(popoverDeleteFromDevice)
+                            updateDeleteFromDeviceCurrentSetting()
+                        })
+                        popup.cancelled.connect(function() {
+                            PopupUtils.close(popup)
+                            PopupUtils.close(popoverDeleteFromDevice)
+                        })
+                    }
+
                     Column {
                         id: containerLayoutDelDevice
                         anchors {
@@ -1496,16 +1514,7 @@ Page {
                                 title.text: i18n.tr("After 1 hour")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "3600", "deleteAfterXTime": i18n.tr("After 1 hour")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromDevice)
-                                    updateDeleteFromDeviceCurrentSetting()
-                                })
+                                confirmDeleteFromDevice("3600", i18n.tr("After 1 hour"))
                             }
                         }
 
@@ -1517,16 +1526,7 @@ Page {
                                 title.text: i18n.tr("After 1 day")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "86400", "deleteAfterXTime": i18n.tr("After 1 day")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromDevice)
-                                    updateDeleteFromDeviceCurrentSetting()
-                                })
+                                confirmDeleteFromDevice("86400", i18n.tr("After 1 day"))
                             }
                         }
 
@@ -1538,16 +1538,7 @@ Page {
                                 title.text: i18n.tr("After 1 week")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "604800", "deleteAfterXTime": i18n.tr("After 1 week")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromDevice)
-                                    updateDeleteFromDeviceCurrentSetting()
-                                })
+                                confirmDeleteFromDevice("604800", i18n.tr("After 1 week"))
                             }
                         }
 
@@ -1559,16 +1550,7 @@ Page {
                                 title.text: i18n.tr("After 4 weeks")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "2419200", "deleteAfterXTime": i18n.tr("After 4 weeks")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromDevice)
-                                    updateDeleteFromDeviceCurrentSetting()
-                                })
+                                confirmDeleteFromDevice("2419200", i18n.tr("After 4 weeks"))
                             }
                         }
 
@@ -1580,16 +1562,7 @@ Page {
                                 title.text: i18n.tr("After 1 year")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromDevice.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "31536000", "deleteAfterXTime": i18n.tr("After 1 year")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromDevice)
-                                    updateDeleteFromDeviceCurrentSetting()
-                                })
+                                confirmDeleteFromDevice("31536000", i18n.tr("After 1 year"))
                             }
                         }
                     }
@@ -1600,6 +1573,24 @@ Page {
                 id: popoverComponentDeleteFromServer
                 Popover {
                     id: popoverDeleteFromServer
+
+                    function confirmDeleteFromServer(secondsAsString, timetext) {
+                        let popup = PopupUtils.open(
+                            Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
+                            null,
+                            { "deleteAfterXSeconds": secondsAsString, "deleteAfterXTime": timetext}
+                        )
+                        popup.confirmed.connect(function() {
+                            PopupUtils.close(popup)
+                            PopupUtils.close(popoverDeleteFromServer)
+                            updateDeleteFromServerCurrentSetting()
+                        })
+                        popup.cancelled.connect(function() {
+                            PopupUtils.close(popup)
+                            PopupUtils.close(popoverDeleteFromServer)
+                        })
+                    }
+
                     Column {
                         id: containerLayoutDelServer
                         anchors {
@@ -1630,16 +1621,7 @@ Page {
                                 title.text: i18n.tr("At once")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "1", "deleteAfterXTime": i18n.tr("At once")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromServer)
-                                    updateDeleteFromServerCurrentSetting()
-                                })
+                                confirmDeleteFromServer("1", i18n.tr("At once"))
                             }
                         }
 
@@ -1651,16 +1633,7 @@ Page {
                                 title.text: i18n.tr("After 30 seconds")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "30", "deleteAfterXTime": i18n.tr("After 30 seconds")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromServer)
-                                    updateDeleteFromServerCurrentSetting()
-                                })
+                                confirmDeleteFromServer("30", i18n.tr("After 30 seconds"))
                             }
                         }
 
@@ -1672,16 +1645,7 @@ Page {
                                 title.text: i18n.tr("After 1 minute")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "60", "deleteAfterXTime": i18n.tr("After 1 minute")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromServer)
-                                    updateDeleteFromServerCurrentSetting()
-                                })
+                                confirmDeleteFromServer("60", i18n.tr("After 1 minute"))
                             }
                         }
 
@@ -1693,16 +1657,7 @@ Page {
                                 title.text: i18n.tr("After 1 hour")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "3600", "deleteAfterXTime": i18n.tr("After 1 hour")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromServer)
-                                    updateDeleteFromServerCurrentSetting()
-                                })
+                                confirmDeleteFromServer("3600", i18n.tr("After 1 hour"))
                             }
                         }
 
@@ -1714,16 +1669,7 @@ Page {
                                 title.text: i18n.tr("After 1 day")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "86400", "deleteAfterXTime": i18n.tr("After 1 day")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromServer)
-                                    updateDeleteFromServerCurrentSetting()
-                                })
+                                confirmDeleteFromServer("86400", i18n.tr("After 1 day"))
                             }
                         }
 
@@ -1735,16 +1681,7 @@ Page {
                                 title.text: i18n.tr("After 1 week")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "604800", "deleteAfterXTime": i18n.tr("After 1 week")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromServer)
-                                    updateDeleteFromServerCurrentSetting()
-                                })
+                                confirmDeleteFromServer("604800", i18n.tr("After 1 week"))
                             }
                         }
 
@@ -1756,16 +1693,7 @@ Page {
                                 title.text: i18n.tr("After 4 weeks")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "2419200", "deleteAfterXTime": i18n.tr("After 4 weeks")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromServer)
-                                    updateDeleteFromServerCurrentSetting()
-                                })
+                                confirmDeleteFromServer("2419200", i18n.tr("After 4 weeks"))
                             }
                         }
 
@@ -1777,16 +1705,7 @@ Page {
                                 title.text: i18n.tr("After 1 year")
                             }
                             onClicked: {
-                                let popup = PopupUtils.open(
-                                    Qt.resolvedUrl("ConfirmDeleteFromServer.qml"),
-                                    null,
-                                    { "deleteAfterXSeconds": "31536000", "deleteAfterXTime": i18n.tr("After 1 year")}
-                                )
-                                popup.confirmed.connect(function() {
-                                    PopupUtils.close(popup)
-                                    PopupUtils.close(popoverDeleteFromServer)
-                                    updateDeleteFromServerCurrentSetting()
-                                })
+                                confirmDeleteFromServer("31536000", i18n.tr("After 1 year"))
                             }
                         }
                     } // end Column id: containerLayoutDelServer

@@ -29,6 +29,7 @@ Dialog {
     property string deleteAfterXTime: ""
 
     signal confirmed()
+    signal cancelled()
 
     Component.onCompleted: {
     }
@@ -44,6 +45,7 @@ Dialog {
     Rectangle {
         width: parent.width
         height: confirmLabel2.contentHeight
+        color: theme.palette.normal.background
 
         Switch {
             id: confirmSwitch
@@ -79,7 +81,7 @@ Dialog {
         id: cancelButton
         text: i18n.tr("Cancel")
         onClicked: {
-            PopupUtils.close(confirmDelFromDevice)
+            cancelled()
         }
     }
 }

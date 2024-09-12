@@ -426,10 +426,10 @@ Page {
         }
 
         onPreviewVcardAttachment: {
-            vcardPrevShape.backgroundColor = contactcolor
             vcardPrevPic.source = imageaddress
             vcardPrevNameLabel.text = displayname
             vcardPrevAddrLabel.text = address
+            vcardPrevShape.backgroundColor = vcardPrevPic.status !== Image.Null && vcardPrevPic.status !== Image.Error ? "transparent" : contactcolor
 
             attachVcardPreviewMode = true
         }
@@ -1059,7 +1059,7 @@ Page {
                     sourceComponent: LomiriShape {
                         id: avatarShape
 
-                        backgroundColor: model.avatarColor
+                        backgroundColor: avatarPic.status !== Image.Null && avatarPic.status !== Image.Error ? "transparent" : model.avatarColor
                         sourceFillMode: LomiriShape.PreserveAspectCrop
 
                         property bool hasProfPic: profPic != ""
@@ -1444,8 +1444,9 @@ Page {
                                     height: contactColumn.height
                                     width: height
 
-                                    backgroundColor: vcardObj.color
+                                    backgroundColor: contactPic.status !== Image.Null && contactPic.status !== Image.Error ? "transparent" : vcardObj.color
                                     sourceFillMode: LomiriShape.PreserveAspectCrop
+                                    aspect: LomiriShape.Flat
 
                                     source: contactPic.status !== Image.Null && contactPic.status !== Image.Error ? contactPic : undefined
 
@@ -2520,63 +2521,64 @@ Page {
                 color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
                 visible: attachVcardPreviewMode
 
-                            Row {
-                                id: vcardPrevRow
-                                spacing: units.gu(1)
+                Row {
+                    id: vcardPrevRow
+                    spacing: units.gu(1)
 
-                                anchors {
-                                    horizontalCenter: parent.horizontalCenter
-                                    verticalCenter: parent.verticalCenter
-                                }
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        verticalCenter: parent.verticalCenter
+                    }
 
-                                LomiriShape {
-                                    id: vcardPrevShape
-                                    height: vcardPrevColumn.height
-                                    width: height
+                    LomiriShape {
+                        id: vcardPrevShape
+                        height: vcardPrevColumn.height
+                        width: height
 
-                                    sourceFillMode: LomiriShape.PreserveAspectCrop
+                        aspect: LomiriShape.Flat
+                        sourceFillMode: LomiriShape.PreserveAspectCrop
 
-                                    source: vcardPrevPic.status !== Image.Null && vcardPrevPic.status !== Image.Error ? vcardPrevPic : undefined
+                        source: vcardPrevPic.status !== Image.Null && vcardPrevPic.status !== Image.Error ? vcardPrevPic : undefined
 
-                                    Image {
-                                        id: vcardPrevPic
-                                        visible: false
-                                    }
+                        Image {
+                            id: vcardPrevPic
+                            visible: false
+                        }
 
-                                    Label {
-                                        id: vcardPrevInitialLabel
-                                        text: vcardPrevNameLabel.text.charAt(0).toUpperCase()
-                                        font.pixelSize: parent.height * 0.6
-                                        color: "white"
-                                        visible: vcardPrevPic.status === Image.Null || vcardPrevPic.status === Image.Error
-                                        anchors.centerIn: parent
-                                    }
-                                }
+                        Label {
+                            id: vcardPrevInitialLabel
+                            text: vcardPrevNameLabel.text.charAt(0).toUpperCase()
+                            font.pixelSize: parent.height * 0.6
+                            color: "white"
+                            visible: vcardPrevPic.status === Image.Null || vcardPrevPic.status === Image.Error
+                            anchors.centerIn: parent
+                        }
+                    }
 
-                                Column {
-                                    id: vcardPrevColumn
-                                    width: vcardPrevNameLabel.contentWidth > vcardPrevAddrLabel.contentWidth ? vcardPrevNameLabel.contentWidth : vcardPrevAddrLabel.contentWidth
+                    Column {
+                        id: vcardPrevColumn
+                        width: vcardPrevNameLabel.contentWidth > vcardPrevAddrLabel.contentWidth ? vcardPrevNameLabel.contentWidth : vcardPrevAddrLabel.contentWidth
 
-                                    Label {
-                                        id: vcardPrevNameLabel
-                                        width: chatViewPage.width - vcardPrevShape.width - units.gu(5)
-                                        text: vcardObj.displayName
-                                        font.bold: true
-                                        fontSize: root.scaledFontSize
-                                        elide: Text.ElideRight
-                                        horizontalAlignment: Text.AlignLeft
-                                    }
+                        Label {
+                            id: vcardPrevNameLabel
+                            width: chatViewPage.width - vcardPrevShape.width - units.gu(5)
+                            text: vcardObj.displayName
+                            font.bold: true
+                            fontSize: root.scaledFontSize
+                            elide: Text.ElideRight
+                            horizontalAlignment: Text.AlignLeft
+                        }
 
-                                    Label {
-                                        id: vcardPrevAddrLabel
-                                        width: vcardPrevNameLabel.width
-                                        text: vcardObj.addr
-                                        fontSize: root.scaledFontSize
-                                        elide: Text.ElideRight
-                                        horizontalAlignment: Text.AlignLeft
-                                    }
-                                }
-                            }
+                        Label {
+                            id: vcardPrevAddrLabel
+                            width: vcardPrevNameLabel.width
+                            text: vcardObj.addr
+                            fontSize: root.scaledFontSize
+                            elide: Text.ElideRight
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                    }
+                }
 
             }
 

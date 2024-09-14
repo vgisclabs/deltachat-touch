@@ -130,7 +130,6 @@ Dialog {
 
                         pwEntryRow.visible = false
                         okButton.visible = false
-                        cancelButton.visible = false
 
                         errorLabel.visible = true
                         confirmErrorButton.visible = true
@@ -139,15 +138,6 @@ Dialog {
             } else {
                 passwordField.focus = true
             }
-        }
-    }
-
-    Button {
-        id: cancelButton
-        text: i18n.tr("Cancel")
-        onClicked: {
-            cancelled()
-            PopupUtils.close(dialog)
         }
     }
 
@@ -168,11 +158,19 @@ Dialog {
             dialog.title = i18n.tr("Enter Database Password")
             pwEntryRow.visible = true
             okButton.visible = true
-            cancelButton.visible = true
             passwordField.focus = true
 
             errorLabel.visible = false
             confirmErrorButton.visible = false
+        }
+    }
+
+    Button {
+        id: cancelButton
+        text: i18n.tr("Cancel")
+        onClicked: {
+            cancelled()
+            PopupUtils.close(dialog)
         }
     }
 }

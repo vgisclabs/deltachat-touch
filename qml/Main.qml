@@ -192,7 +192,7 @@ MainView {
         // passphrase was incorrect. In this case the popup won't close until
         // the correct passphrase has been entered.
         if (DeltaHandler.hasEncryptedAccounts() || DeltaHandler.workflowToEncryptedPending() || DeltaHandler.workflowToUnencryptedPending()) {
-            let popup3 = PopupUtils.open(Qt.resolvedUrl("pages/RequestDatabasePassword.qml"), layout.primaryPage)
+            let popup3 = PopupUtils.open(Qt.resolvedUrl("pages/RequestDatabasePassword.qml"), layout.primaryPage, { "extendedInfoVisible": true })
             popup3.success.connect(startupStep3)
         } else {
             startupStep4()

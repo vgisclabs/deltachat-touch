@@ -461,10 +461,8 @@ public:
     // is called as part of the handling of an URL that was passed
     // as parameter (in contrast to active scanning of a QR code).
     // See also comment for finishedSetConfigFromQr.
-    Q_INVOKABLE void continueQrCodeAction(bool calledAfterUrlReceived = false);
+    Q_INVOKABLE void continueQrCodeAction();
     // Param calledAfterUrlReceived: see comments for continueQrCodeAction
-    Q_INVOKABLE void prepareQrBackupImport(bool calledAfterUrlReceived);
-    Q_INVOKABLE void startQrBackupImport();
     Q_INVOKABLE void cancelQrImport();
 
     Q_INVOKABLE bool prepareQrDecoder();
@@ -636,18 +634,7 @@ signals:
     /* ========================================================
      * ================ QR code related stuff =================
      * ======================================================== */
-    // Param calledAfterUrlReceived is true if the QR/URL processing
-    // steps were started after an URL was passed as parameter, i.e.,
-    // not by scanning in the app, but by another programm that called
-    // the app with the URL as parameter. Has to be distinguished
-    // because both Main.qml and the pages with QR scanning function
-    // react to this signal. The slot in main should only do something
-    // if calledAfterUrlReceived is true, and the other pages only if
-    // it is false.
-    void finishedSetConfigFromQr(bool successful, bool calledAfterUrlReceived);
-
-    // For param calledAfterUrlReceived, see comment for finishedSetConfigFromQr
-    void readyForQrBackupImport(bool calledAfterUrlReceived);
+    void finishedSetConfigFromQr(bool successful);
 
     void qrDecoded(QString qrContent);
     void qrDecodingFailed(QString errorMessage);
@@ -713,6 +700,7 @@ private slots:
     void connectivityUpdate(uint32_t accID);
     void processSignalQueueTimerTimeout();
     void internalOpenOskViaDbus();
+    void startQrBackupImport();
 
 
 private:

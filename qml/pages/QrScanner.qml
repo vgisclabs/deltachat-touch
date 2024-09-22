@@ -5,8 +5,7 @@
  *
  * DeltaTouch is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3.
- *
+ * the Free Software Foundation; version 3.  *
  * DeltaTouch is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -35,36 +34,33 @@ import QtMultimedia 5.12
 import DeltaHandler 1.0
 
 Page {
-    id: addAccountViaQrPage
+    // Once loaded, this page will immediately start scanning for QR codes.
+    // If a code is recognized, DeltaHandler.evaluateQrImage() is called.
+    // Unless qrstate is DT_QR_ERROR (in which case a popup informs the 
+    // user about the error and resumes scanning after the user confirms),
+    // the return value of evaluateQrImage() is emitted via detectedQrState()
+    // and the page is removed from the stack.
+    id: qrScannerPage
 
-    signal setTempContextNull()
     signal deleteDecoder()
 
-    Component.onDestruction: {
-        camera.stopAll()
-        // emit this because a QR code to set up an account might
-        // have been scanned, but the configuration was unsuccessful.
-        // In this case, tempContext is set in C++, but needs to be
-        // unset now.
-        //
-        // C++ side will take care of unnecessary calls.
-        setTempContextNull()
-
-        deleteDecoder()
-    }
+    signal qrDetected(string detectedCode)
 
     Component.onCompleted: {
-        DeltaHandler.finishedSetConfigFromQr.connect(continueQrAccountCreation)
-        DeltaHandler.readyForQrBackupImport.connect(continueQrBackupImport)
         DeltaHandler.qrDecoded.connect(startQrProcessing)
         DeltaHandler.qrDecodingFailed.connect(imageDecodingFailed)
+        qrDetected.connect(root.newUrlFromScan)
         
         DeltaHandler.prepareQrDecoder()
         camera.startAndConfigure()
     }
 
+    Component.onDestruction: {
+        camera.stopAll()
+        deleteDecoder()
+    }
+
     Connections {
-        onSetTempContextNull: DeltaHandler.unrefTempContext()
         onDeleteDecoder: DeltaHandler.deleteQrDecoder()
     }
 
@@ -74,116 +70,32 @@ Page {
 
     function startQrProcessing(content) {
         camera.stopAll()
-        qrActionSwitch(DeltaHandler.evaluateQrCode(content))
+        
+        let qrstate = DeltaHandler.evaluateQrCode(content)
+
+        if (qrstate === DeltaHandler.DT_QR_ERROR) {
+            // in case of an error, display the message and continue scanning
+            // after the user confirms the error
+            let popup10 = PopupUtils.open(
+                Qt.resolvedUrl("ErrorMessage.qml"),
+                null,
+                { text: i18n.tr("Error: %1").arg(DeltaHandler.getQrTextOne()) }
+            )
+            popup10.done.connect(function() {
+                camera.startAndConfigure()
+            })
+        } else {
+            extraStack.pop()
+            qrDetected(content)
+        }
     }
 
     function imageDecodingFailed(errorMsg) {
-        let popup1 = PopupUtils.open(errorPopup, addAccountViaQrPage, { text: errorMsg })
+        let popup1 = PopupUtils.open(errorPopup, qrScannerPage, { text: errorMsg })
         // Function is called as a result of loading an image;
         // for that, the camera was stopped. Need to
         // start it again now.
         popup1.done.connect(function() { camera.startAndConfigure() })
-    }
-
-    function qrActionSwitch(qrstate) {
-        switch (qrstate) {
-            case DeltaHandler.DT_QR_BACKUP: // fallthrough
-            case DeltaHandler.DT_QR_BACKUP2:
-                let popup4 = PopupUtils.open(
-                    Qt.resolvedUrl("ConfirmDialog.qml"),
-                    null,
-                    { dialogText: i18n.tr("Copy the account from the other device to this device?"),
-                      dialogTitle: i18n.tr("Add as Second Device") }
-                )
-                popup4.confirmed.connect(function() {
-                    DeltaHandler.continueQrCodeAction()
-                })
-                popup4.cancelled.connect(function() {
-                    // need to call camera.startAndConfigure() to start
-                    // the captureTimer again.
-                    camera.startAndConfigure()
-                })
-                break;
-            case DeltaHandler.DT_QR_ACCOUNT:
-                let popup5 = PopupUtils.open(
-                    Qt.resolvedUrl("ConfirmDialog.qml"),
-                    null,
-                    { dialogText: i18n.tr("Create new e-mail address on \"%1\" and log in there?").arg(DeltaHandler.getQrTextOne()) }
-                )
-                popup5.confirmed.connect(function() {
-                    DeltaHandler.continueQrCodeAction()
-                })
-                popup5.cancelled.connect(function() {
-                    camera.startAndConfigure()
-                })
-                break;
-            case DeltaHandler.DT_QR_LOGIN:
-                let popup6 = PopupUtils.open(
-                    Qt.resolvedUrl("ConfirmDialog.qml"),
-                    null,
-                    { dialogText: i18n.tr("Log into \"%1\"?").arg(DeltaHandler.getQrTextOne()) }
-                )
-                popup6.confirmed.connect(function() {
-                    DeltaHandler.continueQrCodeAction()
-                })
-                popup6.cancelled.connect(function() {
-                    camera.startAndConfigure()
-                })
-                break;
-            case DeltaHandler.DT_QR_ERROR:
-                let popup7 = PopupUtils.open(
-                    Qt.resolvedUrl("ErrorMessage.qml"),
-                    null,
-                    { text: i18n.tr("Error: %1").arg(DeltaHandler.getQrTextOne()) }
-                )
-                popup7.done.connect(function() {
-                    camera.startAndConfigure()
-                })
-                break;
-            case DeltaHandler.DT_UNKNOWN: // fallthrough
-            default: 
-                let popup8 = PopupUtils.open(
-                    Qt.resolvedUrl("ErrorMessage.qml"),
-                    null,
-                    { text: i18n.tr("The scanned QR code cannot be used to set up a new account.") }
-                )
-                popup8.done.connect(function() {
-                    camera.startAndConfigure()
-                })
-                break;
-        }
-    }
-
-    function continueQrAccountCreation(wasSuccessful, calledDuringUrlHandling) {
-        // only act if signal was emitted as a result of an active scan of
-        // a QR code (i.e., not as a result of an URL passed as parameter
-        // to the app itself; see comments in deltahandler.h and Main.qml for the
-        // finishedSetConfigFromQr signal)
-        if (!calledDuringUrlHandling) {
-            if (wasSuccessful) {
-                // TODO: Unlike in the call from AddOrConfigureEmailAccount.qml,
-                // the account should not persist if the configuration fails (or should it?)
-                let popup3 = PopupUtils.open(configProgress)
-                popup3.success.connect(function() { extraStack.clear() })
-                popup3.failed.connect(function() { extraStack.pop() })
-            } else {
-                PopupUtils.open(errorPopup)
-                setTempContextNull()
-            }
-        }
-    }
-
-    function continueQrBackupImport(calledDuringUrlHandling) {
-        // only act if signal was emitted as a result of an active scan of
-        // a QR code (i.e., not as a result of an URL passed as parameter
-        // to the app itself; see comments in deltahandler.h and Main.qml for the
-        // readyForQrBackupImport signal)
-        if (!calledDuringUrlHandling) {
-            let popup2 = PopupUtils.open(progressQrBackupImport)
-            popup2.failed.connect(function() { extraStack.pop() })
-            popup2.cancelled.connect(function() { extraStack.pop() })
-            popup2.success.connect(function() { extraStack.clear() })
-        }
     }
 
     Loader {
@@ -194,7 +106,7 @@ Page {
         target: picImportLoader.item
         onFileSelected: {
             let tempPath = DeltaHandler.copyToCache(urlOfFile);
-            addAccountViaQrPage.passQrImage(tempPath)
+            qrScannerPage.passQrImage(tempPath)
             picImportLoader.source = ""
         }
         onCancelled: {
@@ -220,8 +132,8 @@ Page {
 
     Rectangle {
         id: qrScanRect
-        width: addAccountViaQrPage.width
-        height: addAccountViaQrPage.height - qrHeader.height
+        width: qrScannerPage.width
+        height: qrScannerPage.height - qrHeader.height
         anchors {
             top: qrHeader.bottom
             left: parent.left
@@ -342,7 +254,7 @@ Page {
 
                 onClicked: {
                     camera.stopAll()
-                    qrActionSwitch(DeltaHandler.evaluateQrCode(Clipboard.data.text))
+                    startQrProcessing(Clipboard.data.text)
                 }
             }
 
@@ -360,10 +272,10 @@ Page {
                     if (root.onUbuntuTouch) {
                         // Ubuntu Touch
                         DeltaHandler.newFileImportSignalHelper()
-                        DeltaHandler.fileImportSignalHelper.fileImported.connect(addAccountViaQrPage.passQrImage)
+                        DeltaHandler.fileImportSignalHelper.fileImported.connect(qrScannerPage.passQrImage)
                         extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
                         // See comments in CreateOrEditGroup.qml
-                        //let incubator = layout.addPageToCurrentColumn(addAccountViaQrPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                        //let incubator = layout.addPageToCurrentColumn(qrScannerPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
 
                         //if (incubator.status != Component.Ready) {
                         //    // have to wait for the object to be ready to connect to the signal,
@@ -371,12 +283,12 @@ Page {
                         //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
                         //    incubator.onStatusChanged = function(status) {
                         //        if (status == Component.Ready) {
-                        //            incubator.object.fileSelected.connect(addAccountViaQrPage.passQrImage)
+                        //            incubator.object.fileSelected.connect(qrScannerPage.passQrImage)
                         //        }
                         //    }
                         //} else {
                         //    // object was directly ready
-                        //    incubator.object.fileSelected.connect(addAccountViaQrPage.passQrImage)
+                        //    incubator.object.fileSelected.connect(qrScannerPage.passQrImage)
                         //}
                     } else {
                         // non-Ubuntu Touch
@@ -390,27 +302,12 @@ Page {
     } // end Rectangle id: qrScanRect
 
     Component {
-        id: configProgress
-
-        ProgressConfigAccount { // see file ProgressConfigAccount.qml
-            title: i18n.tr('Configuring...')
-        }
-    }
-
-    Component {
         id: errorPopup
 
         ErrorMessage {
             title: i18n.tr("Error")
             // where to get the error from if dc_set_config_from_qr() failed?
             text: ""
-        }
-    }
-
-    Component {
-        id: progressQrBackupImport
-
-        ProgressQrBackupImport { // see file ProgressQrBackupImport.qml
         }
     }
 }

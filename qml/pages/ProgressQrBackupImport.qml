@@ -47,7 +47,7 @@ Dialog {
 
     Component.onCompleted: {
         DeltaHandler.emitterthread.imexProgress.connect(updateProgress)
-            DeltaHandler.startQrBackupImport()
+            DeltaHandler.continueQrCodeAction()
     }
 
     function updateProgress(progValue) {
@@ -56,15 +56,13 @@ Dialog {
             // TODO: better string available?
             dialog.title = i18n.tr("Error")
             progBar.visible = false
-            backButton.visible = true
+            confirmFailureButton.visible = true
             cancelButton.visible = false
         }
         else if (progValue == 1000) {
-            // TODO string not translated yet
-            dialog.title = i18n.tr("Done")
-            progBar.visible = false
-            okButton.visible = true
-            cancelButton.visible = false
+            PopupUtils.close(dialog)
+            success()
+            
         } else {
             cancelButton.visible = true
         }
@@ -79,24 +77,12 @@ Dialog {
             PopupUtils.close(dialog)
             cancelled()
         }
-        visible: false
-    }
-
-    Button {
-        id: okButton
-        text: 'OK'
-        color: theme.palette.normal.positive
-        onClicked: {
-            PopupUtils.close(dialog)
-            success()
-        }
-        visible: false
     }
 
     Button {
         // Must only be visible in case the import failed because
         // we are emitting the failed signal when the button is clicked
-        id: backButton
+        id: confirmFailureButton
         text: i18n.tr("Back")
         color: theme.palette.normal.negative
         onClicked: {

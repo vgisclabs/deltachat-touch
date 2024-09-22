@@ -30,6 +30,8 @@ Page {
     anchors.fill: parent
 
     property int numberOfAccounts: DeltaHandler.numberOfAccounts()
+    property string oldUrlHandlingPage
+    readonly property string thisPagePath: "qml/AddAccount"
 
     Component.onCompleted: {
         // If the passphrase is not present in DeltaHandler, let the user enter
@@ -42,6 +44,61 @@ Page {
         // case.
         if (DeltaHandler.databaseIsEncryptedSetting() && !DeltaHandler.hasDatabasePassphrase()) {
             let popup = PopupUtils.open(Qt.resolvedUrl("RequestDatabasePassword.qml"), addAccountPage)
+        }
+
+        oldUrlHandlingPage = root.urlHandlingPage
+        root.urlHandlingPage = thisPagePath
+    }
+
+    Component.onDestruction: {
+        root.urlHandlingPage = oldUrlHandlingPage
+    }
+
+    Loader {
+        id: backupImportLoader
+    }
+
+    Connections {
+        target: root
+        onUnprocessedUrl: {
+            if (root.urlHandlingPage !== thisPagePath) {
+                return
+            }
+
+            let qrstate = DeltaHandler.evaluateQrCode(rawUrl)
+            switch (qrstate) {
+                // CAVE backup here means second device, it's not the "restore
+                // from backup" thing
+                case DeltaHandler.DT_QR_BACKUP: // fallthrough
+                case DeltaHandler.DT_QR_BACKUP2:
+                    let popup9 = PopupUtils.open(Qt.resolvedUrl("ProgressQrBackupImport.qml"))
+                    popup9.success.connect(function() { clearStackTimer.start() })
+                    break;
+                case DeltaHandler.DT_QR_ACCOUNT:
+                    extraStack.push(Qt.resolvedUrl("OnboardingChatmail.qml"), { "provider": DeltaHandler.getQrTextOne(), "isDcLogin": false })
+                    break;
+                case DeltaHandler.DT_QR_LOGIN:
+                    extraStack.push(Qt.resolvedUrl("OnboardingChatmail.qml"), { "provider": DeltaHandler.getQrTextOne(), "isDcLogin": true })
+                    break;
+                default: 
+                    let popup8 = PopupUtils.open(
+                        Qt.resolvedUrl("ErrorMessage.qml"),
+                        null,
+                        { text: i18n.tr("The scanned QR code cannot be used to set up a new account.") }
+                    )
+                    break;
+            }
+        }
+    }
+
+    Connections {
+        target: backupImportLoader.item
+        onFileSelected: {
+            addAccountPage.startBackupImport(urlOfFile)
+            backupImportLoader.source = ""
+        }
+        onCancelled: {
+            backupImportLoader.source = ""
         }
     }
 
@@ -56,12 +113,32 @@ Page {
         onNewUnconfiguredAccount: {
             numberOfAccounts = DeltaHandler.numberOfAccounts()
         }   
+
+        onFinishedSetConfigFromQr: {
+            // see signal finishedSetConfigFromQr in deltahandler.h
+            if (urlHandlingPage === thisPagePath) {
+                if (successful) {
+                    PopupUtils.open(
+                        Qt.resolvedUrl("ProgressConfigAccount.qml"),
+                        chatlistPage,
+                        { "title": i18n.tr('Configuring...') }
+                    )
+                } else {
+                    PopupUtils.open(
+                        Qt.resolvedUrl("errorMessage.qml"),
+                        chatlistPage,
+                        { "title": i18n.tr('Error') }
+                    )
+                    setTempContextNull()
+                }
+            }
+        }
     }
 
     header: PageHeader {
         id: header
 
-        title: i18n.tr("Add Account")
+        title: i18n.tr("Create New Profile")
 
         leadingActionBar.actions: [
             Action {
@@ -102,44 +179,16 @@ Page {
         ]
 
     } //PageHeader id:header
+
+
+    Image {
+        id: backgroundImage
+        anchors.fill: parent
+        opacity: 0.05
+        source: root.darkmode ? Qt.resolvedUrl('qrc:///assets/background_dark.svg') : Qt.resolvedUrl('qrc:///assets/background_bright.svg')
+        fillMode: Image.PreserveAspectFit
+    }
         
-    function startBackupImport(backupFile) {
-        if (DeltaHandler.isBackupFile(backupFile)) {
-            // Actual import will be started in the popup.
-            PopupUtils.open(progressBackupImport, addAccountPage, { "backupSource": backupFile })
-        } else {
-            PopupUtils.open(errorMessage)
-        }
-
-    }
-    
-    Loader {
-        id: backupImportLoader
-    }
-
-    Connections {
-        target: backupImportLoader.item
-        onFileSelected: {
-            addAccountPage.startBackupImport(urlOfFile)
-            backupImportLoader.source = ""
-        }
-        onCancelled: {
-            backupImportLoader.source = ""
-        }
-    }
-
-    ListModel {
-        id: addAccountModel
-    
-        dynamicRoles: true
-        Component.onCompleted: {
-            addAccountModel.append({ "name": i18n.tr("Log into your E-Mail Account"), "linkToPage": "AddOrConfigureEmailAccount.qml" } )
-            addAccountModel.append({ "name": i18n.tr("Add as Second Device"), "linkToPage": "AddAccountViaQr.qml" } )
-            addAccountModel.append({ "name": i18n.tr("Restore from Backup"), "linkToPage": "restoreFromBackup--noLink" } )
-            addAccountModel.append({ "name": i18n.tr("Scan Invitation Code"), "linkToPage": "AddAccountViaQr.qml" } )
-        }
-    }
-    
     Column {
         id: experimentalSettingsColumn
         width: parent.width
@@ -214,93 +263,105 @@ Page {
         }
     }
 
-    ListView {
-        id: addAccountView
-        height: addAccountPage.height - header.height - units.gu(1)
-        width: addAccountPage.width
+    Item {
         anchors {
-            left: addAccountPage.left
-            right: addAccountPage.right
             top: experimentalSettingsColumn.visible ? experimentalSettingsColumn.bottom : header.bottom
-            topMargin: units.gu(1)
-            bottom: addAccountPage.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
         }
-        model: addAccountModel
-        delegate: accountDelegate
-    }
-    
-    Component {
-        id: accountDelegate
 
-        ListItem {
-            id: item
-            height: listLayout.height + (divider.visible ? divider.height : 0)
+        Column {
+            id: buttonColumn
+            width: parent.width > units.gu(54) ? units.gu(50) : (parent.width - units.gu(4))
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
 
-            ListItemLayout {
-                id: listLayout
-                title.text: name
+            spacing: units.gu(2)
 
-                Icon {
-                    //name: "go-next"
-                    source: "qrc:///assets/suru-icons/go-next.svg"
-                    SlotsLayout.position: SlotsLayout.Trailing;
-                    width: units.gu(2)
-                }
-            }
+            Rectangle {
+                width: secureDecentralizedLabel.contentWidth
+                height: secureDecentralizedLabel.contentHeight
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: "transparent"
 
-            onClicked: {
-                if (linkToPage == "restoreFromBackup--noLink") {
-                    if (root.onUbuntuTouch) {
-                        // Ubuntu Touch
-                        DeltaHandler.newFileImportSignalHelper()
-                        DeltaHandler.fileImportSignalHelper.fileImported.connect(addAccountPage.startBackupImport)
-                        extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
-                        // TODO: regarding the below, maybe after the switch "let xy = extraStack.push(...); xy.bla.connect(...)" works?
-                        //
-                        // See comments in CreateOrEditGroup.qml
-                        //let incubator = layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
-
-                        //if (incubator.status != Component.Ready) {
-                        //    // have to wait for the object to be ready to connect to the signal,
-                        //    // see documentation on AdaptivePageLayout and
-                        //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                        //    incubator.onStatusChanged = function(status) {
-                        //        if (status == Component.Ready) {
-                        //            incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
-                        //        }
-                        //    }
-                        //} else {
-                        //    // object was directly ready
-                        //    incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
-                        //}
-                    } else {
-                        // non-Ubuntu Touch
-                        backupImportLoader.source = "FileImportDialog.qml"
-                        backupImportLoader.item.setFileType(DeltaHandler.FileType)
-                        backupImportLoader.item.open()
+                Label {
+                    id: secureDecentralizedLabel
+                    width: buttonColumn.width
+                    anchors {
+                        top: parent.top
+                        left: parent.left
                     }
-                } else {
-                    extraStack.push(Qt.resolvedUrl(linkToPage))
+                    wrapMode: Text.WordWrap
+                    text: i18n.tr("Secure Decentralized Chat")
                 }
             }
+
+            Item {
+                id: spacerItem
+                width: parent.width
+                height: units.gu(2)
+            }
+
+            Button {
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: i18n.tr("Create New Profile")
+                color: theme.palette.normal.positive
+                onClicked: extraStack.push(Qt.resolvedUrl("OnboardingChatmail.qml"))
+            }
+
+            Button {
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: i18n.tr("I Already Have a Profile")
+                onClicked: {
+                    let popup3 = PopupUtils.open(Qt.resolvedUrl("AlreadyHaveProfilePopup.qml"), addAccountPage)
+                    popup3.addSecondDevice.connect(function() {
+                        PopupUtils.close(popup3)
+                        extraStack.push(Qt.resolvedUrl("QrScanner.qml"))
+                    })
+                    popup3.restoreBackup.connect(function() {
+                        PopupUtils.close(popup3)
+                        if (root.onUbuntuTouch) {
+                            // Ubuntu Touch
+                            DeltaHandler.newFileImportSignalHelper()
+                            DeltaHandler.fileImportSignalHelper.fileImported.connect(addAccountPage.startBackupImport)
+                            extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+                            // TODO: regarding the below, maybe after the switch "let xy = extraStack.push(...); xy.bla.connect(...)" works?
+                            //
+                            // See comments in CreateOrEditGroup.qml
+                            //let incubator = layout.addPageToCurrentColumn(addAccountPage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.FileType })
+
+                            //if (incubator.status != Component.Ready) {
+                            //    // have to wait for the object to be ready to connect to the signal,
+                            //    // see documentation on AdaptivePageLayout and
+                            //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                            //    incubator.onStatusChanged = function(status) {
+                            //        if (status == Component.Ready) {
+                            //            incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
+                            //        }
+                            //    }
+                            //} else {
+                            //    // object was directly ready
+                            //    incubator.object.fileSelected.connect(addAccountPage.startBackupImport)
+                            //}
+                        } else {
+                            // non-Ubuntu Touch
+                            backupImportLoader.source = "FileImportDialog.qml"
+                            backupImportLoader.item.setFileType(DeltaHandler.FileType)
+                            backupImportLoader.item.open()
+                        }
+                    })
+                    popup3.cancelled.connect(function() {
+                        PopupUtils.close(popup3)
+                    })
+                } 
+            }
+
         }
     }
 
-    Component {
-        id: progressBackupImport
-        ProgressBackupImport {
-            title: i18n.tr('Restore from Backup')
-        }
-    }
-
-    Component {
-        id: errorMessage
-        ErrorMessage {
-            title: i18n.tr('Error')
-            // TODO: string not translated yet
-            text: i18n.tr('The selected file is not a valid backup file.')
-        }
-    }
 
     /* ==========================================================
      * ===== Functions related to encryption of database ========
@@ -350,4 +411,27 @@ Page {
     }
 
     /* =============== END decryption of database =============== */
+
+    function startBackupImport(backupFile) {
+        if (DeltaHandler.isBackupFile(backupFile)) {
+            // Actual import will be started in the popup.
+            PopupUtils.open(Qt.resolvedUrl("ProgressBackupImport.qml"), addAccountPage, {
+                "backupSource": backupFile,
+                "title": i18n.tr('Restore from Backup')
+            })
+        } else {
+            PopupUtils.open(Qt.resolvedUrl("ErrorMessage.qml"), addAccountPage, {
+                text: i18n.tr("Error: %1").arg("Not a backup file")
+            })
+        }
+    }
+
+    Timer {
+        id: clearStackTimer
+        interval: 300
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: extraStack.clear()
+    }
+
 } // end of Page id: addAccountPage

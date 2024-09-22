@@ -599,6 +599,24 @@ Page {
                     popup.closeDialogAndLeaveChatView.connect(function() {
                         PopupUtils.close(popup)
                         // see Timer in QrShowScan.qml
+                        // TODO Note: The File QrShowScan.qml has been heavily modified and split
+                        // into two pages (InviteCode.qml and QrScanner.qml). The original
+                        // comment is not present in these files anymore. It was:
+                        // TODO: Trying to close the page here by calling
+                        // layout.removePages(qrShowScanPage) [EDIT: that was before the switch to pageStack,
+                        // maybe try if it works now?]
+                        // always results in an error
+                        // QQmlExpression: Attempted to evaluate an expression in an invalid context
+                        // Same if DeltaHandler.continueQrCodeAction() emits a signal closeQrPage()
+                        // that is connected to a method here which calls layout.removePages.
+                        // Just not caring about closing and adding another page to the layout from Main
+                        // results in this page still being active (as tested by a repeating
+                        // timer), and the added page not having a back button.
+                        // Adding a var that would be set to true here and evaluating it after the switch block
+                        // doesn't work because it would be set only after the button is pressed in the popup.
+                        // By that time, the switch block has long been finished.
+                        //
+                        // Only working solution found so far is to perform follow-up actions by a timer.
                         leaveTimer.start()
                     })
                 }

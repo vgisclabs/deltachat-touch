@@ -91,10 +91,8 @@ Page {
             iconSource: "qrc:///assets/suru-icons/view-grid-symbolic.svg"
             text: i18n.tr("Scan QR Code")
             onClicked: {
-                // Very ugly hack, see Main.qml for details
-                root.openScanQrPageOnBottomEdgeCollapse()
-                extraStack.pop()
-                bottomEdge.collapse()
+                // TODO: QR codes in dieser Seite behandeln und nur Kontakte akzeptieren?
+                extraStack.push(Qt.resolvedUrl("QrScanner.qml"))
             }
         }
 

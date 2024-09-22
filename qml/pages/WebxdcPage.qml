@@ -106,7 +106,7 @@ Page {
                       "confirmButtonPositive": true })       
                 popup.confirmed.connect(function() {
                     extraStack.clear()
-                    DeltaHandler.continueQrCodeAction(true)
+                    DeltaHandler.continueQrCodeAction()
                 })
                 break;
                 
@@ -119,7 +119,7 @@ Page {
                       "confirmButtonPositive": true  })
                 popup9.confirmed.connect(function() {
                     extraStack.clear()
-                    DeltaHandler.continueQrCodeAction(true)
+                    DeltaHandler.continueQrCodeAction()
                 })
                 break;
 

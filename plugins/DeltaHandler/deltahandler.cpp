@@ -2449,6 +2449,18 @@ QString DeltaHandler::getTempContextConfig(QString key)
 
 void DeltaHandler::setTempContextConfig(QString key, QString val)
 {
+    if ("selfavatar" == key) {
+        QString tempQString = val;
+        if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
+            val.remove(0, 7);
+        }
+
+        tempQString = val;
+        if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
+            val.remove(0, 4);
+        }
+    }
+
     QString origVal = getTempContextConfig(key);
     if (origVal == val) {
 
@@ -2705,6 +2717,7 @@ void DeltaHandler::imexBackupImportProgressReceiver(int perMill)
         if (m_networkingIsStarted) {
             stop_io();
         }
+
         currentContext = tempContext;
         tempContext = nullptr;
         contextSetupTasks();
@@ -3971,7 +3984,7 @@ void DeltaHandler::prepareContactsmodelForGroupMemberAddition()
 }
 
 
-void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
+void DeltaHandler::continueQrCodeAction()
 {
     uint32_t chatID {0};
 
@@ -4008,7 +4021,7 @@ void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
         case DT_QR_ACCOUNT:
             prepareTempContextConfig();
             if (1 == dc_set_config_from_qr(tempContext, m_qrTempText.toUtf8().constData())) {
-                emit finishedSetConfigFromQr(true, calledAfterUrlReceived);
+                emit finishedSetConfigFromQr(true);
             } else {
                 // dc_set_config_from_qr() exited with an error
                 // TODO: what now? should the account that was created
@@ -4016,12 +4029,12 @@ void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
                 // it will stay. See also the comment in QrShowScan.qml:
                 // If dc_set_config_from_qr() succeeds, but login fails, it's
                 // the same.
-                emit finishedSetConfigFromQr(false, calledAfterUrlReceived);
+                emit finishedSetConfigFromQr(false);
             }
             break;
         case DT_QR_BACKUP: // fallthrough
         case DT_QR_BACKUP2:
-            prepareQrBackupImport(calledAfterUrlReceived);
+            startQrBackupImport();
             break;
         case DT_QR_WEBRTC_INSTANCE:
             // TODO not implemented yet
@@ -4058,7 +4071,7 @@ void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
         case DT_QR_LOGIN:
             prepareTempContextConfig();
             if (1 == dc_set_config_from_qr(tempContext, m_qrTempText.toUtf8().constData())) {
-                emit finishedSetConfigFromQr(true, calledAfterUrlReceived);
+                emit finishedSetConfigFromQr(true);
             } else {
                 // dc_set_config_from_qr() exited with an error
                 // TODO: what now? should the account that was created
@@ -4066,7 +4079,7 @@ void DeltaHandler::continueQrCodeAction(bool calledAfterUrlReceived)
                 // it will stay. See also the comment in QrShowScan.qml:
                 // If dc_set_config_from_qr() succeeds, but login fails, it's
                 // the same.
-                emit finishedSetConfigFromQr(false, calledAfterUrlReceived);
+                emit finishedSetConfigFromQr(false);
             }
             break;
         default:
@@ -4254,10 +4267,10 @@ int DeltaHandler::evaluateQrCode(QString clipboardData)
 }
 
 
-void DeltaHandler::prepareQrBackupImport(bool calledAfterUrlReceived)
+void DeltaHandler::startQrBackupImport()
 {
     if (tempContext) {
-        qDebug() << "DeltaHandler::prepareQrBackupImport: tempContext is unexpectedly set, will now be unref'd";
+        qDebug() << "DeltaHandler::startQrBackupImport: tempContext is unexpectedly set, will now be unref'd";
         dc_context_unref(tempContext);
         tempContext = nullptr;
     }
@@ -4266,15 +4279,13 @@ void DeltaHandler::prepareQrBackupImport(bool calledAfterUrlReceived)
 
     if (m_encryptedDatabase) {
         if (m_databasePassphrase == "") {
-            qDebug() << "DeltaHandler::prepareQrBackupImport(): ERROR: Plaintext key for database encryption is not present, cannot create account.";
+            qDebug() << "DeltaHandler::startQrBackupImport(): ERROR: Plaintext key for database encryption is not present, cannot create account.";
             return;
         }
 
         accID = dc_accounts_add_closed_account(allAccounts);
         if (0 == accID) {
-            qDebug() << "DeltaHandler::prepareQrBackupImport: Could not create new account.";
-            // TODO: add boolean parameter to readyForQrBackupImport(), emit the signal
-            // here with false and handle it accordingly in the GUI?
+            qDebug() << "DeltaHandler::startQrBackupImport: Could not create new account.";
             return;
         }
         tempContext = dc_accounts_get_account(allAccounts, accID);
@@ -4283,28 +4294,20 @@ void DeltaHandler::prepareQrBackupImport(bool calledAfterUrlReceived)
     } else {
         accID = dc_accounts_add_account(allAccounts);
         if (0 == accID) {
-            qDebug() << "DeltaHandler::prepareQrBackupImport: Could not create new account.";
-            // TODO: add boolean parameter to readyForQrBackupImport(), emit the signal
-            // here with false and handle it accordingly in the GUI?
+            qDebug() << "DeltaHandler::startQrBackupImport: Could not create new account.";
             return;
         }
         tempContext = dc_accounts_get_account(allAccounts, accID);
     }
-    
-    emit readyForQrBackupImport(calledAfterUrlReceived);
-}
-
-
-void DeltaHandler::startQrBackupImport()
-{
+ 
     // imexProgress may be connected to imexBackupExportProgressReceiver or imexBackupProviderProgressReceiver
     // disconnect it. Also disconnect it from imexBackupImportProgressReceiver, too, to avoid being
     // connected twice.
     //
     // TODO check return values?
-    bool disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
-    disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
-    disconnectSuccess = disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupExportProgressReceiver(int)));
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupProviderProgressReceiver(int)));
+    disconnect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
  
     // ... and connect it to imexBackupImportProgressReceiver
     connect(eventThread, SIGNAL(imexProgress(int)), this, SLOT(imexBackupImportProgressReceiver(int)));
@@ -4316,7 +4319,7 @@ void DeltaHandler::startQrBackupImport()
     // Construct the request string:
     // first the parameter part
     QString paramString;
-    paramString.setNum(dc_get_id(tempContext));
+    paramString.setNum(accID);
 
     paramString.append(", \"");
     // need to escape '"' for sending it as json parameter
@@ -4331,14 +4334,29 @@ void DeltaHandler::startQrBackupImport()
 }
 
 
-void DeltaHandler::cancelQrImport()
-{
-    dc_stop_ongoing_process(tempContext);
-    // TODO: check whether this is enough - this would be
-    // the case if an imex progress event will be sent with
-    // progress = 0, then imexBackupImportProgressReceiver will
-    // take care of unreffing tempContext and deleting the account.
-    // Otherwise, this would have to be done here.
+void DeltaHandler::cancelQrImport() {
+    if (tempContext) {
+        // TODO why does the call to dc_stop_ongoing_process() not suffice/work if
+        // the app cannot find the source of the backup? In this case, it just
+        // triggers an error: "src/context.rs:698: No ongoing process to stop." but
+        // not the emission of imexProgress with 0 as parameter.
+        dc_stop_ongoing_process(tempContext);
+
+        // As described above, dc_stop_ongoing_process() might not trigger
+        // an imexProgress signal with 0 as parameter, so the newly created, but
+        // now unused and unconfigured account might not be removed, so 
+        // it's done here as well. Even if dc_stop_ongoing_process() will trigger
+        // an imexProgress with 0 as parameter, imexBackupImportProgressReceiver()
+        // will only do something if tempContext is not NULL as well.
+        int tempAccID = dc_get_id(tempContext);
+        dc_context_unref(tempContext);
+        tempContext = nullptr;
+        qDebug() << "DeltaHandler::cancelQrImport(): Now removing account with ID " << tempAccID;
+        dc_accounts_remove_account(allAccounts, tempAccID);
+    }
+
+    m_networkingIsAllowed = true;
+    emit networkingIsAllowedChanged();
 }
 
 

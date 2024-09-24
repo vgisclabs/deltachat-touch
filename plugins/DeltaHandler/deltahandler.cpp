@@ -45,6 +45,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     m_onUbuntuTouch = false;
     m_isDesktopMode = false;
     m_openOskViaDbus = false;
+    m_stopThreads = false;
 
 
     QProcessEnvironment procenv = QProcessEnvironment::systemEnvironment();
@@ -194,7 +195,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     }
 
     // will be started later
-    eventThread = new EmitterThread(allAccounts);
+    eventThread = new EmitterThread(allAccounts, &m_stopThreads);
 
     m_bus = QDBusConnection::connectToBus(QDBusConnection::SessionBus, "DeltaTouch");
 
@@ -265,7 +266,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
     m_jsonrpcInstance = dc_jsonrpc_init(allAccounts);
 
-    m_jsonrpcResponseThread = new JsonrpcResponseThread(m_jsonrpcInstance);
+    m_jsonrpcResponseThread = new JsonrpcResponseThread(m_jsonrpcInstance, &m_stopThreads);
     m_jsonrpcResponseThread->start();
 
 
@@ -483,40 +484,6 @@ DeltaHandler::DeltaHandler(QObject* parent)
 
 DeltaHandler::~DeltaHandler()
 {
-    qDebug() << "entering DeltaHandler::~DeltaHandler()";
-
-    if (currentContext) {
-        dc_context_unref(currentContext);
-    }
-
-    if (tempContext) {
-        dc_context_unref(tempContext);
-    }
-
-    if (allAccounts) {
-        dc_accounts_unref(allAccounts);
-    }
-
-    delete eventThread;
-    delete m_accountsmodel;
-    delete m_chatmodel;
-    delete m_contactsmodel;
-
-    if (m_blockedcontactsmodel) {
-        delete m_blockedcontactsmodel;
-    }
-
-    if (m_groupmembermodel) {
-        delete m_groupmembermodel;
-    }
-
-    if (m_audioRecorder) {
-        delete m_audioRecorder;
-    }
-
-    if (m_qr) {
-        quirc_destroy(m_qr);
-    }
 }
 
 
@@ -635,8 +602,8 @@ QString DeltaHandler::sendJsonrpcBlockingCall(QString request) const
 
     tempText = dc_jsonrpc_blocking_call(m_jsonrpcInstance, request.toLocal8Bit().constData());
     retval = tempText;
-
     dc_str_unref(tempText);
+
     return retval;
 }
 
@@ -5449,10 +5416,75 @@ QString DeltaHandler::copyToCache(QString fromFilePath)
 
 void DeltaHandler::shutdownTasks()
 {
-    dc_accounts_stop_io(allAccounts);
     m_chatmodel->saveDraft();
+    disconnect(m_signalQueueTimer, SIGNAL(timeout()), this, SLOT(processSignalQueueTimerTimeout()));
+
     QDir cachepath(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     cachepath.removeRecursively();
+
+    m_stopThreads = true;
+    dc_accounts_stop_io(allAccounts);
+
+    // to unblock the loop in m_jsonrpcResponseThread
+    sendJsonrpcRequest(constructJsonrpcRequestString("get_system_info", ""));
+
+    // Info:
+    // - allAccounts will be unref'd in eventThread
+    // - m_jsonrpcInstance will be unref'd in m_jsonrpcResponseThread
+    
+    if (currentContext) {
+        dc_context_unref(currentContext);
+        currentContext = nullptr;
+    }
+
+    if (tempContext) {
+        dc_context_unref(tempContext);
+        tempContext = nullptr;
+    }
+
+    if (m_chatmodel) {
+        delete m_chatmodel;
+        m_chatmodel = nullptr;
+    }
+
+    if (m_accountsmodel) {
+        delete m_accountsmodel;
+        m_accountsmodel = nullptr;
+    }
+
+    if (m_blockedcontactsmodel) {
+        delete m_blockedcontactsmodel;
+        m_blockedcontactsmodel = nullptr;
+    }
+
+    if (m_contactsmodel) {
+        delete m_contactsmodel;
+        m_contactsmodel = nullptr;
+    }
+
+    if (m_groupmembermodel) {
+        delete m_groupmembermodel;
+        m_groupmembermodel = nullptr;
+    }
+
+    if (m_audioRecorder) {
+        delete m_audioRecorder;
+        m_audioRecorder = nullptr;
+    }
+
+    if (m_qr) {
+        quirc_destroy(m_qr);
+    }
+
+    if (!(m_jsonrpcResponseThread->wait(1000))) {
+        qDebug() << "DeltaHandler::shutdownTasks(): waiting for m_jsonrpcResponseThread timed out.";
+    }
+
+    if (eventThread->wait(6000)) {
+        qDebug() << "DeltaHandler::shutdownTasks(): Exiting normally, bye.";
+    } else {
+        qDebug() << "DeltaHandler::shutdownTasks(): waiting for eventThread timed out.";
+    }
 }
 
 

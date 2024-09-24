@@ -18,10 +18,10 @@
 
 #include "jsonrpcresponsethread.h"
 
-JsonrpcResponseThread::JsonrpcResponseThread(dc_jsonrpc_instance_t* jsoninst)
+JsonrpcResponseThread::JsonrpcResponseThread(dc_jsonrpc_instance_t* jsoninst, std::atomic<bool>* _stopLoop)
 {
     m_jsonrpcInstance = jsoninst;
-
+    m_stopLoop = _stopLoop;
 }
 
 void JsonrpcResponseThread::run()
@@ -30,12 +30,17 @@ void JsonrpcResponseThread::run()
     if (m_jsonrpcInstance) {
         char* response;
         while ((response = dc_jsonrpc_next_response(m_jsonrpcInstance)) != NULL) {
+            if (*m_stopLoop) {
+                dc_str_unref(response);
+                break;
+            }
             QString stringResponse = response;
-            dc_str_unref(response);
             
             emit newJsonrpcResponse(stringResponse);
-
         } // while
+ 
+        qDebug() << "JsonrpcResponseThread::run(): Loop terminated";
+        dc_jsonrpc_unref(m_jsonrpcInstance);
     } else {
          qDebug() << "JsonrpcResponseThread::run(): Fatal error: No dc_jsonrpc_instance_t defined, could not start response loop.";
     }

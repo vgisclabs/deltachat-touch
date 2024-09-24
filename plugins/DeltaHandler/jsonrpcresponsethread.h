@@ -28,7 +28,7 @@ class JsonrpcResponseThread : public QThread {
     Q_OBJECT
 
     public:
-        JsonrpcResponseThread(dc_jsonrpc_instance_t* jsoninst);
+        JsonrpcResponseThread(dc_jsonrpc_instance_t* jsoninst, std::atomic<bool>* _stopLoop);
 
         void run();
 
@@ -37,6 +37,7 @@ class JsonrpcResponseThread : public QThread {
 
     private:
         dc_jsonrpc_instance_t* m_jsonrpcInstance;
+        std::atomic<bool>* m_stopLoop;
 };
 
 #endif

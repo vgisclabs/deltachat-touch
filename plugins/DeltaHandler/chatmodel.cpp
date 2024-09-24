@@ -48,6 +48,14 @@ ChatModel::~ChatModel()
     if (currentSearchMsgArray) {
         dc_array_unref(currentSearchMsgArray);
     }
+    
+    if (currentMessageDraft) {
+        dc_msg_unref(currentMessageDraft);
+    }
+
+    if (m_chatlistmodel) {
+        delete m_chatlistmodel;
+    }
 }
 
 

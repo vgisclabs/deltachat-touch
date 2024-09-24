@@ -22,13 +22,14 @@
 #include <QtCore>
 #include <QtGui>
 #include <string>
+#include <atomic>
 #include "deltachat.h"
 
 class EmitterThread : public QThread {
     Q_OBJECT
 
     public:
-        EmitterThread(dc_accounts_t* accs);
+        EmitterThread(dc_accounts_t* accs, std::atomic<bool>* stopTheLoop);
 
         void run();
 
@@ -51,7 +52,8 @@ class EmitterThread : public QThread {
             void webxdcStatusUpdate(uint32_t accID, int msgID);
 
     private:
-        dc_accounts_t* accounts;
+        dc_accounts_t* m_accounts;
+        std::atomic<bool>* m_stopLoop;
 };
 
 #endif

@@ -18,18 +18,28 @@
 
 #include "emitterthread.h"
 
-EmitterThread::EmitterThread(dc_accounts_t* accs)
+EmitterThread::EmitterThread(dc_accounts_t* accs, std::atomic<bool>* _stopLoop)
 {
-    accounts = accs;
+    m_accounts = accs;
+    m_stopLoop = _stopLoop;
 }
 
 void EmitterThread::run()
 {
 
-    if (accounts) {
-        dc_event_emitter_t* emitter = dc_accounts_get_event_emitter(accounts);
+    if (m_accounts) {
+        dc_event_emitter_t* emitter = dc_accounts_get_event_emitter(m_accounts);
         dc_event_t* event;
         while ((event = dc_get_next_event(emitter)) != NULL) {
+            if (*m_stopLoop) {
+                if (m_accounts) {
+                    dc_accounts_unref(m_accounts);
+                    m_accounts = nullptr;
+                }
+                dc_event_unref(event);
+                continue;
+            }
+
             int eventType {0};
             char* eventData2Str {nullptr};
             QString data2info;
@@ -257,6 +267,8 @@ void EmitterThread::run()
 
             dc_event_unref(event);
         } // while
+
+        qInfo().nospace() << "Emitter: Loop terminated";
 
         dc_event_emitter_unref(emitter);
     }

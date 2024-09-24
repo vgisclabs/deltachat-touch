@@ -28,6 +28,7 @@
 #include <array>
 #include <vector>
 #include <queue>
+#include <atomic>
 
 #include "chatmodel.h"
 #include "accountsmodel.h"
@@ -534,6 +535,7 @@ public:
     bool chatIsContactRequest();
 
     void processReceivedUrl(QString myUrl);
+    std::atomic<bool> m_stopThreads;
 
 signals:
     // TODO the models never change, they communicate

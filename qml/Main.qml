@@ -939,6 +939,10 @@ MainView {
             console.log('Qt.application signal stateChanged, state is now: ' + currState)
         }
         onAboutToQuit: {
+            extraStack.clear()
+            imageStack.clear()
+            layout.removePages(layout.primaryPage)
+            view.model = null
             DeltaHandler.shutdownTasks()
         }
     }

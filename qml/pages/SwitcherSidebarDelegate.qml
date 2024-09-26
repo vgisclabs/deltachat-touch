@@ -27,9 +27,10 @@ Rectangle {
     id: switcherDelegRect
 
     property int switcherMsgCount: model.freshMsgCount + (root.notifyContactRequests ? model.chatRequestCount : 0)
-    property bool mouseHovers: false
+    property bool mouseHovers: hoverMouse.containsMouse
 
-    color: ((mouseHovers && model.isConfigured) || model.isCurrentActiveAccount) ? (root.darkmode ? "#a0a0a0" : "#f0f0f0") : sidebarColor
+    //color: (model.isCurrentActiveAccount) ? theme.palette.highlighted.focus : (model.isConfigured && mouseHovers ? theme.palette.focused.background : "transparent")
+    color: (model.isCurrentActiveAccount) ? root.selfMessageSeenBackgroundColor : (model.isConfigured && mouseHovers ? root.selfMessageSentBackgroundColor : "transparent")
 
     UbuntuShape {
         id: switcherProfilePic
@@ -60,14 +61,6 @@ Rectangle {
 
         sourceFillMode: UbuntuShape.PreserveAspectCrop
         aspect: UbuntuShape.Flat
-
-        UbuntuShape {
-            // to grey out non-active accounts
-            id: opacityRect
-            anchors.fill: parent
-            color: "black"
-            opacity: (!model.isConfigured || mouseHovers || model.isCurrentActiveAccount) ? 0 : 0.4
-        }
     }
 
 
@@ -130,10 +123,9 @@ Rectangle {
     }
 
     MouseArea {
+        id: hoverMouse
         anchors.fill: parent
         hoverEnabled: true
-        onEntered: switcherDelegRect.mouseHovers = true
-        onExited: switcherDelegRect.mouseHovers = false
         onClicked: {
             if (model.isConfigured) {
                 let accID = DeltaHandler.accountsmodel.getIdOfAccount(index)

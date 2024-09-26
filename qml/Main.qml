@@ -46,6 +46,7 @@ MainView {
     property string oldVersion: "unknown"
 
     property bool chatViewIsOpen: false
+    property int activeChatId: -1
 
     // used for the content of the URL dispatcher
     property string urlstring
@@ -849,6 +850,7 @@ MainView {
                 layout.addPageToNextColumn(layout.primaryPage, Qt.resolvedUrl('pages/ChatView.qml'), { "pageAccID": accID, "pageChatID": chatID })
                 chatViewIsOpen = true
             }
+            root.activeChatId = chatID
         }
 
         onCloseChatViewRequest: {
@@ -990,7 +992,7 @@ MainView {
         }
 
         visible: root.showAccSwitchSidebar && (DeltaHandler.numberOfAccounts() > 1)
-        color:  root.darkmode ? "#505050" : "#a0a0a0" //theme.palette.normal.foreground
+        color:  theme.palette.highlighted.background
 
         ListView {
             id: switcherSidebarView
@@ -1526,6 +1528,8 @@ MainView {
                     property var previewIconSource
                     property bool previewStatusActive
                     property string avatarInitial
+                    property bool mouseHovers: hoverMouse.containsMouse
+                    property int thisChatID: (JSON.parse(model.basicChatInfo)).result.id
 
                     onChatlistEntryChanged: {
                         isArchiveLink = chatlistEntry.kind === "ArchiveLink"
@@ -1559,10 +1563,10 @@ MainView {
                         switch (tempstate) {
                             case DeltaHandler.StatePending:
                                 if (root.darkmode) {
-                                    previewIconSource = Qt.resolvedUrl('../assets/dotted_circle_white.svg');
+                                    previewIconSource = Qt.resolvedUrl('../assets/dotted_circle.svg');
                                     break;
                                 } else {
-                                    previewIconSource = Qt.resolvedUrl('../assets/dotted_circle_black.svg');
+                                    previewIconSource = Qt.resolvedUrl('../assets/dotted_circle.svg');
                                     break;
                                 }
 
@@ -1600,6 +1604,10 @@ MainView {
                     // shall specify the height when Using ListItemLayout inside ListItem
                     height: chatlistLayout.height + (divider.visible ? divider.height : 0)
                     divider.visible: true
+                    color: (root.activeChatId === thisChatID && chatViewIsOpen) ? root.selfMessageSeenBackgroundColor : (mouseHovers ? root.selfMessageSentBackgroundColor : "transparent")
+                    //color: (root.activeChatId === thisChatID && chatViewIsOpen) ? theme.palette.normal.focus : (mouseHovers ? theme.palette.focused.background : "transparent")
+
+
                     onClicked: {
                         if (!root.chatOpenAlreadyClicked) {
                             if (!root.hasTwoColumns) {
@@ -1608,6 +1616,22 @@ MainView {
                             DeltaHandler.selectChatByIndex(index)
                             DeltaHandler.openChat()
                         } 
+                    }
+
+                    MouseArea {
+                        id: hoverMouse
+
+                        // For some reason, on Ubuntu Touch, the first time the app is touched,
+                        // containsMouse will become true for the touched ListItem and never
+                        // become false again (test it by switching to the app and, e.g., begin
+                        // sliding one list item in the chatlist, it will then turn its color
+                        // to the hover color). As a workaround, on UT, changing the background
+                        // on hovering is only enabled when showAccSwitchSidebar is true.
+                        // TODO: find reason
+                        enabled: !root.onUbuntuTouch || root.showAccSwitchSidebar
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        acceptedButtons: Qt.NoButton
                     }
 
                     leadingActions: isArchiveLink ? null : leadingChatAction
@@ -1621,9 +1645,12 @@ MainView {
                         title.horizontalAlignment: Text.AlignLeft
                         title.font.bold: true
                         title.font.pixelSize: scaledFontSizeInPixels
+                        title.color: (thisChatID === root.activeChatId && chatViewIsOpen) ? root.selfMessageSeenTextColor : (mouseHovers ? root.selfMessageSentTextColor : theme.palette.normal.backgroundText)
+                        //title.color: (thisChatID === root.activeChatId && chatViewIsOpen) ? theme.palette.normal.focusText : (mouseHovers ? theme.palette.focused.backgroundText : theme.palette.normal.backgroundText)
                         subtitle.text: isArchiveLink ? null : ((chatlistEntry.summaryText1 === "" ? "" : chatlistEntry.summaryText1 + ": ") + chatlistEntry.summaryText2)
                         subtitle.horizontalAlignment: Text.AlignLeft
                         subtitle.font.pixelSize: scaledFontSizeInPixelsSmaller
+                        subtitle.color: title.color
 
                         // need to explicitly set the height because otherwise,
                         // the height will increase when switching
@@ -1663,7 +1690,7 @@ MainView {
                             SlotsLayout.position: SlotsLayout.Trailing
                             width: (((verifiedIcon.visible ? verifiedIcon.width + units.gu(0.5) : 0) + (mutedIcon.visible ? mutedIcon.width + units.gu(0.5) : 0) + (pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) > contactRequestLabel.contentWidth ? ((verifiedIcon.visible ? verifiedIcon.width + units.gu(0.5) : 0) + (mutedIcon.visible ? mutedIcon.width + units.gu(0.5) : 0) + (pinnedIcon.visible ? pinnedIcon.width + units.gu(0.5) : 0) + timestamp.contentWidth) : contactRequestLabel.contentWidth) + units.gu(1)
                             height: units.gu(3) + units.gu(scaleLevel)
-                            color: chatListItem.color 
+                            color: "transparent"
                             visible: !isArchiveLink
 
                             Icon {
@@ -1691,7 +1718,7 @@ MainView {
                                 }
                                 //name: "audio-speakers-muted-symbolic"
                                 source: "qrc:///assets/suru-icons/audio-speakers-muted-symbolic.svg"
-                                color: root.darkmode ? "white" : "black"
+                                color: chatlistLayout.title.color
                                 visible: chatlistEntry.isMuted
 
                             }
@@ -1706,7 +1733,7 @@ MainView {
                                 }
                                 //name: "pinned"
                                 source: "qrc:///assets/suru-icons/pinned.svg"
-                                color: root.darkmode ? "white" : "black"
+                                color: chatlistLayout.title.color
                                 visible: chatlistEntry.isPinned
 
                             }
@@ -1721,12 +1748,14 @@ MainView {
                                     topMargin: units.gu(0.2)
                                 }
                                 fontSize: root.scaledFontSizeSmaller
+                                color: chatlistLayout.title.color
                             }
 
                             Component {
                                 id: previewIcon
                                 Icon {
                                     source: previewIconSource
+                                    color: chatlistLayout.title.color
                                 }
                             }
 

@@ -4457,6 +4457,35 @@ void DeltaHandler::loadQrImage(QString filepath)
 }
 
 
+bool DeltaHandler::qrOverwritesDraft()
+{
+    if (m_qrTempText == "") {
+        return false;
+    }
+
+    if (m_qrTempState != DT_QR_ADDR) {
+        return false;
+    }
+    // => QR is DT_QR_ADDR
+
+    // m_qrTempLotTextOne contains the draft text
+    if (m_qrTempLotTextOne == "") {
+        return false;
+    }
+    // => QR code / URL contains a draft text
+
+    uint32_t chatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
+
+    if (0 != chatID) {
+        return (chatIdHasDraft(chatID));
+    } else {
+        // TODO this is actually an error
+        qDebug() << "DeltaHandler::qrOverwritesDraft(): ERROR: dc_create_chat_by_contact_id returned 0";
+        return false;
+    }
+}
+
+
 void DeltaHandler::deleteQrDecoder()
 {
     if (m_qr) {

@@ -402,9 +402,22 @@ MainView {
                         chatlistPage,
                         { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()), confirmButtonPositive: true })
                     popup17.confirmed.connect(function() {
-                        extraStack.clear()
-                        imageStack.clear()
-                        DeltaHandler.continueQrCodeAction()
+                        if (DeltaHandler.qrOverwritesDraft()) {
+                            let popup18 = PopupUtils.open(
+                                Qt.resolvedUrl('pages/ConfirmDialog.qml'),
+                                chatlistPage,
+                                { "dialogText": i18n.tr("%1 already has a draft message, do you want to replace it?").arg(DeltaHandler.getQrContactEmail()),
+                                  "confirmButtonPositive": true })
+                            popup18.confirmed.connect(function() {
+                                extraStack.clear()
+                                imageStack.clear()
+                                DeltaHandler.continueQrCodeAction()
+                            })
+                        } else {
+                            extraStack.clear()
+                            imageStack.clear()
+                            DeltaHandler.continueQrCodeAction()
+                        }
                     })
                     // unset urlstring if only one account
                     urlstring = ""
@@ -806,7 +819,18 @@ MainView {
                     case DeltaHandler.DT_QR_ASK_VERIFYCONTACT: // fallthrough
                     case DeltaHandler.DT_QR_ASK_VERIFYGROUP: // fallthrough
                     case DeltaHandler.DT_QR_ADDR:
-                        DeltaHandler.continueQrCodeAction()
+                        if (DeltaHandler.qrOverwritesDraft()) {
+                            let popup19 = PopupUtils.open(
+                                Qt.resolvedUrl('pages/ConfirmDialog.qml'),
+                                chatlistPage,
+                                { "dialogText": i18n.tr("%1 already has a draft message, do you want to replace it?").arg(DeltaHandler.getQrContactEmail()),
+                                  "confirmButtonPositive": true })
+                            popup19.confirmed.connect(function() {
+                                DeltaHandler.continueQrCodeAction()
+                            })
+                        } else {
+                            DeltaHandler.continueQrCodeAction()
+                        }
                         break;
                     default:
                         console.log("Main.qml, onAccountForUrlProcessingSelected: Warning: switch reached default case, url type is not covered by this function")

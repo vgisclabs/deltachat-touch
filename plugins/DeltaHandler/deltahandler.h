@@ -469,6 +469,7 @@ public:
     Q_INVOKABLE bool prepareQrDecoder();
     Q_INVOKABLE void evaluateQrImage(QImage image, bool emitFailureSignal = false);
     Q_INVOKABLE void loadQrImage(QString filepath);
+    Q_INVOKABLE bool qrOverwritesDraft();
     /* ============ End QR code related stuff ================= */
 
     /* ========================================================

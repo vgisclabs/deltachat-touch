@@ -103,10 +103,22 @@ Page {
                     Qt.resolvedUrl('ConfirmDialog.qml'),
                     webxdcPage,
                     { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()),
-                      "confirmButtonPositive": true })       
+                      "confirmButtonPositive": true })
                 popup.confirmed.connect(function() {
-                    extraStack.clear()
-                    DeltaHandler.continueQrCodeAction()
+                    if (DeltaHandler.qrOverwritesDraft()) {
+                        let popup2 = PopupUtils.open(
+                            Qt.resolvedUrl('ConfirmDialog.qml'),
+                            webxdcPage,
+                            { "dialogText": i18n.tr("%1 already has a draft message, do you want to replace it?").arg(DeltaHandler.getQrContactEmail()),
+                              "confirmButtonPositive": true })
+                        popup2.confirmed.connect(function() {
+                            extraStack.clear()
+                            DeltaHandler.continueQrCodeAction()
+                        })
+                    } else {
+                        extraStack.clear()
+                        DeltaHandler.continueQrCodeAction()
+                    }
                 })
                 break;
                 

@@ -4950,7 +4950,6 @@ void DeltaHandler::openOskViaDbus()
 
 void DeltaHandler::internalOpenOskViaDbus()
 {
-    qDebug() << "DeltaHandler::openOskViaDbus()";
     bool param1 = true;
     QDBusMessage message = QDBusMessage::createMethodCall("sm.puri.OSK0", "/sm/puri/OSK0", "sm.puri.OSK0", "SetVisible");
     message << param1;
@@ -4960,7 +4959,6 @@ void DeltaHandler::internalOpenOskViaDbus()
 
 void DeltaHandler::closeOskViaDbus()
 {
-    qDebug() << "DeltaHandler::close()";
     bool param1 = false;
     QDBusMessage message = QDBusMessage::createMethodCall("sm.puri.OSK0", "/sm/puri/OSK0", "sm.puri.OSK0", "SetVisible");
     message << param1;

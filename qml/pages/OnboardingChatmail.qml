@@ -174,7 +174,7 @@ Page {
     }
 
     header: PageHeader {
-        id: profileHeader
+        id: header
         title: i18n.tr("Your Profile")
 
         leadingActionBar.actions: [
@@ -202,9 +202,16 @@ Page {
 
     Flickable {
         id: flickable
-        anchors.fill: parent
-        anchors.topMargin: (chatmailPage.header.flickable ? 0 : chatmailPage.header.height) + units.gu(2)
-        anchors.bottomMargin: units.gu(2)
+
+        anchors {
+            top: header.bottom
+            topMargin: units.gu(2)
+            bottom: parent.bottom
+            bottomMargin: units.gu(2)
+            left: parent.left
+            right: parent.right
+        }
+
         contentHeight: flickColumn.height
 
         Column {
@@ -290,6 +297,8 @@ Page {
                     // it doesn't work because flickable.height is still the old height
                     // without the change caused by the keyboard. Waiting for 200 ms
                     // via flickTimer and then changing the flickable Y position works.
+                    // Only do this on mobile where an OSK is visible (i.e., on UT, only
+                    // if the sidebar is not visible. On non-UT, if oskViaDbus is true).
                     // TODO: Is there a signal when the keyboard appears? This would be
                     // much cleaner than using a timer.
                     //
@@ -299,7 +308,7 @@ Page {
                         if (focus) {
                             pleaseEnterNameLabel.visible = false
 
-                            if (root.onUbuntuTouch) {
+                            if (root.onUbuntuTouch && !root.showAccSwitchSidebar) {
                                 flickTimer.start()
                             }
                         }
@@ -402,7 +411,23 @@ Page {
             interval: 200
             repeat: false
             triggeredOnStart: false
-            onTriggered: flickable.contentY = (flickable.contentHeight - flickable.height) / 2
+            onTriggered: {
+                // Calculate Y value of the TextField that the user is about
+                // to enter something. Y value means the number of pixels
+                // from the top of the Flickable content to the bottom of the TextField.
+                let fieldBottomY = profilePic.height + usernameLabel.height + usernameField.height + units.gu(1)
+
+                // Check if the TextField is shown on the screen. This is the
+                // case if the height of the flickable is not less than
+                // the Y value of the TextField minus flickable.contentY (contentY
+                // is the offset to which the flickable has been flicked up, i.e.,
+                // the number of pixels at the top of the flickable that are not
+                // visible at the moment).
+                if (flickable.height < fieldBottomY - flickable.contentY) {
+                    // this will flick up so the TextField is right at the bottom
+                    flickable.contentY = fieldBottomY - flickable.height
+                }
+            }
         }
     } // Flickable
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  Lothar Ketterer
+ * Copyright (C) 2022-2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -39,9 +39,6 @@ Page {
     property string profileImagePath: DeltaHandler.getOtherProfilePic(contactID)
     property string contactStatus: DeltaHandler.getOtherStatus(contactID)
 
-    Component.onCompleted: {
-    }
-
     header: PageHeader {
         id: profileHeader
         title: i18n.tr("View Profile")
@@ -60,9 +57,13 @@ Page {
 
     Flickable {
         id: flickable
-        anchors.fill: parent
-        anchors.topMargin: (profilePage.header.flickable ? 0 : profilePage.header.height) + units.gu(2)
-        anchors.bottomMargin: units.gu(2)
+        anchors {
+            top: profileHeader.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+
         contentHeight: flickContent.childrenRect.height
 
         Item {
@@ -196,18 +197,19 @@ Page {
                 // it doesn't work because flickable.height is still the old height
                 // without the change caused by the keyboard. Waiting for 200 ms
                 // via flickTimer and then changing the flickable Y position works.
+                // Only do this on mobile where an OSK is visible (i.e., on UT, only
+                // if the sidebar is not visible. On non-UT, if oskViaDbus is true).
                 // TODO: Is there a signal when the keyboard appears? This would be
                 // much cleaner than using a timer.
-                onActiveFocusChanged: {
-                    if (activeFocus) {
+                onFocusChanged: {
+                    if (focus && root.onUbuntuTouch && !root.showAccSwitchSidebar) {
                         flickTimer.start()
                     }
-                }
 
-                onFocusChanged: {
                     if (root.oskViaDbus) {
                         if (focus) {
                             DeltaHandler.openOskViaDbus()
+                            flickTimer.start()
                         } else {
                             DeltaHandler.closeOskViaDbus()
                         }
@@ -350,7 +352,6 @@ Page {
                 }
                 visible: contactStatus != ""
                 text: i18n.tr("Signature Text")
-
             }
 
             Label {
@@ -365,16 +366,31 @@ Page {
                 visible: contactStatus != ""
                 wrapMode: Text.WordWrap
                 text: contactStatus
-
             }
         } // Item id: flickContent
-
-        Timer {
-            id: flickTimer
-            interval: 200
-            repeat: false
-            triggeredOnStart: false
-            onTriggered: flickable.contentY = flickable.contentHeight - flickable.height
-        }
     } // Flickable
+
+    Timer {
+        id: flickTimer
+        interval: 200
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            // Calculate Y value of the TextField that the user is about
+            // to enter something. Y value means the number of pixels
+            // from the top of the Flickable content to the bottom of the TextField.
+            let fieldBottomY = profilePic.height + editButtonShape.height + units.gu(6)
+
+            // Check if the TextField is shown on the screen. This is the
+            // case if the height of the flickable is not less than
+            // the Y value of the TextField minus flickable.contentY (contentY
+            // is the offset to which the flickable has been flicked up, i.e.,
+            // the number of pixels at the top of the flickable that are not
+            // visible at the moment).
+            if (flickable.height < fieldBottomY - flickable.contentY) {
+                // this will flick up so the TextField is right at the bottom
+                flickable.contentY = fieldBottomY - flickable.height
+            }
+        }
+    }
 } // Page id: profilePage

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  Lothar Ketterer
+ * Copyright (C) 2022-2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -105,173 +105,125 @@ Page {
 
     Flickable {
         id: flickable
-        anchors.fill: parent
-        anchors.topMargin: (profilePage.header.flickable ? 0 : profilePage.header.height) + units.gu(2)
-        anchors.bottomMargin: units.gu(2)
-        contentHeight: flickContent.childrenRect.height
 
-        Item {
-            id: flickContent
+        anchors {
+            top: profileHeader.bottom
+            topMargin: units.gu(2)
+            bottom: parent.bottom
+            bottomMargin: units.gu(2)
+            left: parent.left
+            leftMargin: units.gu(2)
+            right: parent.right
+            rightMargin: units.gu(2)
+        }
+
+        contentHeight: flickColumn.height
+
+        Column {
+            id: flickColumn
             width: parent.width
+            spacing: units.gu(1)
+
             Label {
                 id: profileAddrLabel
                 width: parent.width
                 anchors {
-                    top: parent.top
                     left: parent.left
-                    leftMargin: units.gu(2)
                 }
                 text: i18n.tr("Profile") + ": " + DeltaHandler.getCurrentEmail()
     //            fontSize: "large"
             }
 
-            LomiriShape {
-                id: profilePic
-                width: units.gu(15)
-                height: width
-                anchors {
-                    top: profileAddrLabel.bottom
-                    topMargin: units.gu(2)
-                    left: parent.left
-                    leftMargin: units.gu(4)
-                }
-                color: "grey"
-                source: Image {
-                    id: profilePicImage
-                    source: StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
-                }
-                sourceFillMode: LomiriShape.PreserveAspectCrop
+            Item {
+                id: spacerItem1
+                height: units.gu(0.1)
+                width: units.gu(1)
             }
-
 
             Rectangle {
-                // ugly hack to be able to position
-                // editImageShape with an offset of 
-                // just units.gu(1)
-                id: positionHelperEditImage
-                height: units.gu(2)
-                width: height
-                anchors {
-                    verticalCenter: profilePic.top
-                    horizontalCenter: profilePic.right
-                }
-                color: theme.palette.normal.background
-            }
+                height: profilePic.height
+                width: profilePic.width + units.gu(4)
+                anchors.left: parent.left
 
-            LomiriShape {
-                id: editImageShape
-                height: units.gu(4)
-                width: height
-                anchors {
-                    top: positionHelperEditImage.top
-                    right: positionHelperEditImage.right
-                }
-                //color: theme.palette.normal.background
-                color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                color: "transparent"
 
-                Icon {
-                    anchors.fill: parent
-                    //name: "edit"
-                    source: "qrc:///assets/suru-icons/edit.svg"
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        PopupUtils.open(componentProfilePicActions, editImageShape)
+                LomiriShape {
+                    id: profilePic
+                    width: units.gu(15)
+                    height: width
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        leftMargin: units.gu(2)
                     }
+                    color: "grey"
+                    source: Image {
+                        id: profilePicImage
+                        source: StandardPaths.locate(StandardPaths.AppConfigLocation, DeltaHandler.getCurrentProfilePic())
+                    }
+                    sourceFillMode: LomiriShape.PreserveAspectCrop
                 }
-            }
 
-            Component {
-                id: componentProfilePicActions
-                Popover {
-                    id: popoverProfilePicActions
-                    Column {
-                        id: containerLayout
-                        anchors {
-                            left: parent.left
-                            top: parent.top
-                            right: parent.right
-                        }
 
-                        ListItem {
-                            height: layout1.height
-                            // should be automatically be themed with something like
-                            // theme.palette.normal.overlay, but this
-                            // doesn't seem to work for Ambiance (and importing
-                            // Lomiri.Components.Themes 1.3 doesn't solve it). 
-                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-                            ListItemLayout {
-                                id: layout1
-                                title.text: i18n.tr("Select Profile Image")
-                            }
-                            
-                            onClicked: {
-                                PopupUtils.close(popoverProfilePicActions)
+                Rectangle {
+                    // ugly hack to be able to position
+                    // editImageShape with an offset of 
+                    // just units.gu(1)
+                    id: positionHelperEditImage
+                    height: units.gu(2)
+                    width: height
+                    anchors {
+                        verticalCenter: profilePic.top
+                        horizontalCenter: profilePic.right
+                    }
+                    color: theme.palette.normal.background
+                }
 
-                                if (root.onUbuntuTouch) {
-                                    DeltaHandler.newFileImportSignalHelper()
-                                    DeltaHandler.fileImportSignalHelper.fileImported.connect(profilePage.setProfilePic)
-                                    extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
-                                    // See comments in CreateOrEditGroup.qml
-                                    //let incubator = layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                LomiriShape {
+                    id: editImageShape
+                    height: units.gu(4)
+                    width: height
+                    anchors {
+                        top: positionHelperEditImage.top
+                        right: positionHelperEditImage.right
+                    }
+                    //color: theme.palette.normal.background
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
 
-                                    //if (incubator.status != Component.Ready) {
-                                    //    // have to wait for the object to be ready to connect to the signal,
-                                    //    // see documentation on AdaptivePageLayout and
-                                    //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
-                                    //    incubator.onStatusChanged = function(status) {
-                                    //        if (status == Component.Ready) {
-                                    //            incubator.object.fileSelected.connect(profilePage.setProfilePic)
-                                    //        }
-                                    //    }
-                                    //} else {
-                                    //    // object was directly ready
-                                    //    incubator.object.fileSelected.connect(profilePage.setProfilePic)
-                                    //}
-                                } else {
-                                    profilePage.openFileDialog()
-                                }
-                            }
-                        } // ListItem
+                    Icon {
+                        anchors.fill: parent
+                        //name: "edit"
+                        source: "qrc:///assets/suru-icons/edit.svg"
+                    }
 
-                        ListItem {
-                            height: layout2.height
-                            color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
-                            ListItemLayout {
-                                id: layout2
-                                title.text: i18n.tr("Delete Profile Image")
-                            }
-                            onClicked: {
-                                PopupUtils.close(popoverProfilePicActions)
-                                DeltaHandler.setProfileValue("selfavatar", "")
-                                profilePicImage.source = ""
-                            }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            PopupUtils.open(componentProfilePicActions, editImageShape)
                         }
                     }
-                } // Popover id: containerLayout
-            } // Component id: popoverChatPicActions
+                }
+            }
+
+            Item {
+                id: spacerItem2
+                height: units.gu(0.1)
+                width: units.gu(1)
+            }
 
             Label {
                 id: usernameLabel
                 anchors {
-                    top: profilePic.bottom
-                    topMargin: units.gu(3)
                     left: parent.left
-                    leftMargin: units.gu(2)
                 }
                 text: i18n.tr("Your Name")
             }
 
             TextField {
                 id: usernameField
-                width: parent.width - units.gu(4)
+                width: parent.width
                 anchors {
-                    top: usernameLabel.bottom
-                    topMargin: units.gu(1)
                     left: parent.left
-                    leftMargin: units.gu(2)
                 }
                 text: DeltaHandler.getCurrentUsername()
                 
@@ -283,18 +235,19 @@ Page {
                 // it doesn't work because flickable.height is still the old height
                 // without the change caused by the keyboard. Waiting for 200 ms
                 // via flickTimer and then changing the flickable Y position works.
+                // Only do this on mobile where an OSK is visible (i.e., on UT, only
+                // if the sidebar is not visible. On non-UT, if oskViaDbus is true).
                 // TODO: Is there a signal when the keyboard appears? This would be
                 // much cleaner than using a timer.
-                onActiveFocusChanged: {
-                    if (activeFocus) {
-                        flickTimer.start()
-                    }
-                }
-
                 onFocusChanged: {
+                    if (focus && root.onUbuntuTouch && !root.showAccSwitchSidebar) {
+                        flickTimerUsername.start()
+                    }
+
                     if (root.oskViaDbus) {
                         if (focus) {
                             DeltaHandler.openOskViaDbus()
+                            flickTimerUsername.start()
                         } else {
                             DeltaHandler.closeOskViaDbus()
                         }
@@ -302,46 +255,151 @@ Page {
                 }
             }
 
+            Item {
+                id: spacerItem3
+                height: units.gu(0.1)
+                width: units.gu(1)
+            }
+
             Label {
                 id: signatureLabel
                 anchors {
-                    top: usernameField.bottom
-                    topMargin: units.gu(3)
                     left: parent.left
-                    leftMargin: units.gu(2)
                 }
                 text: i18n.tr("Signature Text")
             }
     
             TextField {
                 id: signatureField
-                width: parent.width - units.gu(4)
+                width: parent.width
                 anchors {
-                    top: signatureLabel.bottom
-                    topMargin: units.gu(1)
                     left: parent.left
-                    leftMargin: units.gu(2)
                 }
                 text: DeltaHandler.getCurrentSignature()
 
                 onFocusChanged: {
+                    if (focus && root.onUbuntuTouch && !root.showAccSwitchSidebar) {
+                        flickTimerSignature.start()
+                    }
+
                     if (root.oskViaDbus) {
                         if (focus) {
                             DeltaHandler.openOskViaDbus()
+                            flickTimerSignature.start()
                         } else {
                             DeltaHandler.closeOskViaDbus()
                         }
                     }
                 }
             }
-        } // Item id: flickContent
-
-        Timer {
-            id: flickTimer
-            interval: 200
-            repeat: false
-            triggeredOnStart: false
-            onTriggered: flickable.contentY = flickable.contentHeight - flickable.height
-        }
+        } // Column id: flickColumn
     } // Flickable
+
+    Timer {
+        id: flickTimerUsername
+        interval: 200
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            // Calculate Y value of the TextField that the user is about
+            // to enter something. Y value means the number of pixels
+            // from the top of the Flickable content to the bottom of the TextField.
+            let fieldBottomY = profileAddrLabel.height + profilePic.height + usernameLabel.height + usernameField.height + units.gu(5)
+
+            // Check if the TextField is shown on the screen. This is the
+            // case if the height of the flickable is not less than
+            // the Y value of the TextField minus flickable.contentY (contentY
+            // is the offset to which the flickable has been flicked up, i.e.,
+            // the number of pixels at the top of the flickable that are not
+            // visible at the moment).
+            if (flickable.height < fieldBottomY - flickable.contentY) {
+                // this will flick up so the TextField is right at the bottom
+                flickable.contentY = fieldBottomY - flickable.height
+            }
+        }
+    }
+
+    Timer {
+        id: flickTimerSignature
+        interval: 200
+        repeat: false
+        triggeredOnStart: false
+        onTriggered: {
+            // see comments for flickTimerUsername above
+            let fieldBottomY = profileAddrLabel.height + profilePic.height + usernameLabel.height + usernameField.height + signatureLabel.height + signatureField.height + units.gu(8)
+            if (flickable.height < fieldBottomY - flickable.contentY) {
+                flickable.contentY = fieldBottomY - flickable.height
+            }
+        }
+    }
+
+    Component {
+        id: componentProfilePicActions
+        Popover {
+            id: popoverProfilePicActions
+            Column {
+                id: containerLayout
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+
+                ListItem {
+                    height: layout1.height
+                    // should be automatically be themed with something like
+                    // theme.palette.normal.overlay, but this
+                    // doesn't seem to work for Ambiance (and importing
+                    // Lomiri.Components.Themes 1.3 doesn't solve it). 
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout1
+                        title.text: i18n.tr("Select Profile Image")
+                    }
+                    
+                    onClicked: {
+                        PopupUtils.close(popoverProfilePicActions)
+
+                        if (root.onUbuntuTouch) {
+                            DeltaHandler.newFileImportSignalHelper()
+                            DeltaHandler.fileImportSignalHelper.fileImported.connect(profilePage.setProfilePic)
+                            extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+                            // See comments in CreateOrEditGroup.qml
+                            //let incubator = layout.addPageToCurrentColumn(profilePage, Qt.resolvedUrl('FileImportDialog.qml'), { "conType": DeltaHandler.ImageType })
+
+                            //if (incubator.status != Component.Ready) {
+                            //    // have to wait for the object to be ready to connect to the signal,
+                            //    // see documentation on AdaptivePageLayout and
+                            //    // https://doc.qt.io/qt-5/qml-qtqml-component.html#incubateObject-method
+                            //    incubator.onStatusChanged = function(status) {
+                            //        if (status == Component.Ready) {
+                            //            incubator.object.fileSelected.connect(profilePage.setProfilePic)
+                            //        }
+                            //    }
+                            //} else {
+                            //    // object was directly ready
+                            //    incubator.object.fileSelected.connect(profilePage.setProfilePic)
+                            //}
+                        } else {
+                            profilePage.openFileDialog()
+                        }
+                    }
+                } // ListItem
+
+                ListItem {
+                    height: layout2.height
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout2
+                        title.text: i18n.tr("Delete Profile Image")
+                    }
+                    onClicked: {
+                        PopupUtils.close(popoverProfilePicActions)
+                        DeltaHandler.setProfileValue("selfavatar", "")
+                        profilePicImage.source = ""
+                    }
+                }
+            }
+        } // Popover id: containerLayout
+    } // Component id: popoverChatPicActions
 } // Page id: profilePage

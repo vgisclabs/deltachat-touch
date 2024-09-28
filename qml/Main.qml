@@ -965,6 +965,7 @@ MainView {
             console.log('Qt.application signal stateChanged, state is now: ' + currState)
         }
         onAboutToQuit: {
+            periodicTimer.stop()
             extraStack.clear()
             imageStack.clear()
             layout.removePages(layout.primaryPage)

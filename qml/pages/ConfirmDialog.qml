@@ -34,12 +34,18 @@ Dialog {
     property string cancelButtonText: i18n.tr("Cancel")
     property bool confirmButtonPositive: false
 
-    title: dialogTitle
+    Label {
+        text: dialogTitle
+        horizontalAlignment: Text.AlignLeft
+        wrapMode: Text.Wrap
+        fontSize: root.scaledFontSizeLarger
+        visible: text !== ""
+    }
 
     Label {
         text: dialogText
         horizontalAlignment: Text.AlignLeft
-        wrapMode: Text.WordWrap
+        wrapMode: Text.Wrap
         fontSize: root.scaledFontSize
         visible: text !== ""
     }

@@ -35,16 +35,31 @@ Page {
     header: PageHeader {
         id: fileToSendHeader
         title: i18n.tr("Select")
+
+        leadingActionBar.actions: [
+            Action {
+                //iconName: "close"
+                iconSource: "qrc:///assets/suru-icons/close.svg"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    cancelled()
+                    extraStack.pop()
+                }
+            }
+        ]
     }
 
     property var conType: DeltaHandler.FileType
+    property var multiMode: false
     property var activeTransfer: null
 
     signal fileSelected(string fileUrl)
+    signal multiFileSelected(var files)
     signal cancelled()
 
     Component.onCompleted: {
         fileImportPage.fileSelected.connect(DeltaHandler.fileImportSignalHelper.processFileImportSignal)
+        fileImportPage.multiFileSelected.connect(DeltaHandler.fileImportSignalHelper.processMultiFileImportSignal)
         DeltaHandler.fileImportSignalHelper.increaseCounter()
     }
 
@@ -83,7 +98,7 @@ Page {
         showTitle: false
 
         onPeerSelected: {
-            peer.selectionType = ContentTransfer.Single
+            peer.selectionType = fileImportPage.multiMode ? ContentTransfer.Multiple : ContentTransfer.Single
             fileImportPage.activeTransfer = peer.request()
         }
     }
@@ -108,9 +123,22 @@ Page {
         onStateChanged: {
             if (fileImportPage.activeTransfer.state === ContentTransfer.Charged) {
                 if (fileImportPage.activeTransfer.items.length > 0) {
-                    let fileUrl = DeltaHandler.copyToCache(fileImportPage.activeTransfer.items[0].url);
-                    console.log('Selected file via ContentHub: ', fileUrl)
-                    fileSelected(fileUrl)
+                    if (multiMode) {
+                        let files = []
+                        let tempfile
+                        for (let i = 0; i < fileImportPage.activeTransfer.items.length; i++) {
+                            tempfile = DeltaHandler.copyToCache(fileImportPage.activeTransfer.items[i].url);
+                            files.push(tempfile)
+                        }
+                        console.log('Selected file via ContentHub: ', files)
+                        multiFileSelected(files)
+                    } else {
+                        let fileUrl = DeltaHandler.copyToCache(fileImportPage.activeTransfer.items[0].url);
+                        console.log('Selected file via ContentHub: ', fileUrl)
+                        fileSelected(fileUrl)
+                    }
+                } else {
+                    cancelled()
                 }
                 fileImportPage.activeTransfer.finalize()
                 pageStack.pop()

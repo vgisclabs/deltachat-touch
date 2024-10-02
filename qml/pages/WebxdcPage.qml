@@ -273,5 +273,41 @@ Page {
 
             offTheRecord: false
         }
+
+        onFileDialogRequested: function(request) {
+            if (root.onUbuntuTouch) {
+                request.accepted = true
+
+                let multiMode = false
+                if (request.mode === FileDialogRequest.FileModeOpenMultiple) {
+                    multiMode = true
+                }
+
+                DeltaHandler.newFileImportSignalHelper()
+                DeltaHandler.fileImportSignalHelper.fileImported.connect(function(filePath) {
+                    request.dialogAccept(filePath)
+                })
+                DeltaHandler.fileImportSignalHelper.multiFileImported.connect(function(fileList) {
+                    request.dialogAccept(fileList)
+                })
+
+                // In theory, request.acceptedMimeTypes could be parsed and the
+                // corresponding content type passed to FileImportDialog.qml,
+                // but the two systems (MimeTypes and file extensions as given
+                // by the Webxdc app vs ContentType.xy of ContentHub) are not very
+                // compatible. It would be quite hard and error-prone to create a
+                // function that matches MimeTypes/file extensions to the
+                // ContentHub types, so it's probably not worth it. Filtering
+                // files according to Mime/extensions is not foreseen in ContentHub.
+                //
+                // Of note: On non-UT platforms, the FileDialog nicely filters
+                // according to the file extensions (and MimeTypes?) present
+                // in request.acceptedMimeTypes.
+                let temppage = extraStack.push(Qt.resolvedUrl('FileImportDialog.qml'), { "multiMode": multiMode })
+                temppage.cancelled.connect(function() {
+                    request.dialogReject()
+                })
+            } // no else - the system file picker on non-UT platforms will open automatically
+        }
     }
 } // end Page id: webxdcPage

@@ -41,3 +41,14 @@ void FileImportSignalHelper::processFileImportSignal(QString filePath)
         qWarning() << "FileImportSignalHelper::processFileImportSignal(): Counter does not equal 1 => signal connection is not as expected, not emitting fileImported signal.";
     }
 }
+
+
+void FileImportSignalHelper::processMultiFileImportSignal(QStringList files)
+{
+    if (counter == 1) {
+        emit multiFileImported(files);
+    } else {
+        // see comment in FileImportSignalHelper::processFileImportSignal()
+        qWarning() << "FileImportSignalHelper::processMultiFileImportSignal(): Counter does not equal 1 => signal connection is not as expected, not emitting fileImported signal.";
+    }
+}

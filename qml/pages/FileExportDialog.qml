@@ -58,7 +58,12 @@ FileDialog {
     signal cancelled()
 
     onAccepted: {
-        folderSelected(folder)
+        // Passing "fileUrl" is correct, due to selectFolder being true
+        // it will correspond to the folder selected by the user.
+        // Passing "folder" instead will sometimes lead to undesired
+        // results as "folder" may still contain the folder as set by
+        // setFileType().
+        folderSelected(fileUrl)
         Qt.quit()
     }
     onRejected: {

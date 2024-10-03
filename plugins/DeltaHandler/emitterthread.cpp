@@ -225,6 +225,7 @@ void EmitterThread::run()
 
                 case DC_EVENT_WEBXDC_INSTANCE_DELETED:
                     qInfo().nospace() << "Emitter: DC_EVENT_WEBXDC_INSTANCE_DELETED" << ", account " << dc_event_get_account_id(event) << ", msg_id: " << dc_event_get_data1_int(event);
+                    emit webxdcInstanceDeleted(dc_event_get_account_id(event), dc_event_get_data1_int(event));
                     break;
 
                 case DC_EVENT_WEBXDC_STATUS_UPDATE:

@@ -212,6 +212,7 @@ public slots:
     void searchJumpSlot(int posType);
 
     void webxdcUpdateReceiver(uint32_t accID, int msgID);
+    void webxdcDeleteLocalStorage(uint32_t accID, int msgID);
 
 signals:
     void markedAllMessagesSeen();

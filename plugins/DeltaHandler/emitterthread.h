@@ -50,6 +50,7 @@ class EmitterThread : public QThread {
             void chatDataModified(uint32_t accID, int chatID);
             void connectivityChanged(uint32_t accID);
             void webxdcStatusUpdate(uint32_t accID, int msgID);
+            void webxdcInstanceDeleted(uint32_t accID, int msgID);
 
     private:
         dc_accounts_t* m_accounts;

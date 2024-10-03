@@ -656,19 +656,14 @@ public slots:
     void appIsActiveAgainActions();
     void unrefTempContext();
     void chatViewIsClosed(bool gotoQrScanPage);
-
     void deleteQrDecoder();
-
     void prepareContactsmodelForGroupMemberAddition();
 
     // Main.qml emits a signal every 5 minutes that is connected
     // to this slot
     void periodicTimerActions();
-
     void updateChatlistQueryText(QString query);
-
     void getProviderHintSignal(QString emailAddress);
-
     void receiveJsonrcpResponse(QString response);
 
 protected:

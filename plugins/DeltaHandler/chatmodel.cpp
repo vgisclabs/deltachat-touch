@@ -2678,6 +2678,66 @@ void ChatModel::webxdcUpdateReceiver(uint32_t accID, int msgID)
 }
 
 
+void ChatModel::webxdcDeleteLocalStorage(uint32_t accID, int msgID)
+{
+    // This method deletes the local storage of a Webxdc app. Local
+    // storagae is located in a separate directory per app named
+    // <accID>_<chatID>_<msgID> in 
+    // QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/QtWebEngine/"
+    //
+    // The method is triggered by DC_EVENT_WEBXDC_INSTANCE_DELETED. This event
+    // only has the msgID as parameter, but not the chatID. As the event
+    // is emitted after the deletion of the corresponding message,
+    // it is not possible to query the core for the chatID anymore;
+    // dc_msg_get_chat_id() will always return 0. It's therefore
+    // not possible to assemble the string with the path to the
+    // directory to remove by just stringify the accID, chatID and msgID.
+    //
+    // Instead, the string with the path of the directory to be deleted is
+    // obtained by checking all subdirectories of dataLocation/QtWebEngine/
+    // whether one of these matches the accID and the msgID. This is
+    // possible because msgID is unique across a specific account.
+
+    QDir localStorageDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/QtWebEngine/");
+
+    // get the list of all directories in <cache>/QtWebEngine/
+    QStringList allfolders = localStorageDir.entryList(QDir::AllDirs | QDir::NoSymLinks);
+
+    // will contain the directory to be deleted, if it exists
+    QString dirToDeleteString {""};
+
+    QString accString;
+    QString msgString;
+    accString.setNum(accID);
+    msgString.setNum(msgID);
+
+    for (int i = 0; i < allfolders.size(); ++i) {
+        // Split, e.g., "14_5_523" in three separate strings "14", "5" and "523".
+        // separatedString[0] will then contain the accID part and [2] the msgID
+        // part
+        QStringList separatedString = allfolders[i].split("_");
+        if (separatedString.size() == 3) {
+            if (separatedString[0] == accString && separatedString[2] == msgString) {
+                dirToDeleteString = localStorageDir.absolutePath() + "/" + allfolders[i];
+                break;
+            }
+        }
+    }
+
+    if (dirToDeleteString != "") {
+        QDir dirToDelete(dirToDeleteString);
+        bool success = dirToDelete.removeRecursively();
+        if (success) {
+            qDebug() << "DeltaHandler::webxdcDeleteLocalStorage(): Successfully removed Webxdc local storage dir " << dirToDeleteString;
+        } else {
+            qDebug() << "DeltaHandler::webxdcDeleteLocalStorage(): ERROR: could not (completely) remove Webxdc local storage dir " << dirToDeleteString;
+        }
+    } else {
+        qDebug() << "DeltaHandler::webxdcDeleteLocalStorage(): No directory found to delete for Webxdc instance with accID " << accID << " and msgID " << msgID;
+    }
+}
+
+
 void ChatModel::checkAndJumpToWebxdcParent(int myindex)
 {
     uint32_t msgID = msgVector[myindex];

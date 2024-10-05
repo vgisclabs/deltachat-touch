@@ -249,6 +249,13 @@ Page {
                 worldId: WebEngineScript.MainWorld
                 sourceUrl: "qrc:///assets/webxdc/cppside.js"
                 name: "cppside.js"
+            },
+
+            WebEngineScript {
+                injectionPoint: WebEngineScript.DocumentReady
+                worldId: WebEngineScript.MainWorld
+                sourceUrl: "qrc:///assets/webxdc/fetchReplacement.js"
+                name: "fetchReplacement.js"
             }
         ]
 

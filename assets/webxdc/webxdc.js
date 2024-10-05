@@ -23,6 +23,7 @@
  */
 
 cppside = parent.cppside
+fetch = parent.fetch
 
 window.webxdc = (() => {
   let setUpdateListenerPromise = null

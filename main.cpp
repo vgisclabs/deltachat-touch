@@ -43,8 +43,15 @@ int main(int argc, char *argv[])
             if (procenv.value("QT_FILE_SELECTORS") == "ubuntu-touch") {
                 onUbuntuTouch = true;
             }
+            break;
         }
     }
+
+    // Next two lines regarding chromium flags taken in modified form from the Ubuntu
+    // Touch app "youtube-web", (c) 2023 Mateo Salta, licensed under GPLv3, source:
+    // https://github.com/mateosalta/cuddly-bassoon
+    const auto chromiumFlags = qgetenv("QTWEBENGINE_CHROMIUM_FLAGS");
+    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", chromiumFlags + " --touch-events=enabled");
 
     if (!onUbuntuTouch) {
         // On non-UT platforms, url scheme handling is done by calling a

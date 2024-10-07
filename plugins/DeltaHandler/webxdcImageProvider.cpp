@@ -23,6 +23,7 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonObject>
+#include <QDebug>
 
 
 QImage WebxdcImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
@@ -106,7 +107,7 @@ QString WebxdcImageProvider::addImage(QString imageId, dc_msg_t* msg)
 
             tempText = dc_msg_get_webxdc_blob(msg, tempQString.toUtf8().constData(), &tempSizeT);
             if (tempText) {
-                tempQImage.loadFromData(reinterpret_cast<uchar*>(tempText), tempSizeT, "PNG");
+                tempQImage.loadFromData(reinterpret_cast<uchar*>(tempText), tempSizeT);
                 m_imageCache[imageId] = tempQImage;
 
                 dc_str_unref(tempText);

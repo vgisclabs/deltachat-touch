@@ -29,6 +29,8 @@
         <file>pages/Connectivity.qml</file>
         <file>pages/CreateOrEditGroup.qml</file>
         <file>pages/CreateDatabasePassword.qml</file>
+        <file>pages/DateTimePickerPopup.qml</file>
+        <file>pages/+ubuntu-touch/DateTimePickerPopup.qml</file>
         <file>pages/EphemeralTimerSettings.qml</file>
         <file>pages/ErrorMessage.qml</file>
         <file>pages/GroupAddMember.qml</file>

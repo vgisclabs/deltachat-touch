@@ -115,6 +115,7 @@
         <file>suru-icons/view-on.svg</file>
         <file>webxdc/cppside.js</file>
         <file>webxdc/fetchReplacement.js</file>
+        <file>webxdc/hideInputSymbol.css</file>
         <file>webxdc/sandboxed_iframe_rtcpeerconnection_check.html</file>
         <file>webxdc/webxdc.js</file>
         <file>webxdc/wrapper.html</file>

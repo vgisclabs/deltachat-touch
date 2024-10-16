@@ -25,6 +25,58 @@
 cppside = parent.cppside
 fetch = parent.fetch
 
+// ===================================================================
+// =================== For <input> element override ==================
+// ===================================================================
+
+currentInput = null
+
+window.__setInput = function(newtime) {
+    currentInput.value = newtime
+}
+
+parent.__setInput = window.__setInput
+
+document.addEventListener('mousedown', function(evt) {
+    var input = null
+    if (evt.target.tagName === "INPUT") {
+        currentInput = evt.target
+
+        if (currentInput !== null && evt.target.type === "time") {
+            evt.preventDefault()
+            cppside.getDateTimeInput(currentInput.value, false, true)
+        }
+
+        // For type="date", the default popup can be used. It's not
+        // optimal, but the current custom solutions aren't, either.
+//        if (currentInput !== null && evt.target.type === "date") {
+//            evt.preventDefault()
+//            cppside.getDateTimeInput(currentInput.value, true, false)
+//        }
+
+        if (currentInput !== null && evt.target.type === "datetime-local") {
+            evt.preventDefault()
+            cppside.getDateTimeInput(currentInput.value, true, true)
+        }
+    }
+})
+
+// Loads the css that suppresses the icon on <input type="time"> and
+// <input type="datetime-local"> elements. The app provides its own
+// popup to set the (date)time as the default popup by Qt WebengineView
+// does not react to touch input.
+let temphead  = document.getElementsByTagName("HEAD")[0];
+let templink  = document.createElement('link');
+templink.rel  = 'stylesheet';
+templink.type = 'text/css';
+templink.href = '2346123058123r12835asd2834.css';
+temphead.appendChild(templink);
+
+// =======================================================================
+// =================== END For <input> element override ==================
+// =======================================================================
+
+
 window.webxdc = (() => {
   let setUpdateListenerPromise = null
   var update_listener = () => {};

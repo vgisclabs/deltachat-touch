@@ -68,6 +68,11 @@ void WebxdcSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
             connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
             request->reply("application/javascript", tempfile);
 
+        } else if (fileToRequest == "/2346123058123r12835asd2834.css") {
+            QFile* tempfile = new QFile(":/assets/webxdc/hideInputSymbol.css");
+            connect(request, &QObject::destroyed, tempfile, &QObject::deleteLater);
+            request->reply("text/css", tempfile);
+
         } else if (fileToRequest == "/12369813asd18935zas123123a") {
             // wrapper.html will be requested by WebxdcPage.qml via the webxdcfilerequest scheme
             // and this identifier

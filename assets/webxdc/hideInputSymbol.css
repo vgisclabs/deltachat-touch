@@ -1,0 +1,17 @@
+/* Hides the clock/calendar symbol that triggers a popup. The default popup is
+ * not usable on touch devices, so a custom popup is used. For some reason,
+ * event.preventDefault() doesn't keep the default popup from appearing,
+ * the only solution found so far is to hide the symbol. */
+
+[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+/* The "date" popup can be interacted with on touch devices, don't suppress it */
+/* [type="date"]::-webkit-calendar-picker-indicator {
+     display: none;
+   } */
+
+[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  display: none;
+}

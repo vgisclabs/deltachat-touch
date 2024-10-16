@@ -220,6 +220,63 @@ Page {
                 return "sendToChat(): cancelled by user"
             })
         }
+
+        function getDateTimeInput(oldtime, requestDate, requestTime) {
+            if (!(requestDate || requestTime)) {
+                console.log("getDateTimeInput: Neither date nor time requested, returning.")
+                return ("")
+            }
+
+            let startDay = -1
+            let startMonth = -1
+            let startYear = -1
+            let startHour = -1
+            let startMinute = -1
+
+            // If oldtime was set, the popup to request the date/time will be
+            // pre-set with the old date/time values. Parse oldtime:
+            if (oldtime !== null && oldtime !== "" && oldtime !== undefined) {
+                if (requestDate && requestTime) {
+                    let splittedAtT = oldtime.split("T")
+                    let splittedDate = splittedAtT[0].split("-")
+                    startYear = splittedDate[0]
+                    startMonth = splittedDate[1]
+                    startDay = splittedDate[2]
+
+                    let timeArray = splittedAtT[1].split(":");
+                    startHour = parseInt(timeArray[0])
+                    startMinute = parseInt(timeArray[1]);
+
+                } else if (requestDate) {
+                    let splittedDate = oldtime.split("-")
+                    startYear = splittedDate[0]
+                    startMonth = splittedDate[1]
+                    startDay = splittedDate[2]
+
+                } else if (requestTime) {
+                    let timeArray = oldtime.split(":");
+                    startHour = parseInt(timeArray[0])
+                    startMinute = parseInt(timeArray[1]);
+
+                }
+            }
+
+            let popup = PopupUtils.open(
+                Qt.resolvedUrl("DateTimePickerPopup.qml"),
+                webxdcPage,
+                { "day": startDay,
+                  "month": startMonth,
+                  "year": startYear,
+                  "hour": startHour,
+                  "minute": startMinute,
+                  "dateRequested": requestDate,
+                  "timeRequested": requestTime
+            })
+            popup.dateTimeSelected.connect(function(dateTime) {
+                let temptext = "__setInput(\"" + dateTime + "\")"
+                webview.runJavaScript(temptext)
+            })
+        }
     }
 
     WebChannel {

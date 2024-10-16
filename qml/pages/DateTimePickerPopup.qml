@@ -15,11 +15,11 @@
  */
 
 import QtQuick 2.7
-import Lomiri.Components 1.3
+import Ubuntu.Components 1.3
 import QtQuick.Controls 1.4 as QQC1
 import QtQuick.Controls 2.2 as QQC
 import QtQuick.Layouts 1.3
-import Lomiri.Components.Popups 1.3
+import Ubuntu.Components.Popups 1.3
 
 // Popover for date and/or time input. Date/time can be pre-set via the
 // day/month/year/hour/minute properties, accepted dates range from 01.01.1901

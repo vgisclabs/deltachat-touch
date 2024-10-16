@@ -165,28 +165,6 @@ Page {
                 }
             }
 
-            ListItem {
-                height: logviewerLayout.height + (divider.visible ? divider.height : 0)
-                width: advancedSettingsPage.width
-
-                ListItemLayout {
-                    id: logviewerLayout
-                    title.text: i18n.tr("View Log")
-                    title.font.bold: true
-
-                    Icon {
-                        //name: "go-next"
-                        source: "qrc:///assets/suru-icons/go-next.svg"
-                        SlotsLayout.position: SlotsLayout.Trailing;
-                        width: units.gu(2)
-                    }
-                }
-
-                onClicked: {
-                    extraStack.push(Qt.resolvedUrl("LogViewer.qml"))
-                }
-            }
-
             Rectangle {
                 id: profileSpecificSeparator
                 height: profileSpecificSeparatorLabel.contentHeight + units.gu(4)

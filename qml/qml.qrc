@@ -38,7 +38,6 @@
         <file>pages/ImageViewerAnimated.qml</file>
         <file>pages/InfoPopup.qml</file>
         <file>pages/InviteCode.qml</file>
-        <file>pages/LogViewer.qml</file>
         <file>pages/MessageHtmlView.qml</file>
         <file>pages/MessageInfosActions.qml</file>
         <file>pages/NotImplemented.qml</file>

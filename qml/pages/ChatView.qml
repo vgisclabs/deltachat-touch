@@ -901,7 +901,11 @@ Page {
                 text: i18n.tr("More Options")
                 onTriggered: {
                     DeltaHandler.chatmodel.setMomentaryMessage(value)
-                    let popup6 = PopupUtils.open(Qt.resolvedUrl('MessageInfosActions.qml'))
+                    let popup6 = PopupUtils.open(
+                        Qt.resolvedUrl('MessageInfosActions.qml'),
+                        chatViewPage,
+                        { "msgIsInGroupChat": fullChatJson.chatType === DeltaHandler.ChatTypeGroup }
+                    )
                     popup6.startFileExport.connect(exportMomentaryMessageFile)
                 }
             },

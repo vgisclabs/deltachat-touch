@@ -54,6 +54,16 @@ public:
 
     Q_INVOKABLE void deleteMomentaryMessage();
 
+    Q_INVOKABLE bool momentaryMessageIsFromSelf();
+
+    // Will open the private chat with the sender of m_MomentaryMsgId, with
+    // m_MomentaryMsgId set as quote in the draft message. The caller has
+    // to ensure that m_MomentaryMsgId is a message for which a private
+    // reply makes sense (e.g., it shouldn't be a message from self). A
+    // pre-existing quote in the draft message of the private chat will
+    // be replaced.
+    Q_INVOKABLE void momentaryMessageReplyPrivately();
+
     Q_INVOKABLE void deleteAllMessagesInCurrentChat();
 
     Q_INVOKABLE QString getMomentarySummarytext();

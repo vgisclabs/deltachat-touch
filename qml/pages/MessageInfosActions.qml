@@ -26,10 +26,23 @@ Dialog {
     id: dialog
 
     property bool isInfoMsg: false
+    property bool msgIsInGroupChat: false
 
     signal startFileExport()
 
     Component.onCompleted: {
+    }
+
+    Button {
+        id: replyPrivatelyButton
+        text: i18n.tr("Reply Privately")
+
+        onClicked: {
+            DeltaHandler.chatmodel.momentaryMessageReplyPrivately()
+            PopupUtils.close(dialog)
+        }
+
+        enabled: msgIsInGroupChat && !DeltaHandler.chatmodel.momentaryMessageIsFromSelf()
     }
 
     Button {

@@ -38,6 +38,7 @@ Page {
     property string headerTitle
     property string username
     property string useraddress
+    property string sourceUrl: ""
 
     header: PageHeader {
         id: header
@@ -51,6 +52,24 @@ Page {
                 onTriggered: {
                     extraStack.pop()
                 }
+            }
+        ]
+
+        trailingActionBar.actions: [
+            Action {
+                //iconName: "navigation-menu"
+                iconSource: "qrc:///assets/suru-icons/navigation-menu.svg"
+                text: i18n.tr("More Actions")
+                onTriggered: {
+                    PopupUtils.open(
+                        Qt.resolvedUrl('WebxdcActions.qml'),
+                        webxdcPage,
+                        { "sourceUrl": sourceUrl }
+                    )
+                }
+                // TODO: Adapt this in case more actions than just the link to the
+                // source code are added to the popup
+                visible: sourceUrl !== ""
             }
         ]
     }

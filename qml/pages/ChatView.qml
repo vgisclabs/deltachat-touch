@@ -1539,7 +1539,8 @@ Page {
                                 extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
                                     "headerTitle": webxdcInfo.name,
                                     "username": tempUsername,
-                                    "useraddress": tempEmailAddr }
+                                    "useraddress": tempEmailAddr,
+                                    "sourceUrl": webxdcInfo.source_code_url }
                                 )
                             }
 

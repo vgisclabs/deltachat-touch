@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023, 2024 Lothar Ketterer
+ * Copyright (C) 2023  Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.7
+import QtQuick 2.12
 import Lomiri.Components 1.3
 import Lomiri.Components.Popups 1.3
 
@@ -25,43 +25,33 @@ import DeltaHandler 1.0
 Dialog {
     id: dialog
 
-    property string externalLink
-    property bool openButtonPositive: false
+    property string sourceUrl: ""
 
-    signal done()
-
-    title: i18n.tr("Do you want to open this link?")
-    text: externalLink
-
-    Button {
-        id: okButton
-        text: i18n.tr("Open")
-        color: openButtonPositive ? theme.palette.normal.positive : theme.palette.normal.negative
-        onClicked: {
-            Qt.openUrlExternally(externalLink)
-            PopupUtils.close(dialog)
-            done()
-        }
+    Component.onCompleted: {
     }
 
     Button {
-        id: copyButton
-        text: i18n.tr("Copy Link")
+        id: sourceLinkButton
+        text: i18n.tr("Source Code")
+
         onClicked: {
-            let tempcontent = Clipboard.newData()
-            tempcontent = externalLink
-            Clipboard.push(tempcontent)
-            PopupUtils.close(dialog)
-            done()
+            let popup1 = PopupUtils.open(
+                Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'),
+                dialog,
+                { "externalLink": sourceUrl,
+                  "openButtonPositive": true }
+            )
+            popup1.done.connect(function() { PopupUtils.close(dialog) })
         }
+
+        enabled: sourceUrl !== ""
     }
 
     Button {
-        id: cancelButton
-        text: i18n.tr("Cancel")
+        text: 'OK'
+        color: theme.palette.normal.focus
         onClicked: {
             PopupUtils.close(dialog)
-            done()
         }
     }
 }

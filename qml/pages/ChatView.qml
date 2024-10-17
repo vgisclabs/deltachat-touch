@@ -2581,7 +2581,6 @@ Page {
                         Label {
                             id: vcardPrevNameLabel
                             width: chatViewPage.width - vcardPrevShape.width - units.gu(5)
-                            text: vcardObj.displayName
                             font.bold: true
                             fontSize: root.scaledFontSize
                             elide: Text.ElideRight
@@ -2591,7 +2590,6 @@ Page {
                         Label {
                             id: vcardPrevAddrLabel
                             width: vcardPrevNameLabel.width
-                            text: vcardObj.addr
                             fontSize: root.scaledFontSize
                             elide: Text.ElideRight
                             horizontalAlignment: Text.AlignLeft

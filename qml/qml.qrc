@@ -71,6 +71,7 @@
         <file>pages/UrlDispatchAccountChooserPopup.qml</file>
         <file>pages/UseOtherServerPopup.qml</file>
         <file>pages/VerifiedPopup.qml</file>
+        <file>pages/WebxdcActions.qml</file>
         <file>pages/WebxdcPage.qml</file>
     </qresource>
 </RCC>

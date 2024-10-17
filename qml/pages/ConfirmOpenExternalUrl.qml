@@ -26,6 +26,9 @@ Dialog {
     id: dialog
 
     property string externalLink
+    property bool openButtonPositive: false
+
+    signal done()
 
     title: i18n.tr("Do you want to open this link?")
     text: externalLink
@@ -33,10 +36,11 @@ Dialog {
     Button {
         id: okButton
         text: i18n.tr("Open")
-        color: theme.palette.normal.negative
+        color: openButtonPositive ? theme.palette.normal.positive : theme.palette.normal.negative
         onClicked: {
             Qt.openUrlExternally(externalLink)
             PopupUtils.close(dialog)
+            done()
         }
     }
 
@@ -48,12 +52,16 @@ Dialog {
             tempcontent = externalLink
             Clipboard.push(tempcontent)
             PopupUtils.close(dialog)
+            done()
         }
     }
 
     Button {
         id: cancelButton
         text: i18n.tr("Cancel")
-        onClicked: PopupUtils.close(dialog)
+        onClicked: {
+            PopupUtils.close(dialog)
+            done()
+        }
     }
 }

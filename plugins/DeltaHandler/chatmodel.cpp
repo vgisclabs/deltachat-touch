@@ -1361,6 +1361,63 @@ void ChatModel::deleteMomentaryMessage()
 }
 
 
+bool ChatModel::momentaryMessageIsFromSelf()
+{
+    bool retval {false};
+
+    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, m_MomentaryMsgId);
+    if (tempMsg) {
+        retval = dc_msg_get_from_id(tempMsg) == DC_CONTACT_ID_SELF;
+        dc_msg_unref(tempMsg);
+    } else {
+        qDebug() << "ChatModel::momentaryMessageIsFromSelf(): ERROR obtaining momentary message";
+    }
+
+    return retval;
+}
+
+
+void ChatModel::momentaryMessageReplyPrivately()
+{
+    dc_msg_t* tempMsg = dc_get_msg(currentMsgContext, m_MomentaryMsgId);
+
+    if (!tempMsg) {
+        qDebug() << "ChatModel::momentaryMessageReplyPrivately(): ERROR obtaining momentary message";
+        return;
+    }
+
+    uint32_t tempContactId = dc_msg_get_from_id(tempMsg);
+
+    uint32_t tempChatId = dc_create_chat_by_contact_id(currentMsgContext, tempContactId);
+    if (0 == tempChatId) {
+        qDebug() << "ChatModel::momentaryMessageReplyPrivately(): ERROR creating chat for contact ID " << tempContactId;
+        dc_msg_unref(tempMsg);
+        return;
+    }
+
+    // For replying privately, the group chat message that is being
+    // replied to should be quoted in the private chat.
+    dc_msg_t* tempDraft = dc_get_draft(currentMsgContext, tempChatId);
+
+    if (!tempDraft) {
+        tempDraft = dc_msg_new(currentMsgContext, DC_MSG_TEXT);
+    }
+
+    if (tempDraft) {
+        dc_msg_set_quote(tempDraft, tempMsg);
+        dc_set_draft(currentMsgContext, tempChatId, tempDraft);
+        dc_msg_unref(tempDraft);
+    } else {
+        qDebug() << "ChatModel::momentaryMessageReplyPrivately(): ERROR creating creating draft, continuing without setting draft";
+    }
+
+    dc_msg_unref(tempMsg);
+
+    m_dhandler->selectChatByChatId(tempChatId);
+    m_dhandler->openChat();
+}
+
+
 void ChatModel::deleteAllMessagesInCurrentChat()
 {
     std::vector<uint32_t> tempVector = msgVector;
@@ -1762,8 +1819,8 @@ void ChatModel::addVcardByIndexAndStartChat(int myindex)
     QByteArray byteArray = m_dhandler->sendJsonrpcBlockingCall(tempQString2).toLocal8Bit();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(byteArray);
 
-    // bei success: {"id":1000000125,"jsonrpc":"2.0","result":[17]}
-    // bei error: zB {"error":{"code":-32602,"message":"This method takes an array of 2 arguments"},"id":1000000125,"jsonrpc":"2.0"}
+    // upon success: {"id":1000000125,"jsonrpc":"2.0","result":[17]}
+    // upon error: e.g. {"error":{"code":-32602,"message":"This method takes an array of 2 arguments"},"id":1000000125,"jsonrpc":"2.0"}
     QJsonObject jsonObj = jsonDoc.object();
     if (jsonObj.contains("error")) {
         jsonObj = jsonObj.value("error").toObject();

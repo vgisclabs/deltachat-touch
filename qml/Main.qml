@@ -1553,7 +1553,7 @@ MainView {
                     property var previewIconSource
                     property bool previewStatusActive
                     property string avatarInitial
-                    property bool mouseHovers: hoverMouse.containsMouse
+                    property bool mouseHovers: hoverMouse.enabled && hoverMouse.containsMouse
                     property int thisChatID: (JSON.parse(model.basicChatInfo)).result.id
 
                     onChatlistEntryChanged: {

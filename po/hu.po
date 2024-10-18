@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deltatouch.lotharketterer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-25 15:26+0000\n"
+"POT-Creation-Date: 2024-10-18 18:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,32 +24,31 @@ msgstr ""
 msgid "New Contact"
 msgstr "Új névjegy"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:659
-#: ../plugins/DeltaHandler/deltahandler.cpp:4362 ../qml/Main.qml:452
-#: ../qml/Main.qml:466 ../qml/Main.qml:880 ../qml/pages/AccountConfig.qml:371
-#: ../qml/pages/AccountConfig.qml:593 ../qml/pages/AddAccount.qml:299
-#: ../qml/pages/AddAccountViaQr.qml:404 ../qml/pages/AddSecondDevice.qml:81
-#: ../qml/pages/AddSecondDevice.qml:94
-#: ../qml/pages/ChangeDatabasePassword.qml:154 ../qml/pages/ChatView.qml:158
+#: ../plugins/DeltaHandler/deltahandler.cpp:631
+#: ../plugins/DeltaHandler/deltahandler.cpp:4357 ../qml/Main.qml:524
+#: ../qml/Main.qml:538 ../qml/Main.qml:925 ../qml/pages/AccountConfig.qml:371
+#: ../qml/pages/AccountConfig.qml:593 ../qml/pages/AddAccount.qml:130
+#: ../qml/pages/AddSecondDevice.qml:81 ../qml/pages/AddSecondDevice.qml:94
+#: ../qml/pages/ChangeDatabasePassword.qml:154 ../qml/pages/ChatView.qml:155
 #: ../qml/pages/ImageViewer.qml:39 ../qml/pages/ImageViewerAnimated.qml:39
+#: ../qml/pages/InviteCode.qml:175 ../qml/pages/OnboardingChatmail.qml:169
 #: ../qml/pages/ProgressQrBackupImport.qml:57
-#: ../qml/pages/QrGroupInvite.qml:146 ../qml/pages/QrShowScan.qml:172
-#: ../qml/pages/QrShowScan.qml:315 ../qml/pages/QrShowScan.qml:858
-#: ../qml/pages/RequestDatabasePassword.qml:55
+#: ../qml/pages/QrGroupInvite.qml:146 ../qml/pages/QrScanner.qml:308
+#: ../qml/pages/RequestDatabasePassword.qml:53
 #: ../qml/pages/SettingsPage.qml:125
-#: ../qml/pages/SwitcherSidebarDelegate.qml:144 ../qml/pages/WebxdcPage.qml:132
-#: ../qml/pages/WebxdcPage.qml:147
+#: ../qml/pages/SwitcherSidebarDelegate.qml:136 ../qml/pages/WebxdcPage.qml:163
+#: ../qml/pages/WebxdcPage.qml:178
 msgid "Error"
 msgstr "Hiba"
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:3243
+#: ../plugins/DeltaHandler/deltahandler.cpp:3233
 msgid ""
 "Failed to remove the temporary copy of the backup export in the cache "
 "directory"
 msgstr ""
 
-#: ../plugins/DeltaHandler/deltahandler.cpp:4440
-#: ../plugins/DeltaHandler/deltahandler.cpp:4463
+#: ../plugins/DeltaHandler/deltahandler.cpp:4435
+#: ../plugins/DeltaHandler/deltahandler.cpp:4458
 msgid "QR code could not be decoded"
 msgstr "A QR-kódot nem sikerült értelmezni"
 
@@ -77,174 +76,195 @@ msgstr "%1 új üzenet"
 msgid "DeltaTouch"
 msgstr ""
 
-#: ../qml/Main.qml:166
+#: ../qml/Main.qml:168
 msgid ""
 "From last session, database encryption has not finished yet and will resume "
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:174
+#: ../qml/Main.qml:176
 msgid ""
 "From last session, database decryption has not finished yet and will resume "
 "after entering the passphrase."
 msgstr ""
 
-#: ../qml/Main.qml:302 ../qml/Main.qml:321 ../qml/Main.qml:339
-#: ../qml/Main.qml:355 ../qml/pages/QrShowScan.qml:107
-#: ../qml/pages/QrShowScan.qml:259 ../qml/pages/WebxdcPage.qml:105
+#: ../qml/Main.qml:346 ../qml/Main.qml:367 ../qml/Main.qml:385
+#: ../qml/Main.qml:403 ../qml/pages/ChatView.qml:1523
+#: ../qml/pages/WebxdcPage.qml:124
 msgid "Chat with %1?"
 msgstr "Csevegés vele: %1?"
 
-#: ../qml/Main.qml:302 ../qml/Main.qml:339
+#: ../qml/Main.qml:346 ../qml/Main.qml:385
 msgid "Select account for chatting"
 msgstr ""
 
-#: ../qml/Main.qml:373 ../qml/Main.qml:389 ../qml/pages/QrShowScan.qml:138
-#: ../qml/pages/WebxdcPage.qml:118
+#: ../qml/Main.qml:409 ../qml/Main.qml:826 ../qml/pages/WebxdcPage.qml:131
+#: ../qml/pages/WebxdcPage.qml:225
+msgid "%1 already has a draft message, do you want to replace it?"
+msgstr "%1 már van egy piszkozat, le akarja cserélni?"
+
+#: ../qml/Main.qml:434 ../qml/Main.qml:452 ../qml/pages/WebxdcPage.qml:149
 msgid "Do you want to join the group \"%1\"?"
 msgstr "Biztosan csatlakozik a(z) „%1” nevű szobához?"
 
-#: ../qml/Main.qml:373
+#: ../qml/Main.qml:434
 msgid "Select account for joining"
 msgstr ""
 
-#: ../qml/Main.qml:409 ../qml/pages/AddAccountViaQr.qml:111
-#: ../qml/pages/QrShowScan.qml:205
-msgid "Create new e-mail address on \"%1\" and log in there?"
-msgstr ""
+#: ../qml/Main.qml:473
+msgid "Create new profile on \"%1\" and log in there?"
+msgstr "Új profil létrehozása a(z) „%1” oldalon és bejelentkezés ott?"
 
-#: ../qml/Main.qml:423 ../qml/pages/AddAccountViaQr.qml:95
-#: ../qml/pages/QrShowScan.qml:224
-msgid "Copy the account from the other device to this device?"
-msgstr ""
+#: ../qml/Main.qml:473
+msgid ""
+"Create new profile on \"%1\" and log in there?\n"
+"\n"
+"Your existing profile will not be deleted. Use the \"Switch Profile\" item "
+"to switch between your profiles."
+msgstr "Hozzon létre új profilt a(z) „%1” oldalon, és bejeletkezés ott?\n\nA meglévő profilja nem törlődik. A „Profilváltás” elemmel válthat a profiljai között."
 
-#: ../qml/Main.qml:424 ../qml/pages/AddAccount.qml:137
-#: ../qml/pages/AddAccountViaQr.qml:96 ../qml/pages/QrShowScan.qml:225
-msgid "Add as Second Device"
-msgstr "Hozzáadás második eszközként"
-
-#: ../qml/Main.qml:425 ../qml/pages/AddSecondDevice.qml:119
-#: ../qml/pages/SettingsPage.qml:1043 ../qml/pages/SettingsPage.qml:1058
-msgid "Add Second Device"
-msgstr "Második eszköz hozzáadása"
-
-#: ../qml/Main.qml:438 ../qml/pages/AddAccountViaQr.qml:124
-#: ../qml/pages/QrShowScan.qml:399
+#: ../qml/Main.qml:488 ../qml/pages/OnboardingChatmail.qml:350
 msgid "Log into \"%1\"?"
 msgstr "Bejelentkezés ide: „%1”?"
 
-#: ../qml/Main.qml:451 ../qml/Main.qml:847 ../qml/Main.qml:2004
-#: ../qml/pages/AddAccountViaQr.qml:137 ../qml/pages/QrShowScan.qml:314
-#: ../qml/pages/WebxdcPage.qml:131
+#: ../qml/Main.qml:505 ../qml/pages/OnboardingChatmail.qml:126
+msgid "Copy the account from the other device to this device?"
+msgstr ""
+
+#: ../qml/Main.qml:506 ../qml/pages/AlreadyHaveProfilePopup.qml:36
+#: ../qml/pages/OnboardingChatmail.qml:127
+msgid "Add as Second Device"
+msgstr "Hozzáadás második eszközként"
+
+#: ../qml/Main.qml:507 ../qml/pages/AddSecondDevice.qml:119
+#: ../qml/pages/OnboardingChatmail.qml:128 ../qml/pages/SettingsPage.qml:1043
+#: ../qml/pages/SettingsPage.qml:1058
+msgid "Add Second Device"
+msgstr "Második eszköz hozzáadása"
+
+#: ../qml/Main.qml:523 ../qml/Main.qml:899 ../qml/Main.qml:2081
+#: ../qml/pages/AddAccount.qml:424 ../qml/pages/OnboardingChatmail.qml:120
+#: ../qml/pages/QrScanner.qml:82 ../qml/pages/WebxdcPage.qml:162
 msgid "Error: %1"
 msgstr "Hiba: %1"
 
-#: ../qml/Main.qml:465 ../qml/pages/AddChat.qml:206
-#: ../qml/pages/BlockedContacts.qml:81 ../qml/pages/ChatView.qml:1421
+#: ../qml/Main.qml:537 ../qml/pages/AddChat.qml:206
+#: ../qml/pages/BlockedContacts.qml:81 ../qml/pages/ChatView.qml:1440
 #: ../qml/pages/CreateOrEditGroup.qml:356 ../qml/pages/GroupAddMember.qml:138
-#: ../qml/pages/QrShowScan.qml:417 ../qml/pages/QrShowScan.qml:434
-#: ../qml/pages/WebxdcPage.qml:146
+#: ../qml/pages/SelectContactForVcard.qml:113 ../qml/pages/WebxdcPage.qml:177
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: ../qml/Main.qml:874 ../qml/pages/AddAccountViaQr.qml:396
+#: ../qml/Main.qml:919 ../qml/pages/AddAccount.qml:124
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:952
-#: ../qml/pages/QrShowScan.qml:850
+#: ../qml/pages/OnboardingChatmail.qml:159
 msgid "Configuring..."
 msgstr ""
 
-#: ../qml/Main.qml:1054 ../qml/Main.qml:1061 ../qml/Main.qml:1073
+#: ../qml/Main.qml:1104 ../qml/Main.qml:1111 ../qml/Main.qml:1123
 msgid "No account configured"
 msgstr ""
 
-#: ../qml/Main.qml:1147 ../qml/pages/AccountConfig.qml:424
+#: ../qml/Main.qml:1197 ../qml/pages/AccountConfig.qml:424
 #: ../qml/pages/UrlDispatchAccountChooserPopup.qml:74
 msgid "no username set"
 msgstr ""
 
-#: ../qml/Main.qml:1331 ../qml/pages/ChatView.qml:606
-#: ../qml/pages/ChatView.qml:651 ../qml/pages/ForwardMessage.qml:82
+#: ../qml/Main.qml:1381 ../qml/pages/ChatView.qml:628
+#: ../qml/pages/ChatView.qml:673 ../qml/pages/SelectChatForAction.qml:92
 msgid "Search"
 msgstr "Keresés"
 
-#: ../qml/Main.qml:1373 ../qml/Main.qml:1595
+#: ../qml/Main.qml:1423 ../qml/Main.qml:1667
 msgid "Archived Chats"
 msgstr "Archivált beszélgetések"
 
-#: ../qml/Main.qml:1398 ../qml/pages/AccountConfig.qml:338
-#: ../qml/pages/AddChat.qml:171 ../qml/pages/ChatView.qml:834
-#: ../qml/pages/ChatView.qml:842 ../qml/pages/ChatView.qml:3166
-#: ../qml/pages/ChatView.qml:3319 ../qml/pages/CreateOrEditGroup.qml:165
+#: ../qml/Main.qml:1448 ../qml/pages/AccountConfig.qml:338
+#: ../qml/pages/AddChat.qml:171 ../qml/pages/ChatView.qml:856
+#: ../qml/pages/ChatView.qml:864 ../qml/pages/ChatView.qml:3105
+#: ../qml/pages/ChatView.qml:3258 ../qml/pages/CreateOrEditGroup.qml:165
 msgid "Delete"
 msgstr "Törlés"
 
-#: ../qml/Main.qml:1407 ../qml/Main.qml:1409
+#: ../qml/Main.qml:1457 ../qml/Main.qml:1459
 msgid "Delete Chat"
 msgstr "Beszélgetés törlése"
 
-#: ../qml/Main.qml:1408
+#: ../qml/Main.qml:1458
 msgid "Are you sure you want to delete \"%1\"?"
 msgstr "Biztosan törli a következőt: „%1”?"
 
-#: ../qml/Main.qml:1424
+#: ../qml/Main.qml:1474
 msgid "Archive"
 msgstr "Archiválás"
 
-#: ../qml/Main.qml:1448
+#: ../qml/Main.qml:1498
 msgid "Pin"
 msgstr "Kitűzés"
 
-#: ../qml/Main.qml:1457 ../qml/Main.qml:1484
-#: ../qml/pages/AddAccountViaQr.qml:329 ../qml/pages/ChatView.qml:856
-#: ../qml/pages/ChatView.qml:879 ../qml/pages/QrGroupInvite.qml:48
-#: ../qml/pages/QrShowScan.qml:504 ../qml/pages/QrShowScan.qml:727
+#: ../qml/Main.qml:1507 ../qml/Main.qml:1534 ../qml/pages/ChatView.qml:878
+#: ../qml/pages/ChatView.qml:901 ../qml/pages/InviteCode.qml:62
+#: ../qml/pages/QrGroupInvite.qml:48 ../qml/pages/QrScanner.qml:241
 msgid "More Options"
 msgstr "További beállítások"
 
-#: ../qml/Main.qml:1474
+#: ../qml/Main.qml:1524
 msgid "Unarchive"
 msgstr "Archiválás visszavonása"
 
-#: ../qml/Main.qml:1743 ../qml/pages/AccountConfig.qml:529
+#: ../qml/Main.qml:1820 ../qml/pages/AccountConfig.qml:529
 msgid "Request"
 msgstr "Kérelem"
 
-#: ../qml/Main.qml:1840
+#: ../qml/Main.qml:1917
 msgid "Loading…"
 msgstr "Betöltés..."
 
-#: ../qml/Main.qml:1866 ../qml/pages/AddChat.qml:35
+#: ../qml/Main.qml:1943 ../qml/pages/AddChat.qml:35
 msgid "New Chat"
 msgstr "Új beszélgetés"
 
 #: ../qml/pages/+ubuntu-touch/FileExportDialog.qml:42
 #: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:37
 #: ../qml/pages/+ubuntu-touch/StringExportDialog.qml:41
+#: ../qml/pages/SelectContactForVcard.qml:34
 msgid "Select"
 msgstr "Kiválasztás"
 
 #: ../qml/pages/+ubuntu-touch/FileExportDialog.qml:93
-#: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:99
+#: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:114
 #: ../qml/pages/+ubuntu-touch/StringExportDialog.qml:76
 #: ../qml/pages/AddChat.qml:41 ../qml/pages/AddChatForContact.qml:48
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:137
 #: ../qml/pages/AddSecondDevice.qml:125
+#: ../qml/pages/AlreadyHaveProfilePopup.qml:46
+#: ../qml/pages/AttachmentPopup.qml:83
 #: ../qml/pages/ChangeDatabasePassword.qml:169
-#: ../qml/pages/ConfirmDeleteFromDevice.qml:80
-#: ../qml/pages/ConfirmDeleteFromServer.qml:80
-#: ../qml/pages/ConfirmDialog.qml:34 ../qml/pages/ConfirmOpenExternalUrl.qml:56
-#: ../qml/pages/CreateDatabasePassword.qml:147
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:82
+#: ../qml/pages/ConfirmDeleteFromServer.qml:82
+#: ../qml/pages/ConfirmDialog.qml:34 ../qml/pages/ConfirmOpenExternalUrl.qml:61
+#: ../qml/pages/CreateDatabasePassword.qml:170
 #: ../qml/pages/CreateOrEditGroup.qml:114 ../qml/pages/GroupAddMember.qml:40
-#: ../qml/pages/ProfileOther.qml:53 ../qml/pages/ProfileSelf.qml:81
+#: ../qml/pages/ProfileOther.qml:50 ../qml/pages/ProfileSelf.qml:81
 #: ../qml/pages/ProgressBackupExport.qml:64
 #: ../qml/pages/ProgressKeysExport.qml:70 ../qml/pages/QrConfirmPopup.qml:55
 #: ../qml/pages/QrMenuPopup.qml:64 ../qml/pages/QrSharePopup.qml:63
 #: ../qml/pages/ReactionsSelectionPopover.qml:352
+#: ../qml/pages/SelectContactForVcard.qml:40
 #: ../qml/pages/UrlDispatchAccountChooserPopup.qml:111
+#: ../qml/pages/UseOtherServerPopup.qml:53
 msgid "Cancel"
 msgstr "Mégse"
 
-#: ../qml/pages/About.qml:28 ../qml/pages/AddAccount.qml:99
+#: ../qml/pages/+ubuntu-touch/FileImportDialog.qml:43
+#: ../qml/pages/ImageViewer.qml:56 ../qml/pages/ImageViewerAnimated.qml:56
+#: ../qml/pages/InviteCode.qml:51 ../qml/pages/MessageHtmlView.qml:49
+#: ../qml/pages/SelectChatForAction.qml:58 ../qml/pages/SettingsPage.qml:397
+#: ../qml/pages/WebxdcPage.qml:51
+msgid "Close"
+msgstr "Bezárás"
+
+#: ../qml/pages/About.qml:28 ../qml/pages/AddAccount.qml:176
 #: ../qml/pages/SettingsPage.qml:420 ../qml/pages/SettingsPage.qml:834
 msgid "About DeltaTouch"
 msgstr ""
@@ -283,7 +303,7 @@ msgid ""
 msgstr ""
 
 #: ../qml/pages/AccountConfig.qml:96 ../qml/pages/AccountConfig.qml:156
-#: ../qml/pages/AccountConfig.qml:309 ../qml/pages/AddAccount.qml:193
+#: ../qml/pages/AccountConfig.qml:309 ../qml/pages/AddAccount.qml:242
 #: ../qml/pages/SettingsPage.qml:294 ../qml/pages/SettingsPage.qml:354
 #: ../qml/pages/SettingsPage.qml:671 ../qml/pages/SettingsPage.qml:1060
 msgid "Continue"
@@ -300,17 +320,17 @@ msgstr ""
 msgid "Known Accounts"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:200 ../qml/pages/AddAccount.qml:70
-#: ../qml/pages/AddAccountViaQr.qml:213 ../qml/pages/ChatView.qml:577
+#: ../qml/pages/AccountConfig.qml:200 ../qml/pages/AddAccount.qml:147
+#: ../qml/pages/ChatView.qml:581 ../qml/pages/OnboardingChatmail.qml:184
 #: ../qml/pages/ProgressBackupImport.qml:72
 #: ../qml/pages/ProgressConfigAccount.qml:71
 #: ../qml/pages/ProgressDatabaseDecryption.qml:96
 #: ../qml/pages/ProgressDatabaseEncryption.qml:94
-#: ../qml/pages/ProgressQrBackupImport.qml:100
+#: ../qml/pages/ProgressQrBackupImport.qml:86 ../qml/pages/QrScanner.qml:125
 msgid "Back"
 msgstr "Vissza"
 
-#: ../qml/pages/AccountConfig.qml:214 ../qml/pages/AddAccount.qml:84
+#: ../qml/pages/AccountConfig.qml:214 ../qml/pages/AddAccount.qml:161
 #: ../qml/pages/SettingsPage.qml:391
 msgid "Settings"
 msgstr "Beállítások"
@@ -320,11 +340,11 @@ msgstr "Beállítások"
 msgid "Info"
 msgstr "Infó"
 
-#: ../qml/pages/AccountConfig.qml:235 ../qml/pages/AddAccount.qml:64
+#: ../qml/pages/AccountConfig.qml:235
 msgid "Add Account"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:266 ../qml/pages/AddAccount.qml:167
+#: ../qml/pages/AccountConfig.qml:266 ../qml/pages/AddAccount.qml:216
 msgid "Encrypted database (experimental)"
 msgstr ""
 
@@ -342,12 +362,12 @@ msgid ""
 "to this setting."
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:307 ../qml/pages/AddAccount.qml:191
+#: ../qml/pages/AccountConfig.qml:307 ../qml/pages/AddAccount.qml:240
 #: ../qml/pages/SettingsPage.qml:669
 msgid "Really encrypt the database?"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:308 ../qml/pages/AddAccount.qml:192
+#: ../qml/pages/AccountConfig.qml:308 ../qml/pages/AddAccount.qml:241
 #: ../qml/pages/SettingsPage.qml:670
 msgid ""
 "• Database encryption is experimental, use at your own risk.\n"
@@ -360,7 +380,7 @@ msgid ""
 "• You will have to enter the phassphrase upon each startup of the app."
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:308 ../qml/pages/AddAccount.qml:192
+#: ../qml/pages/AccountConfig.qml:308 ../qml/pages/AddAccount.qml:241
 #: ../qml/pages/SettingsPage.qml:670
 msgid ""
 "• Database encryption is experimental, use at your own risk. BACKUP YOUR "
@@ -374,12 +394,12 @@ msgid ""
 "• You will have to enter the phassphrase upon each startup of the app."
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:318 ../qml/pages/AddAccount.qml:202
+#: ../qml/pages/AccountConfig.qml:318 ../qml/pages/AddAccount.qml:251
 #: ../qml/pages/SettingsPage.qml:680
 msgid "Really disable database encryption?"
 msgstr ""
 
-#: ../qml/pages/AccountConfig.qml:319 ../qml/pages/AddAccount.qml:203
+#: ../qml/pages/AccountConfig.qml:319 ../qml/pages/AddAccount.qml:252
 #: ../qml/pages/SettingsPage.qml:681
 msgid "Disable encryption"
 msgstr ""
@@ -417,7 +437,7 @@ msgid "Mute"
 msgstr "Némítás"
 
 #: ../qml/pages/AccountConfig.qml:596
-#: ../qml/pages/SwitcherSidebarDelegate.qml:144
+#: ../qml/pages/SwitcherSidebarDelegate.qml:136
 msgid "Account is not configured."
 msgstr ""
 
@@ -435,60 +455,44 @@ msgstr ""
 #: ../qml/pages/AddChatForContact.qml:60
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:154
 #: ../qml/pages/ChangeDatabasePassword.qml:110
-#: ../qml/pages/ChangeDatabasePassword.qml:185 ../qml/pages/ChatView.qml:2165
-#: ../qml/pages/ConfirmDeleteFromDevice.qml:69
-#: ../qml/pages/ConfirmDeleteFromServer.qml:69
+#: ../qml/pages/ChangeDatabasePassword.qml:185 ../qml/pages/ChatView.qml:2258
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:71
+#: ../qml/pages/ConfirmDeleteFromServer.qml:71
 #: ../qml/pages/ConfirmDialog.qml:33
 #: ../qml/pages/CreateDatabasePassword.qml:109
-#: ../qml/pages/CreateDatabasePassword.qml:165
+#: ../qml/pages/CreateDatabasePassword.qml:155
 #: ../qml/pages/CreateOrEditGroup.qml:127 ../qml/pages/GroupAddMember.qml:54
 #: ../qml/pages/ProfileSelf.qml:93 ../qml/pages/ProgressKeysExport.qml:78
 #: ../qml/pages/QrConfirmPopup.qml:46 ../qml/pages/ReactionsInfoPopup.qml:182
 #: ../qml/pages/ReactionsSelectionPopover.qml:364
-#: ../qml/pages/RequestDatabasePassword.qml:154
-#: ../qml/pages/RequestDatabasePassword.qml:209
+#: ../qml/pages/RequestDatabasePassword.qml:170
+#: ../qml/pages/RequestDatabasePassword.qml:220
 #: ../qml/pages/VerifiedPopup.qml:35
 msgid "OK"
 msgstr "OK"
 
-#: ../qml/pages/AddAccount.qml:136
-msgid "Log into your E-Mail Account"
-msgstr "Jelentkezzen be az e-mail fiókjába"
-
-#: ../qml/pages/AddAccount.qml:138 ../qml/pages/AddAccount.qml:292
-msgid "Restore from Backup"
-msgstr "Biztonsági mentés visszaállítása"
-
-#: ../qml/pages/AddAccount.qml:139
-msgid "Scan Invitation Code"
-msgstr "Meghívó kód beolvasása"
-
-#: ../qml/pages/AddAccount.qml:301
-msgid "The selected file is not a valid backup file."
-msgstr ""
-
-#: ../qml/pages/AddAccountViaQr.qml:148
+#: ../qml/pages/AddAccount.qml:87
 msgid "The scanned QR code cannot be used to set up a new account."
 msgstr ""
 
-#: ../qml/pages/AddAccountViaQr.qml:207 ../qml/pages/AddChatForContact.qml:92
-#: ../qml/pages/QrShowScan.qml:591 ../qml/pages/VerifiedPopup.qml:43
-msgid "Scan QR Code"
-msgstr "QR-kód olvasása"
+#: ../qml/pages/AddAccount.qml:141 ../qml/pages/AddAccount.qml:309
+msgid "Create New Profile"
+msgstr "Új profil létrehozása"
 
-#: ../qml/pages/AddAccountViaQr.qml:316 ../qml/pages/QrShowScan.qml:714
-msgid "Hold your camera over the QR code."
-msgstr ""
+#: ../qml/pages/AddAccount.qml:296
+msgid "Secure Decentralized Chat"
+msgstr "Biztonságos decentralizált csevegés"
 
-#: ../qml/pages/AddAccountViaQr.qml:341 ../qml/pages/QrShowScan.qml:739
-msgid "Paste from Clipboard"
-msgstr "Beillesztés a vágólapról"
+#: ../qml/pages/AddAccount.qml:317 ../qml/pages/AlreadyHaveProfilePopup.qml:33
+msgid "I Already Have a Profile"
+msgstr "Már van profilom"
 
-#: ../qml/pages/AddAccountViaQr.qml:357 ../qml/pages/QrShowScan.qml:755
-msgid "Load QR Code as Image"
-msgstr "QR-kód betöltése képként"
+#: ../qml/pages/AddAccount.qml:420 ../qml/pages/AlreadyHaveProfilePopup.qml:41
+msgid "Restore from Backup"
+msgstr "Biztonsági mentés visszaállítása"
 
 #: ../qml/pages/AddChat.qml:69 ../qml/pages/GroupAddMember.qml:80
+#: ../qml/pages/SelectContactForVcard.qml:61
 msgid "Enter name or e-mail address"
 msgstr "Adjon meg egy nevet vagy egy e-mail címet"
 
@@ -508,15 +512,20 @@ msgstr "%1 nevű partner tölése?\n\nA folyamatban lévő csevegésekkel rendel
 msgid "Please enter a valid e-mail address"
 msgstr "Adjon meg egy érvényes e-mail címet"
 
-#: ../qml/pages/AddChatForContact.qml:129
+#: ../qml/pages/AddChatForContact.qml:92 ../qml/pages/InviteCode.qml:134
+#: ../qml/pages/QrScanner.qml:119 ../qml/pages/VerifiedPopup.qml:43
+msgid "Scan QR Code"
+msgstr "QR-kód olvasása"
+
+#: ../qml/pages/AddChatForContact.qml:127
 msgid "or"
 msgstr "vagy"
 
-#: ../qml/pages/AddChatForContact.qml:158
+#: ../qml/pages/AddChatForContact.qml:156
 msgid "Name"
 msgstr "Név"
 
-#: ../qml/pages/AddChatForContact.qml:198
+#: ../qml/pages/AddChatForContact.qml:196
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:252
 msgid "E-Mail Address"
 msgstr "E-mail cím"
@@ -541,6 +550,7 @@ msgid "All"
 msgstr "Mind"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:129
+#: ../qml/pages/OnboardingChatmail.qml:368
 msgid "Log In"
 msgstr "Bejelentkezés"
 
@@ -553,7 +563,7 @@ msgid "Password"
 msgstr "Jelszó"
 
 #: ../qml/pages/AddOrConfigureEmailAccount.qml:421
-#: ../qml/pages/ChatView.qml:2182
+#: ../qml/pages/ChatView.qml:2275 ../qml/pages/RequestDatabasePassword.qml:251
 msgid "More Info"
 msgstr "További információ"
 
@@ -750,15 +760,15 @@ msgstr "Hibaelhárítás"
 msgid "Copy to Clipboard"
 msgstr "Vágólapra másolás"
 
-#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:525
+#: ../qml/pages/AdvancedSettings.qml:49 ../qml/pages/AdvancedSettings.qml:503
 msgid "Worse quality, small size"
 msgstr "Rosszabb minőség, kis méret"
 
-#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:511
+#: ../qml/pages/AdvancedSettings.qml:52 ../qml/pages/AdvancedSettings.qml:489
 msgid "Balanced"
 msgstr "kiegyensúlyozott"
 
-#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:497
+#: ../qml/pages/AdvancedSettings.qml:55 ../qml/pages/AdvancedSettings.qml:475
 msgid "High"
 msgstr "Magas"
 
@@ -770,67 +780,88 @@ msgstr ""
 msgid "Voice Message Quality"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:174
-msgid "View Log"
-msgstr "Naplófájl megtekintése"
-
-#: ../qml/pages/AdvancedSettings.qml:201 ../qml/pages/SettingsPage.qml:861
+#: ../qml/pages/AdvancedSettings.qml:179 ../qml/pages/SettingsPage.qml:861
 msgid "Current Account"
 msgstr ""
 
-#: ../qml/pages/AdvancedSettings.qml:222
+#: ../qml/pages/AdvancedSettings.qml:200
 msgid "Autocrypt"
 msgstr "Autocrypt"
 
-#: ../qml/pages/AdvancedSettings.qml:235
+#: ../qml/pages/AdvancedSettings.qml:213
 msgid "Prefer End-To-End Encryption"
 msgstr "Végpontok közötti titkosítás előnyben részesítése"
 
-#: ../qml/pages/AdvancedSettings.qml:272
+#: ../qml/pages/AdvancedSettings.qml:250
 msgid "IMAP Folder Handling"
 msgstr "IMAP mappák kezelése"
 
-#: ../qml/pages/AdvancedSettings.qml:286
+#: ../qml/pages/AdvancedSettings.qml:264
 msgid "Watch Sent Folder"
 msgstr "Elküldött mappa figyelése"
 
-#: ../qml/pages/AdvancedSettings.qml:319
+#: ../qml/pages/AdvancedSettings.qml:297
 msgid "Send Copy to Self"
 msgstr "Másolat küldése önmagának"
 
-#: ../qml/pages/AdvancedSettings.qml:320
+#: ../qml/pages/AdvancedSettings.qml:298
 msgid "Required when using this account on multiple devices."
 msgstr "Szükséges, ha ezt a fiókot több eszközön is használja."
 
-#: ../qml/pages/AdvancedSettings.qml:354
+#: ../qml/pages/AdvancedSettings.qml:332
 msgid "Move automatically to DeltaChat Folder"
 msgstr "Automatikus áthelyezés a DeltaChat mappába"
 
-#: ../qml/pages/AdvancedSettings.qml:355
+#: ../qml/pages/AdvancedSettings.qml:333
 msgid "Chat conversations are moved to avoid cluttering the Inbox"
 msgstr "A csevegések áthelyezésre kerülnek, hogy elkerüljék a bejövő üzenetek mappa zűrzavarát."
 
-#: ../qml/pages/AdvancedSettings.qml:388
+#: ../qml/pages/AdvancedSettings.qml:366
 msgid "Only Fetch from DeltaChat Folder"
 msgstr "Csak a DeltaChat mappából történjen lekérdezés"
 
-#: ../qml/pages/AdvancedSettings.qml:389
+#: ../qml/pages/AdvancedSettings.qml:367
 msgid ""
 "Ignore other folders. Requires your server to move chat messages to the "
 "DeltaChat folder."
 msgstr "Más mappák figyelmen kívül hagyása. A kiszolgálónak a DeltaChat mappába kell áthelyeznie a csevegőüzeneteket."
 
-#: ../qml/pages/AdvancedSettings.qml:427
+#: ../qml/pages/AdvancedSettings.qml:405
 msgid "Manage Keys"
 msgstr "Privát kulcsok kezelése"
 
-#: ../qml/pages/AdvancedSettings.qml:441
+#: ../qml/pages/AdvancedSettings.qml:419
 msgid "Export Secret Keys"
 msgstr "Privát kulcsok exportálása"
 
-#: ../qml/pages/AdvancedSettings.qml:462 ../qml/pages/ProgressKeysImport.qml:59
+#: ../qml/pages/AdvancedSettings.qml:440 ../qml/pages/ProgressKeysImport.qml:59
 msgid "Import Secret Keys"
 msgstr "Privát kulcsok importálása"
+
+#: ../qml/pages/AttachmentPopup.qml:35 ../qml/pages/FileImportDialog.qml:33
+msgid "Add Attachment"
+msgstr "Fájl csatolása"
+
+#: ../qml/pages/AttachmentPopup.qml:38 ../qml/pages/ChatView.qml:451
+#: ../qml/pages/ChatView.qml:1705
+msgid "Voice Message"
+msgstr "Hangüzenet"
+
+#: ../qml/pages/AttachmentPopup.qml:47
+msgid "File"
+msgstr "Fájl"
+
+#: ../qml/pages/AttachmentPopup.qml:56
+msgid "Audio"
+msgstr "Hang"
+
+#: ../qml/pages/AttachmentPopup.qml:65
+msgid "Image"
+msgstr "Kép"
+
+#: ../qml/pages/AttachmentPopup.qml:74
+msgid "Contact"
+msgstr "Névjegy"
 
 #: ../qml/pages/BlockedContacts.qml:34 ../qml/pages/SettingsPage.qml:894
 msgid "Blocked Contacts"
@@ -859,7 +890,7 @@ msgid "Enter New Passphrase"
 msgstr ""
 
 #: ../qml/pages/ChangeDatabasePassword.qml:130
-#: ../qml/pages/RequestDatabasePassword.qml:59
+#: ../qml/pages/RequestDatabasePassword.qml:57
 msgid "Passphrase incorrect"
 msgstr ""
 
@@ -868,8 +899,8 @@ msgid "Re-Enter New Password"
 msgstr ""
 
 #: ../qml/pages/ChangeDatabasePassword.qml:156
-#: ../qml/pages/CreateDatabasePassword.qml:157
-#: ../qml/pages/RequestDatabasePassword.qml:187
+#: ../qml/pages/CreateDatabasePassword.qml:147
+#: ../qml/pages/RequestDatabasePassword.qml:204
 msgid "Passwords do not match, try again"
 msgstr ""
 
@@ -958,11 +989,11 @@ msgstr "Eltűnő üzenetek"
 msgid "Clear Chat"
 msgstr "Csevegés kiürítése"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:152 ../qml/pages/ChatView.qml:841
+#: ../qml/pages/ChatInfosActionsChatview.qml:152 ../qml/pages/ChatView.qml:863
 msgid "Delete %1 message here and on the server?"
 msgstr "%1 üzenet törlése innen is és a kiszolgálóról is?"
 
-#: ../qml/pages/ChatInfosActionsChatview.qml:152
+#: ../qml/pages/ChatInfosActionsChatview.qml:152 ../qml/pages/ChatView.qml:863
 msgid "Delete %1 message?"
 msgstr "%1 üzenet törlése?"
 
@@ -974,91 +1005,95 @@ msgstr "%1 üzenet törlése innen is és a kiszolgálóról is?"
 msgid "Delete %1 messages?"
 msgstr "%1 üzenet törlése?"
 
-#: ../qml/pages/ChatView.qml:158 ../qml/pages/ImageViewer.qml:39
+#: ../qml/pages/ChatView.qml:155 ../qml/pages/ImageViewer.qml:39
 #: ../qml/pages/ImageViewerAnimated.qml:39 ../qml/pages/SettingsPage.qml:125
 msgid "File could not be saved"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:163 ../qml/pages/ImageViewer.qml:44
+#: ../qml/pages/ChatView.qml:160 ../qml/pages/ImageViewer.qml:44
 #: ../qml/pages/ImageViewerAnimated.qml:44 ../qml/pages/SettingsPage.qml:130
 msgid "Saved file "
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:304 ../qml/pages/ChatView.qml:2116
+#: ../qml/pages/ChatView.qml:301 ../qml/pages/ChatView.qml:2209
 msgid "This chat contains locally generated messages; writing is disabled."
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:306 ../qml/pages/ChatView.qml:2118
+#: ../qml/pages/ChatView.qml:303 ../qml/pages/ChatView.qml:2211
 msgid ""
 "You must be in this group to post a message. To join, ask another member."
 msgstr "Ahhoz hogy üzenetet küldhess ebbe a csoportba be kell lépned. A csatlakozáshoz kérdezz meg egy másik tagot."
 
-#: ../qml/pages/ChatView.qml:447 ../qml/pages/ChatView.qml:1612
-msgid "Voice Message"
-msgstr "Hangüzenet"
-
-#: ../qml/pages/ChatView.qml:591
+#: ../qml/pages/ChatView.qml:595 ../qml/pages/WebxdcPage.qml:62
 msgid "More Actions"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:871
+#: ../qml/pages/ChatView.qml:893
 msgid "Reply"
 msgstr "Válasz"
 
-#: ../qml/pages/ChatView.qml:889
+#: ../qml/pages/ChatView.qml:915
 msgid "Forward"
 msgstr "Továbbítás"
 
-#: ../qml/pages/ChatView.qml:1366
+#: ../qml/pages/ChatView.qml:922
+msgid "Forward to…"
+msgstr "Továbbítás…"
+
+#: ../qml/pages/ChatView.qml:927
+msgid "Forward messages to %1?"
+msgstr "Továbbítja az üzenetet a számára: %1?"
+
+#: ../qml/pages/ChatView.qml:1385
 msgid "Forwarded Message"
 msgstr "Továbbított üzenet"
 
-#: ../qml/pages/ChatView.qml:1558
+#: ../qml/pages/ChatView.qml:1651
 msgid "Start…"
 msgstr "Indítás..."
 
-#: ../qml/pages/ChatView.qml:1709
+#: ../qml/pages/ChatView.qml:1802
 msgid "Download"
 msgstr "Letöltés"
 
-#: ../qml/pages/ChatView.qml:1711
+#: ../qml/pages/ChatView.qml:1804
 msgid "Download failed"
 msgstr "Sikertelen letöltés"
 
-#: ../qml/pages/ChatView.qml:1713
+#: ../qml/pages/ChatView.qml:1806
 msgid "Downloading…"
 msgstr "Letöltés..."
 
-#: ../qml/pages/ChatView.qml:1752
+#: ../qml/pages/ChatView.qml:1845
 msgid "Unread Messages"
 msgstr ""
 
-#: ../qml/pages/ChatView.qml:1787
+#: ../qml/pages/ChatView.qml:1880
 msgid "Show Full Message…"
 msgstr "Teljes üzenet megjelenítése..."
 
-#: ../qml/pages/ChatView.qml:2152
+#: ../qml/pages/ChatView.qml:2245
 msgid "%1 sent a message from another device."
 msgstr "%1 egy másik eszközről küldött üzenetet."
 
-#: ../qml/pages/ChatView.qml:2489
+#: ../qml/pages/ChatView.qml:2656
 msgid "Tap to Open"
 msgstr "Koppintson ide a megnyitáshoz."
 
-#: ../qml/pages/ChatView.qml:3149
+#: ../qml/pages/ChatView.qml:3088
 msgid "Accept"
 msgstr "Elfogadás"
 
-#: ../qml/pages/ChatView.qml:3182
+#: ../qml/pages/ChatView.qml:3121
 msgid "Block"
 msgstr "Blokkolás"
 
-#: ../qml/pages/ConfirmDeleteFromDevice.qml:36
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:37
 #: ../qml/pages/SettingsPage.qml:1171
 msgid "Delete Messages from Device"
 msgstr "Üzenetek törlése az eszközről"
 
-#: ../qml/pages/ConfirmDeleteFromDevice.qml:40
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:41
 msgid ""
 "Do you want to delete %1 messages now and all newly fetched messages \"%2\" "
 "in the future?\n"
@@ -1070,17 +1105,17 @@ msgid ""
 "• \"Saved messages\" will be skipped from local deletion"
 msgstr "Szeretné törölni a %1 üzenetet most és az összes újonnan érkező „%2” üzenetet a jövőben?\n\n• Ez magában foglalja az összes médiát\n\n• Az üzenetek törlésre kerülnek, akár látták őket, akár nem\n\n• A „Mentett üzenetek” nem kerülnek törlésre a helyi törlésből."
 
-#: ../qml/pages/ConfirmDeleteFromDevice.qml:62
-#: ../qml/pages/ConfirmDeleteFromServer.qml:62
+#: ../qml/pages/ConfirmDeleteFromDevice.qml:64
+#: ../qml/pages/ConfirmDeleteFromServer.qml:64
 msgid "I understand, delete all these messages"
 msgstr "Értem, törölje ezeket az üzeneteket"
 
-#: ../qml/pages/ConfirmDeleteFromServer.qml:36
+#: ../qml/pages/ConfirmDeleteFromServer.qml:37
 #: ../qml/pages/SettingsPage.qml:1200
 msgid "Delete Messages from Server"
 msgstr "Üzenetek törlése a kiszolgálóról"
 
-#: ../qml/pages/ConfirmDeleteFromServer.qml:40
+#: ../qml/pages/ConfirmDeleteFromServer.qml:41
 msgid ""
 "Do you want to delete %1 messages now and all newly fetched messages \"%2\" "
 "in the future?\n"
@@ -1093,15 +1128,15 @@ msgid ""
 "Delta Chat"
 msgstr "Szeretné törölni a %1 üzenetet most és az összes újonnan érkező „%2” üzenetet a jövőben?\n\n⚠️ Ez magába foglalja az e-maileket, a médiát és a „Mentett üzeneteket” minden kiszolgáló mappában\n\n⚠️ Ne használja ezt a funkciót, ha az adatokat a kiszolgálón szeretné tartani\n\n⚠️ Ne használja ezt a funkciót, ha a Delta Chat mellett más e-mail klienseket is használ."
 
-#: ../qml/pages/ConfirmOpenExternalUrl.qml:30
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:33
 msgid "Do you want to open this link?"
 msgstr "Biztosan megnyitja ezt a hivatkozást?"
 
-#: ../qml/pages/ConfirmOpenExternalUrl.qml:35
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:38
 msgid "Open"
 msgstr "Megnyitás"
 
-#: ../qml/pages/ConfirmOpenExternalUrl.qml:45
+#: ../qml/pages/ConfirmOpenExternalUrl.qml:49
 msgid "Copy Link"
 msgstr "Hívatkozás másolása"
 
@@ -1110,19 +1145,18 @@ msgid "Connectivity"
 msgstr "Csatlakoztathatóság"
 
 #: ../qml/pages/CreateDatabasePassword.qml:44
-#: ../qml/pages/CreateDatabasePassword.qml:168
-#: ../qml/pages/RequestDatabasePassword.qml:212
+#: ../qml/pages/CreateDatabasePassword.qml:158
+#: ../qml/pages/RequestDatabasePassword.qml:224
 msgid "Enter Database Password"
 msgstr ""
 
 #: ../qml/pages/CreateDatabasePassword.qml:120
-#: ../qml/pages/RequestDatabasePassword.qml:77
+#: ../qml/pages/RequestDatabasePassword.qml:74
 msgid "Re-Enter Password"
 msgstr ""
 
-#: ../qml/pages/CreateOrEditGroup.qml:143 ../qml/pages/QrGroupInvite.qml:42
-#: ../qml/pages/QrSharePopup.qml:28 ../qml/pages/QrShowScan.qml:484
-#: ../qml/pages/QrShowScan.qml:579
+#: ../qml/pages/CreateOrEditGroup.qml:143 ../qml/pages/InviteCode.qml:45
+#: ../qml/pages/QrGroupInvite.qml:42 ../qml/pages/QrSharePopup.qml:28
 msgid "QR Invite Code"
 msgstr "QR meghívó kód"
 
@@ -1166,16 +1200,16 @@ msgstr "Csoportkép törlése"
 #: ../qml/pages/EphemeralTimerSettings.qml:151
 #: ../qml/pages/EphemeralTimerSettings.qml:155
 #: ../qml/pages/EphemeralTimerSettings.qml:225
-#: ../qml/pages/SettingsPage.qml:231 ../qml/pages/SettingsPage.qml:1651
-#: ../qml/pages/SettingsPage.qml:1657
+#: ../qml/pages/SettingsPage.qml:231 ../qml/pages/SettingsPage.qml:1633
+#: ../qml/pages/SettingsPage.qml:1636
 msgid "After 30 seconds"
 msgstr "30 másodperc elteltével"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:45
 #: ../qml/pages/EphemeralTimerSettings.qml:165
 #: ../qml/pages/EphemeralTimerSettings.qml:169
-#: ../qml/pages/SettingsPage.qml:235 ../qml/pages/SettingsPage.qml:1672
-#: ../qml/pages/SettingsPage.qml:1678
+#: ../qml/pages/SettingsPage.qml:235 ../qml/pages/SettingsPage.qml:1645
+#: ../qml/pages/SettingsPage.qml:1648
 msgid "After 1 minute"
 msgstr "1 perc elteltével"
 
@@ -1183,8 +1217,8 @@ msgstr "1 perc elteltével"
 #: ../qml/pages/EphemeralTimerSettings.qml:179
 #: ../qml/pages/EphemeralTimerSettings.qml:183
 #: ../qml/pages/SettingsPage.qml:195 ../qml/pages/SettingsPage.qml:239
-#: ../qml/pages/SettingsPage.qml:1496 ../qml/pages/SettingsPage.qml:1502
-#: ../qml/pages/SettingsPage.qml:1693 ../qml/pages/SettingsPage.qml:1699
+#: ../qml/pages/SettingsPage.qml:1514 ../qml/pages/SettingsPage.qml:1517
+#: ../qml/pages/SettingsPage.qml:1657 ../qml/pages/SettingsPage.qml:1660
 msgid "After 1 hour"
 msgstr "1 óra elteltével"
 
@@ -1192,8 +1226,8 @@ msgstr "1 óra elteltével"
 #: ../qml/pages/EphemeralTimerSettings.qml:193
 #: ../qml/pages/EphemeralTimerSettings.qml:197
 #: ../qml/pages/SettingsPage.qml:199 ../qml/pages/SettingsPage.qml:243
-#: ../qml/pages/SettingsPage.qml:1517 ../qml/pages/SettingsPage.qml:1523
-#: ../qml/pages/SettingsPage.qml:1714 ../qml/pages/SettingsPage.qml:1720
+#: ../qml/pages/SettingsPage.qml:1526 ../qml/pages/SettingsPage.qml:1529
+#: ../qml/pages/SettingsPage.qml:1669 ../qml/pages/SettingsPage.qml:1672
 msgid "After 1 day"
 msgstr "1 nap elteltével"
 
@@ -1201,16 +1235,16 @@ msgstr "1 nap elteltével"
 #: ../qml/pages/EphemeralTimerSettings.qml:207
 #: ../qml/pages/EphemeralTimerSettings.qml:211
 #: ../qml/pages/SettingsPage.qml:203 ../qml/pages/SettingsPage.qml:247
-#: ../qml/pages/SettingsPage.qml:1538 ../qml/pages/SettingsPage.qml:1544
-#: ../qml/pages/SettingsPage.qml:1735 ../qml/pages/SettingsPage.qml:1741
+#: ../qml/pages/SettingsPage.qml:1538 ../qml/pages/SettingsPage.qml:1541
+#: ../qml/pages/SettingsPage.qml:1681 ../qml/pages/SettingsPage.qml:1684
 msgid "After 1 week"
 msgstr "1 hét elteltével"
 
 #: ../qml/pages/EphemeralTimerSettings.qml:61
 #: ../qml/pages/EphemeralTimerSettings.qml:221
 #: ../qml/pages/SettingsPage.qml:207 ../qml/pages/SettingsPage.qml:251
-#: ../qml/pages/SettingsPage.qml:1559 ../qml/pages/SettingsPage.qml:1565
-#: ../qml/pages/SettingsPage.qml:1756 ../qml/pages/SettingsPage.qml:1762
+#: ../qml/pages/SettingsPage.qml:1550 ../qml/pages/SettingsPage.qml:1553
+#: ../qml/pages/SettingsPage.qml:1693 ../qml/pages/SettingsPage.qml:1696
 msgid "After 4 weeks"
 msgstr "4 hét elteltével"
 
@@ -1224,24 +1258,25 @@ msgid ""
 "copy, save, and forward messages or use other e-mail clients."
 msgstr "A csevegés minden tagjára vonatkozik, ha a Delta Chat-et használják; az üzeneteket továbbra is másolhatják, menthetik és továbbíthatják, vagy más e-mail klienseket használhatnak."
 
-#: ../qml/pages/FileImportDialog.qml:33
-msgid "Add Attachment"
-msgstr "Fájl csatolása"
-
-#: ../qml/pages/ForwardMessage.qml:41
-msgid "Forward to…"
-msgstr "Továbbítás…"
-
-#: ../qml/pages/ForwardMessage.qml:48 ../qml/pages/ImageViewer.qml:56
-#: ../qml/pages/ImageViewerAnimated.qml:56 ../qml/pages/MessageHtmlView.qml:49
-#: ../qml/pages/QrShowScan.qml:490 ../qml/pages/SettingsPage.qml:397
-#: ../qml/pages/WebxdcPage.qml:50
-msgid "Close"
-msgstr "Bezárás"
-
 #: ../qml/pages/ImageViewer.qml:92 ../qml/pages/ImageViewerAnimated.qml:88
 msgid "Save"
 msgstr "Mentés"
+
+#: ../qml/pages/InviteCode.qml:81
+msgid ""
+"This QR code can be scanned by others to contact you.\n"
+"\n"
+"You can deactivate the QR code here and reactivate it by scanning it again."
+msgstr "Ezt a QR-kódot mások is beolvashatják, hogy felvegyék önnel a kapcsolatot.\n\nA QR-kódot itt kikapcsolhatja, és újból aktiválhatja, ha újra beolvassa."
+
+#: ../qml/pages/InviteCode.qml:82 ../qml/pages/QrGroupInvite.qml:68
+#: ../qml/pages/QrMenuPopup.qml:32
+msgid "Deactivate QR Code"
+msgstr "QR-kód deaktiválása"
+
+#: ../qml/pages/InviteCode.qml:112 ../qml/pages/QrGroupInvite.qml:98
+msgid "Share"
+msgstr "Megosztás"
 
 #: ../qml/pages/MessageHtmlView.qml:111 ../qml/pages/MessageHtmlView.qml:217
 msgid "Load Remote Images"
@@ -1261,15 +1296,19 @@ msgid ""
 "Load remote images?"
 msgstr "A távoli képek követhetik önt.\n\nEz a beállítás betűtípusokat és egyéb tartalmakat is betölthet. Ha letiltja, beágyazott vagy gyorsítótárazott képek jelenhetnek meg.\n\nTávoli képek betöltése?"
 
-#: ../qml/pages/MessageInfosActions.qml:37
+#: ../qml/pages/MessageInfosActions.qml:38
+msgid "Reply Privately"
+msgstr "Válasz privátban"
+
+#: ../qml/pages/MessageInfosActions.qml:50
 msgid "Copy Text"
 msgstr "Szöveg másolása"
 
-#: ../qml/pages/MessageInfosActions.qml:51
+#: ../qml/pages/MessageInfosActions.qml:64
 msgid "Export Attachment"
 msgstr "Csatolmány exportálása"
 
-#: ../qml/pages/MessageInfosActions.qml:63
+#: ../qml/pages/MessageInfosActions.qml:76
 msgid "Message Details"
 msgstr "Üzenet részletei"
 
@@ -1277,9 +1316,56 @@ msgstr "Üzenet részletei"
 msgid "Not Implemented Yet"
 msgstr ""
 
-#: ../qml/pages/NotImplemented.qml:36 ../qml/pages/QrShowScan.qml:242
+#: ../qml/pages/NotImplemented.qml:36
 msgid "Sorry, not implemented yet :-("
 msgstr ""
+
+#: ../qml/pages/OnboardingChatmail.qml:139
+msgid "The scanned QR code cannot be used to set up a new profile."
+msgstr "A beolvasott QR-kód nem használható új profil beállítására."
+
+#: ../qml/pages/OnboardingChatmail.qml:178
+msgid "Your Profile"
+msgstr "Profil"
+
+#: ../qml/pages/OnboardingChatmail.qml:284 ../qml/pages/ProfileSelf.qml:219
+msgid "Your Name"
+msgstr "Neved"
+
+#: ../qml/pages/OnboardingChatmail.qml:331
+msgid "Please enter a name."
+msgstr "Adjon meg egy nevet."
+
+#: ../qml/pages/OnboardingChatmail.qml:341
+msgid ""
+"Set a name that your contacts will recognize. You can also set a profile "
+"image."
+msgstr "Adjon meg egy olyan nevet, amelyet a partnerei felismernek. Beállíthat egy profilképet is."
+
+#: ../qml/pages/OnboardingChatmail.qml:353
+msgid "Privacy Policy for %1"
+msgstr "Adatvédelmi irányelvek ehhez: %1"
+
+#: ../qml/pages/OnboardingChatmail.qml:355
+msgid "About profiles on %1"
+msgstr "További információ a profilokról itt: %1"
+
+#: ../qml/pages/OnboardingChatmail.qml:368
+msgid "Agree & Create Profile"
+msgstr "Elfogadás & Profil létrehozása"
+
+#: ../qml/pages/OnboardingChatmail.qml:386
+#: ../qml/pages/UseOtherServerPopup.qml:34
+msgid "Use Other Server"
+msgstr "Másik szolgáltató használata"
+
+#: ../qml/pages/OnboardingChatmail.qml:471 ../qml/pages/ProfileSelf.qml:357
+msgid "Select Profile Image"
+msgstr "Profilkép kiválasztása"
+
+#: ../qml/pages/OnboardingChatmail.qml:509 ../qml/pages/ProfileSelf.qml:394
+msgid "Delete Profile Image"
+msgstr "Profilkép törlése"
 
 #: ../qml/pages/ProfileOther.qml:38
 msgid "Last seen at %1"
@@ -1289,41 +1375,29 @@ msgstr "Utoljára látta ekkor: %1"
 msgid "Last seen: Unknown"
 msgstr "Utoljára látta: Ismeretlen"
 
-#: ../qml/pages/ProfileOther.qml:47
+#: ../qml/pages/ProfileOther.qml:44
 msgid "View Profile"
 msgstr "Profil megtekintése"
 
-#: ../qml/pages/ProfileOther.qml:283
+#: ../qml/pages/ProfileOther.qml:285
 msgid "Locally generated messages"
 msgstr "Helyileg generált üzenetek"
 
-#: ../qml/pages/ProfileOther.qml:313
+#: ../qml/pages/ProfileOther.qml:315
 msgid "Introduced by %1"
 msgstr "%1 által bemutatva"
 
-#: ../qml/pages/ProfileOther.qml:313
+#: ../qml/pages/ProfileOther.qml:315
 msgid "Introduced by me"
 msgstr "Ön által bemutatva"
 
-#: ../qml/pages/ProfileOther.qml:352 ../qml/pages/ProfileSelf.qml:313
+#: ../qml/pages/ProfileOther.qml:354 ../qml/pages/ProfileSelf.qml:269
 msgid "Signature Text"
 msgstr ""
 
-#: ../qml/pages/ProfileSelf.qml:124
+#: ../qml/pages/ProfileSelf.qml:133
 msgid "Profile"
 msgstr "Profil"
-
-#: ../qml/pages/ProfileSelf.qml:207
-msgid "Select Profile Image"
-msgstr "Profilkép kiválasztása"
-
-#: ../qml/pages/ProfileSelf.qml:244
-msgid "Delete Profile Image"
-msgstr "Profilkép törlése"
-
-#: ../qml/pages/ProfileSelf.qml:264
-msgid "Your Name"
-msgstr "Neved"
 
 #: ../qml/pages/ProgressBackupExport.qml:36
 msgid ""
@@ -1345,7 +1419,6 @@ msgstr ""
 
 #: ../qml/pages/ProgressBackupImport.qml:52
 #: ../qml/pages/ProgressConfigAccount.qml:52
-#: ../qml/pages/ProgressQrBackupImport.qml:64
 msgid "Done"
 msgstr "Kész"
 
@@ -1408,90 +1481,28 @@ msgstr "Titkosítási kulcsok importálva innen: „%1”."
 msgid "Open Url in Browser"
 msgstr ""
 
-#: ../qml/pages/QrGroupInvite.qml:67 ../qml/pages/QrShowScan.qml:348
+#: ../qml/pages/QrGroupInvite.qml:67
 msgid ""
 "This QR code can be scanned by others to join the group \"%1\".\n"
 "\n"
 "You can deactivate the QR code here and reactivate it by scanning it again."
 msgstr "Ezt a QR-kódot mások is beolvashatják, hogy csatlakozhassanak a(z) „%1” nevű csoporthoz.\n\nA QR-kódot itt kikapcsolhatja, és újra aktiválhatja, ha újra beolvassa."
 
-#: ../qml/pages/QrGroupInvite.qml:68 ../qml/pages/QrMenuPopup.qml:32
-#: ../qml/pages/QrShowScan.qml:332 ../qml/pages/QrShowScan.qml:349
-#: ../qml/pages/QrShowScan.qml:525
-msgid "Deactivate QR Code"
-msgstr "QR-kód deaktiválása"
-
-#: ../qml/pages/QrGroupInvite.qml:98 ../qml/pages/QrShowScan.qml:555
-msgid "Share"
-msgstr "Megosztás"
-
 #: ../qml/pages/QrMenuPopup.qml:52 ../qml/pages/QrSharePopup.qml:50
 msgid "Copied QR url to clipboard"
 msgstr "QR url másolása a vágólapra"
 
-#: ../qml/pages/QrShowScan.qml:154
-msgid "The fingerprint of %1 is valid!"
+#: ../qml/pages/QrScanner.qml:228
+msgid "Hold your camera over the QR code."
 msgstr ""
 
-#: ../qml/pages/QrShowScan.qml:155 ../qml/pages/QrShowScan.qml:189
-msgid "Fingerprint"
-msgstr "Ujjlenyomat"
+#: ../qml/pages/QrScanner.qml:253
+msgid "Paste from Clipboard"
+msgstr "Beillesztés a vágólapról"
 
-#: ../qml/pages/QrShowScan.qml:171
-msgid "The scanned fingerprint does not match the last seen for %1."
-msgstr "A beolvasott ujjlenyomat nem egyezik a(z) %1 utoljára látott ujjlenyomatával."
-
-#: ../qml/pages/QrShowScan.qml:188
-msgid ""
-"This QR code contains a fingerprint but no e-mail address.\n"
-"\n"
-"For an out-of-band-verification, please establish an encrypted connection to "
-"the recipient first."
-msgstr "Ez a QR-kód tartalmaz egy ujjlenyomatot, de nem tartalmaz e-mail címet.\n\nA sávon kívüli ellenőrzéshez először hozzon létre titkosított kapcsolatot a címzetthez."
-
-#: ../qml/pages/QrShowScan.qml:275
-msgid ""
-"Scanned QR code text:\n"
-"\n"
-"%1"
-msgstr "A beolvasott QR-kód szövege:\n\n%1"
-
-#: ../qml/pages/QrShowScan.qml:276 ../qml/pages/QrShowScan.qml:295
-#: ../qml/pages/QrShowScan.qml:418 ../qml/pages/QrShowScan.qml:435
-msgid "QR Code"
-msgstr "QR-kód"
-
-#: ../qml/pages/QrShowScan.qml:294
-msgid ""
-"Scanned QR code URL:\n"
-"\n"
-"%1"
-msgstr "A beolvasott QR-kód hivatkozás:\n\n%1"
-
-#: ../qml/pages/QrShowScan.qml:331 ../qml/pages/QrShowScan.qml:524
-msgid ""
-"This QR code can be scanned by others to contact you.\n"
-"\n"
-"You can deactivate the QR code here and reactivate it by scanning it again."
-msgstr "Ezt a QR-kódot mások is beolvashatják, hogy felvegyék önnel a kapcsolatot.\n\nA QR-kódot itt kikapcsolhatja, és újból aktiválhatja, ha újra beolvassa."
-
-#: ../qml/pages/QrShowScan.qml:365
-msgid ""
-"This QR code could be scanned by others to contact you.\n"
-"\n"
-"The QR code is not active on this device."
-msgstr "Ezt a QR-kódot mások is beolvashatják, hogy kapcsolatba lépjenek Önnel.\n\nA QR-kód nem aktív ezen az eszközön."
-
-#: ../qml/pages/QrShowScan.qml:366 ../qml/pages/QrShowScan.qml:383
-msgid "Activate QR Code"
-msgstr "QR-kód aktiválása"
-
-#: ../qml/pages/QrShowScan.qml:382
-msgid ""
-"This QR code could be scanned by others to join the group \"%1\".\n"
-"\n"
-"The QR code is not active on this device."
-msgstr "Ezt a QR-kódot mások is beolvashatják, hogy csatlakozzanak a(z) „%1” nevű csoporthoz.\n\nA QR-kód nem aktív ezen az eszközön."
+#: ../qml/pages/QrScanner.qml:269
+msgid "Load QR Code as Image"
+msgstr "QR-kód betöltése képként"
 
 #: ../qml/pages/ReactionsInfoPopup.qml:31
 msgid "Reactions"
@@ -1501,8 +1512,20 @@ msgstr "Reakciók"
 msgid "Selected: "
 msgstr ""
 
-#: ../qml/pages/RequestDatabasePassword.qml:50
+#: ../qml/pages/RequestDatabasePassword.qml:81
+#: ../qml/pages/RequestDatabasePassword.qml:99
+#: ../qml/pages/RequestDatabasePassword.qml:228
+msgid ""
+"Only message texts and server credentials are encrypted. Attachments "
+"(images, files etc.) remain unencrypted."
+msgstr ""
+
+#: ../qml/pages/RequestDatabasePassword.qml:91
 msgid "Enter Database Passphrase"
+msgstr ""
+
+#: ../qml/pages/RequestDatabasePassword.qml:237
+msgid "Forgot Password"
 msgstr ""
 
 #: ../qml/pages/SettingsPage.qml:54
@@ -1536,13 +1559,13 @@ msgid "Up to %1, most balanced quality images"
 msgstr "Akár %1, leginkább kiegyensúlyozatabb minőségű kép"
 
 #: ../qml/pages/SettingsPage.qml:191 ../qml/pages/SettingsPage.qml:223
-#: ../qml/pages/SettingsPage.qml:1482 ../qml/pages/SettingsPage.qml:1616
+#: ../qml/pages/SettingsPage.qml:1500 ../qml/pages/SettingsPage.qml:1607
 msgid "Never"
 msgstr "Soha"
 
 #: ../qml/pages/SettingsPage.qml:211 ../qml/pages/SettingsPage.qml:255
-#: ../qml/pages/SettingsPage.qml:1580 ../qml/pages/SettingsPage.qml:1586
-#: ../qml/pages/SettingsPage.qml:1777 ../qml/pages/SettingsPage.qml:1783
+#: ../qml/pages/SettingsPage.qml:1562 ../qml/pages/SettingsPage.qml:1565
+#: ../qml/pages/SettingsPage.qml:1705 ../qml/pages/SettingsPage.qml:1708
 msgid "After 1 year"
 msgstr "1 év elteltével"
 
@@ -1550,8 +1573,8 @@ msgstr "1 év elteltével"
 msgid "?"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:227 ../qml/pages/SettingsPage.qml:1630
-#: ../qml/pages/SettingsPage.qml:1636
+#: ../qml/pages/SettingsPage.qml:227 ../qml/pages/SettingsPage.qml:1621
+#: ../qml/pages/SettingsPage.qml:1624
 msgid "At once"
 msgstr "Egyszer"
 
@@ -1563,19 +1586,19 @@ msgstr "Minden szinkronizálása"
 msgid "Message Font Size"
 msgstr "Üzenetek betűmérete"
 
-#: ../qml/pages/SettingsPage.qml:519 ../qml/pages/SettingsPage.qml:1815
+#: ../qml/pages/SettingsPage.qml:519 ../qml/pages/SettingsPage.qml:1734
 msgid "Small"
 msgstr "Kicsi"
 
-#: ../qml/pages/SettingsPage.qml:522 ../qml/pages/SettingsPage.qml:1835
+#: ../qml/pages/SettingsPage.qml:522 ../qml/pages/SettingsPage.qml:1754
 msgid "Normal"
 msgstr "Normál"
 
-#: ../qml/pages/SettingsPage.qml:525 ../qml/pages/SettingsPage.qml:1852
+#: ../qml/pages/SettingsPage.qml:525 ../qml/pages/SettingsPage.qml:1771
 msgid "Large"
 msgstr "Nagy"
 
-#: ../qml/pages/SettingsPage.qml:528 ../qml/pages/SettingsPage.qml:1869
+#: ../qml/pages/SettingsPage.qml:528 ../qml/pages/SettingsPage.qml:1788
 msgid "Extra large"
 msgstr "Nagyon nagy"
 
@@ -1650,27 +1673,25 @@ msgstr "Olvasási nyugták"
 msgid "Delete Old Messages"
 msgstr "Régi üzenetek törlése"
 
-#: ../qml/pages/SettingsPage.qml:1249 ../qml/pages/SettingsPage.qml:1907
+#: ../qml/pages/SettingsPage.qml:1249 ../qml/pages/SettingsPage.qml:1826
 msgid "Export Backup"
 msgstr "Biztonsági mentés exportálása"
-
-#: ../qml/pages/TempWebxdcPopup.qml:31
-msgid ""
-"Webxdc support is not complete yet.\n"
-"\n"
-"Some functions such as realtime channels, file import or sending files to "
-"other chats (needed for, e.g., the Webxdc Store app) will not work.\n"
-"\n"
-"Download apps from webxdc.org and add them to chats as file attachments."
-msgstr ""
-
-#: ../qml/pages/TempWebxdcPopup.qml:45
-msgid "Do not show again"
-msgstr ""
 
 #: ../qml/pages/UrlDispatchAccountChooserPopup.qml:36
 msgid "Select Account"
 msgstr ""
+
+#: ../qml/pages/UseOtherServerPopup.qml:37
+msgid "List Chatmail Servers"
+msgstr "Chatmail kiszolgálók listája"
+
+#: ../qml/pages/UseOtherServerPopup.qml:43
+msgid "Classic E-Mail Login"
+msgstr "Klasszikus e-mail bejelentkezés"
+
+#: ../qml/pages/UseOtherServerPopup.qml:48
+msgid "Scan Invitation Code"
+msgstr "Meghívó kód beolvasása"
 
 #: ../qml/pages/VerifiedPopup.qml:32
 msgid ""
@@ -1693,4 +1714,20 @@ msgstr "Mostantól garantált, hogy ebben a csevegésben minden üzenet végpont
 #: ../qml/pages/VerifiedPopup.qml:52
 msgid "Learn More"
 msgstr "Tudjon meg többet"
+
+#: ../qml/pages/WebxdcActions.qml:35
+msgid "Source Code"
+msgstr "Forráskód"
+
+#: ../qml/pages/WebxdcPage.qml:213
+msgid "Send %1 to…"
+msgstr ""
+
+#: ../qml/pages/WebxdcPage.qml:216
+msgid "Send Message to…"
+msgstr "Üzenet küldése neki... "
+
+#: ../qml/pages/WebxdcPage.qml:226
+msgid "Replace Draft"
+msgstr "Piszkozat cseréje"
 

@@ -67,7 +67,6 @@
         <file>pages/SelectChatForAction.qml</file>
         <file>pages/SelectContactForVcard.qml</file>
         <file>pages/SettingsPage.qml</file>
-        <file>pages/TempWebxdcPopup.qml</file>
         <file>pages/UrlDispatchAccountChooserPopup.qml</file>
         <file>pages/UseOtherServerPopup.qml</file>
         <file>pages/VerifiedPopup.qml</file>

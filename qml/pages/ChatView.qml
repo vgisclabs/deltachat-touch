@@ -1550,12 +1550,7 @@ Page {
                             }
 
                             function webxdcClicked() {
-                                if (root.webxdcTestingEnabled) {
-                                    startWebxdc()
-                                } else {
-                                    let popup7 = PopupUtils.open(Qt.resolvedUrl("TempWebxdcPopup.qml"), chatViewPage)
-                                    popup7.done.connect(startWebxdc)
-                                }
+                                startWebxdc()
                             }
 
                             sourceComponent: Column {
@@ -2689,12 +2684,7 @@ Page {
                     }
 
                     onClicked: {
-                        if (root.webxdcTestingEnabled) {
-                            startDraftWebxdc()
-                        } else {
-                            let popup8 = PopupUtils.open(Qt.resolvedUrl("TempWebxdcPopup.qml"), chatViewPage)
-                            popup8.done.connect(startDraftWebxdc)
-                        }
+                        startDraftWebxdc()
                     }
                 }
             }

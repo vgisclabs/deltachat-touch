@@ -682,8 +682,6 @@ MainView {
     // save time when creating the popup
     property var emojiRecentArray: ["🙂", "😂", "😄", "😅", "😬", "😞", "☹️", "🙁", "😳", "😢", "👍", "👎", "💪", "👀", "🤦", "🤷", "🤞", "🙈", "🍀", "❤️", "💓", "💯", "🚀", "🎉"]
 
-    property bool webxdcTestingEnabled: false
-
     Settings {
         id: settings
         property alias synca: root.syncAll
@@ -701,7 +699,9 @@ MainView {
         property alias recentlyUsedEmojisNew: root.emojiRecentArray
         property alias rootWidth: root.width
         property alias rootHeight: root.height
-        property alias webxdcTesting: root.webxdcTestingEnabled
+
+        // The property "webxdcTesting" was used in previous versions
+        //property alias webxdcTesting: root.webxdcTestingEnabled
     }
 
     width: units.gu(45)

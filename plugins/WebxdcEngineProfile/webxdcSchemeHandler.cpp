@@ -39,8 +39,8 @@ WebxdcSchemeHandler::~WebxdcSchemeHandler()
 
 void WebxdcSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
 {
-    qDebug() << "WebxdcSchemeHandler::requestStarted(): request received:" << request->requestUrl();
-    qDebug() << "WebxdcSchemeHandler::requestStarted(): initiator is:" << request->initiator();
+    //qDebug() << "WebxdcSchemeHandler::requestStarted(): request received:" << request->requestUrl();
+    //qDebug() << "WebxdcSchemeHandler::requestStarted(): initiator is:" << request->initiator();
 
     QString fileToRequest = request->requestUrl().path();
 

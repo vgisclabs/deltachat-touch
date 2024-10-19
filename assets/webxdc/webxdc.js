@@ -20,14 +20,17 @@
  * https://github.com/deltachat/deltachat-android/blob/e0f83cdc54c833981d4c5967a09c42c1c67b9659/res/raw/webxdc.js
  * licensed under GLPv3 by Delta Chat contributors, and modified
  * by Lothar Ketterer.
+ *
+ * Updates of the original were included in modified form, link to original:
+ * https://github.com/deltachat/deltachat-android/blob/main/src/main/res/raw/webxdc.js
  */
 
 cppside = parent.cppside
 fetch = parent.fetch
 
-// ===================================================================
-// =================== For <input> element override ==================
-// ===================================================================
+// ===============================================================
+// =================== <input> element override ==================
+// ===============================================================
 
 currentInput = null
 
@@ -72,15 +75,16 @@ templink.type = 'text/css';
 templink.href = '2346123058123r12835asd2834.css';
 temphead.appendChild(templink);
 
-// =======================================================================
-// =================== END For <input> element override ==================
-// =======================================================================
+// ===================================================================
+// =================== END <input> element override ==================
+// ===================================================================
 
 
 window.webxdc = (() => {
   let setUpdateListenerPromise = null
-  var update_listener = () => {};
-  var last_serial = 0;
+  let update_listener = () => {};
+  let last_serial = 0;
+  let realtimeChannel = null;
 
   window.__webxdcUpdate = () => {
     cppside.getStatusUpdates(last_serial, function(_updates) {
@@ -96,6 +100,37 @@ window.webxdc = (() => {
     })
   };
 
+
+  window.__webxdcRealtimeData = (intArray) => {
+    if (realtimeChannel) {
+      realtimeChannel.__receive(Uint8Array.from(intArray));
+    }
+  };
+
+  const createRealtimeChannel = () => {
+    let listener = null;
+    return {
+      setListener: (li) => listener = li,
+      // TODO: implement
+      //leave: () => cppside.leaveRealtimeChannel(),
+      leave: () => console.log("realtimeChannel.leave() called, not implemented yet"),
+      send: (data) => {
+        if ((!data) instanceof Uint8Array) {
+          throw new Error('realtime listener data must be a Uint8Array')
+        }
+        // TODO: implement
+        //cppside.sendRealtimeData(JSON.stringify(Array.from(data)));
+        console.log("realtimeChannel.send() called, not implemented yet");
+      },
+      __receive: (data) => {
+        if (listener) {
+          listener(data);
+        }
+      },
+    };
+  }
+
+
   parent.__webxdcUpdate = window.__webxdcUpdate;
 
 
@@ -103,6 +138,14 @@ window.webxdc = (() => {
     selfAddr: cppside.selfAddr,
 
     selfName: cppside.selfName,
+
+    joinRealtimeChannel: () => {
+      realtimeChannel = createRealtimeChannel();
+      // TODO implement
+      //cppside.sendRealtimeAdvertisement();
+      console.log("joinRealtimeChannel called, not implemented yet");
+      return realtimeChannel;
+    },
 
     setUpdateListener: (cb, serial) => {
         last_serial = typeof serial === "undefined" ? 0 : parseInt(serial);

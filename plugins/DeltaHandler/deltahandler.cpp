@@ -639,10 +639,10 @@ void DeltaHandler::addDeviceMessageForVersion(QString appVersion, QString oldVer
 {
     // Device message for version 1.6.0;
     // remove/adapt for newer versions
-    if (appVersion == "1.6.0") {
-        QString tempQString = "What's new in 1.6.0?<br><br>• Basic Webxdc support! Download apps from <a href=\"https://webxdc.org/apps/\">https://webxdc.org/apps/</a> and add them as file attachments to chats (the Webxdc Store app via xstore@testrun.org does not work yet). See the <a href=\"https://codeberg.org/lk108/deltatouch/wiki/Status-of-Webxdc-support\">wiki</a> for more info.<br>• Bugfixes, minor UI improvements and internal updates.<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
+    if (appVersion == "1.8.0") {
+        QString tempQString = "What's new in 1.8.0?<br><br>• Enhanced Webxdc support: Most Webxdc apps should work now, see the <a href=\"https://codeberg.org/lk108/deltatouch/wiki/Status-of-Webxdc-support\">wiki</a> for more info<br>• Check out the Webxdc store: Send \"hi\" to <a href=\"mailto:xstore@testrun.org\">xstore@testrun.org</a><br>• VCard support<br>• Bugfixes and UI improvements<br><br>For full changelog see <a href=\"https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG\">https://codeberg.org/lk108/deltatouch/src/branch/main/CHANGELOG</a>";
 
-        QString versionLabel = "1-6-0";
+        QString versionLabel = "1-8-0";
 
         addDeviceMessageToAllContexts(tempQString, versionLabel);
     }

@@ -1,6 +1,26 @@
-1.7.x xxxx-xx-xx
-UI: Add attachments via popup dialog
-Other: Vcard support
+1.8.0 2024-10-19
+UI: Use popup dialog for adding attachments to messages
+UI: Confirm before forwarding messages
+UI: Open the destination chat after forwarding
+UI: More information + options in popup for database password
+UI: Pinch to scale font size in popup for database password
+UI: Adapt onboarding page to layout used by official apps
+UI: Adapt account switcher sidebar colors
+UI: In desktop mode, highlight active and hovered chats and accounts
+UI: Correct font size of title in ConfirmDialog
+UI: Add button with link to source code of Webxdc apps
+UI: Add option to reply privately to group messages
+Feature: Webxdc: Full 2023 API support (sendToChat, importFiles etc.)
+Feature: Webxdc: Adaptations needed for QML WebEngineView (HTML input element; chromium flag for touch; shim fetch)
+Feature: Vcard support
+Bugfix: Correctly auto-flick in Profile pages when OSK pops up
+Bugfix: Actually use folder selected by user for file export (non-UT only)
+Bugfix: Correctly display non-PNG Webxdc app icons
+Bugfix: Correctly terminate event loop before shutdown
+Bugfix: Minor UI corrections
+Other: Check for existing draft when processing mailto: urls
+Other: Delete Webxdc app specific local storage dir when the corresponding instance is deleted
+Other: Update translations
 
 1.6.0 2024-08-27
 UI: Delete message dialog: Inform about deletion on server (except for device messages)

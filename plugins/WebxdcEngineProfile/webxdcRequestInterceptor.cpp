@@ -30,13 +30,13 @@ WebxdcRequestInterceptor::WebxdcRequestInterceptor(QObject *parent) : QWebEngine
 void WebxdcRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
 {
     QUrl currentRequestUrl = info.requestUrl();
-    qDebug() << "WebxdcRequestInterceptor::interceptRequest(): Received a request for " << currentRequestUrl << ", scheme is: " << currentRequestUrl.scheme();
+    //qDebug() << "WebxdcRequestInterceptor::interceptRequest(): Received a request for " << currentRequestUrl << ", scheme is: " << currentRequestUrl.scheme();
 
     if (currentRequestUrl.scheme() == "file" || currentRequestUrl.isRelative()) {
         // This code should never be needed because the request to index.html
         // (in wrapper.html) is already with the scheme webxdcfilerequest, and thus
         // all following requests have this scheme as well, but just to be on the safe side
-        qDebug() << "WebxdcRequestInterceptor::interceptRequest(): setting scheme to webxdcfilerequest";
+        //qDebug() << "WebxdcRequestInterceptor::interceptRequest(): setting scheme to webxdcfilerequest";
         currentRequestUrl.setScheme("webxdcfilerequest");
         info.redirect(currentRequestUrl);
         info.block(false);

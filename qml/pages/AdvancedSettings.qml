@@ -73,9 +73,6 @@ Page {
                 onTriggered: {
                     extraStack.pop()
                 }
-                // only allow leaving account configuration
-                // if there's a configured account
-                visible: DeltaHandler.hasConfiguredAccount
             }
         ]
 

@@ -35,9 +35,6 @@ Page {
                 onTriggered: {
                     extraStack.pop()
                 }
-                // only allow leaving account configuration
-                // if there's a configured account
-                visible: DeltaHandler.hasConfiguredAccount
             }
         ]
     }
@@ -52,8 +49,12 @@ Page {
         id: flick
         height: aboutPage.height - aboutHeader.height 
         width: aboutPage.width
-        anchors.top: aboutHeader.bottom
-        anchors.left: aboutPage.left
+        anchors {
+            top: aboutHeader.bottom
+            bottom: aboutPage.bottom
+            bottomMargin: units.gu(2)
+            left: aboutPage.left
+        }
         contentHeight: flickContent.childrenRect.height
 
         Item {
@@ -87,9 +88,9 @@ Page {
                     top: copyleftLabel.bottom
                     margins: units.gu(1)
                 }
-                text: i18n.tr('License:') + ' <a href="https://codeberg.org/lk108/deltatouch/LICENSE">GPLv3</a>'
+                text: i18n.tr('License:') + ' <a href="https://codeberg.org/lk108/deltatouch/src/branch/main/LICENSE">GPLv3</a>'
                 linkColor: root.dtLinkColor
-                onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/deltatouch/LICENSE')
+                onLinkActivated: Qt.openUrlExternally(link)
             }
 
             Label {
@@ -110,7 +111,7 @@ Page {
                 }
                 text: '<a href="https://codeberg.org/lk108/deltatouch">https://codeberg.org/lk108/deltatouch</a>'
                 linkColor: root.dtLinkColor
-                onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/deltatouch')
+                onLinkActivated: Qt.openUrlExternally(link)
             }
             
             Label {
@@ -131,7 +132,7 @@ Page {
                 }
                 text: '<a href="https://codeberg.org/lk108/deltatouch/issues">https://codeberg.org/lk108/deltatouch/issues</a>'
                 linkColor: root.dtLinkColor
-                onLinkActivated: Qt.openUrlExternally('https://codeberg.org/lk108/deltatouch/issues')
+                onLinkActivated: Qt.openUrlExternally(link)
             }
 
             
@@ -167,7 +168,7 @@ Page {
                 }
                 text: i18n.tr('This app is powered by deltachat-core-rust ') + (deltaversion == "" ? "" : deltaversion) + (' (<a href="https://github.com/deltachat/deltachat-core-rust">source</a>).')
                 linkColor: root.dtLinkColor
-                onLinkActivated: Qt.openUrlExternally('https://github.com/deltachat/deltachat-core-rust')
+                onLinkActivated: Qt.openUrlExternally(link)
                 wrapMode: Text.Wrap
             }
 
@@ -181,7 +182,7 @@ Page {
                 }
                 text: 'Kudos to the creators of this library! Check out their page at <a href="https://delta.chat">delta.chat</a>.'
                 linkColor: root.dtLinkColor
-                onLinkActivated: Qt.openUrlExternally('https://delta.chat')
+                onLinkActivated: Qt.openUrlExternally(link)
                 wrapMode: Text.Wrap
             }
 
@@ -193,19 +194,21 @@ Page {
                     top: creditLabel2.bottom
                     topMargin: units.gu(1)
                 }
-                text: 'Thanks to all supporters and contributors:'
+                text: 'Thanks to all supporters and contributors: Simon (treefit), link2xt, adbenitez, Marko, Hocuri, holger, Ubuntu Touch AppDev community (Maciek, Lionel, dobey, Jonatan)'
                 wrapMode: Text.Wrap
             }
 
             Label {
                 id: thanksLabel2
-                width: aboutPage.width - units.gu(6)
+                width: aboutPage.width - units.gu(4)
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     top: thanksLabel1.bottom
+                    topMargin: units.gu(1)
                 }
-                text: 'Simon (treefit)\nlink2xt\nadbenitez\nMarko\nHocuri\nholger\nUbuntu Touch AppDev community: Maciek, Lionel, dobey, Jonatan'
+                text: 'Webxdc support in DeltaTouch is generously funded by the <a href="https://nlnet.nl/project/DeltaTouch/">NLnet foundation</a>.'
                 wrapMode: Text.Wrap
+                onLinkActivated: Qt.openUrlExternally(link)
             }
         }
     }

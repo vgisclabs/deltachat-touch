@@ -403,11 +403,8 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  * - `send_port`    = SMTP-port, guessed if left out
  * - `send_security`= SMTP-socket, one of @ref DC_SOCKET, defaults to #DC_SOCKET_AUTO
  * - `server_flags` = IMAP-/SMTP-flags as a combination of @ref DC_LP flags, guessed if left out
- * - `socks5_enabled` = SOCKS5 enabled
- * - `socks5_host` = SOCKS5 proxy server host
- * - `socks5_port` = SOCKS5 proxy server port
- * - `socks5_user` = SOCKS5 proxy username
- * - `socks5_password` = SOCKS5 proxy password
+ * - `proxy_enabled` = Proxy enabled. Disabled by default.
+ * - `proxy_url` = Proxy URL. May contain multiple URLs separated by newline, but only the first one is used.
  * - `imap_certificate_checks` = how to check IMAP certificates, one of the @ref DC_CERTCK flags, defaults to #DC_CERTCK_AUTO (0)
  * - `smtp_certificate_checks` = deprecated option, should be set to the same value as `imap_certificate_checks` but ignored by the new core
  * - `displayname`  = Own name to use when sending messages. MUAs are allowed to spread this way e.g. using CC, defaults to empty
@@ -422,8 +419,8 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  * - `mdns_enabled` = 0=do not send or request read receipts,
  *                    1=send and request read receipts
  *                    default=send and request read receipts, only send but not reuqest if `bot` is set
- * - `bcc_self`     = 0=do not send a copy of outgoing messages to self (default),
- *                    1=send a copy of outgoing messages to self.
+ * - `bcc_self`     = 0=do not send a copy of outgoing messages to self,
+ *                    1=send a copy of outgoing messages to self (default).
  *                    Sending messages to self is needed for a proper multi-account setup,
  *                    however, on the other hand, may lead to unwanted notifications in non-delta clients.
  * - `sentbox_watch`= 1=watch `Sent`-folder for changes,
@@ -525,6 +522,8 @@ char*           dc_get_blobdir               (const dc_context_t* context);
  *                    In contrast to `dc_set_chat_mute_duration()`,
  *                    fresh message and badge counters are not changed by this setting,
  *                    but should be tuned down where appropriate.
+ * - `private_tag`  = Optional tag as "Work", "Family".
+ *                    Meant to help profile owner to differ between profiles with similar names.
  * - `ui.*`         = All keys prefixed by `ui.` can be used by the user-interfaces for system-specific purposes.
  *                    The prefix should be followed by the system and maybe subsystem,
  *                    e.g. `ui.desktop.foo`, `ui.desktop.linux.bar`, `ui.android.foo`, `ui.dc40.bar`, `ui.bot.simplebot.baz`.
@@ -867,13 +866,10 @@ void            dc_maybe_network             (dc_context_t* context);
  *
  * @memberof dc_context_t
  * @param context The context as created by dc_context_new().
- * @param addr The e-mail address of the user. This must match the
- *    configured_addr setting of the context as well as the UID of the key.
- * @param public_data Ignored, actual public key is extracted from secret_data.
  * @param secret_data ASCII armored secret key.
  * @return 1 on success, 0 on failure.
  */
-int             dc_preconfigure_keypair        (dc_context_t* context, const char *addr, const char *public_data, const char *secret_data);
+int             dc_preconfigure_keypair        (dc_context_t* context, const char *secret_data);
 
 
 // handle chatlists
@@ -1551,30 +1547,6 @@ void            dc_marknoticed_chat          (dc_context_t* context, uint32_t ch
  * @return An array with messages from the given chat ID that have the wanted message types.
  */
 dc_array_t*     dc_get_chat_media            (dc_context_t* context, uint32_t chat_id, int msg_type, int msg_type2, int msg_type3);
-
-
-/**
- * Search next/previous message based on a given message and a list of types.
- * Typically used to implement the "next" and "previous" buttons
- * in a gallery or in a media player.
- *
- * @deprecated Deprecated 2023-10-03, use dc_get_chat_media() and navigate the returned array instead.
- * @memberof dc_context_t
- * @param context The context object as returned from dc_context_new().
- * @param msg_id The ID of the current message from which the next or previous message should be searched.
- * @param dir 1=get the next message, -1=get the previous one.
- * @param msg_type The message type to search for.
- *     If 0, the message type from curr_msg_id is used.
- * @param msg_type2 Alternative message type to search for. 0 to skip.
- * @param msg_type3 Alternative message type to search for. 0 to skip.
- * @return Returns the message ID that should be played next.
- *     The returned message is in the same chat as the given one
- *     and has one of the given types.
- *     Typically, this result is passed again to dc_get_next_media()
- *     later on the next swipe.
- *     If there is not next/previous message, the function returns 0.
- */
-uint32_t        dc_get_next_media            (dc_context_t* context, uint32_t msg_id, int dir, int msg_type, int msg_type2, int msg_type3);
 
 
 /**
@@ -2507,6 +2479,7 @@ void            dc_stop_ongoing_process      (dc_context_t* context);
 #define         DC_QR_BACKUP                 251
 #define         DC_QR_BACKUP2                252
 #define         DC_QR_WEBRTC_INSTANCE        260 // text1=domain, text2=instance pattern
+#define         DC_QR_PROXY                  271 // text1=address (e.g. "127.0.0.1:9050")
 #define         DC_QR_ADDR                   320 // id=contact
 #define         DC_QR_TEXT                   330 // text1=text
 #define         DC_QR_URL                    332 // text1=URL
@@ -2559,6 +2532,10 @@ void            dc_stop_ongoing_process      (dc_context_t* context);
  * - DC_QR_WEBRTC_INSTANCE with dc_lot_t::text1=domain:
  *   ask the user if they want to use the given service for video chats;
  *   if so, call dc_set_config_from_qr().
+ *
+ * - DC_QR_PROXY with dc_lot_t::text1=address:
+ *   ask the user if they want to use the given proxy.
+ *   if so, call dc_set_config_from_qr() and restart I/O.
  *
  * - DC_QR_ADDR with dc_lot_t::id=Contact ID:
  *   e-mail address scanned, optionally, a draft message could be set in
@@ -2634,6 +2611,7 @@ char*           dc_get_securejoin_qr         (dc_context_t* context, uint32_t ch
  * Get QR code image from the QR code text generated by dc_get_securejoin_qr().
  * See dc_get_securejoin_qr() for details about the contained QR code.
  *
+ * @deprecated 2024-10 use dc_create_qr_svg(dc_get_securejoin_qr()) instead.
  * @memberof dc_context_t
  * @param context The context object.
  * @param chat_id group-chat-id for secure-join or 0 for setup-contact,
@@ -2814,6 +2792,22 @@ dc_array_t* dc_get_locations                (dc_context_t* context, uint32_t cha
 void        dc_delete_all_locations         (dc_context_t* context);
 
 
+// misc
+
+/**
+ * Create a QR code from any input data.
+ *
+ * The QR code is returned as a square SVG image.
+ *
+ * @memberof dc_context_t
+ * @param payload The content for the QR code.
+ * @return SVG image with the QR code.
+ *     On errors, an empty string is returned.
+ *     The returned string must be released using dc_str_unref() after usage.
+ */
+char*           dc_create_qr_svg             (const char* payload);
+
+
 /**
  * Get last error string.
  *
@@ -2902,6 +2896,7 @@ char* dc_backup_provider_get_qr (const dc_backup_provider_t* backup_provider);
  * This works like dc_backup_provider_qr() but returns the text of a rendered
  * SVG image containing the QR code.
  *
+ * @deprecated 2024-10 use dc_create_qr_svg(dc_backup_provider_get_qr()) instead.
  * @memberof dc_backup_provider_t
  * @param backup_provider The backup provider object as created by
  *    dc_backup_provider_new().
@@ -2941,7 +2936,7 @@ void dc_backup_provider_unref (dc_backup_provider_t* backup_provider);
  * Gets a backup offered by a dc_backup_provider_t object on another device.
  *
  * This function is called on a device that scanned the QR code offered by
- * dc_backup_sender_qr() or dc_backup_sender_qr_svg().  Typically this is a
+ * dc_backup_provider_get_qr().  Typically this is a
  * different device than that which provides the backup.
  *
  * This call will block while the backup is being transferred and only
@@ -6057,6 +6052,21 @@ void dc_event_unref(dc_event_t* event);
 
 
 /**
+ * A reaction to one's own sent message received.
+ * Typically, the UI will show a notification for that.
+ *
+ * In addition to this event, DC_EVENT_REACTIONS_CHANGED is emitted.
+ *
+ * @param data1 (int) contact_id ID of the contact sending this reaction.
+ * @param data2 (int) msg_id + (char*) reaction.
+ *      ID of the message for which a reaction was received in dc_event_get_data2_int(),
+ *      and the reaction as dc_event_get_data2_str().
+ *      string must be passed to dc_str_unref() afterwards.
+ */
+#define DC_EVENT_INCOMING_REACTION        2002
+
+
+/**
  * There is a fresh message. Typically, the user will show an notification
  * when receiving this message.
  *
@@ -6273,7 +6283,7 @@ void dc_event_unref(dc_event_t* event);
 
 
 /**
- * webxdc status update received.
+ * Webxdc status update received.
  * To get the received status update, use dc_get_webxdc_status_updates() with
  * `serial` set to the last known update
  * (in case of special bots, `status_update_serial` from `data2`
@@ -6307,6 +6317,15 @@ void dc_event_unref(dc_event_t* event);
  */
 
 #define DC_EVENT_WEBXDC_REALTIME_DATA             2150
+
+/**
+ * Advertisement for ephemeral peer channel communication received.
+ * This can be used by bots to initiate peer-to-peer communication from their side.
+ * @param data1 (int) msg_id
+ * @param data2 0
+ */
+
+#define DC_EVENT_WEBXDC_REALTIME_ADVERTISEMENT    2151
 
 /**
  * Tells that the Background fetch was completed (or timed out).

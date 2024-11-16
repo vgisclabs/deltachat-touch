@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -33,7 +33,11 @@ Page {
     signal leavingAddEmailPage()
     signal addressFieldHasChanged(string emailAddress)
 
-    property bool addressFieldLocked;
+    // Creating a new account if false
+    property bool changingExistingAccount;
+
+    property bool proxyEnabled: false
+    property bool hasProxyUrls: false
 
     property bool advancedOptionsVisible: false;
     property bool advancedOptionsOpened: false;
@@ -73,6 +77,11 @@ Page {
     }
 
     Connections {
+        id: deltaHandlerConnections
+        // to avoid onTempProxySettingsChanged being triggered
+        // during onCompleted
+        enabled: false
+
         target: DeltaHandler
 
         // "address" is a parameter of the three signals below
@@ -100,25 +109,61 @@ Page {
                 providerWorking = working
             }
         }
+
+        onTempProxySettingsChanged: {
+            hasProxyUrls = DeltaHandler.getTempProxyUrls() === "" ? false : true
+            proxyEnabled = DeltaHandler.isTempProxyEnabled()
+        }
+
     }
 
     Component.onCompleted: {
         // The email address field should only be editable if
-        // a new account is created or an account is edited
-        // that is not configured yet so the user cannot change
-        // the email address of a configured account. See the
+        // a new account is created See the
         // "Don’t change mail accounts. Really." part here:
         // https://binblog.de/2024/06/15/deltachat-first-dos-first-donts/
         // TODO: Once AEAP is fully working, this will most
         // likely have to be changed
-        addressFieldLocked = DeltaHandler.prepareTempContextConfig()
+        // Note: In case of a typo in the email address that is
+        // only noticed after leaving this page, the account has to
+        // removed and a new one has to be created.
+        changingExistingAccount = DeltaHandler.prepareTempContextConfig()
+
+        if (changingExistingAccount) {
+            // Need to get the proxy settings from tempContext in the C++ side
+            // if we're working on an existing account
+            let tempurls = DeltaHandler.getTempContextConfig("proxy_url")
+            hasProxyUrls = tempurls === "" ? false : true
+            proxyEnabled = (DeltaHandler.getTempContextConfig("proxy_enabled") === "1" ? true : false)
+            // need to transfer the proxy settings to the temp vars used by Proxy.qml
+            DeltaHandler.setTempProxyEnabled(proxyEnabled);
+            DeltaHandler.setTempProxyUrls(tempurls);
+
+        } else {
+            // Creating a new account, so we're coming from OnboardingChatmail.qml, where
+            // a temp proxy could already have been set
+            hasProxyUrls = DeltaHandler.getTempProxyUrls() === "" ? false : true
+            proxyEnabled = DeltaHandler.isTempProxyEnabled()
+        }
+
+        if (hasProxyUrls) {
+            advancedOptionsVisible = true
+            advancedOptionsOpened = true
+        }
 
         updateShowClassicMailsCurrentSetting()
         addEmailPage.addressFieldHasChanged.connect(DeltaHandler.getProviderHintSignal)
+
+        deltaHandlerConnections.enabled = true
     }
 
     Component.onDestruction: {
         leavingAddEmailPage()
+        if (changingExistingAccount) {
+            // Temp proxy vars need to be cleared if we're not in the 
+            // new account creation setup, otherwise they should be kept
+            DeltaHandler.clearTempProxySettings()
+        }
     }
 
     header: PageHeader {
@@ -192,19 +237,8 @@ Page {
                         DeltaHandler.setTempContextConfig("imap_certificate_checks", (certCheckSelector.selectedIndex == 2 ? "3" : certCheckSelector.selectedIndex.toString(10)))
                         DeltaHandler.setTempContextConfig("smtp_certificate_checks", (certCheckSelector.selectedIndex == 2 ? "3" : certCheckSelector.selectedIndex.toString(10)))
 
-                        DeltaHandler.setTempContextConfig("socks5_enabled", socksSwitch.checked ? "1" : "0")
-
-                        socksHostField.focus = false
-                        DeltaHandler.setTempContextConfig("socks5_host", socksHostField.text)
-
-                        socksPortField.focus = false
-                        DeltaHandler.setTempContextConfig("socks5_port", socksPortField.text)
-
-                        socksUsernameField.focus = false
-                        DeltaHandler.setTempContextConfig("socks5_user", socksUsernameField.text)
-
-                        socksPasswordField.focus = false
-                        DeltaHandler.setTempContextConfig("socks5_password", socksPasswordField.text)
+                        DeltaHandler.setTempContextConfig("proxy_url", DeltaHandler.getTempProxyUrls())
+                        DeltaHandler.setTempContextConfig("proxy_enabled", proxyEnabled ? "1" : "0")
                     }
                     
                     // now DeltaHandler.configureTempContext() needs to be called,
@@ -264,7 +298,7 @@ Page {
                 text: DeltaHandler.getTempContextConfig("addr")
                 // TODO: add RegExpValidator?
                 
-                readOnly: addressFieldLocked
+                readOnly: changingExistingAccount
 
                 onDisplayTextChanged: {
                     // When an email address has been entered, it should be
@@ -440,7 +474,7 @@ Page {
                     topMargin: units.gu(1)
                 }
                 wrapMode: Text.WordWrap
-                text: i18n.tr("There are no Delta Chat servers, your data stays on your device.")
+                text: i18n.tr("Delta Chat does not collect user data, everything stays on your device.")
             }
 
             Label {
@@ -518,6 +552,56 @@ Page {
                 }
             }
 
+            ListItem {
+                id: dividerItem2
+                height: divider.height
+                visible: advancedOptionsVisible
+                anchors {
+                    left: parent.left
+                    top: advancedOptionsButton.bottom
+                    topMargin: units.gu(1)
+                }
+            }
+
+            ListItem {
+                id: proxyItem
+                height: proxyItemLayout.height + (divider.visible ? divider.height : 0)
+                width: addEmailPage.width
+                visible: advancedOptionsVisible
+                anchors {
+                    left: parent.left
+                    top: dividerItem2.bottom
+                    topMargin: units.gu(1)
+                }
+
+                ListItemLayout {
+                    id: proxyItemLayout
+                    title.text: i18n.tr("Proxy")
+                    title.font.bold: true
+
+                    Label {
+                        id: proxyEnabledLabel
+                        width: addEmailPage.width/4
+                        text: proxyEnabled ? i18n.tr("On") : i18n.tr("Off")
+
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                    }
+
+                    Icon {
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    extraStack.push(Qt.resolvedUrl('Proxy.qml'), { "forCurrentContext": false })
+                }
+            }
+
+
             Column {
                 id: advancedOptionsColumn
                 height: advancedOptionsVisible ? childrenRect.height : 0
@@ -526,7 +610,7 @@ Page {
                 anchors {
                     left: parent.left
                     leftMargin: units.gu(2)
-                    top: advancedOptionsButton.bottom
+                    top: proxyItem.bottom
                     topMargin: units.gu(3)
                 }
 
@@ -754,193 +838,6 @@ Page {
                         certCheckSelector.selectedIndex = (DeltaHandler.getTempContextConfig("smtp_certificate_checks") == "" ? 0 : (parseInt(DeltaHandler.getTempContextConfig("smtp_certificate_checks"), 10) == 3 ? 2 : parseInt(DeltaHandler.getTempContextConfig("smtp_certificate_checks"), 10)))
                     }
                 }
-
-                Label {
-                    // to make some space above the SOCKS5 section
-                    id: emptySpaceLabel2
-                    text: " "
-                }
-
-                Label {
-                    id: socksSectionLabel
-                    text: "SOCKS5" // i18n.tr not needed here
-                    font.bold: true
-                }
-
-                Rectangle {
-                    id: socksSwitchRect
-                    width: parent.width < units.gu(45) ? parent.width - units.gu(8) : units.gu(37)
-                    height: socksSwitch.height
-                    visible: advancedOptionsVisible
-                    color: theme.palette.normal.background
-
-                    Label {
-                        id: socksSwitchLabel
-                        anchors {
-                            top: socksSwitchRect.top
-                            left: socksSwitchRect.left
-                        }
-                        text: i18n.tr("Use SOCKS5")
-                    }
-
-                    Switch {
-                        id: socksSwitch
-                        anchors {
-                            top: socksSwitchRect.top
-                            right: socksSwitchRect.right
-                        }
-                        checked: DeltaHandler.getTempContextConfig("socks5_enabled") == '1'
-                        onCheckedChanged: {
-                            // TODO
-                        }
-                    }
-                }
-
-                Label {
-                    id: socksWarningLabel
-                    width: addEmailPage.width < units.gu(45) ? addEmailPage.width - units.gu(8) : units.gu(37)
-                    text: i18n.tr("SOCKS5 support is currently experimental. Please use at your own risk. If you type in an address in the e-mail field, there will be DNS lookup that won't get tunneled through SOCKS5.")
-                    wrapMode: Text.Wrap
-                }
-                Label {
-                    id: socksHostLabel
-                    text: i18n.tr("SOCKS5 Host")
-                }
-
-                TextField {
-                    id: socksHostField
-                    width: emailField.width
-                    text: DeltaHandler.getTempContextConfig("socks5_host")
-                    placeholderText: i18n.tr("Standard (%1)").arg("localhost")
-                    enabled: socksSwitch.checked
-
-                    onFocusChanged: {
-                        if (root.oskViaDbus) {
-                            if (focus) {
-                                DeltaHandler.openOskViaDbus()
-                            } else {
-                                DeltaHandler.closeOskViaDbus()
-                            }
-                        }
-                    }
-                }
-
-                Label {
-                    id: socksPortLabel
-                    text: i18n.tr("SOCKS5 Port")
-                }
-
-                TextField {
-                    id: socksPortField
-                    width: emailField.width
-                    text: DeltaHandler.getTempContextConfig("socks5_port")
-                    placeholderText: i18n.tr("Standard (%1)").arg("9150")
-                    validator: IntValidator {bottom: 0; top: 65535}
-                    enabled: socksSwitch.checked
-
-                    onFocusChanged: {
-                        if (root.oskViaDbus) {
-                            if (focus) {
-                                DeltaHandler.openOskViaDbus()
-                            } else {
-                                DeltaHandler.closeOskViaDbus()
-                            }
-                        }
-                    }
-                }
-
-                Label {
-                    id: socksUsernameLabel
-                    text: i18n.tr("SOCKS5 User")
-                }
-
-                TextField {
-                    id: socksUsernameField
-                    width: emailField.width
-                    text: DeltaHandler.getTempContextConfig("socks5_user")
-                    enabled: socksSwitch.checked
-
-                    onFocusChanged: {
-                        if (root.oskViaDbus) {
-                            if (focus) {
-                                DeltaHandler.openOskViaDbus()
-                            } else {
-                                DeltaHandler.closeOskViaDbus()
-                            }
-                        }
-                    }
-                }
-
-                Label {
-                    id: socksPasswordLabel
-                    text: i18n.tr("SOCKS5 Password")
-                }
-
-                Rectangle {
-                    id: socksPasswordFieldRect
-                    width: addEmailPage.width < units.gu(45) ? addEmailPage.width - units.gu(8) : units.gu(37)
-                    height: socksPasswordField.height
-                    color: theme.palette.normal.background
-
-                    TextField {
-                        id: socksPasswordField
-                        width: emailField.width
-                        anchors {
-                            left: socksPasswordFieldRect.left
-                            top: socksPasswordFieldRect.top
-                        }
-                        text: DeltaHandler.getTempContextConfig("socks5_password")
-                        echoMode: TextInput.Password
-                        enabled: socksSwitch.checked
-
-                        onFocusChanged: {
-                            if (root.oskViaDbus) {
-                                if (focus) {
-                                    DeltaHandler.openOskViaDbus()
-                                } else {
-                                    DeltaHandler.closeOskViaDbus()
-                                }
-                            }
-                        }
-                    }
-
-                    Rectangle {
-                        id: showSocksPwRect
-                        height: units.gu(3)
-                        width: height
-                        color: theme.palette.normal.background
-                        anchors {
-                            right: socksPasswordFieldRect.right
-                            verticalCenter: socksPasswordFieldRect.verticalCenter
-                        }
-
-                        Icon {
-                            anchors.fill: parent
-                            id: showSocksPwIcon
-                            //name: 'view-on'
-                            source: "qrc:///assets/suru-icons/view-on.svg"
-                        }
-
-                        MouseArea {
-                            id: showSocksPwMouse
-                            anchors.fill: parent
-                            onClicked: {
-                                if (socksPasswordField.echoMode == TextInput.Password) {
-                                    socksPasswordField.echoMode = TextInput.Normal
-                                    //showSocksPwIcon.name = 'view-off'
-                                    showSocksPwIcon.source = "qrc:///assets/suru-icons/view-off.svg"
-
-                                }
-                                else {
-                                    socksPasswordField.echoMode = TextInput.Password
-                                    //showSocksPwIcon.name = 'view-on'
-                                    showSocksPwIcon.source = "qrc:///assets/suru-icons/view-on.svg"
-                                }
-                            }
-                        } // end MouseArea id: showSocksPwMouse
-                    } // end Rectangle id: showSocksPwRect
-                } // end Rectangle id: socksPasswordFieldRect
-
             } // end Column id: advancedOptionsColumn
         } // end Item id: contentFlick
     } // end Flickable id:flickable

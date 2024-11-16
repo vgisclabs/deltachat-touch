@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -43,12 +43,12 @@ Page {
     id: qrScannerPage
 
     signal deleteDecoder()
-
     signal qrDetected(string detectedCode)
+    signal cancelled()
 
     Component.onCompleted: {
-        DeltaHandler.qrDecoded.connect(startQrProcessing)
-        DeltaHandler.qrDecodingFailed.connect(imageDecodingFailed)
+//        DeltaHandler.qrDecoded.connect(startQrProcessing)
+//        DeltaHandler.qrDecodingFailed.connect(imageDecodingFailed)
         qrDetected.connect(root.newUrlFromScan)
         
         DeltaHandler.prepareQrDecoder()
@@ -58,6 +58,19 @@ Page {
     Component.onDestruction: {
         camera.stopAll()
         deleteDecoder()
+        qrDetected.disconnect(root.newUrlFromScan)
+    }
+
+    Connections {
+        target: DeltaHandler
+        onQrDecoded: {
+            startQrProcessing(qrContent)
+        }
+
+        onQrDecodingFailed: {
+            imageDecodingFailed(errorMessage)
+        }
+
     }
 
     Connections {
@@ -125,6 +138,7 @@ Page {
                 text: i18n.tr("Back")
                 onTriggered: {
                     extraStack.pop()
+                    cancelled()
                 }
             }
         ]

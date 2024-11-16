@@ -9,6 +9,7 @@
         <file>contact-white.svg</file>
         <file>dotted_circle_black.svg</file>
         <file>dotted_circle.svg</file>
+        <file>edit-copy-white.svg</file>
         <file>external-link-white.svg</file>
         <file>external-link-black.svg</file>
         <file>image-icon3.svg</file>
@@ -20,6 +21,8 @@
         <file>sent_black.svg</file>
         <file>sent_green.svg</file>
         <file>sent_white.svg</file>
+        <file>shield-empty.svg</file>
+        <file>shield-filled.svg</file>
         <file>stock_image-white.svg</file>
         <file>stock_music-white.svg</file>
         <file>verified.svg</file>
@@ -109,6 +112,7 @@
         <file>suru-icons/stock_image.svg</file>
         <file>suru-icons/stock_music.svg</file>
         <file>suru-icons/sync.svg</file>
+        <file>suru-icons/tick.svg</file>
         <file>suru-icons/timer.svg</file>
         <file>suru-icons/view-grid-symbolic.svg</file>
         <file>suru-icons/view-off.svg</file>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  Lothar Ketterer
+ * Copyright (C) 2023, 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -420,6 +420,28 @@ Page {
                             }
                         }
                     }
+                }
+            }
+
+            ListItem {
+                height: proxyLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+
+                ListItemLayout {
+                    id: proxyLayout
+                    title.text: i18n.tr("Proxy")
+                    title.font.bold: true
+
+                    Icon {
+                        //name: "go-next"
+                        source: "qrc:///assets/suru-icons/go-next.svg"
+                        SlotsLayout.position: SlotsLayout.Trailing;
+                        width: units.gu(2)
+                    }
+                }
+
+                onClicked: {
+                    extraStack.push(Qt.resolvedUrl('Proxy.qml'))
                 }
             }
 

@@ -56,6 +56,9 @@
         <file>pages/ProgressQrBackupImport.qml</file>
         <file>pages/ProfileSelf.qml</file>
         <file>pages/ProfileOther.qml</file>
+        <file>pages/Proxy.qml</file>
+        <file>pages/ProxyEnterDialog.qml</file>
+        <file>pages/ProxyShareDialog.qml</file>
         <file>pages/QrConfirmPopup.qml</file>
         <file>pages/QrMenuPopup.qml</file>
         <file>pages/QrSharePopup.qml</file>

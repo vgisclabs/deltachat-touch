@@ -29,12 +29,16 @@ import DeltaHandler 1.0
 Page {
     id: chatmailPage
 
+    // pre-set with the default chatmail instance
     property string provider: "nine.testrun.org"
-    property string initialUrl: "dcaccount:https://nine.testrun.org/new"
+    property string currentUrl: "dcaccount:https://nine.testrun.org/new"
 
     // true if the QR or URL is dclogin:, false
     // if not (valid QR/URL is then only dcaccount:)
     property bool isDcLogin: false
+
+    property bool proxyEnabled: false
+    property bool hasProxyUrls: false
 
     property string oldUrlHandlingPage
     readonly property string thisPagePath: "qml/OnboardingChatmail"
@@ -42,16 +46,14 @@ Page {
     signal setTempContextNull()
 
     Component.onCompleted: {
-        DeltaHandler.finishedSetConfigFromQr.connect(continueQrAccountCreation)
-
-        root.unprocessedUrl.connect(processUrl)
+        DeltaHandler.clearTempProxySettings()
 
         oldUrlHandlingPage = root.urlHandlingPage
         root.urlHandlingPage = thisPagePath
 
         // Initialise with the default chatmail server
         //DeltaHandler.evaluateQrCode("dcaccount:https://nine.testrun.org/new")
-        processUrl(initialUrl)
+        processUrl(currentUrl)
     }
 
     Component.onDestruction: {
@@ -76,6 +78,25 @@ Page {
     Connections {
         target: chatmailPage
         onSetTempContextNull: DeltaHandler.unrefTempContext()
+    }
+
+    Connections {
+        target: DeltaHandler
+        onFinishedSetConfigFromQr: {
+            continueQrAccountCreation(successful)
+        }
+
+        onTempProxySettingsChanged: {
+            chatmailPage.hasProxyUrls = DeltaHandler.getTempProxyUrls() === "" ? false : true
+            chatmailPage.proxyEnabled = DeltaHandler.isTempProxyEnabled()
+        }
+    }
+
+    Connections {
+        target: root
+        onUnprocessedUrl: {
+            processUrl(rawUrl)
+        }
     }
 
     function setProfilePic(imagePath) {
@@ -106,10 +127,12 @@ Page {
 
         let qrstate = DeltaHandler.evaluateQrCode(urlstring)
         if (qrstate === DeltaHandler.DT_QR_ACCOUNT) {
+            currentUrl = urlstring
             isDcLogin = false
             provider = DeltaHandler.getQrTextOne()
 
         } else if (qrstate === DeltaHandler.DT_QR_LOGIN) {
+            currentUrl = urlstring
             isDcLogin = true
             provider = DeltaHandler.getQrTextOne()
 
@@ -163,11 +186,11 @@ Page {
                 popup3.failed.connect(function() { popStackTimer.start() })
 
             } else {
-                 let popup4 = PopupUtils.open(
-                     Qt.resolvedUrl("ErrorMessage.qml"),
-                     chatmailPage,
-                     { text: i18n.tr("Error")
-                 })
+                let popup4 = PopupUtils.open(
+                    Qt.resolvedUrl("ErrorMessage.qml"),
+                    chatmailPage,
+                    { text: i18n.tr("Error")
+                })
                 setTempContextNull()
             }
         }
@@ -179,7 +202,7 @@ Page {
 
         leadingActionBar.actions: [
             Action {
-                //iconName: 'close'
+                //iconName: 'go-previous'
                 iconSource: "qrc:///assets/suru-icons/go-previous.svg"
                 text: i18n.tr('Back')
                 onTriggered: {
@@ -188,16 +211,28 @@ Page {
             }
         ]
 
-//        //trailingActionBar.numberOfSlots: 2
-//        trailingActionBar.actions: [
-//            Action {
-//                //iconName: 'ok'
-//                iconSource: "qrc:///assets/suru-icons/ok.svg"
-//                text: i18n.tr('OK')
-//                onTriggered: {
-//                }
-//            }
-//        ]
+        //trailingActionBar.numberOfSlots: 2
+        trailingActionBar.actions: [
+            Action {
+                //iconName: 'contextual-menu'
+                iconSource: "qrc:///assets/suru-icons/contextual-menu.svg"
+                text: i18n.tr("More Options")
+                onTriggered: {
+                    PopupUtils.open(componentHamburgerMenu, header)
+                }
+            },
+
+            Action {
+                id: proxyAction
+                iconSource: proxyEnabled ? "qrc:///assets/shield-filled.svg" : "qrc:///assets/shield-empty.svg"
+                text: i18n.tr('Proxy')
+                enabled: hasProxyUrls
+                visible: hasProxyUrls
+                onTriggered: {
+                    extraStack.push(Qt.resolvedUrl('Proxy.qml'), { "forCurrentContext": false })
+                }
+            }
+        ]
     }
 
     Flickable {
@@ -372,9 +407,30 @@ Page {
                     if (usernameField.text === "") {
                         pleaseEnterNameLabel.visible = true
                     } else {
-                        DeltaHandler.continueQrCodeAction()
-                        // next actions will be done once the signal
-                        // finishedSetConfigFromQr is received
+                        // Need to call evaluateQrCode() again because on the C++ side, the
+                        // last evaluted QR code might have been, e.g., a proxy
+                        let qrstateCheck = DeltaHandler.evaluateQrCode(currentUrl)
+                        if (qrstateCheck === DeltaHandler.DT_QR_ACCOUNT || qrstateCheck === DeltaHandler.DT_QR_LOGIN) {
+                            if (provider === DeltaHandler.getQrTextOne()) {
+                                DeltaHandler.continueQrCodeAction()
+                                // next actions will be done once the signal
+                                // finishedSetConfigFromQr is received
+                            } else {
+                                console.log("OnboardingChatmail.qml, continueButton: ERROR: Content of property provider unexpectedly does not match return value of getQrTextOne")
+                                PopupUtils.open(
+                                    Qt.resolvedUrl("ErrorMessage.qml"),
+                                    chatmailPage,
+                                    { text: i18n.tr("Error: %1").arg("Internal error") }
+                                )
+                            }
+                        } else {
+                            console.log("OnboardingChatmail.qml, continueButton: ERROR: currentUrl is unexpectedly not of state DT_QR_ACCOUNT or DT_QR_LOGIN")
+                            PopupUtils.open(
+                                Qt.resolvedUrl("ErrorMessage.qml"),
+                                chatmailPage,
+                                { text: i18n.tr("Error: %1").arg("Internal error") }
+                            )
+                        }
                     }
                 }
             }
@@ -436,7 +492,10 @@ Page {
         interval: 300
         repeat: false
         triggeredOnStart: false
-        onTriggered: extraStack.clear()
+        onTriggered: {
+            DeltaHandler.clearTempProxySettings()
+            extraStack.clear()
+        }
     }
 
     Timer {
@@ -444,7 +503,43 @@ Page {
         interval: 300
         repeat: false
         triggeredOnStart: false
-        onTriggered: extraStack.pop()
+        onTriggered: {
+            DeltaHandler.clearTempProxySettings()
+            extraStack.pop()
+        }
+    }
+
+    Component {
+        id: componentHamburgerMenu
+        Popover {
+            id: popoverHamburgerMenu
+            Column {
+                id: menuLayout
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                }
+
+                ListItem {
+                    height: layout3.height
+                    // should be automatically be themed with something like
+                    // theme.palette.normal.overlay, but this
+                    // doesn't seem to work for Ambiance (and importing
+                    // Lomiri.Components.Themes 1.3 doesn't solve it). 
+                    color: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6" 
+                    ListItemLayout {
+                        id: layout3
+                        title.text: i18n.tr("Use Proxy")
+                    }
+                    
+                    onClicked: {
+                        PopupUtils.close(popoverHamburgerMenu)
+                        extraStack.push(Qt.resolvedUrl('Proxy.qml'), { "forCurrentContext": false })
+                    }
+                } // ListItem
+            }
+        }
     }
 
     Component {

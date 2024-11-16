@@ -515,6 +515,49 @@ MainView {
                 urlstring = ""
                 break;
 
+            case DeltaHandler.DT_QR_PROXY:
+                console.log("qr state is DT_QR_PROXY")
+                if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1 && askForAccount) {
+                        let popup20 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"), chatlistPage, { "dialogText": i18n.tr("Do you want to use proxy %1?").arg(DeltaHandler.getQrTextOne()) + "\n\n" + i18n.tr("Select account to use the proxy with") })
+                    popup20.cancelled.connect(function() {
+                        // unset urlstring if the user cancelled the account selection
+                        urlstring = ""
+                    })
+                    popup20.selected.connect(function() {
+                        extraStack.clear()
+                        imageStack.clear()
+                        // rest of the action will be triggered in the popup
+                    })
+                    // see above regarding not calling DeltaHandler.continueQrCodeAction()
+
+                    // if there's one account, or more than one and askForAccount is false
+                } else if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 0) {
+                    // only one configured account
+                    let popup21 = PopupUtils.open(
+                        Qt.resolvedUrl("pages/ConfirmDialog.qml"),
+                        chatlistPage,
+                        { dialogText: i18n.tr("Do you want to use proxy %1?").arg(DeltaHandler.getQrTextOne()), confirmButtonPositive: false })
+                    popup21.confirmed.connect(function() {
+                        DeltaHandler.continueQrCodeAction()
+                        if (DeltaHandler.networkingIsStarted) {
+                            DeltaHandler.stop_io()
+                            DeltaHandler.start_io()
+                        }
+                        PopupUtils.open(
+                            Qt.resolvedUrl("pages/InfoPopup.qml"),
+                            chatlistPage,
+                            { "text": i18n.tr("Done") }
+                        )
+                    })
+                    // unset urlstring if only one account
+                    urlstring = ""
+                } else {
+                    // no account configured, cannot perform this action
+                    console.log("Main.qml: urlDispatcherStep1(): No account configured, cannot process DT_QR_PROXY")
+                    urlstring = ""
+                }
+                break;
+
             case DeltaHandler.DT_QR_ERROR:
                 console.log("qr state is DT_QR_ERROR")
                 let popup15 = PopupUtils.open(
@@ -817,7 +860,19 @@ MainView {
                 switch (qrstate) {
                     // only cases that require account selection are listed here
                     case DeltaHandler.DT_QR_ASK_VERIFYCONTACT: // fallthrough
-                    case DeltaHandler.DT_QR_ASK_VERIFYGROUP: // fallthrough
+                    case DeltaHandler.DT_QR_ASK_VERIFYGROUP:
+                        DeltaHandler.continueQrCodeAction()
+                        break;
+
+                    case DeltaHandler.DT_QR_PROXY:
+                        DeltaHandler.continueQrCodeAction()
+                        PopupUtils.open(
+                            Qt.resolvedUrl("pages/InfoPopup.qml"),
+                            chatlistPage,
+                            { "text": i18n.tr("Done") }
+                        )
+                        break;
+
                     case DeltaHandler.DT_QR_ADDR:
                         if (DeltaHandler.qrOverwritesDraft()) {
                             let popup19 = PopupUtils.open(
@@ -1130,7 +1185,7 @@ MainView {
                 Rectangle {
                     id: profilePicAndNameRect
 
-                    width: headerRect.width - searchIconCage.width - qrIconCage.width - settingsIconCage.width - units.gu(1)
+                    width: headerRect.width - searchIconCage.width - qrIconCage.width - (proxyIconCage.visible ? proxyIconCage.width : 0) - settingsIconCage.width - units.gu(1)
                     height: headerTopBackgroundColor.height
                     anchors {
                         left: headerRect.left
@@ -1303,7 +1358,7 @@ MainView {
                     height: profilePicShape.height + units.gu(1)
                     width: searchIcon.width + units.gu(2)
                     anchors {
-                        right: settingsIconCage.left
+                        right: proxyIconCage.visible ? proxyIconCage.left : settingsIconCage.left
                         top: profilePicAndNameRect.top
                         bottom: profilePicAndNameRect.bottom
                     }
@@ -1329,6 +1384,38 @@ MainView {
                     }
                 }
             
+                Rectangle {
+                    id: proxyIconCage
+                    height: profilePicShape.height + units.gu(1)
+                    width: proxyIcon.width + units.gu(2)
+                    anchors {
+                        right: settingsIconCage.left
+                        top: profilePicAndNameRect.top
+                        bottom: profilePicAndNameRect.bottom
+                    }
+                    color: headerTopBackgroundColor.color
+                    visible: DeltaHandler.hasProxy
+
+                    Icon {
+                        id: proxyIcon
+                        //name: "view-grid-symbolic"
+                        source: DeltaHandler.useProxy ? "qrc:///assets/shield-filled.svg" : "qrc:///assets/shield-empty.svg"
+                        width: profilePicShape.width * (2/5)
+                        height: width
+                        anchors{
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
+                        }
+                        color: usernameLabel.color
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: extraStack.push(Qt.resolvedUrl('pages/Proxy.qml'))
+                        enabled: !root.chatOpenAlreadyClicked
+                    }
+                }
+
                 Rectangle {
                     id: settingsIconCage
                     height: profilePicShape.height + units.gu(1)

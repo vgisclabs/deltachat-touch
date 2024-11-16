@@ -30,18 +30,18 @@
 #include <queue>
 #include <atomic>
 
-#include "chatmodel.h"
 #include "accountsmodel.h"
 #include "blockedcontactsmodel.h"
+#include "chatmodel.h"
 #include "contactsmodel.h"
 #include "dbusUrlReceiver.h"
-#include "groupmembermodel.h"
 #include "emitterthread.h"
+#include "fileImportSignalHelper.h"
+#include "groupmembermodel.h"
 #include "jsonrpcresponsethread.h"
 #include "notificationHelper.h"
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
-#include "fileImportSignalHelper.h"
 
 #include "deltachat.h"
 #include "quirc.h"
@@ -90,7 +90,7 @@ public:
     enum DownloadState { DownloadDone, DownloadAvailable, DownloadInProgress, DownloadFailure };
     Q_ENUM(DownloadState)
 
-    enum QrState { DT_QR_ASK_VERIFYCONTACT, DT_QR_ASK_VERIFYGROUP, DT_QR_FPR_OK, DT_QR_FPR_MISMATCH, DT_QR_FPR_WITHOUT_ADDR, DT_QR_ACCOUNT, DT_QR_BACKUP, DT_QR_BACKUP2, DT_QR_WEBRTC_INSTANCE, DT_QR_ADDR, DT_QR_TEXT, DT_QR_URL, DT_QR_ERROR, DT_QR_WITHDRAW_VERIFYCONTACT, DT_QR_WITHDRAW_VERIFYGROUP, DT_QR_REVIVE_VERIFYCONTACT, DT_QR_REVIVE_VERIFYGROUP, DT_QR_LOGIN, DT_UNKNOWN };
+    enum QrState { DT_QR_ASK_VERIFYCONTACT, DT_QR_ASK_VERIFYGROUP, DT_QR_FPR_OK, DT_QR_FPR_MISMATCH, DT_QR_FPR_WITHOUT_ADDR, DT_QR_ACCOUNT, DT_QR_BACKUP, DT_QR_BACKUP2, DT_QR_WEBRTC_INSTANCE, DT_QR_PROXY, DT_QR_ADDR, DT_QR_TEXT, DT_QR_URL, DT_QR_ERROR, DT_QR_WITHDRAW_VERIFYCONTACT, DT_QR_WITHDRAW_VERIFYGROUP, DT_QR_REVIVE_VERIFYCONTACT, DT_QR_REVIVE_VERIFYGROUP, DT_QR_LOGIN, DT_UNKNOWN };
     Q_ENUM(QrState)
 
     enum VoiceMessageQuality { LowRecordingQuality, BalancedRecordingQuality, HighRecordingQuality };
@@ -284,7 +284,8 @@ public:
 
     Q_INVOKABLE void setCurrentConfig(QString key, QString newValue);
 
-    // returns whether tempContext is already configured
+    // returns whether tempContext corresponds to an existing account (in
+    // contrast to the creation of a new account)
     Q_INVOKABLE bool prepareTempContextConfig();
 
     Q_INVOKABLE void configureTempContext();
@@ -294,6 +295,22 @@ public:
     Q_INVOKABLE QString getTempContextConfig(QString key);
 
     Q_INVOKABLE void setTempContextConfig(QString key, QString val);
+
+    // tempProxy stuff is for changing proxy settings for new accounts or
+    // re-configuration of accounts via the account switcher. In that case, the
+    // page Proxy.qml will write new proxy settings to tempProxy, and another
+    // instance (e.g., the parent page) has to take care of actually transferring
+    // tempProxy settings to the corresponding context.
+    // tempProxy is _not_ for proxy configuration of the current account via
+    // settings or via the shield icon.
+    Q_INVOKABLE void setTempProxyEnabled(bool enabled);
+    Q_INVOKABLE void setTempProxyUrls(QString urls);
+
+    // Returns whether the url(s) returned by getTempProxyUrls are enabled.
+    // False if there are no proxy urls.
+    Q_INVOKABLE bool isTempProxyEnabled();
+    Q_INVOKABLE QString getTempProxyUrls();
+    Q_INVOKABLE void clearTempProxySettings();
 
     Q_INVOKABLE void deleteTemporaryAccount();
 
@@ -491,6 +508,12 @@ public:
 
     Q_INVOKABLE void emitFontSizeChangedSignal();
 
+    // Converts textToConvert into a QR code in an .svg file in the cache and
+    // returns the path minus the cache location (this has to be prepended
+    // again by the caller). The file may be overwritten at any time, so if it
+    // should be retained, the caller has to save it immediately.
+    Q_INVOKABLE QString createQrInCache(QString textToConvert);
+
     // Will be executed when the app is closed
     Q_INVOKABLE void shutdownTasks();
 
@@ -526,11 +549,15 @@ public:
     FileImportSignalHelper* fileImportSignalHelper();
 
     Q_PROPERTY(bool hasConfiguredAccount READ hasConfiguredAccount NOTIFY hasConfiguredAccountChanged);
+    Q_PROPERTY(bool useProxy READ useProxy NOTIFY useProxyChanged);
+    Q_PROPERTY(bool hasProxy READ hasProxy NOTIFY hasProxyChanged);
     Q_PROPERTY(bool networkingIsAllowed READ networkingIsAllowed NOTIFY networkingIsAllowedChanged);
     Q_PROPERTY(bool networkingIsStarted READ networkingIsStarted NOTIFY networkingIsStartedChanged);
     Q_PROPERTY(bool chatIsContactRequest READ chatIsContactRequest NOTIFY chatIsContactRequestChanged);
 
     bool hasConfiguredAccount();
+    bool useProxy();
+    bool hasProxy();
     bool networkingIsAllowed();
     bool networkingIsStarted();
     bool chatIsContactRequest();
@@ -565,6 +592,9 @@ signals:
     void databaseDecryptionFailure();
     void noEncryptedDatabase();
 
+    // tempProxy settings changed, see other comments for tempProxy above
+    void tempProxySettingsChanged();
+
     // emitted if
     // - the event DC_EVENT_CHAT_MODIFIED is received
     // - a username was modified by the user
@@ -594,6 +624,8 @@ signals:
     void providerStatus(bool working, QString address);
 
     void hasConfiguredAccountChanged();
+    void useProxyChanged();
+    void hasProxyChanged();
     void networkingIsAllowedChanged();
     void networkingIsStartedChanged();
     void accountChanged();
@@ -704,9 +736,15 @@ private slots:
 private:
     dc_accounts_t* allAccounts;
     dc_context_t* currentContext;
+    // For creation of new account or re-configuration of
+    // user pw/server settings/proxy settings of existing one.
     // TODO: rename tempContext, name's too similar to
     // local variables used in functions (tempText, tempLot etc.)
-    dc_context_t* tempContext; // for creation of new account
+    dc_context_t* tempContext;
+    bool m_tempProxyEnabled;
+    // Empty string in case no proxy intended
+    QString m_tempProxyUrls;
+
     std::vector<uint32_t> m_chatlistVector;
 
     EmitterThread* eventThread;
@@ -728,6 +766,11 @@ private:
     // is not necessarily shown at the screen atm
     bool currentChatIsOpened;
     bool m_hasConfiguredAccount;
+
+    // Whether the currently active account uses a proxy
+    bool m_useProxy;
+    // Whether at least one proxy is set in the config of the currently active account
+    bool m_hasProxy;
 
     // This member is needed, it can't just be
     // replaced by settings->value("encryptDb").toBool()

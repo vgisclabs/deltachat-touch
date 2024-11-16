@@ -36,7 +36,7 @@ namespace C {
 
 
 DeltaHandler::DeltaHandler(QObject* parent)
-    : QAbstractListModel(parent), tempContext {nullptr}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_fileImportSignalHelper {nullptr}, m_currentAccID {0}, m_currentChatID {0}, m_hasConfiguredAccount {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_bus("DeltaTouch"), m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
+    : QAbstractListModel(parent), tempContext {nullptr}, m_tempProxyEnabled {false}, m_tempProxyUrls {""}, m_blockedcontactsmodel {nullptr}, m_groupmembermodel {nullptr}, m_workflowDbEncryption {nullptr}, m_workflowDbDecryption {nullptr}, m_fileImportSignalHelper {nullptr}, m_currentAccID {0}, m_currentChatID {0}, m_hasConfiguredAccount {false}, m_useProxy {false}, m_hasProxy {false}, m_networkingIsAllowed {true}, m_networkingIsStarted {false}, m_showArchivedChats {false}, m_tempGroupChatID {0}, m_query {""}, m_bus("DeltaTouch"), m_qr {nullptr}, m_audioRecorder {nullptr}, m_backupProvider {nullptr}, m_coreTranslationsAlreadySet {false}, m_signalQueue_refreshChatlist {false}
 {
     // Determine if the app is running on Ubuntu Touch,
     // if it is in desktop mode and if the on-screen
@@ -2208,7 +2208,7 @@ QString DeltaHandler::getCurrentConfig(QString key)
         char * tempString = dc_get_config(currentContext, key.toUtf8().constData());
         retval = tempString;
 
-//        if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
+//        if ("mail_pw" == key || "send_pw" == key || "proxy_url" == key) {
 //            qDebug() << "DeltaHandler::getCurrentConfig() called for " << key << ", returning " << "*****";
 //        } else {
 //            qDebug() << "DeltaHandler::getCurrentConfig() called for " << key << ", returning " << retval;
@@ -2226,6 +2226,18 @@ QString DeltaHandler::getCurrentConfig(QString key)
 bool DeltaHandler::hasConfiguredAccount()
 {
     return m_hasConfiguredAccount;
+}
+
+
+bool DeltaHandler::useProxy()
+{
+    return m_useProxy;
+}
+
+
+bool DeltaHandler::hasProxy()
+{
+    return m_hasProxy;
 }
 
 
@@ -2312,6 +2324,8 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
 {
     qDebug() << "DeltaHandler::setCurrentConfig() called for key " << key;
 
+    bool restartIOrequired = false;
+
     if ("selfavatar" == key) {
         // have to check for the special case where the
         // selfavatar should be deleted
@@ -2338,11 +2352,42 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
                 newValue.remove(0, 4);
             }
         }
+    } else if ("proxy_enabled" == key) {
+        // need to set the Q_PROPERTY useProxy
+        if ("0" == newValue && m_useProxy) {
+            m_useProxy = false;
+            emit useProxyChanged();
+            // need to restart IO to apply changes to proxy settings
+            restartIOrequired = true;
+        } else if ("1" == newValue && !m_useProxy) {
+            m_useProxy = true;
+            emit useProxyChanged();
+            restartIOrequired = true;
+        }
+    } else if ("proxy_url" == key && "" == newValue) {
+        // need to handle this separately as we have to pass NULL instead of ""
+        int success = dc_set_config(currentContext, key.toUtf8().constData(), NULL);
+
+        if (!success) {
+            qDebug() << "DeltaHandler::setCurrentConfig: ERROR: Setting key " << key << " to \"\" was not successful.";
+        } else {
+            if (m_networkingIsStarted) {
+                stop_io();
+                start_io();
+            }
+        }
+
+        if (m_hasProxy) {
+            m_hasProxy = false;
+            emit hasProxyChanged();
+        }
+
+        return;
     }
 
-    // sentbox_watch, mvbox_move and only_fetch_mvbox changes require restarting IO
-    bool restartIOrequired = false;
-    if ("sentbox_watch" == key || "mvbox_move" == key || "only_fetch_mvbox" == key) {
+    // sentbox_watch, mvbox_move, only_fetch_mvbox and proxy_url changes require restarting IO.
+    // proxy_enabled does, too, but for this, restartIOrequired is already set above
+    if ("sentbox_watch" == key || "mvbox_move" == key || "only_fetch_mvbox" == key || "proxy_url" == key) {
         // TODO: maybe check every key whether newValue is already the current value?
         // Then only restartIOrequired would have to be set here
         char* tempText = dc_get_config(currentContext, key.toUtf8().constData());
@@ -2367,6 +2412,14 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
  
     if ("addr" == key || "displayname" == key || "selfavatar" == key) {
         emit accountDataChanged();
+    }
+
+    if ("proxy_url" == key && !("" == key)) {
+        // case with "" == key is covered above
+        if (!m_hasProxy) {
+            m_hasProxy = true;
+            emit hasProxyChanged();
+        }
     }
 }
 
@@ -2410,7 +2463,7 @@ QString DeltaHandler::getTempContextConfig(QString key)
         dc_str_unref(tempText);
     }
 
-    if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
+    if ("mail_pw" == key || "send_pw" == key || "proxy_url" == key) {
         qDebug() << "DeltaHandler::getTempContextConfig() called for " << key << ", returning " << "*****";
     } else {
         qDebug() << "DeltaHandler::getTempContextConfig() called for " << key << ", returning " << retval;
@@ -2436,7 +2489,7 @@ void DeltaHandler::setTempContextConfig(QString key, QString val)
     QString origVal = getTempContextConfig(key);
     if (origVal == val) {
 
-        if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
+        if ("mail_pw" == key || "send_pw" == key || "proxy_url" == key) {
             qDebug() << "DeltaHandler::setTempContextConfig: Not setting key " << key << " to ***** as it has not changed.";
         } else {
             qDebug() << "DeltaHandler::setTempContextConfig: Not setting key " << key << " to " << val << " as it has not changed.";
@@ -2445,12 +2498,66 @@ void DeltaHandler::setTempContextConfig(QString key, QString val)
     } else {
         dc_set_config(tempContext, key.toUtf8().constData(), val.toUtf8().constData());
 
-        if ("mail_pw" == key || "send_pw" == key || "socks5_password" == key) {
+        if ("mail_pw" == key || "send_pw" == key || "proxy_url" == key) {
             qDebug() << "DeltaHandler::setTempContextConfig: Setting " << key << " to " << "*****";
         } else {
             qDebug() << "DeltaHandler::setTempContextConfig: Setting " << key << " to " << val;
         }
+
+        // if tempContext == currentContext, the shield icon needs to be updated
+        if (tempContext == currentContext) {
+            if ("proxy_enabled" == key) {
+                if ("0" == val && m_useProxy) {
+                    m_useProxy = false;
+                    emit useProxyChanged();
+                } else if ("1" == val && !m_useProxy) {
+                    m_useProxy = true;
+                    emit useProxyChanged();
+                }
+            } else if ("proxy_url" == key) {
+                if ("" == val && m_hasProxy) {
+                    m_hasProxy = false;
+                    emit hasProxyChanged();
+                } else if (!m_hasProxy) {
+                    m_hasProxy = true;
+                    emit hasProxyChanged();
+                }
+            }
+        }
     }
+}
+
+
+void DeltaHandler::setTempProxyEnabled(bool enabled)
+{
+    m_tempProxyEnabled = enabled;
+    emit tempProxySettingsChanged();
+}
+
+
+void DeltaHandler::setTempProxyUrls(QString urls)
+{
+    m_tempProxyUrls = urls;
+    emit tempProxySettingsChanged();
+}
+
+
+bool DeltaHandler::isTempProxyEnabled()
+{
+    return m_tempProxyEnabled;
+}
+
+
+QString DeltaHandler::getTempProxyUrls()
+{
+    return m_tempProxyUrls;
+}
+
+
+void DeltaHandler::clearTempProxySettings()
+{
+    m_tempProxyEnabled = false;
+    m_tempProxyUrls = "";
 }
 
 
@@ -2518,6 +2625,16 @@ bool DeltaHandler::prepareTempContextConfig()
         // Enable verified 1:1 chats on the new account
         dc_set_config(tempContext, "verified_one_on_one_chats", "1");
 
+        // Set the proxy config, if needed
+        if (m_tempProxyUrls != "") {
+            dc_set_config(tempContext, "proxy_url", m_tempProxyUrls.toUtf8().constData());
+            if (m_tempProxyEnabled) {
+                dc_set_config(tempContext, "proxy_enabled", "1");
+            } else {
+                dc_set_config(tempContext, "proxy_enabled", "0");
+            }
+        }
+
         m_configuringNewAccount = true;
     } else {
         m_configuringNewAccount = false;
@@ -2526,9 +2643,10 @@ bool DeltaHandler::prepareTempContextConfig()
     if (!tempContext) {
         return false;
     } else {
-        return dc_is_configured(tempContext);
+        return !m_configuringNewAccount;
     }
 }
+
 
 void DeltaHandler::configureTempContext()
 {
@@ -4011,6 +4129,28 @@ void DeltaHandler::continueQrCodeAction()
         case DT_QR_WEBRTC_INSTANCE:
             // TODO not implemented yet
             break;
+        case DT_QR_PROXY:
+            if (currentContext) {
+                dc_set_config_from_qr(currentContext, m_qrTempText.toUtf8().constData());
+
+                if (m_networkingIsStarted) {
+                    stop_io();
+                    start_io();
+                }
+
+                if (!m_useProxy) {
+                    // no need to call setCurrentConfig as proxy_enabled will be set
+                    // automatically by the core
+                    m_useProxy = true;
+                    emit useProxyChanged();
+                }
+
+                if (!m_hasProxy) {
+                    m_hasProxy = true;
+                    emit hasProxyChanged();
+                }
+            }
+            break;
         case DT_QR_ADDR:
             chatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
             if (0 != chatID) {
@@ -4145,14 +4285,11 @@ int DeltaHandler::evaluateQrCode(QString clipboardData)
 
     if (currentContext) {
         tempLot = dc_check_qr(currentContext, m_qrTempText.toUtf8().constData());
+    } else if (tempContext) {
+        tempLot = dc_check_qr(tempContext, m_qrTempText.toUtf8().constData());
     } else {
         accID = dc_accounts_add_account(allAccounts);
         // The created account will be removed at the end of the function.
-        // TODO: check whether this situation can be handled via tempContext
-        // (currently probably not because the logic from previous versions of
-        // DeltaTouch assumes that if tempContext is set, we're in the middle
-        // of configuring an account by manually setting username, password etc.,
-        // see prepareTempContextConfig())
         helperContext = dc_accounts_get_account(allAccounts, accID);
         tempLot = dc_check_qr(helperContext, m_qrTempText.toUtf8().constData());
     }
@@ -4186,6 +4323,9 @@ int DeltaHandler::evaluateQrCode(QString clipboardData)
             break;
         case DC_QR_WEBRTC_INSTANCE:
             m_qrTempState = QrState::DT_QR_WEBRTC_INSTANCE;
+            break;
+        case DC_QR_PROXY:
+            m_qrTempState = QrState::DT_QR_PROXY;
             break;
         case DC_QR_ADDR:
             m_qrTempState = QrState::DT_QR_ADDR;
@@ -5071,6 +5211,18 @@ void DeltaHandler::contextSetupTasks()
     }
 
     dc_array_unref(tempArray);
+
+    bool _proxyUsed = getCurrentConfig("proxy_enabled") == "1";
+    if (_proxyUsed != m_useProxy) {
+        m_useProxy = _proxyUsed;
+        emit useProxyChanged();
+    }
+
+    bool _proxySet = getCurrentConfig("proxy_url") != "";
+    if (_proxySet != m_hasProxy) {
+        m_hasProxy = _proxySet;
+        emit hasProxyChanged();
+    }
 }
 
 
@@ -5737,4 +5889,29 @@ void DeltaHandler::deleteFileImportSignalHelper()
     } else {
         qWarning() << "DeltaHandler::deleteFileImportSignalHelper(): m_fileImportSignalHelper is unexpectedly NULL";
     }
+}
+
+
+QString DeltaHandler::createQrInCache(QString textToConvert)
+{
+    QString filepath {""};
+
+    char* tempText = dc_create_qr_svg(textToConvert.toLocal8Bit().constData());
+    if (tempText) {
+        filepath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+        filepath.append("/qr.svg");
+
+        if (QFile::exists(filepath)) {
+            QFile::remove(filepath);
+        }
+
+        std::ofstream outfile(filepath.toStdString());
+        outfile << tempText;
+        outfile.close();
+
+        dc_str_unref(tempText);
+    }
+
+    filepath.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
+    return filepath;
 }

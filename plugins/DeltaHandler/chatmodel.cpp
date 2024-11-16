@@ -2048,6 +2048,13 @@ void ChatModel::unsetQuote()
             currentMessageDraft = nullptr;
             dc_set_draft(currentMsgContext, m_chatID, NULL);
         } else {
+            // If there was no text in the draft when entering the chat, but
+            // the user has entered text in the meantime, draftText will be
+            // the entered string, but currentMessageDraft will not contain any
+            // text. After removing the quote, currentMessageDraft may actually be
+            // empty, so we have to set the text now to avoid a user visible error
+            // by the core
+            dc_msg_set_text(currentMessageDraft, draftText.toUtf8().constData());
             dc_set_draft(currentMsgContext, m_chatID, currentMessageDraft);
         }
         emit draftHasQuoteChanged();

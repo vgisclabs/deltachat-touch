@@ -2602,7 +2602,7 @@ int ChatModel::indexToMessageId(int myindex)
 }
 
 
-void ChatModel::setWebxdcInstance(int myindex)
+uint32_t ChatModel::setWebxdcInstance(int myindex)
 {
     if (-1 == myindex) {
         if (currentMessageDraft) {
@@ -2614,6 +2614,7 @@ void ChatModel::setWebxdcInstance(int myindex)
     } else {
         m_webxdcInstanceMsgId = msgVector[myindex];
     }
+    return m_webxdcInstanceMsgId;
 }
 
 
@@ -2731,6 +2732,60 @@ QString ChatModel::getWebxdcJs(QString scriptname)
     in.flush();
     jsfile.close();
     return retval;
+}
+
+
+void ChatModel::webxdcSendRealtimeData(QString _rtData)
+{
+    QString tempQString;
+    QString paramString;
+
+    tempQString.setNum(dc_get_id(currentMsgContext));
+    paramString.append(tempQString);
+    paramString.append(", ");
+
+    tempQString.setNum(m_webxdcInstanceMsgId);
+    paramString.append(tempQString);
+
+    paramString.append(", ");
+    paramString.append(_rtData);
+
+    QString requestString = m_dhandler->constructJsonrpcRequestString("send_webxdc_realtime_data", paramString);
+    m_dhandler->sendJsonrpcRequest(requestString);
+}
+
+
+void ChatModel::webxdcSendRealtimeAdvertisement()
+{
+    QString tempQString;
+    QString paramString;
+
+    tempQString.setNum(dc_get_id(currentMsgContext));
+    paramString.append(tempQString);
+    paramString.append(", ");
+
+    tempQString.setNum(m_webxdcInstanceMsgId);
+    paramString.append(tempQString);
+
+    QString requestString = m_dhandler->constructJsonrpcRequestString("send_webxdc_realtime_advertisement", paramString);
+    m_dhandler->sendJsonrpcRequest(requestString);
+}
+
+
+void ChatModel::webxdcLeaveRealtimeChannel()
+{
+    QString tempQString;
+    QString paramString;
+
+    tempQString.setNum(dc_get_id(currentMsgContext));
+    paramString.append(tempQString);
+    paramString.append(", ");
+
+    tempQString.setNum(m_webxdcInstanceMsgId);
+    paramString.append(tempQString);
+
+    QString requestString = m_dhandler->constructJsonrpcRequestString("leave_webxdc_realtime", paramString);
+    m_dhandler->sendJsonrpcRequest(requestString);
 }
 
 

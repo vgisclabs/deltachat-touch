@@ -554,6 +554,7 @@ Page {
                     title.font.bold: true
                     summary.text: i18n.tr("Pressing the Enter key will send text messages")
                     summary.wrapMode: Text.WordWrap
+                    summary.maximumLineCount: 8
 
                     Switch {
                         id: enterKeySendsSwitch
@@ -742,6 +743,7 @@ Page {
                     title.text: i18n.tr("Notifications")
                     summary.text: i18n.tr("Enable system notifications for new messages")
                     summary.wrapMode: Text.WordWrap
+                    summary.maximumLineCount: 8
 
                     Switch {
                         id: sysNotifsEnabledSwitch
@@ -778,6 +780,7 @@ Page {
                     title.text: i18n.tr("Show message content in notification")
                     summary.text: i18n.tr("Shows sender and first words of the message in notifications")
                     summary.wrapMode: Text.WordWrap
+                    summary.maximumLineCount: 8
                     enabled: root.sendPushNotifications
 
                     Switch {
@@ -806,6 +809,7 @@ Page {
                     // TODO string not translated yet
                     summary.text: i18n.tr("Include contact requests in counters and notifications")
                     summary.wrapMode: Text.WordWrap
+                    summary.maximumLineCount: 8
 
                     Switch {
                         id: notifyContRequSwitch

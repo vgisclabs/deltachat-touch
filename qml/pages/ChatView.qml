@@ -1534,7 +1534,7 @@ Page {
                             active: msgViewType === DeltaHandler.WebxdcType
 
                             function startWebxdc() {
-                                DeltaHandler.chatmodel.setWebxdcInstance(index)
+                                let instanceId = DeltaHandler.chatmodel.setWebxdcInstance(index)
                                 let tempUsername = DeltaHandler.getCurrentUsername()
                                 let tempEmailAddr = DeltaHandler.getCurrentEmail()
                                 if (tempUsername == "") {
@@ -1544,7 +1544,9 @@ Page {
                                     "headerTitle": webxdcInfo.name,
                                     "username": tempUsername,
                                     "useraddress": tempEmailAddr,
-                                    "sourceUrl": webxdcInfo.source_code_url }
+                                    "sourceUrl": webxdcInfo.source_code_url,
+                                    "currAccID": DeltaHandler.getCurrentAccountId(),
+                                    "instanceId": instanceId }
                                 )
                             }
 
@@ -2670,7 +2672,7 @@ Page {
                     anchors.fill: parent
 
                     function startDraftWebxdc() {
-                        DeltaHandler.chatmodel.setWebxdcInstance(-1)
+                        let instanceId = DeltaHandler.chatmodel.setWebxdcInstance(-1)
                         let tempUsername = DeltaHandler.getCurrentUsername()
                         let tempEmailAddr = DeltaHandler.getCurrentEmail()
                         if (tempUsername == "") {
@@ -2679,7 +2681,9 @@ Page {
                         extraStack.push(Qt.resolvedUrl("WebxdcPage.qml"), {
                             "headerTitle": webxdcPreviewNameLabel.text,
                             "username": tempUsername,
-                            "useraddress": tempEmailAddr }
+                            "useraddress": tempEmailAddr,
+                            "currAccID": DeltaHandler.getCurrentAccountId(),
+                            "instanceId": instanceId }
                         )
                     }
 

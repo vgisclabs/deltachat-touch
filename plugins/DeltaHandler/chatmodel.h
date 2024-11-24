@@ -146,7 +146,7 @@ public:
     Q_INVOKABLE int indexToMessageId(int myindex);
 
     // With myindex == -1, currentMessageDraft is used as Webxdc instance
-    Q_INVOKABLE void setWebxdcInstance(int myindex);
+    Q_INVOKABLE uint32_t setWebxdcInstance(int myindex);
 
     Q_INVOKABLE void sendWebxdcInstanceData();
 
@@ -159,6 +159,10 @@ public:
     Q_INVOKABLE QString getWebxdcId();
 
     Q_INVOKABLE QString getWebxdcJs(QString scriptname);
+
+    Q_INVOKABLE void webxdcSendRealtimeData(QString _rtData);
+    Q_INVOKABLE void webxdcSendRealtimeAdvertisement();
+    Q_INVOKABLE void webxdcLeaveRealtimeChannel();
     
     Q_INVOKABLE void checkAndJumpToWebxdcParent(int myindex);
 

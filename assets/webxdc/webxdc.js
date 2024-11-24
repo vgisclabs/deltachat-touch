@@ -111,16 +111,12 @@ window.webxdc = (() => {
     let listener = null;
     return {
       setListener: (li) => listener = li,
-      // TODO: implement
-      //leave: () => cppside.leaveRealtimeChannel(),
-      leave: () => console.log("realtimeChannel.leave() called, not implemented yet"),
+      leave: () => cppside.leaveRealtimeChannel(),
       send: (data) => {
         if ((!data) instanceof Uint8Array) {
           throw new Error('realtime listener data must be a Uint8Array')
         }
-        // TODO: implement
-        //cppside.sendRealtimeData(JSON.stringify(Array.from(data)));
-        console.log("realtimeChannel.send() called, not implemented yet");
+        cppside.sendRealtimeData(JSON.stringify(Array.from(data)));
       },
       __receive: (data) => {
         if (listener) {
@@ -132,7 +128,7 @@ window.webxdc = (() => {
 
 
   parent.__webxdcUpdate = window.__webxdcUpdate;
-
+  parent.__webxdcRealtimeData = window.__webxdcRealtimeData;
 
   return {
     selfAddr: cppside.selfAddr,
@@ -141,9 +137,7 @@ window.webxdc = (() => {
 
     joinRealtimeChannel: () => {
       realtimeChannel = createRealtimeChannel();
-      // TODO implement
-      //cppside.sendRealtimeAdvertisement();
-      console.log("joinRealtimeChannel called, not implemented yet");
+      cppside.sendRealtimeAdvertisement();
       return realtimeChannel;
     },
 

@@ -216,6 +216,39 @@ Page {
                 color: theme.palette.normal.background
             }
 
+            ListItem {
+                id: webxdcRealtimeItem
+                height: realtimeLayout.height + (divider.visible ? divider.height : 0)
+                width: advancedSettingsPage.width
+                divider.visible: true
+
+                ListItemLayout {
+                    id: realtimeLayout
+                    title.text: i18n.tr("Realtime Webxdc Channels")
+                    title.font.bold: true
+                    summary.text: i18n.tr("Enable real-time connections for apps shared in chats. If enabled, chat partners may be able to discover your IP address when you start an app.")
+                    summary.wrapMode: Text.WordWrap
+                    summary.maximumLineCount: 8
+
+                    Switch {
+                        id: realtimeSwitch
+                        SlotsLayout.position: SlotsLayout.Trailing
+                        checked: (DeltaHandler.getCurrentConfig("webxdc_realtime_enabled") === "1")
+                        onCheckedChanged: {
+                            if (realtimeSwitch.checked) {
+                                if (DeltaHandler.getCurrentConfig("webxdc_realtime_enabled") != "1") {
+                                    DeltaHandler.setCurrentConfig("webxdc_realtime_enabled", "1")
+                                }
+                            } else {
+                                if (DeltaHandler.getCurrentConfig("webxdc_realtime_enabled") != "0") {
+                                    DeltaHandler.setCurrentConfig("webxdc_realtime_enabled", "0")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             Rectangle {
                 id: prefAutocryptSectionHeader
                 height: prefAutocryptSectionHeaderLabel.contentHeight + units.gu(3)
@@ -330,6 +363,7 @@ Page {
                     title.text: i18n.tr("Send Copy to Self")
                     summary.text: i18n.tr("Required when using this account on multiple devices.")
                     summary.wrapMode: Text.WordWrap
+                    summary.maximumLineCount: 8
 
 
                     Switch {
@@ -365,6 +399,7 @@ Page {
                     title.text: i18n.tr("Move automatically to DeltaChat Folder")
                     summary.text: i18n.tr("Chat conversations are moved to avoid cluttering the Inbox")
                     summary.wrapMode: Text.WordWrap
+                    summary.maximumLineCount: 8
 
 
                     Switch {
@@ -399,6 +434,7 @@ Page {
                     title.text: i18n.tr("Only Fetch from DeltaChat Folder")
                     summary.text: i18n.tr("Ignore other folders. Requires your server to move chat messages to the DeltaChat folder.")
                     summary.wrapMode: Text.WordWrap
+                    summary.maximumLineCount: 8
 
 
                     Switch {

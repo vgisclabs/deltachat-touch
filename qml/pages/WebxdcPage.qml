@@ -38,6 +38,8 @@ Page {
     property string headerTitle
     property string username
     property string useraddress
+    property int currAccID: -1
+    property int instanceId: -1
     property string sourceUrl: ""
 
     header: PageHeader {
@@ -84,6 +86,13 @@ Page {
         webxdcengineprofile.urlReceived.connect(receiveUrlFromWebxdc)
 
         DeltaHandler.chatmodel.sendWebxdcInstanceData()
+
+        if (DeltaHandler.getCurrentConfig("webxdc_realtime_enabled") === "1") {
+            console.log("WebxdcPage.qml: Webxdc realtime is enabled")
+            realtimeConnection.enabled = true
+        } else {
+            console.log("WebxdcPage.qml: Webxdc realtime is not enabled")
+        }
     }
 
     Component.onDestruction: {
@@ -92,6 +101,21 @@ Page {
         // (and a new one will be added each time the page is opened)
         DeltaHandler.chatmodel.newWebxdcInstanceData.disconnect(webxdcengineprofile.configureNewInstance)
         DeltaHandler.chatmodel.updateCurrentWebxdc.disconnect(webxdcUpdate)
+
+        if (realtimeConnection.enabled) {
+            DeltaHandler.chatmodel.webxdcLeaveRealtimeChannel()
+        }
+    }
+
+    Connections {
+        id: realtimeConnection
+        enabled: false
+        target: DeltaHandler.emitterthread
+        onWebxdcRealtimeData: {
+            if (currAccID === accID && instanceId === msgID) {
+                webview.runJavaScript("window.__webxdcRealtimeData([" + rtData + "])")
+            }
+        }
     }
 
     function printJsConsoleMsg(level, message, lineNo, sourceId) {
@@ -295,6 +319,22 @@ Page {
                 let temptext = "__setInput(\"" + dateTime + "\")"
                 webview.runJavaScript(temptext)
             })
+        }
+
+        function sendRealtimeData(dataArray) {
+            DeltaHandler.chatmodel.webxdcSendRealtimeData(dataArray)
+        }
+
+        function leaveRealtimeChannel() {
+            DeltaHandler.chatmodel.webxdcLeaveRealtimeChannel()
+        }
+
+        function sendRealtimeAdvertisement() {
+            // TODO ask whether realtime should be enabled, then enable if yes and call
+            // webxdcSendRealtimeAdvertisement()? => wait until official apps do it
+            if (realtimeConnection.enabled) {
+                DeltaHandler.chatmodel.webxdcSendRealtimeAdvertisement()
+            }
         }
     }
 

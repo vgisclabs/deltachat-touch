@@ -42,7 +42,11 @@ void EmitterThread::run()
 
             int eventType {0};
             char* eventData2Str {nullptr};
+            unsigned char* ucharPtr {nullptr};
             QString data2info;
+            int data2int;
+            QString numberhelper;
+            int i;
 
             eventType = dc_event_get_id(event);
             switch (eventType) {
@@ -235,6 +239,18 @@ void EmitterThread::run()
                     // not be queried to avoid "races in the status replication".
                     break;
 
+                case DC_EVENT_WEBXDC_REALTIME_DATA:
+                    //qInfo().nospace() << "Emitter: DC_EVENT_WEBXDC_REALTIME_DATA" << ", account " << dc_event_get_account_id(event) << ", msg_id: " << dc_event_get_data1_int(event);
+                    data2int = dc_event_get_data2_int(event);
+                    eventData2Str = dc_event_get_data2_str(event);
+                    ucharPtr = reinterpret_cast<unsigned char*>(eventData2Str);
+                    for (i = 0; i < data2int; ++i) {
+                        numberhelper.setNum((int)ucharPtr[i]);
+                        data2info.append(numberhelper + ",");
+                    }
+                    emit webxdcRealtimeData(dc_event_get_account_id(event), dc_event_get_data1_int(event), data2info);
+                    break;
+
                 case DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE:
                     // TODO: emit and react to this event
                     qInfo().nospace() << "Emitter: DC_EVENT_ACCOUNTS_BACKGROUND_FETCH_DONE" << ", account " << dc_event_get_account_id(event);
@@ -259,7 +275,6 @@ void EmitterThread::run()
                 default:
                     qInfo().nospace() << "Emitter: Unknown event received" << ", account " << dc_event_get_account_id(event) << ": " << eventType;
             }
-
 
             if (eventData2Str) {
                 dc_str_unref(eventData2Str);

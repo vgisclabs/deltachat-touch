@@ -14,7 +14,7 @@
             "push-helper": "push.json"
         }
     },
-    "version": "1.9.2",
+    "version": "1.9.3",
     "maintainer": "Lothar Ketterer <deltatouch@mailbox.org>",
     "framework" : "ubuntu-sdk-20.04"
 }

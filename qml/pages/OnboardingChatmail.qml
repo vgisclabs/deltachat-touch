@@ -448,7 +448,12 @@ Page {
                     })
                     popup5.classicMailLogin.connect(function() {
                         PopupUtils.close(popup5)
-                        extraStack.push(Qt.resolvedUrl("AddOrConfigureEmailAccount.qml"))
+                        // have to call DeltaHandler.prepareTempContextConfig() already here,
+                        // otherwise some calls to DeltaHandler.getTempContextConfig() in
+                        // AddOrConfigureEmailAccount.qml will happen before tempContext
+                        // is correctly set in C++ land
+                        let changingExistingAccount = DeltaHandler.prepareTempContextConfig()
+                        extraStack.push(Qt.resolvedUrl('AddOrConfigureEmailAccount.qml'), { "changingExistingAccount": changingExistingAccount })
                     })
                     popup5.scanInvitationCode.connect(function() {
                         PopupUtils.close(popup5)

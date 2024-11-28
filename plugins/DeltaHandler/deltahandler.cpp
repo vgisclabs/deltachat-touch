@@ -2214,9 +2214,38 @@ QString DeltaHandler::getCurrentConfig(QString key)
 //            qDebug() << "DeltaHandler::getCurrentConfig() called for " << key << ", returning " << retval;
 //        }
 
+        if ("imap_certificate_checks" == key || "smtp_certificate_checks" == key) {
+            // need to convert the string returned from dc_get_config to an int, then
+            // compare with the DC_CERTCK constants in deltachat.h and set a
+            // DT_CERTCK_* string as used in DT QML files
+            bool success;
+            int tempCertCheckSetting = retval.toInt(&success);
+            if (success) {
+                if (DC_CERTCK_AUTO == tempCertCheckSetting) {
+                    retval = "DT_CERTCK_AUTO";
+                } else if (DC_CERTCK_STRICT == tempCertCheckSetting) {
+                    retval = "DT_CERTCK_STRICT";
+                } else if (DC_CERTCK_ACCEPT_INVALID == tempCertCheckSetting || DC_CERTCK_ACCEPT_INVALID_CERTIFICATES == tempCertCheckSetting) {
+                    retval = "DT_CERTCK_ACCEPT_INVALID";
+                } else {
+                    retval = "unknown value";
+                }
+            } else {
+                // could not convert the value for the key to an int,
+                // it may be that no value is set, then we return the default
+                // (DT_CERTCK_AUTO)
+                if ("" == retval) {
+                    retval = "DT_CERTCK_AUTO";
+                } else {
+                    qWarning() << "DeltaHandler.getCurrentConfig(): Error converting value \"" << retval << "\" for key " << key << " to int, shown setting for this key will be wrong";
+                    retval = "error converting value to int";
+                }
+            }
+        }
+
         dc_str_unref(tempString);
-    }
-    else {
+    } else {
+        qDebug() << "DeltaHandler::getCurrentConfig(): ERROR: currentContext is not set";
         retval = "";
     }
     return retval;
@@ -2383,6 +2412,34 @@ void DeltaHandler::setCurrentConfig(QString key, QString newValue)
         }
 
         return;
+    } else if ("imap_certificate_checks" == key || "smtp_certificate_checks" == key) {
+        // need to translate the DT_CERTCK_* strings used in QML land to the DC_CERTCK
+        // constants as defined in deltachat.h (but convert them to string for calling
+        // dc_set_config()).
+        QString newCertCheckSetting;
+        if ("DT_CERTCK_AUTO" == newValue) {
+            newCertCheckSetting = newCertCheckSetting.setNum(DC_CERTCK_AUTO);
+        } else if ("DT_CERTCK_STRICT" == newValue) {
+            newCertCheckSetting = newCertCheckSetting.setNum(DC_CERTCK_STRICT);
+        } else if ("DT_CERTCK_ACCEPT_INVALID" == newValue) {
+            newCertCheckSetting = newCertCheckSetting.setNum(DC_CERTCK_ACCEPT_INVALID);
+        } else if ("0" == newValue || "1" == newValue || "2" == newValue) {
+            qWarning() << "DeltaHandler::setCurrentConfig(): WARNING: Do not pass stringified ints as values for " << key << ", use the DT_CERTCK_* string constants instead";
+            newCertCheckSetting = newValue;
+        } else if ("3" == newValue) {
+            qWarning() << "DeltaHandler::setCurrentConfig(): WARNING: Do not pass stringified ints as values for " << key << ", use the DT_CERTCK_* string constants instead. Also, \"3\" aka DC_CERTCK_ACCEPT_INVALID_CERTIFICATES is deprecated, will write \"2\" instead";
+            newCertCheckSetting = "2";
+        } else {
+            qWarning() << "DeltaHandler::setCurrentConfig(): ERROR: Incorrect value passed for key " << key;
+            return;
+        }
+
+        int success = dc_set_config(currentContext, key.toUtf8().constData(), newCertCheckSetting.toUtf8().constData());
+
+        if (!success) {
+            qDebug() << "DeltaHandler::setCurrentConfig(): ERROR: Setting key " << key << " to \"" << newCertCheckSetting << "\" was not successful.";
+        }
+        return;
     }
 
     // sentbox_watch, mvbox_move, only_fetch_mvbox and proxy_url changes require restarting IO.
@@ -2454,10 +2511,9 @@ QString DeltaHandler::getTempContextConfig(QString key)
     QString retval;
 
     if (!tempContext) {
-        qDebug() << "DeltaHandler::getTempContextConfig: tempContext is not set, returning empty string";
-        retval = "";
-    }
-    else {
+        qDebug() << "DeltaHandler::getTempContextConfig: ERROR: tempContext is not set";
+        return "";
+    } else {
         char* tempText = dc_get_config(tempContext, key.toUtf8().constData());
         retval = tempText;
         dc_str_unref(tempText);
@@ -2468,54 +2524,111 @@ QString DeltaHandler::getTempContextConfig(QString key)
     } else {
         qDebug() << "DeltaHandler::getTempContextConfig() called for " << key << ", returning " << retval;
     }
+
+    if ("imap_certificate_checks" == key || "smtp_certificate_checks" == key) {
+        // need to convert the string returned from dc_get_config to an int, then
+        // compare with the DC_CERTCK constants in deltachat.h and set a
+        // DT_CERTCK_* string as used in DT QML files
+        bool success;
+        int tempCertCheckSetting = retval.toInt(&success);
+        if (success) {
+            if (DC_CERTCK_AUTO == tempCertCheckSetting) {
+                retval = "DT_CERTCK_AUTO";
+            } else if (DC_CERTCK_STRICT == tempCertCheckSetting) {
+                retval = "DT_CERTCK_STRICT";
+            } else if (DC_CERTCK_ACCEPT_INVALID == tempCertCheckSetting || DC_CERTCK_ACCEPT_INVALID_CERTIFICATES == tempCertCheckSetting) {
+                retval = "DT_CERTCK_ACCEPT_INVALID";
+            } else {
+                retval = "unknown value";
+            }
+        } else {
+            // could not convert the value for the key to an int,
+            // it may be that no value is set, then we return the default
+            // (DT_CERTCK_AUTO)
+            if ("" == retval) {
+                retval = "DT_CERTCK_AUTO";
+            } else {
+                qWarning() << "DeltaHandler.getTempContextConfig(): Error converting value \"" << retval << "\" for key " << key << " to int, shown setting for this key will be wrong";
+                retval = "error converting value to int";
+            }
+        }
+    }
+
     return retval;
 }
 
 
-void DeltaHandler::setTempContextConfig(QString key, QString val)
+void DeltaHandler::setTempContextConfig(QString key, QString newValue)
 {
     if ("selfavatar" == key) {
-        QString tempQString = val;
+        QString tempQString = newValue;
         if (QString("file://") == tempQString.remove(7, tempQString.size() - 7)) {
-            val.remove(0, 7);
+            newValue.remove(0, 7);
         }
 
-        tempQString = val;
+        tempQString = newValue;
         if (QString("qrc:") == tempQString.remove(4, tempQString.size() - 4)) {
-            val.remove(0, 4);
+            newValue.remove(0, 4);
         }
+    } else if ("imap_certificate_checks" == key || "smtp_certificate_checks" == key) {
+        // need to translate the DT_CERTCK_* strings used in DT QML files to the enum
+        // constants as defined in deltachat.h, but again converted to a string
+        QString newCertCheckSetting;
+        if ("DT_CERTCK_AUTO" == newValue) {
+            newCertCheckSetting = newCertCheckSetting.setNum(DC_CERTCK_AUTO);
+        } else if ("DT_CERTCK_STRICT" == newValue) {
+            newCertCheckSetting = newCertCheckSetting.setNum(DC_CERTCK_STRICT);
+        } else if ("DT_CERTCK_ACCEPT_INVALID" == newValue) {
+            newCertCheckSetting = newCertCheckSetting.setNum(DC_CERTCK_ACCEPT_INVALID);
+        } else if ("0" == newValue || "1" == newValue || "2" == newValue) {
+            qWarning() << "DeltaHandler::setTempContextConfig(): WARNING: Do not pass stringified ints as values for " << key << ", use the DT_CERTCK_* string constants instead";
+            newCertCheckSetting = newValue;
+        } else if ("3" == newValue) {
+            qWarning() << "DeltaHandler::setTempContextConfig(): WARNING: Do not pass stringified ints as values for " << key << ", use the DT_CERTCK_* string constants instead. Also, \"3\" aka DC_CERTCK_ACCEPT_INVALID_CERTIFICATES is deprecated, will write \"2\" instead";
+            newCertCheckSetting = "2";
+        } else {
+            qWarning() << "DeltaHandler::setTempContextConfig(): ERROR: Incorrect value passed for key " << key;
+            return;
+        }
+
+        int success = dc_set_config(tempContext, key.toUtf8().constData(), newCertCheckSetting.toUtf8().constData());
+
+        if (!success) {
+            qDebug() << "DeltaHandler::setTempContextConfig(): ERROR: Setting key " << key << " to \"" << newCertCheckSetting << "\" was not successful.";
+        }
+        return;
     }
 
     QString origVal = getTempContextConfig(key);
-    if (origVal == val) {
+    if (origVal == newValue) {
 
         if ("mail_pw" == key || "send_pw" == key || "proxy_url" == key) {
             qDebug() << "DeltaHandler::setTempContextConfig: Not setting key " << key << " to ***** as it has not changed.";
         } else {
-            qDebug() << "DeltaHandler::setTempContextConfig: Not setting key " << key << " to " << val << " as it has not changed.";
+            qDebug() << "DeltaHandler::setTempContextConfig: Not setting key " << key << " to " << newValue << " as it has not changed.";
         }
 
     } else {
-        dc_set_config(tempContext, key.toUtf8().constData(), val.toUtf8().constData());
+        dc_set_config(tempContext, key.toUtf8().constData(), newValue.toUtf8().constData());
 
         if ("mail_pw" == key || "send_pw" == key || "proxy_url" == key) {
             qDebug() << "DeltaHandler::setTempContextConfig: Setting " << key << " to " << "*****";
         } else {
-            qDebug() << "DeltaHandler::setTempContextConfig: Setting " << key << " to " << val;
+            qDebug() << "DeltaHandler::setTempContextConfig: Setting " << key << " to " << newValue;
         }
 
         // if tempContext == currentContext, the shield icon needs to be updated
         if (tempContext == currentContext) {
             if ("proxy_enabled" == key) {
-                if ("0" == val && m_useProxy) {
+                if ("0" == newValue && m_useProxy) {
                     m_useProxy = false;
                     emit useProxyChanged();
-                } else if ("1" == val && !m_useProxy) {
+                } else if ("1" == newValue && !m_useProxy) {
                     m_useProxy = true;
                     emit useProxyChanged();
                 }
             } else if ("proxy_url" == key) {
-                if ("" == val && m_hasProxy) {
+                if ("" == newValue && m_hasProxy) {
                     m_hasProxy = false;
                     emit hasProxyChanged();
                 } else if (!m_hasProxy) {

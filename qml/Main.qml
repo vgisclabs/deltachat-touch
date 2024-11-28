@@ -42,7 +42,7 @@ MainView {
 //    }
 
     property string appName: i18n.tr('DeltaTouch')
-    property string version: '1.9.2'
+    property string version: '1.9.3'
     property string oldVersion: "unknown"
 
     property bool chatViewIsOpen: false

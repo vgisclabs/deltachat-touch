@@ -118,16 +118,13 @@ Page {
     }
 
     Component.onCompleted: {
-        // The email address field should only be editable if
-        // a new account is created See the
-        // "Don’t change mail accounts. Really." part here:
+        // The email address field should only be editable if a new account is created.
+        // See the "Don’t change mail accounts. Really." part here:
         // https://binblog.de/2024/06/15/deltachat-first-dos-first-donts/
-        // TODO: Once AEAP is fully working, this will most
-        // likely have to be changed
-        // Note: In case of a typo in the email address that is
-        // only noticed after leaving this page, the account has to
-        // removed and a new one has to be created.
-        changingExistingAccount = DeltaHandler.prepareTempContextConfig()
+        // TODO: Once AEAP is fully working, this will most likely have to be changed.
+        //
+        // In case of a typo in the email address that is only noticed after leaving
+        // this page, the account has to be removed and a new one has to be created.
 
         if (changingExistingAccount) {
             // Need to get the proxy settings from tempContext in the C++ side
@@ -234,8 +231,17 @@ Page {
                         DeltaHandler.setTempContextConfig("send_port", smtpPortField.text)
                         
                         DeltaHandler.setTempContextConfig("send_security", smtpSecSelector.selectedIndex.toString(10))
-                        DeltaHandler.setTempContextConfig("imap_certificate_checks", (certCheckSelector.selectedIndex == 2 ? "3" : certCheckSelector.selectedIndex.toString(10)))
-                        DeltaHandler.setTempContextConfig("smtp_certificate_checks", (certCheckSelector.selectedIndex == 2 ? "3" : certCheckSelector.selectedIndex.toString(10)))
+
+                        let certCheckString = "unknown";
+                        if (certCheckSelector.selectedIndex == 0) {
+                            certCheckString = "DT_CERTCK_AUTO"
+                        } else if (certCheckSelector.selectedIndex == 1) {
+                            certCheckString = "DT_CERTCK_STRICT"
+                        } else if (certCheckSelector.selectedIndex == 2) {
+                            certCheckString = "DT_CERTCK_ACCEPT_INVALID"
+                        }
+                        DeltaHandler.setTempContextConfig("imap_certificate_checks", certCheckString)
+                        DeltaHandler.setTempContextConfig("smtp_certificate_checks", certCheckString)
 
                         DeltaHandler.setTempContextConfig("proxy_url", DeltaHandler.getTempProxyUrls())
                         DeltaHandler.setTempContextConfig("proxy_enabled", proxyEnabled ? "1" : "0")
@@ -835,7 +841,16 @@ Page {
                     }
    
                     Component.onCompleted: {
-                        certCheckSelector.selectedIndex = (DeltaHandler.getTempContextConfig("smtp_certificate_checks") == "" ? 0 : (parseInt(DeltaHandler.getTempContextConfig("smtp_certificate_checks"), 10) == 3 ? 2 : parseInt(DeltaHandler.getTempContextConfig("smtp_certificate_checks"), 10)))
+                        let certCheckString = DeltaHandler.getTempContextConfig("imap_certificate_checks")
+                        if (certCheckString === "DT_CERTCK_AUTO") {
+                            certCheckSelector.selectedIndex = 0
+                        } else if (certCheckString === "DT_CERTCK_STRICT") {
+                            certCheckSelector.selectedIndex = 1
+                        } else if (certCheckString === "DT_CERTCK_ACCEPT_INVALID") {
+                            certCheckSelector.selectedIndex = 2
+                        } else {
+                            console.log("AddOrConfigureEmailAccount.qml: WARNING: getTempContextConfig did return an unknown value \"", certCheckString, "\" for key imap_certificate_checks")
+                        }
                     }
                 }
             } // end Column id: advancedOptionsColumn

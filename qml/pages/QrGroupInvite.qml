@@ -66,7 +66,7 @@ Page {
                     //   the user really wants to deactivate, then check whether
                     //   deactivation was successful, and lastly refresh the image,
                     //   which is also not trivial
-                    let popup1 = PopupUtils.open(Qt.resolvedUrl("QrMenuPopup.qml"), qrInvitePage, { "qrInviteLink": DeltaHandler.getTempGroupQrLink() })
+                    let popup1 = PopupUtils.open(Qt.resolvedUrl("QrMenuPopup.qml"), qrInvitePage, { "qrInviteLink": DeltaHandler.getTempGroupQrTxt() })
                     popup1.continueAskUserQrDeactivation.connect(function() {
                         // if the signal continueAskUserQrDeactivation is received,
                         // the user has clicked to deactive the QR code. Ask
@@ -109,9 +109,9 @@ Page {
                 text: i18n.tr("Share")
                 onTriggered: {
                     if (root.onUbuntuTouch) {
-                        extraStack.push(Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getTempGroupQrLink() })
+                        extraStack.push(Qt.resolvedUrl('StringExportDialog.qml'), { "stringToShare": DeltaHandler.getTempGroupQrTxt() })
                     } else {
-                        PopupUtils.open(Qt.resolvedUrl("QrSharePopup.qml"), qrInvitePage, { "qrInviteLink": DeltaHandler.getTempGroupQrLink() })
+                        PopupUtils.open(Qt.resolvedUrl("QrSharePopup.qml"), qrInvitePage, { "qrInviteLink": DeltaHandler.getTempGroupQrTxt() })
                     }
                 }
             }

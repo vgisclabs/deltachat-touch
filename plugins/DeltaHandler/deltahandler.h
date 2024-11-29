@@ -453,7 +453,6 @@ public:
 
     Q_INVOKABLE QString getTempGroupQrSvg();
     Q_INVOKABLE QString getTempGroupQrTxt();
-    Q_INVOKABLE QString getTempGroupQrLink();
 
     // Starts the process to add a second device; this device
     // will act as primary device. Will emit backupProviderCreationSuccess

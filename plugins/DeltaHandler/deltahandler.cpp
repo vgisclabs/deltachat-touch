@@ -3970,21 +3970,6 @@ QString DeltaHandler::getTempGroupQrTxt()
 }
 
 
-QString DeltaHandler::getTempGroupQrLink()
-{
-    QString qrstring = getTempGroupQrTxt();
-    // qrstring is now something like OPENPGP4FPR:..., remove the
-    // beginning until and including the ":"
-    qrstring.remove(0, qrstring.indexOf(":") + 1);
-
-    // remove the first occurrence of "#" by "&"
-    qrstring.replace(qrstring.indexOf("#"), 1, "&");
-
-    QString retval = "https://i.delta.chat/#" + qrstring;
-    return retval;
-}
-
-
 void DeltaHandler::prepareBackupProvider()
 {
     if (m_backupProvider) {

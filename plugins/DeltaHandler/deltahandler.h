@@ -470,7 +470,6 @@ public:
      * ======================================================== */
     Q_INVOKABLE QString getQrInviteSvg();
     Q_INVOKABLE QString getQrInviteTxt();
-    Q_INVOKABLE QString getQrInviteLink();
     Q_INVOKABLE QString getQrContactEmail();
     Q_INVOKABLE QString getQrTextOne();
     Q_INVOKABLE int evaluateQrCode(QString clipboardData);

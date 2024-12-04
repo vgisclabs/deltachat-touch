@@ -52,6 +52,31 @@ Page {
                 }
             }
         ]
+        
+        trailingActionBar.actions: [
+            Action {
+                //iconName: "zoom-in"
+                iconSource: "qrc:///assets/suru-icons/zoom-in.svg"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    if (webview.zoomFactor > 4.4) {
+                        webview.zoomFactor = 5.0
+                    } else {
+                        webview.zoomFactor += 0.5 
+                    }
+                }
+            },
+            Action {
+                //iconName: "zoom-out"
+                iconSource: "qrc:///assets/suru-icons/zoom-out.svg"
+                text: i18n.tr("Close")
+                onTriggered: {
+                    if (webview.zoomFactor > 0.8) {
+                        webview.zoomFactor -= 0.5 
+                    }
+                }
+            }
+        ]
     }
 
     Component.onCompleted: {

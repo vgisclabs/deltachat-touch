@@ -117,6 +117,8 @@
         <file>suru-icons/view-grid-symbolic.svg</file>
         <file>suru-icons/view-off.svg</file>
         <file>suru-icons/view-on.svg</file>
+        <file>suru-icons/zoom-in.svg</file>
+        <file>suru-icons/zoom-out.svg</file>
         <file>webxdc/cppside.js</file>
         <file>webxdc/fetchReplacement.js</file>
         <file>webxdc/hideInputSymbol.css</file>

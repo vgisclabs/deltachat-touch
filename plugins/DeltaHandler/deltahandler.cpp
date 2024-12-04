@@ -4254,7 +4254,7 @@ void DeltaHandler::continueQrCodeAction()
             if (0 != chatID) {
                 chatCreationReceiver(chatID, m_qrTempLotTextOne);
             } else {
-            // TODO error: chat could not be created
+                qDebug() << "DeltaHandler::continueQrCodeAction(): ERROR: Could not create chat for contact ID " << m_qrTempContactID;
             }
             break;
         case DT_QR_TEXT:
@@ -4299,6 +4299,17 @@ void DeltaHandler::continueQrCodeAction()
 }
 
 
+void DeltaHandler::continueQrContactChatWithoutBody()
+{
+    uint32_t chatID = dc_create_chat_by_contact_id(currentContext, m_qrTempContactID);
+    if (0 != chatID) {
+        chatCreationReceiver(chatID);
+    } else {
+        qDebug() << "DeltaHandler::continueQrContactChatWithoutBody(): ERROR: Could not create chat for contact ID " << m_qrTempContactID;
+    }
+}
+
+
 QString DeltaHandler::getQrInviteSvg()
 {
     // need to switch between two filenames because otherwise,
@@ -4330,12 +4341,12 @@ QString DeltaHandler::getQrInviteTxt()
 }
 
 
-QString DeltaHandler::getQrContactEmail()
+QString DeltaHandler::getQrContactNameAndEmail()
 {
     dc_contact_t* tempContact = dc_get_contact(currentContext, m_qrTempContactID);
     QString retval;
     if (tempContact) {
-        char* tempText = dc_contact_get_addr(tempContact);
+        char* tempText = dc_contact_get_name_n_addr(tempContact);
         retval = tempText;
         if (tempText) {
             dc_str_unref(tempText);

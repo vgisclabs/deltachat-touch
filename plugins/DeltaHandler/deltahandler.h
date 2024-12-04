@@ -469,7 +469,7 @@ public:
      * ======================================================== */
     Q_INVOKABLE QString getQrInviteSvg();
     Q_INVOKABLE QString getQrInviteTxt();
-    Q_INVOKABLE QString getQrContactEmail();
+    Q_INVOKABLE QString getQrContactNameAndEmail();
     Q_INVOKABLE QString getQrTextOne();
     Q_INVOKABLE int evaluateQrCode(QString clipboardData);
 
@@ -478,6 +478,12 @@ public:
     // as parameter (in contrast to active scanning of a QR code).
     // See also comment for finishedSetConfigFromQr.
     Q_INVOKABLE void continueQrCodeAction();
+
+    // like continueQrCodeAction(), but ignores the message body of
+    // a mailto: URL (e.g., when the chat already has a draft
+    // and the user decided to keep it)
+    Q_INVOKABLE void continueQrContactChatWithoutBody();
+
     // Param calledAfterUrlReceived: see comments for continueQrCodeAction
     Q_INVOKABLE void cancelQrImport();
 

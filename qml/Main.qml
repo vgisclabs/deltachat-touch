@@ -343,7 +343,7 @@ MainView {
                 if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1 && askForAccount) {
                     let popup12 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"),
                         chatlistPage,
-                        { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) + "\n\n" + i18n.tr("Select account for chatting") })
+                        { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactNameAndEmail()) + "\n\n" + i18n.tr("Select account for chatting") })
                     popup12.cancelled.connect(function() {
                         // unset urlstring if the user cancelled the account selection
                         urlstring = ""
@@ -364,7 +364,7 @@ MainView {
                     let popup = PopupUtils.open(
                         Qt.resolvedUrl("pages/ConfirmDialog.qml"),
                         chatlistPage,
-                        { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()), confirmButtonPositive: true })
+                        { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactNameAndEmail()), confirmButtonPositive: true })
                     popup.confirmed.connect(function() {
                         extraStack.clear()
                         imageStack.clear()
@@ -382,7 +382,7 @@ MainView {
             case DeltaHandler.DT_QR_ADDR:
                 console.log("qr state is DT_QR_ADDR")
                 if ( (DeltaHandler.numberOfAccounts() - DeltaHandler.numberOfUnconfiguredAccounts()) > 1 && askForAccount) {
-                        let popup16 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"), chatlistPage, { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()) + "\n\n" + i18n.tr("Select account for chatting") })
+                        let popup16 = PopupUtils.open(Qt.resolvedUrl("pages/UrlDispatchAccountChooserPopup.qml"), chatlistPage, { "dialogText": i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactNameAndEmail()) + "\n\n" + i18n.tr("Select account for chatting") })
                     popup16.cancelled.connect(function() {
                         // unset urlstring if the user cancelled the account selection
                         urlstring = ""
@@ -400,18 +400,23 @@ MainView {
                     let popup17 = PopupUtils.open(
                         Qt.resolvedUrl("pages/ConfirmDialog.qml"),
                         chatlistPage,
-                        { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactEmail()), confirmButtonPositive: true })
+                        { dialogText: i18n.tr("Chat with %1?").arg(DeltaHandler.getQrContactNameAndEmail()), confirmButtonPositive: true })
                     popup17.confirmed.connect(function() {
                         if (DeltaHandler.qrOverwritesDraft()) {
                             let popup18 = PopupUtils.open(
                                 Qt.resolvedUrl('pages/ConfirmDialog.qml'),
                                 chatlistPage,
-                                { "dialogText": i18n.tr("%1 already has a draft message, do you want to replace it?").arg(DeltaHandler.getQrContactEmail()),
+                                { "dialogText": i18n.tr("%1 already has a draft message, do you want to replace it?").arg(DeltaHandler.getQrContactNameAndEmail()),
                                   "confirmButtonPositive": true })
                             popup18.confirmed.connect(function() {
                                 extraStack.clear()
                                 imageStack.clear()
                                 DeltaHandler.continueQrCodeAction()
+                            })
+                            popup18.cancelled.connect(function() {
+                                extraStack.clear()
+                                imageStack.clear()
+                                DeltaHandler.continueQrContactChatWithoutBody()
                             })
                         } else {
                             extraStack.clear()
@@ -878,10 +883,13 @@ MainView {
                             let popup19 = PopupUtils.open(
                                 Qt.resolvedUrl('pages/ConfirmDialog.qml'),
                                 chatlistPage,
-                                { "dialogText": i18n.tr("%1 already has a draft message, do you want to replace it?").arg(DeltaHandler.getQrContactEmail()),
+                                { "dialogText": i18n.tr("%1 already has a draft message, do you want to replace it?").arg(DeltaHandler.getQrContactNameAndEmail()),
                                   "confirmButtonPositive": true })
                             popup19.confirmed.connect(function() {
                                 DeltaHandler.continueQrCodeAction()
+                            })
+                            popup19.cancelled.connect(function() {
+                                DeltaHandler.continueQrContactChatWithoutBody()
                             })
                         } else {
                             DeltaHandler.continueQrCodeAction()

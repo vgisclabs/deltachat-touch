@@ -309,7 +309,11 @@ Page {
         }
 
         onNewViewRequested: {
-            navigationRequested
+            if (request.userInitiated) {
+                PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), htmlViewPage, {externalLink: request.requestedUrl})
+            } else {
+                console.log("MessageHtmlView.qml: Blocked non-userInitiated signal newViewRequest for ", request.requestedUrl)
+            }
         }
 
         onNavigationRequested: {
@@ -321,21 +325,154 @@ Page {
             }
         }
 
-        // For an unknown reason, some links do not trigger
-        // navigationRequested (same in Dekko). As a workaround, these
-        // links are available via a long press, which triggers
-        // contextMenuRequested. Only requests that contain an url are
-        // handled via this slot.
         onContextMenuRequested: { 
-            // Dekko doesn't check for linkUrl, but for linkText. But
-            // isn't it better to check whether the url is non-empty
-            // directly?
-            if (request.linkUrl.toString() !== "") {
-                request.accepted = true
+            request.accepted = true
+
+            if (request.selectedText !== "") {
+                if (!contextMenuShape.visible) {
+                    contextMenuShape.visible = true
+                    contextMenuShape.x = webview.x + units.gu(10)
+                    contextMenuShape.y = webview.y + units.gu(10)
+                }
+            } else if (request.linkUrl.toString() !== "") {
+                contextMenuShape.visible = false
                 PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), htmlViewPage, {externalLink: request.linkUrl})
-            } // TODO: Maybe add a context menu component that copies text
-              // to the clipboard if it's not an url and
-              // request.selectedText is non-empty
+            }
+        }
+    }
+
+    LomiriShape {
+        // Allows to copy the currently selected text to the clipboard.
+        //
+        // Ideas for this shape taken from Morph Browser
+        // https://gitlab.com/ubports/development/core/morph-browser
+        // licensed under GPLv3 
+        id: contextMenuShape
+
+        backgroundColor: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6"
+        width: actionShapeRow.width + units.gu(1)
+        height: childrenRect.height
+
+        visible: false
+
+        MouseArea {
+            // to catch clicks on edges of the shape and the spacing of the Row which would
+            // otherwise go through to the underlying page as the space is not covered
+            // by the MouseAreas of the Row children
+            anchors.fill: parent
+        }
+
+        Row {
+            id: actionShapeRow
+            spacing: units.gu(3)
+
+            anchors {
+                top: parent.top
+                left: parent.left
+            }
+
+            LomiriShape {
+                width: gripIcon.width
+                height: copyShape.height // height should be as for the other shapes
+                backgroundColor: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6"
+                aspect: LomiriShape.Flat
+                anchors.verticalCenter: parent.verticalCenter
+
+                Image {
+                    id: gripIcon
+                    source: "qrc:///assets/suru-icons/grip-large.svg"
+                    height: parent.height
+                    width: units.gu(3)
+                    fillMode: Image.PreserveAspectCrop
+
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    drag.target: contextMenuShape
+                    drag.axis: Drag.XAndYAxis
+                }
+            }
+
+            LomiriShape {
+                id: copyShape
+                width: (copyIcon.width > copyLabel.contentWidth ? copyIcon.width : copyLabel.contentWidth)
+                height: copyIcon.height + copyLabel.contentHeight + units.gu(1.5)
+                backgroundColor: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6"
+                aspect: LomiriShape.Flat
+
+                Icon {
+                    id: copyIcon
+                    source: "qrc:///assets/suru-icons/edit-copy.svg"
+                    height: units.gu(3)
+
+                    anchors {
+                        top: parent.top
+                        topMargin: units.gu(0.5)
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                }
+
+                Label {
+                    id: copyLabel
+                    anchors {
+                        top: copyIcon.bottom
+                        topMargin: units.gu(0.5)
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                    text: i18n.tr("Copy")
+                    fontSize: "x-small"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        webview.triggerWebAction(WebEngineView.Copy)
+                        contextMenuShape.visible = false
+                    }
+                }
+            }
+            
+            LomiriShape {
+                width: (closeIcon.width > closeLabel.contentWidth ? closeIcon.width : closeLabel.contentWidth)
+                height: closeIcon.height + closeLabel.contentHeight + units.gu(1.5)
+                backgroundColor: root.darkmode ? theme.palette.normal.overlay : "#e6e6e6"
+                aspect: LomiriShape.Flat
+
+                Icon {
+                    id: closeIcon
+                    source: "qrc:///assets/suru-icons/close.svg"
+                    height: units.gu(3)
+
+                    anchors {
+                        top: parent.top
+                        topMargin: units.gu(0.5)
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                }
+
+                Label {
+                    id: closeLabel
+                    anchors {
+                        top: closeIcon.bottom
+                        topMargin: units.gu(0.5)
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                    text: i18n.tr("Close")
+                    fontSize: "x-small"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        contextMenuShape.visible = false
+                    }
+                }
+            }
         }
     }
 } // end Page id: htmlViewPage

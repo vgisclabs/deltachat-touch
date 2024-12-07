@@ -81,12 +81,14 @@
         <file>suru-icons/contextual-menu.svg</file>
         <file>suru-icons/delete.svg</file>
         <file>suru-icons/edit.svg</file>
+        <file>suru-icons/edit-copy.svg</file>
         <file>suru-icons/find.svg</file>
         <file>suru-icons/folder-symbolic.svg</file>
         <file>suru-icons/go-down.svg</file>
         <file>suru-icons/go-next.svg</file>
         <file>suru-icons/go-previous.svg</file>
         <file>suru-icons/go-up.svg</file>
+        <file>suru-icons/grip-large.svg</file>
         <file>suru-icons/help.svg</file>
         <file>suru-icons/info.svg</file>
         <file>suru-icons/lock.svg</file>

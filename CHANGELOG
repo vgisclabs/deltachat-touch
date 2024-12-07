@@ -1,3 +1,7 @@
+1.x.x xxxx-xx-xx
+Feature: Selected text in HTML messages can be copied to clipboard
+Bugfix: All links in HTML messages are clickable now
+
 1.8.0 2024-10-19
 UI: Use popup dialog for adding attachments to messages
 UI: Confirm before forwarding messages

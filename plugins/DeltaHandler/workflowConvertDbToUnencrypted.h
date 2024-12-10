@@ -24,7 +24,7 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <vector>
-#include "deltachat.h"
+#include "../deltachat.h"
 #include "emitterthread.h"
 
 class EmitterThread;

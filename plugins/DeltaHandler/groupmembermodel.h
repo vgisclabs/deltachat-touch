@@ -23,7 +23,7 @@
 #include <QtGui>
 //#include <string>
 #include <vector>
-#include "deltachat.h"
+#include "../deltachat.h"
 
 class GroupMemberModel : public QAbstractListModel {
     Q_OBJECT

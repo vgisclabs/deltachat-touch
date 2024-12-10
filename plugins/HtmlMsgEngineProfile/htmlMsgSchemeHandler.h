@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  Lothar Ketterer
+ * Copyright (C) 2024 Lothar Ketterer
  *
  * This file is part of the app "DeltaTouch".
  *
@@ -16,28 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JSONRPCRESPONSETHREAD_H
-#define JSONRPCRESPONSETHREAD_H
+#ifndef HTMLMSGSCHEMEHANDLER_H
+#define HTMLMSGSCHEMEHANDLER_H
 
-#include <QtCore>
-#include <QtGui>
-#include <string>
 #include "../deltachat.h"
+#include <QWebEngineUrlSchemeHandler>
 
-class JsonrpcResponseThread : public QThread {
+class HtmlMsgSchemeHandler : public QWebEngineUrlSchemeHandler
+{
+
     Q_OBJECT
+public:
+    explicit HtmlMsgSchemeHandler(QObject *parent = Q_NULLPTR);
+    ~HtmlMsgSchemeHandler();
+    void requestStarted(QWebEngineUrlRequestJob *request);
+    void configureSchemehandler(dc_jsonrpc_instance_t* _jsonrpcInst, uint32_t _accId, int _currentRequestId);
 
-    public:
-        JsonrpcResponseThread(dc_jsonrpc_instance_t* jsoninst, std::atomic<bool>* _stopLoop);
-
-        void run();
-
-    signals:
-        void newJsonrpcResponse(QString stringResponse);
-
-    private:
-        dc_jsonrpc_instance_t* m_jsonrpcInstance;
-        std::atomic<bool>* m_stopLoop;
+private:
+    dc_jsonrpc_instance_t* m_jsonrpcInstance;
+    uint32_t m_accountdId;
+    int m_requestId;
 };
 
-#endif
+#endif //HTMLMSGSCHEMEHANDLER_H

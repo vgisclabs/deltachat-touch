@@ -28,6 +28,7 @@
 #define HTMLMSGENGINEPROFILE_H
 
 #include "htmlMsgRequestInterceptor.h"
+#include "htmlMsgSchemeHandler.h"
 #include <QString>
 #include <QUrl>
 #include <QQuickWebEngineProfile>
@@ -39,11 +40,11 @@ class HtmlMsgEngineProfile : public QQuickWebEngineProfile
 
 public:
     explicit HtmlMsgEngineProfile(QObject *parent = Q_NULLPTR);
-    ~HtmlMsgEngineProfile() {
-    }
+    ~HtmlMsgEngineProfile();
 
     Q_INVOKABLE void setRemoteContentAllowed(bool allowed);
     Q_INVOKABLE bool isRemoteContentAllowed() const;
+    Q_INVOKABLE void configureSchemehandler(dc_jsonrpc_instance_t* _jsonrpcInst, uint32_t _accId, int _currentRequestId);
 
 signals:
     void remoteContentBlocked();
@@ -53,7 +54,8 @@ public slots:
     void onInterceptedRemoteRequest(bool wasBlocked);
 
 private:
-    HtmlMsgRequestInterceptor urlRequestInterceptor;
+    HtmlMsgRequestInterceptor m_requestinterceptor;
+    HtmlMsgSchemeHandler m_schemehandler;
 };
 
 #endif // HTMLMSGENGINEPROFILE_H

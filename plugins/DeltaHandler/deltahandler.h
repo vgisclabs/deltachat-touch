@@ -43,7 +43,7 @@
 #include "workflowConvertDbToEncrypted.h"
 #include "workflowConvertDbToUnencrypted.h"
 
-#include "deltachat.h"
+#include "../deltachat.h"
 #include "quirc.h"
 
 struct AccIdAndChatIdStruct {
@@ -381,6 +381,9 @@ public:
     Q_INVOKABLE QString getConnectivityHtml();
 
     Q_INVOKABLE QString saveLog(QString logtext, QString datetime);
+
+    Q_INVOKABLE dc_jsonrpc_instance_t* getJsonrpcInstance();
+    Q_INVOKABLE uint32_t getJsonrpcRequestId() const;
 
     /* ========================================================
      * ===============Self Profile editing ====================
@@ -831,8 +834,6 @@ private:
     bool m_coreTranslationsAlreadySet;
 
     mutable uint32_t m_jsonrpcRequestId;
-
-    uint32_t getJsonrpcRequestId() const;
 
     // for the signal queue
     bool m_signalQueue_refreshChatlist;

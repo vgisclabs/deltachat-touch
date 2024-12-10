@@ -22,7 +22,7 @@
 #include <QtCore>
 #include <QtGui>
 //#include <string>
-#include "deltachat.h"
+#include "../deltachat.h"
 
 class ChatlistModel : public QAbstractListModel {
     Q_OBJECT

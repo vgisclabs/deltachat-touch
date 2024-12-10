@@ -23,7 +23,7 @@
 #include <QQuickImageProvider>
 #include <QMap>
 
-#include "deltachat.h"
+#include "../deltachat.h"
 
 // Class WebxdcImageProvider is to provide the icon of a Webxdc app
 // as image to QML. The image provider is registered for QML along with the

@@ -25,7 +25,6 @@
  */
 
 #include "htmlMsgEngineProfile.h"
-#include "htmlMsgRequestInterceptor.h"
 #include <QQmlEngine>
 #include <QtQml>
 #include <QDebug>
@@ -36,9 +35,18 @@
 
 HtmlMsgEngineProfile::HtmlMsgEngineProfile(QObject *parent) : QQuickWebEngineProfile(parent)
 {
-    this->setUrlRequestInterceptor(&this->urlRequestInterceptor);
-    connect(&this->urlRequestInterceptor, SIGNAL(interceptedRemoteRequest(bool)), this, SLOT(onInterceptedRemoteRequest(bool)));
+    this->setUrlRequestInterceptor(&this->m_requestinterceptor);
+    connect(&this->m_requestinterceptor, SIGNAL(interceptedRemoteRequest(bool)), this, SLOT(onInterceptedRemoteRequest(bool)));
+    this->installUrlSchemeHandler("httpviacore", &this->m_schemehandler);
+    this->installUrlSchemeHandler("httpsviacore", &this->m_schemehandler);
 }
+
+
+HtmlMsgEngineProfile::~HtmlMsgEngineProfile()
+{
+    disconnect(&this->m_requestinterceptor, SIGNAL(interceptedRemoteRequest(bool)), this, SLOT(onInterceptedRemoteRequest(bool)));
+}
+
 
 void HtmlMsgEngineProfile::onInterceptedRemoteRequest(bool wasBlocked)
 {
@@ -48,12 +56,20 @@ void HtmlMsgEngineProfile::onInterceptedRemoteRequest(bool wasBlocked)
     }
 }
 
+
 void HtmlMsgEngineProfile::setRemoteContentAllowed(bool allowed)
 {
-    this->urlRequestInterceptor.setBlockRemoteResources(!allowed);
+    this->m_requestinterceptor.setBlockRemoteResources(!allowed);
 }
+
 
 bool HtmlMsgEngineProfile::isRemoteContentAllowed() const
 {
-    return !this->urlRequestInterceptor.areRemoteResourcesBlocked();
+    return !this->m_requestinterceptor.areRemoteResourcesBlocked();
+}
+
+
+void HtmlMsgEngineProfile::configureSchemehandler(dc_jsonrpc_instance_t* _jsonrpcInst, uint32_t _accId, int _currentRequestId)
+{
+    m_schemehandler.configureSchemehandler(_jsonrpcInst, _accId, _currentRequestId);
 }

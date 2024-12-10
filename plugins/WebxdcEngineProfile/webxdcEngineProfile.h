@@ -22,7 +22,7 @@
 #include "webxdcRequestInterceptor.h"
 #include "webxdcSchemeHandler.h"
 
-#include "deltachat.h"
+#include "../deltachat.h"
 
 #include <QQuickWebEngineProfile>
 #include <QString>

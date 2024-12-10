@@ -6,9 +6,13 @@ set(
     plugin.cpp
     htmlMsgEngineProfile.cpp
     htmlMsgRequestInterceptor.cpp
+    htmlMsgSchemeHandler.cpp
 )
 
 set(CMAKE_AUTOMOC ON)
+
+add_library(deltachat SHARED IMPORTED)
+set_property(TARGET deltachat PROPERTY IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/libdeltachat.so")
 
 add_library(${PLUGIN} MODULE ${SRC})
 set_target_properties(${PLUGIN} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PLUGIN})
@@ -22,7 +26,7 @@ find_package(Qt5 COMPONENTS Quick REQUIRED)
 find_package(Qt5 COMPONENTS DBus REQUIRED)
 find_package(Qt5 COMPONENTS Multimedia REQUIRED)
 find_package(Qt5WebEngine REQUIRED)
-target_link_libraries(${PLUGIN} Qt5::Qml Qt5::Quick Qt5::DBus Qt5::Multimedia Qt5::WebEngine)
+target_link_libraries(${PLUGIN} Qt5::Qml Qt5::Quick Qt5::DBus Qt5::Multimedia Qt5::WebEngine deltachat)
 
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH

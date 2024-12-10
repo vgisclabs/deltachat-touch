@@ -21,7 +21,7 @@
 
 #include <QWebEngineUrlSchemeHandler>
 
-#include "deltachat.h"
+#include "../deltachat.h"
 
 class WebxdcSchemeHandler : public QWebEngineUrlSchemeHandler
 {

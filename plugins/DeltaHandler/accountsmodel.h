@@ -23,7 +23,7 @@
 #include <QtGui>
 //#include <string>
 #include "deltahandler.h"
-#include "deltachat.h"
+#include "../deltachat.h"
 
 #include <vector>
 

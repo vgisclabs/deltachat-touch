@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QString>
 
-#include "deltachat.h"
+#include "../deltachat.h"
 
 #include "deltahandler.h"
 #include "emitterthread.h"

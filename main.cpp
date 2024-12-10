@@ -28,10 +28,13 @@
 #include <iostream>
 #include <cstdio>
 
-// to be able to use dc_msg_t* in signals/slots; for that, a call to qRegisterMetaType
-// is necessary as well, done below in main()
+// to be able to use dc_msg_t* and dc_jsonrpc_instance_t* in QML and in
+// signals/slots; for that, a call to qRegisterMetaType is necessary as
+// well, done below in main()
 struct dc_msg_t;
+struct dc_jsonrpc_instance_t;
 Q_DECLARE_OPAQUE_POINTER(dc_msg_t*);
+Q_DECLARE_OPAQUE_POINTER(dc_jsonrpc_instance_t*);
 
 // QtMessageHandler, a typedef for a pointer to a function with the following signature:
 //
@@ -148,6 +151,18 @@ int main(int argc, char *argv[])
     }
 
     
+    QWebEngineUrlScheme httpviacorescheme("httpviacore");
+    httpviacorescheme.setSyntax(QWebEngineUrlScheme::Syntax::HostAndPort);
+    httpviacorescheme.setDefaultPort(80);
+    httpviacorescheme.setFlags(QWebEngineUrlScheme::NoAccessAllowed);
+    QWebEngineUrlScheme::registerScheme(httpviacorescheme);
+
+    QWebEngineUrlScheme httpsviacorescheme("httpsviacore");
+    httpsviacorescheme.setSyntax(QWebEngineUrlScheme::Syntax::HostAndPort);
+    httpsviacorescheme.setDefaultPort(443);
+    httpsviacorescheme.setFlags(QWebEngineUrlScheme::NoAccessAllowed);
+    QWebEngineUrlScheme::registerScheme(httpsviacorescheme);
+
     QWebEngineUrlScheme webxdcscheme("webxdcfilerequest");
     webxdcscheme.setSyntax(QWebEngineUrlScheme::Syntax::Host);
     webxdcscheme.setDefaultPort(QWebEngineUrlScheme::PortUnspecified);
@@ -209,6 +224,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<dc_msg_t*>("dc_msg_t*");
+    qRegisterMetaType<dc_jsonrpc_instance_t*>("dc_jsonrpc_instance_t*");
     //qRegisterMetaType<size_t>("size_t");
 
     qDebug() << "Starting app from main.cpp";

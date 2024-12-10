@@ -84,6 +84,7 @@ Page {
             webengineprofile.setRemoteContentAllowed(true)
             webview.reload()
         }
+        webengineprofile.configureSchemehandler(DeltaHandler.getJsonrpcInstance(), DeltaHandler.getCurrentAccountId(), DeltaHandler.getJsonrpcRequestId())
     }
 
     Rectangle {

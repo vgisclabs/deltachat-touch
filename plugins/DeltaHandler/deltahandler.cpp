@@ -87,7 +87,7 @@ DeltaHandler::DeltaHandler(QObject* parent)
     }
 
     // Set the initial id for jsonrpc requests to 1 billion, i.e. around half of the
-    // max of an unsigned int (although the id in libdeltachat might
+    // max of an signed int (although the id in libdeltachat might
     // be unsigned). Reason is that jsonrpc.mjs as used in QML has its own
     // ids that start with 0.
     // TODO modify jsonrpc.mjs so that the next id after 999 999 999 is
@@ -5258,6 +5258,12 @@ QString DeltaHandler::saveLog(QString logtext, QString datetime)
     // have to remove the trailing stuff
     snapshotname.remove(0, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).length() + 1);
     return snapshotname;
+}
+
+
+dc_jsonrpc_instance_t* DeltaHandler::getJsonrpcInstance()
+{
+    return m_jsonrpcInstance;
 }
 
 

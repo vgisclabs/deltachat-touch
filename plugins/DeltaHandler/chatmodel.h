@@ -30,7 +30,7 @@
 #include "deltahandler.h"
 #include "chatlistmodel.h"
 #include "webxdcImageProvider.h"
-#include "deltachat.h"
+#include "../deltachat.h"
 
 class DeltaHandler;
 class WebxdcImageProvider;

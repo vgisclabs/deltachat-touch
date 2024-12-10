@@ -23,7 +23,7 @@
 #include <QtGui>
 #include <string>
 #include <atomic>
-#include "deltachat.h"
+#include "../deltachat.h"
 
 class EmitterThread : public QThread {
     Q_OBJECT

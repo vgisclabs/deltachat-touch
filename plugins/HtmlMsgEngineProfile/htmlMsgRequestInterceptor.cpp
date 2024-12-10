@@ -26,7 +26,8 @@
 
 #include "htmlMsgRequestInterceptor.h"
 #include <QWebEngineUrlRequestInfo>
-//#include <QDebug>
+#include <QStandardPaths>
+#include <QDebug>
 
 HtmlMsgRequestInterceptor::HtmlMsgRequestInterceptor(QObject *parent) : QWebEngineUrlRequestInterceptor(parent)
 {
@@ -35,25 +36,52 @@ HtmlMsgRequestInterceptor::HtmlMsgRequestInterceptor(QObject *parent) : QWebEngi
 
 void HtmlMsgRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
 {
-    auto requestUrl = info.requestUrl();
+    QUrl requestUrl = info.requestUrl();
 
-        // The following comment is present in the original Dekko code
-        // (https://gitlab.com/dekkan/dekko/-/blob/17338101bf1dcdd9ce1aad59b7d9d2ab429ecb7f/plugins/ubuntu-plugin/plugins/core/mail/webview/DekkoWebEngineUrlRequestInterceptor.cpp):
-        //
-        // check the resourceType() to not block links, not sure thats reliable, but it
-        // seems navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink always...
-        bool doBlock = this->remoteResourcesAreBlocked
-                       && (info.resourceType() != QWebEngineUrlRequestInfo::ResourceTypeMainFrame);
-        info.block(doBlock);
-        emit interceptedRemoteRequest(doBlock);
+    // Allow access to the html message itself
+    QString initialUrl = "file://" + QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/htmlmsg.html";
 
-        //if (doBlock) {
-        //    //qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Blocked a request to " << info.requestUrl();
-        //    qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Blocked a request.";
-        //} else if (info.resourceType() != QWebEngineUrlRequestInfo::ResourceTypeMainFrame) {
-        //    //qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Did NOT block a request to " << info.requestUrl();
-        //    qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Did NOT block a request.";
-        //}
+    if (requestUrl.scheme() == "file" && requestUrl.toString() == initialUrl) {
+        info.block(false);
+        return;
+    }
+
+    // block by default; allow only images if the user clicked to unblock
+    bool doBlock = this->remoteResourcesAreBlocked || info.resourceType() != QWebEngineUrlRequestInfo::ResourceTypeImage;
+
+    if (doBlock) {
+        info.block(true);
+        emit interceptedRemoteRequest(true);
+    } else {
+        // http or https requests are rewritten to schemes httpviacore or httpsviacore, respectively,
+        // so our own scheme handler can route the calls through the core (it's not allowed by Qt
+        // to define a custom scheme handler for file://, http:// or https://)
+        if (requestUrl.scheme() == "http") {
+            requestUrl.setScheme("httpviacore");
+            info.redirect(requestUrl);
+            info.block(false);
+        } else if (requestUrl.scheme() == "https") {
+            requestUrl.setScheme("httpsviacore");
+            info.redirect(requestUrl);
+            info.block(false);
+        } else if (requestUrl.scheme() == "httpviacore" || requestUrl.scheme() == "httpsviacore") {
+            info.block(false);
+        } else {
+            qDebug() << "HtmlMsgRequestInterceptor::interceptRequest(): remote resources are not blocked, but scheme is neither http nor https, so blocking anyway";
+            doBlock = true;
+            info.block(true);
+            emit interceptedRemoteRequest(true);
+            return;
+        }
+    }
+
+    //if (doBlock) {
+    //    qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Blocked a request to " << info.requestUrl();
+    //    //qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Blocked a request.";
+    //} else if (info.resourceType() != QWebEngineUrlRequestInfo::ResourceTypeMainFrame) {
+    //    qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Did NOT block a request to " << info.requestUrl();
+    //    //qDebug() << "HtmlMsgRequestInterceptor::interceptedRemoteRequest: Did NOT block a request.";
+    //}
 }
 
 void HtmlMsgRequestInterceptor::setBlockRemoteResources(bool doBlock)

@@ -21,6 +21,10 @@
 #include <QtDBus/QDBusMessage>
 #include <QDBusPendingReply>
 #include <QDBusError>
+#include <QJsonValue>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 #include "notificationsLomiriPostal.h"
 
@@ -484,10 +488,56 @@ void NotificationsLomiriPostal::sendNotification(QString summary, QString body, 
     QDBusMessage message;
     message = QDBusMessage::createMethodCall("com.lomiri.Postal", "/com/lomiri/Postal/deltatouch_2elotharketterer", "com.lomiri.Postal", "Post");
     QString appid("deltatouch.lotharketterer_deltatouch");
-    // replace_tag doesn't work, maybe it's positioned wrongly?
-    QString mynotif("{\"message\": \"foobar\", \"notification\":{\"tag\": \"" + tag + "\", \"card\": {\"summary\": \"" + summary + "\", \"body\": \"" + body + "\", \"popup\": true, \"persist\": true, \"icon\": \"" + icon + "\"}, \"sound\": true, \"vibrate\": {\"pattern\": [200], \"duration\": 200, \"repeat\": 1 }}}");
 
-    message << appid << mynotif;
+    // A working Lomiri Postal notification JSON:
+    // {   
+    //     "message": "foobar",
+    //     "notification": {
+    //         "tag": tag,
+    //         "card": {
+    //             "summary": summary,
+    //             "body": body,
+    //             "popup": true,
+    //             "persist": true,
+    //             "icon": icon
+    //         },
+    //         "sound": true,
+    //         "vibrate": {
+    //             "pattern": [200],
+    //             "duration": 200,
+    //             "repeat": 1
+    //         }
+    //     }
+    // }
+
+    QJsonObject _card;
+    _card.insert("summary", QJsonValue(summary));
+    _card.insert("body", QJsonValue(body));
+    _card.insert("popup", QJsonValue(true));
+    _card.insert("persist", QJsonValue(true));
+    _card.insert("icon", QJsonValue(icon));
+
+    QJsonArray _pattern;
+    _pattern.append(QJsonValue(200));
+
+    QJsonObject _vibrate;
+    _vibrate.insert("pattern", _pattern);
+    _vibrate.insert("duration", QJsonValue(200));
+    _vibrate.insert("repeat", QJsonValue(1));
+
+    QJsonObject _notification;
+    _notification.insert("tag", QJsonValue(tag));
+    _notification.insert("card", _card);
+    _notification.insert("sound", QJsonValue(true));
+    _notification.insert("vibrate", _vibrate);
+
+    QJsonObject _fullPostalNotif;
+    _fullPostalNotif.insert("message", QJsonValue("foobar"));
+    _fullPostalNotif.insert("notification", _notification);
+
+    QJsonDocument notifJsonDoc(_fullPostalNotif);
+
+    message << appid << QString(notifJsonDoc.toJson(QJsonDocument::Compact));
     bool success = m_bus->send(message);
     if (!success) {
         qDebug() << "NotificationsLomiriPostal::sendNotification(): ERROR: Queueing notification with tag " << tag << " was not successful";

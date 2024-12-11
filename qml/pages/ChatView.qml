@@ -1857,7 +1857,7 @@ Page {
                                 // needed for right-to-left text such as Arabic
                                 horizontalAlignment: Text.AlignLeft
 
-                                onLinkActivated: Qt.openUrlExternally(link)
+                                onLinkActivated: PopupUtils.open(Qt.resolvedUrl('ConfirmOpenExternalUrl.qml'), chatViewPage, { externalLink: link })
                                 visible: isUnreadMsgsBar || (msgtext != "" && isDownloaded)
                                 fontSize: root.scaledFontSize
                         }
